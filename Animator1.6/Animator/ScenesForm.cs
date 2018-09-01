@@ -1,0 +1,490 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Drawing.Drawing2D;
+
+namespace Animator
+{
+    public partial class ScenesForm : Form
+    {
+        // Initialise Variables
+        List<Piece> piecesList = new List<Piece>();     // Contains ALL pieces, INCLUDING sets (Lone pieces found with piece.GetIsAttached() )
+        List<Set> setList = new List<Set>();            // Contains sets ONLY for saving purposes
+
+        List<Changes> changes = new List<Changes>();
+        List<Originals> originals = new List<Originals>();
+
+        int numFrames = 1;
+        int workingFrame = 0;
+
+        Graphics g;        
+
+
+        public ScenesForm()
+        {
+            InitializeComponent();
+        }
+
+        private void AddPieceBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Add piece to lists
+                piecesList.Add(new Piece(NameTb.Text));
+                partsLb.Items.Add(NameTb.Text);
+                originals.Add(new Originals(piecesList[piecesList.Count - 1]));
+
+
+                // Add set to lists ** NEEDS OWN BUTTON
+                /*
+                setList.Add(new Set(NameTb.Text));
+                piecesList.AddRange(setList[setList.Count - 1].GetPiecesList());
+                //WRONG BELOW - ADD ONE FOR EACH PIECE OF SET. Include star (*) to show part of set?
+                partsLb.Items.Add(setList[setList.Count - 1].GetName());
+                originals.Add(new Originals(piecesList[piecesList.Count - 1]));
+                */
+
+                partsLb.SelectedIndex = partsLb.Items.Count - 1;
+
+                // Draw the Piece on the Scene
+                DrawParts();
+
+            }
+            catch (System.IO.FileNotFoundException)
+            {
+                MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
+            }
+            catch (System.ArgumentOutOfRangeException)
+            {
+                MessageBox.Show("Suspected outdated file.", "File Indexing Error", MessageBoxButtons.OK);
+            }
+        }
+
+        private void DrawParts()
+        {
+            // Prepare
+            DrawPanel.Refresh();
+            g = this.DrawPanel.CreateGraphics();
+
+            // Draw Parts
+            foreach (Piece toDraw in piecesList)
+            {
+                Utilities.DrawPiece(toDraw, g, true);
+            }
+        }
+
+        private void partsLb_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (partsLb.SelectedIndex != -1)
+            {
+                Piece selected = piecesList[partsLb.SelectedIndex];
+                rotationUpDown.Value = (decimal)selected.GetAngles()[0];
+                turnUpDown.Value = (decimal)selected.GetAngles()[1];
+                spinUpDown.Value = (decimal)selected.GetAngles()[2];
+                xUpDown.Value = (decimal)selected.GetCoords()[0];
+                yUpDown.Value = (decimal)selected.GetCoords()[1];
+                sizeUpDown.Value = (decimal)selected.GetSizeMod();
+                DrawParts();
+            }
+        }
+
+        private void rotationUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            if (partsLb.SelectedIndex != -1)
+            {
+                // Check for Overflow
+                if (rotationUpDown.Value == 360)
+                {
+                    rotationUpDown.Value = 0;
+                }
+                else if (rotationUpDown.Value == -1)
+                {
+                    rotationUpDown.Value = 359;
+                }
+
+                // Update Piece
+                piecesList[partsLb.SelectedIndex].SetRotation((double)rotationUpDown.Value);
+
+                DrawParts();
+            }
+        }
+
+        private void turnUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            if (partsLb.SelectedIndex != -1)
+            {
+                // Check for Overflow
+                if (turnUpDown.Value == 360)
+                {
+                    turnUpDown.Value = 0;
+                }
+                else if (turnUpDown.Value == -1)
+                {
+                    turnUpDown.Value = 359;
+                }
+
+                // Update Piece
+                piecesList[partsLb.SelectedIndex].SetTurn((int)turnUpDown.Value);
+
+                DrawParts();
+            }
+        }
+
+        private void DoneBtn_Click(object sender, EventArgs e)
+        {
+            if (animationPanel.Visible)
+            {
+                animationPanel.Visible = false;
+            }
+            else
+            {
+                animationPanel.Visible = true;
+            }
+        }
+
+        private void SpinUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            if (partsLb.SelectedIndex != -1)
+            {
+                // Check for Overflow
+                if (spinUpDown.Value == 360)
+                {
+                    spinUpDown.Value = 0;
+                }
+                else if (spinUpDown.Value == -1)
+                {
+                    spinUpDown.Value = 359;
+                }
+
+                // Update Piece
+                piecesList[partsLb.SelectedIndex].SetSpin((int)spinUpDown.Value);
+
+                DrawParts();
+            }
+        }
+
+        private void upBtn_Click(object sender, EventArgs e)
+        {
+            if (partsLb.SelectedIndex > 0)
+            {
+                // Update piecesList
+                Piece holdingPiece = piecesList[partsLb.SelectedIndex - 1];
+                piecesList[partsLb.SelectedIndex - 1] = piecesList[partsLb.SelectedIndex];
+                piecesList[partsLb.SelectedIndex] = holdingPiece;
+
+                // Update partsLb
+                Object holdingObject = partsLb.Items[partsLb.SelectedIndex - 1];
+                partsLb.Items[partsLb.SelectedIndex - 1] = partsLb.Items[partsLb.SelectedIndex];
+                partsLb.Items[partsLb.SelectedIndex] = holdingObject;
+
+                DrawParts();
+            }
+        }
+
+        private void downBtn_Click(object sender, EventArgs e)
+        {
+            if (partsLb.SelectedIndex != -1 && partsLb.SelectedIndex < piecesList.Count - 1)
+            {
+
+                // Update piecesList
+                Piece holdingPiece = piecesList[partsLb.SelectedIndex + 1];
+                piecesList[partsLb.SelectedIndex + 1] = piecesList[partsLb.SelectedIndex];
+                piecesList[partsLb.SelectedIndex] = holdingPiece;
+
+                // Update partsLb
+                Object holdingObject = partsLb.Items[partsLb.SelectedIndex + 1];
+                partsLb.Items[partsLb.SelectedIndex + 1] = partsLb.Items[partsLb.SelectedIndex];
+                partsLb.Items[partsLb.SelectedIndex] = holdingObject;
+
+                DrawParts();
+            }
+        }
+
+        private void deleteBtn_Click(object sender, EventArgs e)
+        {
+            if (partsLb.SelectedIndex != -1)
+            {
+                // If piece is involved in set
+                if (piecesList[partsLb.SelectedIndex].GetIsAttached() || PieceSetIndex(piecesList[partsLb.SelectedIndex]) != -1)
+                {
+                    // ** TO DO
+                    //SHOW A WARNING MESSAGE ABOUT DELETING THE ENTIRE SET & OPTION TO REMOVE FROM VIEW WITH ACTION
+                    //FIGURE OUT HOW MANY SETS NEED DELETING (Cascades)
+                    // Update piecesList/setsList/partsLb accordingly
+                }
+                else // Piece is lone
+                {
+                    piecesList.RemoveAt(partsLb.SelectedIndex);
+                    partsLb.Items.RemoveAt(partsLb.SelectedIndex);
+                }   // ** TO DO: Update changes and initials
+
+                // Ensure selected index will not overflow
+                if (partsLb.SelectedIndex == partsLb.Items.Count)
+                {
+                    partsLb.SelectedIndex = partsLb.Items.Count - 1;
+                }
+
+                DrawParts();
+            }
+        }
+
+        private void xUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            if (partsLb.SelectedIndex != -1)
+            {
+                // Update Piece
+                piecesList[partsLb.SelectedIndex].SetX((int)xUpDown.Value);
+
+                DrawParts();
+            }
+        }
+
+        private void yUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            if (partsLb.SelectedIndex != -1)
+            {
+                // Update Piece
+                piecesList[partsLb.SelectedIndex].SetY((int)yUpDown.Value);
+
+                DrawParts();
+            }
+        }
+
+        private void sizeUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            if (partsLb.SelectedIndex != -1)
+            {
+                // Update Piece
+                piecesList[partsLb.SelectedIndex].SetSizeMod((int)sizeUpDown.Value);
+
+                DrawParts();
+            }
+        }
+
+        private void hideBtn_Click(object sender, EventArgs e)
+        {
+            animationPanel.Visible = false;
+        }
+
+        private void addAnimationBtn_Click(object sender, EventArgs e)
+        {
+            if (partsLb.SelectedIndex != -1)
+            {
+                changes.Add(new Changes(workingFrame, changeTypeCb.Text, piecesList[partsLb.SelectedIndex], 
+                    (double)animationAmountTb.Value, (int)frameLengthUpDown.Value));
+            }
+            updateAnimationListbox();
+        }
+
+
+        private void updateAnimationListbox()
+        {
+            animationLb.Items.Clear();
+            foreach (Changes change in changes)
+            {
+                if (workingFrame >= change.GetStartFrame() && workingFrame <= change.GetStartFrame() + change.GetHowLong() - 1)
+                {
+                    // ** TO DO Include something to show if it is part of a set
+                    string summary = change.GetAction() + " : " + change.GetPiece().GetName() + " : " + change.GetHowMuch().ToString()
+                        + " : " + (change.GetHowLong() - (workingFrame - change.GetStartFrame())).ToString();
+
+                    animationLb.Items.Add(summary);
+                }
+            }
+        }
+
+        private void nextFrameBtn_Click(object sender, EventArgs e)
+        {
+            foreach (Changes change in changes)
+            {
+                if (workingFrame >= change.GetStartFrame() && workingFrame <= change.GetStartFrame() + change.GetHowLong() - 1)
+                {
+                    change.Run(true);
+                }
+            }
+
+            DrawParts();
+
+            // If new, create new frame
+            if (numFrames - 1 == workingFrame) { numFrames++; }
+
+            workingFrame++;
+            updateAnimationListbox();
+
+            // TEMP **
+            sceneNumber.Text = workingFrame.ToString();
+        }
+
+        private void backBtn_Click(object sender, EventArgs e)
+        {
+            if (workingFrame > 0)
+            {
+                foreach (Changes change in changes)
+                {
+                    if (workingFrame >= change.GetStartFrame() + 1 && workingFrame <= change.GetStartFrame() + change.GetHowLong())
+                    {
+                        change.Run(false);
+                    }
+                }
+
+                DrawParts();
+
+                workingFrame--;
+                updateAnimationListbox();
+
+                // TEMP **
+                sceneNumber.Text = workingFrame.ToString();
+            }
+        }
+
+        private void finishSceneBtn_Click(object sender, EventArgs e)
+        {
+            // Save as a Scene
+            Boolean doEet = true;
+            DialogResult result = MessageBox.Show("Do you want to save this scene?", "Save Confirmation", MessageBoxButtons.YesNo);
+            if (result == System.Windows.Forms.DialogResult.No)
+            {
+                doEet = false;
+            }
+
+
+            if (doEet)
+            {
+                try
+                {
+                    // Save Data
+                    string filePath = Environment.CurrentDirectory + "\\Scenes\\" + sceneNameTb.Text + ".txt";
+                    System.IO.StreamWriter file = new System.IO.StreamWriter(@filePath);
+
+                    // Save FPS & Number of Frames (Line 1)
+                    file.WriteLine(fpsUpDown.Value + ";" + numFrames);
+
+                    // Save Parts
+                    for (int index = 0; index < piecesList.Count; index++)
+                    {
+                        piecesList[index].SetSceneIndex(index);
+
+                        // ** TO DO 
+                        // IF NOT SET THEN:
+                        file.WriteLine("p:" + piecesList[index].GetName());
+                    }
+
+                    // Write Original States Notifier
+                    file.WriteLine("Originals");
+
+                    // Save Original States
+                    Boolean found;
+                    int counter;
+                    foreach (Piece piece in piecesList)
+                    {
+                        // Search for matching Originals
+                        found = false;
+                        counter = 0;
+                        while (!found && counter < originals.Count)
+                        {
+                            if (originals[counter].IsMatch(piece))
+                            {
+                                found = true;
+                            }
+                            else
+                            {
+                                counter++;
+                            }
+                        }
+
+                        // Write Originals data to file
+                        if (found)
+                        {
+                            file.WriteLine(originals[counter].GetSaveData());
+                            originals.RemoveAt(counter);
+                        }
+                        else     // Should never be reached, but JIC
+                        {
+                            file.WriteLine("500;250;0;0;0;100");
+                        }
+                    }
+
+                    // Save Animation Changes
+                    foreach (Changes change in changes)
+                    {
+                        file.WriteLine(change.GetStartFrame() + ";" + change.GetAction() + ";" +
+                            change.GetPiece().GetSceneIndex() + ";" + change.GetHowMuch() + ";" + change.GetHowLong());
+                    }
+
+                    // Close File and Form
+                    file.Close();
+                    this.Close();
+                }
+                catch (System.IO.FileNotFoundException)
+                {
+                    MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
+                }
+            }
+            else
+            {
+                DialogResult query = MessageBox.Show("Do you wish to exit without saving?", "Exit Confirmation", MessageBoxButtons.YesNo);
+                if (query == System.Windows.Forms.DialogResult.Yes)
+                {
+                    this.Close();
+                }
+            }
+        }
+
+        private void switchSidesBtn2_Click(object sender, EventArgs e)
+        {
+            if (animationPanel.Location.X == 0)
+            {
+                animationPanel.Location = new Point(this.Width - 16 - animationPanel.Width, 0);
+            }
+            else
+            {
+                animationPanel.Location = new Point(0, 0);
+            }
+            DrawParts();
+        }
+
+        private void switchSidesBtn1_Click(object sender, EventArgs e)
+        {
+            if (partsPanel.Location.X == 0)
+            {
+                partsPanel.Location = new Point(this.Width - 16 - partsPanel.Width, 0);
+            }
+            else
+            {
+                partsPanel.Location = new Point(0, 0);
+            }
+            DrawParts();
+        }
+
+        private void AnimationPanelBtn_Click(object sender, EventArgs e)
+        {
+            animationPanel.Visible = true;
+            partsPanel.Visible = false;
+        }
+
+        private void partsPanelBtn_Click(object sender, EventArgs e)
+        {
+            animationPanel.Visible = false;
+            partsPanel.Visible = true;
+        }
+
+
+        private int PieceSetIndex(Piece toCheck)
+        {
+            for (int index = 0; index < setList.Count; index++)
+            {
+                if (setList[index].GetBasePiece() == toCheck)
+                {
+                    return index;
+                }
+            }
+            return -1;
+        }
+    }
+}
