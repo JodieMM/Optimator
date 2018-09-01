@@ -44,7 +44,7 @@ namespace Animator
         private Piece attachedTo = null;
         private Piece attachPoint = null;
         private Piece ownPoint = null;
-        private string baseOf = null;
+        private Set pieceOf = null;
 
         // Scenes
         private int sceneIndex = -1;
@@ -265,9 +265,9 @@ namespace Animator
             return sceneIndex;
         }
 
-        public string GetBaseOf()
+        public Set GetPieceOf()
         {
-            return baseOf;
+            return pieceOf;
         }
 
 
@@ -353,9 +353,9 @@ namespace Animator
             sceneIndex = indexNum;
         }
 
-        public void SetBaseOf(string set)
+        public void SetPieceOf(Set set)
         {
-            baseOf = set;
+            pieceOf = set;
         }
 
 

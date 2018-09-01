@@ -59,13 +59,12 @@ namespace Animator
                 {
                     basePiecesList.Add(-1);
 
-                    WIP.SetBaseOf(name);
-
                     // Set x, y, rotation, turn, spin and sizeMod
                     WIP.SetValues(double.Parse(dataSections[1]), double.Parse(dataSections[2]), double.Parse(dataSections[3]),
                         double.Parse(dataSections[4]), double.Parse(dataSections[5]), double.Parse(dataSections[6]));
                 }
 
+                WIP.SetPieceOf(this);
                 piecesList.Add(WIP);
 
             }
@@ -86,6 +85,11 @@ namespace Animator
         public List<int> GetBasePiecesList()
         {
             return basePiecesList;
+        }
+
+        public string GetName()
+        {
+            return name;
         }
 
 

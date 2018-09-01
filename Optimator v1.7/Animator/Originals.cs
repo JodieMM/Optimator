@@ -32,6 +32,8 @@ namespace Animator
             t = piece.GetAngles()[1];
             s = piece.GetAngles()[2];
             sm = piece.GetSizeMod();
+            // Colours/Outlines?
+            // Attached sets etc?
         }
 
         // Getters

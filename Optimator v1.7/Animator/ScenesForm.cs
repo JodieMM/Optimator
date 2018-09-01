@@ -211,18 +211,40 @@ namespace Animator
             if (partsLb.SelectedIndex != -1)
             {
                 // If piece is involved in set
-                if (piecesList[partsLb.SelectedIndex].GetIsAttached() || PieceSetIndex(piecesList[partsLb.SelectedIndex]) != -1)
+                if (piecesList[partsLb.SelectedIndex].GetPieceOf() != null)
                 {
-                    // ** TO DO
-                    //SHOW A WARNING MESSAGE ABOUT DELETING THE ENTIRE SET & OPTION TO REMOVE FROM VIEW WITH ACTION
-                    //FIGURE OUT HOW MANY SETS NEED DELETING (Cascades)
-                    // Update piecesList/setsList/partsLb accordingly
+                    DialogResult result = MessageBox.Show("This will delete the entire set. Do you wish to continue?",
+                        "Overwrite Confirmation", MessageBoxButtons.YesNo);
+                    if (result == DialogResult.Yes)
+                    {
+                        Set deleting = piecesList[partsLb.SelectedIndex].GetPieceOf();
+                        setList.Remove(deleting);
+
+                        for (int index = 0; index < piecesList.Count;)
+                        {
+                            if (piecesList[index].GetPieceOf() == deleting)
+                            {
+                                piecesList.RemoveAt(index);
+                                partsLb.Items.RemoveAt(partsLb.SelectedIndex);
+                            }
+                            else
+                            {
+                                index++;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        return;
+                    }
                 }
                 else // Piece is lone
                 {
                     piecesList.RemoveAt(partsLb.SelectedIndex);
                     partsLb.Items.RemoveAt(partsLb.SelectedIndex);
-                }   // ** TO DO: Update changes and initials
+                }
+
+                UpdateChangesOriginals();
 
                 // Ensure selected index will not overflow
                 if (partsLb.SelectedIndex == partsLb.Items.Count)
@@ -370,9 +392,19 @@ namespace Animator
                     {
                         piecesList[index].SetSceneIndex(index);
 
-                        // ** TO DO 
-                        // IF NOT SET THEN:
-                        file.WriteLine("p:" + piecesList[index].GetName());
+                        // If piece is in set
+                        if (piecesList[index].GetPieceOf() != null)
+                        {
+                            // If piece is base
+                            if (piecesList[index].GetAttachedTo() == null)
+                            {
+                                file.WriteLine("s:" + piecesList[index].GetPieceOf().GetName());
+                            }
+                        }
+                        else
+                        {
+                            file.WriteLine("p:" + piecesList[index].GetName());
+                        }
                     }
 
                     // Write Original States Notifier
@@ -388,25 +420,19 @@ namespace Animator
                         counter = 0;
                         while (!found && counter < originals.Count)
                         {
-                            if (originals[counter].IsMatch(piece))
-                            {
-                                found = true;
-                            }
-                            else
-                            {
-                                counter++;
-                            }
+                            if (originals[counter].IsMatch(piece)) { found = true; }
+                            else { counter++; }
                         }
 
                         // Write Originals data to file
                         if (found)
                         {
-                            file.WriteLine(originals[counter].GetSaveData());
+                            file.WriteLine(originals[counter].GetPiece().GetSceneIndex() + ";" + originals[counter].GetSaveData());
                             originals.RemoveAt(counter);
                         }
                         else     // Should never be reached, but JIC
                         {
-                            file.WriteLine("500;250;0;0;0;100");
+                            file.WriteLine(originals[counter].GetPiece().GetSceneIndex() + ";500;250;0;0;0;100");
                         }
                     }
 
@@ -472,6 +498,39 @@ namespace Animator
         {
             animationPanel.Visible = false;
             partsPanel.Visible = true;
+        }
+
+        /// <summary>
+        /// Checks if any Changes or Originals have been made invalid/unnecessary due
+        /// to the deletion of a piece and removes them if so.
+        /// </summary>
+        private void UpdateChangesOriginals()
+        {
+            // Update Changes
+            for (int index = 0; index < changes.Count;)
+            {
+                if (!piecesList.Contains(changes[index].GetPiece()))
+                {
+                    changes.RemoveAt(index);
+                }
+                else
+                {
+                    index++;
+                }
+            }
+
+            // Update Originals
+            for (int index = 0; index < originals.Count;)
+            {
+                if (!piecesList.Contains(originals[index].GetPiece()))
+                {
+                    originals.RemoveAt(index);
+                }
+                else
+                {
+                    index++;
+                }
+            }
         }
     }
 }

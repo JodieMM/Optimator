@@ -23,6 +23,7 @@ namespace Animator
         List<Piece> piecesList = new List<Piece>();
         List<int> partOrder = new List<int>();
         List<Changes> changes = new List<Changes>();
+        List<Originals> originals = new List<Originals>();
 
         int frameRate;
         int numFrames;
@@ -60,16 +61,28 @@ namespace Animator
                     dataLine = file.ReadLine();
                 }
 
-                // Set part order & Assign Original States
+                // Set Part Order
                 for (int index = 0; index < piecesList.Count; index++)
                 {
-                    // Set Part Order
                     piecesList[index].SetSceneIndex(index);
+                }
 
-                    // Assign Original States
+                // Assign Original States
+                Boolean found = false;
+                for (int index = 0; index < piecesList.Count; index++)      // piecesList.Count is the same as the number of lines to read
+                {
                     dataLines = file.ReadLine().Split(new Char[] { ';' });
-                    piecesList[index].SetValues(double.Parse(dataLines[0]), double.Parse(dataLines[1]), double.Parse(dataLines[2]),
-                        double.Parse(dataLines[3]), double.Parse(dataLines[4]), double.Parse(dataLines[5]));
+                    found = false;
+                    for (int i = 0; index < piecesList.Count && !found; index++)
+                    {
+                        if (piecesList[i].GetSceneIndex() == int.Parse(dataLines[0]))
+                        {
+                            piecesList[i].SetValues(double.Parse(dataLines[1]), double.Parse(dataLines[2]), double.Parse(dataLines[3]), 
+                                double.Parse(dataLines[4]), double.Parse(dataLines[5]), double.Parse(dataLines[6]));
+                            originals.Add(new Originals(piecesList[i]));
+                            found = true;
+                        }
+                    }
                 }
 
 
