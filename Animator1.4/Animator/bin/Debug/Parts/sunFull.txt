@@ -1,0 +1,13 @@
+set
+piecebase;sunBeam;:;s;s;s;s;s;s;s;s;s;s;s;s;0;0;0;100
+piece;sunBeam;sunPoint:sunPoint;s;s;s;s;s;s;s;s;s;s;s;s;0;0;30;100
+piece;sunBeam;sunPoint:sunPoint;s;s;s;s;s;s;s;s;s;s;s;s;0;0;60;100
+piece;sunBeam;sunPoint:sunPoint;s;s;s;s;s;s;s;s;s;s;s;s;0;0;90;100
+piece;sunBeam;sunPoint:sunPoint;s;s;s;s;s;s;s;s;s;s;s;s;0;0;120;100
+piece;sunBeam;sunPoint:sunPoint;s;s;s;s;s;s;s;s;s;s;s;s;0;0;150;100
+piece;sunBeam;sunPoint:sunPoint;s;s;s;s;s;s;s;s;s;s;s;s;0;0;180;100
+piece;sunBeam;sunPoint:sunPoint;s;s;s;s;s;s;s;s;s;s;s;s;0;0;210;100
+piece;sunBeam;sunPoint:sunPoint;s;s;s;s;s;s;s;s;s;s;s;s;0;0;240;100
+piece;sunBeam;sunPoint:sunPoint;s;s;s;s;s;s;s;s;s;s;s;s;0;0;270;100
+piece;sunBeam;sunPoint:sunPoint;s;s;s;s;s;s;s;s;s;s;s;s;0;0;300;100
+piece;sunBeam;sunPoint:sunPoint;s;s;s;s;s;s;s;s;s;s;s;s;0;0;330;100
