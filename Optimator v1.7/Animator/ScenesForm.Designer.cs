@@ -67,6 +67,7 @@
             this.button3 = new System.Windows.Forms.Button();
             this.animationLb = new System.Windows.Forms.ListBox();
             this.addAnimationBtn = new System.Windows.Forms.Button();
+            this.AddSetBtn = new System.Windows.Forms.Button();
             this.DrawPanel.SuspendLayout();
             this.partsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sizeUpDown)).BeginInit();
@@ -94,6 +95,7 @@
             // partsPanel
             // 
             this.partsPanel.BackColor = System.Drawing.Color.PaleTurquoise;
+            this.partsPanel.Controls.Add(this.AddSetBtn);
             this.partsPanel.Controls.Add(this.switchSidesBtn1);
             this.partsPanel.Controls.Add(this.AnimationPanelBtn);
             this.partsPanel.Controls.Add(this.label6);
@@ -248,9 +250,9 @@
             // deleteBtn
             // 
             this.deleteBtn.Font = new System.Drawing.Font("Century Gothic", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.deleteBtn.Location = new System.Drawing.Point(155, 140);
+            this.deleteBtn.Location = new System.Drawing.Point(215, 140);
             this.deleteBtn.Name = "deleteBtn";
-            this.deleteBtn.Size = new System.Drawing.Size(137, 55);
+            this.deleteBtn.Size = new System.Drawing.Size(77, 55);
             this.deleteBtn.TabIndex = 10;
             this.deleteBtn.Text = "Delete";
             this.deleteBtn.UseVisualStyleBackColor = true;
@@ -359,7 +361,7 @@
             this.AddPieceBtn.Font = new System.Drawing.Font("Century Gothic", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.AddPieceBtn.Location = new System.Drawing.Point(8, 140);
             this.AddPieceBtn.Name = "AddPieceBtn";
-            this.AddPieceBtn.Size = new System.Drawing.Size(137, 55);
+            this.AddPieceBtn.Size = new System.Drawing.Size(89, 55);
             this.AddPieceBtn.TabIndex = 1;
             this.AddPieceBtn.Text = "Add";
             this.AddPieceBtn.UseVisualStyleBackColor = true;
@@ -571,6 +573,17 @@
             this.addAnimationBtn.UseVisualStyleBackColor = true;
             this.addAnimationBtn.Click += new System.EventHandler(this.addAnimationBtn_Click);
             // 
+            // AddSetBtn
+            // 
+            this.AddSetBtn.Font = new System.Drawing.Font("Century Gothic", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AddSetBtn.Location = new System.Drawing.Point(115, 140);
+            this.AddSetBtn.Name = "AddSetBtn";
+            this.AddSetBtn.Size = new System.Drawing.Size(89, 55);
+            this.AddSetBtn.TabIndex = 21;
+            this.AddSetBtn.Text = "Set";
+            this.AddSetBtn.UseVisualStyleBackColor = true;
+            this.AddSetBtn.Click += new System.EventHandler(this.AddSetBtn_Click);
+            // 
             // ScenesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -639,5 +652,6 @@
         private System.Windows.Forms.Button partsPanelBtn;
         private System.Windows.Forms.NumericUpDown frameLengthUpDown;
         private System.Windows.Forms.TextBox sceneNumber;
+        private System.Windows.Forms.Button AddSetBtn;
     }
 }

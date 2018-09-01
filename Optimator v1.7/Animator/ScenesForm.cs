@@ -40,16 +40,6 @@ namespace Animator
                 partsLb.Items.Add(NameTb.Text);
                 originals.Add(new Originals(piecesList[piecesList.Count - 1]));
 
-
-                // Add set to lists ** NEEDS OWN BUTTON
-                /*
-                setList.Add(new Set(NameTb.Text));
-                piecesList.AddRange(setList[setList.Count - 1].GetPiecesList());
-                //WRONG BELOW - ADD ONE FOR EACH PIECE OF SET. Include star (*) to show part of set?
-                partsLb.Items.Add(setList[setList.Count - 1].GetName());
-                originals.Add(new Originals(piecesList[piecesList.Count - 1]));
-                */
-
                 partsLb.SelectedIndex = partsLb.Items.Count - 1;
 
                 // Draw the Piece on the Scene
@@ -535,6 +525,42 @@ namespace Animator
                 {
                     index++;
                 }
+            }
+        }
+
+        private void AddSetBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Add pieces to lists
+                setList.Add(new Set(NameTb.Text));
+                piecesList.AddRange(setList[setList.Count - 1].GetPiecesList());
+                foreach (Piece piece in setList[setList.Count - 1].GetPiecesList())
+                {
+                    if (piece.GetAttachedTo() != null)
+                    {
+                        partsLb.Items.Add("* " + piece.GetName());
+                    }
+                    else
+                    {
+                        partsLb.Items.Add("** " + piece.GetName());
+                    }
+                    originals.Add(new Originals(piece));
+                }
+
+                partsLb.SelectedIndex = partsLb.Items.Count - 1;
+
+                // Draw the Piece on the Scene
+                DrawParts();
+
+            }
+            catch (System.IO.FileNotFoundException)
+            {
+                MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
+            }
+            catch (System.ArgumentOutOfRangeException)
+            {
+                MessageBox.Show("Suspected outdated file.", "File Indexing Error", MessageBoxButtons.OK);
             }
         }
     }
