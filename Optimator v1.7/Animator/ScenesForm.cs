@@ -473,18 +473,5 @@ namespace Animator
             animationPanel.Visible = false;
             partsPanel.Visible = true;
         }
-
-
-        private int PieceSetIndex(Piece toCheck)
-        {
-            for (int index = 0; index < setList.Count; index++)
-            {
-                if (setList[index].GetBasePiece() == toCheck)
-                {
-                    return index;
-                }
-            }
-            return -1;
-        }
     }
 }

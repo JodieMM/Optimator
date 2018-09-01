@@ -17,7 +17,6 @@ namespace Animator
         List<string> data;
         List<Piece> piecesList = new List<Piece>();
         List<int> basePiecesList = new List<int>();
-        Piece basePiece;
 
         const string folder = "\\Sets\\";
         const string pointsFolder = "\\Points\\";
@@ -60,7 +59,7 @@ namespace Animator
                 {
                     basePiecesList.Add(-1);
 
-                    basePiece = WIP;
+                    WIP.SetBaseOf(name);
 
                     // Set x, y, rotation, turn, spin and sizeMod
                     WIP.SetValues(double.Parse(dataSections[1]), double.Parse(dataSections[2]), double.Parse(dataSections[3]),
@@ -87,11 +86,6 @@ namespace Animator
         public List<int> GetBasePiecesList()
         {
             return basePiecesList;
-        }
-
-        public Piece GetBasePiece()
-        {
-            return basePiece;
         }
 
 
