@@ -129,5 +129,10 @@ namespace Animator
         {
             return changes;
         }
+
+        public List<Originals> GetOriginals()
+        {
+            return originals;
+        }
     }
 }

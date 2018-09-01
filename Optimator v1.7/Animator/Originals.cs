@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace Animator
 {
-    class Originals
+    public class Originals
     {
         // Initialise Variables
         Piece piece;

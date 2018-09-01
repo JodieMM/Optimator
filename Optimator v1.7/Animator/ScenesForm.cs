@@ -312,8 +312,13 @@ namespace Animator
             {
                 if (workingFrame >= change.GetStartFrame() && workingFrame <= change.GetStartFrame() + change.GetHowLong() - 1)
                 {
-                    // ** TO DO Include something to show if it is part of a set
-                    string summary = change.GetAction() + " : " + change.GetPiece().GetName() + " : " + change.GetHowMuch().ToString()
+                    string summary = "";
+                    if (change.GetPiece().GetPieceOf() != null)
+                    {
+                        summary += change.GetPiece().GetAttachedTo() != null ? "** " : "* ";
+                    }
+
+                    summary += change.GetAction() + " : " + change.GetPiece().GetName() + " : " + change.GetHowMuch().ToString()
                         + " : " + (change.GetHowLong() - (workingFrame - change.GetStartFrame())).ToString();
 
                     animationLb.Items.Add(summary);
