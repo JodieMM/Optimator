@@ -26,12 +26,12 @@ namespace Animator
         public Originals(Piece piece)
         {
             this.piece = piece;
-            x = piece.GetCoords()[0];
-            y = piece.GetCoords()[1];
-            r = piece.GetAngles()[0];
-            t = piece.GetAngles()[1];
-            s = piece.GetAngles()[2];
-            sm = piece.GetSizeMod();
+            x = piece.x;
+            y = piece.y;
+            r = piece.rotation;
+            t = piece.turn;
+            s = piece.spin;
+            sm = piece.sizeMod;
             // Colours/Outlines?
             // Attached sets etc?
         }

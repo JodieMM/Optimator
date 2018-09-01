@@ -23,7 +23,6 @@ namespace Animator
         List<Piece> piecesList = new List<Piece>();
         List<int> partOrder = new List<int>();
         List<Changes> changes = new List<Changes>();
-        List<Originals> originals = new List<Originals>();
 
         int frameRate;
         int numFrames;
@@ -79,7 +78,7 @@ namespace Animator
                         {
                             piecesList[i].SetValues(double.Parse(dataLines[1]), double.Parse(dataLines[2]), double.Parse(dataLines[3]), 
                                 double.Parse(dataLines[4]), double.Parse(dataLines[5]), double.Parse(dataLines[6]));
-                            originals.Add(new Originals(piecesList[i]));
+                            piecesList[i].SetOriginal(new Originals(piecesList[i]));
                             found = true;
                         }
                     }
@@ -130,9 +129,14 @@ namespace Animator
             return changes;
         }
 
-        public List<Originals> GetOriginals()
+
+        // General Functions
+        public void AssignOriginalPositions()
         {
-            return originals;
+            foreach (Piece piece in piecesList)
+            {
+                piece.TakeOriginalState();
+            }
         }
     }
 }

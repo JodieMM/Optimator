@@ -48,6 +48,7 @@ namespace Animator
 
         // Scenes
         private int sceneIndex = -1;
+        private Originals originally = null;
 
 
 
@@ -270,6 +271,11 @@ namespace Animator
             return pieceOf;
         }
 
+        public Originals GetOriginal()
+        {
+            return originally;
+        }
+
 
         // Set Functions
 
@@ -356,6 +362,11 @@ namespace Animator
         public void SetPieceOf(Set set)
         {
             pieceOf = set;
+        }
+
+        public void SetOriginal(Originals origin)
+        {
+            originally = origin;
         }
 
 
@@ -634,22 +645,6 @@ namespace Animator
             }
             else
             {
-                /*
-                double[] baseCentre = Utilities.FindMid(attachedTo.GetCurrentPoints(false, false));
-                double[] thisCentre = Utilities.FindMid(GetCurrentPoints(false, false));
-
-                attachPoint.SetValues(baseCentre[0], baseCentre[1], attachedTo.GetAngles()[0],
-                    attachedTo.GetAngles()[1], attachedTo.GetAngles()[2], attachedTo.GetSizeMod());
-                ownPoint.SetValues(thisCentre[0], thisCentre[1], GetAngles()[0], GetAngles()[1], GetAngles()[2], GetSizeMod());
-
-                double[,] baseCoords = attachPoint.GetCurrentPoints(false, true);
-                double[,] thisCoords = ownPoint.GetCurrentPoints(false, true);
-
-                // baseCoords - baseCentre + thisCentre - thisCoords
-                return new double[] { baseCoords[0, 0] - baseCentre[0] + thisCentre[0] - thisCoords[0, 0],
-                    baseCoords[0, 1] - baseCentre[1] + thisCentre[1] - thisCoords[0, 1] };
-                    */
-
                 attachPoint.SetValues(midX, midY, attachedTo.GetAngles()[0],
                     attachedTo.GetAngles()[1], attachedTo.GetAngles()[2], attachedTo.GetSizeMod());
                 ownPoint.SetValues(midX, midY, GetAngles()[0], GetAngles()[1], GetAngles()[2], GetSizeMod());
@@ -659,6 +654,16 @@ namespace Animator
 
                 return new double[] { baseCoords[0, 0] - thisCoords[0, 0], baseCoords[0, 1] - thisCoords[0, 1] };
             }
+        }
+
+        public void TakeOriginalState()
+        {
+            x = originally.GetX();
+            y = originally.GetY();
+            rotation = originally.GetR();
+            turn = originally.GetT();
+            spin = originally.GetS();
+            sizeMod = originally.GetSM();
         }
     }
 }

@@ -38,82 +38,29 @@ namespace Animator
             sceneIndex = 0;
             frameIndex = 0;
             videoScenes[sceneIndex].AssignOriginalPositions();
-            DrawFrame(videoScenes[sceneIndex]);
+            DrawFrame(videoScenes[sceneIndex], this.DrawPanel.CreateGraphics(), true);
             animationTimer.Start();
         }
 
-        private void DrawFrame(Scene baseScene)
+        private void DrawFrame(Scene baseScene, Graphics g, Boolean refresh)
         {
             // Prepare
-            DrawPanel.Refresh();
-            g = this.DrawPanel.CreateGraphics();
-            List<string> partsList = baseScene.GetPartsList();
+            if (refresh) { DrawPanel.Refresh(); }
             List<Piece> piecesList = baseScene.GetPiecesList();
-            List<Set> setList = baseScene.GetSetList();
 
-            // Update Parts
-            foreach (string[] change in baseScene.GetChanges())
+            // Update Pieces
+            foreach (Changes change in baseScene.GetChanges())
             {
-                if (frameIndex >= int.Parse(change[0]) && (frameIndex <= int.Parse(change[0]) + int.Parse(change[4]) - 1))
+                if (frameIndex >= change.GetStartFrame() && (frameIndex <= change.GetStartFrame() + change.GetHowLong() - 1))
                 {
-                    if (change[2].StartsWith("p"))
-                    {
-                        Piece holdPiece = piecesList[int.Parse(change[2].Remove(0, 2))];
-                        if (change[1] == "X")
-                        {
-                            holdPiece.SetX(holdPiece.GetCoords()[0] + int.Parse(change[3]));
-                        }
-                        else if (change[1] == "Y")
-                        {
-                            holdPiece.SetY(holdPiece.GetCoords()[1] + int.Parse(change[3]));
-                        }
-                        else if (change[1] == "Rotation")
-                        {
-                            holdPiece.SetRotation((int)holdPiece.GetAngles()[0] + int.Parse(change[3]));
-                        }
-                        else if (change[1] == "Turn")
-                        {
-                            holdPiece.SetTurn((int)holdPiece.GetAngles()[1] + int.Parse(change[3]));
-                        }
-                        else if (change[1] == "Spin")
-                        {
-                            holdPiece.SetSpin((int)holdPiece.GetAngles()[2] + int.Parse(change[3]));
-                        }
-                        else if (change[1] == "Size")
-                        {
-                            holdPiece.SetSizeMod(holdPiece.GetSizeMod() + int.Parse(change[3]));
-                        }
-                        // Add other options ** TO DO **
-                    }
-                    else
-                    {
-                        /*
-                        Piece holdPiece = setList[int.Parse(change[2].Remove(0, 2))].GetBasePiece();
-                        Set holdSet = setList[int.Parse(change[2].Remove(0, 2))];
-                        if (change[1] == "Spin")
-                        {
-                            holdSet.UpdateSubpieces("Spin", (int)holdPiece.GetAngles()[2] + int.Parse(change[3]));
-                        }
-                        else if (change[1] == "Size")
-                        {
-                            holdSet.UpdateSubpieces("Size", holdPiece.GetSizeMod() + int.Parse(change[3]));
-                        }
-                        // UPDATE FOR SET ** TO DO **/
-                    }
+                    change.Run(true);
                 }
             }            
 
             // Draw Parts
-            foreach (string part in partsList)
+            foreach(Piece piece in baseScene.GetPiecesList())
             {
-                if (part.StartsWith("p"))
-                {
-                    Utilities.DrawPiece(piecesList[int.Parse(part.Remove(0, 2))], g, true);
-                }
-                else
-                {
-                    //DrawSet(setList[int.Parse(part.Remove(0, 2))]);
-                }
+                Utilities.DrawPiece(piece, g, true);
             }
         }
 
@@ -131,24 +78,19 @@ namespace Animator
                 else
                 {
                     videoScenes[sceneIndex].AssignOriginalPositions();
-                    DrawFrame(videoScenes[sceneIndex]);
+                    DrawFrame(videoScenes[sceneIndex], this.DrawPanel.CreateGraphics(), true);
                 }
             }
             else
             {
-                DrawFrame(videoScenes[sceneIndex]);
+                DrawFrame(videoScenes[sceneIndex], this.DrawPanel.CreateGraphics(), true);
             }
         }
 
         private void saveBtn_Click(object sender, EventArgs e)
         {
-            Boolean doEet = true;
             DialogResult result = MessageBox.Show("Do you want to save this video?", "Save Confirmation", MessageBoxButtons.YesNo);
-            if (result == System.Windows.Forms.DialogResult.No)
-            {
-                doEet = false;
-            }
-            if (doEet)
+            if (result == DialogResult.Yes)
             {
                 try
                 {
@@ -186,72 +128,9 @@ namespace Animator
             {
                 g.FillRectangle(brush, 0, 0, bitmap.Width, bitmap.Height);
             }
-            DrawFrameBitmap(toDraw);
+
+            DrawFrame(toDraw, g, false);
             return bitmap;
         }
-
-        private void DrawFrameBitmap(Scene baseScene)
-        {
-            // Prepare
-            List<string> partsList = baseScene.GetPartsList();
-            List<Piece> piecesList = baseScene.GetPiecesList();
-            List<Set> setList = baseScene.GetSetList();
-
-            // Update Parts
-            foreach (string[] change in baseScene.GetChanges())
-            {
-                if (frameIndex >= int.Parse(change[0]) && (frameIndex <= int.Parse(change[0]) + int.Parse(change[4]) - 1))
-                {
-                    if (change[2].StartsWith("p"))
-                    {
-                        Piece holdPiece = piecesList[int.Parse(change[2].Remove(0, 2))];
-                        if (change[1] == "X")
-                        {
-                            holdPiece.SetX(holdPiece.GetCoords()[0] + int.Parse(change[3]));
-                        }
-                        else if (change[1] == "Y")
-                        {
-                            holdPiece.SetY(holdPiece.GetCoords()[1] + int.Parse(change[3]));
-                        }
-                        else if (change[1] == "Rotation")
-                        {
-                            holdPiece.SetRotation((int)holdPiece.GetAngles()[0] + int.Parse(change[3]));
-                        }
-                        else if (change[1] == "Turn")
-                        {
-                            holdPiece.SetTurn((int)holdPiece.GetAngles()[1] + int.Parse(change[3]));
-                        }
-                        else if (change[1] == "Spin")
-                        {
-                            holdPiece.SetSpin((int)holdPiece.GetAngles()[2] + int.Parse(change[3]));
-                        }
-                        else if (change[1] == "Size")
-                        {
-                            holdPiece.SetSizeMod(holdPiece.GetSizeMod() + int.Parse(change[3]));
-                        }
-                        // Add other options ** TO DO **
-                    }
-                    else
-                    {
-                        // UPDATE FOR SET ** TO DO **
-                    }
-                }
-            }
-
-            // Draw Parts
-            foreach (string part in partsList)
-            {
-                if (part.StartsWith("p"))
-                {
-                    Utilities.DrawPiece(piecesList[int.Parse(part.Remove(0, 2))], g, true);
-                }
-                else
-                {
-                    //DrawSetBitmap(setList[int.Parse(part.Remove(0, 2))]);
-                }
-            }
-        }
-
-        
     }
 }

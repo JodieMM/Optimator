@@ -18,7 +18,6 @@ namespace Animator
         List<Set> setList = new List<Set>();            // Contains sets ONLY for saving purposes
 
         List<Changes> changes = new List<Changes>();
-        List<Originals> originals = new List<Originals>();
 
         int numFrames = 1;
         int workingFrame = 0;
@@ -38,7 +37,7 @@ namespace Animator
                 // Add piece to lists
                 piecesList.Add(new Piece(NameTb.Text));
                 partsLb.Items.Add(NameTb.Text);
-                originals.Add(new Originals(piecesList[piecesList.Count - 1]));
+                piecesList[piecesList.Count - 1].SetOriginal(new Originals(piecesList[piecesList.Count - 1]));
 
                 partsLb.SelectedIndex = partsLb.Items.Count - 1;
 
@@ -62,6 +61,8 @@ namespace Animator
             DrawPanel.Refresh();
             g = this.DrawPanel.CreateGraphics();
 
+            // Update Originals if needed
+
             // Draw Parts
             foreach (Piece toDraw in piecesList)
             {
@@ -74,12 +75,12 @@ namespace Animator
             if (partsLb.SelectedIndex != -1)
             {
                 Piece selected = piecesList[partsLb.SelectedIndex];
-                rotationUpDown.Value = (decimal)selected.GetAngles()[0];
-                turnUpDown.Value = (decimal)selected.GetAngles()[1];
-                spinUpDown.Value = (decimal)selected.GetAngles()[2];
-                xUpDown.Value = (decimal)selected.GetCoords()[0];
-                yUpDown.Value = (decimal)selected.GetCoords()[1];
-                sizeUpDown.Value = (decimal)selected.GetSizeMod();
+                rotationUpDown.Value = (decimal)selected.rotation;
+                turnUpDown.Value = (decimal)selected.turn;
+                spinUpDown.Value = (decimal)selected.spin;
+                xUpDown.Value = (decimal)selected.x;
+                yUpDown.Value = (decimal)selected.y;
+                sizeUpDown.Value = (decimal)selected.sizeMod;
                 DrawParts();
             }
         }
@@ -99,7 +100,7 @@ namespace Animator
                 }
 
                 // Update Piece
-                piecesList[partsLb.SelectedIndex].SetRotation((double)rotationUpDown.Value);
+                piecesList[partsLb.SelectedIndex].GetOriginal().SetR((double)rotationUpDown.Value);
 
                 DrawParts();
             }
@@ -120,7 +121,7 @@ namespace Animator
                 }
 
                 // Update Piece
-                piecesList[partsLb.SelectedIndex].SetTurn((int)turnUpDown.Value);
+                piecesList[partsLb.SelectedIndex].GetOriginal().SetT((int)turnUpDown.Value);
 
                 DrawParts();
             }
@@ -153,7 +154,7 @@ namespace Animator
                 }
 
                 // Update Piece
-                piecesList[partsLb.SelectedIndex].SetSpin((int)spinUpDown.Value);
+                piecesList[partsLb.SelectedIndex].GetOriginal().SetS((int)spinUpDown.Value);
 
                 DrawParts();
             }
@@ -234,7 +235,7 @@ namespace Animator
                     partsLb.Items.RemoveAt(partsLb.SelectedIndex);
                 }
 
-                UpdateChangesOriginals();
+                UpdateChanges();
 
                 // Ensure selected index will not overflow
                 if (partsLb.SelectedIndex == partsLb.Items.Count)
@@ -251,7 +252,7 @@ namespace Animator
             if (partsLb.SelectedIndex != -1)
             {
                 // Update Piece
-                piecesList[partsLb.SelectedIndex].SetX((int)xUpDown.Value);
+                piecesList[partsLb.SelectedIndex].GetOriginal().SetX((int)xUpDown.Value);
 
                 DrawParts();
             }
@@ -262,7 +263,7 @@ namespace Animator
             if (partsLb.SelectedIndex != -1)
             {
                 // Update Piece
-                piecesList[partsLb.SelectedIndex].SetY((int)yUpDown.Value);
+                piecesList[partsLb.SelectedIndex].GetOriginal().SetY((int)yUpDown.Value);
 
                 DrawParts();
             }
@@ -273,7 +274,7 @@ namespace Animator
             if (partsLb.SelectedIndex != -1)
             {
                 // Update Piece
-                piecesList[partsLb.SelectedIndex].SetSizeMod((int)sizeUpDown.Value);
+                piecesList[partsLb.SelectedIndex].GetOriginal().SetSM((int)sizeUpDown.Value);
 
                 DrawParts();
             }
@@ -406,29 +407,11 @@ namespace Animator
                     file.WriteLine("Originals");
 
                     // Save Original States
-                    Boolean found;
-                    int counter;
                     foreach (Piece piece in piecesList)
                     {
-                        // Search for matching Originals
-                        found = false;
-                        counter = 0;
-                        while (!found && counter < originals.Count)
-                        {
-                            if (originals[counter].IsMatch(piece)) { found = true; }
-                            else { counter++; }
-                        }
-
-                        // Write Originals data to file
-                        if (found)
-                        {
-                            file.WriteLine(originals[counter].GetPiece().GetSceneIndex() + ";" + originals[counter].GetSaveData());
-                            originals.RemoveAt(counter);
-                        }
-                        else     // Should never be reached, but JIC
-                        {
-                            file.WriteLine(originals[counter].GetPiece().GetSceneIndex() + ";500;250;0;0;0;100");
-                        }
+                        file.WriteLine(piece.GetOriginal() != null ? piece.GetSceneIndex() + ";" + piece.GetOriginal().GetSaveData() 
+                            : piece.GetSceneIndex() + ";500;250;0;0;0;100");    // This should never be needed- JIC
+                        
                     }
 
                     // Save Animation Changes
@@ -496,10 +479,10 @@ namespace Animator
         }
 
         /// <summary>
-        /// Checks if any Changes or Originals have been made invalid/unnecessary due
+        /// Checks if any Changes have been made invalid/unnecessary due
         /// to the deletion of a piece and removes them if so.
         /// </summary>
-        private void UpdateChangesOriginals()
+        private void UpdateChanges()
         {
             // Update Changes
             for (int index = 0; index < changes.Count;)
@@ -507,19 +490,6 @@ namespace Animator
                 if (!piecesList.Contains(changes[index].GetPiece()))
                 {
                     changes.RemoveAt(index);
-                }
-                else
-                {
-                    index++;
-                }
-            }
-
-            // Update Originals
-            for (int index = 0; index < originals.Count;)
-            {
-                if (!piecesList.Contains(originals[index].GetPiece()))
-                {
-                    originals.RemoveAt(index);
                 }
                 else
                 {
@@ -545,7 +515,7 @@ namespace Animator
                     {
                         partsLb.Items.Add("** " + piece.GetName());
                     }
-                    originals.Add(new Originals(piece));
+                    piece.SetOriginal(new Originals(piece));
                 }
 
                 partsLb.SelectedIndex = partsLb.Items.Count - 1;
