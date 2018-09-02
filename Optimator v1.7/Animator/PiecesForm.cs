@@ -259,9 +259,9 @@ namespace Animator
                 // SHOW WARNING DELETING ROTATED/TURNED ANGLED ** TO DO
                 rotated.Clear();
                 turned.Clear();
-                PointsLb.Items.RemoveAt(PointsLb.SelectedIndex);
                 joins.RemoveAt(PointsLb.SelectedIndex);
                 solid.RemoveAt(PointsLb.SelectedIndex);
+                PointsLb.Items.RemoveAt(PointsLb.SelectedIndex);
                 DrawPoints();
             }
         }

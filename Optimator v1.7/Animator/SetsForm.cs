@@ -16,7 +16,6 @@ namespace Animator
     {
         Graphics g;
         List<Piece> piecesList = new List<Piece>();
-        List<int> basePieceList = new List<int>();
 
         const string tempSet = "tempSet";
         const string folder = "\\Sets\\";
@@ -87,7 +86,6 @@ namespace Animator
                 piecesList.Add(new Piece(addTb.Text));
                 partsLb.Items.Add(addTb.Text);
                 partsLb.SelectedIndex = partsLb.Items.Count - 1;
-                basePieceList.Add(-1);
 
                 DrawParts();
             }
@@ -126,7 +124,7 @@ namespace Animator
                 {
                     basePointTb.Text = highlightedPiece.GetAttachPoint().GetName();
                     joinPointTb.Text = highlightedPiece.GetOwnPoint().GetName();
-                    basePieceTb.Text = basePieceList[partsLb.SelectedIndex].ToString();
+                    basePieceTb.Text = piecesList.IndexOf(highlightedPiece.GetAttachedTo()).ToString();
                 }
                 else
                 {
@@ -161,20 +159,6 @@ namespace Animator
                 int selectedIndex = partsLb.SelectedIndex;      // Must be 1 or greater
                 piecesList.RemoveAt(partsLb.SelectedIndex);
                 partsLb.Items.RemoveAt(partsLb.SelectedIndex);
-
-                // Update basePieceList
-                for (int index = 1; index < piecesList.Count && index != selectedIndex; index++)
-                {
-                    int baseIndex = basePieceList[index];
-                    if (baseIndex == selectedIndex)
-                    {
-                        basePieceList[index] = -1;
-                    } else if (baseIndex > selectedIndex)
-                    {
-                        basePieceList[index] = baseIndex - 1;
-                    }
-                }
-                basePieceList.RemoveAt(selectedIndex);
 
                 DrawParts();
             }
@@ -215,10 +199,8 @@ namespace Animator
                     Boolean front = partsLb.SelectedIndex > int.Parse(basePieceTb.Text);
                     double flip = flipsCb.Checked ? (double)flipsUpDown.Value : -1;
   
-                    piecesList[partsLb.SelectedIndex].AttachToPiece(piecesList[basePieceList[partsLb.SelectedIndex]], new Piece(basePointTb.Text, pointsFolder), 
+                    piecesList[partsLb.SelectedIndex].AttachToPiece(piecesList[int.Parse(basePieceTb.Text)], new Piece(basePointTb.Text, pointsFolder), 
                         new Piece(joinPointTb.Text, pointsFolder), front, flip);
-
-                    basePieceList[partsLb.SelectedIndex] = int.Parse(basePieceTb.Text);
 
                     xInitUpDown.Value = 0;
                     yInitUpDown.Value = 0;
@@ -231,7 +213,7 @@ namespace Animator
                 }
                 catch (System.ArgumentOutOfRangeException)
                 {
-                    MessageBox.Show("Index entered does relate to any existing piece", "Invalid Index", MessageBoxButtons.OK);
+                    MessageBox.Show("Index entered does not relate to any existing piece", "Invalid Index", MessageBoxButtons.OK);
                 }
             }
         }
@@ -309,13 +291,6 @@ namespace Animator
                 List<Piece> addedPieces = addedSet.GetPiecesList();
                 piecesList.AddRange(addedPieces);
 
-                // Update basePieceList
-                int numPieces = basePieceList.Count;
-                foreach (int baseIndex in addedSet.GetBasePiecesList())
-                {
-                    basePieceList.Add((baseIndex != -1) ? baseIndex + numPieces : baseIndex);
-                }
-
                 // Update listbox
                 foreach (Piece added in addedPieces)
                 {
@@ -342,7 +317,7 @@ namespace Animator
             
             for (int index = 1; index < piecesList.Count && permitted; index++)
             {
-                if (!piecesList[index].GetIsAttached() || basePieceList[index] == -1)
+                if (!piecesList[index].GetIsAttached())
                 {
                     permitted = false;
                     partsLb.SelectedIndex = index;
@@ -361,8 +336,8 @@ namespace Animator
 
                 if (index != 0)
                 {
-                    int attachedIndex = basePieceList[index];
-                    pieceData += piecesList[index].GetOwnPoint().GetName() + ";" + attachedIndex + ";" + piecesList[index].GetAttachPoint().GetName() + ";"; 
+                    pieceData += piecesList[index].GetOwnPoint().GetName() + ";" + piecesList.IndexOf(piecesList[index].GetAttachedTo())
+                        + ";" + piecesList[index].GetAttachPoint().GetName() + ";"; 
                 }
 
                 //Save actual x, y, r, t, s and sm values
