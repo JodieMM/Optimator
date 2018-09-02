@@ -20,7 +20,6 @@ namespace Animator
         int frameIndex = 0;
         int numFrames = 0;
         Graphics g;
-        Graphics b;
 
         public CompileVideo()
         {

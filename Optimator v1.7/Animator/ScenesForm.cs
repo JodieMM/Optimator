@@ -16,13 +16,14 @@ namespace Animator
         // Initialise Variables
         List<Piece> piecesList = new List<Piece>();     // Contains ALL pieces, INCLUDING sets (Lone pieces found with piece.GetIsAttached() )
         List<Set> setList = new List<Set>();            // Contains sets ONLY for saving purposes
-
         List<Changes> changes = new List<Changes>();
 
         int numFrames = 1;
         int workingFrame = 0;
 
-        Graphics g;        
+        Graphics g;
+
+        static string scenesFolder = "\\Scenes\\";
 
 
         public ScenesForm()
@@ -62,6 +63,13 @@ namespace Animator
             g = this.DrawPanel.CreateGraphics();
 
             // Update Originals if needed
+            if (workingFrame == 0)
+            {
+                foreach (Piece piece in piecesList)
+                {
+                    piece.TakeOriginalState();
+                }
+            }
 
             // Draw Parts
             foreach (Piece toDraw in piecesList)
@@ -377,11 +385,10 @@ namespace Animator
                 try
                 {
                     // Save Data
-                    string filePath = Environment.CurrentDirectory + "\\Scenes\\" + sceneNameTb.Text + ".txt";
-                    System.IO.StreamWriter file = new System.IO.StreamWriter(@filePath);
-
+                    List<string> file = new List<string>();
+                    
                     // Save FPS & Number of Frames (Line 1)
-                    file.WriteLine(fpsUpDown.Value + ";" + numFrames);
+                    file.Add(fpsUpDown.Value + ";" + numFrames);
 
                     // Save Parts
                     for (int index = 0; index < piecesList.Count; index++)
@@ -394,22 +401,22 @@ namespace Animator
                             // If piece is base
                             if (piecesList[index].GetAttachedTo() == null)
                             {
-                                file.WriteLine("s:" + piecesList[index].GetPieceOf().GetName());
+                                file.Add("s:" + piecesList[index].GetPieceOf().GetName());
                             }
                         }
                         else
                         {
-                            file.WriteLine("p:" + piecesList[index].GetName());
+                            file.Add("p:" + piecesList[index].GetName());
                         }
                     }
 
                     // Write Original States Notifier
-                    file.WriteLine("Originals");
+                    file.Add("Originals");
 
                     // Save Original States
                     foreach (Piece piece in piecesList)
                     {
-                        file.WriteLine(piece.GetOriginal() != null ? piece.GetSceneIndex() + ";" + piece.GetOriginal().GetSaveData() 
+                        file.Add(piece.GetOriginal() != null ? piece.GetSceneIndex() + ";" + piece.GetOriginal().GetSaveData() 
                             : piece.GetSceneIndex() + ";500;250;0;0;0;100");    // This should never be needed- JIC
                         
                     }
@@ -417,12 +424,13 @@ namespace Animator
                     // Save Animation Changes
                     foreach (Changes change in changes)
                     {
-                        file.WriteLine(change.GetStartFrame() + ";" + change.GetAction() + ";" +
+                        file.Add(change.GetStartFrame() + ";" + change.GetAction() + ";" +
                             change.GetPiece().GetSceneIndex() + ";" + change.GetHowMuch() + ";" + change.GetHowLong());
                     }
 
-                    // Close File and Form
-                    file.Close();
+                    // Write to File
+                    Utilities.SaveData(Environment.CurrentDirectory + scenesFolder + sceneNameTb.Text + ".txt", file);
+
                     this.Close();
                 }
                 catch (System.IO.FileNotFoundException)

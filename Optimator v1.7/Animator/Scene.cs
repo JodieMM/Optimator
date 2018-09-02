@@ -21,7 +21,7 @@ namespace Animator
     {
         // Initialise Scene Variables
         List<Piece> piecesList = new List<Piece>();
-        List<int> partOrder = new List<int>();
+        List<Piece> partOrder = new List<Piece>();
         List<Changes> changes = new List<Changes>();
 
         int frameRate;
@@ -137,6 +137,10 @@ namespace Animator
             {
                 piece.TakeOriginalState();
             }
+
+            // Reset partOrder
+            partOrder.Clear();
+            partOrder.AddRange(piecesList);
         }
     }
 }

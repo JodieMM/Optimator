@@ -51,8 +51,7 @@ namespace Animator
         /// <param name="data">The data to save</param>
         public static void SaveData(string directory, List<string> data)
         {
-            string filePath = directory;
-            System.IO.StreamWriter file = new System.IO.StreamWriter(@filePath);
+            System.IO.StreamWriter file = new System.IO.StreamWriter(@directory);
 
             for (int index = 0; index < data.Count; index++)
             {
@@ -61,6 +60,8 @@ namespace Animator
             file.Close();
         }
 
+
+        // OTHER FUNCTIONS
 
         /// <summary>
         /// Finds the middle of a shape
@@ -181,6 +182,10 @@ namespace Animator
         }
 
 
+        public List<Piece> SortOrder(List<Piece> piecesList)
+        {
+            return piecesList;
+        }
 
 
     }
