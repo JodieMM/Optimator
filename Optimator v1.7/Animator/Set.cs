@@ -45,7 +45,8 @@ namespace Animator
                 // If piece is not base
                 if (index > 0)   //piecesList.Count
                 {
-                    WIP.AttachToPiece(piecesList[int.Parse(dataSections[2])], new Piece(dataSections[3], pointsFolder), new Piece(dataSections[1], pointsFolder));
+                    WIP.AttachToPiece(piecesList[int.Parse(dataSections[2])], new Piece(dataSections[3], pointsFolder), 
+                        new Piece(dataSections[1], pointsFolder), Boolean.Parse(dataSections[10]), double.Parse(dataSections[11]));
 
                     basePiecesList.Add(int.Parse(dataSections[2]));
 

@@ -212,8 +212,13 @@ namespace Animator
             {
                 try
                 {
+                    Boolean front = partsLb.SelectedIndex > int.Parse(basePieceTb.Text);
+                    double flip = flipsCb.Checked ? (double)flipsUpDown.Value : -1;
+  
+                    piecesList[partsLb.SelectedIndex].AttachToPiece(piecesList[basePieceList[partsLb.SelectedIndex]], new Piece(basePointTb.Text, pointsFolder), 
+                        new Piece(joinPointTb.Text, pointsFolder), front, flip);
+
                     basePieceList[partsLb.SelectedIndex] = int.Parse(basePieceTb.Text);
-                    piecesList[partsLb.SelectedIndex].AttachToPiece(piecesList[basePieceList[partsLb.SelectedIndex]], new Piece(basePointTb.Text, pointsFolder), new Piece(joinPointTb.Text, pointsFolder));
 
                     xInitUpDown.Value = 0;
                     yInitUpDown.Value = 0;
@@ -365,6 +370,12 @@ namespace Animator
                 pieceData += realData[0] + ";" + realData[1] + ";";
                 pieceData += realData[2] + ";" + realData[3] + ";" + realData[4] + ";";
                 pieceData += realData[5];
+
+                // Save flip values
+                if (index != 0)
+                {
+                    pieceData += ";" + piecesList[index].GetInFront() + ";" + piecesList[index].GetAngleFlip();
+                }
 
                 returnData.Add(pieceData);
             }

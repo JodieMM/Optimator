@@ -58,6 +58,8 @@
             this.deleteBtn = new System.Windows.Forms.Button();
             this.addBtn = new System.Windows.Forms.Button();
             this.DrawPanel = new System.Windows.Forms.Panel();
+            this.flipsCb = new System.Windows.Forms.CheckBox();
+            this.flipsUpDown = new System.Windows.Forms.NumericUpDown();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.yInitUpDown)).BeginInit();
@@ -66,6 +68,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.spinInitUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.turnInitUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rotInitUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.flipsUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -104,6 +107,8 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.panel2.Controls.Add(this.flipsUpDown);
+            this.panel2.Controls.Add(this.flipsCb);
             this.panel2.Controls.Add(this.basePieceTb);
             this.panel2.Controls.Add(this.label10);
             this.panel2.Controls.Add(this.yInitUpDown);
@@ -138,7 +143,7 @@
             // basePieceTb
             // 
             this.basePieceTb.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.basePieceTb.Location = new System.Drawing.Point(217, 836);
+            this.basePieceTb.Location = new System.Drawing.Point(220, 770);
             this.basePieceTb.Name = "basePieceTb";
             this.basePieceTb.Size = new System.Drawing.Size(170, 47);
             this.basePieceTb.TabIndex = 87;
@@ -148,7 +153,7 @@
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(19, 839);
+            this.label10.Location = new System.Drawing.Point(22, 773);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(188, 39);
             this.label10.TabIndex = 86;
@@ -363,7 +368,7 @@
             // joinPointTb
             // 
             this.joinPointTb.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.joinPointTb.Location = new System.Drawing.Point(202, 948);
+            this.joinPointTb.Location = new System.Drawing.Point(205, 882);
             this.joinPointTb.Name = "joinPointTb";
             this.joinPointTb.Size = new System.Drawing.Size(186, 47);
             this.joinPointTb.TabIndex = 71;
@@ -372,7 +377,7 @@
             // basePointTb
             // 
             this.basePointTb.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.basePointTb.Location = new System.Drawing.Point(202, 892);
+            this.basePointTb.Location = new System.Drawing.Point(205, 826);
             this.basePointTb.Name = "basePointTb";
             this.basePointTb.Size = new System.Drawing.Size(186, 47);
             this.basePointTb.TabIndex = 70;
@@ -391,7 +396,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(21, 951);
+            this.label2.Location = new System.Drawing.Point(24, 885);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(166, 39);
             this.label2.TabIndex = 51;
@@ -401,7 +406,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(20, 895);
+            this.label1.Location = new System.Drawing.Point(23, 829);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(176, 39);
             this.label1.TabIndex = 50;
@@ -414,14 +419,14 @@
             this.partsLb.ItemHeight = 33;
             this.partsLb.Location = new System.Drawing.Point(26, 175);
             this.partsLb.Name = "partsLb";
-            this.partsLb.Size = new System.Drawing.Size(360, 565);
+            this.partsLb.Size = new System.Drawing.Size(360, 499);
             this.partsLb.TabIndex = 27;
             this.partsLb.SelectedIndexChanged += new System.EventHandler(this.partsLb_SelectedIndexChanged);
             // 
             // deleteBtn
             // 
             this.deleteBtn.Font = new System.Drawing.Font("Century Gothic", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.deleteBtn.Location = new System.Drawing.Point(25, 764);
+            this.deleteBtn.Location = new System.Drawing.Point(26, 693);
             this.deleteBtn.Name = "deleteBtn";
             this.deleteBtn.Size = new System.Drawing.Size(362, 59);
             this.deleteBtn.TabIndex = 30;
@@ -448,6 +453,28 @@
             this.DrawPanel.Size = new System.Drawing.Size(1312, 1229);
             this.DrawPanel.TabIndex = 2;
             // 
+            // flipsCb
+            // 
+            this.flipsCb.AutoSize = true;
+            this.flipsCb.Location = new System.Drawing.Point(31, 950);
+            this.flipsCb.Name = "flipsCb";
+            this.flipsCb.Size = new System.Drawing.Size(102, 29);
+            this.flipsCb.TabIndex = 88;
+            this.flipsCb.Text = "Flips?";
+            this.flipsCb.UseVisualStyleBackColor = true;
+            // 
+            // flipsUpDown
+            // 
+            this.flipsUpDown.Location = new System.Drawing.Point(187, 950);
+            this.flipsUpDown.Maximum = new decimal(new int[] {
+            359,
+            0,
+            0,
+            0});
+            this.flipsUpDown.Name = "flipsUpDown";
+            this.flipsUpDown.Size = new System.Drawing.Size(120, 31);
+            this.flipsUpDown.TabIndex = 89;
+            // 
             // SetsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -469,6 +496,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.spinInitUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.turnInitUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.rotInitUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.flipsUpDown)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -505,5 +533,7 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox basePieceTb;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.NumericUpDown flipsUpDown;
+        private System.Windows.Forms.CheckBox flipsCb;
     }
 }

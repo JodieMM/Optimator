@@ -44,6 +44,8 @@ namespace Animator
         private Piece attachedTo = null;
         private Piece attachPoint = null;
         private Piece ownPoint = null;
+        private Boolean inFront = true;
+        private double angleFlip = -1;
         private Set pieceOf = null;
 
         // Scenes
@@ -276,6 +278,16 @@ namespace Animator
             return originally;
         }
 
+        public Boolean GetInFront()
+        {
+            return inFront;
+        }
+
+        public double GetAngleFlip()
+        {
+            return angleFlip;
+        }
+
 
         // Set Functions
 
@@ -340,11 +352,13 @@ namespace Animator
         }
 
 
-        public void AttachToPiece(Piece attach, Piece attachmentPoint, Piece point)
+        public void AttachToPiece(Piece attach, Piece attachmentPoint, Piece point, Boolean front, double angleFlip)
         {
             attachedTo = attach;
             attachPoint = attachmentPoint;
             ownPoint = point;
+            inFront = front;
+            this.angleFlip = angleFlip;
             x = 0;
             y = 0;
         }

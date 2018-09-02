@@ -184,7 +184,67 @@ namespace Animator
 
         public List<Piece> SortOrder(List<Piece> piecesList)
         {
-            return piecesList;
+            List<Piece> order = new List<Piece>();
+            order.AddRange(piecesList);
+
+            Boolean change = true;
+            while (change)
+            {
+                change = false;
+
+                // Go from the bottom (first) to the top
+                for (int index = 0; index < piecesList.Count;)
+                {
+                    // If attached and has to change height at some stage
+                    if (order[index].GetAttachedTo() != null && order[index].GetAngleFlip() != -1)
+                    {
+                        // Find if should be above or below attachedTo
+                        if (order[index].GetAngles()[0] <= order[index].GetAngleFlip() &&                   // One set to is the one is at "most" of the time (181 vs 179 degrees)
+                            order[index].GetAngles()[0] >= order[index].GetAngleFlip() + 180 % 360)
+                        {
+                            // In given position
+
+                            // If should be in front, and not
+                            if (order[index].GetInFront() == true && index < order.IndexOf(order[index].GetAttachedTo()))
+                            {
+                                order.Insert(order.IndexOf(order[index].GetAttachedTo()), order[index]);
+                                order.RemoveAt(index + 1);
+                                change = true;
+                            }
+                            // If should be behind, and not
+                            else if (order[index].GetInFront() == false && index > order.IndexOf(order[index].GetAttachedTo()))
+                            {
+                                order.Insert(order.IndexOf(order[index].GetAttachedTo()) - 1, order[index]);        // ** Potential error here calling and changing
+                                order.RemoveAt(index);
+                                change = true;
+                            }
+                        }
+                        else
+                        {
+                            // In taken position
+
+                            // If should be in front normally and still is in opposite
+                            if (order[index].GetInFront() == true && index > order.IndexOf(order[index].GetAttachedTo()))
+                            {
+                                order.Insert(order.IndexOf(order[index].GetAttachedTo()) - 1, order[index]);
+                                order.RemoveAt(index);
+                                change = true;
+                            }
+                            // If should be behind normally and still is in opposite
+                            else if (order[index].GetInFront() == false && index < order.IndexOf(order[index].GetAttachedTo()))
+                            {
+                                order.Insert(order.IndexOf(order[index].GetAttachedTo()), order[index]);
+                                order.RemoveAt(index + 1);
+                                change = true;
+                            }
+                        }
+                    }
+                    // No action if lone piece or base
+                }
+            }
+
+
+            return order;
         }
 
 
