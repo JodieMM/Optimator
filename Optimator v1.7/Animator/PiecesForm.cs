@@ -109,10 +109,10 @@ namespace Animator
             if (PointsLb.SelectedIndex != -1)
             {
                 int[,] coords = ConvertListbox();
-                xUpDown.Value = coords[PointsLb.SelectedIndex, 0];
-                yUpDown.Value = coords[PointsLb.SelectedIndex, 1];
-                joinOptions.SelectedItem = joins[PointsLb.SelectedIndex];
-                fixedCb.Checked = (solid[PointsLb.SelectedIndex] == "s") ? true : false;
+                XUpDown.Value = coords[PointsLb.SelectedIndex, 0];
+                YUpDown.Value = coords[PointsLb.SelectedIndex, 1];
+                JoinOptions.SelectedItem = joins[PointsLb.SelectedIndex];
+                FixedCb.Checked = (solid[PointsLb.SelectedIndex] == "s") ? true : false;
                 DrawPoints();
             }
             
@@ -198,27 +198,27 @@ namespace Animator
             }
         }
 
-        private void xUpDown_ValueChanged(object sender, EventArgs e)
+        private void XUpDown_ValueChanged(object sender, EventArgs e)
         {
             if (PointsLb.SelectedIndex != -1)
             {
                 int[,] coords = ConvertListbox();
-                PointsLb.Items[PointsLb.SelectedIndex] = xUpDown.Value + "," + coords[PointsLb.SelectedIndex, 1];
+                PointsLb.Items[PointsLb.SelectedIndex] = XUpDown.Value + "," + coords[PointsLb.SelectedIndex, 1];
                 DrawPoints();
             }
         }
 
-        private void yUpDown_ValueChanged(object sender, EventArgs e)
+        private void YUpDown_ValueChanged(object sender, EventArgs e)
         {
             if (PointsLb.SelectedIndex != -1)
             {
                 int[,] coords = ConvertListbox();
-                PointsLb.Items[PointsLb.SelectedIndex] = coords[PointsLb.SelectedIndex, 0] + "," + yUpDown.Value;
+                PointsLb.Items[PointsLb.SelectedIndex] = coords[PointsLb.SelectedIndex, 0] + "," + YUpDown.Value;
                 DrawPoints();
             }
         }
 
-        private void upBtn_Click(object sender, EventArgs e)
+        private void UpBtn_Click(object sender, EventArgs e)
         {
             if (PointsLb.SelectedIndex != -1 && PointsLb.SelectedIndex != 0)
             {
@@ -235,7 +235,7 @@ namespace Animator
             }
         }
 
-        private void downBtn_Click(object sender, EventArgs e)
+        private void DownBtn_Click(object sender, EventArgs e)
         {
             if (PointsLb.SelectedIndex != -1 && PointsLb.SelectedIndex != PointsLb.Items.Count - 1)
             {
@@ -339,126 +339,14 @@ namespace Animator
         {
             if (PointsLb.SelectedIndex != -1)
             {
-                joins[PointsLb.SelectedIndex] = (string)joinOptions.SelectedItem;
+                joins[PointsLb.SelectedIndex] = (string)JoinOptions.SelectedItem;
             }
         }
 
-        private void switchBtn_Click(object sender, EventArgs e)
+        private void SwitchBtn_Click(object sender, EventArgs e)
         {
-            if (switchBtn.Text == "Define Shape")
-            {
-                // Show Shape Components
-                AddPointBtn.Visible = true;
-                PointsLb.Visible = true;
-                upBtn.Visible = true;
-                downBtn.Visible = true;
-                DeleteBtn.Visible = true;
-                label5.Visible = true;
-                label7.Visible = true;
-                xUpDown.Visible = true;
-                yUpDown.Visible = true;
-                label9.Visible = true;
-                joinOptions.Visible = true;
-                fixedCb.Visible = true;
-                label12.Visible = true;
-                label13.Visible = true;
-                rFromUpDown.Visible = true;
-                rToUpDown.Visible = true;
-                tFromUpDown.Visible = true;
-                tToUpDown.Visible = true;
-                nextBtn.Visible = true;
-                BaseBtn.Visible = true;
-                RotateBtn.Visible = true;
-                TurnBtn.Visible = true;
-                ClearAngleBtn.Visible = true;
-                ResetAngleBtn.Visible = true;
-
-                // Hide Piece Components
-                FillRb.Visible = false;
-                OutlineRb.Visible = false;
-                label6.Visible = false;
-                label1.Visible = false;
-                label2.Visible = false;
-                label3.Visible = false;
-                AlphaUpDown.Visible = false;
-                RedUpDown.Visible = false;
-                GreenUpDown.Visible = false;
-                BlueUpDown.Visible = false;
-                label8.Visible = false;
-                label10.Visible = false;
-                numColUpDown.Visible = false;
-                gradAngleUpDown.Visible = false;
-                label4.Visible = false;
-                wrUpDown.Visible = false;
-                label11.Visible = false;
-                midFillCb.Visible = false;
-                loadBtn.Visible = false;
-                sketchBtn.Visible = false;
-                label14.Visible = false;
-                outlineWidthUpDown.Visible = false;
-                loadTb.Visible = false;
-
-                // Change Button Text
-                switchBtn.Text = "Define Piece";
-            }
-            else
-            {
-                // Show Piece Components
-                FillRb.Visible = true;
-                OutlineRb.Visible = true;
-                label6.Visible = true;
-                label1.Visible = true;
-                label2.Visible = true;
-                label3.Visible = true;
-                AlphaUpDown.Visible = true;
-                RedUpDown.Visible = true;
-                GreenUpDown.Visible = true;
-                BlueUpDown.Visible = true;
-                label8.Visible = true;
-                label10.Visible = true;
-                numColUpDown.Visible = true;
-                gradAngleUpDown.Visible = true;
-                label4.Visible = true;
-                wrUpDown.Visible = true;
-                label11.Visible = true;
-                midFillCb.Visible = true;
-                loadBtn.Visible = true;
-                sketchBtn.Visible = true;
-                label14.Visible = true;
-                outlineWidthUpDown.Visible = true;
-                loadTb.Visible = true;
-
-                // Hide Shape Components
-                AddPointBtn.Visible = false;
-                PointsLb.Visible = false;
-                upBtn.Visible = false;
-                downBtn.Visible = false;
-                DeleteBtn.Visible = false;
-                label5.Visible = false;
-                label7.Visible = false;
-                xUpDown.Visible = false;
-                yUpDown.Visible = false;
-                label9.Visible = false;
-                joinOptions.Visible = false;
-                fixedCb.Visible = false;
-                label12.Visible = false;
-                label13.Visible = false;
-                label13.Visible = false;
-                label13.Visible = false;
-                rFromUpDown.Visible = false;
-                rToUpDown.Visible = false;
-                tFromUpDown.Visible = false;
-                tToUpDown.Visible = false;
-                nextBtn.Visible = false;
-                BaseBtn.Visible = false;
-                RotateBtn.Visible = false;
-                TurnBtn.Visible = false;
-                ClearAngleBtn.Visible = false;
-                ResetAngleBtn.Visible = false;
-
-                // Change Button Text
-                switchBtn.Text = "Define Shape";
-            }
+            OptionsPanel.Visible = true;
+            PiecePanel.Visible = false;
         }
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
@@ -481,11 +369,11 @@ namespace Animator
             label10.ForeColor = (midFillCb.Checked == true) ? Color.DimGray : Color.Black;
         }
 
-        private void fixedCb_CheckedChanged(object sender, EventArgs e)
+        private void FixedCb_CheckedChanged(object sender, EventArgs e)
         {
             if (PointsLb.SelectedIndex != -1)
             {
-                solid[PointsLb.SelectedIndex] = (fixedCb.Checked == true) ? "s" : "f";
+                solid[PointsLb.SelectedIndex] = (FixedCb.Checked == true) ? "s" : "f";
             }
 
         }
@@ -518,13 +406,13 @@ namespace Animator
             FillListbox(rotated);
 
             // Hide/Show Buttons
-            yUpDown.Enabled = false;
-            xUpDown.Enabled = true;
-            upBtn.Enabled = false;
-            downBtn.Enabled = false;
+            YUpDown.Enabled = false;
+            XUpDown.Enabled = true;
+            UpBtn.Enabled = false;
+            DownBtn.Enabled = false;
             AddPointBtn.Enabled = false;
             DeleteBtn.Enabled = false;
-            ClearAngleBtn.Enabled = false;
+            ClearBtn.Enabled = false;
         }
 
         private void TurnBtn_Click(object sender, EventArgs e)
@@ -544,13 +432,13 @@ namespace Animator
             FillListbox(turned);
 
             // Hide/Show Buttons
-            yUpDown.Enabled = true;
-            xUpDown.Enabled = false;
-            upBtn.Enabled = false;
-            downBtn.Enabled = false;
+            YUpDown.Enabled = true;
+            XUpDown.Enabled = false;
+            UpBtn.Enabled = false;
+            DownBtn.Enabled = false;
             AddPointBtn.Enabled = false;
             DeleteBtn.Enabled = false;
-            ClearAngleBtn.Enabled = false;
+            ClearBtn.Enabled = false;
         }
 
         private void BaseBtn_Click(object sender, EventArgs e)
@@ -566,13 +454,13 @@ namespace Animator
             FillListbox(original);
 
             // Hide/Show Buttons
-            yUpDown.Enabled = true;
-            xUpDown.Enabled = true;
-            upBtn.Enabled = true;
-            downBtn.Enabled = true;
+            YUpDown.Enabled = true;
+            XUpDown.Enabled = true;
+            UpBtn.Enabled = true;
+            DownBtn.Enabled = true;
             AddPointBtn.Enabled = true;
             DeleteBtn.Enabled = true;
-            ClearAngleBtn.Enabled = true;
+            ClearBtn.Enabled = true;
         }
 
         private List<double[]> SaveAngles()
@@ -588,9 +476,9 @@ namespace Animator
             return angles;
         }
 
-        private void outlineWidthUpDown_ValueChanged(object sender, EventArgs e)
+        private void OutlineWidthUpDown_ValueChanged(object sender, EventArgs e)
         {
-            WIP.SetOutlineWidth((int)outlineWidthUpDown.Value);
+            WIP.SetOutlineWidth((int)OutlineWidthUpDown.Value);
             DrawPoints();
         }
 
@@ -668,7 +556,7 @@ namespace Animator
                     loadBtn.Enabled = false;
                     AddPointBtn.Enabled = false;
                     DeleteBtn.Enabled = false;
-                    joinOptions.Enabled = false;
+                    JoinOptions.Enabled = false;
 
                     folder = pointsFolder;
                     WIP = new Piece(tempPoint, folder);
@@ -696,8 +584,8 @@ namespace Animator
                 wrUpDown.Enabled = false;
                 label11.Enabled = false;
                 midFillCb.Enabled = false;
-                label14.Enabled = false;
-                outlineWidthUpDown.Enabled = false;
+                label15.Enabled = false;
+                OutlineWidthUpDown.Enabled = false;
             }
             else
             {
@@ -708,7 +596,7 @@ namespace Animator
                 loadBtn.Enabled = true;
                 AddPointBtn.Enabled = true;
                 DeleteBtn.Enabled = true;
-                joinOptions.Enabled = true;
+                JoinOptions.Enabled = true;
 
                 // Enable Piece Settings
                 FillRb.Enabled = true;
@@ -729,8 +617,8 @@ namespace Animator
                 wrUpDown.Enabled = true;
                 label11.Enabled = true;
                 midFillCb.Enabled = true;
-                label14.Enabled = true;
-                outlineWidthUpDown.Enabled = true;
+                label15.Enabled = true;
+                OutlineWidthUpDown.Enabled = true;
             }
 
             DrawPoints();
@@ -1044,6 +932,24 @@ namespace Animator
         private void wrUpDown_ValueChanged(object sender, EventArgs e)
         {
             WIP.SetPieceDetails("wr" + wrUpDown.Value);
+        }
+
+        private void SwitchBtn_Click_1(object sender, EventArgs e)
+        {
+            PiecePanel.Visible = false;
+            OptionsPanel.Visible = true;
+        }
+
+        private void SwitchBtnOptions_Click(object sender, EventArgs e)
+        {
+            PiecePanel.Visible = true;
+            OptionsPanel.Visible = false;
+        }
+
+        private void SwitchBtn_Click_2(object sender, EventArgs e)
+        {
+            PiecePanel.Visible = false;
+            OptionsPanel.Visible = true;
         }
 
         private string ConvertCurrentAngleDetails()

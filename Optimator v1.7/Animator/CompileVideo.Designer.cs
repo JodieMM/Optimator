@@ -30,14 +30,15 @@
         {
             this.components = new System.ComponentModel.Container();
             this.insertPanel = new System.Windows.Forms.Panel();
+            this.saveBtn = new System.Windows.Forms.Button();
+            this.saveLocationTb = new System.Windows.Forms.TextBox();
             this.playBtn = new System.Windows.Forms.Button();
             this.submitScene = new System.Windows.Forms.Button();
             this.sceneTb = new System.Windows.Forms.TextBox();
-            this.DrawPanel = new System.Windows.Forms.Panel();
             this.animationTimer = new System.Windows.Forms.Timer(this.components);
-            this.saveLocationTb = new System.Windows.Forms.TextBox();
-            this.saveBtn = new System.Windows.Forms.Button();
+            this.DrawPanel = new System.Windows.Forms.PictureBox();
             this.insertPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DrawPanel)).BeginInit();
             this.SuspendLayout();
             // 
             // insertPanel
@@ -52,6 +53,25 @@
             this.insertPanel.Name = "insertPanel";
             this.insertPanel.Size = new System.Drawing.Size(273, 1241);
             this.insertPanel.TabIndex = 0;
+            // 
+            // saveBtn
+            // 
+            this.saveBtn.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.saveBtn.Location = new System.Drawing.Point(30, 826);
+            this.saveBtn.Name = "saveBtn";
+            this.saveBtn.Size = new System.Drawing.Size(202, 66);
+            this.saveBtn.TabIndex = 4;
+            this.saveBtn.Text = "Save";
+            this.saveBtn.UseVisualStyleBackColor = true;
+            this.saveBtn.Click += new System.EventHandler(this.saveBtn_Click);
+            // 
+            // saveLocationTb
+            // 
+            this.saveLocationTb.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.saveLocationTb.Location = new System.Drawing.Point(30, 743);
+            this.saveLocationTb.Name = "saveLocationTb";
+            this.saveLocationTb.Size = new System.Drawing.Size(202, 47);
+            this.saveLocationTb.TabIndex = 3;
             // 
             // playBtn
             // 
@@ -83,36 +103,17 @@
             this.sceneTb.Size = new System.Drawing.Size(202, 47);
             this.sceneTb.TabIndex = 0;
             // 
-            // DrawPanel
-            // 
-            this.DrawPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DrawPanel.Location = new System.Drawing.Point(0, 0);
-            this.DrawPanel.Name = "DrawPanel";
-            this.DrawPanel.Size = new System.Drawing.Size(1647, 1241);
-            this.DrawPanel.TabIndex = 1;
-            // 
             // animationTimer
             // 
             this.animationTimer.Tick += new System.EventHandler(this.animationTimer_Tick);
             // 
-            // saveLocationTb
+            // DrawPanel
             // 
-            this.saveLocationTb.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.saveLocationTb.Location = new System.Drawing.Point(30, 743);
-            this.saveLocationTb.Name = "saveLocationTb";
-            this.saveLocationTb.Size = new System.Drawing.Size(202, 47);
-            this.saveLocationTb.TabIndex = 3;
-            // 
-            // saveBtn
-            // 
-            this.saveBtn.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.saveBtn.Location = new System.Drawing.Point(30, 826);
-            this.saveBtn.Name = "saveBtn";
-            this.saveBtn.Size = new System.Drawing.Size(202, 66);
-            this.saveBtn.TabIndex = 4;
-            this.saveBtn.Text = "Save";
-            this.saveBtn.UseVisualStyleBackColor = true;
-            this.saveBtn.Click += new System.EventHandler(this.saveBtn_Click);
+            this.DrawPanel.Location = new System.Drawing.Point(0, 0);
+            this.DrawPanel.Name = "DrawPanel";
+            this.DrawPanel.Size = new System.Drawing.Size(1647, 1241);
+            this.DrawPanel.TabIndex = 1;
+            this.DrawPanel.TabStop = false;
             // 
             // CompileVideo
             // 
@@ -126,6 +127,7 @@
             this.Text = "Compile Video";
             this.insertPanel.ResumeLayout(false);
             this.insertPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DrawPanel)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -135,10 +137,10 @@
         private System.Windows.Forms.Panel insertPanel;
         private System.Windows.Forms.Button submitScene;
         private System.Windows.Forms.TextBox sceneTb;
-        private System.Windows.Forms.Panel DrawPanel;
         private System.Windows.Forms.Button playBtn;
         private System.Windows.Forms.Timer animationTimer;
         private System.Windows.Forms.Button saveBtn;
         private System.Windows.Forms.TextBox saveLocationTb;
+        private System.Windows.Forms.PictureBox DrawPanel;
     }
 }

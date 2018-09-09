@@ -32,6 +32,8 @@
             this.DoneBtn = new System.Windows.Forms.Button();
             this.NameTb = new System.Windows.Forms.TextBox();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.flipsUpDown = new System.Windows.Forms.NumericUpDown();
+            this.flipsCb = new System.Windows.Forms.CheckBox();
             this.basePieceTb = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.yInitUpDown = new System.Windows.Forms.NumericUpDown();
@@ -57,18 +59,17 @@
             this.partsLb = new System.Windows.Forms.ListBox();
             this.deleteBtn = new System.Windows.Forms.Button();
             this.addBtn = new System.Windows.Forms.Button();
-            this.DrawPanel = new System.Windows.Forms.Panel();
-            this.flipsCb = new System.Windows.Forms.CheckBox();
-            this.flipsUpDown = new System.Windows.Forms.NumericUpDown();
+            this.DrawPanel = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.flipsUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.yInitUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xInitUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.sizeInitUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinInitUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.turnInitUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rotInitUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.flipsUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DrawPanel)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -139,6 +140,28 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(412, 1329);
             this.panel2.TabIndex = 1;
+            // 
+            // flipsUpDown
+            // 
+            this.flipsUpDown.Location = new System.Drawing.Point(187, 950);
+            this.flipsUpDown.Maximum = new decimal(new int[] {
+            359,
+            0,
+            0,
+            0});
+            this.flipsUpDown.Name = "flipsUpDown";
+            this.flipsUpDown.Size = new System.Drawing.Size(120, 31);
+            this.flipsUpDown.TabIndex = 89;
+            // 
+            // flipsCb
+            // 
+            this.flipsCb.AutoSize = true;
+            this.flipsCb.Location = new System.Drawing.Point(31, 950);
+            this.flipsCb.Name = "flipsCb";
+            this.flipsCb.Size = new System.Drawing.Size(102, 29);
+            this.flipsCb.TabIndex = 88;
+            this.flipsCb.Text = "Flips?";
+            this.flipsCb.UseVisualStyleBackColor = true;
             // 
             // basePieceTb
             // 
@@ -452,37 +475,16 @@
             this.DrawPanel.Name = "DrawPanel";
             this.DrawPanel.Size = new System.Drawing.Size(1312, 1229);
             this.DrawPanel.TabIndex = 2;
-            // 
-            // flipsCb
-            // 
-            this.flipsCb.AutoSize = true;
-            this.flipsCb.Location = new System.Drawing.Point(31, 950);
-            this.flipsCb.Name = "flipsCb";
-            this.flipsCb.Size = new System.Drawing.Size(102, 29);
-            this.flipsCb.TabIndex = 88;
-            this.flipsCb.Text = "Flips?";
-            this.flipsCb.UseVisualStyleBackColor = true;
-            // 
-            // flipsUpDown
-            // 
-            this.flipsUpDown.Location = new System.Drawing.Point(187, 950);
-            this.flipsUpDown.Maximum = new decimal(new int[] {
-            359,
-            0,
-            0,
-            0});
-            this.flipsUpDown.Name = "flipsUpDown";
-            this.flipsUpDown.Size = new System.Drawing.Size(120, 31);
-            this.flipsUpDown.TabIndex = 89;
+            this.DrawPanel.TabStop = false;
             // 
             // SetsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1724, 1329);
+            this.Controls.Add(this.DrawPanel);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.DrawPanel);
             this.Name = "SetsForm";
             this.ShowIcon = false;
             this.Text = "SetsForm";
@@ -490,13 +492,14 @@
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.flipsUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.yInitUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xInitUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.sizeInitUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinInitUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.turnInitUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.rotInitUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.flipsUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DrawPanel)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -505,7 +508,6 @@
 
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Panel DrawPanel;
         private System.Windows.Forms.TextBox NameTb;
         private System.Windows.Forms.Button DoneBtn;
         private System.Windows.Forms.ListBox partsLb;
@@ -535,5 +537,6 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.NumericUpDown flipsUpDown;
         private System.Windows.Forms.CheckBox flipsCb;
+        private System.Windows.Forms.PictureBox DrawPanel;
     }
 }
