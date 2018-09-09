@@ -118,7 +118,8 @@ namespace Animator
         {
             if (GetIsAttached())
             {
-                return new double[] { (rotation + attachedTo.GetAngles()[0]) % 360, (turn + attachedTo.GetAngles()[1]) % 360, (spin + attachedTo.GetAngles()[2]) % 360 };
+                return new double[] { (rotation + attachedTo.GetAngles()[0]) % 360, (turn + attachedTo.GetAngles()[1]
+                    + HookAngle(1)) % 360, (spin + attachedTo.GetAngles()[2] + HookAngle(2)) % 360 };
             }
             return new double[] { rotation, turn, spin };
         }
@@ -678,6 +679,110 @@ namespace Animator
             turn = originally.GetT();
             spin = originally.GetS();
             sizeMod = originally.GetSM();
+        }
+
+        /// <summary>
+        /// Finds how being at a different angle to the connected piece alters r/t/s
+        /// Should only run if piece has been confirmed connected
+        /// </summary>
+        /// <param name="angle">The angle type; 0 = r, 1 = t, 2 = s</param>
+        /// <returns>The amount the provided angle needs to be modified by</returns>
+        private double HookAngle(int angle)
+        {
+            return 0;
+            // TEMP ABOVE
+            double sum = 0;
+            double getR = (rotation + attachedTo.GetAngles()[0]) % 360;
+            double getT = (turn + attachedTo.GetAngles()[1]) % 360;
+            double getS = (spin + attachedTo.GetAngles()[2]) % 360;
+
+            if (angle == 0 && (turn != 0 || spin != 0))                     // Rotation
+            {
+
+            }
+            else if (angle == 1 && (rotation != 0 || spin != 0))             // Turn
+            {
+                if (spin % 180 != 0)    // Spin Changed
+                {
+                    // ROTATION
+                    // Exact quadrants && one value is 0
+                    if (getR % 90 == 0)
+                    {
+                        if (getR == 90)
+                        {
+                            sum += spin;
+                        }
+                        else if (getR == 270)
+                        {
+                            sum -= spin;
+                        }
+                    }
+                    // Rounded Sections
+                    else
+                    {
+                        if (getR < 90)
+                        {
+                            sum += getR / 90 * spin;
+                        }
+                        else if (getR < 180)
+                        {
+                            sum += (getR - 90) / 90 * (1 / spin);
+                        }
+                        else if (getR < 270)
+                        {
+                            sum -= (getR - 180) / 90 * spin;
+                        }
+                        else
+                        {
+                            sum -= (getR - 270) / 90 * (1 / spin);
+                        }
+                    }
+
+                    // TURN
+                }
+            }
+            else if (angle == 2 && (rotation != 0 || turn != 0))      // Spin
+            {
+                if (spin % 180 != 0)    // Spin Changed
+                {
+                    // ROTATION
+                    // Exact quadrants && one value is 0
+                    if (getR % 90 == 0)
+                    {
+                        if (getR == 0)
+                        {
+                            sum += turn;
+                        }
+                        else if (getR == 180)
+                        {
+                            sum -= turn;
+                        }
+                    }
+                    // Rounded Sections
+                    else
+                    {
+                        if (getR < 90)
+                        {
+                            sum += getR / 90 * turn;
+                        }
+                        else if (getR < 180)
+                        {
+                            sum += (getR - 90) / 90 * (1 / turn);
+                        }
+                        else if (getR < 270)
+                        {
+                            sum -= (getR - 180) / 90 * turn;
+                        }
+                        else
+                        {
+                            sum -= (getR - 270) / 90 * (1 / turn);
+                        }
+                    }
+                }
+            }
+            
+
+            return sum;
         }
     }
 }
