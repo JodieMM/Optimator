@@ -139,7 +139,7 @@ namespace Animator
 
 
                 // Draw Connecting Lines
-                for (int pointIndex = 0; pointIndex < numCoords && numCoords > 1; pointIndex++)
+                for (int pointIndex = 0; pointIndex < numCoords && numCoords > 1 && piece.GetOutlineWidth() > 0; pointIndex++)
                 {
                     // Draw Line Between Final Point and First Point
                     if (pointIndex == numCoords - 1)

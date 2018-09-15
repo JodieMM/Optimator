@@ -65,8 +65,6 @@
             this.ClearBtn = new System.Windows.Forms.Button();
             this.ResetBtn = new System.Windows.Forms.Button();
             this.PointsLb = new System.Windows.Forms.ListBox();
-            this.OutlineWidthUpDown = new System.Windows.Forms.NumericUpDown();
-            this.label15 = new System.Windows.Forms.Label();
             this.BaseBtn = new System.Windows.Forms.Button();
             this.RotateBtn = new System.Windows.Forms.Button();
             this.TurnBtn = new System.Windows.Forms.Button();
@@ -84,6 +82,8 @@
             this.label23 = new System.Windows.Forms.Label();
             this.label24 = new System.Windows.Forms.Label();
             this.DrawPanel = new System.Windows.Forms.PictureBox();
+            this.OutlineWidthUpDown = new System.Windows.Forms.NumericUpDown();
+            this.label15 = new System.Windows.Forms.Label();
             this.NamePanel.SuspendLayout();
             this.OptionsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tToUpDown)).BeginInit();
@@ -98,10 +98,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.GreenUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.RedUpDown)).BeginInit();
             this.PiecePanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.OutlineWidthUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.YUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.XUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawPanel)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.OutlineWidthUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // NamePanel
@@ -155,6 +155,8 @@
             // OptionsPanel
             // 
             this.OptionsPanel.BackColor = System.Drawing.Color.SlateBlue;
+            this.OptionsPanel.Controls.Add(this.OutlineWidthUpDown);
+            this.OptionsPanel.Controls.Add(this.label15);
             this.OptionsPanel.Controls.Add(this.SwitchBtnOptions);
             this.OptionsPanel.Controls.Add(this.loadTb);
             this.OptionsPanel.Controls.Add(this.tToUpDown);
@@ -204,7 +206,7 @@
             // loadTb
             // 
             this.loadTb.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.loadTb.Location = new System.Drawing.Point(26, 996);
+            this.loadTb.Location = new System.Drawing.Point(29, 1056);
             this.loadTb.Name = "loadTb";
             this.loadTb.Size = new System.Drawing.Size(361, 47);
             this.loadTb.TabIndex = 68;
@@ -213,7 +215,7 @@
             // tToUpDown
             // 
             this.tToUpDown.Font = new System.Drawing.Font("Century Gothic", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tToUpDown.Location = new System.Drawing.Point(237, 882);
+            this.tToUpDown.Location = new System.Drawing.Point(237, 964);
             this.tToUpDown.Maximum = new decimal(new int[] {
             360,
             0,
@@ -227,7 +229,7 @@
             // tFromUpDown
             // 
             this.tFromUpDown.Font = new System.Drawing.Font("Century Gothic", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tFromUpDown.Location = new System.Drawing.Point(70, 882);
+            this.tFromUpDown.Location = new System.Drawing.Point(70, 964);
             this.tFromUpDown.Maximum = new decimal(new int[] {
             360,
             0,
@@ -242,7 +244,7 @@
             // 
             this.label13.AutoSize = true;
             this.label13.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label13.Location = new System.Drawing.Point(22, 879);
+            this.label13.Location = new System.Drawing.Point(22, 961);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(30, 39);
             this.label13.TabIndex = 53;
@@ -251,7 +253,7 @@
             // rToUpDown
             // 
             this.rToUpDown.Font = new System.Drawing.Font("Century Gothic", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rToUpDown.Location = new System.Drawing.Point(237, 827);
+            this.rToUpDown.Location = new System.Drawing.Point(237, 909);
             this.rToUpDown.Maximum = new decimal(new int[] {
             360,
             0,
@@ -265,7 +267,7 @@
             // rFromUpDown
             // 
             this.rFromUpDown.Font = new System.Drawing.Font("Century Gothic", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rFromUpDown.Location = new System.Drawing.Point(70, 827);
+            this.rFromUpDown.Location = new System.Drawing.Point(70, 909);
             this.rFromUpDown.Maximum = new decimal(new int[] {
             360,
             0,
@@ -280,7 +282,7 @@
             // 
             this.label12.AutoSize = true;
             this.label12.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.Location = new System.Drawing.Point(22, 824);
+            this.label12.Location = new System.Drawing.Point(22, 906);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(36, 39);
             this.label12.TabIndex = 50;
@@ -303,7 +305,7 @@
             // sketchBtn
             // 
             this.sketchBtn.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.sketchBtn.Location = new System.Drawing.Point(26, 1162);
+            this.sketchBtn.Location = new System.Drawing.Point(29, 1222);
             this.sketchBtn.Name = "sketchBtn";
             this.sketchBtn.Size = new System.Drawing.Size(361, 82);
             this.sketchBtn.TabIndex = 45;
@@ -314,7 +316,7 @@
             // loadBtn
             // 
             this.loadBtn.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.loadBtn.Location = new System.Drawing.Point(26, 1064);
+            this.loadBtn.Location = new System.Drawing.Point(29, 1124);
             this.loadBtn.Name = "loadBtn";
             this.loadBtn.Size = new System.Drawing.Size(361, 82);
             this.loadBtn.TabIndex = 44;
@@ -326,7 +328,7 @@
             // 
             this.wrUpDown.BackColor = System.Drawing.SystemColors.HighlightText;
             this.wrUpDown.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.wrUpDown.Location = new System.Drawing.Point(144, 760);
+            this.wrUpDown.Location = new System.Drawing.Point(144, 842);
             this.wrUpDown.Name = "wrUpDown";
             this.wrUpDown.Size = new System.Drawing.Size(123, 47);
             this.wrUpDown.TabIndex = 10;
@@ -341,7 +343,7 @@
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Century Gothic", 13.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(51, 702);
+            this.label11.Location = new System.Drawing.Point(51, 784);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(309, 44);
             this.label11.TabIndex = 43;
@@ -568,8 +570,6 @@
             this.PiecePanel.Controls.Add(this.ClearBtn);
             this.PiecePanel.Controls.Add(this.ResetBtn);
             this.PiecePanel.Controls.Add(this.PointsLb);
-            this.PiecePanel.Controls.Add(this.OutlineWidthUpDown);
-            this.PiecePanel.Controls.Add(this.label15);
             this.PiecePanel.Controls.Add(this.BaseBtn);
             this.PiecePanel.Controls.Add(this.RotateBtn);
             this.PiecePanel.Controls.Add(this.TurnBtn);
@@ -620,35 +620,6 @@
             this.PointsLb.Name = "PointsLb";
             this.PointsLb.Size = new System.Drawing.Size(360, 235);
             this.PointsLb.TabIndex = 17;
-            // 
-            // OutlineWidthUpDown
-            // 
-            this.OutlineWidthUpDown.BackColor = System.Drawing.SystemColors.HighlightText;
-            this.OutlineWidthUpDown.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.OutlineWidthUpDown.Location = new System.Drawing.Point(156, 949);
-            this.OutlineWidthUpDown.Maximum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.OutlineWidthUpDown.Name = "OutlineWidthUpDown";
-            this.OutlineWidthUpDown.Size = new System.Drawing.Size(123, 47);
-            this.OutlineWidthUpDown.TabIndex = 66;
-            this.OutlineWidthUpDown.Value = new decimal(new int[] {
-            3,
-            0,
-            0,
-            0});
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Font = new System.Drawing.Font("Century Gothic", 13.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label15.Location = new System.Drawing.Point(78, 882);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(257, 44);
-            this.label15.TabIndex = 67;
-            this.label15.Text = "Outline Width";
             // 
             // BaseBtn
             // 
@@ -832,15 +803,45 @@
             this.DrawPanel.TabIndex = 4;
             this.DrawPanel.TabStop = false;
             // 
+            // OutlineWidthUpDown
+            // 
+            this.OutlineWidthUpDown.BackColor = System.Drawing.SystemColors.HighlightText;
+            this.OutlineWidthUpDown.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.OutlineWidthUpDown.Location = new System.Drawing.Point(141, 734);
+            this.OutlineWidthUpDown.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.OutlineWidthUpDown.Name = "OutlineWidthUpDown";
+            this.OutlineWidthUpDown.Size = new System.Drawing.Size(123, 47);
+            this.OutlineWidthUpDown.TabIndex = 72;
+            this.OutlineWidthUpDown.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.OutlineWidthUpDown.ValueChanged += new System.EventHandler(this.OutlineWidthUpDown_ValueChanged);
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("Century Gothic", 13.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label15.Location = new System.Drawing.Point(63, 667);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(257, 44);
+            this.label15.TabIndex = 73;
+            this.label15.Text = "Outline Width";
+            // 
             // PiecesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1724, 1329);
             this.Controls.Add(this.DrawPanel);
-            this.Controls.Add(this.PiecePanel);
             this.Controls.Add(this.OptionsPanel);
             this.Controls.Add(this.NamePanel);
+            this.Controls.Add(this.PiecePanel);
             this.Name = "PiecesForm";
             this.ShowIcon = false;
             this.Text = "Pieces";
@@ -861,10 +862,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.RedUpDown)).EndInit();
             this.PiecePanel.ResumeLayout(false);
             this.PiecePanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.OutlineWidthUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.YUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.XUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawPanel)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.OutlineWidthUpDown)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -907,8 +908,6 @@
         private System.Windows.Forms.Button ClearBtn;
         private System.Windows.Forms.Button ResetBtn;
         private System.Windows.Forms.ListBox PointsLb;
-        private System.Windows.Forms.NumericUpDown OutlineWidthUpDown;
-        private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Button BaseBtn;
         private System.Windows.Forms.Button RotateBtn;
         private System.Windows.Forms.Button TurnBtn;
@@ -926,5 +925,7 @@
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.Label label24;
         private System.Windows.Forms.PictureBox DrawPanel;
+        private System.Windows.Forms.NumericUpDown OutlineWidthUpDown;
+        private System.Windows.Forms.Label label15;
     }
 }
