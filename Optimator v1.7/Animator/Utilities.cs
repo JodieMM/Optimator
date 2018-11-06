@@ -18,7 +18,7 @@ namespace Animator
 
     public class Utilities
     {
-        // FILE I/O
+        // ----- FILE I/O -----
 
         /// <summary>
         /// Reads information from a text file and returns it
@@ -61,7 +61,8 @@ namespace Animator
         }
 
 
-        // OTHER FUNCTIONS
+
+        // ----- OTHER FUNCTIONS -----
 
         /// <summary>
         /// Finds the middle of a shape
@@ -110,8 +111,8 @@ namespace Animator
             {
 
                 // Prepare for drawing
-                Pen pen = new Pen(piece.GetOutlineColour(), piece.GetOutlineWidth());
-                SolidBrush fill = new SolidBrush(piece.GetFillColour()[0]);        // ** NEEDS UPDATING WITH GRADIENTS
+                Pen pen = new Pen(piece.OutlineColour, piece.OutlineWidth);
+                SolidBrush fill = new SolidBrush(piece.FillColour[0]);                          // ** NEEDS UPDATING WITH GRADIENTS
                 double[,] sketchCoords = piece.GetCurrentPoints(recentre, true);
                 string[] joiners = piece.GetLineArray(piece.GetAngles()[0], piece.GetAngles()[1]);
                 int numCoords = sketchCoords.Length / 2;
@@ -139,7 +140,7 @@ namespace Animator
 
 
                 // Draw Connecting Lines
-                for (int pointIndex = 0; pointIndex < numCoords && numCoords > 1 && piece.GetOutlineWidth() > 0; pointIndex++)
+                for (int pointIndex = 0; pointIndex < numCoords && numCoords > 1 && piece.OutlineWidth > 0; pointIndex++)
                 {
                     // Draw Line Between Final Point and First Point
                     if (pointIndex == numCoords - 1)
@@ -256,6 +257,41 @@ namespace Animator
                 }
             }
             return coord;
+        }
+
+
+        /// <summary>
+        /// Finds the correct row in the piece data for the given rotation and turn values
+        /// RowNum is 1 for pieces, 0 for points
+        /// </summary>
+        /// <param name="r">Rotation</param>
+        /// <param name="t">Turn</param>
+        /// <returns>The data row holding the information for the given angles</returns>
+        public static int FindRow(double r, double t, List<string> data, int rowNum)
+        {
+            int row = rowNum;
+            bool found = false;
+            while (!found)
+            {
+                if (row == data.Count)
+                {
+                    found = true;
+                    row = -1;
+                }
+                else
+                {
+                    if (r >= int.Parse(data[row].Substring(0, 3)) && r <= int.Parse(data[row].Substring(4, 3))
+                        && t >= int.Parse(data[row].Substring(8, 3)) && t <= int.Parse(data[row].Substring(12, 3)))
+                    {
+                        found = true;
+                    }
+                    else
+                    {
+                        row++;
+                    }
+                }
+            }
+            return row;
         }
     }
 }

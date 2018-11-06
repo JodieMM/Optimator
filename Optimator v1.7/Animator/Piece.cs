@@ -19,36 +19,38 @@ namespace Animator
 
     public class Piece
     {
-        // Initialise Piece Variables
-        private string Name { get; set; }
-        private readonly string folder;
-        private List<string> data = new List<string>();
+        // Piece Variables
+        public string Name { get; set; }
+        private List<string> data;
 
-        private double X { get; set; }
-        private double Y { get; set; }
+        // Coords and Angles
+        public double X { get; set; }
+        public double Y { get; set; }
         private double R;
         private double T;
         private double S;
-        private double SM { get; set; }
+        public double SM { get; set; }
+        private int numCoords;
 
-        private string ColourType { get; set; }                     // Solid/Gradient colour and direction
-        private string PieceDetails { get; set; }                   // Wind resistance and more
-        private int OutlineWidth { get; set; }
-        private Color[] FillColour { get; set; }                    // Multiple colours for gradients
-        private Color OutlineColour { get; set; }
+        // Colours and Details
+        public string ColourType { get; set; }                     // Solid/Gradient colour and direction
+        public Color[] FillColour { get; set; }                    // Multiple colours for gradients
+        public Color OutlineColour { get; set; }
+        public int OutlineWidth { get; set; }
+        public string PieceDetails { get; set; }                   // Wind resistance and more
 
         // Sets
-        private Piece attachedTo = null;
-        private Piece attachPoint = null;
-        private Piece ownPoint = null;
-        private Boolean inFront = true;
-        private double angleFlip = -1;
-        private Set pieceOf = null;
+        public Piece AttachedTo { get; set; }
+        public PointSpot AttachPoint { get; set; }
+        public PointSpot OwnPoint { get; set; }
+        public Set PieceOf { get; set; }
+        // Set Ordering
+        public bool inFront { get; set; }
+        public double angleFlip { get; set; }
 
         // Scenes
-        private int sceneIndex = -1;
-        private Originals originally = null;
-
+        public int SceneIndex { get; set; }
+        public Originals Originally { get; set; }
 
 
         /// <summary>
@@ -58,30 +60,36 @@ namespace Animator
         /// <param Name="inName">The (file) name of the piece</param>
         public Piece(string inName)
         {
+            // Get Piece Data
             Name = inName;
-            folder = Constants.PiecesFolder;
-            data = Utilities.ReadFile(Environment.CurrentDirectory + folder + Name + ".txt");
+            data = Utilities.ReadFile(Environment.CurrentDirectory + Constants.PiecesFolder + Name + ".txt");
 
-            //Get points and colours from file
+            // Initialise Sets and Scenes as null
+            AttachedTo = null;
+            AttachPoint = null;
+            OwnPoint = null;
+            PieceOf = null;
+            inFront = true;
+            angleFlip = -1;
+            SceneIndex = -1;
+            Originally = null;
+
+            // Get Points and Colours from File
             AssignValues(data[0]);
         }
 
 
-        public Piece(string inName, string customFolder)
-        {
-            Name = inName;
-            folder = customFolder;
-            data = Utilities.ReadFile(Environment.CurrentDirectory + folder + Name + ".txt");
-            FillColour = new Color[1] { Color.Black };
-        }
-
-
         // ----- GET FUNCTIONS -----
+
+        /// <summary>
+        /// Gets the size modifier with considerations
+        /// </summary>
+        /// <returns></returns>
         public double GetSizeMod()
         {
             if (GetIsAttached())
             {
-                return (SM/100.0) * (attachedTo.GetSizeMod()/100.0) * 100.0;
+                return (SM/100.0) * (AttachedTo.GetSizeMod()/100.0) * 100.0;
             }
             return SM;
         }
@@ -94,7 +102,7 @@ namespace Animator
         {
             if (GetIsAttached())
             {
-                return new double[] { X + attachedTo.GetCoords()[0] + GetPointChange()[0], Y + attachedTo.GetCoords()[1] + GetPointChange()[1] };
+                return new double[] { X + AttachedTo.GetCoords()[0] + GetPointChange()[0], Y + AttachedTo.GetCoords()[1] + GetPointChange()[1] };
             }
             return new double[] { X, Y };
         }
@@ -107,63 +115,38 @@ namespace Animator
         {
             if (GetIsAttached())
             {
-                return new double[] { (R + attachedTo.GetAngles()[0]) % 360, (T + attachedTo.GetAngles()[1]
-                    + HookAngle(1)) % 360, (S + attachedTo.GetAngles()[2] + HookAngle(2)) % 360 };
+                return new double[] { (R + AttachedTo.GetAngles()[0]) % 360, (T + AttachedTo.GetAngles()[1]
+                    + HookAngle(1)) % 360, (S + AttachedTo.GetAngles()[2] + HookAngle(2)) % 360 };
             }
             return new double[] { R, T, S };
         }
 
         /// <summary>
-        /// Returns the data of the piece so it can be saved. Used during piece creation.
-        /// Also updates the first line of data; colour type, colour array, outline width and piece details to match
-        /// current status.
+        /// Updates the first line of data; colour type, colour array, outline width and piece details to match
+        /// current status. Used during piece creation.
         /// </summary>
-        /// <returns>Piece data</returns>
-        public List<string> GetData()
+        public void UpdateDataInfoLine()
         {
-            if (folder == Constants.PiecesFolder)
+            // Update first line of data            [0] colour type     [1] colour array        [2] outline width       [3] pieceDetails
+            string pieceInfo = ColourType + ";" + OutlineColour.A + "," + OutlineColour.R + "," + OutlineColour.G + "," + OutlineColour.B + ":";
+            if (FillColour != null)
             {
-                // Update first line of data            [0] colour type     [1] colour array        [2] outline width       [3] pieceDetails
-                string pieceInfo = ColourType + ";" + OutlineColour.A + "," + OutlineColour.R + "," + OutlineColour.G + "," + OutlineColour.B + ":";
-                if (FillColour != null)
+                foreach (Color col in FillColour)
                 {
-                    foreach (Color col in FillColour)
-                    {
-                        pieceInfo += col.A + "," + col.R + "," + col.G + "," + col.B + ":";
-                    }
+                    pieceInfo += col.A + "," + col.R + "," + col.G + "," + col.B + ":";
                 }
-                pieceInfo = pieceInfo.Remove(pieceInfo.Length - 1, 1) + ";" + OutlineWidth + ";" + PieceDetails;
-                data[0] = pieceInfo;
             }
-            return data;
+            pieceInfo = pieceInfo.Remove(pieceInfo.Length - 1, 1) + ";" + OutlineWidth + ";" + PieceDetails;
+            data[0] = pieceInfo;
         }
 
         /// <summary>
         /// Finds whether the piece is attached to another piece
         /// </summary>
         /// <returns>If attached</returns>
-        public Boolean GetIsAttached()
+        public bool GetIsAttached()
         {
-            return attachedTo != null;
-        }
-
-        /// <summary>
-        /// Finds the piece the current piece is attached to.
-        /// </summary>
-        /// <returns>Piece attached to</returns>
-        public Piece GetAttachedTo()
-        {
-            return attachedTo;
-        }
-
-        public Piece GetAttachPoint()
-        {
-            return attachPoint;
-        }
-
-        public Piece GetOwnPoint()
-        {
-            return ownPoint;
+            return AttachedTo != null;
         }
 
         /// <summary>
@@ -174,7 +157,7 @@ namespace Animator
         /// <returns>Joins</returns>
         public string[] GetLineArray(double r, double t)          // Type of joining line
         {
-            return data[FindRow(r, t)].ToString().Split(new Char[] { ';' })[5].Split(new Char[] { ',' });
+            return data[Utilities.FindRow(r, t, data, 1)].ToString().Split(new Char[] { ';' })[5].Split(new Char[] { ',' });
         }
 
         /// <summary>
@@ -185,52 +168,20 @@ namespace Animator
         /// <returns>Point Type</returns>
         public string[] GetPointDataArray(double r, double t)     // Solid or float
         {
-            return data[FindRow(r, t)].ToString().Split(new Char[] { ';' })[6].Split(new Char[] { ',' });
+            return data[Utilities.FindRow(r, t, data, 1)].ToString().Split(new Char[] { ';' })[6].Split(new Char[] { ',' });
         }
 
-        public double[,] GetOriginalPoints(double r, double t)
+        /// <summary>
+        /// Finds coordinates within a row
+        /// Original angle = 2, rotated angle = 3, turned angle = 4
+        /// </summary>
+        /// <param name="r"></param>
+        /// <param name="t"></param>
+        /// <param name="angle"></param>
+        /// <returns></returns>
+        public double[,] GetAnglePoints(double r, double t, int angle)
         {
-            return FindPoints(FindRow(r, t), 2);
-        }
-
-        public double[,] GetRotatedPoints(double r, double t)
-        {
-            return FindPoints(FindRow(r, t), 3);
-        }
-
-        public double[,] GetTurnedPoints(double r, double t)
-        {
-            return FindPoints(FindRow(r, t), 4);
-        }
-
-        public int GetNumPoints(double r, double t)
-        {
-            return GetOriginalPoints(r, t).Length / 2;
-        }
-
-        public int GetSceneIndex()
-        {
-            return sceneIndex;
-        }
-
-        public Set GetPieceOf()
-        {
-            return pieceOf;
-        }
-
-        public Originals GetOriginal()
-        {
-            return originally;
-        }
-
-        public Boolean GetInFront()
-        {
-            return inFront;
-        }
-
-        public double GetAngleFlip()
-        {
-            return angleFlip;
+            return FindPoints(Utilities.FindRow(r, t, data, 1), angle);
         }
 
 
@@ -256,39 +207,20 @@ namespace Animator
             X = x; Y = y; R = r; T = t; S = s; SM = sm;
         }
 
-        public void AttachToPiece(Piece attach, Piece attachmentPoint, Piece point, Boolean front, double angleFlip)
+        public void AttachToPiece(Piece attach, PointSpot attachmentPoint, PointSpot point, bool front, double angleFlip)
         {
-            attachedTo = attach;
-            attachPoint = attachmentPoint;
-            ownPoint = point;
+            AttachedTo = attach;
+            AttachPoint = attachmentPoint;
+            OwnPoint = point;
             inFront = front;
             this.angleFlip = angleFlip;
             X = 0;
             Y = 0;
         }
 
-        public void SetName(string inName)
-        {
-            Name = inName;
-        }
-
-        public void SetSceneIndex(int indexNum)
-        {
-            sceneIndex = indexNum;
-        }
-
-        public void SetPieceOf(Set set)
-        {
-            pieceOf = set;
-        }
-
-        public void SetOriginal(Originals origin)
-        {
-            originally = origin;
-        }
 
 
-        // Data Modification
+        // ----- DATA MODIFICATION -----
         public void AddDataLine(string line)
         {
             data.Add(line);
@@ -342,6 +274,9 @@ namespace Animator
 
             // Piece Details
             PieceDetails = angleData[3];
+
+            // Get Num Points
+            numCoords = data[1].Split(new Char[] { ';' })[2].Count();
         }
 
 
@@ -376,62 +311,20 @@ namespace Animator
         }
 
         /// <summary>
-        /// Finds the correct row in the piece data for the given rotation and turn values
-        /// </summary>
-        /// <param name="r">Rotation</param>
-        /// <param name="t">Turn</param>
-        /// <returns>The data row holding the information for the given angles</returns>
-        public int FindRow(double r, double t)
-        {
-            // Check rows until found
-            int row = 1;
-            if (folder != Constants.PiecesFolder)
-            {
-                row = 0;                
-            }
-
-            Boolean found = false;
-            while (!found)
-            {
-                if (row == data.Count)
-                {
-                    found = true;
-                    row = -1;
-                }
-                else
-                {
-                    if (r >= int.Parse(data[row].Substring(0, 3)) && r <= int.Parse(data[row].Substring(4, 3))
-                        && t >= int.Parse(data[row].Substring(8, 3)) && t <= int.Parse(data[row].Substring(12, 3)))
-                    {
-                        found = true;
-                    }
-                    else
-                    {
-                        row++;
-                    }
-                }
-            }
-            return row;
-        }
-
-
-        /// <summary>
         /// Finds the points to print based on the rotation, turn and size of the piece
         /// </summary>
         /// <returns></returns>
         public double[,] GetCurrentPoints(Boolean recentre, Boolean spinSize)
         {
-            // Find correct row of piece data
-            int row = FindRow(GetAngles()[0], GetAngles()[1]);
-            List<string> data = GetData();
+            UpdateDataInfoLine();
+            int row = Utilities.FindRow(GetAngles()[0], GetAngles()[1], data, 1);
             string dataLine = data[row];
-            int numPoints = GetNumPoints(Convert.ToInt32(GetAngles()[0]), Convert.ToInt32(GetAngles()[1]));
 
             // Prepare Points
-            double[,] pointsArrayInitial = GetOriginalPoints(GetAngles()[0], GetAngles()[1]);
-            double[,] pointsArrayRotated = GetRotatedPoints(GetAngles()[0], GetAngles()[1]);
-            double[,] pointsArrayTurned = GetTurnedPoints(GetAngles()[0], GetAngles()[1]);
-            double[,] pointsArray = new double[numPoints, 2];           // To be filled and returned below
+            double[,] pointsArrayInitial = GetAnglePoints(GetAngles()[0], GetAngles()[1], 2);
+            double[,] pointsArrayRotated = GetAnglePoints(GetAngles()[0], GetAngles()[1], 3);
+            double[,] pointsArrayTurned = GetAnglePoints(GetAngles()[0], GetAngles()[1], 4);
+            double[,] pointsArray = new double[numCoords, 2];           // To be filled and returned below
 
             // Find Multipliers - How far into the rotation range is required
             double rotationMultiplier = (GetAngles()[0] - double.Parse(dataLine.Substring(0, 3))) / (double.Parse(dataLine.Substring(4, 3)) - double.Parse(dataLine.Substring(0, 3)));
@@ -439,7 +332,7 @@ namespace Animator
 
             // Find Points
             // Rotation Adjustment
-            for (int index = 0; index < numPoints; index++)
+            for (int index = 0; index < numCoords; index++)
             {
                 if (double.Parse(dataLine.Substring(4, 3)) != double.Parse(dataLine.Substring(0, 3)))
                 {
@@ -459,7 +352,7 @@ namespace Animator
             }
 
             // Turn Adjustment
-            for (int index = 0; index < numPoints; index++)
+            for (int index = 0; index < numCoords; index++)
             {
                 if (double.Parse(dataLine.Substring(12, 3)) != double.Parse(dataLine.Substring(8, 3)))
                 {
@@ -471,7 +364,7 @@ namespace Animator
             }
 
             //Recentre
-            pointsArray = Recentre(pointsArray, numPoints, recentre);
+            pointsArray = Recentre(pointsArray, numCoords, recentre);
 
             // Spin and Size Adjustment
             if (spinSize)
@@ -563,12 +456,11 @@ namespace Animator
             }
             else
             {
-                attachPoint.SetValues(Constants.MidX, Constants.MidY, attachedTo.GetAngles()[0],
-                    attachedTo.GetAngles()[1], attachedTo.GetAngles()[2], attachedTo.GetSizeMod());
-                ownPoint.SetValues(Constants.MidX, Constants.MidY, GetAngles()[0], GetAngles()[1], GetAngles()[2], GetSizeMod());
+                AttachPoint.SetValues(Constants.MidX, Constants.MidY);
+                OwnPoint.SetValues(Constants.MidX, Constants.MidY);
 
-                double[,] baseCoords = attachPoint.GetCurrentPoints(false, true);
-                double[,] thisCoords = ownPoint.GetCurrentPoints(false, true);
+                double[,] baseCoords = AttachPoint.GetCurrentPoints();
+                double[,] thisCoords = OwnPoint.GetCurrentPoints();
 
                 return new double[] { baseCoords[0, 0] - thisCoords[0, 0], baseCoords[0, 1] - thisCoords[0, 1] };
             }
@@ -576,12 +468,8 @@ namespace Animator
 
         public void TakeOriginalState()
         {
-            X = originally.GetX();
-            Y = originally.GetY();
-            R = originally.GetR();
-            T = originally.GetT();
-            S = originally.GetS();
-            SM = originally.GetSM();
+            X = Originally.GetX(); Y = Originally.GetY(); R = Originally.GetR();
+            T = Originally.GetT(); S = Originally.GetS(); SM = Originally.GetSM();
         }
 
         /// <summary>
@@ -595,9 +483,9 @@ namespace Animator
             return 0;
             // TEMP ABOVE
             double sum = 0;
-            double getR = (R + attachedTo.GetAngles()[0]) % 360;
-            double getT = (T + attachedTo.GetAngles()[1]) % 360;
-            double getS = (S + attachedTo.GetAngles()[2]) % 360;
+            double getR = (R + AttachedTo.GetAngles()[0]) % 360;
+            double getT = (T + AttachedTo.GetAngles()[1]) % 360;
+            double getS = (S + AttachedTo.GetAngles()[2]) % 360;
 
             if (angle == 0 && (T != 0 || S != 0))                     // Rotation
             {

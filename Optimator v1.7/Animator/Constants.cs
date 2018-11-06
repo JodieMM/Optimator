@@ -14,5 +14,6 @@ namespace Animator
 
         // Folders
         public static string PiecesFolder => "\\Pieces\\";
+        public static string PointsFolder => "\\Points\\";
     }
 }
