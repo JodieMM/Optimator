@@ -242,11 +242,20 @@ namespace Animator
                     // No action if lone piece or base
                 }
             }
-
-
             return order;
         }
 
 
+        public static int CheckClose(int coord, int[] aims, int range)
+        {
+            foreach (int aim in aims)
+            {
+                if (coord > aim - range && coord < aim + range)
+                {
+                    return aim;
+                }
+            }
+            return coord;
+        }
     }
 }

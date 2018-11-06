@@ -52,6 +52,7 @@
     <Compile Include="CompileVideo.Designer.cs">
       <DependentUpon>CompileVideo.cs</DependentUpon>
     </Compile>
+    <Compile Include="Constants.cs" />
     <Compile Include="Menu.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -65,6 +66,12 @@
     </Compile>
     <Compile Include="PiecesForm.Designer.cs">
       <DependentUpon>PiecesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PiecesFormOrig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PiecesFormOrig.Designer.cs">
+      <DependentUpon>PiecesFormOrig.cs</DependentUpon>
     </Compile>
     <Compile Include="PiecesForm_LoadMenu.cs">
       <SubType>Form</SubType>
@@ -97,6 +104,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="PiecesForm.resx">
       <DependentUpon>PiecesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PiecesFormOrig.resx">
+      <DependentUpon>PiecesFormOrig.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PiecesForm_LoadMenu.resx">
       <DependentUpon>PiecesForm_LoadMenu.cs</DependentUpon>

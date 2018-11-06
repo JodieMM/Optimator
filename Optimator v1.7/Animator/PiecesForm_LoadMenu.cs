@@ -13,9 +13,9 @@ namespace Animator
     public partial class PiecesForm_LoadMenu : Form
     {
         string goal;
-        PiecesForm baseForm;
+        PiecesFormOrig baseForm;
 
-        public PiecesForm_LoadMenu(PiecesForm from)
+        public PiecesForm_LoadMenu(PiecesFormOrig from)
         {
             InitializeComponent();
             baseForm = from;

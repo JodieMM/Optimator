@@ -25,7 +25,6 @@ namespace Animator
         private void PiecesBtn_Click(object sender, EventArgs e)
         {
             PiecesForm pieceform = new PiecesForm();
-            pieceform.Size = new System.Drawing.Size(875, 750);
             pieceform.Show();
         }
 

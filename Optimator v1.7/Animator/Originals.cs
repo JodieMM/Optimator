@@ -26,12 +26,12 @@ namespace Animator
         public Originals(Piece piece)
         {
             this.piece = piece;
-            x = piece.x;
-            y = piece.y;
-            r = piece.rotation;
-            t = piece.turn;
-            s = piece.spin;
-            sm = piece.sizeMod;
+            x = piece.X;
+            y = piece.Y;
+            r = piece.R;
+            t = piece.T;
+            s = piece.S;
+            sm = piece.SM;
             // Colours/Outlines?
             // Attached sets etc?
         }

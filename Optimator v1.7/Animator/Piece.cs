@@ -20,25 +20,22 @@ namespace Animator
     public class Piece
     {
         // Initialise Piece Variables
-        public string name;
-        public string folder;
-        public List<string> data = new List<string>();
+        private string Name { get; set; }
+        private readonly string folder;
+        private List<string> data = new List<string>();
 
-        public double x = 500;
-        public double y = 250;
-        public double rotation = 0;
-        public double turn = 0;
-        public double spin = 0;
-        public double sizeMod = 100;
+        private double X { get; set; }
+        private double Y { get; set; }
+        private double R;
+        private double T;
+        private double S;
+        private double SM { get; set; }
 
-        private string colourType, pieceDetails;                  // File name, solid/gradient colour and direction, wind etc.
-        private int outlineWidth;
-        private Color[] fillColour;                               // Range of colours (single for solid, multiple for gradient)
-        private Color outlineColour;
-
-        private const string piecesFolder = "\\Pieces\\";
-        private const double midX = 500;
-        private const double midY = 250;
+        private string ColourType { get; set; }                     // Solid/Gradient colour and direction
+        private string PieceDetails { get; set; }                   // Wind resistance and more
+        private int OutlineWidth { get; set; }
+        private Color[] FillColour { get; set; }                    // Multiple colours for gradients
+        private Color OutlineColour { get; set; }
 
         // Sets
         private Piece attachedTo = null;
@@ -58,12 +55,12 @@ namespace Animator
         /// Assigns starting values to the piece variables. 
         /// Piece values stored in files are accessed.
         /// </summary>
-        /// <param name="inName">The (file) name of the piece</param>
+        /// <param Name="inName">The (file) name of the piece</param>
         public Piece(string inName)
         {
-            name = inName;
-            folder = piecesFolder;
-            data = Utilities.ReadFile(Environment.CurrentDirectory + folder + name + ".txt");
+            Name = inName;
+            folder = Constants.PiecesFolder;
+            data = Utilities.ReadFile(Environment.CurrentDirectory + folder + Name + ".txt");
 
             //Get points and colours from file
             AssignValues(data[0]);
@@ -72,58 +69,49 @@ namespace Animator
 
         public Piece(string inName, string customFolder)
         {
-            name = inName;
+            Name = inName;
             folder = customFolder;
-            data = Utilities.ReadFile(Environment.CurrentDirectory + folder + name + ".txt");
-            fillColour = new Color[1] { Color.Black };
+            data = Utilities.ReadFile(Environment.CurrentDirectory + folder + Name + ".txt");
+            FillColour = new Color[1] { Color.Black };
         }
 
 
-        // Get Functions
-
-        public string GetName()
-        {
-            return name;
-        }
-
+        // ----- GET FUNCTIONS -----
         public double GetSizeMod()
         {
             if (GetIsAttached())
             {
-                return (sizeMod/100.0) * (attachedTo.GetSizeMod()/100.0) * 100.0;
+                return (SM/100.0) * (attachedTo.GetSizeMod()/100.0) * 100.0;
             }
-            return sizeMod;
+            return SM;
         }
 
+        /// <summary>
+        /// Gets the X and Y values of the piece with considerations
+        /// </summary>
+        /// <returns></returns>
         public double[] GetCoords()
         {
             if (GetIsAttached())
             {
-                return new double[] { x + attachedTo.GetCoords()[0] + GetPointChange()[0], y + attachedTo.GetCoords()[1] + GetPointChange()[1] };
+                return new double[] { X + attachedTo.GetCoords()[0] + GetPointChange()[0], Y + attachedTo.GetCoords()[1] + GetPointChange()[1] };
             }
-            return new double[] { x, y };
+            return new double[] { X, Y };
         }
-
 
         /// <summary>
-        /// Gets the x, y, rotation, turn, spin and sizemod value as they are regardless of whether the piece is attached.
+        /// Gets the rotation, turn and spin of the piece with considerations
         /// </summary>
-        /// <returns>Stored X, Y, R, T, S and SM values</returns>
-        public double[] GetActualValues()
-        {
-            return new double[] { x, y, rotation, turn, spin, sizeMod };
-        }
-
+        /// <returns></returns>
         public double[] GetAngles()
         {
             if (GetIsAttached())
             {
-                return new double[] { (rotation + attachedTo.GetAngles()[0]) % 360, (turn + attachedTo.GetAngles()[1]
-                    + HookAngle(1)) % 360, (spin + attachedTo.GetAngles()[2] + HookAngle(2)) % 360 };
+                return new double[] { (R + attachedTo.GetAngles()[0]) % 360, (T + attachedTo.GetAngles()[1]
+                    + HookAngle(1)) % 360, (S + attachedTo.GetAngles()[2] + HookAngle(2)) % 360 };
             }
-            return new double[] { rotation, turn, spin };
+            return new double[] { R, T, S };
         }
-
 
         /// <summary>
         /// Returns the data of the piece so it can be saved. Used during piece creation.
@@ -133,18 +121,18 @@ namespace Animator
         /// <returns>Piece data</returns>
         public List<string> GetData()
         {
-            if (folder == piecesFolder)
+            if (folder == Constants.PiecesFolder)
             {
                 // Update first line of data            [0] colour type     [1] colour array        [2] outline width       [3] pieceDetails
-                string pieceInfo = colourType + ";" + outlineColour.A + "," + outlineColour.R + "," + outlineColour.G + "," + outlineColour.B + ":";
-                if (fillColour != null)
+                string pieceInfo = ColourType + ";" + OutlineColour.A + "," + OutlineColour.R + "," + OutlineColour.G + "," + OutlineColour.B + ":";
+                if (FillColour != null)
                 {
-                    foreach (Color col in fillColour)
+                    foreach (Color col in FillColour)
                     {
                         pieceInfo += col.A + "," + col.R + "," + col.G + "," + col.B + ":";
                     }
                 }
-                pieceInfo = pieceInfo.Remove(pieceInfo.Length - 1, 1) + ";" + outlineWidth + ";" + pieceDetails;
+                pieceInfo = pieceInfo.Remove(pieceInfo.Length - 1, 1) + ";" + OutlineWidth + ";" + PieceDetails;
                 data[0] = pieceInfo;
             }
             return data;
@@ -156,14 +144,7 @@ namespace Animator
         /// <returns>If attached</returns>
         public Boolean GetIsAttached()
         {
-            if (attachedTo != null)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return attachedTo != null;
         }
 
         /// <summary>
@@ -186,33 +167,6 @@ namespace Animator
         }
 
         /// <summary>
-        /// Finds the fill or gradient type.
-        /// </summary>
-        /// <returns>String code of colour type</returns>
-        public string GetColourType()
-        {
-            return colourType;
-        }
-
-        /// <summary>
-        /// Finds the outline colour of the piece.
-        /// </summary>
-        /// <returns>Outline colour</returns>
-        public Color GetOutlineColour()
-        {
-            return outlineColour;
-        }
-
-        /// <summary>
-        /// Finds the fill colour(s) of the piece.
-        /// </summary>
-        /// <returns>An array of colours</returns>
-        public Color[] GetFillColour()
-        {
-            return fillColour;
-        }
-
-        /// <summary>
         /// Finds which join should be used to connect points- line, curve etc. at a specific angle.
         /// </summary>
         /// <param name="r">Rotation</param>
@@ -232,16 +186,6 @@ namespace Animator
         public string[] GetPointDataArray(double r, double t)     // Solid or float
         {
             return data[FindRow(r, t)].ToString().Split(new Char[] { ';' })[6].Split(new Char[] { ',' });
-        }
-
-        public string GetPieceDetails()
-        {
-            return pieceDetails;
-        }
-
-        public int GetOutlineWidth()
-        {
-            return outlineWidth;
         }
 
         public double[,] GetOriginalPoints(double r, double t)
@@ -290,68 +234,27 @@ namespace Animator
         }
 
 
-        // Set Functions
-
-        public void SetSizeMod(double inSize)
-        {
-            sizeMod = inSize;
-        }
-
-        public void SetX(double inX)
-        {
-            x = inX;
-        }
-
-        public void SetY(double inY)
-        {
-            y = inY;
-        }
+        // ----- SET FUNCTIONS -----
 
         public void SetRotation(double inRotation)
         {
-            rotation = inRotation % 360;
+            R = inRotation % 360;
         }
 
         public void SetTurn(double inTurn)
         {
-            turn = inTurn % 360;
+            T = inTurn % 360;
         }
 
         public void SetSpin(double inSpin)
         {
-            spin = inSpin % 360;
+            S = inSpin % 360;
         }
 
-        public void SetFillColour(Color[] colourArray)
+        public void SetValues(double x, double y, double r, double t, double s, double sm)
         {
-            fillColour = colourArray;
+            X = x; Y = y; R = r; T = t; S = s; SM = sm;
         }
-
-        public void SetOutlineColour(Color outline)
-        {
-            outlineColour = outline;
-        }
-
-        public void SetColourType(string inColourType)
-        {
-            colourType = inColourType;
-        }
-
-        public void SetOutlineWidth(int inOutlineWidth)
-        {
-            outlineWidth = inOutlineWidth;
-        }
-
-        public void SetPieceDetails(string deets)
-        {
-            pieceDetails = deets;
-        }
-
-        public void SetValues(double nx, double ny, double nr, double nt, double ns, double nsize)
-        {
-            x = nx; y = ny; rotation = nr; turn = nt; spin = ns; sizeMod = nsize;
-        }
-
 
         public void AttachToPiece(Piece attach, Piece attachmentPoint, Piece point, Boolean front, double angleFlip)
         {
@@ -360,13 +263,13 @@ namespace Animator
             ownPoint = point;
             inFront = front;
             this.angleFlip = angleFlip;
-            x = 0;
-            y = 0;
+            X = 0;
+            Y = 0;
         }
 
         public void SetName(string inName)
         {
-            name = inName;
+            Name = inName;
         }
 
         public void SetSceneIndex(int indexNum)
@@ -414,11 +317,11 @@ namespace Animator
             // angleData    [0] colour type     [1] colour array   [2] outline width   [3] pieceDetails
 
             // Colour Type
-            colourType = angleData[0];
+            ColourType = angleData[0];
 
             // Colours (Outline and Fill)
             string[] colours = angleData[1].Split(new Char[] { ':' });
-            fillColour = new Color[colours.Length - 1];
+            FillColour = new Color[colours.Length - 1];
 
             for (int index = 0; index < colours.Length; index++)
             {
@@ -426,19 +329,19 @@ namespace Animator
 
                 if (index == 0)
                 {
-                    outlineColour = Color.FromArgb(int.Parse(rgbValues[0]), int.Parse(rgbValues[1]), int.Parse(rgbValues[2]), int.Parse(rgbValues[3]));
+                    OutlineColour = Color.FromArgb(int.Parse(rgbValues[0]), int.Parse(rgbValues[1]), int.Parse(rgbValues[2]), int.Parse(rgbValues[3]));
                 }
                 else
                 {
-                    fillColour[index - 1] = Color.FromArgb(int.Parse(rgbValues[0]), int.Parse(rgbValues[1]), int.Parse(rgbValues[2]), int.Parse(rgbValues[3]));
+                    FillColour[index - 1] = Color.FromArgb(int.Parse(rgbValues[0]), int.Parse(rgbValues[1]), int.Parse(rgbValues[2]), int.Parse(rgbValues[3]));
                 }
             }
 
             // Outline Width
-            outlineWidth = int.Parse(angleData[2]);
+            OutlineWidth = int.Parse(angleData[2]);
 
             // Piece Details
-            pieceDetails = angleData[3];
+            PieceDetails = angleData[3];
         }
 
 
@@ -482,7 +385,7 @@ namespace Animator
         {
             // Check rows until found
             int row = 1;
-            if (folder != piecesFolder)
+            if (folder != Constants.PiecesFolder)
             {
                 row = 0;                
             }
@@ -660,9 +563,9 @@ namespace Animator
             }
             else
             {
-                attachPoint.SetValues(midX, midY, attachedTo.GetAngles()[0],
+                attachPoint.SetValues(Constants.MidX, Constants.MidY, attachedTo.GetAngles()[0],
                     attachedTo.GetAngles()[1], attachedTo.GetAngles()[2], attachedTo.GetSizeMod());
-                ownPoint.SetValues(midX, midY, GetAngles()[0], GetAngles()[1], GetAngles()[2], GetSizeMod());
+                ownPoint.SetValues(Constants.MidX, Constants.MidY, GetAngles()[0], GetAngles()[1], GetAngles()[2], GetSizeMod());
 
                 double[,] baseCoords = attachPoint.GetCurrentPoints(false, true);
                 double[,] thisCoords = ownPoint.GetCurrentPoints(false, true);
@@ -673,12 +576,12 @@ namespace Animator
 
         public void TakeOriginalState()
         {
-            x = originally.GetX();
-            y = originally.GetY();
-            rotation = originally.GetR();
-            turn = originally.GetT();
-            spin = originally.GetS();
-            sizeMod = originally.GetSM();
+            X = originally.GetX();
+            Y = originally.GetY();
+            R = originally.GetR();
+            T = originally.GetT();
+            S = originally.GetS();
+            SM = originally.GetSM();
         }
 
         /// <summary>
@@ -692,17 +595,17 @@ namespace Animator
             return 0;
             // TEMP ABOVE
             double sum = 0;
-            double getR = (rotation + attachedTo.GetAngles()[0]) % 360;
-            double getT = (turn + attachedTo.GetAngles()[1]) % 360;
-            double getS = (spin + attachedTo.GetAngles()[2]) % 360;
+            double getR = (R + attachedTo.GetAngles()[0]) % 360;
+            double getT = (T + attachedTo.GetAngles()[1]) % 360;
+            double getS = (S + attachedTo.GetAngles()[2]) % 360;
 
-            if (angle == 0 && (turn != 0 || spin != 0))                     // Rotation
+            if (angle == 0 && (T != 0 || S != 0))                     // Rotation
             {
 
             }
-            else if (angle == 1 && (rotation != 0 || spin != 0))             // Turn
+            else if (angle == 1 && (R != 0 || S != 0))             // Turn
             {
-                if (spin % 180 != 0)    // Spin Changed
+                if (S % 180 != 0)    // Spin Changed
                 {
                     // ROTATION
                     // Exact quadrants && one value is 0
@@ -710,11 +613,11 @@ namespace Animator
                     {
                         if (getR == 90)
                         {
-                            sum += spin;
+                            sum += S;
                         }
                         else if (getR == 270)
                         {
-                            sum -= spin;
+                            sum -= S;
                         }
                     }
                     // Rounded Sections
@@ -722,28 +625,28 @@ namespace Animator
                     {
                         if (getR < 90)
                         {
-                            sum += getR / 90 * spin;
+                            sum += getR / 90 * S;
                         }
                         else if (getR < 180)
                         {
-                            sum += (getR - 90) / 90 * (1 / spin);
+                            sum += (getR - 90) / 90 * (1 / S);
                         }
                         else if (getR < 270)
                         {
-                            sum -= (getR - 180) / 90 * spin;
+                            sum -= (getR - 180) / 90 * S;
                         }
                         else
                         {
-                            sum -= (getR - 270) / 90 * (1 / spin);
+                            sum -= (getR - 270) / 90 * (1 / S);
                         }
                     }
 
                     // TURN
                 }
             }
-            else if (angle == 2 && (rotation != 0 || turn != 0))      // Spin
+            else if (angle == 2 && (R != 0 || T != 0))      // Spin
             {
-                if (spin % 180 != 0)    // Spin Changed
+                if (S % 180 != 0)    // Spin Changed
                 {
                     // ROTATION
                     // Exact quadrants && one value is 0
@@ -751,11 +654,11 @@ namespace Animator
                     {
                         if (getR == 0)
                         {
-                            sum += turn;
+                            sum += T;
                         }
                         else if (getR == 180)
                         {
-                            sum -= turn;
+                            sum -= T;
                         }
                     }
                     // Rounded Sections
@@ -763,19 +666,19 @@ namespace Animator
                     {
                         if (getR < 90)
                         {
-                            sum += getR / 90 * turn;
+                            sum += getR / 90 * T;
                         }
                         else if (getR < 180)
                         {
-                            sum += (getR - 90) / 90 * (1 / turn);
+                            sum += (getR - 90) / 90 * (1 / T);
                         }
                         else if (getR < 270)
                         {
-                            sum -= (getR - 180) / 90 * turn;
+                            sum -= (getR - 180) / 90 * T;
                         }
                         else
                         {
-                            sum -= (getR - 270) / 90 * (1 / turn);
+                            sum -= (getR - 270) / 90 * (1 / T);
                         }
                     }
                 }
