@@ -348,7 +348,7 @@ namespace Animator
                 // Save flip values
                 if (index != 0)
                 {
-                    pieceData += ";" + piecesList[index].inFront + ";" + piecesList[index].angleFlip;
+                    pieceData += ";" + piecesList[index].InFront + ";" + piecesList[index].AngleFlip;
                 }
 
                 returnData.Add(pieceData);

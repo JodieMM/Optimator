@@ -63,7 +63,7 @@ namespace Animator
                 // Set Part Order
                 for (int index = 0; index < piecesList.Count; index++)
                 {
-                    piecesList[index].SetSceneIndex(index);
+                    piecesList[index].SceneIndex = index;
                 }
 
                 // Assign Original States
@@ -74,11 +74,11 @@ namespace Animator
                     found = false;
                     for (int i = 0; index < piecesList.Count && !found; index++)
                     {
-                        if (piecesList[i].GetSceneIndex() == int.Parse(dataLines[0]))
+                        if (piecesList[i].SceneIndex == int.Parse(dataLines[0]))
                         {
                             piecesList[i].SetValues(double.Parse(dataLines[1]), double.Parse(dataLines[2]), double.Parse(dataLines[3]), 
                                 double.Parse(dataLines[4]), double.Parse(dataLines[5]), double.Parse(dataLines[6]));
-                            piecesList[i].SetOriginal(new Originals(piecesList[i]));
+                            piecesList[i].Originally = new Originals(piecesList[i]);
                             found = true;
                         }
                     }

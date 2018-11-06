@@ -38,7 +38,7 @@ namespace Animator
                 // Add piece to lists
                 piecesList.Add(new Piece(NameTb.Text));
                 partsLb.Items.Add(NameTb.Text);
-                piecesList[piecesList.Count - 1].SetOriginal(new Originals(piecesList[piecesList.Count - 1]));
+                piecesList[piecesList.Count - 1].Originally = new Originals(piecesList[piecesList.Count - 1]);
 
                 partsLb.SelectedIndex = partsLb.Items.Count - 1;
 
@@ -83,12 +83,12 @@ namespace Animator
             if (partsLb.SelectedIndex != -1)
             {
                 Piece selected = piecesList[partsLb.SelectedIndex];
-                rotationUpDown.Value = (decimal)selected.rotation;
-                turnUpDown.Value = (decimal)selected.turn;
-                spinUpDown.Value = (decimal)selected.spin;
-                xUpDown.Value = (decimal)selected.x;
-                yUpDown.Value = (decimal)selected.y;
-                sizeUpDown.Value = (decimal)selected.sizeMod;
+                rotationUpDown.Value = (decimal)selected.R;
+                turnUpDown.Value = (decimal)selected.T;
+                spinUpDown.Value = (decimal)selected.S;
+                xUpDown.Value = (decimal)selected.X;
+                yUpDown.Value = (decimal)selected.Y;
+                sizeUpDown.Value = (decimal)selected.SM;
                 DrawParts();
             }
         }
@@ -108,7 +108,7 @@ namespace Animator
                 }
 
                 // Update Piece
-                piecesList[partsLb.SelectedIndex].GetOriginal().SetR((double)rotationUpDown.Value);
+                piecesList[partsLb.SelectedIndex].Originally.SetR((double)rotationUpDown.Value);
 
                 DrawParts();
             }
@@ -129,7 +129,7 @@ namespace Animator
                 }
 
                 // Update Piece
-                piecesList[partsLb.SelectedIndex].GetOriginal().SetT((int)turnUpDown.Value);
+                piecesList[partsLb.SelectedIndex].Originally.SetT((int)turnUpDown.Value);
 
                 DrawParts();
             }
@@ -162,7 +162,7 @@ namespace Animator
                 }
 
                 // Update Piece
-                piecesList[partsLb.SelectedIndex].GetOriginal().SetS((int)spinUpDown.Value);
+                piecesList[partsLb.SelectedIndex].Originally.SetS((int)spinUpDown.Value);
 
                 DrawParts();
             }
@@ -210,18 +210,18 @@ namespace Animator
             if (partsLb.SelectedIndex != -1)
             {
                 // If piece is involved in set
-                if (piecesList[partsLb.SelectedIndex].GetPieceOf() != null)
+                if (piecesList[partsLb.SelectedIndex].PieceOf != null)
                 {
                     DialogResult result = MessageBox.Show("This will delete the entire set. Do you wish to continue?",
                         "Overwrite Confirmation", MessageBoxButtons.YesNo);
                     if (result == DialogResult.Yes)
                     {
-                        Set deleting = piecesList[partsLb.SelectedIndex].GetPieceOf();
+                        Set deleting = piecesList[partsLb.SelectedIndex].PieceOf;
                         setList.Remove(deleting);
 
                         for (int index = 0; index < piecesList.Count;)
                         {
-                            if (piecesList[index].GetPieceOf() == deleting)
+                            if (piecesList[index].PieceOf == deleting)
                             {
                                 piecesList.RemoveAt(index);
                                 partsLb.Items.RemoveAt(partsLb.SelectedIndex);
@@ -260,7 +260,7 @@ namespace Animator
             if (partsLb.SelectedIndex != -1)
             {
                 // Update Piece
-                piecesList[partsLb.SelectedIndex].GetOriginal().SetX((int)xUpDown.Value);
+                piecesList[partsLb.SelectedIndex].Originally.SetX((int)xUpDown.Value);
 
                 DrawParts();
             }
@@ -271,7 +271,7 @@ namespace Animator
             if (partsLb.SelectedIndex != -1)
             {
                 // Update Piece
-                piecesList[partsLb.SelectedIndex].GetOriginal().SetY((int)yUpDown.Value);
+                piecesList[partsLb.SelectedIndex].Originally.SetY((int)yUpDown.Value);
 
                 DrawParts();
             }
@@ -282,7 +282,7 @@ namespace Animator
             if (partsLb.SelectedIndex != -1)
             {
                 // Update Piece
-                piecesList[partsLb.SelectedIndex].GetOriginal().SetSM((int)sizeUpDown.Value);
+                piecesList[partsLb.SelectedIndex].Originally.SetSM((int)sizeUpDown.Value);
 
                 DrawParts();
             }
@@ -312,12 +312,12 @@ namespace Animator
                 if (workingFrame >= change.GetStartFrame() && workingFrame <= change.GetStartFrame() + change.GetHowLong() - 1)
                 {
                     string summary = "";
-                    if (change.GetPiece().GetPieceOf() != null)
+                    if (change.GetPiece().PieceOf != null)
                     {
-                        summary += change.GetPiece().GetAttachedTo() != null ? "** " : "* ";
+                        summary += change.GetPiece().AttachedTo != null ? "** " : "* ";
                     }
 
-                    summary += change.GetAction() + " : " + change.GetPiece().GetName() + " : " + change.GetHowMuch().ToString()
+                    summary += change.GetAction() + " : " + change.GetPiece().Name + " : " + change.GetHowMuch().ToString()
                         + " : " + (change.GetHowLong() - (workingFrame - change.GetStartFrame())).ToString();
 
                     animationLb.Items.Add(summary);
@@ -393,20 +393,20 @@ namespace Animator
                     // Save Parts
                     for (int index = 0; index < piecesList.Count; index++)
                     {
-                        piecesList[index].SetSceneIndex(index);
+                        piecesList[index].SceneIndex = index;
 
                         // If piece is in set
-                        if (piecesList[index].GetPieceOf() != null)
+                        if (piecesList[index].PieceOf != null)
                         {
                             // If piece is base
-                            if (piecesList[index].GetAttachedTo() == null)
+                            if (piecesList[index].AttachedTo == null)
                             {
-                                file.Add("s:" + piecesList[index].GetPieceOf().GetName());
+                                file.Add("s:" + piecesList[index].PieceOf.Name);
                             }
                         }
                         else
                         {
-                            file.Add("p:" + piecesList[index].GetName());
+                            file.Add("p:" + piecesList[index].Name);
                         }
                     }
 
@@ -416,8 +416,8 @@ namespace Animator
                     // Save Original States
                     foreach (Piece piece in piecesList)
                     {
-                        file.Add(piece.GetOriginal() != null ? piece.GetSceneIndex() + ";" + piece.GetOriginal().GetSaveData() 
-                            : piece.GetSceneIndex() + ";500;250;0;0;0;100");    // This should never be needed- JIC
+                        file.Add(piece.Originally != null ? piece.SceneIndex + ";" + piece.Originally.GetSaveData() 
+                            : piece.SceneIndex + ";500;250;0;0;0;100");    // This should never be needed- JIC
                         
                     }
 
@@ -425,7 +425,7 @@ namespace Animator
                     foreach (Changes change in changes)
                     {
                         file.Add(change.GetStartFrame() + ";" + change.GetAction() + ";" +
-                            change.GetPiece().GetSceneIndex() + ";" + change.GetHowMuch() + ";" + change.GetHowLong());
+                            change.GetPiece().SceneIndex + ";" + change.GetHowMuch() + ";" + change.GetHowLong());
                     }
 
                     // Write to File
@@ -515,15 +515,15 @@ namespace Animator
                 piecesList.AddRange(setList[setList.Count - 1].GetPiecesList());
                 foreach (Piece piece in setList[setList.Count - 1].GetPiecesList())
                 {
-                    if (piece.GetAttachedTo() != null)
+                    if (piece.AttachedTo != null)
                     {
-                        partsLb.Items.Add("* " + piece.GetName());
+                        partsLb.Items.Add("* " + piece.Name);
                     }
                     else
                     {
-                        partsLb.Items.Add("** " + piece.GetName());
+                        partsLb.Items.Add("** " + piece.Name);
                     }
-                    piece.SetOriginal(new Originals(piece));
+                    piece.Originally = new Originals(piece);
                 }
 
                 partsLb.SelectedIndex = partsLb.Items.Count - 1;

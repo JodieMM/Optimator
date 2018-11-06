@@ -40,17 +40,17 @@ namespace Animator
         public string PieceDetails { get; set; }                   // Wind resistance and more
 
         // Sets
-        public Piece AttachedTo { get; set; }
-        public PointSpot AttachPoint { get; set; }
-        public PointSpot OwnPoint { get; set; }
-        public Set PieceOf { get; set; }
+        public Piece AttachedTo { get; set; } = null;
+        public PointSpot AttachPoint { get; set; } = null;
+        public PointSpot OwnPoint { get; set; } = null;
+        public Set PieceOf { get; set; } = null;
         // Set Ordering
-        public bool inFront { get; set; }
-        public double angleFlip { get; set; }
+        public bool InFront { get; set; } = true;
+        public double AngleFlip { get; set; } = -1;
 
         // Scenes
-        public int SceneIndex { get; set; }
-        public Originals Originally { get; set; }
+        public int SceneIndex { get; set; } = -1;
+        public Originals Originally { get; set; } = null;
 
 
         /// <summary>
@@ -63,16 +63,6 @@ namespace Animator
             // Get Piece Data
             Name = inName;
             data = Utilities.ReadFile(Environment.CurrentDirectory + Constants.PiecesFolder + Name + ".txt");
-
-            // Initialise Sets and Scenes as null
-            AttachedTo = null;
-            AttachPoint = null;
-            OwnPoint = null;
-            PieceOf = null;
-            inFront = true;
-            angleFlip = -1;
-            SceneIndex = -1;
-            Originally = null;
 
             // Get Points and Colours from File
             AssignValues(data[0]);
@@ -220,8 +210,8 @@ namespace Animator
             AttachedTo = attach;
             AttachPoint = attachmentPoint;
             OwnPoint = point;
-            inFront = front;
-            this.angleFlip = angleFlip;
+            InFront = front;
+            this.AngleFlip = angleFlip;
             X = 0;
             Y = 0;
         }
@@ -464,8 +454,8 @@ namespace Animator
             }
             else
             {
-                AttachPoint.SetValues(Constants.MidX, Constants.MidY);
-                OwnPoint.SetValues(Constants.MidX, Constants.MidY);
+                AttachPoint.X = Constants.MidX; AttachPoint.Y = Constants.MidY;
+                OwnPoint.X = Constants.MidX; OwnPoint.Y = Constants.MidY;
 
                 double[,] baseCoords = AttachPoint.GetCurrentPoints();
                 double[,] thisCoords = OwnPoint.GetCurrentPoints();

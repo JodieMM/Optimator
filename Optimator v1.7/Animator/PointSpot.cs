@@ -23,6 +23,11 @@ namespace Animator
         private readonly Color FillColour = Color.Black;
 
 
+        /// <summary>
+        /// Constructs a point and stores relevant data
+        /// </summary>
+        /// <param name="inName"></param>
+        /// <param name="owner"></param>
         public PointSpot(string inName, Piece owner)
         {
             Name = inName;
@@ -30,18 +35,14 @@ namespace Animator
             Data = Utilities.ReadFile(Environment.CurrentDirectory + Constants.PointsFolder + Name + ".txt");
         }
 
-        public void SetValues(double x, double y)
-        {
-            X = x; Y = y;
-        }
-
+        /// <summary>
+        /// Gets the coordinates of the point based on the host Piece's angles
+        /// </summary>
+        /// <returns></returns>
         public double[,] GetCurrentPoints()
         {
             string[] dataValues = Data[Utilities.FindRow(host.GetAngles()[0], host.GetAngles()[1], Data, 0)].Split(new Char[] { ';' });
             return new double[,] { { dataValues[2][0], dataValues[2][3] } };
         }
-
-
-        // GET COORDS AT POINTS
     }
 }

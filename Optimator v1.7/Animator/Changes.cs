@@ -113,11 +113,11 @@ namespace Animator
             // Update Parts
             if (action == "X")
             {
-                affectedPiece.SetX(affectedPiece.GetCoords()[0] + multiplier * howMuch);
+                affectedPiece.X = affectedPiece.GetCoords()[0] + multiplier * howMuch;
             }
             else if (action == "Y")
             {
-                affectedPiece.SetY(affectedPiece.GetCoords()[1] + multiplier * howMuch);
+                affectedPiece.Y = affectedPiece.GetCoords()[1] + multiplier * howMuch;
             }
             else if (action == "Rotation")
             {
@@ -133,7 +133,7 @@ namespace Animator
             }
             else if (action == "Size")
             {
-                affectedPiece.SetSizeMod(affectedPiece.GetSizeMod() + multiplier * howMuch);
+                affectedPiece.SM = affectedPiece.GetSizeMod() + multiplier * howMuch;
             }
         }
     }

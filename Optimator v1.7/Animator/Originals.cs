@@ -112,7 +112,7 @@ namespace Animator
         }
 
         // General Functions
-        public Boolean IsMatch(Piece compare)
+        public bool IsMatch(Piece compare)
         {
             if (piece == compare)
             {
