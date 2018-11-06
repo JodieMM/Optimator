@@ -21,16 +21,16 @@ namespace Animator
     {
         // Piece Variables
         public string Name { get; set; }
-        private List<string> data;
+        public List<string> data { get; set; }
 
         // Coords and Angles
         public double X { get; set; }
         public double Y { get; set; }
-        private double R;
-        private double T;
-        private double S;
+        public double R { get; set; }
+        public double T { get; set; }
+        public double S { get; set; }
         public double SM { get; set; }
-        private int numCoords;
+        public int NumCoords { get; set; }
 
         // Colours and Details
         public string ColourType { get; set; }                     // Solid/Gradient colour and direction
@@ -207,6 +207,14 @@ namespace Animator
             X = x; Y = y; R = r; T = t; S = s; SM = sm;
         }
 
+        /// <summary>
+        /// Attaches this piece to another, forming or continuing a set
+        /// </summary>
+        /// <param name="attach">The piece being attached to</param>
+        /// <param name="attachmentPoint">The point of the attaching piece</param>
+        /// <param name="point">The point of the current piece</param>
+        /// <param name="front">Whether this piece goes in front of the other</param>
+        /// <param name="angleFlip">The angle when front is changed</param>
         public void AttachToPiece(Piece attach, PointSpot attachmentPoint, PointSpot point, bool front, double angleFlip)
         {
             AttachedTo = attach;
@@ -276,7 +284,7 @@ namespace Animator
             PieceDetails = angleData[3];
 
             // Get Num Points
-            numCoords = data[1].Split(new Char[] { ';' })[2].Count();
+            NumCoords = data[1].Split(new Char[] { ';' })[2].Count();
         }
 
 
@@ -324,7 +332,7 @@ namespace Animator
             double[,] pointsArrayInitial = GetAnglePoints(GetAngles()[0], GetAngles()[1], 2);
             double[,] pointsArrayRotated = GetAnglePoints(GetAngles()[0], GetAngles()[1], 3);
             double[,] pointsArrayTurned = GetAnglePoints(GetAngles()[0], GetAngles()[1], 4);
-            double[,] pointsArray = new double[numCoords, 2];           // To be filled and returned below
+            double[,] pointsArray = new double[NumCoords, 2];           // To be filled and returned below
 
             // Find Multipliers - How far into the rotation range is required
             double rotationMultiplier = (GetAngles()[0] - double.Parse(dataLine.Substring(0, 3))) / (double.Parse(dataLine.Substring(4, 3)) - double.Parse(dataLine.Substring(0, 3)));
@@ -332,7 +340,7 @@ namespace Animator
 
             // Find Points
             // Rotation Adjustment
-            for (int index = 0; index < numCoords; index++)
+            for (int index = 0; index < NumCoords; index++)
             {
                 if (double.Parse(dataLine.Substring(4, 3)) != double.Parse(dataLine.Substring(0, 3)))
                 {
@@ -352,7 +360,7 @@ namespace Animator
             }
 
             // Turn Adjustment
-            for (int index = 0; index < numCoords; index++)
+            for (int index = 0; index < NumCoords; index++)
             {
                 if (double.Parse(dataLine.Substring(12, 3)) != double.Parse(dataLine.Substring(8, 3)))
                 {
@@ -364,7 +372,7 @@ namespace Animator
             }
 
             //Recentre
-            pointsArray = Recentre(pointsArray, numCoords, recentre);
+            pointsArray = Recentre(pointsArray, NumCoords, recentre);
 
             // Spin and Size Adjustment
             if (spinSize)

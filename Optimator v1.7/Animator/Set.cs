@@ -12,21 +12,17 @@ namespace Animator
 {
     public class Set
     {
-        //Initialise Variables
-        string name;
-        List<string> data;
+        // Set Variables
+        public string Name { get; set; }
+        List<string> Data { get; set; }
         List<Piece> piecesList = new List<Piece>();
         List<int> basePiecesList = new List<int>();
-
-        const string folder = "\\Sets\\";
-        const string pointsFolder = "\\Points\\";
 
 
         public Set(string inName)
         {
-            SetName(inName);
-            data = Utilities.ReadFile(Environment.CurrentDirectory + folder + name + ".txt");
-
+            Name = inName;
+            Data = Utilities.ReadFile(Environment.CurrentDirectory + Constants.SetsFolder + Name + ".txt");
             ConvertData();
         }
 
@@ -35,9 +31,9 @@ namespace Animator
         /// </summary>
         private void ConvertData()
         {
-            for (int index = 0; index < data.Count; index++)
+            for (int index = 0; index < Data.Count; index++)
             {
-                string[] dataSections = data[index].Split(new Char[] { ';' });
+                string[] dataSections = Data[index].Split(new Char[] { ';' });
 
                 // New Piece
                 Piece WIP = new Piece(dataSections[0]);
@@ -45,8 +41,8 @@ namespace Animator
                 // If piece is not base
                 if (index > 0)   //piecesList.Count
                 {
-                    WIP.AttachToPiece(piecesList[int.Parse(dataSections[2])], new Piece(dataSections[3], pointsFolder), 
-                        new Piece(dataSections[1], pointsFolder), Boolean.Parse(dataSections[10]), double.Parse(dataSections[11]));
+                    WIP.AttachToPiece(piecesList[int.Parse(dataSections[2])], new PointSpot(dataSections[3], piecesList[int.Parse(dataSections[2])]), 
+                        new PointSpot(dataSections[1], WIP), bool.Parse(dataSections[10]), double.Parse(dataSections[11]));
 
                     basePiecesList.Add(int.Parse(dataSections[2]));
 
@@ -65,7 +61,7 @@ namespace Animator
                         double.Parse(dataSections[4]), double.Parse(dataSections[5]), double.Parse(dataSections[6]));
                 }
 
-                WIP.SetPieceOf(this);
+                WIP.PieceOf = this;
                 piecesList.Add(WIP);
 
             }
@@ -77,28 +73,10 @@ namespace Animator
         {
             return piecesList;
         }
-        
-        public List<string> GetData()
-        {
-            return data;
-        }
 
         public List<int> GetBasePiecesList()
         {
             return basePiecesList;
-        }
-
-        public string GetName()
-        {
-            return name;
-        }
-
-
-        // Set Functions
-        public void SetName(string inName)
-        {
-            name = inName;
-        }
-        
+        }        
     }
 }

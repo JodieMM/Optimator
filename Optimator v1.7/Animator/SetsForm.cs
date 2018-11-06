@@ -18,8 +18,6 @@ namespace Animator
         List<Piece> piecesList = new List<Piece>();
 
         const string tempSet = "tempSet";
-        const string folder = "\\Sets\\";
-        const string pointsFolder = "\\Points\\";
         const string defaultName = "Item Name";
 
 
@@ -42,7 +40,7 @@ namespace Animator
                     doEet = false;
                     MessageBox.Show("Please choose a name for your set", "Name Invalid", MessageBoxButtons.OK);
                 }
-                else if (File.Exists(Environment.CurrentDirectory + folder + NameTb.Text + ".txt"))
+                else if (File.Exists(Environment.CurrentDirectory + Constants.SetsFolder + NameTb.Text + ".txt"))
                 {
                     DialogResult result = MessageBox.Show("This name is already in use. Do you wish to overwrite it?", "Overwrite Confirmation", MessageBoxButtons.YesNo);
                     if (result == DialogResult.No) { doEet = false; }
@@ -54,11 +52,12 @@ namespace Animator
                     if (result == System.Windows.Forms.DialogResult.No) { doEet = false; exit = true; }
                 }
 
+
                 // Save Piece
                 if (doEet)
                 {
                     // Save
-                    Utilities.SaveData(Environment.CurrentDirectory + folder + NameTb.Text + ".txt", GetSaveData());
+                    Utilities.SaveData(Environment.CurrentDirectory + Constants.SetsFolder + NameTb.Text + ".txt", GetSaveData());
 
                     // Close Pieces Form
                     this.Close();
@@ -122,9 +121,9 @@ namespace Animator
                 // Textboxes
                 if (highlightedPiece.GetIsAttached())
                 {
-                    basePointTb.Text = highlightedPiece.GetAttachPoint().GetName();
-                    joinPointTb.Text = highlightedPiece.GetOwnPoint().GetName();
-                    basePieceTb.Text = piecesList.IndexOf(highlightedPiece.GetAttachedTo()).ToString();
+                    basePointTb.Text = highlightedPiece.AttachPoint.Name;
+                    joinPointTb.Text = highlightedPiece.OwnPoint.Name;
+                    basePieceTb.Text = piecesList.IndexOf(highlightedPiece.AttachedTo).ToString();
                 }
                 else
                 {
@@ -134,12 +133,12 @@ namespace Animator
                 }
 
                 // InitUpDowns
-                xInitUpDown.Value = (decimal)highlightedPiece.x;
-                yInitUpDown.Value = (decimal)highlightedPiece.y;
-                rotInitUpDown.Value = (decimal)highlightedPiece.rotation;
-                turnInitUpDown.Value = (decimal)highlightedPiece.turn;
-                spinInitUpDown.Value = (decimal)highlightedPiece.spin;
-                sizeInitUpDown.Value = (decimal)highlightedPiece.sizeMod;
+                xInitUpDown.Value = (decimal)highlightedPiece.X;
+                yInitUpDown.Value = (decimal)highlightedPiece.Y;
+                rotInitUpDown.Value = (decimal)highlightedPiece.R;
+                turnInitUpDown.Value = (decimal)highlightedPiece.T;
+                spinInitUpDown.Value = (decimal)highlightedPiece.S;
+                sizeInitUpDown.Value = (decimal)highlightedPiece.SM;
             }
 
             try
@@ -199,8 +198,8 @@ namespace Animator
                     Boolean front = partsLb.SelectedIndex > int.Parse(basePieceTb.Text);
                     double flip = flipsCb.Checked ? (double)flipsUpDown.Value : -1;
   
-                    piecesList[partsLb.SelectedIndex].AttachToPiece(piecesList[int.Parse(basePieceTb.Text)], new Piece(basePointTb.Text, pointsFolder), 
-                        new Piece(joinPointTb.Text, pointsFolder), front, flip);
+                    piecesList[partsLb.SelectedIndex].AttachToPiece(piecesList[int.Parse(basePieceTb.Text)], new PointSpot(basePointTb.Text, piecesList[int.Parse(basePieceTb.Text)]), 
+                        new PointSpot(joinPointTb.Text, piecesList[partsLb.SelectedIndex]), front, flip);
 
                     xInitUpDown.Value = 0;
                     yInitUpDown.Value = 0;
@@ -223,7 +222,7 @@ namespace Animator
         {
             if (partsLb.SelectedIndex != -1)
             {
-                piecesList[partsLb.SelectedIndex].SetX((double)xInitUpDown.Value);
+                piecesList[partsLb.SelectedIndex].X = (double)xInitUpDown.Value;
                 DrawParts();
             }
         }
@@ -232,7 +231,7 @@ namespace Animator
         {
             if (partsLb.SelectedIndex != -1)
             {
-                piecesList[partsLb.SelectedIndex].SetY((double)yInitUpDown.Value);
+                piecesList[partsLb.SelectedIndex].Y = (double)yInitUpDown.Value;
                 DrawParts();
             }
         }
@@ -277,7 +276,7 @@ namespace Animator
         {
             if (partsLb.SelectedIndex != -1)
             {
-                piecesList[partsLb.SelectedIndex].SetSizeMod((double)sizeInitUpDown.Value);
+                piecesList[partsLb.SelectedIndex].SM = (double)sizeInitUpDown.Value;
                 DrawParts();
             }
         }
@@ -294,7 +293,7 @@ namespace Animator
                 // Update listbox
                 foreach (Piece added in addedPieces)
                 {
-                    partsLb.Items.Add(added.GetName());
+                    partsLb.Items.Add(added.Name);
                 }
 
                 partsLb.SelectedIndex = partsLb.Items.Count - 1;
@@ -332,24 +331,24 @@ namespace Animator
             List<string> returnData = new List<string>();
             for (int index = 0; index < piecesList.Count; index++)
             {
-                string pieceData = piecesList[index].GetName() + ";";
+                string pieceData = piecesList[index].Name + ";";
 
                 if (index != 0)
                 {
-                    pieceData += piecesList[index].GetOwnPoint().GetName() + ";" + piecesList.IndexOf(piecesList[index].GetAttachedTo())
-                        + ";" + piecesList[index].GetAttachPoint().GetName() + ";"; 
+                    pieceData += piecesList[index].OwnPoint.Name + ";" + piecesList.IndexOf(piecesList[index].AttachedTo)
+                        + ";" + piecesList[index].AttachPoint.Name + ";"; 
                 }
 
                 //Save actual x, y, r, t, s and sm values
-                double[] realData = piecesList[index].GetActualValues();
-                pieceData += realData[0] + ";" + realData[1] + ";";
-                pieceData += realData[2] + ";" + realData[3] + ";" + realData[4] + ";";
-                pieceData += realData[5];
+                double[] realData = new double[] {piecesList[index].X, piecesList[index].Y, piecesList[index].R,
+                    piecesList[index].T, piecesList[index].S, piecesList[index].SM };
+                pieceData += realData[0] + ";" + realData[1] + ";" + realData[2] + ";" + realData[3] 
+                    + ";" + realData[4] + ";" + realData[5];
 
                 // Save flip values
                 if (index != 0)
                 {
-                    pieceData += ";" + piecesList[index].GetInFront() + ";" + piecesList[index].GetAngleFlip();
+                    pieceData += ";" + piecesList[index].inFront + ";" + piecesList[index].angleFlip;
                 }
 
                 returnData.Add(pieceData);

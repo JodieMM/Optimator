@@ -13,13 +13,13 @@ namespace Animator
     public class PointSpot
     {
         // Point Variables
-        private string Name { get; set; }
-        private List<string> Data { get; set; }
+        public string Name { get; set; }
+        public List<string> Data { get; set; }
         private readonly Piece host;
 
         // Attributes
-        private double X { get; set; }
-        private double Y { get; set; }
+        public double X { get; set; }
+        public double Y { get; set; }
         private readonly Color FillColour = Color.Black;
 
 

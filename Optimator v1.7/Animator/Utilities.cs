@@ -107,7 +107,7 @@ namespace Animator
         public static void DrawPiece(Piece piece, Graphics g, bool recentre)
         {
             //Check piece defined at that point
-            if (piece.FindRow(piece.GetAngles()[0], piece.GetAngles()[1]) != -1)
+            if (FindRow(piece.GetAngles()[0], piece.GetAngles()[1], piece.data, 1) != -1)
             {
 
                 // Prepare for drawing
@@ -197,25 +197,25 @@ namespace Animator
                 for (int index = 0; index < piecesList.Count;)
                 {
                     // If attached and has to change height at some stage
-                    if (order[index].GetAttachedTo() != null && order[index].GetAngleFlip() != -1)
+                    if (order[index].AttachedTo != null && order[index].angleFlip != -1)
                     {
                         // Find if should be above or below attachedTo
-                        if (order[index].GetAngles()[0] <= order[index].GetAngleFlip() &&                   // One set to is the one is at "most" of the time (181 vs 179 degrees)
-                            order[index].GetAngles()[0] >= order[index].GetAngleFlip() + 180 % 360)
+                        if (order[index].GetAngles()[0] <= order[index].angleFlip &&                   // One set to is the one is at "most" of the time (181 vs 179 degrees)
+                            order[index].GetAngles()[0] >= order[index].angleFlip + 180 % 360)
                         {
                             // In given position
 
                             // If should be in front, and not
-                            if (order[index].GetInFront() == true && index < order.IndexOf(order[index].GetAttachedTo()))
+                            if (order[index].inFront == true && index < order.IndexOf(order[index].AttachedTo))
                             {
-                                order.Insert(order.IndexOf(order[index].GetAttachedTo()), order[index]);
+                                order.Insert(order.IndexOf(order[index].AttachedTo), order[index]);
                                 order.RemoveAt(index + 1);
                                 change = true;
                             }
                             // If should be behind, and not
-                            else if (order[index].GetInFront() == false && index > order.IndexOf(order[index].GetAttachedTo()))
+                            else if (order[index].inFront == false && index > order.IndexOf(order[index].AttachedTo))
                             {
-                                order.Insert(order.IndexOf(order[index].GetAttachedTo()) - 1, order[index]);        // ** Potential error here calling and changing
+                                order.Insert(order.IndexOf(order[index].AttachedTo) - 1, order[index]);        // ** Potential error here calling and changing
                                 order.RemoveAt(index);
                                 change = true;
                             }
@@ -225,16 +225,16 @@ namespace Animator
                             // In taken position
 
                             // If should be in front normally and still is in opposite
-                            if (order[index].GetInFront() == true && index > order.IndexOf(order[index].GetAttachedTo()))
+                            if (order[index].inFront == true && index > order.IndexOf(order[index].AttachedTo))
                             {
-                                order.Insert(order.IndexOf(order[index].GetAttachedTo()) - 1, order[index]);
+                                order.Insert(order.IndexOf(order[index].AttachedTo) - 1, order[index]);
                                 order.RemoveAt(index);
                                 change = true;
                             }
                             // If should be behind normally and still is in opposite
-                            else if (order[index].GetInFront() == false && index < order.IndexOf(order[index].GetAttachedTo()))
+                            else if (order[index].inFront == false && index < order.IndexOf(order[index].AttachedTo))
                             {
-                                order.Insert(order.IndexOf(order[index].GetAttachedTo()), order[index]);
+                                order.Insert(order.IndexOf(order[index].AttachedTo), order[index]);
                                 order.RemoveAt(index + 1);
                                 change = true;
                             }
