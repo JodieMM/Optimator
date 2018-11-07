@@ -21,7 +21,7 @@ namespace Animator
     {
         // Piece Variables
         public string Name { get; set; }
-        public List<string> data { get; set; }
+        public List<string> Data { get; set; }
 
         // Coords and Angles
         public double X { get; set; }
@@ -62,10 +62,10 @@ namespace Animator
         {
             // Get Piece Data
             Name = inName;
-            data = Utilities.ReadFile(Environment.CurrentDirectory + Constants.PiecesFolder + Name + ".txt");
+            Data = Utilities.ReadFile(Environment.CurrentDirectory + Constants.PiecesFolder + Name + ".txt");
 
             // Get Points and Colours from File
-            AssignValues(data[0]);
+            AssignValues(Data[0]);
         }
 
 
@@ -127,7 +127,7 @@ namespace Animator
                 }
             }
             pieceInfo = pieceInfo.Remove(pieceInfo.Length - 1, 1) + ";" + OutlineWidth + ";" + PieceDetails;
-            data[0] = pieceInfo;
+            Data[0] = pieceInfo;
         }
 
         /// <summary>
@@ -147,7 +147,7 @@ namespace Animator
         /// <returns>Joins</returns>
         public string[] GetLineArray(double r, double t)          // Type of joining line
         {
-            return data[Utilities.FindRow(r, t, data, 1)].ToString().Split(new Char[] { ';' })[5].Split(new Char[] { ',' });
+            return Data[Utilities.FindRow(r, t, Data, 1)].ToString().Split(new Char[] { ';' })[5].Split(new Char[] { ',' });
         }
 
         /// <summary>
@@ -158,7 +158,7 @@ namespace Animator
         /// <returns>Point Type</returns>
         public string[] GetPointDataArray(double r, double t)     // Solid or float
         {
-            return data[Utilities.FindRow(r, t, data, 1)].ToString().Split(new Char[] { ';' })[6].Split(new Char[] { ',' });
+            return Data[Utilities.FindRow(r, t, Data, 1)].ToString().Split(new Char[] { ';' })[6].Split(new Char[] { ',' });
         }
 
         /// <summary>
@@ -171,7 +171,7 @@ namespace Animator
         /// <returns></returns>
         public double[,] GetAnglePoints(double r, double t, int angle)
         {
-            return FindPoints(Utilities.FindRow(r, t, data, 1), angle);
+            return FindPoints(Utilities.FindRow(r, t, Data, 1), angle);
         }
 
 
@@ -219,20 +219,21 @@ namespace Animator
 
 
         // ----- DATA MODIFICATION -----
+
         public void AddDataLine(string line)
         {
-            data.Add(line);
+            Data.Add(line);
         }
 
         public void ReplaceDataLine(string line)
         {
-            data.RemoveAt(data.Count - 1);
-            data.Add(line);
+            Data.RemoveAt(Data.Count - 1);
+            Data.Add(line);
         }
 
         public void RemoveDataLine(int index)
         {
-            data.RemoveAt(index);
+            Data.RemoveAt(index);
         }
 
 
@@ -274,9 +275,8 @@ namespace Animator
             PieceDetails = angleData[3];
 
             // Get Num Points
-            NumCoords = data[1].Split(new Char[] { ';' })[2].Count();
+            NumCoords = Data[1].Split(new Char[] { ';' })[2].Count();
         }
-
 
         /// <summary>
         /// Find original, rotated or turned points
@@ -289,20 +289,20 @@ namespace Animator
             // Find Points
             if (row != -1)
             {
-                int numPoints = data[row].Split(new Char[] { ';' })[angle].Split(new Char[] { ':' }).Length;
+                int numPoints = Data[row].Split(new Char[] { ';' })[angle].Split(new Char[] { ':' }).Length;
                 if (numPoints > 1)
                 {
                     double[,] returnPoints = new double[numPoints, 2];
                     for (int index = 0; index < numPoints; index++)
                     {
-                        returnPoints[index, 0] = double.Parse(data[row].Split(new Char[] { ';' })[angle].Split(new Char[] { ':' })[index].Split(new Char[] { ',' })[0]);
-                        returnPoints[index, 1] = double.Parse(data[row].Split(new Char[] { ';' })[angle].Split(new Char[] { ':' })[index].Split(new Char[] { ',' })[1]);
+                        returnPoints[index, 0] = double.Parse(Data[row].Split(new Char[] { ';' })[angle].Split(new Char[] { ':' })[index].Split(new Char[] { ',' })[0]);
+                        returnPoints[index, 1] = double.Parse(Data[row].Split(new Char[] { ';' })[angle].Split(new Char[] { ':' })[index].Split(new Char[] { ',' })[1]);
                     }
                     return returnPoints;
                 }
-                else if (data[row].Split(new Char[] { ';' })[angle].Split(new Char[] { ':' })[0] != "")
+                else if (Data[row].Split(new Char[] { ';' })[angle].Split(new Char[] { ':' })[0] != "")
                 {
-                    return new double[1, 2] { { double.Parse(data[row].Split(new Char[] { ';' })[angle].Split(new Char[] { ':' })[0].Split(new Char[] { ',' })[0]), double.Parse(data[row].Split(new Char[] { ';' })[angle].Split(new Char[] { ':' })[0].Split(new Char[] { ',' })[1]) } };
+                    return new double[1, 2] { { double.Parse(Data[row].Split(new Char[] { ';' })[angle].Split(new Char[] { ':' })[0].Split(new Char[] { ',' })[0]), double.Parse(Data[row].Split(new Char[] { ';' })[angle].Split(new Char[] { ':' })[0].Split(new Char[] { ',' })[1]) } };
                 }
             }
             return new double[0, 0];
@@ -315,8 +315,8 @@ namespace Animator
         public double[,] GetCurrentPoints(Boolean recentre, Boolean spinSize)
         {
             UpdateDataInfoLine();
-            int row = Utilities.FindRow(GetAngles()[0], GetAngles()[1], data, 1);
-            string dataLine = data[row];
+            int row = Utilities.FindRow(GetAngles()[0], GetAngles()[1], Data, 1);
+            string dataLine = Data[row];
 
             // Prepare Points
             double[,] pointsArrayInitial = GetAnglePoints(GetAngles()[0], GetAngles()[1], 2);
@@ -379,7 +379,12 @@ namespace Animator
             return pointsArray;
         }
 
-
+        /// <summary>
+        /// Spins the coords provided and modifies their size
+        /// </summary>
+        /// <param name="pointsArray">The points to be spun</param>
+        /// <param name="sizeModifier">The size modifier to be applied</param>
+        /// <returns></returns>
         public double[,] SpinMeRound(double[,] pointsArray, double sizeModifier)
         {
             // Spin Adjustment

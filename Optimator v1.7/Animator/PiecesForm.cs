@@ -91,5 +91,27 @@ namespace Animator
         {
             // Currently inaccessible               ** EXTRA
         }
+
+        /// <summary>
+        /// Closes the form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ExitBtn_Click(object sender, EventArgs e)
+        {
+            // ** TO DO - CHECK SAVE
+            this.Close();
+        }
+
+        /// <summary>
+        /// Saves the piece and closes the form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CompleteBtn_Click(object sender, EventArgs e)
+        {
+            // ** TO DO - SAVE PIECE
+            this.Close();
+        }
     }
 }

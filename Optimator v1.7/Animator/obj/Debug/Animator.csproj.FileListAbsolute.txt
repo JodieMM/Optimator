@@ -110,8 +110,6 @@ C:\Users\jodie\Documents\0 Documents\Projects\Programming\Optimator\Optimator v1
 C:\Users\jodie\Documents\0 Documents\Projects\Programming\Optimator\Optimator v1.7\Animator\obj\Debug\Animator.CompileVideo.resources
 C:\Users\jodie\Documents\0 Documents\Projects\Programming\Optimator\Optimator v1.7\Animator\obj\Debug\Animator.MenuForm.resources
 C:\Users\jodie\Documents\0 Documents\Projects\Programming\Optimator\Optimator v1.7\Animator\obj\Debug\Animator.PiecesForm.resources
-C:\Users\jodie\Documents\0 Documents\Projects\Programming\Optimator\Optimator v1.7\Animator\obj\Debug\Animator.PiecesFormOrig.resources
-C:\Users\jodie\Documents\0 Documents\Projects\Programming\Optimator\Optimator v1.7\Animator\obj\Debug\Animator.PiecesForm_LoadMenu.resources
 C:\Users\jodie\Documents\0 Documents\Projects\Programming\Optimator\Optimator v1.7\Animator\obj\Debug\Animator.Properties.Resources.resources
 C:\Users\jodie\Documents\0 Documents\Projects\Programming\Optimator\Optimator v1.7\Animator\obj\Debug\Animator.ScenesForm.resources
 C:\Users\jodie\Documents\0 Documents\Projects\Programming\Optimator\Optimator v1.7\Animator\obj\Debug\Animator.SetsForm.resources

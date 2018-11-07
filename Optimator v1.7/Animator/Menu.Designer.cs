@@ -41,8 +41,8 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Tahoma", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(89, 14);
+            this.label1.ForeColor = System.Drawing.Color.Black;
+            this.label1.Location = new System.Drawing.Point(93, 20);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(173, 42);
@@ -51,12 +51,12 @@
             // 
             // SceneBtn
             // 
-            this.SceneBtn.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.SceneBtn.BackColor = System.Drawing.Color.MediumSeaGreen;
             this.SceneBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SceneBtn.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SceneBtn.ForeColor = System.Drawing.Color.White;
-            this.SceneBtn.Location = new System.Drawing.Point(40, 154);
-            this.SceneBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.SceneBtn.ForeColor = System.Drawing.Color.Black;
+            this.SceneBtn.Location = new System.Drawing.Point(40, 181);
+            this.SceneBtn.Margin = new System.Windows.Forms.Padding(2);
             this.SceneBtn.Name = "SceneBtn";
             this.SceneBtn.Size = new System.Drawing.Size(150, 66);
             this.SceneBtn.TabIndex = 1;
@@ -66,12 +66,12 @@
             // 
             // SpriteBtn
             // 
-            this.SpriteBtn.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.SpriteBtn.BackColor = System.Drawing.Color.MediumSeaGreen;
             this.SpriteBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SpriteBtn.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SpriteBtn.ForeColor = System.Drawing.Color.White;
-            this.SpriteBtn.Location = new System.Drawing.Point(203, 154);
-            this.SpriteBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.SpriteBtn.ForeColor = System.Drawing.Color.Black;
+            this.SpriteBtn.Location = new System.Drawing.Point(203, 181);
+            this.SpriteBtn.Margin = new System.Windows.Forms.Padding(2);
             this.SpriteBtn.Name = "SpriteBtn";
             this.SpriteBtn.Size = new System.Drawing.Size(107, 66);
             this.SpriteBtn.TabIndex = 2;
@@ -80,12 +80,12 @@
             // 
             // SetsBtn
             // 
-            this.SetsBtn.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.SetsBtn.BackColor = System.Drawing.Color.MediumSeaGreen;
             this.SetsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SetsBtn.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SetsBtn.ForeColor = System.Drawing.Color.White;
-            this.SetsBtn.Location = new System.Drawing.Point(40, 237);
-            this.SetsBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.SetsBtn.ForeColor = System.Drawing.Color.Black;
+            this.SetsBtn.Location = new System.Drawing.Point(40, 267);
+            this.SetsBtn.Margin = new System.Windows.Forms.Padding(2);
             this.SetsBtn.Name = "SetsBtn";
             this.SetsBtn.Size = new System.Drawing.Size(270, 66);
             this.SetsBtn.TabIndex = 3;
@@ -95,12 +95,12 @@
             // 
             // PiecesBtn
             // 
-            this.PiecesBtn.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.PiecesBtn.BackColor = System.Drawing.Color.MediumSeaGreen;
             this.PiecesBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.PiecesBtn.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PiecesBtn.ForeColor = System.Drawing.Color.White;
-            this.PiecesBtn.Location = new System.Drawing.Point(40, 321);
-            this.PiecesBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.PiecesBtn.ForeColor = System.Drawing.Color.Black;
+            this.PiecesBtn.Location = new System.Drawing.Point(40, 353);
+            this.PiecesBtn.Margin = new System.Windows.Forms.Padding(2);
             this.PiecesBtn.Name = "PiecesBtn";
             this.PiecesBtn.Size = new System.Drawing.Size(270, 66);
             this.PiecesBtn.TabIndex = 4;
@@ -110,12 +110,12 @@
             // 
             // QuitBtn
             // 
-            this.QuitBtn.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.QuitBtn.BackColor = System.Drawing.Color.MediumSeaGreen;
             this.QuitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.QuitBtn.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.QuitBtn.ForeColor = System.Drawing.Color.White;
-            this.QuitBtn.Location = new System.Drawing.Point(40, 404);
-            this.QuitBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.QuitBtn.ForeColor = System.Drawing.Color.Black;
+            this.QuitBtn.Location = new System.Drawing.Point(40, 439);
+            this.QuitBtn.Margin = new System.Windows.Forms.Padding(2);
             this.QuitBtn.Name = "QuitBtn";
             this.QuitBtn.Size = new System.Drawing.Size(270, 66);
             this.QuitBtn.TabIndex = 5;
@@ -125,12 +125,12 @@
             // 
             // animateBtn
             // 
-            this.animateBtn.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.animateBtn.BackColor = System.Drawing.Color.MediumSeaGreen;
             this.animateBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.animateBtn.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.animateBtn.ForeColor = System.Drawing.Color.White;
-            this.animateBtn.Location = new System.Drawing.Point(40, 71);
-            this.animateBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.animateBtn.ForeColor = System.Drawing.Color.Black;
+            this.animateBtn.Location = new System.Drawing.Point(40, 95);
+            this.animateBtn.Margin = new System.Windows.Forms.Padding(2);
             this.animateBtn.Name = "animateBtn";
             this.animateBtn.Size = new System.Drawing.Size(270, 66);
             this.animateBtn.TabIndex = 6;
@@ -140,10 +140,9 @@
             // 
             // MenuForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.RoyalBlue;
-            this.ClientSize = new System.Drawing.Size(350, 500);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.BackColor = System.Drawing.Color.SeaGreen;
+            this.ClientSize = new System.Drawing.Size(350, 550);
             this.Controls.Add(this.animateBtn);
             this.Controls.Add(this.QuitBtn);
             this.Controls.Add(this.PiecesBtn);
@@ -152,9 +151,12 @@
             this.Controls.Add(this.SceneBtn);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
+            this.MaximumSize = new System.Drawing.Size(350, 550);
+            this.MinimumSize = new System.Drawing.Size(350, 550);
             this.Name = "MenuForm";
             this.ShowIcon = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Optimator V1.4";
             this.ResumeLayout(false);
             this.PerformLayout();
