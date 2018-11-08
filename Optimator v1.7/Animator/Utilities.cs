@@ -75,6 +75,7 @@ namespace Animator
             double maxX = -99999;
             double minY = 99999;
             double maxY = -99999;
+
             for (int index = 0; index < arrayIn.Length / 2; index++)
             {
                 if (arrayIn[index, 0] < minX)
@@ -97,6 +98,60 @@ namespace Animator
             return new double[] { minX + (maxX - minX) / 2, minY + (maxY - minY) / 2 };
         }
 
+        /// <summary>
+        /// Finds the middle of a shape
+        /// </summary>
+        /// <param name="coords">Shape points</param>
+        /// <returns>The middle as [middle x, middle y]</returns>
+        public static double[] GetMidListCoords(List<double[]> coords)
+        {
+            double minX = 99999;
+            double maxX = -99999;
+            double minY = 99999;
+            double maxY = -99999;
+
+            foreach (double[] entry in coords)
+            {
+                minX = (entry[0] < minX) ? entry[0] : minX;
+                maxX = (entry[0] > maxX) ? entry[0] : maxX;
+                minY = (entry[0] < minY) ? entry[1] : minY;
+                maxY = (entry[0] > maxY) ? entry[1] : maxY;
+            }
+
+            return new double[] { minX + (maxX - minX) / 2, minY + (maxY - minY) / 2 };
+        }
+
+        /// <summary>
+        /// Flips a shape vertically and/or horizontally
+        /// </summary>
+        /// <param name="coords">Shape coordinates</param>
+        /// <param name="right">Flip vertically</param>
+        /// <param name="down">Flip horizontally</param>
+        /// <returns></returns>
+        public static List<double[]> FlipCoords(List<double[]> coords, bool right, bool down)
+        {
+            double[] middle = Utilities.GetMidListCoords(coords);
+
+            // Flip Vertically (Right)
+            if (right)
+            {
+                for (int index = 0; index < coords.Count; index++)
+                {
+                    coords[index][0] = 2 * middle[0] - coords[index][0];
+                }
+            }
+
+            // Flip Horizontally (Down)
+            if (down)
+            {
+                for (int index = 0; index < coords.Count; index++)
+                {
+                    coords[index][1] = 2 * middle[1] - coords[index][1];
+                }
+            }
+
+            return coords;
+        }
 
         /// <summary>
         /// Draws a piece with outline and fill
@@ -171,13 +226,17 @@ namespace Animator
             }
         }
 
-
+        /// <summary>
+        /// Draws all pieces in a list
+        /// </summary>
+        /// <param name="piecesList">Pieces to be drawn</param>
+        /// <param name="g">Board to draw to</param>
         public static void DrawPieces(List<Piece> piecesList, Graphics g)
         {
             // Draw Parts
             for (int index = 0; index < piecesList.Count; index++)
             {
-                // ** FIND BEST ORDER TO DRAW IN
+                // ** FIND BEST ORDER TO DRAW IN TO DO
                 DrawPiece(piecesList[index], g, true);
             }
         }

@@ -33,7 +33,7 @@ namespace Animator
         {
             for (int index = 0; index < Data.Count; index++)
             {
-                string[] dataSections = Data[index].Split(new Char[] { ';' });
+                string[] dataSections = Data[index].Split(Constants.Semi);
 
                 // New Piece
                 Piece WIP = new Piece(dataSections[0]);

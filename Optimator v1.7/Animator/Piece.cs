@@ -24,12 +24,12 @@ namespace Animator
         public List<string> Data { get; set; }
 
         // Coords and Angles
-        public double X { get; set; }
-        public double Y { get; set; }
-        public double R { get; set; }
-        public double T { get; set; }
-        public double S { get; set; }
-        public double SM { get; set; }
+        public double X { get; set; } //= Constants.MidX;
+        public double Y { get; set; } //= Constants.MidY;
+        public double R { get; set; } = 0;
+        public double T { get; set; } = 0;
+        public double S { get; set; } = 0;
+        public double SM { get; set; } = 100;
         public int NumCoords { get; set; }
 
         // Colours and Details
@@ -62,7 +62,7 @@ namespace Animator
         {
             // Get Piece Data
             Name = inName;
-            Data = Utilities.ReadFile(Environment.CurrentDirectory + Constants.PiecesFolder + Name + ".txt");
+            Data = Utilities.ReadFile(Constants.GetDirectory(Constants.PiecesFolder, Name));
 
             // Get Points and Colours from File
             AssignValues(Data[0]);
@@ -112,25 +112,6 @@ namespace Animator
         }
 
         /// <summary>
-        /// Updates the first line of data; colour type, colour array, outline width and piece details to match
-        /// current status. Used during piece creation.
-        /// </summary>
-        public void UpdateDataInfoLine()
-        {
-            // Update first line of data            [0] colour type     [1] colour array        [2] outline width       [3] pieceDetails
-            string pieceInfo = ColourType + ";" + OutlineColour.A + "," + OutlineColour.R + "," + OutlineColour.G + "," + OutlineColour.B + ":";
-            if (FillColour != null)
-            {
-                foreach (Color col in FillColour)
-                {
-                    pieceInfo += col.A + "," + col.R + "," + col.G + "," + col.B + ":";
-                }
-            }
-            pieceInfo = pieceInfo.Remove(pieceInfo.Length - 1, 1) + ";" + OutlineWidth + ";" + PieceDetails;
-            Data[0] = pieceInfo;
-        }
-
-        /// <summary>
         /// Finds whether the piece is attached to another piece
         /// </summary>
         /// <returns>If attached</returns>
@@ -147,7 +128,7 @@ namespace Animator
         /// <returns>Joins</returns>
         public string[] GetLineArray(double r, double t)          // Type of joining line
         {
-            return Data[Utilities.FindRow(r, t, Data, 1)].ToString().Split(new Char[] { ';' })[5].Split(new Char[] { ',' });
+            return Data[Utilities.FindRow(r, t, Data, 1)].ToString().Split(Constants.Semi)[5].Split(Constants.Comma);
         }
 
         /// <summary>
@@ -158,7 +139,7 @@ namespace Animator
         /// <returns>Point Type</returns>
         public string[] GetPointDataArray(double r, double t)     // Solid or float
         {
-            return Data[Utilities.FindRow(r, t, Data, 1)].ToString().Split(new Char[] { ';' })[6].Split(new Char[] { ',' });
+            return Data[Utilities.FindRow(r, t, Data, 1)].ToString().Split(Constants.Semi)[6].Split(Constants.Comma);
         }
 
         /// <summary>
@@ -220,43 +201,70 @@ namespace Animator
 
         // ----- DATA MODIFICATION -----
 
-        public void AddDataLine(string line)
+        /// <summary>
+        /// Replaces the data for the piece at the given angle. Used when creating the piece.
+        /// Adds a new data line if the current data does not exist.
+        /// </summary>
+        /// <param name="rot">Rotation to update</param>
+        /// <param name="turn">Turn to update</param>
+        /// <param name="newLine">Replacement data</param>
+        public void UpdateDataLine(double rot, double turn, string newLine)
         {
-            Data.Add(line);
+            int row = Utilities.FindRow(rot, turn, Data, 1);
+            if (row != -1)
+            {
+                Data[row] = newLine;
+            }
+            else
+            {
+                Data.Add(newLine);
+            }
+
+            CalculateNumCoords();
         }
 
-        public void ReplaceDataLine(string line)
+        /// <summary>
+        /// Updates the first line of data; colour type, colour array, outline width and piece details to match
+        /// current status. Used during piece creation.
+        /// </summary>
+        public void UpdateDataInfoLine()
         {
-            Data.RemoveAt(Data.Count - 1);
-            Data.Add(line);
+            // Update first line of data            [0] colour type     [1] colour array        [2] outline width       [3] pieceDetails
+            string pieceInfo = ColourType + ";" + OutlineColour.A + "," + OutlineColour.R + "," + OutlineColour.G + "," + OutlineColour.B + ":";
+            if (FillColour != null)
+            {
+                foreach (Color col in FillColour)
+                {
+                    pieceInfo += col.A + "," + col.R + "," + col.G + "," + col.B + ":";
+                }
+            }
+            pieceInfo = pieceInfo.Remove(pieceInfo.Length - 1, 1) + ";" + OutlineWidth + ";" + PieceDetails;
+            Data[0] = pieceInfo;
         }
 
-        public void RemoveDataLine(int index)
-        {
-            Data.RemoveAt(index);
-        }
 
 
-        // Other Functions
+        // ----- OTHER FUNCTIONS -----
+
         /// <summary>
         /// Takes the first line of a piece's data and initialises variables accordingly
         /// </summary>
         /// <param name="inData">The first line of piece data</param>
         public void AssignValues(string inData)
         {
-            string[] angleData = inData.Split(new Char[] { ';' });
+            string[] angleData = inData.Split(Constants.Semi);
             // angleData    [0] colour type     [1] colour array   [2] outline width   [3] pieceDetails
 
             // Colour Type
             ColourType = angleData[0];
 
             // Colours (Outline and Fill)
-            string[] colours = angleData[1].Split(new Char[] { ':' });
+            string[] colours = angleData[1].Split(Constants.Colon);
             FillColour = new Color[colours.Length - 1];
 
             for (int index = 0; index < colours.Length; index++)
             {
-                string[] rgbValues = colours[index].Split(new Char[] { ',' });
+                string[] rgbValues = colours[index].Split(Constants.Comma);
 
                 if (index == 0)
                 {
@@ -275,7 +283,7 @@ namespace Animator
             PieceDetails = angleData[3];
 
             // Get Num Points
-            NumCoords = Data[1].Split(new Char[] { ';' })[2].Count();
+            CalculateNumCoords();
         }
 
         /// <summary>
@@ -289,20 +297,20 @@ namespace Animator
             // Find Points
             if (row != -1)
             {
-                int numPoints = Data[row].Split(new Char[] { ';' })[angle].Split(new Char[] { ':' }).Length;
+                int numPoints = Data[row].Split(Constants.Semi)[angle].Split(Constants.Colon).Length;
                 if (numPoints > 1)
                 {
                     double[,] returnPoints = new double[numPoints, 2];
                     for (int index = 0; index < numPoints; index++)
                     {
-                        returnPoints[index, 0] = double.Parse(Data[row].Split(new Char[] { ';' })[angle].Split(new Char[] { ':' })[index].Split(new Char[] { ',' })[0]);
-                        returnPoints[index, 1] = double.Parse(Data[row].Split(new Char[] { ';' })[angle].Split(new Char[] { ':' })[index].Split(new Char[] { ',' })[1]);
+                        returnPoints[index, 0] = double.Parse(Data[row].Split(Constants.Semi)[angle].Split(Constants.Colon)[index].Split(Constants.Comma)[0]);
+                        returnPoints[index, 1] = double.Parse(Data[row].Split(Constants.Semi)[angle].Split(Constants.Colon)[index].Split(Constants.Comma)[1]);
                     }
                     return returnPoints;
                 }
-                else if (Data[row].Split(new Char[] { ';' })[angle].Split(new Char[] { ':' })[0] != "")
+                else if (Data[row].Split(Constants.Semi)[angle].Split(Constants.Colon)[0] != "")
                 {
-                    return new double[1, 2] { { double.Parse(Data[row].Split(new Char[] { ';' })[angle].Split(new Char[] { ':' })[0].Split(new Char[] { ',' })[0]), double.Parse(Data[row].Split(new Char[] { ';' })[angle].Split(new Char[] { ':' })[0].Split(new Char[] { ',' })[1]) } };
+                    return new double[1, 2] { { double.Parse(Data[row].Split(Constants.Semi)[angle].Split(Constants.Colon)[0].Split(Constants.Comma)[0]), double.Parse(Data[row].Split(Constants.Semi)[angle].Split(Constants.Colon)[0].Split(Constants.Comma)[1]) } };
                 }
             }
             return new double[0, 0];
@@ -312,7 +320,7 @@ namespace Animator
         /// Finds the points to print based on the rotation, turn and size of the piece
         /// </summary>
         /// <returns></returns>
-        public double[,] GetCurrentPoints(Boolean recentre, Boolean spinSize)
+        public double[,] GetCurrentPoints(bool recentre, bool spinSize)
         {
             UpdateDataInfoLine();
             int row = Utilities.FindRow(GetAngles()[0], GetAngles()[1], Data, 1);
@@ -485,6 +493,7 @@ namespace Animator
         {
             return 0;
             // TEMP ABOVE
+            /*
             double sum = 0;
             double getR = (R + AttachedTo.GetAngles()[0]) % 360;
             double getT = (T + AttachedTo.GetAngles()[1]) % 360;
@@ -576,7 +585,12 @@ namespace Animator
             }
             
 
-            return sum;
+            return sum;*/
+        }
+
+        private void CalculateNumCoords()
+        {
+            NumCoords = Data[1].Split(Constants.Semi)[2].Split(Constants.Colon).Count();
         }
     }
 }

@@ -57,7 +57,6 @@
             this.DrawBase.Size = new System.Drawing.Size(300, 300);
             this.DrawBase.TabIndex = 0;
             this.DrawBase.TabStop = false;
-            this.DrawBase.Click += new System.EventHandler(this.DrawBase_Click);
             // 
             // OptionsMenu
             // 
@@ -74,22 +73,22 @@
             // Page1
             // 
             this.Page1.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Page1.Location = new System.Drawing.Point(4, 27);
+            this.Page1.Location = new System.Drawing.Point(8, 50);
             this.Page1.Margin = new System.Windows.Forms.Padding(6);
             this.Page1.Name = "Page1";
             this.Page1.Padding = new System.Windows.Forms.Padding(6);
-            this.Page1.Size = new System.Drawing.Size(392, 669);
+            this.Page1.Size = new System.Drawing.Size(384, 642);
             this.Page1.TabIndex = 0;
             this.Page1.Text = "Shape";
             this.Page1.UseVisualStyleBackColor = true;
             // 
             // tabPage2
             // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 27);
+            this.tabPage2.Location = new System.Drawing.Point(8, 50);
             this.tabPage2.Margin = new System.Windows.Forms.Padding(6);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(6);
-            this.tabPage2.Size = new System.Drawing.Size(592, 1219);
+            this.tabPage2.Size = new System.Drawing.Size(384, 642);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Settings";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -103,7 +102,6 @@
             this.DrawDown.Size = new System.Drawing.Size(300, 300);
             this.DrawDown.TabIndex = 3;
             this.DrawDown.TabStop = false;
-            this.DrawDown.Click += new System.EventHandler(this.DrawDown_Click);
             // 
             // DrawRight
             // 
@@ -114,7 +112,6 @@
             this.DrawRight.Size = new System.Drawing.Size(300, 300);
             this.DrawRight.TabIndex = 4;
             this.DrawRight.TabStop = false;
-            this.DrawRight.Click += new System.EventHandler(this.DrawRight_Click);
             // 
             // NameTb
             // 
@@ -122,7 +119,7 @@
             this.NameTb.Location = new System.Drawing.Point(360, 360);
             this.NameTb.Margin = new System.Windows.Forms.Padding(6);
             this.NameTb.Name = "NameTb";
-            this.NameTb.Size = new System.Drawing.Size(300, 27);
+            this.NameTb.Size = new System.Drawing.Size(300, 46);
             this.NameTb.TabIndex = 5;
             this.NameTb.Text = "Piece Name";
             // 
@@ -246,7 +243,7 @@
             this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "PiecesForm";
             this.ShowIcon = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Piece";
             ((System.ComponentModel.ISupportInitialize)(this.DrawBase)).EndInit();
             this.OptionsMenu.ResumeLayout(false);
