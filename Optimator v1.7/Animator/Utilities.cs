@@ -305,17 +305,30 @@ namespace Animator
             return order;
         }
 
-
-        public static int CheckClose(int coord, int[] aims, int range)
+        /// <summary>
+        /// Finds the closest coordinate from the list.
+        /// Returns -1 if none within 9 pixels of the given position.
+        /// </summary>
+        /// <param name="toSearch">The list of coordinates to search</param>
+        /// <param name="x">The x coord to be close to</param>
+        /// <param name="y">The y coord to be close to</param>
+        /// <returns>Index of list that is closest</returns>
+        public static int FindClosestIndex(List<double[]> toSearch, int x, int y)
         {
-            foreach (int aim in aims)
+            int[] ranges = new int[] { 0, 3, 5, 7, 9 };
+
+            foreach (int range in ranges)
             {
-                if (coord > aim - range && coord < aim + range)
+                for (int index = 0; index < toSearch.Count(); index++)
                 {
-                    return aim;
+                    if (x >= toSearch[index][0] - range && x <= toSearch[index][0] + range 
+                        && y >= toSearch[index][1] - range && y <= toSearch[index][1] + range)
+                    {
+                        return index;
+                    }
                 }
             }
-            return coord;
+            return -1;
         }
 
 

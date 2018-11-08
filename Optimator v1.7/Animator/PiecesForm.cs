@@ -27,6 +27,9 @@ namespace Animator
         List<string> joins = new List<string>();
         List<string> solid = new List<string>();
 
+        int selectedIndex = 0;
+        bool moving = false;
+
         // TEMP
         double rotationTo = 90;
         double turnTo = 90;
@@ -55,9 +58,31 @@ namespace Animator
         /// <param name="e"></param>
         private void DrawBase_MouseDown(object sender, MouseEventArgs e)
         {
-            if (EraserBtn.Text == "Select")
+            if (EraserBtn.Text == "Point")
             {
-                // Erase
+                int closestIndex = Utilities.FindClosestIndex(oCoords, e.X, e.Y);
+                if (closestIndex == -1)
+                {
+                    // Clear entire piece
+                    DialogResult result = MessageBox.Show("Would you like to restart the piece?", "Restart Confirmation", MessageBoxButtons.YesNo);
+                    if (result == DialogResult.Yes)
+                    {
+                        oCoords.Clear();
+                        rCoords.Clear();
+                        tCoords.Clear();
+                        string dataLine = WIP.Data[0];
+                        WIP.Data.Clear();
+                        WIP.Data.Add(dataLine);
+                    }
+                }
+                else
+                {
+                    // Remove selected point
+                    oCoords.RemoveAt(closestIndex);
+                    rCoords.RemoveAt(closestIndex);
+                    tCoords.RemoveAt(closestIndex);
+                }
+                DisplayDrawings();
             }
             else if (PointBtn.Text == "Select")
             {
@@ -66,12 +91,13 @@ namespace Animator
                 tCoords.Add(new double[] { e.X, e.Y });
                 joins.Add("line");
                 solid.Add("s");
-                ConvertVariablesToData(rotationFrom, rotationTo, turnFrom, turnTo, oCoords, rCoords, tCoords, joins, solid);
                 DisplayDrawings();
             }
             else
             {
-                // Move
+                int closestIndex = Utilities.FindClosestIndex(oCoords, e.X, e.Y);
+                selectedIndex = closestIndex;
+                //moving = true; ** TO DO
             }
         }
 
@@ -83,6 +109,19 @@ namespace Animator
         private void DrawRight_MouseDown(object sender, MouseEventArgs e)
         {
             int mouseX = e.X; int mouseY = e.Y;
+            if (EraserBtn.Text == "Point")
+            {
+                DialogResult result = MessageBox.Show("Would you like to reset the rotated perspective?", "Reset Confirmation", MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
+                {
+                    rCoords.Clear();
+                    rCoords.AddRange(oCoords);
+                }
+            }
+            else
+            {
+                // ** TO DO
+            }
         }
 
         /// <summary>
@@ -93,6 +132,19 @@ namespace Animator
         private void DrawDown_MouseDown(object sender, MouseEventArgs e)
         {
             int mouseX = e.X; int mouseY = e.Y;
+            if (EraserBtn.Text == "Point")
+            {
+                DialogResult result = MessageBox.Show("Would you like to reset the turned perspective?", "Reset Confirmation", MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
+                {
+                    tCoords.Clear();
+                    tCoords.AddRange(oCoords);
+                }
+            }
+            else
+            {
+                // ** TO DO
+            }
         }
 
 
@@ -237,6 +289,9 @@ namespace Animator
         /// </summary>
         private void DisplayDrawings()
         {
+            // Prepare Piece
+            ConvertVariablesToData(rotationFrom, rotationTo, turnFrom, turnTo, oCoords, rCoords, tCoords, joins, solid);
+
             // Prepare Boards
             DrawBase.Refresh();
             DrawRight.Refresh();
@@ -321,46 +376,56 @@ namespace Animator
             List<double[]> originalCoords, List<double[]> rotatedCoords, List<double[]> turnedCoords,
             List<string> joinsList, List<string> detailsList)
         {
-            // Angles
-            string WIPstring = rFrom.ToString().PadLeft(3, '0') + ":" + rTo.ToString().PadLeft(3, '0') + ";" +
-                tFrom.ToString().PadLeft(3, '0') + ":" + tTo.ToString().PadLeft(3, '0') + ";";
-
-            // Original Coords
-            for (int index = 0; index < originalCoords.Count; index++)
+            // When No Coords
+            if (originalCoords.Count < 1)
             {
-                WIPstring += originalCoords[index][0] + "," + originalCoords[index][1];
-                WIPstring += (index == originalCoords.Count - 1) ? ";" : ":";
+                int workingRow = Utilities.FindRow(rFrom, tFrom, WIP.Data, 1);
+                if (workingRow != -1) { WIP.Data.RemoveAt(workingRow); }
             }
-
-            // Rotated Coords
-            for (int index = 0; index < rotatedCoords.Count; index++)
+            else
             {
-                WIPstring += rotatedCoords[index][0] + "," + rotatedCoords[index][1];
-                WIPstring += (index == rotatedCoords.Count - 1) ? ";" : ":";
-            }
 
-            // Turned Coords
-            for (int index = 0; index < turnedCoords.Count; index++)
-            {
-                WIPstring += turnedCoords[index][0] + "," + turnedCoords[index][1];
-                WIPstring += (index == turnedCoords.Count - 1) ? ";" : ":";
-            }
+                // Angles
+                string WIPstring = rFrom.ToString().PadLeft(3, '0') + ":" + rTo.ToString().PadLeft(3, '0') + ";" +
+                    tFrom.ToString().PadLeft(3, '0') + ":" + tTo.ToString().PadLeft(3, '0') + ";";
 
-            // Joins
-            for (int index = 0; index < joinsList.Count; index++)
-            {
-                WIPstring += joinsList[index];
-                WIPstring += (index == joinsList.Count - 1) ? ";" : ",";
-            }
+                // Original Coords
+                for (int index = 0; index < originalCoords.Count; index++)
+                {
+                    WIPstring += originalCoords[index][0] + "," + originalCoords[index][1];
+                    WIPstring += (index == originalCoords.Count - 1) ? ";" : ":";
+                }
 
-            // Details
-            for (int index = 0; index < detailsList.Count; index++)
-            {
-                WIPstring += detailsList[index];
-                WIPstring += (index == detailsList.Count - 1) ? "" : ",";
-            }
+                // Rotated Coords
+                for (int index = 0; index < rotatedCoords.Count; index++)
+                {
+                    WIPstring += rotatedCoords[index][0] + "," + rotatedCoords[index][1];
+                    WIPstring += (index == rotatedCoords.Count - 1) ? ";" : ":";
+                }
 
-            WIP.UpdateDataLine(rFrom, tFrom, WIPstring);
+                // Turned Coords
+                for (int index = 0; index < turnedCoords.Count; index++)
+                {
+                    WIPstring += turnedCoords[index][0] + "," + turnedCoords[index][1];
+                    WIPstring += (index == turnedCoords.Count - 1) ? ";" : ":";
+                }
+
+                // Joins
+                for (int index = 0; index < joinsList.Count; index++)
+                {
+                    WIPstring += joinsList[index];
+                    WIPstring += (index == joinsList.Count - 1) ? ";" : ",";
+                }
+
+                // Details
+                for (int index = 0; index < detailsList.Count; index++)
+                {
+                    WIPstring += detailsList[index];
+                    WIPstring += (index == detailsList.Count - 1) ? "" : ",";
+                }
+
+                WIP.UpdateDataLine(rFrom, tFrom, WIPstring);
+            }
         }
     }
 }
