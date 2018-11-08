@@ -10,8 +10,8 @@ namespace Animator
     public static class Constants
     {
         // Constant Values
-        public static double MidX = 50;
-        public static double MidY = 25;
+        public static double MidX = 500;
+        public static double MidY = 250;
 
         // Folders
         public static string PiecesFolder => "\\Pieces\\";

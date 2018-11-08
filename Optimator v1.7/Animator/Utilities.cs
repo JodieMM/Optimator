@@ -339,8 +339,8 @@ namespace Animator
                 }
                 else
                 {
-                    if (r >= int.Parse(data[row].Substring(0, 3)) && r <= int.Parse(data[row].Substring(4, 3))
-                        && t >= int.Parse(data[row].Substring(8, 3)) && t <= int.Parse(data[row].Substring(12, 3)))
+                    if (r >= int.Parse(data[row].Substring(0, 3)) && r < int.Parse(data[row].Substring(4, 3))
+                        && t >= int.Parse(data[row].Substring(8, 3)) && t < int.Parse(data[row].Substring(12, 3)))
                     {
                         found = true;
                     }

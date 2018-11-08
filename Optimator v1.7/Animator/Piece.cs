@@ -590,7 +590,14 @@ namespace Animator
 
         private void CalculateNumCoords()
         {
-            NumCoords = Data[1].Split(Constants.Semi)[2].Split(Constants.Colon).Count();
+            if (Data.Count < 2)
+            {
+                NumCoords = 0;
+            }
+            else
+            {
+                NumCoords = Data[1].Split(Constants.Semi)[2].Split(Constants.Colon).Count();
+            }
         }
     }
 }
