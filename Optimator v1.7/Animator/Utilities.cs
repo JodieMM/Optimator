@@ -12,10 +12,10 @@ using System.Drawing.Drawing2D;
 namespace Animator
 {
     /// <summary>
-    /// Holds functions common to multiple classes and/or forms
+    /// Holds functions common to multiple classes and/or forms.
+    /// 
+    /// Author Jodie Muller
     /// </summary>
-  
-
     public class Utilities
     {
         // ----- FILE I/O -----
@@ -60,12 +60,23 @@ namespace Animator
             file.Close();
         }
 
+        /// <summary>
+        /// Takes a folder and item name and returns the directory name to reach that file
+        /// </summary>
+        /// <param name="folder">The folder the item is in</param>
+        /// <param name="name">The item name</param>
+        /// <returns></returns>
+        public static string GetDirectory(string folder, string name)
+        {
+            return Environment.CurrentDirectory + folder + name + ".txt";
+        }
 
 
-        // ----- OTHER FUNCTIONS -----
+
+        // ----- MIDDLE FUNCTIONS -----
 
         /// <summary>
-        /// Finds the middle of a shape
+        /// Finds the middle of a shape where shape coords in double[,] form.
         /// </summary>
         /// <param name="arrayIn">Shape points</param>
         /// <returns>The middle as [middle x, middle y]</returns>
@@ -99,7 +110,7 @@ namespace Animator
         }
 
         /// <summary>
-        /// Finds the middle of a shape
+        /// Finds the middle of a shape where shape coords in List form.
         /// </summary>
         /// <param name="coords">Shape points</param>
         /// <returns>The middle as [middle x, middle y]</returns>
@@ -121,37 +132,9 @@ namespace Animator
             return new double[] { minX + (maxX - minX) / 2, minY + (maxY - minY) / 2 };
         }
 
-        /// <summary>
-        /// Flips a shape vertically and/or horizontally
-        /// </summary>
-        /// <param name="coords">Shape coordinates</param>
-        /// <param name="right">Flip vertically</param>
-        /// <param name="down">Flip horizontally</param>
-        /// <returns></returns>
-        public static List<double[]> FlipCoords(List<double[]> coords, bool right, bool down)
-        {
-            double[] middle = Utilities.GetMidListCoords(coords);
 
-            // Flip Vertically (Right)
-            if (right)
-            {
-                for (int index = 0; index < coords.Count; index++)
-                {
-                    coords[index][0] = 2 * middle[0] - coords[index][0];
-                }
-            }
 
-            // Flip Horizontally (Down)
-            if (down)
-            {
-                for (int index = 0; index < coords.Count; index++)
-                {
-                    coords[index][1] = 2 * middle[1] - coords[index][1];
-                }
-            }
-
-            return coords;
-        }
+        // ----- DRAW & RELATED FUNCTIONS -----
 
         /// <summary>
         /// Draws a piece with outline and fill
@@ -241,7 +224,11 @@ namespace Animator
             }
         }
 
-
+        /// <summary>
+        /// Finds the correct order to draw pieces so they are layered correctly.
+        /// </summary>
+        /// <param name="piecesList">The list of pieces in original order</param>
+        /// <returns>Ordered list of pieces</returns>
         public List<Piece> SortOrder(List<Piece> piecesList)
         {
             List<Piece> order = new List<Piece>();
@@ -332,6 +319,9 @@ namespace Animator
         }
 
 
+
+        // ----- OTHER FUNCTIONS -----
+
         /// <summary>
         /// Finds the correct row in the piece data for the given rotation and turn values
         /// RowNum is 1 for pieces, 0 for points
@@ -364,6 +354,38 @@ namespace Animator
                 }
             }
             return row;
+        }
+
+        /// <summary>
+        /// Flips a shape vertically and/or horizontally
+        /// </summary>
+        /// <param name="coords">Shape coordinates</param>
+        /// <param name="right">Flip vertically</param>
+        /// <param name="down">Flip horizontally</param>
+        /// <returns></returns>
+        public static List<double[]> FlipCoords(List<double[]> coords, bool right, bool down)
+        {
+            double[] middle = GetMidListCoords(coords);
+
+            // Flip Vertically (Right)
+            if (right)
+            {
+                for (int index = 0; index < coords.Count; index++)
+                {
+                    coords[index][0] = 2 * middle[0] - coords[index][0];
+                }
+            }
+
+            // Flip Horizontally (Down)
+            if (down)
+            {
+                for (int index = 0; index < coords.Count; index++)
+                {
+                    coords[index][1] = 2 * middle[1] - coords[index][1];
+                }
+            }
+
+            return coords;
         }
     }
 }

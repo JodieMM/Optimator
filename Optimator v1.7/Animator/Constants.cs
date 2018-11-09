@@ -7,6 +7,12 @@ using System.Text.RegularExpressions;
 
 namespace Animator
 {
+    /// <summary>
+    /// Constant values used throughout the program.
+    /// Can be modified here for changes to be applied everywhere.
+    /// 
+    /// Author Jodie Muller
+    /// </summary>
     public static class Constants
     {
         // Constant Values
@@ -37,17 +43,5 @@ namespace Animator
         // UI Precision
         public static int[] Ranges = new int[] { 0, 3, 5, 7, 9 };
         public static int ClickPrecision = 5;
-
-
-        /// <summary>
-        /// Takes a folder and item name and returns the directory name to reach that file
-        /// </summary>
-        /// <param name="folder">The folder the item is in</param>
-        /// <param name="name">The item name</param>
-        /// <returns></returns>
-        public static string GetDirectory(string folder, string name)
-        {
-            return Environment.CurrentDirectory + folder + name + ".txt";
-        }
     }
 }

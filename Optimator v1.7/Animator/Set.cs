@@ -10,6 +10,11 @@ using System.Windows.Forms;
 
 namespace Animator
 {
+    /// <summary>
+    /// A collection of pieces and how they interact with each other.
+    /// 
+    /// Author Jodie Muller
+    /// </summary>
     public class Set
     {
         // Set Variables
@@ -18,7 +23,10 @@ namespace Animator
         List<Piece> piecesList = new List<Piece>();
         List<int> basePiecesList = new List<int>();
 
-
+        /// <summary>
+        /// Set constructor.
+        /// </summary>
+        /// <param name="inName"></param>
         public Set(string inName)
         {
             Name = inName;

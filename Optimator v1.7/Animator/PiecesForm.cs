@@ -12,9 +12,16 @@ using System.IO;
 
 namespace Animator
 {
+
+    /// <summary>
+    /// The form used to generate and modify pieces and points.
+    /// 
+    /// Author Jodie Muller
+    /// </summary>
     public partial class PiecesForm : Form
     {
         // Variables
+        #region PiecesForm Variables
         Graphics original;
         Graphics rotated;
         Graphics turned;
@@ -34,6 +41,7 @@ namespace Animator
         bool movingFar = false;
         int[] originalMoving;
         int[] positionMoving;
+        #endregion
 
         // TEMP
         double rotationTo = 90;
@@ -62,6 +70,7 @@ namespace Animator
 
             WIP.Name = Constants.WIPName;
         }
+
 
 
         // ----- DRAWING BOARDS -----
@@ -393,7 +402,7 @@ namespace Animator
             {
                 // Check name not already in use, or that overriding is okay
                 DialogResult result = DialogResult.Yes;
-                if (File.Exists(Constants.GetDirectory(Constants.PiecesFolder, NameTb.Text)))
+                if (File.Exists(Utilities.GetDirectory(Constants.PiecesFolder, NameTb.Text)))
                 {
                     result = MessageBox.Show("This name is already in use. Do you want to override the existing piece?", "Override Confirmation", MessageBoxButtons.YesNo);
                 }
@@ -404,7 +413,7 @@ namespace Animator
                     try
                     {
                         ApplySegmentFully();
-                        Utilities.SaveData(Constants.GetDirectory(Constants.PiecesFolder, NameTb.Text), WIP.Data);
+                        Utilities.SaveData(Utilities.GetDirectory(Constants.PiecesFolder, NameTb.Text), WIP.Data);
                         Close();
                     }
                     catch (FileNotFoundException)
@@ -609,7 +618,7 @@ namespace Animator
         // ----- RANDOM FUNCTIONS -----
 
         /// <summary>
-        /// Resets all movement boolean variables
+        /// Resets all movement boolean variables to false.
         /// </summary>
         private void StopMovement()
         {

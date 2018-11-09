@@ -16,10 +16,10 @@ namespace Animator
     /// 
     /// Author Jodie Muller
     /// </summary>
-
     public class Piece
     {
         // Piece Variables
+        #region Piece Variables
         public string Name { get; set; }
         public List<string> Data { get; set; }
 
@@ -51,6 +51,8 @@ namespace Animator
         // Scenes
         public int SceneIndex { get; set; } = -1;
         public Originals Originally { get; set; } = null;
+        #endregion
+
 
 
         /// <summary>
@@ -62,11 +64,12 @@ namespace Animator
         {
             // Get Piece Data
             Name = inName;
-            Data = Utilities.ReadFile(Constants.GetDirectory(Constants.PiecesFolder, Name));
+            Data = Utilities.ReadFile(Utilities.GetDirectory(Constants.PiecesFolder, Name));
 
             // Get Points and Colours from File
             AssignValues(Data[0]);
         }
+
 
 
         // ----- GET FUNCTIONS -----
@@ -74,7 +77,7 @@ namespace Animator
         /// <summary>
         /// Gets the size modifier with considerations
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Size Modifier</returns>
         public double GetSizeMod()
         {
             if (GetIsAttached())
@@ -87,7 +90,7 @@ namespace Animator
         /// <summary>
         /// Gets the X and Y values of the piece with considerations
         /// </summary>
-        /// <returns></returns>
+        /// <returns>double[] { X, Y }</returns>
         public double[] GetCoords()
         {
             if (GetIsAttached())
@@ -100,7 +103,7 @@ namespace Animator
         /// <summary>
         /// Gets the rotation, turn and spin of the piece with considerations
         /// </summary>
-        /// <returns></returns>
+        /// <returns>double[] { Rotation, Turn, Spin }</returns>
         public double[] GetAngles()
         {
             if (GetIsAttached())
@@ -126,7 +129,7 @@ namespace Animator
         /// <param name="r">Rotation</param>
         /// <param name="t">Turn</param>
         /// <returns>Joins</returns>
-        public string[] GetLineArray(double r, double t)          // Type of joining line
+        public string[] GetLineArray(double r, double t)
         {
             return Data[Utilities.FindRow(r, t, Data, 1)].ToString().Split(Constants.Semi)[5].Split(Constants.Comma);
         }
@@ -137,13 +140,13 @@ namespace Animator
         /// <param name="r">Rotation</param>
         /// <param name="t">Turn</param>
         /// <returns>Point Type</returns>
-        public string[] GetPointDataArray(double r, double t)     // Solid or float
+        public string[] GetPointDataArray(double r, double t)
         {
             return Data[Utilities.FindRow(r, t, Data, 1)].ToString().Split(Constants.Semi)[6].Split(Constants.Comma);
         }
 
         /// <summary>
-        /// Finds coordinates within a row
+        /// Finds coordinates within a row.
         /// Original angle = 2, rotated angle = 3, turned angle = 4
         /// </summary>
         /// <param name="r"></param>
@@ -158,21 +161,42 @@ namespace Animator
 
         // ----- SET FUNCTIONS -----
 
+        /// <summary>
+        /// Sets the rotation within a 360 degree boundary.
+        /// </summary>
+        /// <param name="inRotation"></param>
         public void SetRotation(double inRotation)
         {
             R = inRotation % 360;
         }
 
+        /// <summary>
+        /// Sets the turn within a 360 degree boundary.
+        /// </summary>
+        /// <param name="inTurn"></param>
         public void SetTurn(double inTurn)
         {
             T = inTurn % 360;
         }
 
+        /// <summary>
+        /// Sets the spin within a 360 degree boundary.
+        /// </summary>
+        /// <param name="inSpin"></param>
         public void SetSpin(double inSpin)
         {
             S = inSpin % 360;
         }
 
+        /// <summary>
+        /// Sets all of the position/angle/size parameters at once.
+        /// </summary>
+        /// <param name="x">New X Coord</param>
+        /// <param name="y">New Y Coord</param>
+        /// <param name="r">New Rotation</param>
+        /// <param name="t">New Turn</param>
+        /// <param name="s">New Spin</param>
+        /// <param name="sm">New Size Modifier</param>
         public void SetValues(double x, double y, double r, double t, double s, double sm)
         {
             X = x; Y = y; R = r; T = t; S = s; SM = sm;
@@ -247,7 +271,8 @@ namespace Animator
         // ----- OTHER FUNCTIONS -----
 
         /// <summary>
-        /// Takes the first line of a piece's data and initialises variables accordingly
+        /// Takes the first line of a piece's data and initialises variables accordingly.
+        /// Used in piece constructor.
         /// </summary>
         /// <param name="inData">The first line of piece data</param>
         public void AssignValues(string inData)
@@ -447,7 +472,14 @@ namespace Animator
             return pointsArray;
         }
 
-        private double[,] Recentre(double[,] pointsArray, int numPoints, Boolean recentre)
+        /// <summary>
+        /// Recentres a piece by modifying its points by a common amount.
+        /// </summary>
+        /// <param name="pointsArray">Piece's points</param>
+        /// <param name="numPoints">The number of points</param>
+        /// <param name="recentre">If changes should be made</param>
+        /// <returns></returns>
+        private double[,] Recentre(double[,] pointsArray, int numPoints, bool recentre)
         {
             double[,] holder = new double[numPoints, 2];
             holder = (double[,])pointsArray.Clone();
@@ -459,6 +491,10 @@ namespace Animator
             return pointsArray;
         }
 
+        /// <summary>
+        /// Finds how much the point has changed from its attached to piece.
+        /// </summary>
+        /// <returns>double[] { X change, Y change }</returns>
         private double[] GetPointChange()
         {
             if (!GetIsAttached())
@@ -477,6 +513,10 @@ namespace Animator
             }
         }
 
+        /// <summary>
+        /// Reverts the piece back to its original state before animation 
+        /// operations were applied.
+        /// </summary>
         public void TakeOriginalState()
         {
             X = Originally.GetX(); Y = Originally.GetY(); R = Originally.GetR();
@@ -588,6 +628,9 @@ namespace Animator
             return sum;*/
         }
 
+        /// <summary>
+        /// Finds the number of points in the piece.
+        /// </summary>
         private void CalculateNumCoords()
         {
             if (Data.Count < 2)
