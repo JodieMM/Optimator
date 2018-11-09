@@ -31,6 +31,9 @@ namespace Animator
         bool oMoving = false;
         bool rMoving = false;
         bool tMoving = false;
+        bool movingFar = false;
+        int[] originalMoving;
+        int[] positionMoving;
 
         // TEMP
         double rotationTo = 90;
@@ -44,12 +47,19 @@ namespace Animator
         public PiecesForm()
         {
             InitializeComponent();
-            DrawBase.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DrawBase_MouseDown);
-            DrawBase.MouseUp += new System.Windows.Forms.MouseEventHandler(this.DrawBase_MouseUp);
-            DrawRight.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DrawRight_MouseDown);
-            DrawRight.MouseUp += new System.Windows.Forms.MouseEventHandler(this.DrawRight_MouseUp);
-            DrawDown.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DrawDown_MouseDown);
-            DrawDown.MouseUp += new System.Windows.Forms.MouseEventHandler(this.DrawDown_MouseUp);
+
+            DrawBase.MouseDown += new MouseEventHandler(DrawBase_MouseDown);
+            DrawBase.MouseUp += new MouseEventHandler(DrawBase_MouseUp);
+            DrawBase.MouseMove += new MouseEventHandler(DrawBase_MouseMove);
+
+            DrawRight.MouseDown += new MouseEventHandler(DrawRight_MouseDown);
+            DrawRight.MouseUp += new MouseEventHandler(DrawRight_MouseUp);
+            DrawRight.MouseMove += new MouseEventHandler(DrawRight_MouseMove);
+
+            DrawDown.MouseDown += new MouseEventHandler(DrawDown_MouseDown);
+            DrawDown.MouseUp += new MouseEventHandler(DrawDown_MouseUp);
+            DrawDown.MouseMove += new MouseEventHandler(DrawDown_MouseMove);
+
             WIP.Name = Constants.WIPName;
         }
 
@@ -63,9 +73,7 @@ namespace Animator
         /// <param name="e"></param>
         private void DrawBase_MouseDown(object sender, MouseEventArgs e)
         {
-            oMoving = false;
-            rMoving = false;
-            tMoving = false;
+            StopMovement();
 
             if (EraserBtn.Text == "Point")
             {
@@ -114,6 +122,7 @@ namespace Animator
                 {
                     selectedIndex = closestIndex;
                     oMoving = true;
+                    originalMoving = new int[] { (int)oCoords[closestIndex][0], (int)oCoords[closestIndex][1] };
                 }
             }
             DisplayDrawings();
@@ -126,16 +135,40 @@ namespace Animator
         /// <param name="e"></param>
         private void DrawBase_MouseUp(object sender, MouseEventArgs e)
         {
-            if (oMoving)
+            if (oMoving && movingFar)
             {
                 oCoords[selectedIndex] = new double[] { e.X, e.Y };
                 rCoords[selectedIndex] = new double[] { e.X, e.Y };
                 tCoords[selectedIndex] = new double[] { e.X, e.Y };
+            }
+            StopMovement();
+            DisplayDrawings();
+        }
+
+        /// <summary>
+        /// Updates movement as mouse position changes.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DrawBase_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (oMoving)
+            {
+                if (e.X < 0 || e.Y < 0 || e.X > DrawBase.Size.Width || e.Y > DrawBase.Size.Height)
+                {
+                    StopMovement();
+                }
+                else
+                {
+                    positionMoving = new int[] { e.X, e.Y };
+                    if (!movingFar)
+                    {
+                        movingFar = Math.Abs(originalMoving[0] - positionMoving[0]) > Constants.ClickPrecision
+                            || Math.Abs(originalMoving[1] - positionMoving[1]) > Constants.ClickPrecision;
+                    }
+                }
                 DisplayDrawings();
             }
-            oMoving = false;
-            rMoving = false;
-            tMoving = false;
         }
 
         /// <summary>
@@ -145,9 +178,7 @@ namespace Animator
         /// <param name="e"></param>
         private void DrawRight_MouseDown(object sender, MouseEventArgs e)
         {
-            oMoving = false;
-            rMoving = false;
-            tMoving = false;
+            StopMovement();
 
             int mouseX = e.X; int mouseY = e.Y;
             if (EraserBtn.Text == "Point")
@@ -166,6 +197,7 @@ namespace Animator
                 {
                     selectedIndex = closestIndex;
                     rMoving = true;
+                    originalMoving = new int[] { (int)rCoords[closestIndex][0], (int)rCoords[closestIndex][1] };
                 }
             }
             DisplayDrawings();
@@ -178,14 +210,38 @@ namespace Animator
         /// <param name="e"></param>
         private void DrawRight_MouseUp(object sender, MouseEventArgs e)
         {
-            if (rMoving)
+            if (rMoving && movingFar)
             {
                 rCoords[selectedIndex] = new double[] { e.X, rCoords[selectedIndex][1] };
+            }
+            StopMovement();
+            DisplayDrawings();
+        }
+
+        /// <summary>
+        /// Updates movement as mouse position changes.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DrawRight_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (rMoving)
+            {
+                if (e.X < 0 || e.Y < 0 || e.X > DrawRight.Size.Width || e.Y > DrawRight.Size.Height)
+                {
+                    StopMovement();
+                }
+                else
+                {
+                    positionMoving = new int[] { e.X, originalMoving[1] };
+                    if (!movingFar)
+                    {
+                        movingFar = Math.Abs(originalMoving[0] - positionMoving[0]) > Constants.ClickPrecision
+                            || Math.Abs(originalMoving[1] - positionMoving[1]) > Constants.ClickPrecision;
+                    }
+                }
                 DisplayDrawings();
             }
-            oMoving = false;
-            rMoving = false;
-            tMoving = false;
         }
 
         /// <summary>
@@ -195,9 +251,7 @@ namespace Animator
         /// <param name="e"></param>
         private void DrawDown_MouseDown(object sender, MouseEventArgs e)
         {
-            oMoving = false;
-            rMoving = false;
-            tMoving = false;
+            StopMovement();
 
             int mouseX = e.X; int mouseY = e.Y;
             if (EraserBtn.Text == "Point")
@@ -216,6 +270,7 @@ namespace Animator
                 {
                     selectedIndex = closestIndex;
                     tMoving = true;
+                    originalMoving = new int[] { (int)tCoords[closestIndex][0], (int)tCoords[closestIndex][1] };
                 }
             }
             DisplayDrawings();
@@ -228,14 +283,38 @@ namespace Animator
         /// <param name="e"></param>
         private void DrawDown_MouseUp(object sender, MouseEventArgs e)
         {
-            if (tMoving)
+            if (tMoving && movingFar)
             {
                 tCoords[selectedIndex] = new double[] { tCoords[selectedIndex][0], e.Y };
+            }
+            StopMovement();
+            DisplayDrawings();
+        }
+
+        /// <summary>
+        /// Updates movement as mouse position changes.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DrawDown_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (tMoving)
+            {
+                if (e.X < 0 || e.Y < 0 || e.X > DrawDown.Size.Width || e.Y > DrawDown.Size.Height)
+                {
+                    StopMovement();
+                }
+                else
+                {
+                    positionMoving = new int[] { originalMoving[0], e.Y };
+                    if (!movingFar)
+                    {
+                        movingFar = Math.Abs(originalMoving[0] - positionMoving[0]) > Constants.ClickPrecision
+                            || Math.Abs(originalMoving[1] - positionMoving[1]) > Constants.ClickPrecision;
+                    }
+                }
                 DisplayDrawings();
             }
-            oMoving = false;
-            rMoving = false;
-            tMoving = false;
         }
 
 
@@ -270,7 +349,8 @@ namespace Animator
         private void PreviewBtn_Click(object sender, EventArgs e)
         {
             // Currently inaccessible
-            //ApplySegmentFully();
+            ApplySegmentFully();
+            // Open preview form
         }
 
         /// <summary>
@@ -288,7 +368,7 @@ namespace Animator
             }
             if (result == DialogResult.Yes)
             {
-                this.Close();
+                Close();
             }
         }
 
@@ -325,9 +405,9 @@ namespace Animator
                     {
                         ApplySegmentFully();
                         Utilities.SaveData(Constants.GetDirectory(Constants.PiecesFolder, NameTb.Text), WIP.Data);
-                        this.Close();
+                        Close();
                     }
-                    catch (System.IO.FileNotFoundException)
+                    catch (FileNotFoundException)
                     {
                         MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
                     }
@@ -398,6 +478,7 @@ namespace Animator
             WIP.T = 0;
             Utilities.DrawPiece(WIP, original, false);
             DrawPoints(original, 2);
+            if (oMoving && movingFar) { DrawPoint(positionMoving[0], positionMoving[1], Color.DarkGray, original); }
             
 
             // Draw Rotated Board
@@ -405,12 +486,14 @@ namespace Animator
             WIP.T = 0;
             Utilities.DrawPiece(WIP, rotated, false);
             DrawPoints(rotated, 3);
+            if (rMoving && movingFar) { DrawPoint(positionMoving[0], positionMoving[1], Color.DarkGray, rotated); }
 
             // Draw Turned Board
             WIP.R = 0;
             WIP.T = 89.9999;
             Utilities.DrawPiece(WIP, turned, false);
             DrawPoints(turned, 4);
+            if (tMoving && movingFar) { DrawPoint(positionMoving[0], positionMoving[1], Color.DarkGray, turned); }
             WIP.T = 0;
         }
 
@@ -519,6 +602,21 @@ namespace Animator
 
                 WIP.UpdateDataLine(rFrom, tFrom, WIPstring);
             }
+        }
+
+
+
+        // ----- RANDOM FUNCTIONS -----
+
+        /// <summary>
+        /// Resets all movement boolean variables
+        /// </summary>
+        private void StopMovement()
+        {
+            oMoving = false;
+            rMoving = false;
+            tMoving = false;
+            movingFar = false;
         }
     }
 }

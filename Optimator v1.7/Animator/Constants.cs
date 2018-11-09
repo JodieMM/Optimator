@@ -34,6 +34,10 @@ namespace Animator
         public static char[] Colon = new char[] { ':' };
         public static char[] Semi = new char[] { ';' };
 
+        // UI Precision
+        public static int[] Ranges = new int[] { 0, 3, 5, 7, 9 };
+        public static int ClickPrecision = 5;
+
 
         /// <summary>
         /// Takes a folder and item name and returns the directory name to reach that file

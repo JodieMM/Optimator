@@ -315,7 +315,7 @@ namespace Animator
         /// <returns>Index of list that is closest</returns>
         public static int FindClosestIndex(List<double[]> toSearch, int x, int y)
         {
-            int[] ranges = new int[] { 0, 3, 5, 7, 9 };
+            int[] ranges = Constants.Ranges;
 
             foreach (int range in ranges)
             {
