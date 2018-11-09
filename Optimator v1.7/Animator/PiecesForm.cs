@@ -28,7 +28,9 @@ namespace Animator
         List<string> solid = new List<string>();
 
         int selectedIndex = 0;
-        bool moving = false;
+        bool oMoving = false;
+        bool rMoving = false;
+        bool tMoving = false;
 
         // TEMP
         double rotationTo = 90;
@@ -43,8 +45,11 @@ namespace Animator
         {
             InitializeComponent();
             DrawBase.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DrawBase_MouseDown);
+            DrawBase.MouseUp += new System.Windows.Forms.MouseEventHandler(this.DrawBase_MouseUp);
             DrawRight.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DrawRight_MouseDown);
+            DrawRight.MouseUp += new System.Windows.Forms.MouseEventHandler(this.DrawRight_MouseUp);
             DrawDown.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DrawDown_MouseDown);
+            DrawDown.MouseUp += new System.Windows.Forms.MouseEventHandler(this.DrawDown_MouseUp);
             WIP.Name = Constants.WIPName;
         }
 
@@ -58,6 +63,10 @@ namespace Animator
         /// <param name="e"></param>
         private void DrawBase_MouseDown(object sender, MouseEventArgs e)
         {
+            oMoving = false;
+            rMoving = false;
+            tMoving = false;
+
             if (EraserBtn.Text == "Point")
             {
                 int closestIndex = Utilities.FindClosestIndex(oCoords, e.X, e.Y);
@@ -73,6 +82,7 @@ namespace Animator
                         string dataLine = WIP.Data[0];
                         WIP.Data.Clear();
                         WIP.Data.Add(dataLine);
+                        selectedIndex = 0;
                     }
                 }
                 else
@@ -81,24 +91,51 @@ namespace Animator
                     oCoords.RemoveAt(closestIndex);
                     rCoords.RemoveAt(closestIndex);
                     tCoords.RemoveAt(closestIndex);
+                    // Update Selected Index
+                    if (selectedIndex >= closestIndex)
+                    {
+                        selectedIndex = (selectedIndex - 1 < 0) ? 0 : selectedIndex - 1;
+                    }
                 }
-                DisplayDrawings();
             }
             else if (PointBtn.Text == "Select")
             {
-                oCoords.Add(new double[] { e.X, e.Y });
-                rCoords.Add(new double[] { e.X, e.Y });
-                tCoords.Add(new double[] { e.X, e.Y });
-                joins.Add("line");
-                solid.Add("s");
-                DisplayDrawings();
+                selectedIndex = (oCoords.Count() == 0) ? 0 : selectedIndex + 1;
+                oCoords.Insert(selectedIndex, new double[] { e.X, e.Y });
+                rCoords.Insert(selectedIndex, new double[] { e.X, e.Y });
+                tCoords.Insert(selectedIndex, new double[] { e.X, e.Y });
+                joins.Insert(selectedIndex, "line");
+                solid.Insert(selectedIndex, "s");
             }
             else
             {
                 int closestIndex = Utilities.FindClosestIndex(oCoords, e.X, e.Y);
-                selectedIndex = closestIndex;
-                //moving = true; ** TO DO
+                if (closestIndex != -1)
+                {
+                    selectedIndex = closestIndex;
+                    oMoving = true;
+                }
             }
+            DisplayDrawings();
+        }
+
+        /// <summary>
+        /// Moves a point if move is in progress.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DrawBase_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (oMoving)
+            {
+                oCoords[selectedIndex] = new double[] { e.X, e.Y };
+                rCoords[selectedIndex] = new double[] { e.X, e.Y };
+                tCoords[selectedIndex] = new double[] { e.X, e.Y };
+                DisplayDrawings();
+            }
+            oMoving = false;
+            rMoving = false;
+            tMoving = false;
         }
 
         /// <summary>
@@ -108,6 +145,10 @@ namespace Animator
         /// <param name="e"></param>
         private void DrawRight_MouseDown(object sender, MouseEventArgs e)
         {
+            oMoving = false;
+            rMoving = false;
+            tMoving = false;
+
             int mouseX = e.X; int mouseY = e.Y;
             if (EraserBtn.Text == "Point")
             {
@@ -120,8 +161,31 @@ namespace Animator
             }
             else
             {
-                // ** TO DO
+                int closestIndex = Utilities.FindClosestIndex(rCoords, e.X, e.Y);
+                if (closestIndex != -1)
+                {
+                    selectedIndex = closestIndex;
+                    rMoving = true;
+                }
             }
+            DisplayDrawings();
+        }
+
+        /// <summary>
+        /// Moves a point if move is in progress.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DrawRight_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (rMoving)
+            {
+                rCoords[selectedIndex] = new double[] { e.X, rCoords[selectedIndex][1] };
+                DisplayDrawings();
+            }
+            oMoving = false;
+            rMoving = false;
+            tMoving = false;
         }
 
         /// <summary>
@@ -131,6 +195,10 @@ namespace Animator
         /// <param name="e"></param>
         private void DrawDown_MouseDown(object sender, MouseEventArgs e)
         {
+            oMoving = false;
+            rMoving = false;
+            tMoving = false;
+
             int mouseX = e.X; int mouseY = e.Y;
             if (EraserBtn.Text == "Point")
             {
@@ -143,8 +211,31 @@ namespace Animator
             }
             else
             {
-                // ** TO DO
+                int closestIndex = Utilities.FindClosestIndex(tCoords, e.X, e.Y);
+                if (closestIndex != -1)
+                {
+                    selectedIndex = closestIndex;
+                    tMoving = true;
+                }
             }
+            DisplayDrawings();
+        }
+
+        /// <summary>
+        /// Moves a point if move is in progress.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DrawDown_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (tMoving)
+            {
+                tCoords[selectedIndex] = new double[] { tCoords[selectedIndex][0], e.Y };
+                DisplayDrawings();
+            }
+            oMoving = false;
+            rMoving = false;
+            tMoving = false;
         }
 
 
@@ -277,10 +368,12 @@ namespace Animator
         private void DrawPoints(Graphics board, int angle)
         {
             double[,] coords = WIP.GetAnglePoints(WIP.R, WIP.T, angle);
+            Color color;
 
             for (int index = 0; index < coords.Length / 2; index++)
             {
-                DrawPoint(coords[index, 0], coords[index, 1], Color.Black, board);
+                color = (index == selectedIndex) ? Color.Red : Color.Black;
+                DrawPoint(coords[index, 0], coords[index, 1], color, board);
             }
         }
 
