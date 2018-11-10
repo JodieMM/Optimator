@@ -19,9 +19,11 @@ namespace Animator
     {
         // Set Variables
         public string Name { get; set; }
-        List<string> Data { get; set; }
+        public List<string> Data { get; set; }
         List<Piece> piecesList = new List<Piece>();
         List<int> basePiecesList = new List<int>();
+
+
 
         /// <summary>
         /// Set constructor.
@@ -33,6 +35,10 @@ namespace Animator
             Data = Utilities.ReadFile(Environment.CurrentDirectory + Constants.SetsFolder + Name + ".txt");
             ConvertData();
         }
+
+
+
+        // ----- DATA FUNCTIONS
 
         /// <summary>
         /// Used in constructor to create pieces and assign them correct values.
@@ -75,13 +81,31 @@ namespace Animator
             }
         }
 
+        /// <summary>
+        /// Takes the current state and saves it in the data.
+        /// </summary>
+        public void CreateData()
+        {
 
-        // Get Functions
+        }
+
+
+
+        // ----- GET FUNCTIONS -----
+
+        /// <summary>
+        /// Returns the list of pieces that make up the set.
+        /// </summary>
+        /// <returns>List of pieces.</returns>
         public List<Piece> GetPiecesList()
         {
             return piecesList;
         }
 
+        /// <summary>
+        /// Gets the base piece indexes.       ** TO DO
+        /// </summary>
+        /// <returns>List of base piece indexes</returns>
         public List<int> GetBasePiecesList()
         {
             return basePiecesList;

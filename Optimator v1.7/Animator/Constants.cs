@@ -32,7 +32,7 @@ namespace Animator
 
         // Name Validation
         public static string[] ReservedNames = { PieceStructure, PointStructure, SetStructure, WIPName };
-        public static string[] InvalidNames = { "", " ", "Piece Name" };
+        public static string[] InvalidNames = { "", " ", "Piece Name", "Set Name" };
         public static Regex PermittedName = new Regex(@"^[A-Za-z0-9]+$");
 
         // Characters
