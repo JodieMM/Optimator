@@ -73,67 +73,6 @@ namespace Animator
 
 
 
-        // ----- MIDDLE FUNCTIONS -----
-
-        /// <summary>
-        /// Finds the middle of a shape where shape coords in double[,] form.
-        /// </summary>
-        /// <param name="arrayIn">Shape points</param>
-        /// <returns>The middle as [middle x, middle y]</returns>
-        public static double[] FindMid(double[,] arrayIn)
-        {
-            double minX = 99999;
-            double maxX = -99999;
-            double minY = 99999;
-            double maxY = -99999;
-
-            for (int index = 0; index < arrayIn.Length / 2; index++)
-            {
-                if (arrayIn[index, 0] < minX)
-                {
-                    minX = arrayIn[index, 0];
-                }
-                if (arrayIn[index, 0] > maxX)
-                {
-                    maxX = arrayIn[index, 0];
-                }
-                if (arrayIn[index, 1] < minY)
-                {
-                    minY = arrayIn[index, 1];
-                }
-                if (arrayIn[index, 1] > maxY)
-                {
-                    maxY = arrayIn[index, 1];
-                }
-            }
-            return new double[] { minX + (maxX - minX) / 2, minY + (maxY - minY) / 2 };
-        }
-
-        /// <summary>
-        /// Finds the middle of a shape where shape coords in List form.
-        /// </summary>
-        /// <param name="coords">Shape points</param>
-        /// <returns>The middle as [middle x, middle y]</returns>
-        public static double[] GetMidListCoords(List<double[]> coords)
-        {
-            double minX = 99999;
-            double maxX = -99999;
-            double minY = 99999;
-            double maxY = -99999;
-
-            foreach (double[] entry in coords)
-            {
-                minX = (entry[0] < minX) ? entry[0] : minX;
-                maxX = (entry[0] > maxX) ? entry[0] : maxX;
-                minY = (entry[0] < minY) ? entry[1] : minY;
-                maxY = (entry[0] > maxY) ? entry[1] : maxY;
-            }
-
-            return new double[] { minX + (maxX - minX) / 2, minY + (maxY - minY) / 2 };
-        }
-
-
-
         // ----- DRAW & RELATED FUNCTIONS -----
 
         /// <summary>
@@ -151,9 +90,9 @@ namespace Animator
                 // Prepare for drawing
                 Pen pen = new Pen(piece.OutlineColour, piece.OutlineWidth);
                 SolidBrush fill = new SolidBrush(piece.FillColour[0]);                          // ** NEEDS UPDATING WITH GRADIENTS
-                double[,] sketchCoords = piece.GetCurrentPoints(recentre, true);
-                string[] joiners = piece.GetLineArray(piece.GetAngles()[0], piece.GetAngles()[1]);
-                int numCoords = sketchCoords.Length / 2;
+                List<double[]> sketchCoords = piece.GetCurrentPoints(recentre, true);
+                List<string> joiners = piece.GetLineArray(piece.GetAngles()[0], piece.GetAngles()[1]);
+                int numCoords = sketchCoords.Count;
 
 
                 // Fill Shape
@@ -163,15 +102,15 @@ namespace Animator
                     // Draw Line Between Final Point and First Point
                     if (pointIndex == numCoords - 1)
                     {
-                        path.AddLine(new Point(Convert.ToInt32(sketchCoords[numCoords - 1, 0]), Convert.ToInt32(sketchCoords[numCoords - 1, 1])),
-                            new Point(Convert.ToInt32(sketchCoords[0, 0]), Convert.ToInt32(sketchCoords[0, 1])));
+                        path.AddLine(new Point(Convert.ToInt32(sketchCoords[numCoords - 1][0]), Convert.ToInt32(sketchCoords[numCoords - 1][1])),
+                            new Point(Convert.ToInt32(sketchCoords[0][0]), Convert.ToInt32(sketchCoords[0][1])));
                     }
 
                     // Draw Remaining Lines
                     else
                     {
-                       path.AddLine(new Point(Convert.ToInt32(sketchCoords[pointIndex, 0]), Convert.ToInt32(sketchCoords[pointIndex, 1])),
-                            new Point(Convert.ToInt32(sketchCoords[pointIndex + 1, 0]), Convert.ToInt32(sketchCoords[pointIndex + 1, 1])));
+                       path.AddLine(new Point(Convert.ToInt32(sketchCoords[pointIndex][0]), Convert.ToInt32(sketchCoords[pointIndex][1])),
+                            new Point(Convert.ToInt32(sketchCoords[pointIndex + 1][0]), Convert.ToInt32(sketchCoords[pointIndex + 1][1])));
                     }
                 }
                 g.FillPath(fill, path);
@@ -186,8 +125,8 @@ namespace Animator
                         // Connected by Line
                         if (joiners[numCoords - 1] == "line")
                         {
-                            g.DrawLine(pen, new Point(Convert.ToInt32(sketchCoords[0, 0]), Convert.ToInt32(sketchCoords[0, 1])),
-                                new Point(Convert.ToInt32(sketchCoords[numCoords - 1, 0]), Convert.ToInt32(sketchCoords[numCoords - 1, 1])));
+                            g.DrawLine(pen, new Point(Convert.ToInt32(sketchCoords[0][0]), Convert.ToInt32(sketchCoords[0][1])),
+                                new Point(Convert.ToInt32(sketchCoords[numCoords - 1][0]), Convert.ToInt32(sketchCoords[numCoords - 1][1])));
                         }
                         // Connected by Curve
                         // TO DO **
@@ -199,8 +138,8 @@ namespace Animator
                         // Connected by Line
                         if (joiners[pointIndex] == "line")
                         {
-                            g.DrawLine(pen, new Point(Convert.ToInt32(sketchCoords[pointIndex, 0]), Convert.ToInt32(sketchCoords[pointIndex, 1])),
-                                new Point(Convert.ToInt32(sketchCoords[pointIndex + 1, 0]), Convert.ToInt32(sketchCoords[pointIndex + 1, 1])));
+                            g.DrawLine(pen, new Point(Convert.ToInt32(sketchCoords[pointIndex][0]), Convert.ToInt32(sketchCoords[pointIndex][1])),
+                                new Point(Convert.ToInt32(sketchCoords[pointIndex + 1][0]), Convert.ToInt32(sketchCoords[pointIndex + 1][1])));
                         }
                         // Connected by Curve
                         // TO DO **
@@ -331,29 +270,40 @@ namespace Animator
         /// <returns>The data row holding the information for the given angles</returns>
         public static int FindRow(double r, double t, List<string> data, int rowNum)
         {
-            int row = rowNum;
-            bool found = false;
-            while (!found)
+            int row; bool found = false;
+
+            for (row = 0; row < data.Count && !found; row++)
             {
-                if (row == data.Count)
+                if (r >= int.Parse(data[row].Substring(0, 3)) && r < int.Parse(data[row].Substring(4, 3))
+                        && t >= int.Parse(data[row].Substring(8, 3)) && t < int.Parse(data[row].Substring(12, 3)))
                 {
                     found = true;
-                    row = -1;
-                }
-                else
-                {
-                    if (r >= int.Parse(data[row].Substring(0, 3)) && r < int.Parse(data[row].Substring(4, 3))
-                        && t >= int.Parse(data[row].Substring(8, 3)) && t < int.Parse(data[row].Substring(12, 3)))
-                    {
-                        found = true;
-                    }
-                    else
-                    {
-                        row++;
-                    }
                 }
             }
-            return row;
+            return (found) ? row : -1;
+        }
+
+        /// <summary>
+        /// Finds the middle of a shape.
+        /// </summary>
+        /// <param name="coords">Shape points</param>
+        /// <returns>The middle as [middle x, middle y]</returns>
+        public static double[] FindMid(List<double[]> coords)
+        {
+            double minX = 99999;
+            double maxX = -99999;
+            double minY = 99999;
+            double maxY = -99999;
+
+            foreach (double[] entry in coords)
+            {
+                minX = (entry[0] < minX) ? entry[0] : minX;
+                maxX = (entry[0] > maxX) ? entry[0] : maxX;
+                minY = (entry[0] < minY) ? entry[1] : minY;
+                maxY = (entry[0] > maxY) ? entry[1] : maxY;
+            }
+
+            return new double[] { minX + (maxX - minX) / 2, minY + (maxY - minY) / 2 };
         }
 
         /// <summary>
@@ -365,7 +315,7 @@ namespace Animator
         /// <returns></returns>
         public static List<double[]> FlipCoords(List<double[]> coords, bool right, bool down)
         {
-            double[] middle = GetMidListCoords(coords);
+            double[] middle = FindMid(coords);
 
             // Flip Vertically (Right)
             if (right)

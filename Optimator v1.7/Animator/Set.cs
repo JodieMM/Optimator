@@ -103,7 +103,7 @@ namespace Animator
         }
 
         /// <summary>
-        /// Gets the base piece indexes.       ** TO DO
+        /// Gets the base piece indexes.
         /// </summary>
         /// <returns>List of base piece indexes</returns>
         public List<int> GetBasePiecesList()

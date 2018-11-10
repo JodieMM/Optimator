@@ -129,9 +129,15 @@ namespace Animator
         /// <param name="r">Rotation</param>
         /// <param name="t">Turn</param>
         /// <returns>Joins</returns>
-        public string[] GetLineArray(double r, double t)
+        public List<string> GetLineArray(double r, double t)
         {
-            return Data[Utilities.FindRow(r, t, Data, 1)].ToString().Split(Constants.Semi)[5].Split(Constants.Comma);
+            List<string> joins = new List<string>();
+            string[] lineArray = Data[Utilities.FindRow(r, t, Data, 1)].ToString().Split(Constants.Semi)[5].Split(Constants.Comma);
+            foreach (string join in lineArray)
+            {
+                joins.Add(join);
+            }
+            return joins;
         }
 
         /// <summary>
@@ -140,23 +146,17 @@ namespace Animator
         /// <param name="r">Rotation</param>
         /// <param name="t">Turn</param>
         /// <returns>Point Type</returns>
-        public string[] GetPointDataArray(double r, double t)
+        public List<string> GetPointDataArray(double r, double t)
         {
-            return Data[Utilities.FindRow(r, t, Data, 1)].ToString().Split(Constants.Semi)[6].Split(Constants.Comma);
+            List<string> details = new List<string>();
+            string[] detailsArray = Data[Utilities.FindRow(r, t, Data, 1)].ToString().Split(Constants.Semi)[6].Split(Constants.Comma);
+            foreach (string detail in detailsArray)
+            {
+                details.Add(detail);
+            }
+            return details;
         }
 
-        /// <summary>
-        /// Finds coordinates within a row.
-        /// Original angle = 2, rotated angle = 3, turned angle = 4
-        /// </summary>
-        /// <param name="r"></param>
-        /// <param name="t"></param>
-        /// <param name="angle"></param>
-        /// <returns></returns>
-        public double[,] GetAnglePoints(double r, double t, int angle)
-        {
-            return FindPoints(Utilities.FindRow(r, t, Data, 1), angle);
-        }
 
 
         // ----- SET FUNCTIONS -----
@@ -216,7 +216,7 @@ namespace Animator
             AttachPoint = attachmentPoint;
             OwnPoint = point;
             InFront = front;
-            this.AngleFlip = angleFlip;
+            AngleFlip = angleFlip;
             X = 0;
             Y = 0;
         }
@@ -268,6 +268,69 @@ namespace Animator
 
 
 
+        // ----- SHAPE SURFACE FUNCTIONS -----
+
+        /// <summary>
+        /// Finds all of the coordinates between two points.
+        /// </summary>
+        /// <param name="from">The starting point</param>
+        /// <param name="to">The end point</param>
+        /// <param name="join">How the two points are connected</param>
+        /// <returns>A list of int[] with the point coords</returns>
+        private List<int[]> FindLineCoords(int[] from, int[] to, string join)
+        {
+            // Check shape has volume
+            if (NumCoords < 3) { return null; }
+
+            List<int[]> line = new List<int[]>();
+            double gradient = 1;
+
+            // Switch order so highest (lowest Y value) is 'from'
+            if (from[1] > to[1])
+            {
+                int[] hold = from;
+                from = to;
+                to = hold;
+            }
+
+            // Find Gradient
+            if (join == "line")
+            {
+                gradient = (from[1] - to[1]) / (from[0] - to[0]);
+            }
+            // ** TO DO - CURVES
+
+            // Add point for each Y value
+            line.Add(from);         // 'To' is added as 'from' in the next line.
+
+            for (int index = from[1] + 1; index < to[1]; index++)
+            {
+                line.Add(new int[] { (int)(index * gradient), index });
+            }
+
+            return line;
+        }
+
+        /// <summary>
+        /// Finds the coordinates along the outline of the shape.
+        /// </summary>
+        /// <returns>A list of int[] with the outline coordinates</returns>
+        private List<int[]> FindPieceLines()
+        {
+            List<int[]> line = new List<int[]>();
+            List<double[]> coords = GetCurrentPoints(true, true);
+            List<string> lineArray = GetLineArray(R, T);
+
+            for (int index = 0; index < NumCoords; index++)
+            {
+                line.AddRange(FindLineCoords(new int[] { (int)coords[index][0], (int)coords[index][1] }, new int[] { (int)coords[index + 1][0], (int)coords[index + 1][1] }, lineArray[index]));
+            }
+
+            return line;
+        }
+
+
+
         // ----- OTHER FUNCTIONS -----
 
         /// <summary>
@@ -312,50 +375,47 @@ namespace Animator
         }
 
         /// <summary>
-        /// Find original, rotated or turned points
+        /// Finds coordinates within a row.
+        /// Original angle = 2, rotated angle = 3, turned angle = 4
         /// </summary>
-        /// <param name="row">The row in the piece data that is being searched</param>
-        /// <param name="angle">2 for original, 3 for rotated, 4 for turned</param>
-        /// <returns></returns>
-        public double[,] FindPoints(int row, int angle)
+        /// <param name="r">The rotation to be searched</param>
+        /// <param name="t">The turn to be searched</param>
+        /// <param name="angle">Original, rotated or turned perspective</param>
+        /// <returns>A list of coordinates for that angle</returns>
+        public List<double[]> FindPoints(double r, double t, int angle)
         {
+            int row = Utilities.FindRow(r, t, Data, 1);
+            List<double[]> returnPoints = new List<double[]>();
+            string[] angleLine = Data[row].Split(Constants.Semi)[angle].Split(Constants.Colon);
+
             // Find Points
-            if (row != -1)
+            if (row != -1 && NumCoords > 0)
             {
-                int numPoints = Data[row].Split(Constants.Semi)[angle].Split(Constants.Colon).Length;
-                if (numPoints > 1)
+                for (int index = 0; index < NumCoords && angleLine[0] != ""; index++)
                 {
-                    double[,] returnPoints = new double[numPoints, 2];
-                    for (int index = 0; index < numPoints; index++)
-                    {
-                        returnPoints[index, 0] = double.Parse(Data[row].Split(Constants.Semi)[angle].Split(Constants.Colon)[index].Split(Constants.Comma)[0]);
-                        returnPoints[index, 1] = double.Parse(Data[row].Split(Constants.Semi)[angle].Split(Constants.Colon)[index].Split(Constants.Comma)[1]);
-                    }
-                    return returnPoints;
+                    returnPoints.Add(new double[] { double.Parse(angleLine[index].Split(Constants.Comma)[0]),
+                    double.Parse(angleLine[index].Split(Constants.Comma)[1]) });
                 }
-                else if (Data[row].Split(Constants.Semi)[angle].Split(Constants.Colon)[0] != "")
-                {
-                    return new double[1, 2] { { double.Parse(Data[row].Split(Constants.Semi)[angle].Split(Constants.Colon)[0].Split(Constants.Comma)[0]), double.Parse(Data[row].Split(Constants.Semi)[angle].Split(Constants.Colon)[0].Split(Constants.Comma)[1]) } };
-                }
+                return returnPoints;
             }
-            return new double[0, 0];
+            return null;
         }
 
         /// <summary>
         /// Finds the points to print based on the rotation, turn and size of the piece
         /// </summary>
         /// <returns></returns>
-        public double[,] GetCurrentPoints(bool recentre, bool spinSize)
+        public List<double[]> GetCurrentPoints(bool recentre, bool spinSize)
         {
             UpdateDataInfoLine();
             int row = Utilities.FindRow(GetAngles()[0], GetAngles()[1], Data, 1);
             string dataLine = Data[row];
 
             // Prepare Points
-            double[,] pointsArrayInitial = GetAnglePoints(GetAngles()[0], GetAngles()[1], 2);
-            double[,] pointsArrayRotated = GetAnglePoints(GetAngles()[0], GetAngles()[1], 3);
-            double[,] pointsArrayTurned = GetAnglePoints(GetAngles()[0], GetAngles()[1], 4);
-            double[,] pointsArray = new double[NumCoords, 2];           // To be filled and returned below
+            List<double[]> pointsArrayInitial = FindPoints(GetAngles()[0], GetAngles()[1], 2);
+            List<double[]> pointsArrayRotated = FindPoints(GetAngles()[0], GetAngles()[1], 3);
+            List<double[]> pointsArrayTurned = FindPoints(GetAngles()[0], GetAngles()[1], 4);
+            List<double[]> pointsArray = new List<double[]>();
 
             // Find Multipliers - How far into the rotation range is required
             double rotationMultiplier = (GetAngles()[0] - double.Parse(dataLine.Substring(0, 3))) / (double.Parse(dataLine.Substring(4, 3)) - double.Parse(dataLine.Substring(0, 3)));
@@ -367,18 +427,12 @@ namespace Animator
             {
                 if (double.Parse(dataLine.Substring(4, 3)) != double.Parse(dataLine.Substring(0, 3)))
                 {
-                    // X
-                    pointsArray[index, 0] = pointsArrayInitial[index, 0] + (pointsArrayRotated[index, 0] - pointsArrayInitial[index, 0]) * rotationMultiplier;
-                    // Y
-                    pointsArray[index, 1] = pointsArrayInitial[index, 1] + (pointsArrayRotated[index, 1] - pointsArrayInitial[index, 1]) * rotationMultiplier;
+                    pointsArray.Add(new double[] { pointsArrayInitial[index][0] + (pointsArrayRotated[index][0] - pointsArrayInitial[index][0]) * rotationMultiplier,
+                        pointsArrayInitial[index][1] + (pointsArrayRotated[index][1] - pointsArrayInitial[index][1]) * rotationMultiplier });
                 }
                 else
                 {
-                    // X
-                    pointsArray[index, 0] = pointsArrayInitial[index, 0];
-                    // Y
-                    pointsArray[index, 1] = pointsArrayInitial[index, 1];
-
+                    pointsArray.Add(pointsArrayInitial[index]);
                 }
             }
 
@@ -388,9 +442,9 @@ namespace Animator
                 if (double.Parse(dataLine.Substring(12, 3)) != double.Parse(dataLine.Substring(8, 3)))
                 {
                     // X
-                    pointsArray[index, 0] += (pointsArrayTurned[index, 0] - pointsArrayInitial[index, 0]) * turnMultiplier;
+                    pointsArray[index][0] += (pointsArrayTurned[index][0] - pointsArrayInitial[index][0]) * turnMultiplier;
                     // Y
-                    pointsArray[index, 1] += (pointsArrayTurned[index, 1] - pointsArrayInitial[index, 1]) * turnMultiplier;
+                    pointsArray[index][1] += (pointsArrayTurned[index][1] - pointsArrayInitial[index][1]) * turnMultiplier;
                 }
             }
 
@@ -418,55 +472,55 @@ namespace Animator
         /// <param name="pointsArray">The points to be spun</param>
         /// <param name="sizeModifier">The size modifier to be applied</param>
         /// <returns></returns>
-        public double[,] SpinMeRound(double[,] pointsArray, double sizeModifier)
+        public List<double[]> SpinMeRound(List<double[]> pointsArray, double sizeModifier)
         {
             // Spin Adjustment
-            for (int index = 0; index < pointsArray.Length / 2; index++)
+            for (int index = 0; index < pointsArray.Count; index++)
             {
-                if (!(pointsArray[index, 0] == GetCoords()[0] && pointsArray[index, 1] == GetCoords()[1]))
+                if (!(pointsArray[index][0] == GetCoords()[0] && pointsArray[index][1] == GetCoords()[1]))
                 {
-                    double hypotenuse = Math.Sqrt(Math.Pow(GetCoords()[0] - pointsArray[index, 0], 2) + Math.Pow(GetCoords()[1] - pointsArray[index, 1], 2)) * sizeModifier;
+                    double hypotenuse = Math.Sqrt(Math.Pow(GetCoords()[0] - pointsArray[index][0], 2) + Math.Pow(GetCoords()[1] - pointsArray[index][1], 2)) * sizeModifier;
                     // Find Angle
                     double pointAngle;
-                    if (pointsArray[index, 0] == GetCoords()[0] && pointsArray[index, 1] < GetCoords()[1])
+                    if (pointsArray[index][0] == GetCoords()[0] && pointsArray[index][1] < GetCoords()[1])
                     {
                         pointAngle = 0;
                     }
-                    else if (pointsArray[index, 0] == GetCoords()[0] && pointsArray[index, 1] > GetCoords()[1])
+                    else if (pointsArray[index][0] == GetCoords()[0] && pointsArray[index][1] > GetCoords()[1])
                     {
                         pointAngle = 180;
                     }
-                    else if (pointsArray[index, 0] > GetCoords()[0] && pointsArray[index, 1] == GetCoords()[1])
+                    else if (pointsArray[index][0] > GetCoords()[0] && pointsArray[index][1] == GetCoords()[1])
                     {
                         pointAngle = 90;
                     }
-                    else if (pointsArray[index, 0] < GetCoords()[0] && pointsArray[index, 1] == GetCoords()[1])
+                    else if (pointsArray[index][0] < GetCoords()[0] && pointsArray[index][1] == GetCoords()[1])
                     {
                         pointAngle = 270;
                     }
                     //  Second || First
                     //  Third  || Fourth
-                    else if (pointsArray[index, 0] > GetCoords()[0] && pointsArray[index, 1] < GetCoords()[1]) // First Quadrant
+                    else if (pointsArray[index][0] > GetCoords()[0] && pointsArray[index][1] < GetCoords()[1]) // First Quadrant
                     {
-                        pointAngle = (180 / Math.PI) * Math.Atan(Math.Abs(((double)GetCoords()[0] - pointsArray[index, 0]) / ((double)GetCoords()[1] - pointsArray[index, 1])));
+                        pointAngle = (180 / Math.PI) * Math.Atan(Math.Abs((GetCoords()[0] - pointsArray[index][0]) / (GetCoords()[1] - pointsArray[index][1])));
                     }
-                    else if (pointsArray[index, 0] > GetCoords()[0] && pointsArray[index, 1] > GetCoords()[1]) // Fourth Quadrant
+                    else if (pointsArray[index][0] > GetCoords()[0] && pointsArray[index][1] > GetCoords()[1]) // Fourth Quadrant
                     {
-                        pointAngle = 90 + (180 / Math.PI) * Math.Atan(Math.Abs((double)(GetCoords()[1] - pointsArray[index, 1]) / ((double)GetCoords()[0] - pointsArray[index, 0])));
+                        pointAngle = 90 + (180 / Math.PI) * Math.Atan(Math.Abs((GetCoords()[1] - pointsArray[index][1]) / (GetCoords()[0] - pointsArray[index][0])));
                     }
-                    else if (pointsArray[index, 0] < GetCoords()[0] && pointsArray[index, 1] < GetCoords()[1]) // Second Quadrant
+                    else if (pointsArray[index][0] < GetCoords()[0] && pointsArray[index][1] < GetCoords()[1]) // Second Quadrant
                     {
-                        pointAngle = 270 + (180 / Math.PI) * Math.Atan(Math.Abs(((double)GetCoords()[1] - pointsArray[index, 1]) / ((double)GetCoords()[0] - pointsArray[index, 0])));
+                        pointAngle = 270 + (180 / Math.PI) * Math.Atan(Math.Abs((GetCoords()[1] - pointsArray[index][1]) / (GetCoords()[0] - pointsArray[index][0])));
                     }
                     else  // Third Quadrant
                     {
-                        pointAngle = 180 + (180 / Math.PI) * Math.Atan(Math.Abs(((double)GetCoords()[0] - pointsArray[index, 0]) / ((double)GetCoords()[1] - pointsArray[index, 1])));
+                        pointAngle = 180 + (180 / Math.PI) * Math.Atan(Math.Abs((GetCoords()[0] - pointsArray[index][0]) / (GetCoords()[1] - pointsArray[index][1])));
                     }
                     double findAngle = ((pointAngle + GetAngles()[2]) % 360) * Math.PI / 180;
 
                     // Find Points
-                    pointsArray[index, 0] = Convert.ToInt32((GetCoords()[0] + hypotenuse * Math.Sin(findAngle)));
-                    pointsArray[index, 1] = Convert.ToInt32((GetCoords()[1] - hypotenuse * Math.Cos(findAngle)));
+                    pointsArray[index][0] = Convert.ToInt32((GetCoords()[0] + hypotenuse * Math.Sin(findAngle)));
+                    pointsArray[index][1] = Convert.ToInt32((GetCoords()[1] - hypotenuse * Math.Cos(findAngle)));
                 }
             }
             return pointsArray;
@@ -479,14 +533,13 @@ namespace Animator
         /// <param name="numPoints">The number of points</param>
         /// <param name="recentre">If changes should be made</param>
         /// <returns></returns>
-        private double[,] Recentre(double[,] pointsArray, int numPoints, bool recentre)
+        private List<double[]> Recentre(List<double[]> pointsArray, int numPoints, bool recentre)
         {
-            double[,] holder = new double[numPoints, 2];
-            holder = (double[,])pointsArray.Clone();
+            List<double[]> holder = new List<double[]>(pointsArray);
             for (int index = 0; index < numPoints && recentre; index++)
             {
-                pointsArray[index, 0] = GetCoords()[0] + (holder[index, 0] - Utilities.FindMid(holder)[0]);
-                pointsArray[index, 1] = GetCoords()[1] + (holder[index, 1] - Utilities.FindMid(holder)[1]);
+                pointsArray[index][0] = GetCoords()[0] + (holder[index][0] - Utilities.FindMid(holder)[0]);
+                pointsArray[index][1] = GetCoords()[1] + (holder[index][1] - Utilities.FindMid(holder)[1]);
             }
             return pointsArray;
         }

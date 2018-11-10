@@ -456,13 +456,13 @@ namespace Animator
         /// <param name="angle">The angle to be drawn</param>
         private void DrawPoints(Graphics board, int angle)
         {
-            double[,] coords = WIP.GetAnglePoints(WIP.R, WIP.T, angle);
+            List<double[]> coords = WIP.FindPoints(WIP.R, WIP.T, angle);
             Color color;
 
-            for (int index = 0; index < coords.Length / 2; index++)
+            for (int index = 0; index < coords.Count; index++)
             {
                 color = (index == selectedIndex) ? Color.Red : Color.Black;
-                DrawPoint(coords[index, 0], coords[index, 1], color, board);
+                DrawPoint(coords[index][0], coords[index][1], color, board);
             }
         }
 
