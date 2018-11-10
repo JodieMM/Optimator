@@ -40,18 +40,18 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Tahoma", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Font = new System.Drawing.Font("Tahoma", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.Black;
-            this.label1.Location = new System.Drawing.Point(93, 20);
+            this.label1.Location = new System.Drawing.Point(57, 20);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(173, 42);
+            this.label1.Size = new System.Drawing.Size(237, 58);
             this.label1.TabIndex = 0;
             this.label1.Text = "Optimator";
             // 
             // SceneBtn
             // 
-            this.SceneBtn.BackColor = System.Drawing.Color.MediumSeaGreen;
+            this.SceneBtn.BackColor = System.Drawing.Color.Aquamarine;
             this.SceneBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SceneBtn.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SceneBtn.ForeColor = System.Drawing.Color.Black;
@@ -66,7 +66,7 @@
             // 
             // SpriteBtn
             // 
-            this.SpriteBtn.BackColor = System.Drawing.Color.MediumSeaGreen;
+            this.SpriteBtn.BackColor = System.Drawing.Color.Aquamarine;
             this.SpriteBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SpriteBtn.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SpriteBtn.ForeColor = System.Drawing.Color.Black;
@@ -80,7 +80,7 @@
             // 
             // SetsBtn
             // 
-            this.SetsBtn.BackColor = System.Drawing.Color.MediumSeaGreen;
+            this.SetsBtn.BackColor = System.Drawing.Color.Aquamarine;
             this.SetsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SetsBtn.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SetsBtn.ForeColor = System.Drawing.Color.Black;
@@ -95,7 +95,7 @@
             // 
             // PiecesBtn
             // 
-            this.PiecesBtn.BackColor = System.Drawing.Color.MediumSeaGreen;
+            this.PiecesBtn.BackColor = System.Drawing.Color.Aquamarine;
             this.PiecesBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.PiecesBtn.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.PiecesBtn.ForeColor = System.Drawing.Color.Black;
@@ -110,7 +110,7 @@
             // 
             // QuitBtn
             // 
-            this.QuitBtn.BackColor = System.Drawing.Color.MediumSeaGreen;
+            this.QuitBtn.BackColor = System.Drawing.Color.Aquamarine;
             this.QuitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.QuitBtn.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.QuitBtn.ForeColor = System.Drawing.Color.Black;
@@ -125,7 +125,7 @@
             // 
             // animateBtn
             // 
-            this.animateBtn.BackColor = System.Drawing.Color.MediumSeaGreen;
+            this.animateBtn.BackColor = System.Drawing.Color.Aquamarine;
             this.animateBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.animateBtn.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.animateBtn.ForeColor = System.Drawing.Color.Black;
@@ -141,7 +141,7 @@
             // MenuForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.BackColor = System.Drawing.Color.SeaGreen;
+            this.BackColor = System.Drawing.Color.MediumAquamarine;
             this.ClientSize = new System.Drawing.Size(350, 550);
             this.Controls.Add(this.animateBtn);
             this.Controls.Add(this.QuitBtn);

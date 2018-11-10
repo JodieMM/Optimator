@@ -73,13 +73,13 @@
             this.NameTb.Name = "NameTb";
             this.NameTb.Size = new System.Drawing.Size(178, 26);
             this.NameTb.TabIndex = 1;
-            this.NameTb.Text = "Item Name";
+            this.NameTb.Text = "Set Name";
             // 
             // AddSetBtn
             // 
             this.AddSetBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.AddSetBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.AddSetBtn.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AddSetBtn.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.AddSetBtn.Location = new System.Drawing.Point(206, 138);
             this.AddSetBtn.Margin = new System.Windows.Forms.Padding(2);
             this.AddSetBtn.Name = "AddSetBtn";
@@ -103,7 +103,7 @@
             // 
             this.DeleteBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.DeleteBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DeleteBtn.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DeleteBtn.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DeleteBtn.Location = new System.Drawing.Point(21, 192);
             this.DeleteBtn.Margin = new System.Windows.Forms.Padding(2);
             this.DeleteBtn.Name = "DeleteBtn";
@@ -117,7 +117,7 @@
             // 
             this.AddPieceBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.AddPieceBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.AddPieceBtn.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AddPieceBtn.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.AddPieceBtn.Location = new System.Drawing.Point(21, 138);
             this.AddPieceBtn.Margin = new System.Windows.Forms.Padding(2);
             this.AddPieceBtn.Name = "AddPieceBtn";
