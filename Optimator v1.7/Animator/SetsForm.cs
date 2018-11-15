@@ -100,7 +100,9 @@ namespace Animator
         {
             try
             {
-                piecesList.Add(new Piece(AddTb.Text));
+                Piece justAdded = new Piece(AddTb.Text);
+                piecesList.Add(justAdded);
+                justAdded.X = Constants.MidX; justAdded.Y = Constants.MidY;
                 DrawParts();
             }
             catch (System.IO.FileNotFoundException)

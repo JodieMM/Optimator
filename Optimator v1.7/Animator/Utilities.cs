@@ -272,7 +272,7 @@ namespace Animator
         {
             int row; bool found = false;
 
-            for (row = 0; row < data.Count && !found; row++)
+            for (row = rowNum; row < data.Count && !found; row++)
             {
                 if (r >= int.Parse(data[row].Substring(0, 3)) && r < int.Parse(data[row].Substring(4, 3))
                         && t >= int.Parse(data[row].Substring(8, 3)) && t < int.Parse(data[row].Substring(12, 3)))
@@ -280,7 +280,7 @@ namespace Animator
                     found = true;
                 }
             }
-            return (found) ? row : -1;
+            return (found) ? row - 1 : -1;
         }
 
         /// <summary>

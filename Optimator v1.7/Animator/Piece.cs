@@ -407,7 +407,6 @@ namespace Animator
         /// <returns></returns>
         public List<double[]> GetCurrentPoints(bool recentre, bool spinSize)
         {
-            UpdateDataInfoLine();
             int row = Utilities.FindRow(GetAngles()[0], GetAngles()[1], Data, 1);
             string dataLine = Data[row];
 
@@ -535,11 +534,13 @@ namespace Animator
         /// <returns></returns>
         private List<double[]> Recentre(List<double[]> pointsArray, int numPoints, bool recentre)
         {
-            List<double[]> holder = new List<double[]>(pointsArray);
+            double middleX = Utilities.FindMid(pointsArray)[0];
+            double middleY = Utilities.FindMid(pointsArray)[1];
+
             for (int index = 0; index < numPoints && recentre; index++)
             {
-                pointsArray[index][0] = GetCoords()[0] + (holder[index][0] - Utilities.FindMid(holder)[0]);
-                pointsArray[index][1] = GetCoords()[1] + (holder[index][1] - Utilities.FindMid(holder)[1]);
+                pointsArray[index][0] = GetCoords()[0] + (pointsArray[index][0] - middleX);
+                pointsArray[index][1] = GetCoords()[1] + (pointsArray[index][1] - middleY);
             }
             return pointsArray;
         }
