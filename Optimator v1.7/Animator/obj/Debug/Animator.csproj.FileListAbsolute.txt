@@ -117,3 +117,4 @@ C:\Users\jodie\Documents\0 Documents\Projects\Programming\Optimator\Optimator v1
 C:\Users\jodie\Documents\0 Documents\Projects\Programming\Optimator\Optimator v1.7\Animator\obj\Debug\Animator.csproj.CoreCompileInputs.cache
 C:\Users\jodie\Documents\0 Documents\Projects\Programming\Optimator\Optimator v1.7\Animator\obj\Debug\Animator.exe
 C:\Users\jodie\Documents\0 Documents\Projects\Programming\Optimator\Optimator v1.7\Animator\obj\Debug\Animator.pdb
+C:\Users\jodie\Documents\0 Documents\Projects\Programming\Optimator\Optimator v1.7\Animator\obj\Debug\Animator.PiecesPreviewForm.resources

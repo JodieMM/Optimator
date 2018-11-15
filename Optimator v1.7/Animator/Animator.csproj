@@ -67,6 +67,12 @@
     <Compile Include="PiecesForm.Designer.cs">
       <DependentUpon>PiecesForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="PiecesPreviewForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PiecesPreviewForm.Designer.cs">
+      <DependentUpon>PiecesPreviewForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="PointSpot.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -93,6 +99,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="PiecesForm.resx">
       <DependentUpon>PiecesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PiecesPreviewForm.resx">
+      <DependentUpon>PiecesPreviewForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

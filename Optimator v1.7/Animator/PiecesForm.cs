@@ -357,9 +357,9 @@ namespace Animator
         /// <param name="e"></param>
         private void PreviewBtn_Click(object sender, EventArgs e)
         {
-            // Currently inaccessible
             ApplySegmentFully();
-            // Open preview form
+            PiecesPreviewForm previewForm = new PiecesPreviewForm(WIP);
+            previewForm.Show();
         }
 
         /// <summary>
@@ -511,7 +511,7 @@ namespace Animator
         // ----- DATA FUNCTIONS -----
 
         /// <summary>
-        /// Applies the 3-board segment across the entire piece
+        /// Applies the 3-board segment across the entire piece.
         /// </summary>
         private void ApplySegmentFully()
         {

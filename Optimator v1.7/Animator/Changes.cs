@@ -38,7 +38,6 @@ namespace Animator
         /// <param name="affectedPiece">The piece to be changed</param>
         /// <param name="howMuch">How much the change should occur per </param>
         /// <param name="howLong">How many frames the change should continue for</param>
-
         public Changes(int startFrame, string action, Piece affectedPiece, double howMuch, int howLong)
         {
             this.startFrame = startFrame;
@@ -57,7 +56,6 @@ namespace Animator
         /// <param name="howMuch">How much the change should occur per </param>
         /// <param name="howLong">How many frames the change should continue for</param>
         /// <param name="options">Any additional notes for implementation</param>
-
         public Changes(int startFrame, string action, Piece affectedPiece, double howMuch, int howLong, string options)
         {
             this.startFrame = startFrame;

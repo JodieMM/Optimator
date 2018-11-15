@@ -10,41 +10,75 @@ using System.Windows.Forms;
 
 namespace Animator
 {
+    /// <summary>
+    /// The opening form.
+    /// </summary>
     public partial class MenuForm : Form
     {
+
+        /// <summary>
+        /// Constructor for the form.
+        /// </summary>
         public MenuForm()
         {
             InitializeComponent();
         }
 
+
+
+        // ----- MENU BUTTONS -----
+
+        /// <summary>
+        /// Closes the application entirely.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void QuitBtn_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
+        /// <summary>
+        /// Shows the form for creating a piece.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PiecesBtn_Click(object sender, EventArgs e)
         {
             PiecesForm pieceform = new PiecesForm();
             pieceform.Show();
         }
 
+        /// <summary>
+        /// Shows the form for animating a scene.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AnimateBtn_Click(object sender, EventArgs e)
         {
             ScenesForm sceneform = new ScenesForm();
-            sceneform.Size = new Size(976, 600);
             sceneform.Show();
         }
 
+        /// <summary>
+        /// Shows the form for creating a set.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SetsBtn_Click(object sender, EventArgs e)
         {
             SetsForm setform = new SetsForm();
             setform.Show();
         }
 
-        private void animateBtn_Click_1(object sender, EventArgs e)
+        /// <summary>
+        /// Shows the form for compiling a video.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CompileBtn_Click(object sender, EventArgs e)
         {
             CompileVideo vidForm = new CompileVideo();
-            vidForm.Size = new Size(1186, 791);
             vidForm.Show();
         }
     }

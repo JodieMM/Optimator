@@ -34,7 +34,7 @@
             this.SetsBtn = new System.Windows.Forms.Button();
             this.PiecesBtn = new System.Windows.Forms.Button();
             this.QuitBtn = new System.Windows.Forms.Button();
-            this.animateBtn = new System.Windows.Forms.Button();
+            this.CompileBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -123,27 +123,27 @@
             this.QuitBtn.UseVisualStyleBackColor = false;
             this.QuitBtn.Click += new System.EventHandler(this.QuitBtn_Click);
             // 
-            // animateBtn
+            // CompileBtn
             // 
-            this.animateBtn.BackColor = System.Drawing.Color.Aquamarine;
-            this.animateBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.animateBtn.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.animateBtn.ForeColor = System.Drawing.Color.Black;
-            this.animateBtn.Location = new System.Drawing.Point(40, 95);
-            this.animateBtn.Margin = new System.Windows.Forms.Padding(2);
-            this.animateBtn.Name = "animateBtn";
-            this.animateBtn.Size = new System.Drawing.Size(270, 66);
-            this.animateBtn.TabIndex = 6;
-            this.animateBtn.Text = "Compile Video";
-            this.animateBtn.UseVisualStyleBackColor = false;
-            this.animateBtn.Click += new System.EventHandler(this.animateBtn_Click_1);
+            this.CompileBtn.BackColor = System.Drawing.Color.Aquamarine;
+            this.CompileBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.CompileBtn.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CompileBtn.ForeColor = System.Drawing.Color.Black;
+            this.CompileBtn.Location = new System.Drawing.Point(40, 95);
+            this.CompileBtn.Margin = new System.Windows.Forms.Padding(2);
+            this.CompileBtn.Name = "CompileBtn";
+            this.CompileBtn.Size = new System.Drawing.Size(270, 66);
+            this.CompileBtn.TabIndex = 6;
+            this.CompileBtn.Text = "Compile Video";
+            this.CompileBtn.UseVisualStyleBackColor = false;
+            this.CompileBtn.Click += new System.EventHandler(this.CompileBtn_Click);
             // 
             // MenuForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.MediumAquamarine;
             this.ClientSize = new System.Drawing.Size(350, 550);
-            this.Controls.Add(this.animateBtn);
+            this.Controls.Add(this.CompileBtn);
             this.Controls.Add(this.QuitBtn);
             this.Controls.Add(this.PiecesBtn);
             this.Controls.Add(this.SetsBtn);
@@ -171,7 +171,7 @@
         private System.Windows.Forms.Button SetsBtn;
         private System.Windows.Forms.Button PiecesBtn;
         private System.Windows.Forms.Button QuitBtn;
-        private System.Windows.Forms.Button animateBtn;
+        private System.Windows.Forms.Button CompileBtn;
     }
 }
 

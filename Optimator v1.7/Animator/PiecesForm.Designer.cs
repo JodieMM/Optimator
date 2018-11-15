@@ -31,10 +31,10 @@
             this.DrawBase = new System.Windows.Forms.PictureBox();
             this.OptionsMenu = new System.Windows.Forms.TabControl();
             this.Page1 = new System.Windows.Forms.TabPage();
+            this.NameTb = new System.Windows.Forms.TextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.DrawDown = new System.Windows.Forms.PictureBox();
             this.DrawRight = new System.Windows.Forms.PictureBox();
-            this.NameTb = new System.Windows.Forms.TextBox();
             this.PointBtn = new System.Windows.Forms.Button();
             this.PreviewBtn = new System.Windows.Forms.Button();
             this.EraserBtn = new System.Windows.Forms.Button();
@@ -84,6 +84,18 @@
             this.Page1.TabIndex = 0;
             this.Page1.Text = "Shape";
             // 
+            // NameTb
+            // 
+            this.NameTb.BackColor = System.Drawing.Color.Azure;
+            this.NameTb.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.NameTb.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.NameTb.Location = new System.Drawing.Point(15, 15);
+            this.NameTb.Margin = new System.Windows.Forms.Padding(6);
+            this.NameTb.Name = "NameTb";
+            this.NameTb.Size = new System.Drawing.Size(300, 26);
+            this.NameTb.TabIndex = 5;
+            this.NameTb.Text = "Piece Name";
+            // 
             // tabPage2
             // 
             this.tabPage2.BackColor = System.Drawing.Color.Azure;
@@ -115,18 +127,6 @@
             this.DrawRight.TabIndex = 4;
             this.DrawRight.TabStop = false;
             // 
-            // NameTb
-            // 
-            this.NameTb.BackColor = System.Drawing.Color.Azure;
-            this.NameTb.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.NameTb.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.NameTb.Location = new System.Drawing.Point(15, 15);
-            this.NameTb.Margin = new System.Windows.Forms.Padding(6);
-            this.NameTb.Name = "NameTb";
-            this.NameTb.Size = new System.Drawing.Size(300, 26);
-            this.NameTb.TabIndex = 5;
-            this.NameTb.Text = "Piece Name";
-            // 
             // PointBtn
             // 
             this.PointBtn.BackColor = System.Drawing.Color.LightCyan;
@@ -144,7 +144,6 @@
             // PreviewBtn
             // 
             this.PreviewBtn.BackColor = System.Drawing.Color.LightCyan;
-            this.PreviewBtn.Enabled = false;
             this.PreviewBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.PreviewBtn.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.PreviewBtn.Location = new System.Drawing.Point(570, 360);
