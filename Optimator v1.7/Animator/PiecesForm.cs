@@ -1,18 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Drawing.Drawing2D;
 using System.IO;
 
 namespace Animator
 {
-
     /// <summary>
     /// The form used to generate and modify pieces and points.
     /// 
@@ -20,34 +14,34 @@ namespace Animator
     /// </summary>
     public partial class PiecesForm : Form
     {
-        // Variables
         #region PiecesForm Variables
-        Graphics original;
-        Graphics rotated;
-        Graphics turned;
-        List<Piece> sketch = new List<Piece>();
-        Piece WIP = new Piece(Constants.PieceStructure);
+        private Graphics original;
+        private Graphics rotated;
+        private Graphics turned;
+        private List<Piece> sketch = new List<Piece>();
+        private Piece WIP = new Piece(Constants.PieceStructure);
 
-        List<double[]> oCoords = new List<double[]>();
-        List<double[]> rCoords = new List<double[]>();
-        List<double[]> tCoords = new List<double[]>();
-        List<string> joins = new List<string>();
-        List<string> solid = new List<string>();
+        private List<double[]> oCoords = new List<double[]>();
+        private List<double[]> rCoords = new List<double[]>();
+        private List<double[]> tCoords = new List<double[]>();
+        private List<string> joins = new List<string>();
+        private List<string> solid = new List<string>();
 
-        int selectedIndex = 0;
-        bool oMoving = false;
-        bool rMoving = false;
-        bool tMoving = false;
-        bool movingFar = false;
-        int[] originalMoving;
-        int[] positionMoving;
+        private int selectedIndex = 0;
+        private bool oMoving = false;
+        private bool rMoving = false;
+        private bool tMoving = false;
+        private bool movingFar = false;
+        private int[] originalMoving;
+        private int[] positionMoving;
         #endregion
 
         // TEMP
-        double rotationTo = 90;
-        double turnTo = 90;
-        double rotationFrom = 0;
-        double turnFrom = 0;
+        private double rotationTo = 90;
+        private double turnTo = 90;
+        private double rotationFrom = 0;
+        private double turnFrom = 0;
+
 
         /// <summary>
         /// Constructor creates a PiecesForm page

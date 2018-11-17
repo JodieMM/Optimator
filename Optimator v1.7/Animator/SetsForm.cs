@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Drawing.Drawing2D;
 using System.IO;
 
 namespace Animator
@@ -19,11 +14,11 @@ namespace Animator
     /// </summary>
     public partial class SetsForm : Form
     {
-        // Set Variables
-        Graphics g;
-        List<Piece> piecesList = new List<Piece>();
-        Set WIP = new Set(Constants.SetStructure);
-
+        #region Sets Form Variables
+        private Graphics g;
+        private List<Piece> piecesList = new List<Piece>();
+        private Set WIP = new Set(Constants.SetStructure);
+        #endregion
 
 
         /// <summary>
@@ -172,6 +167,7 @@ namespace Animator
 
         // ----- SETTINGS BUTTONS -----
         // **TO DO 
+
 
 
         // ----- OTHER FUNCTIONS -----

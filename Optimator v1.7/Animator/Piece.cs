@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Animator
 {
@@ -18,7 +13,6 @@ namespace Animator
     /// </summary>
     public class Piece
     {
-        // Piece Variables
         #region Piece Variables
         public string Name { get; set; }
         public List<string> Data { get; set; }
@@ -52,7 +46,6 @@ namespace Animator
         public int SceneIndex { get; set; } = -1;
         public Originals Originally { get; set; } = null;
         #endregion
-
 
 
         /// <summary>
@@ -573,8 +566,11 @@ namespace Animator
         /// </summary>
         public void TakeOriginalState()
         {
-            X = Originally.GetX(); Y = Originally.GetY(); R = Originally.GetR();
-            T = Originally.GetT(); S = Originally.GetS(); SM = Originally.GetSM();
+            if (Originally != null)
+            {
+                X = Originally.X; Y = Originally.Y; R = Originally.R;
+                T = Originally.T; S = Originally.S; SM = Originally.SM;
+            }
         }
 
         /// <summary>

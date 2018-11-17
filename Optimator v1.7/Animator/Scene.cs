@@ -1,11 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Animator
@@ -16,69 +10,72 @@ namespace Animator
     /// 
     /// Author Jodie Muller
     /// </summary>
-
     public class Scene
     {
-        // Initialise Scene Variables
-        List<Piece> piecesList = new List<Piece>();
-        List<Piece> partOrder = new List<Piece>();
-        List<Changes> changes = new List<Changes>();
+        #region Scene Variables
+        public List<Piece> PiecesList { get; } = new List<Piece>();
+        private List<Piece> partOrder = new List<Piece>();
+        public List<Changes> Changes { get; } = new List<Changes>();
 
-        int frameRate;
-        int numFrames;
+        public int FrameRate { get; }
+        public int NumFrames { get; }
+        #endregion
 
-        const string originalsSegment = "Originals";
-        const string scenesFolder = "\\Scenes\\";
 
+        /// <summary>
+        /// Scene constructor. Assigns variables based
+        /// on the scene file that is loaded.
+        /// </summary>
+        /// <param name="fileName">Name of scene to load</param>
         public Scene(string fileName)
         {
             try
             {
-                //Read and assign
+                // Read and assign
                 // Open File
-                string filePath = Environment.CurrentDirectory + scenesFolder + fileName + ".txt";
+                string filePath = Environment.CurrentDirectory + Constants.ScenesFolder + fileName + Constants.Txt;
                 System.IO.StreamReader file = new System.IO.StreamReader(@filePath);
 
                 // Read Data
-                string[] dataLines = file.ReadLine().Split(new Char[] { ';' });
-                frameRate = int.Parse(dataLines[0]);
-                numFrames = int.Parse(dataLines[1]);
+                string[] dataLines = file.ReadLine().Split(Constants.Semi);
+                FrameRate = int.Parse(dataLines[0]);
+                NumFrames = int.Parse(dataLines[1]);
 
                 // Read parts
                 string dataLine = file.ReadLine();
-                while (dataLine != originalsSegment)
+                while (dataLine != "Originals")
                 {
                     if (dataLine.StartsWith("p"))
                     {
-                        piecesList.Add(new Piece(dataLine.Remove(0, 2)));
+                        PiecesList.Add(new Piece(dataLine.Remove(0, 2)));
                     }
                     else
                     {
                         Set newSet = new Set(dataLine.Remove(0, 2));
-                        piecesList.AddRange(newSet.GetPiecesList());
+                        PiecesList.AddRange(newSet.GetPiecesList());
                     }
                     dataLine = file.ReadLine();
                 }
 
                 // Set Part Order
-                for (int index = 0; index < piecesList.Count; index++)
+                for (int index = 0; index < PiecesList.Count; index++)
                 {
-                    piecesList[index].SceneIndex = index;
+                    PiecesList[index].SceneIndex = index;
                 }
 
                 // Assign Original States
-                Boolean found = false;
-                for (int index = 0; index < piecesList.Count; index++)      // piecesList.Count is the same as the number of lines to read
+                bool found = false;
+                for (int index = 0; index < PiecesList.Count; index++)      // piecesList.Count is the same as the number of lines to read
                 {
-                    dataLines = file.ReadLine().Split(new Char[] { ';' });
+                    dataLines = file.ReadLine().Split(Constants.Semi);
                     found = false;
-                    for (int i = 0; index < piecesList.Count && !found; index++)
+                    for (int i = 0; index < PiecesList.Count && !found; index++)
                     {
-                        if (piecesList[i].SceneIndex == int.Parse(dataLines[0]))
+                        if (PiecesList[i].SceneIndex == int.Parse(dataLines[0]))
                         {
-                            piecesList[i].SetValues(double.Parse(dataLines[1]), double.Parse(dataLines[2]), double.Parse(dataLines[3]), 
+                            PiecesList[i].SetValues(double.Parse(dataLines[1]), double.Parse(dataLines[2]), double.Parse(dataLines[3]), 
                                 double.Parse(dataLines[4]), double.Parse(dataLines[5]), double.Parse(dataLines[6]));
-                            piecesList[i].Originally = new Originals(piecesList[i]);
+                            PiecesList[i].Originally = new Originals(PiecesList[i]);
                             found = true;
                         }
                     }
@@ -88,9 +85,9 @@ namespace Animator
                 // Read frame changes
                 while ((dataLine = file.ReadLine()) != null)
                 {
-                    string[] data = dataLine.Split(new Char[] { ';' });
+                    string[] data = dataLine.Split(Constants.Semi);
                                 // ** TO DO if options: use different initiliser
-                    changes.Add(new Changes(int.Parse(data[0]), data[1], piecesList[int.Parse(data[2])], double.Parse(data[3]), int.Parse(data[4])));
+                    Changes.Add(new Changes(int.Parse(data[0]), data[1], PiecesList[int.Parse(data[2])], double.Parse(data[3]), int.Parse(data[4])));
                 }
 
                 file.Close();
@@ -107,40 +104,23 @@ namespace Animator
         }
 
 
-        // Get Functions
 
-        public int GetNumFrames()
-        {
-            return numFrames;
-        }
+        // ----- GENERAL FUNCTIONS -----
 
-        public int GetFrameRate()
-        {
-            return frameRate;
-        }
-
-        public List<Piece> GetPiecesList()
-        {
-            return piecesList;
-        }
-
-        public List<Changes> GetChanges()
-        {
-            return changes;
-        }
-
-
-        // General Functions
+        /// <summary>
+        /// Assigns the original values to all pieces
+        /// in the scene, restarting the scene.
+        /// </summary>
         public void AssignOriginalPositions()
         {
-            foreach (Piece piece in piecesList)
+            foreach (Piece piece in PiecesList)
             {
                 piece.TakeOriginalState();
             }
 
             // Reset partOrder
             partOrder.Clear();
-            partOrder.AddRange(piecesList);
+            partOrder.AddRange(PiecesList);
         }
     }
 }

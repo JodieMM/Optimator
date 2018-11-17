@@ -1,36 +1,48 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Drawing.Drawing2D;
 
 namespace Animator
 {
+    /// <summary>
+    /// Form for creating a scene, indicating how 
+    /// pieces and sets should move over time, applying
+    /// effects and setting other visual components.
+    /// 
+    /// Author Jodie Muller
+    /// </summary>
     public partial class ScenesForm : Form
     {
-        // Initialise Variables
-        List<Piece> piecesList = new List<Piece>();     // Contains ALL pieces, INCLUDING sets (Lone pieces found with piece.GetIsAttached() )
-        List<Set> setList = new List<Set>();            // Contains sets ONLY for saving purposes
-        List<Changes> changes = new List<Changes>();
+        #region Scenes Form Variables
+        private List<Piece> piecesList = new List<Piece>();     // Contains ALL pieces, INCLUDING sets (Lone pieces found with piece.GetIsAttached() )
+        private List<Set> setList = new List<Set>();            // Contains sets ONLY for saving purposes
+        private List<Changes> changes = new List<Changes>();
 
-        int numFrames = 1;
-        int workingFrame = 0;
+        private int numFrames = 1;
+        private int workingFrame = 0;
 
-        Graphics g;
+        private Graphics g;
+        #endregion
 
-        static string scenesFolder = "\\Scenes\\";
 
-
+        /// <summary>
+        /// ScenesForm constructor.
+        /// </summary>
         public ScenesForm()
         {
             InitializeComponent();
         }
 
+
+
+        // ----- OPTIONS MENU BUTTONS -----
+
+        /// <summary>
+        /// Adds the entered piece to the scene.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AddPieceBtn_Click(object sender, EventArgs e)
         {
             try
@@ -50,17 +62,24 @@ namespace Animator
             {
                 MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
             }
-            catch (System.ArgumentOutOfRangeException)
+            catch (ArgumentOutOfRangeException)
             {
                 MessageBox.Show("Suspected outdated file.", "File Indexing Error", MessageBoxButtons.OK);
             }
         }
 
+
+
+        // ----- DRAWING FUNCTIONS -----
+
+        /// <summary>
+        /// Draw the parts onto the screen.
+        /// </summary>
         private void DrawParts()
         {
             // Prepare
             DrawPanel.Refresh();
-            g = this.DrawPanel.CreateGraphics();
+            g = DrawPanel.CreateGraphics();
 
             // Update Originals if needed
             if (workingFrame == 0)
@@ -77,6 +96,9 @@ namespace Animator
                 Utilities.DrawPiece(toDraw, g, true);
             }
         }
+
+
+        // NEEDS UPDATING
 
         private void partsLb_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -108,7 +130,7 @@ namespace Animator
                 }
 
                 // Update Piece
-                piecesList[partsLb.SelectedIndex].Originally.SetR((double)rotationUpDown.Value);
+                piecesList[partsLb.SelectedIndex].Originally.R = (double)rotationUpDown.Value;
 
                 DrawParts();
             }
@@ -129,7 +151,7 @@ namespace Animator
                 }
 
                 // Update Piece
-                piecesList[partsLb.SelectedIndex].Originally.SetT((int)turnUpDown.Value);
+                piecesList[partsLb.SelectedIndex].Originally.T = (int)turnUpDown.Value;
 
                 DrawParts();
             }
@@ -162,7 +184,7 @@ namespace Animator
                 }
 
                 // Update Piece
-                piecesList[partsLb.SelectedIndex].Originally.SetS((int)spinUpDown.Value);
+                piecesList[partsLb.SelectedIndex].Originally.S = (int)spinUpDown.Value;
 
                 DrawParts();
             }
@@ -260,7 +282,7 @@ namespace Animator
             if (partsLb.SelectedIndex != -1)
             {
                 // Update Piece
-                piecesList[partsLb.SelectedIndex].Originally.SetX((int)xUpDown.Value);
+                piecesList[partsLb.SelectedIndex].Originally.X = (int)xUpDown.Value;
 
                 DrawParts();
             }
@@ -271,7 +293,7 @@ namespace Animator
             if (partsLb.SelectedIndex != -1)
             {
                 // Update Piece
-                piecesList[partsLb.SelectedIndex].Originally.SetY((int)yUpDown.Value);
+                piecesList[partsLb.SelectedIndex].Originally.Y = (int)yUpDown.Value;
 
                 DrawParts();
             }
@@ -282,7 +304,7 @@ namespace Animator
             if (partsLb.SelectedIndex != -1)
             {
                 // Update Piece
-                piecesList[partsLb.SelectedIndex].Originally.SetSM((int)sizeUpDown.Value);
+                piecesList[partsLb.SelectedIndex].Originally.SM = (int)sizeUpDown.Value;
 
                 DrawParts();
             }
@@ -309,16 +331,16 @@ namespace Animator
             animationLb.Items.Clear();
             foreach (Changes change in changes)
             {
-                if (workingFrame >= change.GetStartFrame() && workingFrame <= change.GetStartFrame() + change.GetHowLong() - 1)
+                if (workingFrame >= change.StartFrame && workingFrame <= change.StartFrame + change.HowLong - 1)
                 {
                     string summary = "";
-                    if (change.GetPiece().PieceOf != null)
+                    if (change.AffectedPiece.PieceOf != null)
                     {
-                        summary += change.GetPiece().AttachedTo != null ? "** " : "* ";
+                        summary += change.AffectedPiece.AttachedTo != null ? "** " : "* ";
                     }
 
-                    summary += change.GetAction() + " : " + change.GetPiece().Name + " : " + change.GetHowMuch().ToString()
-                        + " : " + (change.GetHowLong() - (workingFrame - change.GetStartFrame())).ToString();
+                    summary += change.Action + " : " + change.AffectedPiece.Name + " : " + change.HowMuch.ToString()
+                        + " : " + (change.HowLong - (workingFrame - change.StartFrame)).ToString();
 
                     animationLb.Items.Add(summary);
                 }
@@ -329,7 +351,7 @@ namespace Animator
         {
             foreach (Changes change in changes)
             {
-                if (workingFrame >= change.GetStartFrame() && workingFrame <= change.GetStartFrame() + change.GetHowLong() - 1)
+                if (workingFrame >= change.StartFrame && workingFrame <= change.StartFrame + change.HowLong - 1)
                 {
                     change.Run(true);
                 }
@@ -353,7 +375,7 @@ namespace Animator
             {
                 foreach (Changes change in changes)
                 {
-                    if (workingFrame >= change.GetStartFrame() + 1 && workingFrame <= change.GetStartFrame() + change.GetHowLong())
+                    if (workingFrame >= change.StartFrame + 1 && workingFrame <= change.StartFrame + change.HowLong)
                     {
                         change.Run(false);
                     }
@@ -395,7 +417,7 @@ namespace Animator
                     {
                         piecesList[index].SceneIndex = index;
 
-                        // If piece is in set
+                        // If piece is in 
                         if (piecesList[index].PieceOf != null)
                         {
                             // If piece is base
@@ -424,12 +446,12 @@ namespace Animator
                     // Save Animation Changes
                     foreach (Changes change in changes)
                     {
-                        file.Add(change.GetStartFrame() + ";" + change.GetAction() + ";" +
-                            change.GetPiece().SceneIndex + ";" + change.GetHowMuch() + ";" + change.GetHowLong());
+                        file.Add(change.StartFrame + ";" + change.Action + ";" +
+                            change.AffectedPiece.SceneIndex + ";" + change.HowMuch + ";" + change.HowLong);
                     }
 
                     // Write to File
-                    Utilities.SaveData(Environment.CurrentDirectory + scenesFolder + sceneNameTb.Text + ".txt", file);
+                    Utilities.SaveData(Environment.CurrentDirectory + Constants.ScenesFolder + sceneNameTb.Text + Constants.Txt, file);
 
                     this.Close();
                 }
@@ -495,7 +517,7 @@ namespace Animator
             // Update Changes
             for (int index = 0; index < changes.Count;)
             {
-                if (!piecesList.Contains(changes[index].GetPiece()))
+                if (!piecesList.Contains(changes[index].AffectedPiece))
                 {
                     changes.RemoveAt(index);
                 }

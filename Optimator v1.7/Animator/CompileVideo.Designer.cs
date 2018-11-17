@@ -30,12 +30,12 @@
         {
             this.components = new System.ComponentModel.Container();
             this.insertPanel = new System.Windows.Forms.Panel();
-            this.saveBtn = new System.Windows.Forms.Button();
+            this.SaveBtn = new System.Windows.Forms.Button();
             this.saveLocationTb = new System.Windows.Forms.TextBox();
-            this.playBtn = new System.Windows.Forms.Button();
-            this.submitScene = new System.Windows.Forms.Button();
+            this.PlayBtn = new System.Windows.Forms.Button();
+            this.SubmitScene = new System.Windows.Forms.Button();
             this.sceneTb = new System.Windows.Forms.TextBox();
-            this.animationTimer = new System.Windows.Forms.Timer(this.components);
+            this.AnimationTimer = new System.Windows.Forms.Timer(this.components);
             this.DrawPanel = new System.Windows.Forms.PictureBox();
             this.insertPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DrawPanel)).BeginInit();
@@ -43,10 +43,10 @@
             // 
             // insertPanel
             // 
-            this.insertPanel.Controls.Add(this.saveBtn);
+            this.insertPanel.Controls.Add(this.SaveBtn);
             this.insertPanel.Controls.Add(this.saveLocationTb);
-            this.insertPanel.Controls.Add(this.playBtn);
-            this.insertPanel.Controls.Add(this.submitScene);
+            this.insertPanel.Controls.Add(this.PlayBtn);
+            this.insertPanel.Controls.Add(this.SubmitScene);
             this.insertPanel.Controls.Add(this.sceneTb);
             this.insertPanel.Dock = System.Windows.Forms.DockStyle.Right;
             this.insertPanel.Location = new System.Drawing.Point(1647, 0);
@@ -54,16 +54,16 @@
             this.insertPanel.Size = new System.Drawing.Size(273, 1241);
             this.insertPanel.TabIndex = 0;
             // 
-            // saveBtn
+            // SaveBtn
             // 
-            this.saveBtn.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.saveBtn.Location = new System.Drawing.Point(30, 826);
-            this.saveBtn.Name = "saveBtn";
-            this.saveBtn.Size = new System.Drawing.Size(202, 66);
-            this.saveBtn.TabIndex = 4;
-            this.saveBtn.Text = "Save";
-            this.saveBtn.UseVisualStyleBackColor = true;
-            this.saveBtn.Click += new System.EventHandler(this.saveBtn_Click);
+            this.SaveBtn.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SaveBtn.Location = new System.Drawing.Point(30, 826);
+            this.SaveBtn.Name = "SaveBtn";
+            this.SaveBtn.Size = new System.Drawing.Size(202, 66);
+            this.SaveBtn.TabIndex = 4;
+            this.SaveBtn.Text = "Save";
+            this.SaveBtn.UseVisualStyleBackColor = true;
+            this.SaveBtn.Click += new System.EventHandler(this.SaveBtn_Click);
             // 
             // saveLocationTb
             // 
@@ -73,27 +73,27 @@
             this.saveLocationTb.Size = new System.Drawing.Size(202, 47);
             this.saveLocationTb.TabIndex = 3;
             // 
-            // playBtn
+            // PlayBtn
             // 
-            this.playBtn.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.playBtn.Location = new System.Drawing.Point(35, 587);
-            this.playBtn.Name = "playBtn";
-            this.playBtn.Size = new System.Drawing.Size(202, 66);
-            this.playBtn.TabIndex = 2;
-            this.playBtn.Text = "Play";
-            this.playBtn.UseVisualStyleBackColor = true;
-            this.playBtn.Click += new System.EventHandler(this.playBtn_Click);
+            this.PlayBtn.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PlayBtn.Location = new System.Drawing.Point(35, 587);
+            this.PlayBtn.Name = "PlayBtn";
+            this.PlayBtn.Size = new System.Drawing.Size(202, 66);
+            this.PlayBtn.TabIndex = 2;
+            this.PlayBtn.Text = "Play";
+            this.PlayBtn.UseVisualStyleBackColor = true;
+            this.PlayBtn.Click += new System.EventHandler(this.PlayBtn_Click);
             // 
-            // submitScene
+            // SubmitScene
             // 
-            this.submitScene.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.submitScene.Location = new System.Drawing.Point(30, 151);
-            this.submitScene.Name = "submitScene";
-            this.submitScene.Size = new System.Drawing.Size(202, 66);
-            this.submitScene.TabIndex = 1;
-            this.submitScene.Text = "Get Scene";
-            this.submitScene.UseVisualStyleBackColor = true;
-            this.submitScene.Click += new System.EventHandler(this.submitScene_Click);
+            this.SubmitScene.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SubmitScene.Location = new System.Drawing.Point(30, 151);
+            this.SubmitScene.Name = "SubmitScene";
+            this.SubmitScene.Size = new System.Drawing.Size(202, 66);
+            this.SubmitScene.TabIndex = 1;
+            this.SubmitScene.Text = "Get Scene";
+            this.SubmitScene.UseVisualStyleBackColor = true;
+            this.SubmitScene.Click += new System.EventHandler(this.SubmitScene_Click);
             // 
             // sceneTb
             // 
@@ -103,9 +103,9 @@
             this.sceneTb.Size = new System.Drawing.Size(202, 47);
             this.sceneTb.TabIndex = 0;
             // 
-            // animationTimer
+            // AnimationTimer
             // 
-            this.animationTimer.Tick += new System.EventHandler(this.animationTimer_Tick);
+            this.AnimationTimer.Tick += new System.EventHandler(this.AnimationTimer_Tick);
             // 
             // DrawPanel
             // 
@@ -135,11 +135,11 @@
         #endregion
 
         private System.Windows.Forms.Panel insertPanel;
-        private System.Windows.Forms.Button submitScene;
+        private System.Windows.Forms.Button SubmitScene;
         private System.Windows.Forms.TextBox sceneTb;
-        private System.Windows.Forms.Button playBtn;
-        private System.Windows.Forms.Timer animationTimer;
-        private System.Windows.Forms.Button saveBtn;
+        private System.Windows.Forms.Button PlayBtn;
+        private System.Windows.Forms.Timer AnimationTimer;
+        private System.Windows.Forms.Button SaveBtn;
         private System.Windows.Forms.TextBox saveLocationTb;
         private System.Windows.Forms.PictureBox DrawPanel;
     }

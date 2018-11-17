@@ -1,34 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace Animator
+﻿namespace Animator
 {
-
     /// <summary>
     /// A class to hold animations changes.
     /// 
     /// Author Jodie Muller
     /// </summary>
-
-
     public class Changes
     {
-        // Initialise Variables
-        private int startFrame;
-        private string action;
-        private Piece affectedPiece;
-        private double howMuch;
-        private int howLong;
-        private string options = null;
+        #region Changes Variables
+        public int StartFrame { get; }
+        public string Action { get; }
+        public Piece AffectedPiece { get; }
+        public double HowMuch { get; }
+        public int HowLong { get; }
+        private readonly string Options = null;
+        #endregion
 
 
+        // ----- CONSTRUCTORS -----
 
         /// <summary>
         /// Generates a Changes instance
@@ -40,11 +29,11 @@ namespace Animator
         /// <param name="howLong">How many frames the change should continue for</param>
         public Changes(int startFrame, string action, Piece affectedPiece, double howMuch, int howLong)
         {
-            this.startFrame = startFrame;
-            this.action = action;
-            this.affectedPiece = affectedPiece;
-            this.howMuch = howMuch;
-            this.howLong = howLong;
+            StartFrame = startFrame;
+            Action = action;
+            AffectedPiece = affectedPiece;
+            HowMuch = howMuch;
+            HowLong = howLong;
         }
 
         /// <summary>
@@ -58,44 +47,23 @@ namespace Animator
         /// <param name="options">Any additional notes for implementation</param>
         public Changes(int startFrame, string action, Piece affectedPiece, double howMuch, int howLong, string options)
         {
-            this.startFrame = startFrame;
-            this.action = action;
-            this.affectedPiece = affectedPiece;
-            this.howMuch = howMuch;
-            this.howLong = howLong;
-            this.options = options;
+            StartFrame = startFrame;
+            Action = action;
+            AffectedPiece = affectedPiece;
+            HowMuch = howMuch;
+            HowLong = howLong;
+            Options = options;
         }
 
-        // Get Functions
 
-        public int GetStartFrame()
-        {
-            return startFrame;
-        }
 
-        public string GetAction()
-        {
-            return action;
-        }
+        // ----- RUN CHANGES -----
 
-        public Piece GetPiece()
-        {
-            return affectedPiece;
-        }
-
-        public double GetHowMuch()
-        {
-            return howMuch;
-        }
-
-        public int GetHowLong()
-        {
-            return howLong;
-        }
-
-        // General Function
-
-        public void Run(Boolean forward)
+        /// <summary>
+        /// Applies the change to the affected piece.
+        /// </summary>
+        /// <param name="forward">Whether the change is being applied or removed</param>
+        public void Run(bool forward)
         {
             // Allow for subtraction/ going back in time
             int multiplier;
@@ -109,29 +77,29 @@ namespace Animator
             }
 
             // Update Parts
-            if (action == "X")
+            if (Action == "X")
             {
-                affectedPiece.X = affectedPiece.GetCoords()[0] + multiplier * howMuch;
+                AffectedPiece.X = AffectedPiece.GetCoords()[0] + multiplier * HowMuch;
             }
-            else if (action == "Y")
+            else if (Action == "Y")
             {
-                affectedPiece.Y = affectedPiece.GetCoords()[1] + multiplier * howMuch;
+                AffectedPiece.Y = AffectedPiece.GetCoords()[1] + multiplier * HowMuch;
             }
-            else if (action == "Rotation")
+            else if (Action == "Rotation")
             {
-                affectedPiece.SetRotation((int)affectedPiece.GetAngles()[0] + multiplier * howMuch);
+                AffectedPiece.SetRotation((int)AffectedPiece.GetAngles()[0] + multiplier * HowMuch);
             }
-            else if (action == "Turn")
+            else if (Action == "Turn")
             {
-                affectedPiece.SetTurn((int)affectedPiece.GetAngles()[1] + multiplier * howMuch);
+                AffectedPiece.SetTurn((int)AffectedPiece.GetAngles()[1] + multiplier * HowMuch);
             }
-            else if (action == "Spin")
+            else if (Action == "Spin")
             {
-                affectedPiece.SetSpin((int)affectedPiece.GetAngles()[2] + multiplier * howMuch);
+                AffectedPiece.SetSpin((int)AffectedPiece.GetAngles()[2] + multiplier * HowMuch);
             }
-            else if (action == "Size")
+            else if (Action == "Size")
             {
-                affectedPiece.SM = affectedPiece.GetSizeMod() + multiplier * howMuch;
+                AffectedPiece.SM = AffectedPiece.GetSizeMod() + multiplier * HowMuch;
             }
         }
     }

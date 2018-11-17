@@ -1,12 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Animator
 {
@@ -17,28 +10,28 @@ namespace Animator
     /// </summary>
     public class Set
     {
-        // Set Variables
+        #region Set Variables
         public string Name { get; set; }
         public List<string> Data { get; set; }
-        List<Piece> piecesList = new List<Piece>();
-        List<int> basePiecesList = new List<int>();
-
+        private List<Piece> piecesList = new List<Piece>();
+        private List<int> basePiecesList = new List<int>();
+        #endregion
 
 
         /// <summary>
         /// Set constructor.
         /// </summary>
-        /// <param name="inName"></param>
+        /// <param name="inName">File name to load</param>
         public Set(string inName)
         {
             Name = inName;
-            Data = Utilities.ReadFile(Environment.CurrentDirectory + Constants.SetsFolder + Name + ".txt");
+            Data = Utilities.ReadFile(Environment.CurrentDirectory + Constants.SetsFolder + Name + Constants.Txt);
             ConvertData();
         }
 
 
 
-        // ----- DATA FUNCTIONS
+        // ----- DATA FUNCTIONS -----
 
         /// <summary>
         /// Used in constructor to create pieces and assign them correct values.

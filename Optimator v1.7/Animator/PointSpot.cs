@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Animator
 {
+    /// <summary>
+    /// A point used for indicating the position
+    /// pieces connect in a set.
+    /// 
+    /// Author Jodie Muller
+    /// </summary>
     public class PointSpot
     {
-        // Point Variables
+        #region Point Variables
         public string Name { get; set; }
         public List<string> Data { get; set; }
         private readonly Piece host;
@@ -21,19 +21,24 @@ namespace Animator
         public double X { get; set; }
         public double Y { get; set; }
         private readonly Color FillColour = Color.Black;
+        #endregion
 
 
         /// <summary>
-        /// Constructs a point and stores relevant data
+        /// Point constructor.
         /// </summary>
-        /// <param name="inName"></param>
-        /// <param name="owner"></param>
+        /// <param name="inName">Point to load</param>
+        /// <param name="owner">Piece point is in reference to</param>
         public PointSpot(string inName, Piece owner)
         {
             Name = inName;
             host = owner;
-            Data = Utilities.ReadFile(Environment.CurrentDirectory + Constants.PointsFolder + Name + ".txt");
+            Data = Utilities.ReadFile(Environment.CurrentDirectory + Constants.PointsFolder + Name + Constants.Txt);
         }
+
+
+
+        // ----- FUNCTIONS -----
 
         /// <summary>
         /// Gets the coordinates of the point based on the host Piece's angles

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace Animator
 {
@@ -23,6 +18,7 @@ namespace Animator
         public static string PiecesFolder => "\\Pieces\\";
         public static string PointsFolder => "\\Points\\";
         public static string SetsFolder => "\\Sets\\";
+        public static string ScenesFolder = "\\Scenes\\";
 
         // Reserved Names
         public static string PieceStructure => "ZPieceScaffold";
@@ -32,7 +28,7 @@ namespace Animator
 
         // Name Validation
         public static string[] ReservedNames = { PieceStructure, PointStructure, SetStructure, WIPName };
-        public static string[] InvalidNames = { "", " ", "Piece Name", "Set Name" };
+        public static string[] InvalidNames = { "", " ", "Piece Name", "Set Name", "Scene Name" };
         public static Regex PermittedName = new Regex(@"^[A-Za-z0-9]+$");
 
         // Characters
@@ -43,5 +39,8 @@ namespace Animator
         // UI Precision
         public static int[] Ranges = new int[] { 0, 3, 5, 7, 9 };
         public static int ClickPrecision = 5;
+
+        // File Extensions
+        public static string Txt => ".txt";
     }
 }

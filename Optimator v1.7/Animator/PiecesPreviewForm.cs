@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Animator
@@ -13,12 +7,18 @@ namespace Animator
     /// <summary>
     /// Displays a rotating/turning view of the piece to get a 3D perspective
     /// of what it will look like.
+    /// 
+    /// Author Jodie Muller
     /// </summary>
     public partial class PiecesPreviewForm : Form
     {
-        // Variables
-        Piece WIP;
-        Graphics g;
+        #region Preview Variables
+        private Piece WIP;
+        private Graphics g;
+        #endregion
+
+
+        // ----- CONSTRUCTOR AND SHOWN -----
 
         /// <summary>
         /// Constructor for the Preview form.

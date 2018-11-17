@@ -1,124 +1,63 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace Animator
+﻿namespace Animator
 {
+    /// <summary>
+    /// Maintains a copy of the original values of a piece.
+    /// 
+    /// Author Jodie Muller
+    /// </summary>
     public class Originals
     {
-        // Initialise Variables
-        Piece piece;
-        double x;
-        double y;
-        double r;
-        double t;
-        double s;
-        double sm;
+        #region Originals Variables
+        public Piece Piece { get; }
+        public double X { get; set; }
+        public double Y { get; set; }
+        public double R { get; set; }
+        public double T { get; set; }
+        public double S { get; set; }
+        public double SM { get; set; }
+        #endregion
 
 
-
+        /// <summary>
+        /// Originals constructor. Keeps a copy of the 
+        /// current (original) state of the provided piece.
+        /// </summary>
+        /// <param name="piece">Piece to keep original copt of</param>
         public Originals(Piece piece)
         {
-            this.piece = piece;
-            x = piece.X;
-            y = piece.Y;
-            r = piece.R;
-            t = piece.T;
-            s = piece.S;
-            sm = piece.SM;
+            Piece = piece;
+            X = piece.X;
+            Y = piece.Y;
+            R = piece.R;
+            T = piece.T;
+            S = piece.S;
+            SM = piece.SM;
             // Colours/Outlines?
             // Attached sets etc?
         }
 
-        // Getters
 
-        public Piece GetPiece()
-        {
-            return piece;
-        }
 
-        public double GetX()
-        {
-            return x;
-        }
+        // ----- GENERAL FUNCTIONS -----
 
-        public double GetY()
-        {
-            return y;
-        }
-
-        public double GetR()
-        {
-            return r;
-        }
-
-        public double GetT()
-        {
-            return t;
-        }
-
-        public double GetS()
-        {
-            return s;
-        }
-
-        public double GetSM()
-        {
-            return sm;
-        }
-
+        /// <summary>
+        /// Returns the piece attributes seperated by colons.
+        /// </summary>
+        /// <returns>Colon-seperated attribute string</returns>
         public string GetSaveData()
         {
-            string data = x + ";" + y + ";" + r + ";" + t + ";" + s + ";" + sm;
-            return data;
+            return X + ";" + Y + ";" + R + ";" + T + ";" + S + ";" + SM;
         }
 
-        // Setters
-
-        public void SetX(double x)
-        {
-            this.x = x;
-        }
-
-        public void SetY(double y)
-        {
-            this.y = y;
-        }
-
-        public void SetR(double r)
-        {
-            this.r = r;
-        }
-
-        public void SetT(double t)
-        {
-            this.t = t;
-        }
-
-        public void SetS(double s)
-        {
-            this.s = s;
-        }
-
-        public void SetSM(double sm)
-        {
-            this.sm = sm;
-        }
-
-        // General Functions
+        /// <summary>
+        /// Compares whether the entered piece matches the
+        /// piece whose data is saved.
+        /// </summary>
+        /// <param name="compare">Piece to check with</param>
+        /// <returns>Whether the two are a match</returns>
         public bool IsMatch(Piece compare)
         {
-            if (piece == compare)
-            {
-                return true;
-            }
-            return false;
+            return (Piece == compare) ? true : false;
         }
     }
 }
