@@ -98,13 +98,13 @@ namespace Animator
                 Piece justAdded = new Piece(AddTb.Text);
                 piecesList.Add(justAdded);
                 justAdded.X = Constants.MidX; justAdded.Y = Constants.MidY;
-                DrawParts();
+                Utilities.DrawPieces(piecesList, g, DrawPanel);
             }
-            catch (System.IO.FileNotFoundException)
+            catch (FileNotFoundException)
             {
                 MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
             }
-            catch (System.ArgumentOutOfRangeException)
+            catch (ArgumentOutOfRangeException)
             {
                 MessageBox.Show("Suspected outdated file.", "File Indexing Error", MessageBoxButtons.OK);
             }
@@ -121,13 +121,13 @@ namespace Animator
             {
                 Set addedSet = new Set(AddTb.Text);
                 piecesList.AddRange(addedSet.GetPiecesList());
-                DrawParts();
+                Utilities.DrawPieces(piecesList, g, DrawPanel);
             }
-            catch (System.IO.FileNotFoundException)
+            catch (FileNotFoundException)
             {
                 MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
             }
-            catch (System.ArgumentOutOfRangeException)
+            catch (ArgumentOutOfRangeException)
             {
                 MessageBox.Show("Suspected outdated file.", "File Indexing Error", MessageBoxButtons.OK);
             }
@@ -141,7 +141,7 @@ namespace Animator
         private void DeleteBtn_Click(object sender, EventArgs e)
         {
             //piecesList.RemoveAt(partsLb.SelectedIndex);
-            DrawParts();
+            Utilities.DrawPieces(piecesList, g, DrawPanel);
         }
 
         /// <summary>
@@ -171,18 +171,6 @@ namespace Animator
 
 
         // ----- OTHER FUNCTIONS -----
-
-        /// <summary>
-        /// Draws the WIP set.
-        /// </summary>
-        private void DrawParts()
-        {
-            // Prepare
-            DrawPanel.Refresh();
-            g = DrawPanel.CreateGraphics();
-
-            Utilities.DrawPieces(piecesList, g);
-        }
 
         /// <summary>
         /// Checks that all added pieces are connected to the set.

@@ -77,10 +77,6 @@ namespace Animator
         /// </summary>
         private void DrawParts()
         {
-            // Prepare
-            DrawPanel.Refresh();
-            g = DrawPanel.CreateGraphics();
-
             // Update Originals if needed
             if (workingFrame == 0)
             {
@@ -91,10 +87,7 @@ namespace Animator
             }
 
             // Draw Parts
-            foreach (Piece toDraw in piecesList)
-            {
-                Utilities.DrawPiece(toDraw, g, true);
-            }
+            Utilities.DrawPieces(piecesList, g, DrawPanel);
         }
 
 

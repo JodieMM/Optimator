@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Drawing.Drawing2D;
+using System.Windows.Forms;
 
 namespace Animator
 {
@@ -146,10 +147,15 @@ namespace Animator
         /// <summary>
         /// Draws all pieces in a list
         /// </summary>
+        /// <param name="DrawPanel">Panel to be drawn on</param>
         /// <param name="piecesList">Pieces to be drawn</param>
-        /// <param name="g">Board to draw to</param>
-        public static void DrawPieces(List<Piece> piecesList, Graphics g)
+        /// <param name="g">Graphics to draw</param>
+        public static void DrawPieces(List<Piece> piecesList, Graphics g, PictureBox DrawPanel)
         {
+            // Prepare
+            DrawPanel.Refresh();
+            g = DrawPanel.CreateGraphics();
+
             // Draw Parts
             for (int index = 0; index < piecesList.Count; index++)
             {
