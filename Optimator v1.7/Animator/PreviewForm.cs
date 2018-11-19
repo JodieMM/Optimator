@@ -10,7 +10,7 @@ namespace Animator
     /// 
     /// Author Jodie Muller
     /// </summary>
-    public partial class PiecesPreviewForm : Form
+    public partial class PreviewForm : Form
     {
         #region Preview Variables
         private Piece WIP;
@@ -23,7 +23,7 @@ namespace Animator
         /// <summary>
         /// Constructor for the Preview form.
         /// </summary>
-        public PiecesPreviewForm(Piece piece)
+        public PreviewForm(Piece piece)
         {
             InitializeComponent();
             WIP = piece;

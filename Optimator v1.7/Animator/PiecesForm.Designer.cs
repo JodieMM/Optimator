@@ -86,13 +86,12 @@
             // 
             // NameTb
             // 
-            this.NameTb.BackColor = System.Drawing.Color.Azure;
-            this.NameTb.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.NameTb.BackColor = System.Drawing.Color.White;
             this.NameTb.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.NameTb.Location = new System.Drawing.Point(15, 15);
             this.NameTb.Margin = new System.Windows.Forms.Padding(6);
             this.NameTb.Name = "NameTb";
-            this.NameTb.Size = new System.Drawing.Size(300, 26);
+            this.NameTb.Size = new System.Drawing.Size(300, 33);
             this.NameTb.TabIndex = 5;
             this.NameTb.Text = "Piece Name";
             // 

@@ -120,7 +120,7 @@ namespace Animator
             try
             {
                 Set addedSet = new Set(AddTb.Text);
-                piecesList.AddRange(addedSet.GetPiecesList());
+                piecesList.AddRange(addedSet.PiecesList);
                 Utilities.DrawPieces(piecesList, g, DrawPanel);
             }
             catch (FileNotFoundException)

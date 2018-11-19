@@ -37,12 +37,15 @@
             this.DrawPanel = new System.Windows.Forms.PictureBox();
             this.OptionsMenu = new System.Windows.Forms.TabControl();
             this.SetPage = new System.Windows.Forms.TabPage();
+            this.ExitBtn = new System.Windows.Forms.Button();
             this.OrderLbl = new System.Windows.Forms.Label();
             this.AddPartLbl = new System.Windows.Forms.Label();
             this.FlipsUpDown = new System.Windows.Forms.NumericUpDown();
             this.FlipsCb = new System.Windows.Forms.CheckBox();
             this.SettingsPage = new System.Windows.Forms.TabPage();
-            this.ExitBtn = new System.Windows.Forms.Button();
+            this.UpBtn = new System.Windows.Forms.Button();
+            this.DownBtn = new System.Windows.Forms.Button();
+            this.OriginalLbl = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.DrawPanel)).BeginInit();
             this.OptionsMenu.SuspendLayout();
             this.SetPage.SuspendLayout();
@@ -65,13 +68,12 @@
             // 
             // NameTb
             // 
-            this.NameTb.BackColor = System.Drawing.Color.Honeydew;
-            this.NameTb.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.NameTb.BackColor = System.Drawing.Color.White;
             this.NameTb.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.NameTb.Location = new System.Drawing.Point(15, 15);
             this.NameTb.Margin = new System.Windows.Forms.Padding(2);
             this.NameTb.Name = "NameTb";
-            this.NameTb.Size = new System.Drawing.Size(178, 26);
+            this.NameTb.Size = new System.Drawing.Size(178, 33);
             this.NameTb.TabIndex = 1;
             this.NameTb.Text = "Set Name";
             // 
@@ -151,6 +153,9 @@
             // SetPage
             // 
             this.SetPage.BackColor = System.Drawing.Color.Honeydew;
+            this.SetPage.Controls.Add(this.OriginalLbl);
+            this.SetPage.Controls.Add(this.UpBtn);
+            this.SetPage.Controls.Add(this.DownBtn);
             this.SetPage.Controls.Add(this.ExitBtn);
             this.SetPage.Controls.Add(this.OrderLbl);
             this.SetPage.Controls.Add(this.AddPartLbl);
@@ -169,11 +174,25 @@
             this.SetPage.TabIndex = 0;
             this.SetPage.Text = "Set";
             // 
+            // ExitBtn
+            // 
+            this.ExitBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ExitBtn.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ExitBtn.Location = new System.Drawing.Point(21, 611);
+            this.ExitBtn.Margin = new System.Windows.Forms.Padding(2);
+            this.ExitBtn.Name = "ExitBtn";
+            this.ExitBtn.Size = new System.Drawing.Size(165, 40);
+            this.ExitBtn.TabIndex = 93;
+            this.ExitBtn.Text = "Exit";
+            this.ExitBtn.UseVisualStyleBackColor = false;
+            this.ExitBtn.Click += new System.EventHandler(this.ExitBtn_Click);
+            // 
             // OrderLbl
             // 
             this.OrderLbl.AutoSize = true;
             this.OrderLbl.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.OrderLbl.Location = new System.Drawing.Point(15, 267);
+            this.OrderLbl.Location = new System.Drawing.Point(15, 434);
             this.OrderLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.OrderLbl.Name = "OrderLbl";
             this.OrderLbl.Size = new System.Drawing.Size(58, 23);
@@ -194,7 +213,7 @@
             // FlipsUpDown
             // 
             this.FlipsUpDown.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FlipsUpDown.Location = new System.Drawing.Point(133, 300);
+            this.FlipsUpDown.Location = new System.Drawing.Point(133, 533);
             this.FlipsUpDown.Margin = new System.Windows.Forms.Padding(2);
             this.FlipsUpDown.Maximum = new decimal(new int[] {
             359,
@@ -209,7 +228,7 @@
             // 
             this.FlipsCb.AutoSize = true;
             this.FlipsCb.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FlipsCb.Location = new System.Drawing.Point(21, 301);
+            this.FlipsCb.Location = new System.Drawing.Point(21, 534);
             this.FlipsCb.Margin = new System.Windows.Forms.Padding(2);
             this.FlipsCb.Name = "FlipsCb";
             this.FlipsCb.Size = new System.Drawing.Size(68, 23);
@@ -227,19 +246,42 @@
             this.SettingsPage.TabIndex = 1;
             this.SettingsPage.Text = "Settings";
             // 
-            // ExitBtn
+            // UpBtn
             // 
-            this.ExitBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ExitBtn.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ExitBtn.Location = new System.Drawing.Point(21, 611);
-            this.ExitBtn.Margin = new System.Windows.Forms.Padding(2);
-            this.ExitBtn.Name = "ExitBtn";
-            this.ExitBtn.Size = new System.Drawing.Size(165, 40);
-            this.ExitBtn.TabIndex = 93;
-            this.ExitBtn.Text = "Exit";
-            this.ExitBtn.UseVisualStyleBackColor = false;
-            this.ExitBtn.Click += new System.EventHandler(this.ExitBtn_Click);
+            this.UpBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.UpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.UpBtn.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpBtn.Location = new System.Drawing.Point(21, 472);
+            this.UpBtn.Margin = new System.Windows.Forms.Padding(2);
+            this.UpBtn.Name = "UpBtn";
+            this.UpBtn.Size = new System.Drawing.Size(165, 40);
+            this.UpBtn.TabIndex = 94;
+            this.UpBtn.Text = "Move Up";
+            this.UpBtn.UseVisualStyleBackColor = false;
+            // 
+            // DownBtn
+            // 
+            this.DownBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.DownBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DownBtn.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DownBtn.Location = new System.Drawing.Point(206, 472);
+            this.DownBtn.Margin = new System.Windows.Forms.Padding(2);
+            this.DownBtn.Name = "DownBtn";
+            this.DownBtn.Size = new System.Drawing.Size(165, 40);
+            this.DownBtn.TabIndex = 95;
+            this.DownBtn.Text = "Move Down";
+            this.DownBtn.UseVisualStyleBackColor = false;
+            // 
+            // OriginalLbl
+            // 
+            this.OriginalLbl.AutoSize = true;
+            this.OriginalLbl.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.OriginalLbl.Location = new System.Drawing.Point(15, 258);
+            this.OriginalLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.OriginalLbl.Name = "OriginalLbl";
+            this.OriginalLbl.Size = new System.Drawing.Size(151, 23);
+            this.OriginalLbl.TabIndex = 96;
+            this.OriginalLbl.Text = "Original Positions";
             // 
             // SetsForm
             // 
@@ -279,5 +321,8 @@
         private System.Windows.Forms.CheckBox FlipsCb;
         private System.Windows.Forms.Label OrderLbl;
         private System.Windows.Forms.Button ExitBtn;
+        private System.Windows.Forms.Button UpBtn;
+        private System.Windows.Forms.Button DownBtn;
+        private System.Windows.Forms.Label OriginalLbl;
     }
 }

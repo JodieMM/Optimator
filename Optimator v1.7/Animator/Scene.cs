@@ -15,7 +15,7 @@ namespace Animator
         #region Scene Variables
         public List<Piece> PiecesList { get; } = new List<Piece>();
         private List<Piece> partOrder = new List<Piece>();
-        public List<Changes> Changes { get; } = new List<Changes>();
+        public List<Change> Changes { get; } = new List<Change>();
 
         public int FrameRate { get; }
         public int NumFrames { get; }
@@ -52,7 +52,7 @@ namespace Animator
                     else
                     {
                         Set newSet = new Set(dataLine.Remove(0, 2));
-                        PiecesList.AddRange(newSet.GetPiecesList());
+                        PiecesList.AddRange(newSet.PiecesList);
                     }
                     dataLine = file.ReadLine();
                 }
@@ -87,7 +87,7 @@ namespace Animator
                 {
                     string[] data = dataLine.Split(Constants.Semi);
                                 // ** TO DO if options: use different initiliser
-                    Changes.Add(new Changes(int.Parse(data[0]), data[1], PiecesList[int.Parse(data[2])], double.Parse(data[3]), int.Parse(data[4])));
+                    Changes.Add(new Change(int.Parse(data[0]), data[1], PiecesList[int.Parse(data[2])], double.Parse(data[3]), int.Parse(data[4])));
                 }
 
                 file.Close();

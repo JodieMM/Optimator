@@ -261,69 +261,6 @@ namespace Animator
 
 
 
-        // ----- SHAPE SURFACE FUNCTIONS -----
-
-        /// <summary>
-        /// Finds all of the coordinates between two points.
-        /// </summary>
-        /// <param name="from">The starting point</param>
-        /// <param name="to">The end point</param>
-        /// <param name="join">How the two points are connected</param>
-        /// <returns>A list of int[] with the point coords</returns>
-        private List<int[]> FindLineCoords(int[] from, int[] to, string join)
-        {
-            // Check shape has volume
-            if (NumCoords < 3) { return null; }
-
-            List<int[]> line = new List<int[]>();
-            double gradient = 1;
-
-            // Switch order so highest (lowest Y value) is 'from'
-            if (from[1] > to[1])
-            {
-                int[] hold = from;
-                from = to;
-                to = hold;
-            }
-
-            // Find Gradient
-            if (join == "line")
-            {
-                gradient = (from[1] - to[1]) / (from[0] - to[0]);
-            }
-            // ** TO DO - CURVES
-
-            // Add point for each Y value
-            line.Add(from);         // 'To' is added as 'from' in the next line.
-
-            for (int index = from[1] + 1; index < to[1]; index++)
-            {
-                line.Add(new int[] { (int)(index * gradient), index });
-            }
-
-            return line;
-        }
-
-        /// <summary>
-        /// Finds the coordinates along the outline of the shape.
-        /// </summary>
-        /// <returns>A list of int[] with the outline coordinates</returns>
-        private List<int[]> FindPieceLines()
-        {
-            List<int[]> line = new List<int[]>();
-            List<double[]> coords = GetCurrentPoints(true, true);
-            List<string> lineArray = GetLineArray(R, T);
-
-            for (int index = 0; index < NumCoords; index++)
-            {
-                line.AddRange(FindLineCoords(new int[] { (int)coords[index][0], (int)coords[index][1] }, new int[] { (int)coords[index + 1][0], (int)coords[index + 1][1] }, lineArray[index]));
-            }
-
-            return line;
-        }
-
-
-
         // ----- OTHER FUNCTIONS -----
 
         /// <summary>

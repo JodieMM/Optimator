@@ -5,7 +5,7 @@
     /// 
     /// Author Jodie Muller
     /// </summary>
-    public class Changes
+    public class Change
     {
         #region Changes Variables
         public int StartFrame { get; }
@@ -27,7 +27,7 @@
         /// <param name="affectedPiece">The piece to be changed</param>
         /// <param name="howMuch">How much the change should occur per </param>
         /// <param name="howLong">How many frames the change should continue for</param>
-        public Changes(int startFrame, string action, Piece affectedPiece, double howMuch, int howLong)
+        public Change(int startFrame, string action, Piece affectedPiece, double howMuch, int howLong)
         {
             StartFrame = startFrame;
             Action = action;
@@ -45,7 +45,7 @@
         /// <param name="howMuch">How much the change should occur per </param>
         /// <param name="howLong">How many frames the change should continue for</param>
         /// <param name="options">Any additional notes for implementation</param>
-        public Changes(int startFrame, string action, Piece affectedPiece, double howMuch, int howLong, string options)
+        public Change(int startFrame, string action, Piece affectedPiece, double howMuch, int howLong, string options)
         {
             StartFrame = startFrame;
             Action = action;

@@ -114,7 +114,7 @@ namespace Animator
             List<Piece> piecesList = baseScene.PiecesList;
 
             // Update Pieces
-            foreach (Changes change in baseScene.Changes)
+            foreach (Change change in baseScene.Changes)
             {
                 if (frameIndex >= change.StartFrame && (frameIndex <= change.StartFrame + change.HowLong - 1))
                 {

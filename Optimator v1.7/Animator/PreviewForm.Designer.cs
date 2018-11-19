@@ -1,6 +1,6 @@
 ﻿namespace Animator
 {
-    partial class PiecesPreviewForm
+    partial class PreviewForm
     {
         /// <summary>
         /// Required designer variable.
@@ -50,7 +50,7 @@
             // 
             // OptionsMenu
             // 
-            this.OptionsMenu.BackColor = System.Drawing.Color.LightCyan;
+            this.OptionsMenu.BackColor = System.Drawing.Color.Honeydew;
             this.OptionsMenu.Controls.Add(this.CloseBtn);
             this.OptionsMenu.Location = new System.Drawing.Point(700, 0);
             this.OptionsMenu.Name = "OptionsMenu";
@@ -59,7 +59,7 @@
             // 
             // CloseBtn
             // 
-            this.CloseBtn.BackColor = System.Drawing.Color.PaleTurquoise;
+            this.CloseBtn.BackColor = System.Drawing.Color.PaleGreen;
             this.CloseBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CloseBtn.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CloseBtn.Location = new System.Drawing.Point(15, 635);
@@ -99,7 +99,7 @@
             // PiecesPreviewForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.BackColor = System.Drawing.Color.PaleTurquoise;
+            this.BackColor = System.Drawing.Color.PaleGreen;
             this.ClientSize = new System.Drawing.Size(900, 700);
             this.Controls.Add(this.TurnTrack);
             this.Controls.Add(this.RotationTrack);

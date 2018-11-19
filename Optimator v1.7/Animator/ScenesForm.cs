@@ -17,12 +17,13 @@ namespace Animator
         #region Scenes Form Variables
         private List<Piece> piecesList = new List<Piece>();     // Contains ALL pieces, INCLUDING sets (Lone pieces found with piece.GetIsAttached() )
         private List<Set> setList = new List<Set>();            // Contains sets ONLY for saving purposes
-        private List<Changes> changes = new List<Changes>();
+        private List<Change> changes = new List<Change>();
 
         private int numFrames = 1;
         private int workingFrame = 0;
 
         private Graphics g;
+        private Piece selected = null;
         #endregion
 
 
@@ -36,7 +37,8 @@ namespace Animator
 
 
 
-        // ----- OPTIONS MENU BUTTONS -----
+        // ----- PARTS TAB -----
+        #region Parts Tab
 
         /// <summary>
         /// Adds the entered piece to the scene.
@@ -49,14 +51,10 @@ namespace Animator
             {
                 // Add piece to lists
                 piecesList.Add(new Piece(NameTb.Text));
-                partsLb.Items.Add(NameTb.Text);
                 piecesList[piecesList.Count - 1].Originally = new Originals(piecesList[piecesList.Count - 1]);
+                selected = piecesList[piecesList.Count - 1];
 
-                partsLb.SelectedIndex = partsLb.Items.Count - 1;
-
-                // Draw the Piece on the Scene
-                DrawParts();
-
+                Utilities.DrawPieces(piecesList, g, DrawPanel);
             }
             catch (System.IO.FileNotFoundException)
             {
@@ -68,261 +66,203 @@ namespace Animator
             }
         }
 
+        /// <summary>
+        /// Adds the entered set to the scene.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void AddSetBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Add pieces to lists
+                setList.Add(new Set(NameTb.Text));
+                piecesList.AddRange(setList[setList.Count - 1].PiecesList);
+                selected = setList[setList.Count - 1].BasePiece;
 
+                // Set Originals
+                foreach (Piece piece in setList[setList.Count - 1].PiecesList)
+                {
+                    piece.Originally = new Originals(piece);
+                }
 
-        // ----- DRAWING FUNCTIONS -----
+                // Draw the Piece on the Scene
+                Utilities.DrawPieces(piecesList, g, DrawPanel);
+            }
+            catch (System.IO.FileNotFoundException)
+            {
+                MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                MessageBox.Show("Suspected outdated file.", "File Indexing Error", MessageBoxButtons.OK);
+            }
+        }
 
         /// <summary>
-        /// Draw the parts onto the screen.
+        /// Moves the selected set or piece upwards in position.
         /// </summary>
-        private void DrawParts()
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void UpBtn_Click(object sender, EventArgs e)
         {
-            // Update Originals if needed
-            if (workingFrame == 0)
-            {
-                foreach (Piece piece in piecesList)
-                {
-                    piece.TakeOriginalState();
-                }
-            }
+            if (selected == null) { return; }
+            int selectedIndex = piecesList.IndexOf(selected);
+            if (selectedIndex == -1 || selectedIndex == piecesList.Count - 1) { return; }
 
-            // Draw Parts
+            // Update piecesList
+            piecesList[selectedIndex] = piecesList[selectedIndex + 1];
+            piecesList[selectedIndex + 1] = selected;
+
             Utilities.DrawPieces(piecesList, g, DrawPanel);
         }
 
-
-        // NEEDS UPDATING
-
-        private void partsLb_SelectedIndexChanged(object sender, EventArgs e)
+        /// <summary>
+        /// Moves the selected set or piece downwards in position.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DownBtn_Click(object sender, EventArgs e)
         {
-            if (partsLb.SelectedIndex != -1)
-            {
-                Piece selected = piecesList[partsLb.SelectedIndex];
-                rotationUpDown.Value = (decimal)selected.R;
-                turnUpDown.Value = (decimal)selected.T;
-                spinUpDown.Value = (decimal)selected.S;
-                xUpDown.Value = (decimal)selected.X;
-                yUpDown.Value = (decimal)selected.Y;
-                sizeUpDown.Value = (decimal)selected.SM;
-                DrawParts();
-            }
+            if (selected == null) { return; }
+            int selectedIndex = piecesList.IndexOf(selected);
+            if (selectedIndex == -1 || selectedIndex == 0) { return; }
+
+            // Update piecesList
+            piecesList[selectedIndex] = piecesList[selectedIndex - 1];
+            piecesList[selectedIndex - 1] = selected;
+
+            Utilities.DrawPieces(piecesList, g, DrawPanel);
         }
 
-        private void rotationUpDown_ValueChanged(object sender, EventArgs e)
+        /// <summary>
+        /// Sets the initial rotation of the selected piece.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RotationUpDown_ValueChanged(object sender, EventArgs e)
         {
-            if (partsLb.SelectedIndex != -1)
-            {
-                // Check for Overflow
-                if (rotationUpDown.Value == 360)
-                {
-                    rotationUpDown.Value = 0;
-                }
-                else if (rotationUpDown.Value == -1)
-                {
-                    rotationUpDown.Value = 359;
-                }
+            if (selected == null) { return; }
 
-                // Update Piece
-                piecesList[partsLb.SelectedIndex].Originally.R = (double)rotationUpDown.Value;
+            // Check for Overflow
+            if (RotationUpDown.Value == 360) { RotationUpDown.Value = 0; }
+            else if (RotationUpDown.Value == -1) { RotationUpDown.Value = 359; }
 
-                DrawParts();
-            }
+            // Update Piece
+            selected.Originally.R = (double)RotationUpDown.Value;
+
+            Utilities.DrawPieces(piecesList, g, DrawPanel);
         }
 
-        private void turnUpDown_ValueChanged(object sender, EventArgs e)
+        /// <summary>
+        /// Sets the initial turn of the selected piece.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TurnUpDown_ValueChanged(object sender, EventArgs e)
         {
-            if (partsLb.SelectedIndex != -1)
-            {
-                // Check for Overflow
-                if (turnUpDown.Value == 360)
-                {
-                    turnUpDown.Value = 0;
-                }
-                else if (turnUpDown.Value == -1)
-                {
-                    turnUpDown.Value = 359;
-                }
+            if (selected == null) { return; }
 
-                // Update Piece
-                piecesList[partsLb.SelectedIndex].Originally.T = (int)turnUpDown.Value;
+            // Check for Overflow
+            if (TurnUpDown.Value == 360) { TurnUpDown.Value = 0; }
+            else if (TurnUpDown.Value == -1) { TurnUpDown.Value = 359; }
 
-                DrawParts();
-            }
+            // Update Piece
+            selected.Originally.T = (int)TurnUpDown.Value;
+
+            Utilities.DrawPieces(piecesList, g, DrawPanel);
         }
 
-        private void DoneBtn_Click(object sender, EventArgs e)
-        {
-            if (animationPanel.Visible)
-            {
-                animationPanel.Visible = false;
-            }
-            else
-            {
-                animationPanel.Visible = true;
-            }
-        }
-
+        /// <summary>
+        /// Sets the initial spin of the selected piece.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SpinUpDown_ValueChanged(object sender, EventArgs e)
         {
-            if (partsLb.SelectedIndex != -1)
-            {
-                // Check for Overflow
-                if (spinUpDown.Value == 360)
-                {
-                    spinUpDown.Value = 0;
-                }
-                else if (spinUpDown.Value == -1)
-                {
-                    spinUpDown.Value = 359;
-                }
+            if (selected == null) { return; }
 
-                // Update Piece
-                piecesList[partsLb.SelectedIndex].Originally.S = (int)spinUpDown.Value;
+            // Check for Overflow
+            if (SpinUpDown.Value == 360) { SpinUpDown.Value = 0; }
+            else if (SpinUpDown.Value == -1) { SpinUpDown.Value = 359; }
 
-                DrawParts();
-            }
+            // Update Piece
+            selected.Originally.S = (int)SpinUpDown.Value;
+
+            Utilities.DrawPieces(piecesList, g, DrawPanel);
         }
 
-        private void upBtn_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Sets the initial X position of the selected piece.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void XUpDown_ValueChanged(object sender, EventArgs e)
         {
-            if (partsLb.SelectedIndex > 0)
-            {
-                // Update piecesList
-                Piece holdingPiece = piecesList[partsLb.SelectedIndex - 1];
-                piecesList[partsLb.SelectedIndex - 1] = piecesList[partsLb.SelectedIndex];
-                piecesList[partsLb.SelectedIndex] = holdingPiece;
+            if (selected == null) { return; }
 
-                // Update partsLb
-                Object holdingObject = partsLb.Items[partsLb.SelectedIndex - 1];
-                partsLb.Items[partsLb.SelectedIndex - 1] = partsLb.Items[partsLb.SelectedIndex];
-                partsLb.Items[partsLb.SelectedIndex] = holdingObject;
+            // Update Piece
+            selected.Originally.X = (int)XUpDown.Value;
 
-                DrawParts();
-            }
+            Utilities.DrawPieces(piecesList, g, DrawPanel);
         }
 
-        private void downBtn_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Sets the initial Y position of the selected piece.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void YUpDown_ValueChanged(object sender, EventArgs e)
         {
-            if (partsLb.SelectedIndex != -1 && partsLb.SelectedIndex < piecesList.Count - 1)
-            {
+            if (selected == null) { return; }
 
-                // Update piecesList
-                Piece holdingPiece = piecesList[partsLb.SelectedIndex + 1];
-                piecesList[partsLb.SelectedIndex + 1] = piecesList[partsLb.SelectedIndex];
-                piecesList[partsLb.SelectedIndex] = holdingPiece;
+            // Update Piece
+            selected.Originally.Y = (int)YUpDown.Value;
 
-                // Update partsLb
-                Object holdingObject = partsLb.Items[partsLb.SelectedIndex + 1];
-                partsLb.Items[partsLb.SelectedIndex + 1] = partsLb.Items[partsLb.SelectedIndex];
-                partsLb.Items[partsLb.SelectedIndex] = holdingObject;
-
-                DrawParts();
-            }
+            Utilities.DrawPieces(piecesList, g, DrawPanel);
         }
 
-        private void deleteBtn_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Sets the initial size modifier of the selected piece.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SizeUpDown_ValueChanged(object sender, EventArgs e)
         {
-            if (partsLb.SelectedIndex != -1)
-            {
-                // If piece is involved in set
-                if (piecesList[partsLb.SelectedIndex].PieceOf != null)
-                {
-                    DialogResult result = MessageBox.Show("This will delete the entire set. Do you wish to continue?",
-                        "Overwrite Confirmation", MessageBoxButtons.YesNo);
-                    if (result == DialogResult.Yes)
-                    {
-                        Set deleting = piecesList[partsLb.SelectedIndex].PieceOf;
-                        setList.Remove(deleting);
+            if (selected == null) { return; }
 
-                        for (int index = 0; index < piecesList.Count;)
-                        {
-                            if (piecesList[index].PieceOf == deleting)
-                            {
-                                piecesList.RemoveAt(index);
-                                partsLb.Items.RemoveAt(partsLb.SelectedIndex);
-                            }
-                            else
-                            {
-                                index++;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        return;
-                    }
-                }
-                else // Piece is lone
-                {
-                    piecesList.RemoveAt(partsLb.SelectedIndex);
-                    partsLb.Items.RemoveAt(partsLb.SelectedIndex);
-                }
+            // Update Piece
+            selected.Originally.SM = (int)SizeUpDown.Value;
 
-                UpdateChanges();
-
-                // Ensure selected index will not overflow
-                if (partsLb.SelectedIndex == partsLb.Items.Count)
-                {
-                    partsLb.SelectedIndex = partsLb.Items.Count - 1;
-                }
-
-                DrawParts();
-            }
+            Utilities.DrawPieces(piecesList, g, DrawPanel);
         }
 
-        private void xUpDown_ValueChanged(object sender, EventArgs e)
-        {
-            if (partsLb.SelectedIndex != -1)
-            {
-                // Update Piece
-                piecesList[partsLb.SelectedIndex].Originally.X = (int)xUpDown.Value;
+        #endregion
 
-                DrawParts();
-            }
+
+
+        // ----- ANIMATIONS TAB -----
+
+        /// <summary>
+        /// Adds a movement/effect to the animations of the scene.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void AddAnimationBtn_Click(object sender, EventArgs e)
+        {
+            if (selected == null) { return; }
+
+            changes.Add(new Change(workingFrame, ChangeTypeCb.Text, selected, (double)AnimationAmountTb.Value, (int)FrameLengthUpDown.Value));
+            UpdateAnimationListbox();
         }
 
-        private void yUpDown_ValueChanged(object sender, EventArgs e)
+        /// <summary>
+        /// Updates the animation listbox to show all current animations.
+        /// </summary>
+        private void UpdateAnimationListbox()
         {
-            if (partsLb.SelectedIndex != -1)
-            {
-                // Update Piece
-                piecesList[partsLb.SelectedIndex].Originally.Y = (int)yUpDown.Value;
-
-                DrawParts();
-            }
-        }
-
-        private void sizeUpDown_ValueChanged(object sender, EventArgs e)
-        {
-            if (partsLb.SelectedIndex != -1)
-            {
-                // Update Piece
-                piecesList[partsLb.SelectedIndex].Originally.SM = (int)sizeUpDown.Value;
-
-                DrawParts();
-            }
-        }
-
-        private void hideBtn_Click(object sender, EventArgs e)
-        {
-            animationPanel.Visible = false;
-        }
-
-        private void addAnimationBtn_Click(object sender, EventArgs e)
-        {
-            if (partsLb.SelectedIndex != -1)
-            {
-                changes.Add(new Changes(workingFrame, changeTypeCb.Text, piecesList[partsLb.SelectedIndex], 
-                    (double)animationAmountTb.Value, (int)frameLengthUpDown.Value));
-            }
-            updateAnimationListbox();
-        }
-
-
-        private void updateAnimationListbox()
-        {
-            animationLb.Items.Clear();
-            foreach (Changes change in changes)
+            AnimationLb.Items.Clear();
+            foreach (Change change in changes)
             {
                 if (workingFrame >= change.StartFrame && workingFrame <= change.StartFrame + change.HowLong - 1)
                 {
@@ -335,14 +275,19 @@ namespace Animator
                     summary += change.Action + " : " + change.AffectedPiece.Name + " : " + change.HowMuch.ToString()
                         + " : " + (change.HowLong - (workingFrame - change.StartFrame)).ToString();
 
-                    animationLb.Items.Add(summary);
+                    AnimationLb.Items.Add(summary);
                 }
             }
         }
 
-        private void nextFrameBtn_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Progresses to the next frame of the animation.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void NextFrameBtn_Click(object sender, EventArgs e)
         {
-            foreach (Changes change in changes)
+            foreach (Change change in changes)
             {
                 if (workingFrame >= change.StartFrame && workingFrame <= change.StartFrame + change.HowLong - 1)
                 {
@@ -350,23 +295,28 @@ namespace Animator
                 }
             }
 
-            DrawParts();
+            Utilities.DrawPieces(piecesList, g, DrawPanel);
 
             // If new, create new frame
             if (numFrames - 1 == workingFrame) { numFrames++; }
 
             workingFrame++;
-            updateAnimationListbox();
+            UpdateAnimationListbox();
 
             // TEMP **
-            sceneNumber.Text = workingFrame.ToString();
+            SceneNumber.Text = workingFrame.ToString();
         }
 
-        private void backBtn_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Returns to the previous frame of the animation.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BackBtn_Click(object sender, EventArgs e)
         {
             if (workingFrame > 0)
             {
-                foreach (Changes change in changes)
+                foreach (Change change in changes)
                 {
                     if (workingFrame >= change.StartFrame + 1 && workingFrame <= change.StartFrame + change.HowLong)
                     {
@@ -374,26 +324,34 @@ namespace Animator
                     }
                 }
 
-                DrawParts();
+                Utilities.DrawPieces(piecesList, g, DrawPanel);
 
                 workingFrame--;
-                updateAnimationListbox();
+                UpdateAnimationListbox();
 
                 // TEMP **
-                sceneNumber.Text = workingFrame.ToString();
+                SceneNumber.Text = workingFrame.ToString();
             }
         }
 
-        private void finishSceneBtn_Click(object sender, EventArgs e)
+
+
+        // ----- SCENE TAB -----
+
+        /// <summary>
+        /// Completes and saves the scene to a file.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void FinishSceneBtn_Click(object sender, EventArgs e)
         {
             // Save as a Scene
-            Boolean doEet = true;
+            bool doEet = true;
             DialogResult result = MessageBox.Show("Do you want to save this scene?", "Save Confirmation", MessageBoxButtons.YesNo);
-            if (result == System.Windows.Forms.DialogResult.No)
+            if (result == DialogResult.No)
             {
                 doEet = false;
             }
-
 
             if (doEet)
             {
@@ -401,9 +359,9 @@ namespace Animator
                 {
                     // Save Data
                     List<string> file = new List<string>();
-                    
+
                     // Save FPS & Number of Frames (Line 1)
-                    file.Add(fpsUpDown.Value + ";" + numFrames);
+                    file.Add(FpsUpDown.Value + ";" + numFrames);
 
                     // Save Parts
                     for (int index = 0; index < piecesList.Count; index++)
@@ -431,20 +389,20 @@ namespace Animator
                     // Save Original States
                     foreach (Piece piece in piecesList)
                     {
-                        file.Add(piece.Originally != null ? piece.SceneIndex + ";" + piece.Originally.GetSaveData() 
+                        file.Add(piece.Originally != null ? piece.SceneIndex + ";" + piece.Originally.GetSaveData()
                             : piece.SceneIndex + ";500;250;0;0;0;100");    // This should never be needed- JIC
-                        
+
                     }
 
                     // Save Animation Changes
-                    foreach (Changes change in changes)
+                    foreach (Change change in changes)
                     {
                         file.Add(change.StartFrame + ";" + change.Action + ";" +
                             change.AffectedPiece.SceneIndex + ";" + change.HowMuch + ";" + change.HowLong);
                     }
 
                     // Write to File
-                    Utilities.SaveData(Environment.CurrentDirectory + Constants.ScenesFolder + sceneNameTb.Text + Constants.Txt, file);
+                    Utilities.SaveData(Environment.CurrentDirectory + Constants.ScenesFolder + SceneNameTb.Text + Constants.Txt, file);
 
                     this.Close();
                 }
@@ -463,98 +421,68 @@ namespace Animator
             }
         }
 
-        private void switchSidesBtn2_Click(object sender, EventArgs e)
-        {
-            if (animationPanel.Location.X == 0)
-            {
-                animationPanel.Location = new Point(this.Width - 16 - animationPanel.Width, 0);
-            }
-            else
-            {
-                animationPanel.Location = new Point(0, 0);
-            }
-            DrawParts();
-        }
 
-        private void switchSidesBtn1_Click(object sender, EventArgs e)
-        {
-            if (partsPanel.Location.X == 0)
-            {
-                partsPanel.Location = new Point(this.Width - 16 - partsPanel.Width, 0);
-            }
-            else
-            {
-                partsPanel.Location = new Point(0, 0);
-            }
-            DrawParts();
-        }
 
-        private void AnimationPanelBtn_Click(object sender, EventArgs e)
-        {
-            animationPanel.Visible = true;
-            partsPanel.Visible = false;
-        }
+        // ----- NEEDS UPDATING -----
 
-        private void partsPanelBtn_Click(object sender, EventArgs e)
+        // Should be run on click of screen
+        /*
+        private void PartsLb_SelectedIndexChanged(object sender, EventArgs e)
         {
-            animationPanel.Visible = false;
-            partsPanel.Visible = true;
-        }
+            RotationUpDown.Value = (decimal)selected.R;
+            TurnUpDown.Value = (decimal)selected.T;
+            SpinUpDown.Value = (decimal)selected.S;
+            XUpDown.Value = (decimal)selected.X;
+            YUpDown.Value = (decimal)selected.Y;
+            SizeUpDown.Value = (decimal)selected.SM;
+            // ** Update outline
+            Utilities.DrawPieces(piecesList, g, DrawPanel);
+        }*/
 
-        /// <summary>
-        /// Checks if any Changes have been made invalid/unnecessary due
-        /// to the deletion of a piece and removes them if so.
-        /// </summary>
-        private void UpdateChanges()
+        // Should be on delete key press
+        /*
+        private void DeleteBtn_Click(object sender, EventArgs e)
         {
-            // Update Changes
-            for (int index = 0; index < changes.Count;)
+            if (selected == null) { return; }
+
+            // If piece is involved in set
+            if (selected.PieceOf != null)
             {
-                if (!piecesList.Contains(changes[index].AffectedPiece))
+                DialogResult result = MessageBox.Show("This will delete the entire set. Do you wish to continue?",
+                    "Overwrite Confirmation", MessageBoxButtons.YesNo);
+
+                if (result == DialogResult.Yes)
                 {
-                    changes.RemoveAt(index);
+                    Set deleting = selected.PieceOf;
+                    setList.Remove(deleting);
+                    foreach (Piece piece in piecesList)
+                    {
+                        if (piece.PieceOf == deleting)
+                        {
+                            piecesList.Remove(piece);
+                        }
+                    }
                 }
                 else
                 {
-                    index++;
+                    return;
                 }
             }
-        }
-
-        private void AddSetBtn_Click(object sender, EventArgs e)
-        {
-            try
+            else // Piece is lone
             {
-                // Add pieces to lists
-                setList.Add(new Set(NameTb.Text));
-                piecesList.AddRange(setList[setList.Count - 1].GetPiecesList());
-                foreach (Piece piece in setList[setList.Count - 1].GetPiecesList())
+                piecesList.Remove(selected);
+            }
+
+            foreach (Change change in changes)
+            {
+                if (!piecesList.Contains(change.AffectedPiece))
                 {
-                    if (piece.AttachedTo != null)
-                    {
-                        partsLb.Items.Add("* " + piece.Name);
-                    }
-                    else
-                    {
-                        partsLb.Items.Add("** " + piece.Name);
-                    }
-                    piece.Originally = new Originals(piece);
+                    changes.Remove(change);
                 }
-
-                partsLb.SelectedIndex = partsLb.Items.Count - 1;
-
-                // Draw the Piece on the Scene
-                DrawParts();
-
             }
-            catch (System.IO.FileNotFoundException)
-            {
-                MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
-            }
-            catch (System.ArgumentOutOfRangeException)
-            {
-                MessageBox.Show("Suspected outdated file.", "File Indexing Error", MessageBoxButtons.OK);
-            }
-        }
+
+            selected = null;
+            Utilities.DrawPieces(piecesList, g, DrawPanel);
+        }*/
     }
 }

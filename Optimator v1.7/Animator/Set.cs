@@ -11,10 +11,11 @@ namespace Animator
     public class Set
     {
         #region Set Variables
-        public string Name { get; set; }
-        public List<string> Data { get; set; }
-        private List<Piece> piecesList = new List<Piece>();
-        private List<int> basePiecesList = new List<int>();
+        public string Name { get; }
+        public List<string> Data { get; }
+        public List<Piece> PiecesList { get; } = new List<Piece>();
+        public List<int> BasePiecesList { get; } = new List<int>();
+        public Piece BasePiece { get; }
         #endregion
 
 
@@ -46,12 +47,12 @@ namespace Animator
                 Piece WIP = new Piece(dataSections[0]);
                 
                 // If piece is not base
-                if (index > 0)   //piecesList.Count
+                if (index > 0)   //PiecesList.Count
                 {
-                    WIP.AttachToPiece(piecesList[int.Parse(dataSections[2])], new PointSpot(dataSections[3], piecesList[int.Parse(dataSections[2])]), 
+                    WIP.AttachToPiece(PiecesList[int.Parse(dataSections[2])], new PointSpot(dataSections[3], PiecesList[int.Parse(dataSections[2])]), 
                         new PointSpot(dataSections[1], WIP), bool.Parse(dataSections[10]), double.Parse(dataSections[11]));
 
-                    basePiecesList.Add(int.Parse(dataSections[2]));
+                    BasePiecesList.Add(int.Parse(dataSections[2]));
 
                     // Set x, y, rotation, turn, spin and sizeMod
                     WIP.SetValues(double.Parse(dataSections[4]), double.Parse(dataSections[5]), double.Parse(dataSections[6]),
@@ -61,7 +62,7 @@ namespace Animator
                 // If piece is base
                 else
                 {
-                    basePiecesList.Add(-1);
+                    BasePiecesList.Add(-1);
 
                     // Set x, y, rotation, turn, spin and sizeMod
                     WIP.SetValues(double.Parse(dataSections[1]), double.Parse(dataSections[2]), double.Parse(dataSections[3]),
@@ -69,7 +70,7 @@ namespace Animator
                 }
 
                 WIP.PieceOf = this;
-                piecesList.Add(WIP);
+                PiecesList.Add(WIP);
 
             }
         }
@@ -80,28 +81,6 @@ namespace Animator
         public void CreateData()
         {
 
-        }
-
-
-
-        // ----- GET FUNCTIONS -----
-
-        /// <summary>
-        /// Returns the list of pieces that make up the set.
-        /// </summary>
-        /// <returns>List of pieces.</returns>
-        public List<Piece> GetPiecesList()
-        {
-            return piecesList;
-        }
-
-        /// <summary>
-        /// Gets the base piece indexes.
-        /// </summary>
-        /// <returns>List of base piece indexes</returns>
-        public List<int> GetBasePiecesList()
-        {
-            return basePiecesList;
-        }        
+        }    
     }
 }
