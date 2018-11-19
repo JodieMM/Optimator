@@ -17,6 +17,7 @@ namespace Animator
     public partial class ScenesForm : Form
     {
         #region Scenes Form Variables
+        //private Scene WIP = new Scene(Constants.SceneStructure);
         private List<Piece> piecesList = new List<Piece>();
         private List<Change> changes = new List<Change>();
 

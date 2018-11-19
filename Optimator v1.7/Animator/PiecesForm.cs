@@ -638,5 +638,335 @@ namespace Animator
             tMoving = false;
             movingFar = false;
         }
+
+
+
+        // ----- TO INCLUDE/ REDO -----
+        #region WIP
+        /*
+        private void AlphaUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            UpdateColours();
+        }
+
+        private void RedUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            UpdateColours();
+        }
+
+        private void GreenUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            UpdateColours();
+        }
+
+        private void BlueUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            UpdateColours();
+        }
+
+        private void UpdateColours()
+        {
+            if (OutlineRb.Checked == true)
+            {
+                WIP.SetOutlineColour(Color.FromArgb((int)AlphaUpDown.Value, (int)RedUpDown.Value, (int)GreenUpDown.Value, (int)BlueUpDown.Value));
+            }
+            else
+            {
+                // ALLOW FOR GRADIENTS      ** TO DO **
+                WIP.SetFillColour(new Color[] { Color.FromArgb((int)AlphaUpDown.Value, (int)RedUpDown.Value, (int)GreenUpDown.Value, (int)BlueUpDown.Value) });
+            }
+            DrawPoints();
+        }
+
+        private void FillRb_CheckedChanged(object sender, EventArgs e)
+        {
+            if (FillRb.Checked == true)
+            {
+                int[] coloursHold = new int[] { WIP.GetFillColour()[0].A, WIP.GetFillColour()[0].R, WIP.GetFillColour()[0].G, WIP.GetFillColour()[0].B };
+                AlphaUpDown.Value = coloursHold[0];
+                RedUpDown.Value = coloursHold[1];
+                GreenUpDown.Value = coloursHold[2];
+                BlueUpDown.Value = coloursHold[3];
+                label8.ForeColor = Color.Black;
+                label10.ForeColor = Color.Black;
+                midFillCb.ForeColor = Color.Black;
+                midFillCb.Enabled = true;
+                numColUpDown.Enabled = true;
+                gradAngleUpDown.Enabled = true;
+            }
+            DrawPoints();
+        }
+
+        private void OutlineRb_CheckedChanged(object sender, EventArgs e)
+        {
+            if (OutlineRb.Checked == true)
+            {
+                int[] coloursHold = new int[] { WIP.GetOutlineColour().A, WIP.GetOutlineColour().R, WIP.GetOutlineColour().G, WIP.GetOutlineColour().B };
+                AlphaUpDown.Value = coloursHold[0];
+                RedUpDown.Value = coloursHold[1];
+                GreenUpDown.Value = coloursHold[2];
+                BlueUpDown.Value = coloursHold[3];
+                label8.ForeColor = Color.DimGray;
+                label10.ForeColor = Color.DimGray;
+                midFillCb.ForeColor = Color.DimGray;
+                midFillCb.Enabled = false;
+                numColUpDown.Enabled = false;
+                gradAngleUpDown.Enabled = false;
+            }
+            DrawPoints();
+        }
+
+        private void Joins_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (PointsLb.SelectedIndex != -1)
+            {
+                joins[PointsLb.SelectedIndex] = (string)JoinOptions.SelectedItem;
+            }
+        }
+
+        private void FixedCb_CheckedChanged(object sender, EventArgs e)
+        {
+            if (PointsLb.SelectedIndex != -1)
+            {
+                solid[PointsLb.SelectedIndex] = (FixedCb.Checked == true) ? "s" : "f";
+            }
+
+        }
+
+        private void rFromUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            // Test Range Fair
+            if (rFromUpDown.Value > rToUpDown.Value)
+            {
+                decimal hold = rFromUpDown.Value;
+                rFromUpDown.Value = rToUpDown.Value;
+                rToUpDown.Value = hold;
+            }
+        }
+
+        private void OutlineWidthUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            WIP.SetOutlineWidth((int)OutlineWidthUpDown.Value);
+            DrawPoints();
+        }
+
+        private void sketchBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                sketch.Add(new Piece(loadTb.Text));
+                if (pointCb.Checked == true)
+                {
+                    sketchBtn.Enabled = false;
+                }
+                DrawPoints();
+            }
+            catch (System.IO.FileNotFoundException)        // ** ADD IN ERROR IF SET CHOSEN **
+            {
+                MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
+            }
+        }
+
+        private void pointCb_CheckedChanged(object sender, EventArgs e)
+        {
+            Boolean doEet = true;
+
+            if (pointCb.Checked == true)
+            {
+                // Confirm Intention
+                if (PointsLb.Items.Count > 1)
+                {
+                    DialogResult result = MessageBox.Show("Points will be lost. Do you wish to continue?", "Change Confirmation", MessageBoxButtons.YesNo);
+                    if (result == System.Windows.Forms.DialogResult.No)
+                    {
+                        doEet = false;
+                        pointCb.Checked = false;
+                    }
+                }
+
+                // Prepare LB, Enables/disables
+                if (doEet)
+                {
+                    //Remove excess points from listbox
+                    foreach (Object lbpoint in PointsLb.Items)
+                    {
+                        if (lbpoint != PointsLb.Items[0])
+                        {
+                            PointsLb.Items.Remove(lbpoint);
+                        }
+                    }
+
+                    //Remove excess points from original/rotated/turned
+                    if (original.Count > 0)
+                    {
+                        double[] holder = original[0];
+                        original.Clear();
+                        original.Add(holder);
+                    }
+                    if (rotated.Count > 0)
+                    {
+                        double[] holder = rotated[0];
+                        rotated.Clear();
+                        rotated.Add(holder);
+                    }
+                    if (turned.Count > 0)
+                    {
+                        double[] holder = turned[0];
+                        turned.Clear();
+                        turned.Add(holder);
+                    }
+
+                    //If no point exists, add one (as adding functions are now disabled to prevent adding multiple points)
+                    if (PointsLb.Items.Count == 0)
+                    {
+                        AddPoint(400, 400);
+                    }
+
+                    loadBtn.Enabled = false;
+                    AddPointBtn.Enabled = false;
+                    DeleteBtn.Enabled = false;
+                    JoinOptions.Enabled = false;
+
+                    folder = pointsFolder;
+                    WIP = new Piece(tempPoint, folder);
+
+
+                    // ** POTENTIAL TO SAVE EXISTING DATA IS HERE BUT LOST
+                }
+
+                // Disable Piece Settings
+                FillRb.Enabled = false;
+                OutlineRb.Enabled = false;
+                label6.Enabled = false;
+                label1.Enabled = false;
+                label2.Enabled = false;
+                label3.Enabled = false;
+                AlphaUpDown.Enabled = false;
+                RedUpDown.Enabled = false;
+                GreenUpDown.Enabled = false;
+                BlueUpDown.Enabled = false;
+                label8.Enabled = false;
+                label10.Enabled = false;
+                numColUpDown.Enabled = false;
+                gradAngleUpDown.Enabled = false;
+                label4.Enabled = false;
+                wrUpDown.Enabled = false;
+                label11.Enabled = false;
+                midFillCb.Enabled = false;
+                label15.Enabled = false;
+                OutlineWidthUpDown.Enabled = false;
+            }
+            else
+            {
+                folder = piecesFolder;
+                WIP = new Piece(tempPiece);
+
+                sketchBtn.Enabled = true;
+                loadBtn.Enabled = true;
+                AddPointBtn.Enabled = true;
+                DeleteBtn.Enabled = true;
+                JoinOptions.Enabled = true;
+
+                // Enable Piece Settings
+                FillRb.Enabled = true;
+                OutlineRb.Enabled = true;
+                label6.Enabled = true;
+                label1.Enabled = true;
+                label2.Enabled = true;
+                label3.Enabled = true;
+                AlphaUpDown.Enabled = true;
+                RedUpDown.Enabled = true;
+                GreenUpDown.Enabled = true;
+                BlueUpDown.Enabled = true;
+                label8.Enabled = true;
+                label10.Enabled = true;
+                numColUpDown.Enabled = true;
+                gradAngleUpDown.Enabled = true;
+                label4.Enabled = true;
+                wrUpDown.Enabled = true;
+                label11.Enabled = true;
+                midFillCb.Enabled = true;
+                label15.Enabled = true;
+                OutlineWidthUpDown.Enabled = true;
+            }
+
+            DrawPoints();
+        }
+
+        private void loadBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                new Piece(loadTb.Text);
+                PiecesForm_LoadMenu loadForm = new PiecesForm_LoadMenu(this);
+                //loadForm.Size = new System.Drawing.Size(875, 750);
+                loadForm.Show();
+            }
+            catch (System.IO.FileNotFoundException) // ** SET ERROR **
+            {
+                MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
+            }
+        }
+
+        private void nextBtn_Click(object sender, EventArgs e)
+        {
+            Boolean doEet = true;
+            if (rFromUpDown.Value == rToUpDown.Value || tFromUpDown.Value == tToUpDown.Value)
+            {
+                DialogResult result = MessageBox.Show("Rotation or Turn unchanged. Is this intentional?", "Input Confirmation", MessageBoxButtons.YesNo);
+                if (result == System.Windows.Forms.DialogResult.No)
+                {
+                    doEet = false;
+                }
+            }
+            // CHECK FOR OVERRIDING AND CONFIRM INTENTION ** TO DO
+            // CHECK FOR NO CHANGE TO ROTATION / TURN AND CHECK INTENTION ** TO DO
+            if (doEet)
+            {
+                // Fill in blank data before continuing
+                if (rotated.Count == 0)
+                {
+                    rotated.AddRange(original);
+                }
+                if (turned.Count == 0)
+                {
+                    turned.AddRange(original);
+                }
+
+                // Get values from holding arrays
+                string save = ConvertCurrentAngle();
+
+                // Add to piece data
+                WIP.ReplaceDataLine(save);
+
+                // Change Provided Angles and Points
+                if (rToUpDown.Value == 360)
+                {
+                    rFromUpDown.Value = 0;
+                    rToUpDown.Value = 0;
+                    tFromUpDown.Value = tToUpDown.Value;
+                }
+                else
+                {
+                    rFromUpDown.Value = rToUpDown.Value;
+                }
+
+                // Clear Angles and Reset
+                turned.Clear();
+                rotated.Clear();
+                original.Clear();
+                angleType = "base";
+                WIP.AddDataLine("000:000;000:000;;;;;");
+                ResetOriginal();
+                DrawPoints();
+            }
+        }
+
+        private void wrUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            WIP.SetPieceDetails("wr" + wrUpDown.Value);
+        }
+        */
+        #endregion
     }
 }

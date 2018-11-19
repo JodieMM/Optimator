@@ -24,6 +24,7 @@ namespace Animator
         public static string PieceStructure => "ZPieceScaffold";
         public static string PointStructure => "ZPointScaffold";
         public static string SetStructure => "ZSetScaffold";
+        public static string SceneStructure => "ZSceneScaffold";
         public static string WIPName => "ZWIP";
 
         // Name Validation
