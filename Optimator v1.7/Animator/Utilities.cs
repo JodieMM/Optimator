@@ -310,7 +310,7 @@ namespace Animator
 
 
         // ----- SHAPE SURFACE FUNCTIONS -----
-
+        #region WORK IN PROGRESS
         /// <summary>
         /// Finds all of the coordinates between two points.
         /// </summary>
@@ -431,9 +431,11 @@ namespace Animator
             return -1;
         }
 
-        public static int FindClickedSelection(List<Piece> piecesList)
+        public static int FindClickedSelection(List<Piece> piecesList, int x, int y)
         {
-            return 0;
+            return -1;
         }
+
+        #endregion
     }
 }

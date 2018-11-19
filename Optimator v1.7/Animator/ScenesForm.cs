@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using System.IO;
+using System.Linq;
 
 namespace Animator
 {
@@ -15,8 +17,7 @@ namespace Animator
     public partial class ScenesForm : Form
     {
         #region Scenes Form Variables
-        private List<Piece> piecesList = new List<Piece>();     // Contains ALL pieces, INCLUDING sets (Lone pieces found with piece.GetIsAttached() )
-        private List<Set> setList = new List<Set>();            // Contains sets ONLY for saving purposes
+        private List<Piece> piecesList = new List<Piece>();
         private List<Change> changes = new List<Change>();
 
         private int numFrames = 1;
@@ -33,6 +34,8 @@ namespace Animator
         public ScenesForm()
         {
             InitializeComponent();
+            DrawPanel.KeyDown += KeyPress;
+            DrawPanel.MouseDown += new MouseEventHandler(DrawPanel_MouseDown);
         }
 
 
@@ -76,20 +79,19 @@ namespace Animator
             try
             {
                 // Add pieces to lists
-                setList.Add(new Set(NameTb.Text));
-                piecesList.AddRange(setList[setList.Count - 1].PiecesList);
-                selected = setList[setList.Count - 1].BasePiece;
+                Set newbie = new Set(NameTb.Text);
+                piecesList.AddRange(newbie.PiecesList);
+                selected = newbie.BasePiece;
 
                 // Set Originals
-                foreach (Piece piece in setList[setList.Count - 1].PiecesList)
+                foreach (Piece piece in newbie.PiecesList)
                 {
                     piece.Originally = new Originals(piece);
                 }
 
-                // Draw the Piece on the Scene
                 Utilities.DrawPieces(piecesList, g, DrawPanel);
             }
-            catch (System.IO.FileNotFoundException)
+            catch (FileNotFoundException)
             {
                 MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
             }
@@ -302,8 +304,6 @@ namespace Animator
 
             workingFrame++;
             UpdateAnimationListbox();
-
-            // TEMP **
             SceneNumber.Text = workingFrame.ToString();
         }
 
@@ -314,24 +314,21 @@ namespace Animator
         /// <param name="e"></param>
         private void BackBtn_Click(object sender, EventArgs e)
         {
-            if (workingFrame > 0)
+            if (workingFrame <= 0) { return; }
+
+            foreach (Change change in changes)
             {
-                foreach (Change change in changes)
+                if (workingFrame >= change.StartFrame + 1 && workingFrame <= change.StartFrame + change.HowLong)
                 {
-                    if (workingFrame >= change.StartFrame + 1 && workingFrame <= change.StartFrame + change.HowLong)
-                    {
-                        change.Run(false);
-                    }
+                    change.Run(false);
                 }
-
-                Utilities.DrawPieces(piecesList, g, DrawPanel);
-
-                workingFrame--;
-                UpdateAnimationListbox();
-
-                // TEMP **
-                SceneNumber.Text = workingFrame.ToString();
             }
+
+            Utilities.DrawPieces(piecesList, g, DrawPanel);
+
+            workingFrame--;
+            UpdateAnimationListbox();
+            SceneNumber.Text = workingFrame.ToString();
         }
 
 
@@ -345,29 +342,38 @@ namespace Animator
         /// <param name="e"></param>
         private void FinishSceneBtn_Click(object sender, EventArgs e)
         {
-            // Save as a Scene
-            bool doEet = true;
-            DialogResult result = MessageBox.Show("Do you want to save this scene?", "Save Confirmation", MessageBoxButtons.YesNo);
-            if (result == DialogResult.No)
+            // Check Name is Valid for Saving
+            if (Constants.InvalidNames.Contains(NameTb.Text) || !Constants.PermittedName.IsMatch(NameTb.Text))
             {
-                doEet = false;
+                MessageBox.Show("Please choose a valid name for your piece. Name can only include letters and numbers.", "Name Invalid", MessageBoxButtons.OK);
             }
-
-            if (doEet)
+            else if (Constants.ReservedNames.Contains(NameTb.Text))
             {
+                MessageBox.Show("This name is reserved. Please choose a new name for your piece.", "Name Reserved", MessageBoxButtons.OK);
+            }
+            // Name is Valid
+            else
+            {
+                // Check name not already in use, or that overriding is okay
+                DialogResult result = DialogResult.Yes;
+                if (File.Exists(Utilities.GetDirectory(Constants.PiecesFolder, NameTb.Text)))
+                {
+                    result = MessageBox.Show("This name is already in use. Do you want to override the existing piece?", "Override Confirmation", MessageBoxButtons.YesNo);
+                }
+                if (result == DialogResult.No) { return; }
+
                 try
                 {
                     // Save Data
-                    List<string> file = new List<string>();
-
-                    // Save FPS & Number of Frames (Line 1)
-                    file.Add(FpsUpDown.Value + ";" + numFrames);
+                    List<string> file = new List<string>
+                    {
+                        // Save FPS & Number of Frames (Line 1)
+                        FpsUpDown.Value + ";" + numFrames
+                    };
 
                     // Save Parts
                     for (int index = 0; index < piecesList.Count; index++)
                     {
-                        piecesList[index].SceneIndex = index;
-
                         // If piece is in 
                         if (piecesList[index].PieceOf != null)
                         {
@@ -383,106 +389,116 @@ namespace Animator
                         }
                     }
 
-                    // Write Original States Notifier
-                    file.Add("Originals");
-
                     // Save Original States
+                    file.Add("Originals");
                     foreach (Piece piece in piecesList)
                     {
-                        file.Add(piece.Originally != null ? piece.SceneIndex + ";" + piece.Originally.GetSaveData()
-                            : piece.SceneIndex + ";500;250;0;0;0;100");    // This should never be needed- JIC
-
+                        file.Add(piece.Originally != null ? ";" + piece.Originally.GetSaveData() : ";500;250;0;0;0;100");
                     }
 
                     // Save Animation Changes
                     foreach (Change change in changes)
                     {
                         file.Add(change.StartFrame + ";" + change.Action + ";" +
-                            change.AffectedPiece.SceneIndex + ";" + change.HowMuch + ";" + change.HowLong);
+                            piecesList.IndexOf(change.AffectedPiece) + ";" + change.HowMuch + ";" + change.HowLong);
                     }
 
-                    // Write to File
                     Utilities.SaveData(Environment.CurrentDirectory + Constants.ScenesFolder + SceneNameTb.Text + Constants.Txt, file);
-
-                    this.Close();
+                    Close();
                 }
-                catch (System.IO.FileNotFoundException)
+                catch (FileNotFoundException)
                 {
                     MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
                 }
             }
-            else
-            {
-                DialogResult query = MessageBox.Show("Do you wish to exit without saving?", "Exit Confirmation", MessageBoxButtons.YesNo);
-                if (query == System.Windows.Forms.DialogResult.Yes)
-                {
-                    this.Close();
-                }
-            }
+        }
+
+        /// <summary>
+        /// Closes the form.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ExitBtn_Click(object sender, EventArgs e)
+        {
+            if (piecesList.Count == 0) { Close(); return; } // If nothing to save, exit without confirmation
+            DialogResult query = MessageBox.Show("Do you wish to exit without saving?", "Exit Confirmation", MessageBoxButtons.YesNo);
+            if (query == DialogResult.Yes) { Close(); }
         }
 
 
 
-        // ----- NEEDS UPDATING -----
+        // ----- DRAW PANEL I/O -----
 
-        // Should be run on click of screen
-        /*
-        private void PartsLb_SelectedIndexChanged(object sender, EventArgs e)
+        /// <summary>
+        /// Selects a piece if it is clicked on.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DrawPanel_MouseDown(object sender, MouseEventArgs e)
         {
+            // Update old selected outline
+            if (selected != null) { selected.OutlineColour = selected.Originally.OC; }
+
+            // Choose and Update Selected Piece (If Any)
+            int selectedIndex = Utilities.FindClickedSelection(piecesList, e.X, e.Y);
+            if (selectedIndex == -1) { return; }
+            selected = piecesList[selectedIndex];
+            selected.OutlineColour = Color.Red;
+
+            // Update UI
             RotationUpDown.Value = (decimal)selected.R;
             TurnUpDown.Value = (decimal)selected.T;
             SpinUpDown.Value = (decimal)selected.S;
             XUpDown.Value = (decimal)selected.X;
             YUpDown.Value = (decimal)selected.Y;
             SizeUpDown.Value = (decimal)selected.SM;
-            // ** Update outline
+
             Utilities.DrawPieces(piecesList, g, DrawPanel);
-        }*/
+        }
 
-        // Should be on delete key press
-        /*
-        private void DeleteBtn_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Runs when a key is pressed.
+        /// If delete is pressed and a piece is selected, it will be deleted.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private new void KeyPress(object sender, KeyEventArgs e)
         {
-            if (selected == null) { return; }
-
-            // If piece is involved in set
-            if (selected.PieceOf != null)
+            // Delete selected shape
+            if (e.KeyCode == Keys.Delete)
             {
-                DialogResult result = MessageBox.Show("This will delete the entire set. Do you wish to continue?",
-                    "Overwrite Confirmation", MessageBoxButtons.YesNo);
+                if (selected == null) { return; }
 
-                if (result == DialogResult.Yes)
+                // If piece is involved in set
+                if (selected.PieceOf != null)
                 {
+                    DialogResult result = MessageBox.Show("This will delete the entire set. Do you wish to continue?",
+                        "Overwrite Confirmation", MessageBoxButtons.YesNo);
+                    if (result == DialogResult.No) { return; }
+
                     Set deleting = selected.PieceOf;
-                    setList.Remove(deleting);
-                    foreach (Piece piece in piecesList)
+                    foreach (Piece piece in deleting.PiecesList)
                     {
-                        if (piece.PieceOf == deleting)
-                        {
-                            piecesList.Remove(piece);
-                        }
+                        piecesList.Remove(piece);
                     }
                 }
-                else
+                else // Piece is lone
                 {
-                    return;
+                    piecesList.Remove(selected);
                 }
-            }
-            else // Piece is lone
-            {
-                piecesList.Remove(selected);
-            }
 
-            foreach (Change change in changes)
-            {
-                if (!piecesList.Contains(change.AffectedPiece))
+                // Update changes to remove those made redundant by deleting a piece/set
+                foreach (Change change in changes)
                 {
-                    changes.Remove(change);
+                    if (!piecesList.Contains(change.AffectedPiece))
+                    {
+                        changes.Remove(change);
+                    }
                 }
-            }
 
-            selected = null;
-            Utilities.DrawPieces(piecesList, g, DrawPanel);
-        }*/
+                selected = null;
+                Utilities.DrawPieces(piecesList, g, DrawPanel);
+            }
+        }
     }
 }

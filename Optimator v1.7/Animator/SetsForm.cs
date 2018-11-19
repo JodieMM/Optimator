@@ -18,6 +18,8 @@ namespace Animator
         private Graphics g;
         private List<Piece> piecesList = new List<Piece>();
         private Set WIP = new Set(Constants.SetStructure);
+        private Piece selected = null;
+        private Color selectedOC;
         #endregion
 
 
@@ -27,11 +29,13 @@ namespace Animator
         public SetsForm()
         {
             InitializeComponent();
+            DrawPanel.KeyDown += KeyPress;
+            DrawPanel.MouseDown += new MouseEventHandler(DrawPanel_MouseDown);
         }
 
 
 
-        // ----- SET BUTTONS -----
+        // ----- SET TAB -----
 
         /// <summary>
         /// Saves the set and/or closes the form.
@@ -65,23 +69,22 @@ namespace Animator
                 {
                     result = MessageBox.Show("This name is already in use. Do you want to override the existing set?", "Override Confirmation", MessageBoxButtons.YesNo);
                 }
+                if (result == DialogResult.No) { return; }
+
                 // Save Set and Close Form
-                if (result == DialogResult.Yes)
+                try
                 {
-                    try
-                    {
-                        WIP.CreateData();
-                        Utilities.SaveData(Utilities.GetDirectory(Constants.SetsFolder, NameTb.Text), WIP.Data);
-                        Close();
-                    }
-                    catch (FileNotFoundException)
-                    {
-                        MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
-                    }
-                    catch (ArgumentOutOfRangeException)
-                    {
-                        MessageBox.Show("No data entered for point.", "Missing Data", MessageBoxButtons.OK);
-                    }
+                    WIP.CreateData();
+                    Utilities.SaveData(Utilities.GetDirectory(Constants.SetsFolder, NameTb.Text), WIP.Data);
+                    Close();
+                }
+                catch (FileNotFoundException)
+                {
+                    MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    MessageBox.Show("No data entered for point.", "Missing Data", MessageBoxButtons.OK);
                 }
             }
         }
@@ -98,6 +101,8 @@ namespace Animator
                 Piece justAdded = new Piece(AddTb.Text);
                 piecesList.Add(justAdded);
                 justAdded.X = Constants.MidX; justAdded.Y = Constants.MidY;
+                selected = justAdded;
+                selectedOC = selected.OutlineColour;
                 Utilities.DrawPieces(piecesList, g, DrawPanel);
             }
             catch (FileNotFoundException)
@@ -121,6 +126,8 @@ namespace Animator
             {
                 Set addedSet = new Set(AddTb.Text);
                 piecesList.AddRange(addedSet.PiecesList);
+                selected = addedSet.BasePiece;
+                selectedOC = selected.OutlineColour;
                 Utilities.DrawPieces(piecesList, g, DrawPanel);
             }
             catch (FileNotFoundException)
@@ -131,17 +138,6 @@ namespace Animator
             {
                 MessageBox.Show("Suspected outdated file.", "File Indexing Error", MessageBoxButtons.OK);
             }
-        }
-
-        /// <summary>
-        /// Deletes a piece or set from the WIP set.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void DeleteBtn_Click(object sender, EventArgs e)
-        {
-            //piecesList.RemoveAt(partsLb.SelectedIndex);
-            Utilities.DrawPieces(piecesList, g, DrawPanel);
         }
 
         /// <summary>
@@ -165,8 +161,57 @@ namespace Animator
 
 
 
-        // ----- SETTINGS BUTTONS -----
-        // **TO DO 
+        // ----- SETTINGS TAB -----
+
+
+
+        // ----- DRAW PANEL I/O -----
+
+        /// <summary>
+        /// Selects a piece if it is clicked on.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DrawPanel_MouseDown(object sender, MouseEventArgs e)
+        {
+            // Update old selected outline
+            if (selected != null) { selected.OutlineColour = selectedOC; }
+
+            // Choose and Update Selected Piece (If Any)
+            int selectedIndex = Utilities.FindClickedSelection(piecesList, e.X, e.Y);
+            if (selectedIndex == -1) { return; }
+            selected = piecesList[selectedIndex];
+            selectedOC = selected.OutlineColour;
+            selected.OutlineColour = Color.Red;
+
+            // Update UI
+            /*RotationUpDown.Value = (decimal)selected.R;
+            TurnUpDown.Value = (decimal)selected.T;
+            SpinUpDown.Value = (decimal)selected.S;
+            XUpDown.Value = (decimal)selected.X;
+            YUpDown.Value = (decimal)selected.Y;
+            SizeUpDown.Value = (decimal)selected.SM;*/
+
+            Utilities.DrawPieces(piecesList, g, DrawPanel);
+        }
+
+        /// <summary>
+        /// Runs when a key is pressed.
+        /// If delete is pressed and a piece is selected, it will be deleted.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private new void KeyPress(object sender, KeyEventArgs e)
+        {
+            // Delete selected piece
+            if (e.KeyCode == Keys.Delete)
+            {
+                if (selected == null) { return; }
+                piecesList.Remove(selected);
+                selected = null;
+                Utilities.DrawPieces(piecesList, g, DrawPanel);
+            }
+        }
 
 
 
@@ -200,28 +245,25 @@ namespace Animator
         private List<string> GetSaveData()
         {
             List<string> returnData = new List<string>();
-            for (int index = 0; index < piecesList.Count; index++)
+            foreach (Piece piece in piecesList)
             {
-                string pieceData = piecesList[index].Name + ";";
+                bool notBase = WIP.BasePiece != piece;
+                string pieceData = piece.Name + ";";
 
-                if (index != 0)
+                if (notBase)
                 {
-                    pieceData += piecesList[index].OwnPoint.Name + ";" + piecesList.IndexOf(piecesList[index].AttachedTo)
-                        + ";" + piecesList[index].AttachPoint.Name + ";"; 
+                    pieceData += piece.OwnPoint.Name + ";" + piecesList.IndexOf(piece.AttachedTo)
+                        + ";" + piece.AttachPoint.Name + ";";
                 }
 
-                //Save actual x, y, r, t, s and sm values
-                double[] realData = new double[] {piecesList[index].X, piecesList[index].Y, piecesList[index].R,
-                    piecesList[index].T, piecesList[index].S, piecesList[index].SM };
-                pieceData += realData[0] + ";" + realData[1] + ";" + realData[2] + ";" + realData[3] 
-                    + ";" + realData[4] + ";" + realData[5];
+                // Save Piece Attributes
+                pieceData += piece.X + ";" + piece.Y + ";" + piece.R + ";" + piece.T + ";" + piece.S + ";" + piece.SM;
 
                 // Save flip values
-                if (index != 0)
+                if (notBase)
                 {
-                    pieceData += ";" + piecesList[index].InFront + ";" + piecesList[index].AngleFlip;
+                    pieceData += ";" + piece.InFront + ";" + piece.AngleFlip;
                 }
-
                 returnData.Add(pieceData);
             }
             return returnData;
@@ -232,50 +274,6 @@ namespace Animator
         // ----- TO UPDATE -----
         #region To Update
         /*
-        private void partsLb_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (partsLb.SelectedIndex != -1)
-            {
-                // Enable/Disable points
-                SelectionChange();
-
-                Piece highlightedPiece = piecesList[partsLb.SelectedIndex];
-
-                // Assign Values to Match
-
-                // Textboxes
-                if (highlightedPiece.GetIsAttached())
-                {
-                    basePointTb.Text = highlightedPiece.AttachPoint.Name;
-                    joinPointTb.Text = highlightedPiece.OwnPoint.Name;
-                    basePieceTb.Text = piecesList.IndexOf(highlightedPiece.AttachedTo).ToString();
-                }
-                else
-                {
-                    basePointTb.Text = "Point";
-                    joinPointTb.Text = "Point";
-                    basePieceTb.Text = "Index";
-                }
-
-                // InitUpDowns
-                xInitUpDown.Value = (decimal)highlightedPiece.X;
-                yInitUpDown.Value = (decimal)highlightedPiece.Y;
-                rotInitUpDown.Value = (decimal)highlightedPiece.R;
-                turnInitUpDown.Value = (decimal)highlightedPiece.T;
-                spinInitUpDown.Value = (decimal)highlightedPiece.S;
-                sizeInitUpDown.Value = (decimal)highlightedPiece.SM;
-            }
-
-            try
-            {
-                DrawParts();
-            }
-            catch (System.ArgumentOutOfRangeException)
-            {
-                MessageBox.Show("Suspected outdated file.", "File Indexing Error", MessageBoxButtons.OK);
-            }
-        }
-
         private void loadPointsBtn_Click(object sender, EventArgs e)
         {
             if (partsLb.SelectedIndex != -1 && basePointTb.Text != "" && joinPointTb.Text != "" && basePieceTb.Text != "-1")

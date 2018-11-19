@@ -68,6 +68,7 @@ namespace Animator
 
 
         // ----- DRAWING BOARDS -----
+        #region Drawing Boards I/O
 
         /// <summary>
         /// Places or selects a point on the main board
@@ -320,6 +321,8 @@ namespace Animator
             }
         }
 
+        #endregion
+
 
 
         // ----- MAIN BUTTONS -----
@@ -400,24 +403,22 @@ namespace Animator
                 {
                     result = MessageBox.Show("This name is already in use. Do you want to override the existing piece?", "Override Confirmation", MessageBoxButtons.YesNo);
                 }
+                if (result == DialogResult.No) { return; }
 
                 // Save Piece and Close Form
-                if (result == DialogResult.Yes)
+                try
                 {
-                    try
-                    {
-                        ApplySegmentFully();
-                        Utilities.SaveData(Utilities.GetDirectory(Constants.PiecesFolder, NameTb.Text), WIP.Data);
-                        Close();
-                    }
-                    catch (FileNotFoundException)
-                    {
-                        MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
-                    }
-                    catch (ArgumentOutOfRangeException)
-                    {
-                        MessageBox.Show("No data entered for point", "Missing Data", MessageBoxButtons.OK);
-                    }
+                    ApplySegmentFully();
+                    Utilities.SaveData(Utilities.GetDirectory(Constants.PiecesFolder, NameTb.Text), WIP.Data);
+                    Close();
+                }
+                catch (FileNotFoundException)
+                {
+                    MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    MessageBox.Show("No data entered for point", "Missing Data", MessageBoxButtons.OK);
                 }
             }
         }

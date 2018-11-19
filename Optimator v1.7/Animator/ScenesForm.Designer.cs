@@ -65,8 +65,9 @@
             this.AddPieceBtn = new System.Windows.Forms.Button();
             this.AnimationTab = new System.Windows.Forms.TabPage();
             this.SceneTab = new System.Windows.Forms.TabPage();
-            this.FinishSceneBtn = new System.Windows.Forms.Button();
             this.SceneTb = new System.Windows.Forms.TextBox();
+            this.FinishSceneBtn = new System.Windows.Forms.Button();
+            this.ExitBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.FrameLengthUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.FpsUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.AnimationAmountTb)).BeginInit();
@@ -589,6 +590,7 @@
             // SceneTab
             // 
             this.SceneTab.BackColor = System.Drawing.Color.LemonChiffon;
+            this.SceneTab.Controls.Add(this.ExitBtn);
             this.SceneTab.Controls.Add(this.SceneTb);
             this.SceneTab.Controls.Add(this.FinishSceneBtn);
             this.SceneTab.Location = new System.Drawing.Point(4, 27);
@@ -597,21 +599,6 @@
             this.SceneTab.Size = new System.Drawing.Size(202, 669);
             this.SceneTab.TabIndex = 1;
             this.SceneTab.Text = "Scene";
-            // 
-            // FinishSceneBtn
-            // 
-            this.FinishSceneBtn.BackColor = System.Drawing.Color.Khaki;
-            this.FinishSceneBtn.FlatAppearance.BorderSize = 0;
-            this.FinishSceneBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.FinishSceneBtn.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FinishSceneBtn.ForeColor = System.Drawing.Color.Black;
-            this.FinishSceneBtn.Location = new System.Drawing.Point(10, 606);
-            this.FinishSceneBtn.Margin = new System.Windows.Forms.Padding(2);
-            this.FinishSceneBtn.Name = "FinishSceneBtn";
-            this.FinishSceneBtn.Size = new System.Drawing.Size(182, 50);
-            this.FinishSceneBtn.TabIndex = 21;
-            this.FinishSceneBtn.Text = "Finish Scene";
-            this.FinishSceneBtn.UseVisualStyleBackColor = false;
             // 
             // SceneTb
             // 
@@ -623,6 +610,36 @@
             this.SceneTb.Size = new System.Drawing.Size(182, 33);
             this.SceneTb.TabIndex = 22;
             this.SceneTb.Text = "Scene Name";
+            // 
+            // FinishSceneBtn
+            // 
+            this.FinishSceneBtn.BackColor = System.Drawing.Color.Khaki;
+            this.FinishSceneBtn.FlatAppearance.BorderSize = 0;
+            this.FinishSceneBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.FinishSceneBtn.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FinishSceneBtn.ForeColor = System.Drawing.Color.Black;
+            this.FinishSceneBtn.Location = new System.Drawing.Point(10, 550);
+            this.FinishSceneBtn.Margin = new System.Windows.Forms.Padding(2);
+            this.FinishSceneBtn.Name = "FinishSceneBtn";
+            this.FinishSceneBtn.Size = new System.Drawing.Size(182, 50);
+            this.FinishSceneBtn.TabIndex = 21;
+            this.FinishSceneBtn.Text = "Finish Scene";
+            this.FinishSceneBtn.UseVisualStyleBackColor = false;
+            // 
+            // ExitBtn
+            // 
+            this.ExitBtn.BackColor = System.Drawing.Color.Khaki;
+            this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ExitBtn.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ExitBtn.ForeColor = System.Drawing.Color.Black;
+            this.ExitBtn.Location = new System.Drawing.Point(10, 610);
+            this.ExitBtn.Margin = new System.Windows.Forms.Padding(2);
+            this.ExitBtn.Name = "ExitBtn";
+            this.ExitBtn.Size = new System.Drawing.Size(182, 50);
+            this.ExitBtn.TabIndex = 23;
+            this.ExitBtn.Text = "Exit";
+            this.ExitBtn.UseVisualStyleBackColor = false;
+            this.ExitBtn.Click += new System.EventHandler(this.ExitBtn_Click);
             // 
             // ScenesForm
             // 
@@ -698,5 +715,6 @@
         private System.Windows.Forms.TabPage SceneTab;
         private System.Windows.Forms.Button FinishSceneBtn;
         private System.Windows.Forms.TextBox SceneTb;
+        private System.Windows.Forms.Button ExitBtn;
     }
 }

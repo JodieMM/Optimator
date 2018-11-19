@@ -1,4 +1,6 @@
-﻿namespace Animator
+﻿using System.Drawing;
+
+namespace Animator
 {
     /// <summary>
     /// Maintains a copy of the original values of a piece.
@@ -15,6 +17,9 @@
         public double T { get; set; }
         public double S { get; set; }
         public double SM { get; set; }
+        public Color OC { get; set; }
+        public Color[] FC { get; set; }
+        public string CT { get; set; }
         #endregion
 
 
@@ -32,8 +37,9 @@
             T = piece.T;
             S = piece.S;
             SM = piece.SM;
-            // Colours/Outlines?
-            // Attached sets etc?
+            OC = piece.OutlineColour;
+            FC = piece.FillColour;
+            CT = piece.ColourType;
         }
 
 

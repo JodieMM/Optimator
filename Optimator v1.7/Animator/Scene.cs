@@ -31,7 +31,6 @@ namespace Animator
         {
             try
             {
-                // Read and assign
                 // Open File
                 string filePath = Environment.CurrentDirectory + Constants.ScenesFolder + fileName + Constants.Txt;
                 System.IO.StreamReader file = new System.IO.StreamReader(@filePath);
@@ -57,47 +56,36 @@ namespace Animator
                     dataLine = file.ReadLine();
                 }
 
-                // Set Part Order
-                for (int index = 0; index < PiecesList.Count; index++)
-                {
-                    PiecesList[index].SceneIndex = index;
-                }
-
                 // Assign Original States
-                bool found = false;
-                for (int index = 0; index < PiecesList.Count; index++)      // piecesList.Count is the same as the number of lines to read
+                foreach (Piece piece in PiecesList)
                 {
                     dataLines = file.ReadLine().Split(Constants.Semi);
-                    found = false;
-                    for (int i = 0; index < PiecesList.Count && !found; index++)
-                    {
-                        if (PiecesList[i].SceneIndex == int.Parse(dataLines[0]))
-                        {
-                            PiecesList[i].SetValues(double.Parse(dataLines[1]), double.Parse(dataLines[2]), double.Parse(dataLines[3]), 
+                    piece.SetValues(double.Parse(dataLines[1]), double.Parse(dataLines[2]), double.Parse(dataLines[3]),
                                 double.Parse(dataLines[4]), double.Parse(dataLines[5]), double.Parse(dataLines[6]));
-                            PiecesList[i].Originally = new Originals(PiecesList[i]);
-                            found = true;
-                        }
-                    }
+                    piece.Originally = new Originals(piece);
                 }
-
 
                 // Read frame changes
                 while ((dataLine = file.ReadLine()) != null)
                 {
                     string[] data = dataLine.Split(Constants.Semi);
-                                // ** TO DO if options: use different initiliser
-                    Changes.Add(new Change(int.Parse(data[0]), data[1], PiecesList[int.Parse(data[2])], double.Parse(data[3]), int.Parse(data[4])));
+                    if (data.Length == 5) 
+                    {
+                        Changes.Add(new Change(int.Parse(data[0]), data[1], PiecesList[int.Parse(data[2])], double.Parse(data[3]), int.Parse(data[4])));
+                    }
+                    else
+                    {
+                        Changes.Add(new Change(int.Parse(data[0]), data[1], PiecesList[int.Parse(data[2])], double.Parse(data[3]), int.Parse(data[4]), data[5]));
+                    }
                 }
 
                 file.Close();
-
             }
             catch (System.IO.FileNotFoundException)
             {
                 MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
             }
-            catch (System.ArgumentOutOfRangeException)
+            catch (ArgumentOutOfRangeException)
             {
                 MessageBox.Show("Suspected outdated file.", "File Indexing Error", MessageBoxButtons.OK);
             }

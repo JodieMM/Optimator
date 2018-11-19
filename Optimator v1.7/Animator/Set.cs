@@ -14,8 +14,7 @@ namespace Animator
         public string Name { get; }
         public List<string> Data { get; }
         public List<Piece> PiecesList { get; } = new List<Piece>();
-        public List<int> BasePiecesList { get; } = new List<int>();
-        public Piece BasePiece { get; }
+        public Piece BasePiece { get; set; }
         #endregion
 
 
@@ -42,36 +41,27 @@ namespace Animator
             for (int index = 0; index < Data.Count; index++)
             {
                 string[] dataSections = Data[index].Split(Constants.Semi);
-
-                // New Piece
                 Piece WIP = new Piece(dataSections[0]);
-                
-                // If piece is not base
-                if (index > 0)   //PiecesList.Count
+                if (dataSections.Length == 7) { BasePiece = WIP; }
+
+                if (BasePiece == WIP)
                 {
                     WIP.AttachToPiece(PiecesList[int.Parse(dataSections[2])], new PointSpot(dataSections[3], PiecesList[int.Parse(dataSections[2])]), 
                         new PointSpot(dataSections[1], WIP), bool.Parse(dataSections[10]), double.Parse(dataSections[11]));
 
-                    BasePiecesList.Add(int.Parse(dataSections[2]));
-
-                    // Set x, y, rotation, turn, spin and sizeMod
+                    // Set Attributes
                     WIP.SetValues(double.Parse(dataSections[4]), double.Parse(dataSections[5]), double.Parse(dataSections[6]),
                         double.Parse(dataSections[7]), double.Parse(dataSections[8]), double.Parse(dataSections[9]));
-
                 }
-                // If piece is base
                 else
                 {
-                    BasePiecesList.Add(-1);
-
-                    // Set x, y, rotation, turn, spin and sizeMod
+                    // Set Attributes
                     WIP.SetValues(double.Parse(dataSections[1]), double.Parse(dataSections[2]), double.Parse(dataSections[3]),
                         double.Parse(dataSections[4]), double.Parse(dataSections[5]), double.Parse(dataSections[6]));
                 }
 
-                WIP.PieceOf = this;
+                WIP.PieceOf.Add(this);
                 PiecesList.Add(WIP);
-
             }
         }
 

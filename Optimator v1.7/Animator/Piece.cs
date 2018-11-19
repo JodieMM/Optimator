@@ -37,13 +37,12 @@ namespace Animator
         public Piece AttachedTo { get; set; } = null;
         public PointSpot AttachPoint { get; set; } = null;
         public PointSpot OwnPoint { get; set; } = null;
-        public Set PieceOf { get; set; } = null;
+        public Set PieceOf { get; set; }
         // Set Ordering
         public bool InFront { get; set; } = true;
         public double AngleFlip { get; set; } = -1;
 
-        // Scenes
-        public int SceneIndex { get; set; } = -1;
+        //Scenes
         public Originals Originally { get; set; } = null;
         #endregion
 

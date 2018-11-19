@@ -32,20 +32,19 @@
             this.NameTb = new System.Windows.Forms.TextBox();
             this.AddSetBtn = new System.Windows.Forms.Button();
             this.AddTb = new System.Windows.Forms.TextBox();
-            this.DeleteBtn = new System.Windows.Forms.Button();
             this.AddPieceBtn = new System.Windows.Forms.Button();
             this.DrawPanel = new System.Windows.Forms.PictureBox();
             this.OptionsMenu = new System.Windows.Forms.TabControl();
             this.SetPage = new System.Windows.Forms.TabPage();
+            this.OriginalLbl = new System.Windows.Forms.Label();
+            this.UpBtn = new System.Windows.Forms.Button();
+            this.DownBtn = new System.Windows.Forms.Button();
             this.ExitBtn = new System.Windows.Forms.Button();
             this.OrderLbl = new System.Windows.Forms.Label();
             this.AddPartLbl = new System.Windows.Forms.Label();
             this.FlipsUpDown = new System.Windows.Forms.NumericUpDown();
             this.FlipsCb = new System.Windows.Forms.CheckBox();
             this.SettingsPage = new System.Windows.Forms.TabPage();
-            this.UpBtn = new System.Windows.Forms.Button();
-            this.DownBtn = new System.Windows.Forms.Button();
-            this.OriginalLbl = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.DrawPanel)).BeginInit();
             this.OptionsMenu.SuspendLayout();
             this.SetPage.SuspendLayout();
@@ -101,20 +100,6 @@
             this.AddTb.TabIndex = 69;
             this.AddTb.Text = "Item Name";
             // 
-            // DeleteBtn
-            // 
-            this.DeleteBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.DeleteBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DeleteBtn.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DeleteBtn.Location = new System.Drawing.Point(21, 192);
-            this.DeleteBtn.Margin = new System.Windows.Forms.Padding(2);
-            this.DeleteBtn.Name = "DeleteBtn";
-            this.DeleteBtn.Size = new System.Drawing.Size(350, 40);
-            this.DeleteBtn.TabIndex = 30;
-            this.DeleteBtn.Text = "Delete";
-            this.DeleteBtn.UseVisualStyleBackColor = false;
-            this.DeleteBtn.Click += new System.EventHandler(this.DeleteBtn_Click);
-            // 
             // AddPieceBtn
             // 
             this.AddPieceBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
@@ -166,13 +151,49 @@
             this.SetPage.Controls.Add(this.NameTb);
             this.SetPage.Controls.Add(this.AddPieceBtn);
             this.SetPage.Controls.Add(this.AddSetBtn);
-            this.SetPage.Controls.Add(this.DeleteBtn);
             this.SetPage.Location = new System.Drawing.Point(4, 27);
             this.SetPage.Name = "SetPage";
             this.SetPage.Padding = new System.Windows.Forms.Padding(3);
             this.SetPage.Size = new System.Drawing.Size(392, 669);
             this.SetPage.TabIndex = 0;
             this.SetPage.Text = "Set";
+            // 
+            // OriginalLbl
+            // 
+            this.OriginalLbl.AutoSize = true;
+            this.OriginalLbl.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.OriginalLbl.Location = new System.Drawing.Point(15, 198);
+            this.OriginalLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.OriginalLbl.Name = "OriginalLbl";
+            this.OriginalLbl.Size = new System.Drawing.Size(151, 23);
+            this.OriginalLbl.TabIndex = 96;
+            this.OriginalLbl.Text = "Original Positions";
+            // 
+            // UpBtn
+            // 
+            this.UpBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.UpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.UpBtn.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpBtn.Location = new System.Drawing.Point(21, 472);
+            this.UpBtn.Margin = new System.Windows.Forms.Padding(2);
+            this.UpBtn.Name = "UpBtn";
+            this.UpBtn.Size = new System.Drawing.Size(165, 40);
+            this.UpBtn.TabIndex = 94;
+            this.UpBtn.Text = "Move Up";
+            this.UpBtn.UseVisualStyleBackColor = false;
+            // 
+            // DownBtn
+            // 
+            this.DownBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.DownBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DownBtn.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DownBtn.Location = new System.Drawing.Point(206, 472);
+            this.DownBtn.Margin = new System.Windows.Forms.Padding(2);
+            this.DownBtn.Name = "DownBtn";
+            this.DownBtn.Size = new System.Drawing.Size(165, 40);
+            this.DownBtn.TabIndex = 95;
+            this.DownBtn.Text = "Move Down";
+            this.DownBtn.UseVisualStyleBackColor = false;
             // 
             // ExitBtn
             // 
@@ -246,43 +267,6 @@
             this.SettingsPage.TabIndex = 1;
             this.SettingsPage.Text = "Settings";
             // 
-            // UpBtn
-            // 
-            this.UpBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.UpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.UpBtn.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpBtn.Location = new System.Drawing.Point(21, 472);
-            this.UpBtn.Margin = new System.Windows.Forms.Padding(2);
-            this.UpBtn.Name = "UpBtn";
-            this.UpBtn.Size = new System.Drawing.Size(165, 40);
-            this.UpBtn.TabIndex = 94;
-            this.UpBtn.Text = "Move Up";
-            this.UpBtn.UseVisualStyleBackColor = false;
-            // 
-            // DownBtn
-            // 
-            this.DownBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.DownBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DownBtn.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownBtn.Location = new System.Drawing.Point(206, 472);
-            this.DownBtn.Margin = new System.Windows.Forms.Padding(2);
-            this.DownBtn.Name = "DownBtn";
-            this.DownBtn.Size = new System.Drawing.Size(165, 40);
-            this.DownBtn.TabIndex = 95;
-            this.DownBtn.Text = "Move Down";
-            this.DownBtn.UseVisualStyleBackColor = false;
-            // 
-            // OriginalLbl
-            // 
-            this.OriginalLbl.AutoSize = true;
-            this.OriginalLbl.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.OriginalLbl.Location = new System.Drawing.Point(15, 258);
-            this.OriginalLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.OriginalLbl.Name = "OriginalLbl";
-            this.OriginalLbl.Size = new System.Drawing.Size(151, 23);
-            this.OriginalLbl.TabIndex = 96;
-            this.OriginalLbl.Text = "Original Positions";
-            // 
             // SetsForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -308,7 +292,6 @@
         #endregion
         private System.Windows.Forms.TextBox NameTb;
         private System.Windows.Forms.Button DoneBtn;
-        private System.Windows.Forms.Button DeleteBtn;
         private System.Windows.Forms.Button AddPieceBtn;
         private System.Windows.Forms.TextBox AddTb;
         private System.Windows.Forms.Button AddSetBtn;
