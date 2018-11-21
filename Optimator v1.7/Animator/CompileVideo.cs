@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Animator
@@ -41,7 +43,7 @@ namespace Animator
         /// <param name="e"></param>
         private void SubmitScene_Click(object sender, EventArgs e)
         {
-            videoScenes.Add(new Scene(sceneTb.Text));
+            videoScenes.Add(new Scene(SceneTb.Text));
             numFrames += videoScenes[videoScenes.Count - 1].NumFrames;
         }
 
@@ -66,16 +68,33 @@ namespace Animator
         /// <param name="e"></param>
         private void SaveBtn_Click(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show("Do you want to save this video?", "Save Confirmation", MessageBoxButtons.YesNo);
-            if (result == DialogResult.Yes)
+            // Check Name is Valid for Saving
+            if (Constants.InvalidNames.Contains(NameTb.Text) || !Constants.PermittedName.IsMatch(NameTb.Text))
             {
+                MessageBox.Show("Please choose a valid name for your video. Name can only include letters and numbers.", "Name Invalid", MessageBoxButtons.OK);
+            }
+            else if (Constants.ReservedNames.Contains(NameTb.Text))
+            {
+                MessageBox.Show("This name is reserved. Please choose a new name for your video.", "Name Reserved", MessageBoxButtons.OK);
+            }
+            // Name is Valid
+            else
+            {
+                // Check name not already in use, or that overriding is okay
+                DialogResult result = DialogResult.Yes;
+                if (File.Exists(Utilities.GetDirectory(Constants.VideosFolder, NameTb.Text)))
+                {
+                    result = MessageBox.Show("This name is already in use. Do you want to override the existing video?", "Override Confirmation", MessageBoxButtons.YesNo);
+                }
+                if (result == DialogResult.No) { return; }
+
+                // Save Video and Close Form
                 try
                 {
                     // Prepare Save Location
-                    string filePath = Environment.CurrentDirectory + "\\Scenes\\" + saveLocationTb.Text;
-                    System.IO.Directory.CreateDirectory(filePath);
-                    int imageNumber = 1;
-                    //System.IO.StreamWriter file = new System.IO.StreamWriter(@filePath);
+                    string filePath = Environment.CurrentDirectory + Constants.VideosFolder + NameTb.Text;
+                    Directory.CreateDirectory(filePath);
+                    StreamWriter file = new StreamWriter(@filePath);
 
                     // Save Images
                     for (sceneIndex = 0; sceneIndex < videoScenes.Count; sceneIndex++)
@@ -84,15 +103,19 @@ namespace Animator
                         for (frameIndex = 0; frameIndex < videoScenes[sceneIndex].NumFrames; frameIndex++)
                         {
                             Bitmap bitmap = DrawOnBitmap(videoScenes[sceneIndex]);
-                            bitmap.Save(filePath + "\\" + imageNumber + ".png", System.Drawing.Imaging.ImageFormat.Png);
-                            imageNumber++;
+                            bitmap.Save(filePath + "\\" + (frameIndex + 1) + Constants.Png, System.Drawing.Imaging.ImageFormat.Png);
                         }
 
                     }
+                    Close();
                 }
-                catch (System.IO.FileNotFoundException)
+                catch (FileNotFoundException)
                 {
                     MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    MessageBox.Show("No data entered for point", "Missing Data", MessageBoxButtons.OK);
                 }
             }
         }
@@ -170,12 +193,12 @@ namespace Animator
                 else
                 {
                     videoScenes[sceneIndex].AssignOriginalPositions();
-                    DrawFrame(videoScenes[sceneIndex], this.DrawPanel.CreateGraphics(), true);
+                    DrawFrame(videoScenes[sceneIndex], DrawPanel.CreateGraphics(), true);
                 }
             }
             else
             {
-                DrawFrame(videoScenes[sceneIndex], this.DrawPanel.CreateGraphics(), true);
+                DrawFrame(videoScenes[sceneIndex], DrawPanel.CreateGraphics(), true);
             }
         }
     }

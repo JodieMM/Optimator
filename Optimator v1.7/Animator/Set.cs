@@ -60,7 +60,7 @@ namespace Animator
                         double.Parse(dataSections[4]), double.Parse(dataSections[5]), double.Parse(dataSections[6]));
                 }
 
-                WIP.PieceOf.Add(this);
+                WIP.PieceOf = this;
                 PiecesList.Add(WIP);
             }
         }

@@ -65,7 +65,7 @@ namespace Animator
 
 
         // ----- GET FUNCTIONS -----
-
+        #region Get Functions
         /// <summary>
         /// Gets the size modifier with considerations
         /// </summary>
@@ -149,9 +149,12 @@ namespace Animator
             return details;
         }
 
+        #endregion
+
 
 
         // ----- SET FUNCTIONS -----
+        #region Set Functions
 
         /// <summary>
         /// Sets the rotation within a 360 degree boundary.
@@ -212,6 +215,8 @@ namespace Animator
             X = 0;
             Y = 0;
         }
+
+        #endregion
 
 
 
@@ -334,7 +339,7 @@ namespace Animator
         /// Finds the points to print based on the rotation, turn and size of the piece
         /// </summary>
         /// <returns></returns>
-        public List<double[]> GetCurrentPoints(bool recentre, bool spinSize)
+        public List<double[]> GetCurrentPoints(bool recentre)
         {
             int row = Utilities.FindRow(GetAngles()[0], GetAngles()[1], Data, 1);
             string dataLine = Data[row];
@@ -349,7 +354,7 @@ namespace Animator
             double rotationMultiplier = (GetAngles()[0] - double.Parse(dataLine.Substring(0, 3))) / (double.Parse(dataLine.Substring(4, 3)) - double.Parse(dataLine.Substring(0, 3)));
             double turnMultiplier = (GetAngles()[1] - double.Parse(dataLine.Substring(8, 3))) / (double.Parse(dataLine.Substring(12, 3)) - double.Parse(dataLine.Substring(8, 3)));
 
-            // Find Points
+            // FIND POINTS
             // Rotation Adjustment
             for (int index = 0; index < NumCoords; index++)
             {
@@ -377,19 +382,20 @@ namespace Animator
             }
 
             //Recentre
-            pointsArray = Recentre(pointsArray, NumCoords, recentre);
+            if (recentre)
+            {
+                double middleX = Utilities.FindMid(pointsArray)[0];
+                double middleY = Utilities.FindMid(pointsArray)[1];
+
+                for (int index = 0; index < NumCoords; index++)
+                {
+                    pointsArray[index][0] = GetCoords()[0] + (pointsArray[index][0] - middleX);
+                    pointsArray[index][1] = GetCoords()[1] + (pointsArray[index][1] - middleY);
+                }
+            }
 
             // Spin and Size Adjustment
-            if (spinSize)
-            {
-                pointsArray = SpinMeRound(pointsArray, GetSizeMod() / 100.0);
-            }
-        
-            //Recentre -- This was purposefully removed but has been kept for future-proofing purposes
-            // When this is kept in, the piece is always exactly on centre but the spins are not smooth as the x and y coordinates
-            // are adjusted by the spin rather than following it
-            // This may be re-added at a later time for set compatability smoothness later, potentially with a boolean include/exclude variable
-            //pointsArray = Recentre(pointsArray, numPoints, recentre);
+            pointsArray = SpinMeRound(pointsArray, GetSizeMod() / 100.0);
 
             return pointsArray;
         }
@@ -450,26 +456,6 @@ namespace Animator
                     pointsArray[index][0] = Convert.ToInt32((GetCoords()[0] + hypotenuse * Math.Sin(findAngle)));
                     pointsArray[index][1] = Convert.ToInt32((GetCoords()[1] - hypotenuse * Math.Cos(findAngle)));
                 }
-            }
-            return pointsArray;
-        }
-
-        /// <summary>
-        /// Recentres a piece by modifying its points by a common amount.
-        /// </summary>
-        /// <param name="pointsArray">Piece's points</param>
-        /// <param name="numPoints">The number of points</param>
-        /// <param name="recentre">If changes should be made</param>
-        /// <returns></returns>
-        private List<double[]> Recentre(List<double[]> pointsArray, int numPoints, bool recentre)
-        {
-            double middleX = Utilities.FindMid(pointsArray)[0];
-            double middleY = Utilities.FindMid(pointsArray)[1];
-
-            for (int index = 0; index < numPoints && recentre; index++)
-            {
-                pointsArray[index][0] = GetCoords()[0] + (pointsArray[index][0] - middleX);
-                pointsArray[index][1] = GetCoords()[1] + (pointsArray[index][1] - middleY);
             }
             return pointsArray;
         }

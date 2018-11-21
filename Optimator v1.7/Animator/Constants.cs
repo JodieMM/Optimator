@@ -18,7 +18,8 @@ namespace Animator
         public static string PiecesFolder => "\\Pieces\\";
         public static string PointsFolder => "\\Points\\";
         public static string SetsFolder => "\\Sets\\";
-        public static string ScenesFolder = "\\Scenes\\";
+        public static string ScenesFolder => "\\Scenes\\";
+        public static string VideosFolder => "\\Videos\\";
 
         // Reserved Names
         public static string PieceStructure => "ZPieceScaffold";
@@ -29,7 +30,7 @@ namespace Animator
 
         // Name Validation
         public static string[] ReservedNames = { PieceStructure, PointStructure, SetStructure, WIPName };
-        public static string[] InvalidNames = { "", " ", "Piece Name", "Set Name", "Scene Name" };
+        public static string[] InvalidNames = { "", " ", "Piece Name", "Set Name", "Scene Name", "Video Name" };
         public static Regex PermittedName = new Regex(@"^[A-Za-z0-9]+$");
 
         // Characters
@@ -43,5 +44,6 @@ namespace Animator
 
         // File Extensions
         public static string Txt => ".txt";
+        public static string Png => ".png";
     }
 }

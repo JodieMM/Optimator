@@ -82,14 +82,12 @@ namespace Animator
             //Check piece defined at that point
             if (FindRow(piece.GetAngles()[0], piece.GetAngles()[1], piece.Data, 1) != -1)
             {
-
                 // Prepare for drawing
                 Pen pen = new Pen(piece.OutlineColour, piece.OutlineWidth);
                 SolidBrush fill = new SolidBrush(piece.FillColour[0]);                          // ** NEEDS UPDATING WITH GRADIENTS
-                List<double[]> sketchCoords = piece.GetCurrentPoints(recentre, true);
+                List<double[]> sketchCoords = piece.GetCurrentPoints(recentre);
                 List<string> joiners = piece.GetLineArray(piece.GetAngles()[0], piece.GetAngles()[1]);
                 int numCoords = sketchCoords.Count;
-
 
                 // Fill Shape
                 GraphicsPath path = new GraphicsPath();
@@ -101,7 +99,6 @@ namespace Animator
                         path.AddLine(new Point(Convert.ToInt32(sketchCoords[numCoords - 1][0]), Convert.ToInt32(sketchCoords[numCoords - 1][1])),
                             new Point(Convert.ToInt32(sketchCoords[0][0]), Convert.ToInt32(sketchCoords[0][1])));
                     }
-
                     // Draw Remaining Lines
                     else
                     {
@@ -111,33 +108,31 @@ namespace Animator
                 }
                 g.FillPath(fill, path);
 
-
                 // Draw Connecting Lines
                 for (int pointIndex = 0; pointIndex < numCoords && numCoords > 1 && piece.OutlineWidth > 0; pointIndex++)
                 {
+                    Point start; Point end;
                     // Draw Line Between Final Point and First Point
                     if (pointIndex == numCoords - 1)
                     {
-                        // Connected by Line
-                        if (joiners[numCoords - 1] == "line")
-                        {
-                            g.DrawLine(pen, new Point(Convert.ToInt32(sketchCoords[0][0]), Convert.ToInt32(sketchCoords[0][1])),
-                                new Point(Convert.ToInt32(sketchCoords[numCoords - 1][0]), Convert.ToInt32(sketchCoords[numCoords - 1][1])));
-                        }
-                        // Connected by Curve
-                        // TO DO **
+                        start = new Point(Convert.ToInt32(sketchCoords[0][0]), Convert.ToInt32(sketchCoords[0][1]));
+                        end = new Point(Convert.ToInt32(sketchCoords[numCoords - 1][0]), Convert.ToInt32(sketchCoords[numCoords - 1][1]));
                     }
-
                     // Draw Remaining Lines
                     else
                     {
-                        // Connected by Line
-                        if (joiners[pointIndex] == "line")
-                        {
-                            g.DrawLine(pen, new Point(Convert.ToInt32(sketchCoords[pointIndex][0]), Convert.ToInt32(sketchCoords[pointIndex][1])),
-                                new Point(Convert.ToInt32(sketchCoords[pointIndex + 1][0]), Convert.ToInt32(sketchCoords[pointIndex + 1][1])));
-                        }
-                        // Connected by Curve
+                        start = new Point(Convert.ToInt32(sketchCoords[pointIndex][0]), Convert.ToInt32(sketchCoords[pointIndex][1]));
+                        end = new Point(Convert.ToInt32(sketchCoords[pointIndex + 1][0]), Convert.ToInt32(sketchCoords[pointIndex + 1][1]));
+                    }
+
+                    // Connected by Line
+                    if (joiners[numCoords - 1] == "line")
+                    {
+                        g.DrawLine(pen, start, end);
+                    }
+                    // Connected by Curve
+                    else
+                    {
                         // TO DO **
                     }
                 }
@@ -157,10 +152,11 @@ namespace Animator
             g = DrawPanel.CreateGraphics();
 
             // Draw Parts
+            // List<Piece> orderedPieces = SortOrder(piecesList);
             for (int index = 0; index < piecesList.Count; index++)
             {
-                // ** FIND BEST ORDER TO DRAW IN TO DO
                 DrawPiece(piecesList[index], g, true);
+                //DrawPiece(orderedPieces[index], g, true);
             }
         }
 
