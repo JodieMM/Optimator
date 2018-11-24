@@ -148,8 +148,7 @@ namespace Animator
         private void ExitBtn_Click(object sender, EventArgs e)
         {
             DialogResult result = DialogResult.Yes;
-            // Only ask if there is something to save
-            if (piecesList.Count > 0)
+            if (piecesList.Count > 1)
             {
                 result = MessageBox.Show("Do you want to exit without saving? Your set will be lost.", "Exit Confirmation", MessageBoxButtons.YesNo);
             }
@@ -179,7 +178,11 @@ namespace Animator
 
             // Choose and Update Selected Piece (If Any)
             int selectedIndex = Utilities.FindClickedSelection(piecesList, e.X, e.Y);
-            if (selectedIndex == -1) { return; }
+            if (selectedIndex == -1)
+            {
+                Utilities.DrawPieces(piecesList, g, DrawPanel);
+                return;
+            }
             selected = piecesList[selectedIndex];
             selectedOC = selected.OutlineColour;
             selected.OutlineColour = Color.Red;

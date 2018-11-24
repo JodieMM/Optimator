@@ -281,86 +281,35 @@ namespace Animator
         }
 
         /// <summary>
+        /// Finds the minimum and maximum x and y coordinates of a point.
+        /// </summary>
+        /// <param name="entries">Shape points</param>
+        /// <returns>The mins and maxes as [minX, maxX, minY, maxY]</returns>
+        public static double[] FindMinMax(List<double[]> coords)
+        {
+            double minX = 99999;
+            double maxX = -99999;
+            double minY = 99999;
+            double maxY = -99999;
+            foreach (double[] entry in coords)
+            {
+                minX = (entry[0] < minX) ? entry[0] : minX;
+                maxX = (entry[0] > maxX) ? entry[0] : maxX;
+                minY = (entry[1] < minY) ? entry[1] : minY;
+                maxY = (entry[1] > maxY) ? entry[1] : maxY;
+            }
+            return new double[] { minX, maxX, minY, maxY };
+        }
+
+        /// <summary>
         /// Finds the middle of a shape.
         /// </summary>
         /// <param name="coords">Shape points</param>
         /// <returns>The middle as [middle x, middle y]</returns>
         public static double[] FindMid(List<double[]> coords)
         {
-            double minX = 99999;
-            double maxX = -99999;
-            double minY = 99999;
-            double maxY = -99999;
-
-            foreach (double[] entry in coords)
-            {
-                minX = (entry[0] < minX) ? entry[0] : minX;
-                maxX = (entry[0] > maxX) ? entry[0] : maxX;
-                minY = (entry[0] < minY) ? entry[1] : minY;
-                maxY = (entry[0] > maxY) ? entry[1] : maxY;
-            }
-
-            return new double[] { minX + (maxX - minX) / 2, minY + (maxY - minY) / 2 };
-        }
-
-
-
-        // ----- SHAPE SURFACE FUNCTIONS -----
-        #region WORK IN PROGRESS
-        /// <summary>
-        /// Finds all of the coordinates between two points.
-        /// </summary>
-        /// <param name="from">The starting point</param>
-        /// <param name="to">The end point</param>
-        /// <param name="join">How the two points are connected</param>
-        /// <returns>A list of int[] with the point coords</returns>
-        public static List<int[]> FindLineCoords(int[] from, int[] to, string join)
-        {
-            List<int[]> line = new List<int[]>();
-            double gradient = 1;
-
-            // Switch order so highest (lowest Y value) is 'from'
-            if (from[1] > to[1])
-            {
-                int[] hold = from;
-                from = to;
-                to = hold;
-            }
-
-            // Find Gradient
-            if (join == "line")
-            {
-                gradient = (from[1] - to[1]) / (from[0] - to[0]);
-            }
-            // ** TO DO - CURVES
-
-            // Add point for each Y value
-            line.Add(from);         // 'To' is added as 'from' in the next line.
-
-            for (int index = from[1] + 1; index < to[1]; index++)
-            {
-                line.Add(new int[] { (int)(index * gradient), index });
-            }
-
-            return line;
-        }
-
-        /// <summary>
-        /// Finds the coordinates along the outline of the shape.
-        /// </summary>
-        /// <param name="coords">Coordinates of the shape</param>
-        /// <param name="lineArray">Lines that connect points</param>
-        /// <returns>A list of int[] with the outline coordinates</returns>
-        public static List<int[]> FindPieceLines(List<double[]> coords, List<string> lineArray)       //GetCurrentPoints(true, true);, GetLineArray(R, T);
-        {
-            List<int[]> line = new List<int[]>();
-
-            for (int index = 0; index < coords.Count; index++)
-            {
-                line.AddRange(FindLineCoords(new int[] { (int)coords[index][0], (int)coords[index][1] }, new int[] { (int)coords[index + 1][0], (int)coords[index + 1][1] }, lineArray[index]));
-            }
-
-            return line;
+            double[] minMax = FindMinMax(coords);
+            return new double[] { minMax[0] + (minMax[1] - minMax[0]) / 2, minMax[2] + (minMax[3] - minMax[2]) / 2 };
         }
 
         /// <summary>
@@ -379,23 +328,6 @@ namespace Animator
             // Flip Vertically (Right)
             if (right)
             {
-                /*
-                // Switch Sides
-                List<int[]> lines = FindPieceLines(coords, lineArray);
-
-                for (int index = 0; index < coords.Count; index++)
-                {
-                    if (FindMatchIndex(coords, index, 1) != -1)
-                    {
-                        newCoords.Add(new double[] { coords[FindMatchIndex(coords, index, 1)][0], coords[index][1] });
-                    }
-                    else
-                    {
-                        newCoords.Add(coords[index]);
-                    }
-                }*/
-
-
                 for (int index = 0; index < coords.Count; index++)
                 {
                     coords[index][0] = 2 * middle[0] - coords[index][0];
@@ -405,7 +337,6 @@ namespace Animator
             // Flip Horizontally (Down)
             if (down)
             {
-                // Flip
                 for (int index = 0; index < coords.Count; index++)
                 {
                     coords[index][1] = 2 * middle[1] - coords[index][1];
@@ -415,23 +346,173 @@ namespace Animator
             return newCoords;
         }
 
-        public static int FindMatchIndex(List<double[]> coords, int originalIndex, int xy)
+        /// <summary>
+        /// Switches the positions of two values in the list.
+        /// Note that index order is not important.
+        /// </summary>
+        /// <param name="toSwitch">The list of values</param>
+        /// <param name="index1">The index of the first value</param>
+        /// <param name="index2">The index of the second value</param>
+        public static void SwitchPositions(List<double[]> toSwitch, int index1, int index2)
         {
-            for (int index = 0; index < coords.Count(); index++)
+            double[] holding = toSwitch[index1];
+            toSwitch[index1] = toSwitch[index2];
+            toSwitch[index2] = holding;
+        }
+
+
+        // ----- SHAPE SURFACE FUNCTIONS -----
+
+        /// <summary>
+        /// Finds all of the coordinates between two points.
+        /// </summary>
+        /// <param name="from">The starting point</param>
+        /// <param name="to">The end point</param>
+        /// <param name="join">How the two points are connected</param>
+        /// <returns>A list of int[] with the point coords</returns>
+        public static List<double[]> FindLineCoords(double[] from, double[] to, string join)
+        {
+            List<double[]> line = new List<double[]>();
+            double gradient = 1;
+            double[] lower = (from[1] < to[1]) ? from : to;
+            double[] upper = (from[1] < to[1]) ? to : from;
+
+            // Find Gradient
+            if (join == "line")
             {
-                if (index != originalIndex && coords[originalIndex][xy] == coords[index][xy])
+                // If straight vertical line
+                if (from[0] - to[0] == 0)
                 {
-                    return index;
+                    for (int index = (int)lower[1]; index < upper[1]; index++)
+                    {
+                        line.Add(new double[] { from[0], index });
+                    }
+                    return line;
+                }
+                // If straight horizontal line
+                else if (from[1] - to[1] == 0)
+                {
+                    line.Add(from);
+                    line.Add(to);
+                    return line;
+                }
+                // If diagonal line
+                else
+                {
+                    gradient = (from[1] - to[1]) / (from[0] - to[0]);
+                }
+            }
+            // ** TO DO - CURVES
+
+            // Add point for each Y value
+            line.Add(from);
+            for (int index = (int)lower[1] + 1; index < upper[1]; index++)
+            {
+                line.Add(new double[] { lower[0] + ((index - lower[1]) * gradient), index });
+            }
+            line.Add(to);
+            return line;
+        }
+
+        /// <summary>
+        /// Finds the coordinates along the outline of the shape.
+        /// </summary>
+        /// <param name="coords">Coordinates of the shape</param>
+        /// <param name="lineArray">Lines that connect points</param>
+        /// <returns>A list of int[] with the outline coordinates</returns>
+        public static List<double[]> FindPieceLines(List<double[]> coords, List<string> lineArray)
+        {
+            List<double[]> line = new List<double[]>();
+
+            for (int index = 0; index < coords.Count; index++)
+            {
+                if (index == coords.Count - 1)
+                {
+                    line.AddRange(FindLineCoords(new double[] { coords[index][0], coords[index][1] },
+                        new double[] { coords[0][0], coords[0][1] }, lineArray[index]));
+                }
+                else
+                {
+                    line.AddRange(FindLineCoords(new double[] { coords[index][0], coords[index][1] }, 
+                        new double[] { coords[index + 1][0], coords[index + 1][1] }, lineArray[index]));
+                }
+            }
+            return line;
+        }
+
+        /// <summary>
+        /// Finds all of the coordinates that the shape covers.
+        /// Includes both outlines and fill.
+        /// </summary>
+        /// <param name="outline">The coordinates around the outline of the shape</param>
+        /// <returns>List of covered coordinates</returns>
+        public static List<int[]> FindPieceSpace(List<double[]> outline)
+        {
+            List<int[]> pieceSpace = new List<int[]>();
+
+            // Sort pieceSpace by Y, then by X
+            for (int spot = 0; spot < outline.Count - 1; spot++)
+            {
+                for (int position = 0; position < outline.Count - spot - 1; position++)
+                {
+                    if (outline[position][1] > outline[position + 1][1] 
+                        || (outline[position][1] == outline[position + 1][1] && outline[position][0] > outline[position + 1][0]))
+                    {
+                        SwitchPositions(outline, position, position + 1);
+                    }
+                }
+            }
+
+            double[] minMax = FindMinMax(outline);
+            int y = (int)minMax[2];
+            int index = 0;
+            while (y < minMax[3])
+            {
+                // Find all points in that row (should be a multiple of 2)
+                List<double[]> row = new List<double[]>();
+                while (outline[index][1] == y)
+                {
+                    row.Add(outline[index]);
+                    index++;
+                }
+
+                // Add coords between point pairs to pieceSpace
+                for (int column = 0; column + 1 < row.Count; column += 2)
+                {
+                    for (int point = (int)row[column][0]; point < row[column + 1][0]; point++)
+                    {
+                        pieceSpace.Add(new int[] { point, y });
+                    }
+                }
+                y++;
+            }
+            return pieceSpace;
+        }
+
+        /// <summary>
+        /// Finds the top piece clicked from the list.
+        /// </summary>
+        /// <param name="piecesList">The list of pieces that could be clicked</param>
+        /// <param name="x">The x coordinate of the click</param>
+        /// <param name="y">The y coordinate of the click</param>
+        /// <returns>The index of the piece clicked, or negative one if none selected</returns>
+        public static int FindClickedSelection(List<Piece> piecesList, int x, int y)
+        {
+            for (int index = piecesList.Count - 1; index >= 0; index--)
+            {
+                List<double[]> coords = piecesList[index].GetCurrentPoints(true);
+                List<int[]> contents = FindPieceSpace(FindPieceLines(coords, 
+                    piecesList[index].GetLineArray(piecesList[index].R, piecesList[index].T)));
+
+                foreach (int[] dot in contents)
+                {
+                    if (dot[0] == x && dot[1] == y)
+                    {
+                        return index;
+                    }
                 }
             }
             return -1;
         }
-
-        public static int FindClickedSelection(List<Piece> piecesList, int x, int y)
-        {
-            return -1;
-        }
-
-        #endregion
     }
 }
