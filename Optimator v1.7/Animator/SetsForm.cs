@@ -18,8 +18,14 @@ namespace Animator
         private Graphics g;
         private List<Piece> piecesList = new List<Piece>();
         private Set WIP = new Set(Constants.SetStructure);
+
         private Piece selected = null;
         private Color selectedOC;
+        private Piece shadow = null;
+        private bool moving = false;
+        private bool movingFar = false;
+        private int[] originalMoving;
+        private int[] positionMoving;
         #endregion
 
 
@@ -31,6 +37,8 @@ namespace Animator
             InitializeComponent();
             DrawPanel.KeyDown += KeyPress;
             DrawPanel.MouseDown += new MouseEventHandler(DrawPanel_MouseDown);
+            DrawPanel.MouseMove += new MouseEventHandler(DrawPanel_MouseMove);
+            DrawPanel.MouseUp += new MouseEventHandler(DrawPanel_MouseUp);
         }
 
 
@@ -165,36 +173,96 @@ namespace Animator
 
 
         // ----- DRAW PANEL I/O -----
+        #region Draw Panel I/O
 
         /// <summary>
-        /// Selects a piece if it is clicked on.
+        /// Starts click preparation, checking for a click or drag.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void DrawPanel_MouseDown(object sender, MouseEventArgs e)
         {
-            // Update old selected outline
             if (selected != null) { selected.OutlineColour = selectedOC; }
 
             // Choose and Update Selected Piece (If Any)
             int selectedIndex = Utilities.FindClickedSelection(piecesList, e.X, e.Y);
-            if (selectedIndex == -1)
+            if (selectedIndex != -1)
             {
-                Utilities.DrawPieces(piecesList, g, DrawPanel);
-                return;
+                selected = piecesList[selectedIndex];
+                selectedOC = selected.OutlineColour;
+                selected.OutlineColour = Color.Red;
+                moving = true;
+                originalMoving = new int[] { e.X, e.Y };
             }
-            selected = piecesList[selectedIndex];
-            selectedOC = selected.OutlineColour;
-            selected.OutlineColour = Color.Red;
+
+            Utilities.DrawPieces(piecesList, g, DrawPanel);
+        }
+
+        /// <summary>
+        /// Checks if a piece is being moved or just clicked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DrawPanel_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (!moving) { return; }
+            if (e.X < 0 || e.Y < 0 || e.X > DrawPanel.Size.Width || e.Y > DrawPanel.Size.Height)
+            {
+                moving = false; movingFar = false;
+            }
+            else
+            {
+                positionMoving = new int[] { e.X, e.Y };
+                if (!movingFar)
+                {
+                    movingFar = Math.Abs(originalMoving[0] - positionMoving[0]) > Constants.ClickPrecision
+                        || Math.Abs(originalMoving[1] - positionMoving[1]) > Constants.ClickPrecision;
+                    if (movingFar)
+                    {
+                        shadow = new Piece(selected.Name)
+                        {
+                            R = selected.GetAngles()[0],
+                            T = selected.GetAngles()[1],
+                            S = selected.GetAngles()[2],
+                            SM = selected.GetSizeMod(),
+                            FillColour = new Color[] { Color.FromArgb(155, 163, 163, 194) },
+                            OutlineWidth = 0
+                        };
+                    }
+                }
+            }
+            g = DrawPanel.CreateGraphics();
+            Utilities.DrawPieces(piecesList, g, DrawPanel);
+            if (movingFar)
+            {
+                shadow.X = selected.GetCoords()[0] + positionMoving[0] - originalMoving[0];
+                shadow.Y = selected.GetCoords()[1] + positionMoving[1] - originalMoving[1];
+                Utilities.DrawPiece(shadow, g, true);
+            }
+        }
+
+        /// <summary>
+        /// Updates the user interface for the selected piece and stops
+        /// the movement search, actioning it if necessary.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DrawPanel_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (!moving) { return; }
+            if (movingFar)
+            {
+                selected.X += positionMoving[0] - originalMoving[0];
+                selected.Y += positionMoving[1] - originalMoving[1];
+            }
 
             // Update UI
             /*RotationUpDown.Value = (decimal)selected.R;
             TurnUpDown.Value = (decimal)selected.T;
             SpinUpDown.Value = (decimal)selected.S;
-            XUpDown.Value = (decimal)selected.X;
-            YUpDown.Value = (decimal)selected.Y;
             SizeUpDown.Value = (decimal)selected.SM;*/
 
+            moving = false; movingFar = false;
             Utilities.DrawPieces(piecesList, g, DrawPanel);
         }
 
@@ -216,6 +284,8 @@ namespace Animator
             }
         }
 
+        #endregion
+
 
 
         // ----- OTHER FUNCTIONS -----
@@ -227,18 +297,21 @@ namespace Animator
         /// <returns></returns>
         private bool PermitChange()
         {
-            bool permitted = true;
-            
-            for (int index = 1; index < piecesList.Count && permitted; index++)
+            int count = 0;
+            foreach (Piece piece in piecesList)
             {
-                if (!piecesList[index].GetIsAttached())
+                if (piece.GetIsAttached())
                 {
-                    // ** TO DO SWITCH TO THIS PIECE
-                    permitted = false;
-                    MessageBox.Show("You must attach this piece to something, or delete it, to save the set.", "Detached Piece", MessageBoxButtons.OK);
+                    count++;
+                    if (count > 1)
+                    {
+                        selected = piece;
+                        MessageBox.Show("You must attach this piece to something, or delete it, to save the set.", "Detached Piece", MessageBoxButtons.OK);
+                        return false;
+                    }
                 }
             }
-            return permitted;
+            return true;
         }
 
         /// <summary>

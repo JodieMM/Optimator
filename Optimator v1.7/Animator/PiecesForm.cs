@@ -321,6 +321,17 @@ namespace Animator
             }
         }
 
+        /// <summary>
+        /// Resets all movement boolean variables to false.
+        /// </summary>
+        private void StopMovement()
+        {
+            oMoving = false;
+            rMoving = false;
+            tMoving = false;
+            movingFar = false;
+        }
+
         #endregion
 
 
@@ -622,21 +633,6 @@ namespace Animator
 
                 WIP.UpdateDataLine(rFrom, tFrom, WIPstring);
             }
-        }
-
-
-
-        // ----- RANDOM FUNCTIONS -----
-
-        /// <summary>
-        /// Resets all movement boolean variables to false.
-        /// </summary>
-        private void StopMovement()
-        {
-            oMoving = false;
-            rMoving = false;
-            tMoving = false;
-            movingFar = false;
         }
 
 
