@@ -42,22 +42,19 @@ namespace Animator
             {
                 string[] dataSections = Data[index].Split(Constants.Semi);
                 Piece WIP = new Piece(dataSections[0]);
-                if (dataSections.Length == 7) { BasePiece = WIP; }
 
-                if (BasePiece == WIP)
+                if (dataSections.Length == 7)
                 {
-                    WIP.AttachToPiece(PiecesList[int.Parse(dataSections[2])], new PointSpot(dataSections[3], PiecesList[int.Parse(dataSections[2])]), 
-                        new PointSpot(dataSections[1], WIP), bool.Parse(dataSections[10]), double.Parse(dataSections[11]));
-
-                    // Set Attributes
-                    WIP.SetValues(double.Parse(dataSections[4]), double.Parse(dataSections[5]), double.Parse(dataSections[6]),
-                        double.Parse(dataSections[7]), double.Parse(dataSections[8]), double.Parse(dataSections[9]));
+                    BasePiece = WIP;
+                    WIP.SetValues(double.Parse(dataSections[1]), double.Parse(dataSections[2]), double.Parse(dataSections[3]),
+                        double.Parse(dataSections[4]), double.Parse(dataSections[5]), double.Parse(dataSections[6]));
                 }
                 else
                 {
-                    // Set Attributes
-                    WIP.SetValues(double.Parse(dataSections[1]), double.Parse(dataSections[2]), double.Parse(dataSections[3]),
-                        double.Parse(dataSections[4]), double.Parse(dataSections[5]), double.Parse(dataSections[6]));
+                    WIP.AttachToPiece(PiecesList[int.Parse(dataSections[2])], new PointSpot(dataSections[3], PiecesList[int.Parse(dataSections[2])]),
+                        new PointSpot(dataSections[1], WIP), bool.Parse(dataSections[10]), double.Parse(dataSections[11]));
+                    WIP.SetValues(double.Parse(dataSections[4]), double.Parse(dataSections[5]), double.Parse(dataSections[6]),
+                        double.Parse(dataSections[7]), double.Parse(dataSections[8]), double.Parse(dataSections[9]));
                 }
 
                 WIP.PieceOf = this;
@@ -68,9 +65,23 @@ namespace Animator
         /// <summary>
         /// Takes the current state and saves it in the data.
         /// </summary>
-        /*public void CreateData()
+        public void CreateData()
         {
-
-        }    */
+            Data.Clear();
+            foreach (Piece piece in PiecesList)
+            {
+                if (piece == BasePiece)
+                {
+                    Data.Add(piece.Name + Constants.Semi + piece.X + Constants.Semi + piece.Y + Constants.Semi +
+                        piece.R + Constants.Semi + piece.T + Constants.Semi + piece.S + Constants.Semi + piece.SM);
+                }
+                else
+                {
+                    Data.Add(piece.Name + Constants.Semi + piece.OwnPoint.Name + Constants.Semi + PiecesList.IndexOf(piece.AttachedTo) +
+                        Constants.Semi + piece.AttachPoint + Constants.Semi + piece.X + Constants.Semi + piece.Y + Constants.Semi +
+                        piece.R + Constants.Semi + piece.T + Constants.Semi + piece.S + Constants.Semi + piece.SM);
+                }
+            }
+        }
     }
 }
