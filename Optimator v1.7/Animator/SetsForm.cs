@@ -109,8 +109,7 @@ namespace Animator
                 Piece justAdded = new Piece(AddTb.Text);
                 piecesList.Add(justAdded);
                 justAdded.X = Constants.MidX; justAdded.Y = Constants.MidY;
-                selected = justAdded;
-                selectedOC = selected.OutlineColour;
+                SelectPiece(justAdded);
                 Utilities.DrawPieces(piecesList, g, DrawPanel);
             }
             catch (FileNotFoundException)
@@ -134,8 +133,7 @@ namespace Animator
             {
                 Set addedSet = new Set(AddTb.Text);
                 piecesList.AddRange(addedSet.PiecesList);
-                selected = addedSet.BasePiece;
-                selectedOC = selected.OutlineColour;
+                SelectPiece(addedSet.BasePiece);
                 Utilities.DrawPieces(piecesList, g, DrawPanel);
             }
             catch (FileNotFoundException)
@@ -168,7 +166,55 @@ namespace Animator
 
 
 
-        // ----- SETTINGS TAB -----
+        // ----- PIECES TAB -----
+
+        /// <summary>
+        /// Updates the original rotation of the selected piece.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RotationBar_Scroll(object sender, EventArgs e)
+        {
+            if (selected == null) { return; }
+            selected.R = RotationBar.Value;
+            Utilities.DrawPieces(piecesList, g, DrawPanel);
+        }
+
+        /// <summary>
+        /// Updates the original turn of the selected piece.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TurnBar_Scroll(object sender, EventArgs e)
+        {
+            if (selected == null) { return; }
+            selected.T = TurnBar.Value;
+            Utilities.DrawPieces(piecesList, g, DrawPanel);
+        }
+
+        /// <summary>
+        /// Updates the original spin of the selected piece.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SpinBar_Scroll(object sender, EventArgs e)
+        {
+            if (selected == null) { return; }
+            selected.S = SpinBar.Value;
+            Utilities.DrawPieces(piecesList, g, DrawPanel);
+        }
+
+        /// <summary>
+        /// Updates the original size of the selected piece.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SizeBar_Scroll(object sender, EventArgs e)
+        {
+            if (selected == null) { return; }
+            selected.SM = SizeBar.Value;
+            Utilities.DrawPieces(piecesList, g, DrawPanel);
+        }
 
 
 
@@ -182,15 +228,12 @@ namespace Animator
         /// <param name="e"></param>
         private void DrawPanel_MouseDown(object sender, MouseEventArgs e)
         {
-            if (selected != null) { selected.OutlineColour = selectedOC; }
-
             // Choose and Update Selected Piece (If Any)
+            DeselectPiece();
             int selectedIndex = Utilities.FindClickedSelection(piecesList, e.X, e.Y);
             if (selectedIndex != -1)
             {
-                selected = piecesList[selectedIndex];
-                selectedOC = selected.OutlineColour;
-                selected.OutlineColour = Color.Red;
+                SelectPiece(piecesList[selectedIndex]);
                 moving = true;
                 originalMoving = new int[] { e.X, e.Y };
             }
@@ -257,10 +300,10 @@ namespace Animator
             }
 
             // Update UI
-            /*RotationUpDown.Value = (decimal)selected.R;
-            TurnUpDown.Value = (decimal)selected.T;
-            SpinUpDown.Value = (decimal)selected.S;
-            SizeUpDown.Value = (decimal)selected.SM;*/
+            RotationBar.Value = (int)selected.R;
+            TurnBar.Value = (int)selected.T;
+            SpinBar.Value = (int)selected.S;
+            SizeBar.Value = (int)selected.SM;
 
             moving = false; movingFar = false;
             Utilities.DrawPieces(piecesList, g, DrawPanel);
@@ -345,6 +388,38 @@ namespace Animator
             return returnData;
         }
 
+        /// <summary>
+        /// Selects a piece and updates its outline.
+        /// </summary>
+        /// <param name="piece"></param>
+        private void SelectPiece(Piece piece)
+        {
+            DeselectPiece();
+            selected = piece;
+            selectedOC = selected.OutlineColour;
+            selected.OutlineColour = Color.Red;
+            RotationBar.Enabled = true;
+            TurnBar.Enabled = true;
+            SpinBar.Enabled = true;
+            SizeBar.Enabled = true;
+        }
+
+        /// <summary>
+        /// Deselects a piece and returns its outline to original.
+        /// </summary>
+        private void DeselectPiece()
+        {
+            if (selected != null)
+            {
+                selected.OutlineColour = selectedOC;
+                selected = null;
+                RotationBar.Enabled = false;
+                TurnBar.Enabled = false;
+                SpinBar.Enabled = false;
+                SizeBar.Enabled = false;
+            }
+        }
+
 
 
         // ----- TO UPDATE -----
@@ -376,70 +451,9 @@ namespace Animator
                     MessageBox.Show("Index entered does not relate to any existing piece", "Invalid Index", MessageBoxButtons.OK);
                 }
             }
-        }
-
-        private void xInitUpDown_ValueChanged(object sender, EventArgs e)
-        {
-            if (partsLb.SelectedIndex != -1)
-            {
-                piecesList[partsLb.SelectedIndex].X = (double)xInitUpDown.Value;
-                DrawParts();
-            }
-        }
-
-        private void yInitUpDown_ValueChanged(object sender, EventArgs e)
-        {
-            if (partsLb.SelectedIndex != -1)
-            {
-                piecesList[partsLb.SelectedIndex].Y = (double)yInitUpDown.Value;
-                DrawParts();
-            }
-        }
-
-        private void rotInitUpDown_ValueChanged(object sender, EventArgs e)
-        {
-            if (rotInitUpDown.Value == 360) { rotInitUpDown.Value = 0; }
-            if (rotInitUpDown.Value == -1) { rotInitUpDown.Value = 359; }
-
-            if (partsLb.SelectedIndex != -1)
-            {
-                piecesList[partsLb.SelectedIndex].SetRotation((double)rotInitUpDown.Value);
-                DrawParts();
-            }
-        }
-
-        private void turnInitUpDown_ValueChanged(object sender, EventArgs e)
-        {
-            if (turnInitUpDown.Value == 360) { turnInitUpDown.Value = 0; }
-            if (turnInitUpDown.Value == -1) { turnInitUpDown.Value = 359; }
-
-            if (partsLb.SelectedIndex != -1)
-            {
-                piecesList[partsLb.SelectedIndex].SetTurn((double)turnInitUpDown.Value);
-                DrawParts();
-            }
-        }
-
-        private void spinInitUpDown_ValueChanged(object sender, EventArgs e)
-        {
-            if (spinInitUpDown.Value == 360) { spinInitUpDown.Value = 0; }
-            if (spinInitUpDown.Value == -1) { spinInitUpDown.Value = 359; }
-
-            if (partsLb.SelectedIndex != -1)
-            {
-                piecesList[partsLb.SelectedIndex].SetSpin((double)spinInitUpDown.Value);
-                DrawParts();
-            }
-        }
-
-        private void sizeInitUpDown_ValueChanged(object sender, EventArgs e)
-        {
-            if (partsLb.SelectedIndex != -1)
-            {
-                piecesList[partsLb.SelectedIndex].SM = (double)sizeInitUpDown.Value;
-                DrawParts();
-            }
         }*/
         #endregion
+
+        
     }
 }

@@ -336,7 +336,7 @@ namespace Animator
         }
 
         /// <summary>
-        /// Finds the points to print based on the rotation, turn and size of the piece
+        /// Finds the points to print based on the rotation, turn, spin and size of the piece
         /// </summary>
         /// <returns></returns>
         public List<double[]> GetCurrentPoints(bool recentre)

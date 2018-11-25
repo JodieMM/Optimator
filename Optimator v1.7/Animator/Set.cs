@@ -68,9 +68,9 @@ namespace Animator
         /// <summary>
         /// Takes the current state and saves it in the data.
         /// </summary>
-        public void CreateData()
+        /*public void CreateData()
         {
 
-        }    
+        }    */
     }
 }
