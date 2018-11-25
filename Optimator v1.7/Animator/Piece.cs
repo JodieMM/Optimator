@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 
 namespace Animator
@@ -18,8 +19,8 @@ namespace Animator
         public List<string> Data { get; set; }
 
         // Coords and Angles
-        public double X { get; set; } //= Constants.MidX;
-        public double Y { get; set; } //= Constants.MidY;
+        public double X { get; set; }
+        public double Y { get; set; }
         public double R { get; set; } = 0;
         public double T { get; set; } = 0;
         public double S { get; set; } = 0;
@@ -38,6 +39,7 @@ namespace Animator
         public PointSpot AttachPoint { get; set; } = null;
         public PointSpot OwnPoint { get; set; } = null;
         public Set PieceOf { get; set; }
+        public List<PointSpot> PiecePoints { get; set; } = new List<PointSpot>();
         // Set Ordering
         public bool InFront { get; set; } = true;
         public double AngleFlip { get; set; } = -1;
@@ -306,6 +308,23 @@ namespace Animator
 
             // Get Num Points
             CalculateNumCoords();
+        }
+
+        /// <summary>
+        /// Finds all of the points that connect to this piece.
+        /// </summary>
+        public void FindPointSpots()
+        {
+            string directory = Environment.CurrentDirectory + Constants.PointsFolder + Name + "\\";
+            if (Directory.Exists(directory))
+            {
+                string[] fileArray = Directory.GetFiles(directory, "*.txt");
+                foreach (string file in fileArray)
+                {
+                    string fileName = Path.GetFileName(file);
+                    PiecePoints.Add(new PointSpot(fileName.Substring(0, fileName.Length - 4), this));
+                }
+            }
         }
 
         /// <summary>

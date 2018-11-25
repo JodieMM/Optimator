@@ -33,7 +33,8 @@ namespace Animator
         {
             Name = inName;
             host = owner;
-            Data = Utilities.ReadFile(Environment.CurrentDirectory + Constants.PointsFolder + Name + Constants.Txt);
+            Data = Utilities.ReadFile(Environment.CurrentDirectory + Constants.PointsFolder 
+                + owner.Name + "//" + Name + Constants.Txt);
         }
 
 

@@ -109,6 +109,7 @@ namespace Animator
                 Piece justAdded = new Piece(AddTb.Text);
                 piecesList.Add(justAdded);
                 justAdded.X = Constants.MidX; justAdded.Y = Constants.MidY;
+                justAdded.FindPointSpots();
                 SelectPiece(justAdded);
                 Utilities.DrawPieces(piecesList, g, DrawPanel);
             }
@@ -133,6 +134,10 @@ namespace Animator
             {
                 Set addedSet = new Set(AddTb.Text);
                 piecesList.AddRange(addedSet.PiecesList);
+                foreach (Piece piece in addedSet.PiecesList)
+                {
+                    piece.FindPointSpots();
+                }
                 SelectPiece(addedSet.BasePiece);
                 Utilities.DrawPieces(piecesList, g, DrawPanel);
             }
