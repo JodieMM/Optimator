@@ -79,7 +79,8 @@ namespace Animator
                 {
                     Data.Add(piece.Name + Constants.Semi + piece.OwnPoint.Name + Constants.Semi + PiecesList.IndexOf(piece.AttachedTo) +
                         Constants.Semi + piece.AttachPoint + Constants.Semi + piece.X + Constants.Semi + piece.Y + Constants.Semi +
-                        piece.R + Constants.Semi + piece.T + Constants.Semi + piece.S + Constants.Semi + piece.SM);
+                        piece.R + Constants.Semi + piece.T + Constants.Semi + piece.S + Constants.Semi + piece.SM + Constants.Semi +
+                        piece.InFront + Constants.Semi + piece.AngleFlip);
                 }
             }
         }

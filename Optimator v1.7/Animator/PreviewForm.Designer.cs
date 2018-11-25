@@ -74,7 +74,7 @@
             // 
             this.RotationTrack.BackColor = System.Drawing.Color.White;
             this.RotationTrack.Cursor = System.Windows.Forms.Cursors.Default;
-            this.RotationTrack.Location = new System.Drawing.Point(80, 30);
+            this.RotationTrack.Location = new System.Drawing.Point(80, 625);
             this.RotationTrack.Maximum = 359;
             this.RotationTrack.Name = "RotationTrack";
             this.RotationTrack.Size = new System.Drawing.Size(540, 45);
@@ -96,7 +96,7 @@
             this.TurnTrack.TickStyle = System.Windows.Forms.TickStyle.TopLeft;
             this.TurnTrack.Scroll += new System.EventHandler(this.TurnTrack_Scroll);
             // 
-            // PiecesPreviewForm
+            // PreviewForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.PaleGreen;
@@ -107,7 +107,7 @@
             this.Controls.Add(this.DrawBoard);
             this.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "PiecesPreviewForm";
+            this.Name = "PreviewForm";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Preview";

@@ -327,6 +327,42 @@ namespace Animator
             }
         }
 
+        /// <summary>
+        /// Rotates the set on the DrawPanel.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RotationTrack_Scroll(object sender, EventArgs e)
+        {
+            foreach (Piece piece in piecesList)
+            {
+                if (piece.AttachedTo == null)
+                {
+                    piece.R += RotationTrack.Value;
+                    Utilities.DrawPieces(piecesList, g, DrawPanel);
+                    return;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Turns the set on the DrawPanel.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TurnTrack_Scroll(object sender, EventArgs e)
+        {
+            foreach (Piece piece in piecesList)
+            {
+                if (piece.AttachedTo == null)
+                {
+                    piece.T += TurnTrack.Value;
+                    Utilities.DrawPieces(piecesList, g, DrawPanel);
+                    return;
+                }
+            }
+        }
+
         #endregion
 
 
@@ -422,6 +458,7 @@ namespace Animator
 
 
 
+
         // ----- TO UPDATE -----
         #region To Update
         /*
@@ -453,7 +490,5 @@ namespace Animator
             }
         }*/
         #endregion
-
-        
     }
 }

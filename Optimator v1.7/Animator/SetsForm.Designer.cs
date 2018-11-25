@@ -54,6 +54,8 @@
             this.SpinBar = new System.Windows.Forms.TrackBar();
             this.SizeLbl = new System.Windows.Forms.Label();
             this.SizeBar = new System.Windows.Forms.TrackBar();
+            this.TurnTrack = new System.Windows.Forms.TrackBar();
+            this.RotationTrack = new System.Windows.Forms.TrackBar();
             ((System.ComponentModel.ISupportInitialize)(this.DrawPanel)).BeginInit();
             this.OptionsMenu.SuspendLayout();
             this.SetPage.SuspendLayout();
@@ -63,6 +65,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.TurnBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.SpinBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.SizeBar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TurnTrack)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.RotationTrack)).BeginInit();
             this.SuspendLayout();
             // 
             // DoneBtn
@@ -385,11 +389,39 @@
             this.SizeBar.Value = 100;
             this.SizeBar.Scroll += new System.EventHandler(this.SizeBar_Scroll);
             // 
+            // TurnTrack
+            // 
+            this.TurnTrack.BackColor = System.Drawing.Color.White;
+            this.TurnTrack.Cursor = System.Windows.Forms.Cursors.Default;
+            this.TurnTrack.Location = new System.Drawing.Point(625, 80);
+            this.TurnTrack.Maximum = 359;
+            this.TurnTrack.Name = "TurnTrack";
+            this.TurnTrack.Orientation = System.Windows.Forms.Orientation.Vertical;
+            this.TurnTrack.Size = new System.Drawing.Size(45, 540);
+            this.TurnTrack.TabIndex = 92;
+            this.TurnTrack.TickFrequency = 10;
+            this.TurnTrack.TickStyle = System.Windows.Forms.TickStyle.TopLeft;
+            this.TurnTrack.Scroll += new System.EventHandler(this.TurnTrack_Scroll);
+            // 
+            // RotationTrack
+            // 
+            this.RotationTrack.BackColor = System.Drawing.Color.White;
+            this.RotationTrack.Cursor = System.Windows.Forms.Cursors.Default;
+            this.RotationTrack.Location = new System.Drawing.Point(80, 625);
+            this.RotationTrack.Maximum = 359;
+            this.RotationTrack.Name = "RotationTrack";
+            this.RotationTrack.Size = new System.Drawing.Size(540, 45);
+            this.RotationTrack.TabIndex = 91;
+            this.RotationTrack.TickFrequency = 10;
+            this.RotationTrack.Scroll += new System.EventHandler(this.RotationTrack_Scroll);
+            // 
             // SetsForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.PaleGreen;
             this.ClientSize = new System.Drawing.Size(1100, 700);
+            this.Controls.Add(this.TurnTrack);
+            this.Controls.Add(this.RotationTrack);
             this.Controls.Add(this.OptionsMenu);
             this.Controls.Add(this.DrawPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -409,7 +441,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.TurnBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.SpinBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.SizeBar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TurnTrack)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.RotationTrack)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -440,5 +475,7 @@
         private System.Windows.Forms.Label OrderLbl;
         private System.Windows.Forms.NumericUpDown FlipsUpDown;
         private System.Windows.Forms.CheckBox FlipsCb;
+        private System.Windows.Forms.TrackBar TurnTrack;
+        private System.Windows.Forms.TrackBar RotationTrack;
     }
 }
