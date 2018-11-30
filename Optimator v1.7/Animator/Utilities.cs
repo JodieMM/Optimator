@@ -346,6 +346,38 @@ namespace Animator
             return newCoords;
         }
 
+        public static List<double[]> CoordsOnAllSides(List<double[]> originalCoords)
+        {
+            double[] highestPoints = FindMinMax(originalCoords);
+            int highIndexY = -1;
+            int highIndexX = -1;
+            for (int index = 0; index < originalCoords.Count && (highIndexY == -1 || highIndexX == -1); index++)
+            {
+                if (originalCoords[index][1] == highestPoints[2])
+                {
+                    highIndexY = index;
+                }
+                if (originalCoords[index][0] == highestPoints[0])
+                {
+                    highIndexX = index;
+                }
+            }
+
+            // Horizontal Allignment (Same Y Value)
+            for (int index = highIndexY + 1; index != highIndexY; index = (index + 1) % originalCoords.Count)
+            {
+                if (originalCoords[index][1] != highestPoints[3])
+                {
+                    // Check if matching on other side exists, skip if does
+                    // If doesn't, make a point there
+                }
+            }
+
+            // Vertical Allignment (Same X Value)
+
+            return originalCoords;
+        }
+
         /// <summary>
         /// Switches the positions of two values in the list.
         /// Note that index order is not important.
