@@ -259,6 +259,17 @@ namespace Animator
         // ----- OTHER FUNCTIONS -----
 
         /// <summary>
+        /// Finds the mathematical modulus of a mod b.
+        /// </summary>
+        /// <param name="a">Value to be divided</param>
+        /// <param name="b">Modulus</param>
+        /// <returns>a modulo b</returns>
+        public static int Modulo(int a, int b)
+        {
+            return (a % b + b) % b;
+        }
+
+        /// <summary>
         /// Finds the correct row in the piece data for the given rotation and turn values
         /// RowNum is 1 for pieces, 0 for points
         /// </summary>
@@ -346,36 +357,145 @@ namespace Animator
             return newCoords;
         }
 
-        public static List<double[]> CoordsOnAllSides(List<double[]> originalCoords)
+        /// <summary>
+        /// Checks shape coordinates are valid and returns a set of coordinates where
+        /// all coordinates have a matching coord horizontally and vertically to them if
+        /// it is valid.
+        /// </summary>
+        /// <param name="oCoords">Original coordinates</param>
+        /// <param name="rCoords">Rotated coordinates</param>
+        /// <param name="tCoords">Turned coordinates</param>
+        /// <param name="lineArray">Lines that connect points</param>
+        /// <returns>Shape coordinates with extra coords on both sides</returns>
+        public static void CoordsOnAllSides(List<double[]> oCoords, List<double[]> rCoords, List<double[]> tCoords, List<string> lineArray)
         {
-            double[] highestPoints = FindMinMax(originalCoords);
-            int highIndexY = -1;
-            int highIndexX = -1;
-            for (int index = 0; index < originalCoords.Count && (highIndexY == -1 || highIndexX == -1); index++)
-            {
-                if (originalCoords[index][1] == highestPoints[2])
-                {
-                    highIndexY = index;
-                }
-                if (originalCoords[index][0] == highestPoints[0])
-                {
-                    highIndexX = index;
-                }
-            }
+            // Check Viable Pieces
+            // ** TO DO
+
+            double[] highestPoints = FindMinMax(oCoords);
+            List<int> clearIndexes = new List<int>();
 
             // Horizontal Allignment (Same Y Value)
-            for (int index = highIndexY + 1; index != highIndexY; index = (index + 1) % originalCoords.Count)
+            for (int index = 0; index < oCoords.Count; index++)
             {
-                if (originalCoords[index][1] != highestPoints[3])
+                // Check if there is already a matching on the other side and that the coordinate is not the bottom
+                if (FindSymmetricalCoord(oCoords, index, 1) == -1 && 
+                    oCoords[index][1] != highestPoints[3] && oCoords[index][1] != highestPoints[2])
                 {
-                    // Check if matching on other side exists, skip if does
-                    // If doesn't, make a point there
+                    int insertIndex = FindSymmetricalCoordHome(oCoords, index, 1);
+                    oCoords.Insert(insertIndex, FindSymmetricalOppositeCoord(oCoords[insertIndex],
+                        oCoords[Modulo(insertIndex - 1, oCoords.Count)], oCoords[index][1], 1, lineArray[insertIndex]));
+                    rCoords.Insert(insertIndex, FindSymmetricalOppositeCoord(rCoords[insertIndex],
+                        rCoords[Modulo(insertIndex - 1, rCoords.Count)], rCoords[index][1], 1, lineArray[insertIndex]));
+                    tCoords.Insert(insertIndex, FindSymmetricalOppositeCoord(tCoords[insertIndex],
+                        tCoords[Modulo(insertIndex - 1, tCoords.Count)], tCoords[index][1], 1, lineArray[insertIndex]));
+                    lineArray.Insert(insertIndex, "line");
                 }
             }
 
             // Vertical Allignment (Same X Value)
+            for (int index = 0; index < oCoords.Count; index++)
+            {
+                // Check if there is already a matching on the other side and that the coordinate is not the bottom
+                if (FindSymmetricalCoord(oCoords, index, 0) == -1 && 
+                    oCoords[index][0] != highestPoints[1] && oCoords[index][0] != highestPoints[0])
+                {
+                    int insertIndex = FindSymmetricalCoordHome(oCoords, index, 0);
+                    oCoords.Insert(insertIndex, FindSymmetricalOppositeCoord(oCoords[insertIndex],
+                        oCoords[Modulo(insertIndex - 1, oCoords.Count)], oCoords[index][0], 0, lineArray[insertIndex]));
+                    rCoords.Insert(insertIndex, FindSymmetricalOppositeCoord(rCoords[insertIndex],
+                        rCoords[Modulo(insertIndex - 1, oCoords.Count)], rCoords[index][0], 0, lineArray[insertIndex]));
+                    tCoords.Insert(insertIndex, FindSymmetricalOppositeCoord(tCoords[insertIndex],
+                        tCoords[Modulo(insertIndex - 1, oCoords.Count)], tCoords[index][0], 0, lineArray[insertIndex]));
+                    lineArray.Insert(insertIndex, "line");
+                }
+            }
+        }
 
-            return originalCoords;
+        /// <summary>
+        /// Finds the index of the coordinate that has the same x or y value
+        /// as the selected coordinate.
+        /// </summary>
+        /// <param name="coords">List of piece coordinates</param>
+        /// <param name="matchIndex">The index of the selected coordinate</param>
+        /// <param name="xy">Whether searching for a match in x (0) or y (1)</param>
+        /// <returns>The symmetrical point's index or -1 if none exists</returns>
+        public static int FindSymmetricalCoord(List<double[]> coords, int matchIndex, int xy)
+        {
+            for (int index = 0; index < coords.Count; index++)
+            {
+                if (coords[index][xy] == coords[matchIndex][xy] && index != matchIndex)
+                {
+                    return index;
+                }
+            }
+            return -1;
+        }
+
+        /// <summary>
+        /// Finds the coordinate across from the selected coordinate.
+        /// </summary>
+        /// <param name="from">Coord before pending</param>
+        /// <param name="to">Coord after pending</param>
+        /// <param name="value">Selected value to match</param>
+        /// <param name="xy">Whether the x (0) or y (1) should be matched</param>
+        /// <param name="line">The join between the lines</param>
+        /// <returns></returns>
+        public static double[] FindSymmetricalOppositeCoord(double[] from, double[] to, double value, int xy, string line)
+        {
+            double gradient = -1;
+            if (line == "line")
+            {
+                gradient = (from[1] - to[1]) / (from[0] - to[0]);
+            }
+
+            if (xy == 0)
+            {
+                return new double[] { value, from[1] + (value - from[0]) * gradient };  // y = x * gradient
+            }
+            else
+            {
+                return new double[] { from[0] + (value - from[1]) / gradient, value };  // x = y / gradient
+            }
+        }
+
+        /// <summary>
+        /// Finds where a matching point would go if it existed.
+        /// </summary>
+        /// <param name="coords">List of piece coordinates</param>
+        /// <param name="matchIndex">The index of the selected coordinate</param>
+        /// <param name="xy">Whether searching for a match in x (0) or y (1)</param>
+        /// <returns>The index where the matching point would go or -1 in error</returns>
+        public static int FindSymmetricalCoordHome(List<double[]> coords, int matchIndex, int xy)
+        {
+            double goal = coords[matchIndex][xy];
+            bool bigger = false;
+            int searchIndex = -1;
+
+            // Find whether we're searching above or below the goal
+            for (int index = 0; index < coords.Count && searchIndex == -1; index++)
+            {
+                if (coords[index][xy] != goal)
+                {
+                    bigger = (coords[index][xy] > goal);
+                    searchIndex = (index + 1) % coords.Count;
+                }
+            }
+
+            // Find index position
+            for (int index = 0; index < coords.Count; index++)
+            {
+                if (coords[searchIndex][xy] == goal)
+                {
+                    bigger = !bigger;
+                }
+                else if (coords[searchIndex][xy] > goal != bigger)
+                {
+                    return searchIndex;
+                }
+                searchIndex = (searchIndex + 1) % coords.Count;
+            }
+            return -1;       // Error
         }
 
         /// <summary>

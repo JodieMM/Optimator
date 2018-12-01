@@ -41,7 +41,7 @@
             this.CompleteBtn = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.ExitBtn = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
+            this.TestingButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.DrawBase)).BeginInit();
             this.OptionsMenu.SuspendLayout();
             this.Page1.SuspendLayout();
@@ -76,11 +76,11 @@
             this.Page1.BackColor = System.Drawing.Color.Azure;
             this.Page1.Controls.Add(this.NameTb);
             this.Page1.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Page1.Location = new System.Drawing.Point(4, 27);
+            this.Page1.Location = new System.Drawing.Point(8, 50);
             this.Page1.Margin = new System.Windows.Forms.Padding(6);
             this.Page1.Name = "Page1";
             this.Page1.Padding = new System.Windows.Forms.Padding(6);
-            this.Page1.Size = new System.Drawing.Size(392, 669);
+            this.Page1.Size = new System.Drawing.Size(384, 642);
             this.Page1.TabIndex = 0;
             this.Page1.Text = "Shape";
             // 
@@ -91,18 +91,18 @@
             this.NameTb.Location = new System.Drawing.Point(15, 15);
             this.NameTb.Margin = new System.Windows.Forms.Padding(6);
             this.NameTb.Name = "NameTb";
-            this.NameTb.Size = new System.Drawing.Size(300, 33);
+            this.NameTb.Size = new System.Drawing.Size(300, 58);
             this.NameTb.TabIndex = 5;
             this.NameTb.Text = "Piece Name";
             // 
             // tabPage2
             // 
             this.tabPage2.BackColor = System.Drawing.Color.Azure;
-            this.tabPage2.Location = new System.Drawing.Point(4, 27);
+            this.tabPage2.Location = new System.Drawing.Point(8, 50);
             this.tabPage2.Margin = new System.Windows.Forms.Padding(6);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(6);
-            this.tabPage2.Size = new System.Drawing.Size(392, 669);
+            this.tabPage2.Size = new System.Drawing.Size(384, 642);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Settings";
             // 
@@ -210,19 +210,19 @@
             this.ExitBtn.UseVisualStyleBackColor = false;
             this.ExitBtn.Click += new System.EventHandler(this.ExitBtn_Click);
             // 
-            // button4
+            // TestingButton
             // 
-            this.button4.BackColor = System.Drawing.Color.LightCyan;
-            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button4.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button4.Location = new System.Drawing.Point(360, 465);
-            this.button4.Margin = new System.Windows.Forms.Padding(6);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(90, 90);
-            this.button4.TabIndex = 10;
-            this.button4.Text = "TBD";
-            this.button4.UseVisualStyleBackColor = false;
-            this.button4.Visible = false;
+            this.TestingButton.BackColor = System.Drawing.Color.LightCyan;
+            this.TestingButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.TestingButton.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TestingButton.Location = new System.Drawing.Point(360, 465);
+            this.TestingButton.Margin = new System.Windows.Forms.Padding(6);
+            this.TestingButton.Name = "TestingButton";
+            this.TestingButton.Size = new System.Drawing.Size(90, 90);
+            this.TestingButton.TabIndex = 10;
+            this.TestingButton.Text = "Testing";
+            this.TestingButton.UseVisualStyleBackColor = false;
+            this.TestingButton.Click += new System.EventHandler(this.TestingButton_Click);
             // 
             // PiecesForm
             // 
@@ -231,7 +231,7 @@
             this.ClientSize = new System.Drawing.Size(1100, 700);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.ExitBtn);
-            this.Controls.Add(this.button4);
+            this.Controls.Add(this.TestingButton);
             this.Controls.Add(this.CompleteBtn);
             this.Controls.Add(this.EraserBtn);
             this.Controls.Add(this.PreviewBtn);
@@ -271,6 +271,6 @@
         private System.Windows.Forms.Button CompleteBtn;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button ExitBtn;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button TestingButton;
     }
 }

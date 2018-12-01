@@ -538,6 +538,7 @@ namespace Animator
             }*/
 
             // ** REPEAT ABOVE FOR r AND t coords
+            Utilities.CoordsOnAllSides(oCoords, rCoords, tCoords, joins);
 
             // Get 4th (Combo R and T)
             List<double[]> bCoords = new List<double[]>();
@@ -964,5 +965,11 @@ namespace Animator
         }
         */
         #endregion
+
+        private void TestingButton_Click(object sender, EventArgs e)
+        {
+            Utilities.CoordsOnAllSides(oCoords, rCoords, tCoords, joins);
+            DisplayDrawings();
+        }
     }
 }
