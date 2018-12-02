@@ -362,6 +362,7 @@ namespace Animator
         public List<double[]> GetCurrentPoints(bool recentre)
         {
             int row = Utilities.FindRow(GetAngles()[0], GetAngles()[1], Data, 1);
+            if (row == -1) { return null; }
             string dataLine = Data[row];
 
             // Prepare Points

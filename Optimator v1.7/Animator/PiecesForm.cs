@@ -24,8 +24,13 @@ namespace Animator
         private List<double[]> oCoords = new List<double[]>();
         private List<double[]> rCoords = new List<double[]>();
         private List<double[]> tCoords = new List<double[]>();
+        private List<double[]> oCoordsFull = new List<double[]>();
+        private List<double[]> rCoordsFull = new List<double[]>();
+        private List<double[]> tCoordsFull = new List<double[]>();
         private List<string> joins = new List<string>();
         private List<string> solid = new List<string>();
+        private List<string> joinsFull = new List<string>();
+        private List<string> solidFull = new List<string>();
 
         private int selectedIndex = 0;
         private bool oMoving = false;
@@ -524,34 +529,37 @@ namespace Animator
             WIP.UpdateDataInfoLine();
 
             // Update coords to include matching points to the right/left
-            Utilities.CoordsOnAllSides(oCoords, rCoords, tCoords, joins);
+            oCoordsFull.Clear(); tCoordsFull.Clear(); rCoordsFull.Clear(); joinsFull.Clear(); solidFull.Clear();
+            oCoordsFull.AddRange(oCoords); tCoordsFull.AddRange(tCoords); rCoordsFull.AddRange(rCoords);
+            joinsFull.AddRange(joins); solidFull.AddRange(solid);
+            Utilities.CoordsOnAllSides(oCoordsFull, rCoordsFull, tCoordsFull, joinsFull, solidFull);
 
             // Get 4th (Combo R and T)
             List<double[]> bCoords = new List<double[]>();
-            for (int index = 0; index < rCoords.Count; index++)
+            for (int index = 0; index < rCoordsFull.Count; index++)
             {
-                bCoords.Add(new double[] { rCoords[index][0], tCoords[index][1] });
+                bCoords.Add(new double[] { rCoordsFull[index][0], tCoordsFull[index][1] });
             }
             
-            ConvertVariablesToData(0, 90, 0, 90, oCoords, rCoords, tCoords, joins, solid);
-            ConvertVariablesToData(90, 180, 0, 90, rCoords, Utilities.FlipCoords(oCoords, joins, true, false), bCoords, joins, solid);
-            ConvertVariablesToData(180, 270, 0, 90, Utilities.FlipCoords(oCoords, joins, true, false), Utilities.FlipCoords(rCoords, joins, true, false), Utilities.FlipCoords(tCoords, joins, true, false), joins, solid);
-            ConvertVariablesToData(270, 360, 0, 90, Utilities.FlipCoords(rCoords, joins, true, false), oCoords, Utilities.FlipCoords(bCoords, joins, true, false), joins, solid);
+            ConvertVariablesToData(0, 90, 0, 90, oCoordsFull, rCoordsFull, tCoordsFull, joinsFull, solidFull);
+            ConvertVariablesToData(90, 180, 0, 90, rCoordsFull, Utilities.FlipCoords(oCoordsFull, joinsFull, true, false), bCoords, joinsFull, solidFull);
+            ConvertVariablesToData(180, 270, 0, 90, Utilities.FlipCoords(oCoordsFull, joinsFull, true, false), Utilities.FlipCoords(rCoordsFull, joinsFull, true, false), Utilities.FlipCoords(tCoordsFull, joinsFull, true, false), joinsFull, solidFull);
+            ConvertVariablesToData(270, 360, 0, 90, Utilities.FlipCoords(rCoordsFull, joinsFull, true, false), oCoordsFull, Utilities.FlipCoords(bCoords, joinsFull, true, false), joinsFull, solidFull);
 
-            ConvertVariablesToData(0, 90, 90, 180, tCoords, bCoords, Utilities.FlipCoords(oCoords, joins, false, true), joins, solid);
-            ConvertVariablesToData(90, 180, 90, 180, bCoords, Utilities.FlipCoords(tCoords, joins, true, false), Utilities.FlipCoords(rCoords, joins, false, true), joins, solid);
-            ConvertVariablesToData(180, 270, 90, 180, Utilities.FlipCoords(tCoords, joins, true, false), Utilities.FlipCoords(bCoords, joins, true, false), Utilities.FlipCoords(oCoords, joins, true, true), joins, solid);
-            ConvertVariablesToData(270, 360, 90, 180, Utilities.FlipCoords(bCoords, joins, true, false), tCoords, Utilities.FlipCoords(rCoords, joins, true, true), joins, solid);
+            ConvertVariablesToData(0, 90, 90, 180, tCoordsFull, bCoords, Utilities.FlipCoords(oCoordsFull, joinsFull, false, true), joinsFull, solidFull);
+            ConvertVariablesToData(90, 180, 90, 180, bCoords, Utilities.FlipCoords(tCoordsFull, joinsFull, true, false), Utilities.FlipCoords(rCoordsFull, joinsFull, false, true), joinsFull, solidFull);
+            ConvertVariablesToData(180, 270, 90, 180, Utilities.FlipCoords(tCoordsFull, joinsFull, true, false), Utilities.FlipCoords(bCoords, joinsFull, true, false), Utilities.FlipCoords(oCoordsFull, joinsFull, true, true), joinsFull, solidFull);
+            ConvertVariablesToData(270, 360, 90, 180, Utilities.FlipCoords(bCoords, joinsFull, true, false), tCoordsFull, Utilities.FlipCoords(rCoordsFull, joinsFull, true, true), joinsFull, solidFull);
 
-            ConvertVariablesToData(0, 90, 180, 270, Utilities.FlipCoords(oCoords, joins, false, true), Utilities.FlipCoords(rCoords, joins, false, true), Utilities.FlipCoords(tCoords, joins, false, true), joins, solid);
-            ConvertVariablesToData(90, 180, 180, 270, Utilities.FlipCoords(rCoords, joins, false, true), Utilities.FlipCoords(oCoords, joins, true, true), Utilities.FlipCoords(bCoords, joins, false, true), joins, solid);
-            ConvertVariablesToData(180, 270, 180, 270, Utilities.FlipCoords(oCoords, joins, true, true), Utilities.FlipCoords(rCoords, joins, true, true), Utilities.FlipCoords(tCoords, joins, true, true), joins, solid);
-            ConvertVariablesToData(270, 360, 180, 270, Utilities.FlipCoords(rCoords, joins, true, true), Utilities.FlipCoords(oCoords, joins, false, true), Utilities.FlipCoords(bCoords, joins, true, true), joins, solid);
+            ConvertVariablesToData(0, 90, 180, 270, Utilities.FlipCoords(oCoordsFull, joinsFull, false, true), Utilities.FlipCoords(rCoordsFull, joinsFull, false, true), Utilities.FlipCoords(tCoordsFull, joinsFull, false, true), joinsFull, solidFull);
+            ConvertVariablesToData(90, 180, 180, 270, Utilities.FlipCoords(rCoordsFull, joinsFull, false, true), Utilities.FlipCoords(oCoordsFull, joinsFull, true, true), Utilities.FlipCoords(bCoords, joinsFull, false, true), joinsFull, solidFull);
+            ConvertVariablesToData(180, 270, 180, 270, Utilities.FlipCoords(oCoordsFull, joinsFull, true, true), Utilities.FlipCoords(rCoordsFull, joinsFull, true, true), Utilities.FlipCoords(tCoordsFull, joinsFull, true, true), joinsFull, solidFull);
+            ConvertVariablesToData(270, 360, 180, 270, Utilities.FlipCoords(rCoordsFull, joinsFull, true, true), Utilities.FlipCoords(oCoordsFull, joinsFull, false, true), Utilities.FlipCoords(bCoords, joinsFull, true, true), joinsFull, solidFull);
 
-            ConvertVariablesToData(0, 90, 270, 360, Utilities.FlipCoords(tCoords, joins, false, true), Utilities.FlipCoords(bCoords, joins, false, true), oCoords, joins, solid);
-            ConvertVariablesToData(90, 180, 270, 360, Utilities.FlipCoords(bCoords, joins, false, true), Utilities.FlipCoords(tCoords, joins, true, true), rCoords, joins, solid);
-            ConvertVariablesToData(180, 270, 270, 360, Utilities.FlipCoords(tCoords, joins, true, true), Utilities.FlipCoords(bCoords, joins, true, true), Utilities.FlipCoords(oCoords, joins, true, false), joins, solid);
-            ConvertVariablesToData(270, 360, 270, 360, Utilities.FlipCoords(bCoords, joins, true, true), Utilities.FlipCoords(tCoords, joins, false, true), Utilities.FlipCoords(rCoords, joins, true, false), joins, solid);
+            ConvertVariablesToData(0, 90, 270, 360, Utilities.FlipCoords(tCoordsFull, joinsFull, false, true), Utilities.FlipCoords(bCoords, joinsFull, false, true), oCoordsFull, joinsFull, solidFull);
+            ConvertVariablesToData(90, 180, 270, 360, Utilities.FlipCoords(bCoords, joinsFull, false, true), Utilities.FlipCoords(tCoordsFull, joinsFull, true, true), rCoordsFull, joinsFull, solidFull);
+            ConvertVariablesToData(180, 270, 270, 360, Utilities.FlipCoords(tCoordsFull, joinsFull, true, true), Utilities.FlipCoords(bCoords, joinsFull, true, true), Utilities.FlipCoords(oCoordsFull, joinsFull, true, false), joinsFull, solidFull);
+            ConvertVariablesToData(270, 360, 270, 360, Utilities.FlipCoords(bCoords, joinsFull, true, true), Utilities.FlipCoords(tCoordsFull, joinsFull, false, true), Utilities.FlipCoords(rCoordsFull, joinsFull, true, false), joinsFull, solidFull);
         }
 
         /// <summary>
@@ -954,7 +962,7 @@ namespace Animator
 
         private void TestingButton_Click(object sender, EventArgs e)
         {
-            Utilities.CoordsOnAllSides(oCoords, rCoords, tCoords, joins);
+            Utilities.CoordsOnAllSides(oCoords, rCoords, tCoords, joins, solid);
             DisplayDrawings();
         }
     }
