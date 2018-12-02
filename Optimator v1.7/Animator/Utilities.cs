@@ -420,18 +420,22 @@ namespace Animator
         }
 
         /// <summary>
-        /// Finds the equivalent index in a larger set of coordinates.
+        /// Finds the equivalent index in a larger set of coordinates and finds
+        /// its symmetrical match.
         /// </summary>
         /// <param name="current">Larger set of coordinates</param>
         /// <param name="original">Smaller set of coordinates</param>
         /// <param name="findIndex">Index of original to match</param>
+        /// <param name="xy">Whether the resulting index should be searched via x (0) or y (1)</param>
         /// <returns>The equivalent index or -1 if error</returns>
-        public static int FindAdjustedIndex(List<double[]> current, List<double[]> original, int findIndex)
+        public static int FindAdjustedIndex(List<double[]> current, List<double[]> original, int findIndex, int xy)
         {
-            if (current.Count == original.Count) { return findIndex; }
             for (int index = findIndex; index < current.Count; index++)
             {
-                if (current[index][0] == original[findIndex][0] && current[index][1] == original[findIndex][1]) { return index; }
+                if (current[index][0] == original[findIndex][0] && current[index][1] == original[findIndex][1])
+                {
+                    return FindSymmetricalCoordHome(current, index, xy);
+                }
             }
             return -1;
         }
@@ -464,7 +468,7 @@ namespace Animator
                     ooCoords[index][1] != highestPoints[3] && ooCoords[index][1] != highestPoints[2])
                 {
                     int insertIndex = FindSymmetricalCoordHome(ooCoords, index, 1);
-                    int adjustedIndex = FindAdjustedIndex(oCoords, ooCoords, insertIndex);
+                    int adjustedIndex = FindAdjustedIndex(oCoords, ooCoords, index, 1);
                     oCoords.Insert(adjustedIndex, FindSymmetricalOppositeCoord(ooCoords[insertIndex],
                         ooCoords[Modulo(insertIndex - 1, ooCoords.Count)], ooCoords[index][1], 1, lineArray[adjustedIndex]));
                     rCoords.Insert(adjustedIndex, FindSymmetricalOppositeCoord(orCoords[insertIndex],
@@ -484,7 +488,7 @@ namespace Animator
                     ooCoords[index][0] != highestPoints[1] && ooCoords[index][0] != highestPoints[0])
                 {
                     int insertIndex = FindSymmetricalCoordHome(ooCoords, index, 0);
-                    int adjustedIndex = FindAdjustedIndex(oCoords, ooCoords, insertIndex);
+                    int adjustedIndex = FindAdjustedIndex(oCoords, ooCoords, index, 0);
                     oCoords.Insert(adjustedIndex, FindSymmetricalOppositeCoord(ooCoords[insertIndex],
                         ooCoords[Modulo(insertIndex - 1, ooCoords.Count)], ooCoords[index][0], 0, lineArray[adjustedIndex]));
                     rCoords.Insert(adjustedIndex, FindSymmetricalOppositeCoord(orCoords[insertIndex],
