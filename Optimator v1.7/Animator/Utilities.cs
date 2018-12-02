@@ -256,7 +256,7 @@ namespace Animator
 
 
 
-        // ----- OTHER FUNCTIONS -----
+        // ----- GENERAL FUNCTIONS -----
 
         /// <summary>
         /// Finds the mathematical modulus of a mod b.
@@ -268,6 +268,23 @@ namespace Animator
         {
             return (a % b + b) % b;
         }
+
+        /// <summary>
+        /// Returns a de-referenced clone of a double[] list.
+        /// </summary>
+        /// <param name="original">Original list</param>
+        /// <returns>A de-referenced copy of original</returns>
+        public static List<double[]> CloneMe(List<double[]> original)
+        {
+            List<double[]> clone = new List<double[]>();
+            clone.AddRange(original);
+            return clone;
+        }
+
+
+
+        // ----- PIECE FUNCTIONS -----
+        #region Piece Functions
 
         /// <summary>
         /// Finds the correct row in the piece data for the given rotation and turn values
@@ -334,13 +351,27 @@ namespace Animator
         public static List<double[]> FlipCoords(List<double[]> coords, List<string> lineArray, bool right, bool down)
         {
             double[] middle = FindMid(coords);
-            List<double[]> newCoords = new List<double[]>();
+            double[] minMax = FindMinMax(coords);
+            List<double[]> clone = CloneMe(coords);
 
             // Flip Vertically (Right)
             if (right)
             {
                 for (int index = 0; index < coords.Count; index++)
                 {
+                    // Assign coords to their symmetric match
+                    int matchIndex = FindSymmetricalCoord(clone, index, 1);
+                    if (matchIndex == -1)
+                    {
+                        int searchIndex = FindSymmetricalCoordHome(clone, index, 1);
+                        coords[index][0] = FindSymmetricalOppositeCoord(clone[searchIndex],
+                            clone[Modulo(searchIndex - 1, clone.Count)], clone[index][1], 1, lineArray[searchIndex])[0];
+                    }
+                    else
+                    {
+                        coords[index][0] = clone[matchIndex][0];
+                    }
+                    // Flip
                     coords[index][0] = 2 * middle[0] - coords[index][0];
                 }
             }
@@ -350,11 +381,42 @@ namespace Animator
             {
                 for (int index = 0; index < coords.Count; index++)
                 {
+                    // Assign coords to their symmetric match
+                    int matchIndex = FindSymmetricalCoord(clone, index, 0);
+                    if (matchIndex == -1)
+                    {
+                        int searchIndex = FindSymmetricalCoordHome(clone, index, 0);
+                        coords[index][1] = FindSymmetricalOppositeCoord(clone[searchIndex],
+                            clone[Modulo(searchIndex - 1, clone.Count)], clone[index][0], 0, lineArray[searchIndex])[1];
+                    }
+                    else
+                    {
+                        coords[index][1] = clone[matchIndex][1];
+                    }
+                    // Flip
                     coords[index][1] = 2 * middle[1] - coords[index][1];
                 }
             }
 
-            return newCoords;
+            return coords;
+        }
+
+        /// <summary>
+        /// Finds the equivalent index in a larger set of coordinates.
+        /// </summary>
+        /// <param name="current">Larger set of coordinates</param>
+        /// <param name="original">Smaller set of coordinates</param>
+        /// <param name="findIndex">Index of original to match</param>
+        /// <returns>The equivalent index or -1 if error</returns>
+        public static int FindAdjustedIndex(List<double[]> current, List<double[]> original, int findIndex)
+        {
+            if (current.Count == original.Count) { return findIndex; }
+            double[] goal = original[findIndex];
+            for (int index = findIndex; index < current.Count; index++)
+            {
+                if (current[index] == goal) { return index; }
+            }
+            return -1;
         }
 
         /// <summary>
@@ -374,39 +436,44 @@ namespace Animator
 
             double[] highestPoints = FindMinMax(oCoords);
             List<int> clearIndexes = new List<int>();
+            List<double[]> ooCoords = CloneMe(oCoords);
+            List<double[]> orCoords = CloneMe(rCoords);
+            List<double[]> otCoords = CloneMe(tCoords);
 
             // Horizontal Allignment (Same Y Value)
-            for (int index = 0; index < oCoords.Count; index++)
+            for (int index = 0; index < ooCoords.Count; index++)
             {
                 // Check if there is already a matching on the other side and that the coordinate is not the bottom
-                if (FindSymmetricalCoord(oCoords, index, 1) == -1 && 
-                    oCoords[index][1] != highestPoints[3] && oCoords[index][1] != highestPoints[2])
+                if (FindSymmetricalCoord(ooCoords, index, 1) == -1 &&
+                    ooCoords[index][1] != highestPoints[3] && ooCoords[index][1] != highestPoints[2])
                 {
-                    int insertIndex = FindSymmetricalCoordHome(oCoords, index, 1);
-                    oCoords.Insert(insertIndex, FindSymmetricalOppositeCoord(oCoords[insertIndex],
-                        oCoords[Modulo(insertIndex - 1, oCoords.Count)], oCoords[index][1], 1, lineArray[insertIndex]));
-                    rCoords.Insert(insertIndex, FindSymmetricalOppositeCoord(rCoords[insertIndex],
-                        rCoords[Modulo(insertIndex - 1, rCoords.Count)], rCoords[index][1], 1, lineArray[insertIndex]));
-                    tCoords.Insert(insertIndex, FindSymmetricalOppositeCoord(tCoords[insertIndex],
-                        tCoords[Modulo(insertIndex - 1, tCoords.Count)], tCoords[index][1], 1, lineArray[insertIndex]));
-                    lineArray.Insert(insertIndex, "line");
+                    int insertIndex = FindSymmetricalCoordHome(ooCoords, index, 1);
+                    int adjustedIndex = FindAdjustedIndex(oCoords, ooCoords, insertIndex);
+                    oCoords.Insert(adjustedIndex, FindSymmetricalOppositeCoord(ooCoords[insertIndex],
+                        ooCoords[Modulo(insertIndex - 1, ooCoords.Count)], ooCoords[index][1], 1, lineArray[adjustedIndex]));
+                    rCoords.Insert(adjustedIndex, FindSymmetricalOppositeCoord(orCoords[insertIndex],
+                        orCoords[Modulo(insertIndex - 1, orCoords.Count)], orCoords[index][1], 1, lineArray[adjustedIndex]));
+                    tCoords.Insert(adjustedIndex, FindSymmetricalOppositeCoord(otCoords[insertIndex],
+                        otCoords[Modulo(insertIndex - 1, otCoords.Count)], otCoords[index][1], 1, lineArray[adjustedIndex]));
+                    lineArray.Insert(adjustedIndex, "line");
                 }
             }
 
             // Vertical Allignment (Same X Value)
-            for (int index = 0; index < oCoords.Count; index++)
+            for (int index = 0; index < ooCoords.Count; index++)
             {
                 // Check if there is already a matching on the other side and that the coordinate is not the bottom
-                if (FindSymmetricalCoord(oCoords, index, 0) == -1 && 
-                    oCoords[index][0] != highestPoints[1] && oCoords[index][0] != highestPoints[0])
+                if (FindSymmetricalCoord(ooCoords, index, 0) == -1 && 
+                    ooCoords[index][0] != highestPoints[1] && ooCoords[index][0] != highestPoints[0])
                 {
-                    int insertIndex = FindSymmetricalCoordHome(oCoords, index, 0);
-                    oCoords.Insert(insertIndex, FindSymmetricalOppositeCoord(oCoords[insertIndex],
-                        oCoords[Modulo(insertIndex - 1, oCoords.Count)], oCoords[index][0], 0, lineArray[insertIndex]));
-                    rCoords.Insert(insertIndex, FindSymmetricalOppositeCoord(rCoords[insertIndex],
-                        rCoords[Modulo(insertIndex - 1, oCoords.Count)], rCoords[index][0], 0, lineArray[insertIndex]));
-                    tCoords.Insert(insertIndex, FindSymmetricalOppositeCoord(tCoords[insertIndex],
-                        tCoords[Modulo(insertIndex - 1, oCoords.Count)], tCoords[index][0], 0, lineArray[insertIndex]));
+                    int insertIndex = FindSymmetricalCoordHome(ooCoords, index, 0);
+                    int adjustedIndex = FindAdjustedIndex(oCoords, ooCoords, insertIndex);
+                    oCoords.Insert(adjustedIndex, FindSymmetricalOppositeCoord(ooCoords[insertIndex],
+                        ooCoords[Modulo(insertIndex - 1, ooCoords.Count)], ooCoords[index][0], 0, lineArray[adjustedIndex]));
+                    rCoords.Insert(adjustedIndex, FindSymmetricalOppositeCoord(orCoords[insertIndex],
+                        orCoords[Modulo(insertIndex - 1, orCoords.Count)], orCoords[index][0], 0, lineArray[adjustedIndex]));
+                    tCoords.Insert(adjustedIndex, FindSymmetricalOppositeCoord(otCoords[insertIndex],
+                        otCoords[Modulo(insertIndex - 1, otCoords.Count)], otCoords[index][0], 0, lineArray[adjustedIndex]));
                     lineArray.Insert(insertIndex, "line");
                 }
             }
@@ -433,7 +500,7 @@ namespace Animator
         }
 
         /// <summary>
-        /// Finds the coordinate across from the selected coordinate.
+        /// Finds the coordinate that would be across from the selected coordinate.
         /// </summary>
         /// <param name="from">Coord before pending</param>
         /// <param name="to">Coord after pending</param>
@@ -511,6 +578,8 @@ namespace Animator
             toSwitch[index1] = toSwitch[index2];
             toSwitch[index2] = holding;
         }
+
+        #endregion
 
 
 

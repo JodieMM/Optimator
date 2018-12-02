@@ -338,6 +338,7 @@ namespace Animator
         public List<double[]> FindPoints(double r, double t, int angle)
         {
             int row = Utilities.FindRow(r, t, Data, 1);
+            if (row == -1) { return null; }
             List<double[]> returnPoints = new List<double[]>();
             string[] angleLine = Data[row].Split(Constants.Semi)[angle].Split(Constants.Colon);
 

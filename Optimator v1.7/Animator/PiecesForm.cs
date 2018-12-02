@@ -524,20 +524,6 @@ namespace Animator
             WIP.UpdateDataInfoLine();
 
             // Update coords to include matching points to the right/left
-            /*
-            for (int index = 0; index < oCoords.Count; index++)
-            {
-                if (Utilities.FindMatchIndex(oCoords, index, 1) != -1)
-                {
-                    oCoords.Add(new double[] { oCoords[Utilities.FindMatchIndex(oCoords, index, 1)][0], oCoords[index][1] });
-                }
-                else
-                {
-                    oCoords.Add(oCoords[index]);
-                }
-            }*/
-
-            // ** REPEAT ABOVE FOR r AND t coords
             Utilities.CoordsOnAllSides(oCoords, rCoords, tCoords, joins);
 
             // Get 4th (Combo R and T)
