@@ -452,9 +452,6 @@ namespace Animator
         /// <returns>Shape coordinates with extra coords on both sides</returns>
         public static void CoordsOnAllSides(List<double[]> oCoords, List<double[]> rCoords, List<double[]> tCoords, List<string> lineArray, List<string> solidArray)
         {
-            // Check Viable Pieces
-            // ** TO DO
-
             double[] highestPoints = FindMinMax(oCoords);
             List<double[]> ooCoords = CloneMe(oCoords);
             List<double[]> orCoords = CloneMe(rCoords);

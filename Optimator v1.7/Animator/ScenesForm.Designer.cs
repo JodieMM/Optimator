@@ -65,9 +65,9 @@
             this.AddPieceBtn = new System.Windows.Forms.Button();
             this.AnimationTab = new System.Windows.Forms.TabPage();
             this.SceneTab = new System.Windows.Forms.TabPage();
+            this.ExitBtn = new System.Windows.Forms.Button();
             this.SceneTb = new System.Windows.Forms.TextBox();
             this.FinishSceneBtn = new System.Windows.Forms.Button();
-            this.ExitBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.FrameLengthUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.FpsUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.AnimationAmountTb)).BeginInit();
@@ -90,7 +90,7 @@
             this.SceneNumber.Location = new System.Drawing.Point(150, 387);
             this.SceneNumber.Margin = new System.Windows.Forms.Padding(2);
             this.SceneNumber.Name = "SceneNumber";
-            this.SceneNumber.Size = new System.Drawing.Size(32, 27);
+            this.SceneNumber.Size = new System.Drawing.Size(32, 46);
             this.SceneNumber.TabIndex = 28;
             this.SceneNumber.Text = "0";
             // 
@@ -100,7 +100,7 @@
             this.FrameLengthUpDown.Location = new System.Drawing.Point(22, 324);
             this.FrameLengthUpDown.Margin = new System.Windows.Forms.Padding(2);
             this.FrameLengthUpDown.Name = "FrameLengthUpDown";
-            this.FrameLengthUpDown.Size = new System.Drawing.Size(142, 27);
+            this.FrameLengthUpDown.Size = new System.Drawing.Size(142, 46);
             this.FrameLengthUpDown.TabIndex = 27;
             // 
             // FpsUpDown
@@ -109,7 +109,7 @@
             this.FpsUpDown.Location = new System.Drawing.Point(125, 428);
             this.FpsUpDown.Margin = new System.Windows.Forms.Padding(2);
             this.FpsUpDown.Name = "FpsUpDown";
-            this.FpsUpDown.Size = new System.Drawing.Size(72, 27);
+            this.FpsUpDown.Size = new System.Drawing.Size(72, 46);
             this.FpsUpDown.TabIndex = 24;
             this.FpsUpDown.Visible = false;
             // 
@@ -119,7 +119,7 @@
             this.SceneNameTb.Location = new System.Drawing.Point(22, 358);
             this.SceneNameTb.Margin = new System.Windows.Forms.Padding(2);
             this.SceneNameTb.Name = "SceneNameTb";
-            this.SceneNameTb.Size = new System.Drawing.Size(144, 27);
+            this.SceneNameTb.Size = new System.Drawing.Size(144, 46);
             this.SceneNameTb.TabIndex = 19;
             this.SceneNameTb.Text = "Scene Name";
             // 
@@ -161,7 +161,7 @@
             this.BasePrevCb.Location = new System.Drawing.Point(22, 489);
             this.BasePrevCb.Margin = new System.Windows.Forms.Padding(2);
             this.BasePrevCb.Name = "BasePrevCb";
-            this.BasePrevCb.Size = new System.Drawing.Size(101, 23);
+            this.BasePrevCb.Size = new System.Drawing.Size(199, 43);
             this.BasePrevCb.TabIndex = 21;
             this.BasePrevCb.Text = "Base Prev.";
             this.BasePrevCb.UseVisualStyleBackColor = true;
@@ -186,7 +186,7 @@
             this.AnimationAmountTb.Location = new System.Drawing.Point(22, 297);
             this.AnimationAmountTb.Margin = new System.Windows.Forms.Padding(2);
             this.AnimationAmountTb.Name = "AnimationAmountTb";
-            this.AnimationAmountTb.Size = new System.Drawing.Size(142, 27);
+            this.AnimationAmountTb.Size = new System.Drawing.Size(142, 46);
             this.AnimationAmountTb.TabIndex = 12;
             // 
             // ChangeTypeCb
@@ -206,7 +206,7 @@
             this.ChangeTypeCb.Location = new System.Drawing.Point(22, 266);
             this.ChangeTypeCb.Margin = new System.Windows.Forms.Padding(2);
             this.ChangeTypeCb.Name = "ChangeTypeCb";
-            this.ChangeTypeCb.Size = new System.Drawing.Size(144, 27);
+            this.ChangeTypeCb.Size = new System.Drawing.Size(144, 47);
             this.ChangeTypeCb.TabIndex = 11;
             // 
             // DeleteAnimationBtn
@@ -226,11 +226,11 @@
             // 
             this.AnimationLb.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.AnimationLb.FormattingEnabled = true;
-            this.AnimationLb.ItemHeight = 19;
+            this.AnimationLb.ItemHeight = 39;
             this.AnimationLb.Location = new System.Drawing.Point(20, 17);
             this.AnimationLb.Margin = new System.Windows.Forms.Padding(2);
             this.AnimationLb.Name = "AnimationLb";
-            this.AnimationLb.Size = new System.Drawing.Size(144, 137);
+            this.AnimationLb.Size = new System.Drawing.Size(144, 121);
             this.AnimationLb.TabIndex = 4;
             // 
             // AddAnimationBtn
@@ -255,7 +255,7 @@
             this.label6.Location = new System.Drawing.Point(6, 596);
             this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(85, 23);
+            this.label6.Size = new System.Drawing.Size(170, 46);
             this.label6.TabIndex = 18;
             this.label6.Text = "Size Mod";
             // 
@@ -270,7 +270,7 @@
             0,
             0});
             this.SizeUpDown.Name = "SizeUpDown";
-            this.SizeUpDown.Size = new System.Drawing.Size(182, 27);
+            this.SizeUpDown.Size = new System.Drawing.Size(182, 46);
             this.SizeUpDown.TabIndex = 17;
             this.SizeUpDown.ValueChanged += new System.EventHandler(this.SizeUpDown_ValueChanged);
             // 
@@ -281,7 +281,7 @@
             this.label5.Location = new System.Drawing.Point(6, 534);
             this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(21, 23);
+            this.label5.Size = new System.Drawing.Size(42, 46);
             this.label5.TabIndex = 16;
             this.label5.Text = "Y";
             // 
@@ -301,7 +301,7 @@
             0,
             -2147483648});
             this.YUpDown.Name = "YUpDown";
-            this.YUpDown.Size = new System.Drawing.Size(182, 27);
+            this.YUpDown.Size = new System.Drawing.Size(182, 46);
             this.YUpDown.TabIndex = 15;
             this.YUpDown.ValueChanged += new System.EventHandler(this.YUpDown_ValueChanged);
             // 
@@ -312,7 +312,7 @@
             this.label4.Location = new System.Drawing.Point(6, 472);
             this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(21, 23);
+            this.label4.Size = new System.Drawing.Size(42, 46);
             this.label4.TabIndex = 14;
             this.label4.Text = "X";
             // 
@@ -332,7 +332,7 @@
             0,
             -2147483648});
             this.XUpDown.Name = "XUpDown";
-            this.XUpDown.Size = new System.Drawing.Size(182, 27);
+            this.XUpDown.Size = new System.Drawing.Size(182, 46);
             this.XUpDown.TabIndex = 13;
             this.XUpDown.ValueChanged += new System.EventHandler(this.XUpDown_ValueChanged);
             // 
@@ -343,7 +343,7 @@
             this.label3.Location = new System.Drawing.Point(6, 410);
             this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(47, 23);
+            this.label3.Size = new System.Drawing.Size(92, 46);
             this.label3.TabIndex = 9;
             this.label3.Text = "Spin";
             // 
@@ -363,7 +363,7 @@
             0,
             -2147483648});
             this.SpinUpDown.Name = "SpinUpDown";
-            this.SpinUpDown.Size = new System.Drawing.Size(182, 27);
+            this.SpinUpDown.Size = new System.Drawing.Size(182, 46);
             this.SpinUpDown.TabIndex = 8;
             this.SpinUpDown.ValueChanged += new System.EventHandler(this.SpinUpDown_ValueChanged);
             // 
@@ -374,7 +374,7 @@
             this.AttributesLbl.Location = new System.Drawing.Point(5, 169);
             this.AttributesLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.AttributesLbl.Name = "AttributesLbl";
-            this.AttributesLbl.Size = new System.Drawing.Size(103, 25);
+            this.AttributesLbl.Size = new System.Drawing.Size(201, 51);
             this.AttributesLbl.TabIndex = 6;
             this.AttributesLbl.Text = "Attributes";
             // 
@@ -394,7 +394,7 @@
             0,
             -2147483648});
             this.TurnUpDown.Name = "TurnUpDown";
-            this.TurnUpDown.Size = new System.Drawing.Size(182, 27);
+            this.TurnUpDown.Size = new System.Drawing.Size(182, 46);
             this.TurnUpDown.TabIndex = 3;
             this.TurnUpDown.ValueChanged += new System.EventHandler(this.TurnUpDown_ValueChanged);
             // 
@@ -414,7 +414,7 @@
             0,
             -2147483648});
             this.RotationUpDown.Name = "RotationUpDown";
-            this.RotationUpDown.Size = new System.Drawing.Size(182, 27);
+            this.RotationUpDown.Size = new System.Drawing.Size(182, 46);
             this.RotationUpDown.TabIndex = 2;
             this.RotationUpDown.ValueChanged += new System.EventHandler(this.RotationUpDown_ValueChanged);
             // 
@@ -424,7 +424,7 @@
             this.NameTb.Location = new System.Drawing.Point(10, 13);
             this.NameTb.Margin = new System.Windows.Forms.Padding(2);
             this.NameTb.Name = "NameTb";
-            this.NameTb.Size = new System.Drawing.Size(182, 30);
+            this.NameTb.Size = new System.Drawing.Size(182, 53);
             this.NameTb.TabIndex = 0;
             this.NameTb.Text = "Part Name";
             // 
@@ -472,9 +472,9 @@
             this.PartsTab.Controls.Add(this.TurnUpDown);
             this.PartsTab.Controls.Add(this.SpinUpDown);
             this.PartsTab.Controls.Add(this.label3);
-            this.PartsTab.Location = new System.Drawing.Point(4, 27);
+            this.PartsTab.Location = new System.Drawing.Point(8, 50);
             this.PartsTab.Name = "PartsTab";
-            this.PartsTab.Size = new System.Drawing.Size(202, 669);
+            this.PartsTab.Size = new System.Drawing.Size(194, 642);
             this.PartsTab.TabIndex = 2;
             this.PartsTab.Text = "Parts";
             // 
@@ -485,7 +485,7 @@
             this.OrderLbl.Location = new System.Drawing.Point(6, 204);
             this.OrderLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.OrderLbl.Name = "OrderLbl";
-            this.OrderLbl.Size = new System.Drawing.Size(58, 23);
+            this.OrderLbl.Size = new System.Drawing.Size(116, 46);
             this.OrderLbl.TabIndex = 33;
             this.OrderLbl.Text = "Order";
             // 
@@ -496,7 +496,7 @@
             this.TurnLbl.Location = new System.Drawing.Point(6, 348);
             this.TurnLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.TurnLbl.Name = "TurnLbl";
-            this.TurnLbl.Size = new System.Drawing.Size(50, 23);
+            this.TurnLbl.Size = new System.Drawing.Size(98, 46);
             this.TurnLbl.TabIndex = 32;
             this.TurnLbl.Text = "Turn";
             // 
@@ -507,7 +507,7 @@
             this.RotationLbl.Location = new System.Drawing.Point(6, 286);
             this.RotationLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.RotationLbl.Name = "RotationLbl";
-            this.RotationLbl.Size = new System.Drawing.Size(79, 23);
+            this.RotationLbl.Size = new System.Drawing.Size(162, 46);
             this.RotationLbl.TabIndex = 31;
             this.RotationLbl.Text = "Rotation";
             // 
@@ -563,6 +563,7 @@
             this.AddPieceBtn.TabIndex = 27;
             this.AddPieceBtn.Text = "+ Piece";
             this.AddPieceBtn.UseVisualStyleBackColor = false;
+            this.AddPieceBtn.Click += new System.EventHandler(this.AddPieceBtn_Click);
             // 
             // AnimationTab
             // 
@@ -580,10 +581,10 @@
             this.AnimationTab.Controls.Add(this.CalculatorBtn);
             this.AnimationTab.Controls.Add(this.NextFrameBtn);
             this.AnimationTab.Controls.Add(this.BasePrevCb);
-            this.AnimationTab.Location = new System.Drawing.Point(4, 27);
+            this.AnimationTab.Location = new System.Drawing.Point(8, 50);
             this.AnimationTab.Name = "AnimationTab";
             this.AnimationTab.Padding = new System.Windows.Forms.Padding(3);
-            this.AnimationTab.Size = new System.Drawing.Size(202, 669);
+            this.AnimationTab.Size = new System.Drawing.Size(194, 642);
             this.AnimationTab.TabIndex = 0;
             this.AnimationTab.Text = "Animation";
             // 
@@ -593,38 +594,12 @@
             this.SceneTab.Controls.Add(this.ExitBtn);
             this.SceneTab.Controls.Add(this.SceneTb);
             this.SceneTab.Controls.Add(this.FinishSceneBtn);
-            this.SceneTab.Location = new System.Drawing.Point(4, 27);
+            this.SceneTab.Location = new System.Drawing.Point(8, 50);
             this.SceneTab.Name = "SceneTab";
             this.SceneTab.Padding = new System.Windows.Forms.Padding(3);
-            this.SceneTab.Size = new System.Drawing.Size(202, 669);
+            this.SceneTab.Size = new System.Drawing.Size(194, 642);
             this.SceneTab.TabIndex = 1;
             this.SceneTab.Text = "Scene";
-            // 
-            // SceneTb
-            // 
-            this.SceneTb.BackColor = System.Drawing.Color.White;
-            this.SceneTb.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SceneTb.Location = new System.Drawing.Point(10, 9);
-            this.SceneTb.Margin = new System.Windows.Forms.Padding(6);
-            this.SceneTb.Name = "SceneTb";
-            this.SceneTb.Size = new System.Drawing.Size(182, 33);
-            this.SceneTb.TabIndex = 22;
-            this.SceneTb.Text = "Scene Name";
-            // 
-            // FinishSceneBtn
-            // 
-            this.FinishSceneBtn.BackColor = System.Drawing.Color.Khaki;
-            this.FinishSceneBtn.FlatAppearance.BorderSize = 0;
-            this.FinishSceneBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.FinishSceneBtn.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FinishSceneBtn.ForeColor = System.Drawing.Color.Black;
-            this.FinishSceneBtn.Location = new System.Drawing.Point(10, 550);
-            this.FinishSceneBtn.Margin = new System.Windows.Forms.Padding(2);
-            this.FinishSceneBtn.Name = "FinishSceneBtn";
-            this.FinishSceneBtn.Size = new System.Drawing.Size(182, 50);
-            this.FinishSceneBtn.TabIndex = 21;
-            this.FinishSceneBtn.Text = "Finish Scene";
-            this.FinishSceneBtn.UseVisualStyleBackColor = false;
             // 
             // ExitBtn
             // 
@@ -640,6 +615,31 @@
             this.ExitBtn.Text = "Exit";
             this.ExitBtn.UseVisualStyleBackColor = false;
             this.ExitBtn.Click += new System.EventHandler(this.ExitBtn_Click);
+            // 
+            // SceneTb
+            // 
+            this.SceneTb.BackColor = System.Drawing.Color.White;
+            this.SceneTb.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SceneTb.Location = new System.Drawing.Point(10, 9);
+            this.SceneTb.Margin = new System.Windows.Forms.Padding(6);
+            this.SceneTb.Name = "SceneTb";
+            this.SceneTb.Size = new System.Drawing.Size(182, 58);
+            this.SceneTb.TabIndex = 22;
+            this.SceneTb.Text = "Scene Name";
+            // 
+            // FinishSceneBtn
+            // 
+            this.FinishSceneBtn.BackColor = System.Drawing.Color.Khaki;
+            this.FinishSceneBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.FinishSceneBtn.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FinishSceneBtn.ForeColor = System.Drawing.Color.Black;
+            this.FinishSceneBtn.Location = new System.Drawing.Point(10, 550);
+            this.FinishSceneBtn.Margin = new System.Windows.Forms.Padding(2);
+            this.FinishSceneBtn.Name = "FinishSceneBtn";
+            this.FinishSceneBtn.Size = new System.Drawing.Size(182, 50);
+            this.FinishSceneBtn.TabIndex = 21;
+            this.FinishSceneBtn.Text = "Finish Scene";
+            this.FinishSceneBtn.UseVisualStyleBackColor = false;
             // 
             // ScenesForm
             // 

@@ -109,6 +109,7 @@ namespace Animator
                 Piece justAdded = new Piece(AddTb.Text);
                 piecesList.Add(justAdded);
                 justAdded.X = Constants.MidX; justAdded.Y = Constants.MidY;
+                justAdded.Originally = new Originals(justAdded);
                 justAdded.FindPointSpots();
                 SelectPiece(justAdded);
                 Utilities.DrawPieces(piecesList, g, DrawPanel);
@@ -134,9 +135,11 @@ namespace Animator
             {
                 Set addedSet = new Set(AddTb.Text);
                 piecesList.AddRange(addedSet.PiecesList);
+                addedSet.BasePiece.X = Constants.MidX; addedSet.BasePiece.Y = Constants.MidY;
                 foreach (Piece piece in addedSet.PiecesList)
                 {
                     piece.FindPointSpots();
+                    piece.Originally = new Originals(piece);
                 }
                 SelectPiece(addedSet.BasePiece);
                 Utilities.DrawPieces(piecesList, g, DrawPanel);
@@ -181,7 +184,8 @@ namespace Animator
         private void RotationBar_Scroll(object sender, EventArgs e)
         {
             if (selected == null) { return; }
-            selected.R = RotationBar.Value;
+            selected.Originally.R = RotationBar.Value;
+            selected.R = (RotationBar.Value + RotationTrack.Value) % 360;
             Utilities.DrawPieces(piecesList, g, DrawPanel);
         }
 
@@ -193,7 +197,8 @@ namespace Animator
         private void TurnBar_Scroll(object sender, EventArgs e)
         {
             if (selected == null) { return; }
-            selected.T = TurnBar.Value;
+            selected.Originally.T = TurnBar.Value;
+            selected.T = (TurnBar.Value + TurnTrack.Value) % 360;
             Utilities.DrawPieces(piecesList, g, DrawPanel);
         }
 
@@ -205,6 +210,7 @@ namespace Animator
         private void SpinBar_Scroll(object sender, EventArgs e)
         {
             if (selected == null) { return; }
+            selected.Originally.S = SpinBar.Value;
             selected.S = SpinBar.Value;
             Utilities.DrawPieces(piecesList, g, DrawPanel);
         }
@@ -217,6 +223,7 @@ namespace Animator
         private void SizeBar_Scroll(object sender, EventArgs e)
         {
             if (selected == null) { return; }
+            selected.Originally.SM = SizeBar.Value;
             selected.SM = SizeBar.Value;
             Utilities.DrawPieces(piecesList, g, DrawPanel);
         }
@@ -343,7 +350,7 @@ namespace Animator
             {
                 if (piece.AttachedTo == null)
                 {
-                    piece.R += RotationTrack.Value;
+                    piece.R = (piece.Originally.R + RotationTrack.Value) % 360;
                     Utilities.DrawPieces(piecesList, g, DrawPanel);
                     return;
                 }
@@ -361,7 +368,7 @@ namespace Animator
             {
                 if (piece.AttachedTo == null)
                 {
-                    piece.T += TurnTrack.Value;
+                    piece.T = (piece.Originally.T + TurnTrack.Value) % 360;
                     Utilities.DrawPieces(piecesList, g, DrawPanel);
                     return;
                 }

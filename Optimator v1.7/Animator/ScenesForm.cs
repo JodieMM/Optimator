@@ -26,6 +26,9 @@ namespace Animator
 
         private Graphics g;
         private Piece selected = null;
+
+        private double midX;
+        private double midY;
         #endregion
 
 
@@ -37,6 +40,8 @@ namespace Animator
             InitializeComponent();
             DrawPanel.KeyDown += KeyPress;
             DrawPanel.MouseDown += new MouseEventHandler(DrawPanel_MouseDown);
+            midX = DrawPanel.Size.Width / 2;
+            midY = DrawPanel.Size.Height / 2;
         }
 
 
@@ -55,12 +60,13 @@ namespace Animator
             {
                 // Add piece to lists
                 piecesList.Add(new Piece(NameTb.Text));
+                piecesList[piecesList.Count - 1].X = midX; piecesList[piecesList.Count - 1].Y = midY;
                 piecesList[piecesList.Count - 1].Originally = new Originals(piecesList[piecesList.Count - 1]);
                 selected = piecesList[piecesList.Count - 1];
 
                 Utilities.DrawPieces(piecesList, g, DrawPanel);
             }
-            catch (System.IO.FileNotFoundException)
+            catch (FileNotFoundException)
             {
                 MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
             }
@@ -83,6 +89,7 @@ namespace Animator
                 Set newbie = new Set(NameTb.Text);
                 piecesList.AddRange(newbie.PiecesList);
                 selected = newbie.BasePiece;
+                selected.X = midX; selected.Y = midY;
 
                 // Set Originals
                 foreach (Piece piece in newbie.PiecesList)

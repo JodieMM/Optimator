@@ -370,6 +370,7 @@ namespace Animator
         /// <param name="e"></param>
         private void PreviewBtn_Click(object sender, EventArgs e)
         {
+            if (!CheckPiecesValid(oCoords, rCoords, tCoords)) { return; }
             ApplySegmentFully();
             PreviewForm previewForm = new PreviewForm(WIP);
             previewForm.Show();
@@ -424,6 +425,7 @@ namespace Animator
                 // Save Piece and Close Form
                 try
                 {
+                    if (!CheckPiecesValid(oCoords, rCoords, tCoords)) { return; }
                     ApplySegmentFully();
                     Utilities.SaveData(Utilities.GetDirectory(Constants.PiecesFolder, NameTb.Text), WIP.Data);
                     Close();
@@ -630,6 +632,78 @@ namespace Animator
             }
         }
 
+        /// <summary>
+        /// Checks whether the pieces drawn can be calculated correctly.
+        /// </summary>
+        /// <param name="o">Base piece coordinates</param>
+        /// <param name="r">Rotated piece coordinates</param>
+        /// <param name="t">Turned piece coordinates</param>
+        /// <returns></returns>
+        private bool CheckPiecesValid(List<double[]> o, List<double[]> r, List<double[]> t)
+        {
+            if (o.Count < 2) { return true; }
+
+            // Check oCoords
+            for (int xy = 0; xy < 2; xy++)
+            {
+                bool bigger = (o[0][xy] < o[1][xy]);
+                int switchCount = 0;
+                for (int index = 0; index < o.Count - 1; index++)
+                {
+                    if (o[index][xy] > o[index + 1][xy] != bigger)
+                    {
+                        bigger = !bigger;
+                        switchCount++;
+                    }
+                }
+                if (switchCount > 2)
+                {
+                    MessageBox.Show("Invalid base shape. Ensure shape does not fold back on itself.", "Invalid base shape", MessageBoxButtons.OK);
+                    return false;
+                }
+            }
+
+            // Check rCoords
+            for (int xy = 0; xy < 2; xy++)
+            {
+                bool bigger = (r[0][xy] < r[1][xy]);
+                int switchCount = 0;
+                for (int index = 0; index < r.Count - 1; index++)
+                {
+                    if (r[index][xy] > r[index + 1][xy] != bigger)
+                    {
+                        bigger = !bigger;
+                        switchCount++;
+                    }
+                }
+                if (switchCount > 2)
+                {
+                    MessageBox.Show("Invalid right shape. Ensure shape does not fold back on itself.", "Invalid right shape", MessageBoxButtons.OK);
+                    return false;
+                }
+            }
+
+            // Check tCoords
+            for (int xy = 0; xy < 2; xy++)
+            {
+                bool bigger = (t[0][xy] < t[1][xy]);
+                int switchCount = 0;
+                for (int index = 0; index < t.Count - 1; index++)
+                {
+                    if (t[index][xy] > t[index + 1][xy] != bigger)
+                    {
+                        bigger = !bigger;
+                        switchCount++;
+                    }
+                }
+                if (switchCount > 2)
+                {
+                    MessageBox.Show("Invalid bottom shape. Ensure shape does not fold back on itself.", "Invalid bottom shape", MessageBoxButtons.OK);
+                    return false;
+                }
+            }
+            return true;
+        }
 
 
         // ----- TO INCLUDE/ REDO -----
@@ -959,11 +1033,5 @@ namespace Animator
         }
         */
         #endregion
-
-        private void TestingButton_Click(object sender, EventArgs e)
-        {
-            Utilities.CoordsOnAllSides(oCoords, rCoords, tCoords, joins, solid);
-            DisplayDrawings();
-        }
     }
 }

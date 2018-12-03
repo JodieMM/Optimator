@@ -222,7 +222,7 @@
             this.TestingButton.TabIndex = 10;
             this.TestingButton.Text = "Testing";
             this.TestingButton.UseVisualStyleBackColor = false;
-            this.TestingButton.Click += new System.EventHandler(this.TestingButton_Click);
+            this.TestingButton.Visible = false;
             // 
             // PiecesForm
             // 
