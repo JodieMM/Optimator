@@ -30,9 +30,11 @@
         {
             this.DrawBase = new System.Windows.Forms.PictureBox();
             this.OptionsMenu = new System.Windows.Forms.TabControl();
-            this.Page1 = new System.Windows.Forms.TabPage();
+            this.ShapeTab = new System.Windows.Forms.TabPage();
             this.NameTb = new System.Windows.Forms.TextBox();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.SetsTab = new System.Windows.Forms.TabPage();
+            this.AddPointBtn = new System.Windows.Forms.Button();
+            this.SettingsTab = new System.Windows.Forms.TabPage();
             this.DrawDown = new System.Windows.Forms.PictureBox();
             this.DrawRight = new System.Windows.Forms.PictureBox();
             this.PointBtn = new System.Windows.Forms.Button();
@@ -44,7 +46,8 @@
             this.TestingButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.DrawBase)).BeginInit();
             this.OptionsMenu.SuspendLayout();
-            this.Page1.SuspendLayout();
+            this.ShapeTab.SuspendLayout();
+            this.SetsTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DrawDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawRight)).BeginInit();
             this.SuspendLayout();
@@ -61,8 +64,9 @@
             // 
             // OptionsMenu
             // 
-            this.OptionsMenu.Controls.Add(this.Page1);
-            this.OptionsMenu.Controls.Add(this.tabPage2);
+            this.OptionsMenu.Controls.Add(this.ShapeTab);
+            this.OptionsMenu.Controls.Add(this.SetsTab);
+            this.OptionsMenu.Controls.Add(this.SettingsTab);
             this.OptionsMenu.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.OptionsMenu.Location = new System.Drawing.Point(700, 0);
             this.OptionsMenu.Margin = new System.Windows.Forms.Padding(6);
@@ -71,18 +75,18 @@
             this.OptionsMenu.Size = new System.Drawing.Size(400, 700);
             this.OptionsMenu.TabIndex = 2;
             // 
-            // Page1
+            // ShapeTab
             // 
-            this.Page1.BackColor = System.Drawing.Color.Azure;
-            this.Page1.Controls.Add(this.NameTb);
-            this.Page1.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Page1.Location = new System.Drawing.Point(8, 50);
-            this.Page1.Margin = new System.Windows.Forms.Padding(6);
-            this.Page1.Name = "Page1";
-            this.Page1.Padding = new System.Windows.Forms.Padding(6);
-            this.Page1.Size = new System.Drawing.Size(384, 642);
-            this.Page1.TabIndex = 0;
-            this.Page1.Text = "Shape";
+            this.ShapeTab.BackColor = System.Drawing.Color.Azure;
+            this.ShapeTab.Controls.Add(this.NameTb);
+            this.ShapeTab.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ShapeTab.Location = new System.Drawing.Point(4, 27);
+            this.ShapeTab.Margin = new System.Windows.Forms.Padding(6);
+            this.ShapeTab.Name = "ShapeTab";
+            this.ShapeTab.Padding = new System.Windows.Forms.Padding(6);
+            this.ShapeTab.Size = new System.Drawing.Size(392, 669);
+            this.ShapeTab.TabIndex = 0;
+            this.ShapeTab.Text = "Shape";
             // 
             // NameTb
             // 
@@ -91,20 +95,44 @@
             this.NameTb.Location = new System.Drawing.Point(15, 15);
             this.NameTb.Margin = new System.Windows.Forms.Padding(6);
             this.NameTb.Name = "NameTb";
-            this.NameTb.Size = new System.Drawing.Size(300, 58);
+            this.NameTb.Size = new System.Drawing.Size(300, 33);
             this.NameTb.TabIndex = 5;
             this.NameTb.Text = "Piece Name";
             // 
-            // tabPage2
+            // SetsTab
             // 
-            this.tabPage2.BackColor = System.Drawing.Color.Azure;
-            this.tabPage2.Location = new System.Drawing.Point(8, 50);
-            this.tabPage2.Margin = new System.Windows.Forms.Padding(6);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(6);
-            this.tabPage2.Size = new System.Drawing.Size(384, 642);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Settings";
+            this.SetsTab.BackColor = System.Drawing.Color.Azure;
+            this.SetsTab.Controls.Add(this.AddPointBtn);
+            this.SetsTab.Location = new System.Drawing.Point(4, 27);
+            this.SetsTab.Name = "SetsTab";
+            this.SetsTab.Size = new System.Drawing.Size(392, 669);
+            this.SetsTab.TabIndex = 2;
+            this.SetsTab.Text = "Sets";
+            // 
+            // AddPointBtn
+            // 
+            this.AddPointBtn.BackColor = System.Drawing.Color.LightCyan;
+            this.AddPointBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.AddPointBtn.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AddPointBtn.Location = new System.Drawing.Point(15, 17);
+            this.AddPointBtn.Margin = new System.Windows.Forms.Padding(6);
+            this.AddPointBtn.Name = "AddPointBtn";
+            this.AddPointBtn.Size = new System.Drawing.Size(363, 55);
+            this.AddPointBtn.TabIndex = 13;
+            this.AddPointBtn.Text = "Add Point";
+            this.AddPointBtn.UseVisualStyleBackColor = false;
+            this.AddPointBtn.Click += new System.EventHandler(this.AddPointBtn_Click);
+            // 
+            // SettingsTab
+            // 
+            this.SettingsTab.BackColor = System.Drawing.Color.Azure;
+            this.SettingsTab.Location = new System.Drawing.Point(4, 27);
+            this.SettingsTab.Margin = new System.Windows.Forms.Padding(6);
+            this.SettingsTab.Name = "SettingsTab";
+            this.SettingsTab.Padding = new System.Windows.Forms.Padding(6);
+            this.SettingsTab.Size = new System.Drawing.Size(392, 669);
+            this.SettingsTab.TabIndex = 1;
+            this.SettingsTab.Text = "Settings";
             // 
             // DrawDown
             // 
@@ -248,8 +276,9 @@
             this.Text = "Piece";
             ((System.ComponentModel.ISupportInitialize)(this.DrawBase)).EndInit();
             this.OptionsMenu.ResumeLayout(false);
-            this.Page1.ResumeLayout(false);
-            this.Page1.PerformLayout();
+            this.ShapeTab.ResumeLayout(false);
+            this.ShapeTab.PerformLayout();
+            this.SetsTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.DrawDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawRight)).EndInit();
             this.ResumeLayout(false);
@@ -260,8 +289,8 @@
 
         private System.Windows.Forms.PictureBox DrawBase;
         private System.Windows.Forms.TabControl OptionsMenu;
-        private System.Windows.Forms.TabPage Page1;
-        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage ShapeTab;
+        private System.Windows.Forms.TabPage SettingsTab;
         private System.Windows.Forms.PictureBox DrawDown;
         private System.Windows.Forms.PictureBox DrawRight;
         private System.Windows.Forms.TextBox NameTb;
@@ -272,5 +301,7 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button ExitBtn;
         private System.Windows.Forms.Button TestingButton;
+        private System.Windows.Forms.TabPage SetsTab;
+        private System.Windows.Forms.Button AddPointBtn;
     }
 }

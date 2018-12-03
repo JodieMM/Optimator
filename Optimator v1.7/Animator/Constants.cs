@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Drawing;
+using System.Text.RegularExpressions;
 
 namespace Animator
 {
@@ -23,13 +24,12 @@ namespace Animator
 
         // Reserved Names
         public static string PieceStructure => "ZPieceScaffold";
-        public static string PointStructure => "ZPointScaffold";
         public static string SetStructure => "ZSetScaffold";
         public static string SceneStructure => "ZSceneScaffold";
         public static string WIPName => "ZWIP";
 
         // Name Validation
-        public static string[] ReservedNames = { PieceStructure, PointStructure, SetStructure, WIPName };
+        public static string[] ReservedNames = { PieceStructure, SetStructure, WIPName };
         public static string[] InvalidNames = { "", " ", "Piece Name", "Set Name", "Scene Name", "Video Name" };
         public static Regex PermittedName = new Regex(@"^[A-Za-z0-9]+$");
 
@@ -45,5 +45,8 @@ namespace Animator
         // File Extensions
         public static string Txt => ".txt";
         public static string Png => ".png";
+
+        // Uncategorised Constants
+        public static Color[] randomColours = { Color.Blue, Color.Pink, Color.Green, Color.Purple, Color.Aqua, Color.Orange};
     }
 }

@@ -19,6 +19,7 @@ namespace Animator
         private Graphics rotated;
         private Graphics turned;
         private List<Piece> sketch = new List<Piece>();
+        private List<PointSpot> pointSpots = new List<PointSpot>();
         private Piece WIP = new Piece(Constants.PieceStructure);
 
         private List<double[]> oCoords = new List<double[]>();
@@ -341,7 +342,7 @@ namespace Animator
 
 
 
-        // ----- MAIN BUTTONS -----
+        // ----- SHAPE TAB -----
 
         /// <summary>
         /// Changes between placing points and selecting them
@@ -443,6 +444,21 @@ namespace Animator
 
 
 
+        // ----- SETS TAB ------
+
+        /// <summary>
+        /// Adds a new point to the piece's connections.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void AddPointBtn_Click(object sender, EventArgs e)
+        {
+            pointSpots.Add(new PointSpot(pointSpots.Count, WIP));
+            DisplayDrawings();
+        }
+
+
+
         // ----- DRAWING FUNCTIONS -----
 
         /// <summary>
@@ -470,11 +486,10 @@ namespace Animator
         private void DrawPoints(Graphics board, int angle)
         {
             List<double[]> coords = WIP.FindPoints(WIP.R, WIP.T, angle);
-            Color color;
-
+            if (coords == null) { return; }
             for (int index = 0; index < coords.Count; index++)
             {
-                color = (index == selectedIndex) ? Color.Red : Color.Black;
+                Color color = (index == selectedIndex) ? Color.Red : Color.Black;
                 DrawPoint(coords[index][0], coords[index][1], color, board);
             }
         }
@@ -501,6 +516,10 @@ namespace Animator
             Utilities.DrawPiece(WIP, original, false);
             DrawPoints(original, 2);
             if (oMoving && movingFar) { DrawPoint(positionMoving[0], positionMoving[1], Color.DarkGray, original); }
+            foreach (PointSpot spot in pointSpots)
+            {
+                DrawPoint(spot.X, spot.Y, spot.FillColour, original);
+            }
             
 
             // Draw Rotated Board
@@ -509,6 +528,10 @@ namespace Animator
             Utilities.DrawPiece(WIP, rotated, false);
             DrawPoints(rotated, 3);
             if (rMoving && movingFar) { DrawPoint(positionMoving[0], positionMoving[1], Color.DarkGray, rotated); }
+            foreach (PointSpot spot in pointSpots)
+            {
+                DrawPoint(spot.XRight, spot.Y, spot.FillColour, original);
+            }
 
             // Draw Turned Board
             WIP.R = 0;
@@ -517,6 +540,10 @@ namespace Animator
             DrawPoints(turned, 4);
             if (tMoving && movingFar) { DrawPoint(positionMoving[0], positionMoving[1], Color.DarkGray, turned); }
             WIP.T = 0;
+            foreach (PointSpot spot in pointSpots)
+            {
+                DrawPoint(spot.X, spot.YDown, spot.FillColour, original);
+            }
         }
 
 
@@ -704,6 +731,7 @@ namespace Animator
             }
             return true;
         }
+
 
 
         // ----- TO INCLUDE/ REDO -----
