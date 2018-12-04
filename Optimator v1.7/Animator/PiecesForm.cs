@@ -37,6 +37,7 @@ namespace Animator
         private bool oMoving = false;
         private bool rMoving = false;
         private bool tMoving = false;
+        private int spotMoving = -1;
         private bool movingFar = false;
         private int[] originalMoving;
         private int[] positionMoving;
@@ -84,10 +85,9 @@ namespace Animator
         private void DrawBase_MouseDown(object sender, MouseEventArgs e)
         {
             StopMovement();
-
             if (EraserBtn.Text == "Point")
             {
-                int closestIndex = Utilities.FindClosestIndex(oCoords, e.X, e.Y);
+                int closestIndex = Utilities.FindClosestIndex(CombineCoordTypes(oCoords, pointSpots, 0), e.X, e.Y);
                 if (closestIndex == -1)
                 {
                     // Clear entire piece
@@ -105,14 +105,21 @@ namespace Animator
                 }
                 else
                 {
-                    // Remove selected point
-                    oCoords.RemoveAt(closestIndex);
-                    rCoords.RemoveAt(closestIndex);
-                    tCoords.RemoveAt(closestIndex);
-                    // Update Selected Index
-                    if (selectedIndex >= closestIndex)
+                    if (closestIndex < oCoords.Count)
                     {
-                        selectedIndex = (selectedIndex - 1 < 0) ? 0 : selectedIndex - 1;
+                        // Remove selected point
+                        oCoords.RemoveAt(closestIndex);
+                        rCoords.RemoveAt(closestIndex);
+                        tCoords.RemoveAt(closestIndex);
+                        // Update Selected Index
+                        if (selectedIndex >= closestIndex)
+                        {
+                            selectedIndex = (selectedIndex - 1 < 0) ? 0 : selectedIndex - 1;
+                        }
+                    }
+                    else
+                    {
+                        pointSpots.RemoveAt(closestIndex - oCoords.Count);
                     }
                 }
             }
@@ -127,12 +134,20 @@ namespace Animator
             }
             else
             {
-                int closestIndex = Utilities.FindClosestIndex(oCoords, e.X, e.Y);
+                int closestIndex = Utilities.FindClosestIndex(CombineCoordTypes(oCoords, pointSpots, 0), e.X, e.Y);
                 if (closestIndex != -1)
                 {
-                    selectedIndex = closestIndex;
-                    oMoving = true;
-                    originalMoving = new int[] { (int)oCoords[closestIndex][0], (int)oCoords[closestIndex][1] };
+                    if (closestIndex < oCoords.Count)
+                    {
+                        selectedIndex = closestIndex;
+                        oMoving = true;
+                        originalMoving = new int[] { (int)oCoords[closestIndex][0], (int)oCoords[closestIndex][1] };
+                    }
+                    else
+                    {
+                        spotMoving = closestIndex - oCoords.Count;
+                        positionMoving = new int[] { (int)pointSpots[spotMoving].X, (int)pointSpots[spotMoving].Y };
+                    }
                 }
             }
             DisplayDrawings();
@@ -151,6 +166,11 @@ namespace Animator
                 rCoords[selectedIndex] = new double[] { e.X, e.Y };
                 tCoords[selectedIndex] = new double[] { e.X, e.Y };
             }
+            else if (spotMoving != -1)
+            {
+                pointSpots[spotMoving].X = e.X;
+                pointSpots[spotMoving].Y = e.Y;
+            }
             StopMovement();
             DisplayDrawings();
         }
@@ -162,21 +182,24 @@ namespace Animator
         /// <param name="e"></param>
         private void DrawBase_MouseMove(object sender, MouseEventArgs e)
         {
+            if (e.X > DrawBase.Size.Width || e.Y > DrawBase.Size.Height || e.X < 0 || e.Y < 0)
+            {
+                StopMovement();
+                return;
+            }
             if (oMoving)
             {
-                if (e.X < 0 || e.Y < 0 || e.X > DrawBase.Size.Width || e.Y > DrawBase.Size.Height)
+                positionMoving = new int[] { e.X, e.Y };
+                if (!movingFar)
                 {
-                    StopMovement();
+                    movingFar = Math.Abs(originalMoving[0] - positionMoving[0]) > Constants.ClickPrecision
+                        || Math.Abs(originalMoving[1] - positionMoving[1]) > Constants.ClickPrecision;
                 }
-                else
-                {
-                    positionMoving = new int[] { e.X, e.Y };
-                    if (!movingFar)
-                    {
-                        movingFar = Math.Abs(originalMoving[0] - positionMoving[0]) > Constants.ClickPrecision
-                            || Math.Abs(originalMoving[1] - positionMoving[1]) > Constants.ClickPrecision;
-                    }
-                }
+                DisplayDrawings();
+            }
+            else if (spotMoving != -1)
+            {
+                positionMoving = new int[] { e.X, e.Y };
                 DisplayDrawings();
             }
         }
@@ -202,12 +225,20 @@ namespace Animator
             }
             else
             {
-                int closestIndex = Utilities.FindClosestIndex(rCoords, e.X, e.Y);
+                int closestIndex = Utilities.FindClosestIndex(CombineCoordTypes(rCoords, pointSpots, 1), e.X, e.Y);
                 if (closestIndex != -1)
                 {
-                    selectedIndex = closestIndex;
-                    rMoving = true;
-                    originalMoving = new int[] { (int)rCoords[closestIndex][0], (int)rCoords[closestIndex][1] };
+                    if (closestIndex < rCoords.Count)
+                    {
+                        selectedIndex = closestIndex;
+                        rMoving = true;
+                        originalMoving = new int[] { (int)rCoords[closestIndex][0], (int)rCoords[closestIndex][1] };
+                    }
+                    else
+                    {
+                        spotMoving = closestIndex - rCoords.Count;
+                        positionMoving = new int[] { (int)pointSpots[spotMoving].XRight, -1 };
+                    }
                 }
             }
             DisplayDrawings();
@@ -223,6 +254,10 @@ namespace Animator
             if (rMoving && movingFar)
             {
                 rCoords[selectedIndex] = new double[] { e.X, rCoords[selectedIndex][1] };
+            }
+            else if (spotMoving != -1)
+            {
+                pointSpots[spotMoving].XRight = e.X;
             }
             StopMovement();
             DisplayDrawings();
@@ -252,6 +287,11 @@ namespace Animator
                 }
                 DisplayDrawings();
             }
+            else if (spotMoving != -1)
+            {
+                positionMoving = new int[] { e.X, -1 };
+                DisplayDrawings();
+            }
         }
 
         /// <summary>
@@ -275,12 +315,20 @@ namespace Animator
             }
             else
             {
-                int closestIndex = Utilities.FindClosestIndex(tCoords, e.X, e.Y);
+                int closestIndex = Utilities.FindClosestIndex(CombineCoordTypes(tCoords, pointSpots, 2), e.X, e.Y);
                 if (closestIndex != -1)
                 {
-                    selectedIndex = closestIndex;
-                    tMoving = true;
-                    originalMoving = new int[] { (int)tCoords[closestIndex][0], (int)tCoords[closestIndex][1] };
+                    if (closestIndex < tCoords.Count)
+                    {
+                        selectedIndex = closestIndex;
+                        tMoving = true;
+                        originalMoving = new int[] { (int)tCoords[closestIndex][0], (int)tCoords[closestIndex][1] };
+                    }
+                    else
+                    {
+                        spotMoving = closestIndex - tCoords.Count;
+                        positionMoving = new int[] { -1, (int)pointSpots[spotMoving].YDown };
+                    }
                 }
             }
             DisplayDrawings();
@@ -296,6 +344,10 @@ namespace Animator
             if (tMoving && movingFar)
             {
                 tCoords[selectedIndex] = new double[] { tCoords[selectedIndex][0], e.Y };
+            }
+            else if (spotMoving != -1)
+            {
+                pointSpots[spotMoving].YDown = e.Y;
             }
             StopMovement();
             DisplayDrawings();
@@ -325,6 +377,11 @@ namespace Animator
                 }
                 DisplayDrawings();
             }
+            else if (spotMoving != -1)
+            {
+                positionMoving = new int[] { -1, e.Y };
+                DisplayDrawings();
+            }
         }
 
         /// <summary>
@@ -336,6 +393,7 @@ namespace Animator
             rMoving = false;
             tMoving = false;
             movingFar = false;
+            spotMoving = -1;
         }
 
         #endregion
@@ -515,22 +573,38 @@ namespace Animator
             WIP.T = 0;
             Utilities.DrawPiece(WIP, original, false);
             DrawPoints(original, 2);
-            if (oMoving && movingFar) { DrawPoint(positionMoving[0], positionMoving[1], Color.DarkGray, original); }
             foreach (PointSpot spot in pointSpots)
             {
                 DrawPoint(spot.X, spot.Y, spot.FillColour, original);
             }
-            
+            if (oMoving && movingFar || (spotMoving != -1 && positionMoving[0] != -1 && positionMoving[1] != -1))
+            {
+                DrawPoint(positionMoving[0], positionMoving[1], Color.DarkGray, original);
+            }
 
             // Draw Rotated Board
             WIP.R = 89.9999;
             WIP.T = 0;
             Utilities.DrawPiece(WIP, rotated, false);
             DrawPoints(rotated, 3);
-            if (rMoving && movingFar) { DrawPoint(positionMoving[0], positionMoving[1], Color.DarkGray, rotated); }
             foreach (PointSpot spot in pointSpots)
             {
-                DrawPoint(spot.XRight, spot.Y, spot.FillColour, original);
+                DrawPoint(spot.XRight, spot.Y, spot.FillColour, rotated);
+            }
+            if (rMoving && movingFar)
+            {
+                DrawPoint(positionMoving[0], positionMoving[1], Color.DarkGray, rotated);
+            }
+            else if (spotMoving != -1)
+            {
+                if (positionMoving[1] == -1)
+                {
+                    DrawPoint(positionMoving[0], pointSpots[spotMoving].Y, Color.DarkGray, rotated);
+                }
+                else if (positionMoving[0] != -1)
+                {
+                    DrawPoint(pointSpots[spotMoving].XRight, positionMoving[1], Color.DarkGray, rotated);
+                }
             }
 
             // Draw Turned Board
@@ -538,12 +612,26 @@ namespace Animator
             WIP.T = 89.9999;
             Utilities.DrawPiece(WIP, turned, false);
             DrawPoints(turned, 4);
-            if (tMoving && movingFar) { DrawPoint(positionMoving[0], positionMoving[1], Color.DarkGray, turned); }
-            WIP.T = 0;
             foreach (PointSpot spot in pointSpots)
             {
-                DrawPoint(spot.X, spot.YDown, spot.FillColour, original);
+                DrawPoint(spot.X, spot.YDown, spot.FillColour, turned);
             }
+            if (tMoving && movingFar)
+            {
+                DrawPoint(positionMoving[0], positionMoving[1], Color.DarkGray, turned);
+            }
+            else if (spotMoving != -1)
+            {
+                if (positionMoving[0] == -1)
+                {
+                    DrawPoint(pointSpots[spotMoving].X, positionMoving[1], Color.DarkGray, turned);
+                }
+                else if (positionMoving[1] != -1)
+                {
+                    DrawPoint(positionMoving[0], pointSpots[spotMoving].YDown, Color.DarkGray, turned);
+                }
+            }
+            WIP.T = 0;
         }
 
 
@@ -730,6 +818,50 @@ namespace Animator
                 }
             }
             return true;
+        }
+
+
+
+        // ----- UTILITY FUNCTIONS -----
+
+        /// <summary>
+        /// Combines a list of coordinates with a list of points to
+        /// return a searchable list of double arrays.
+        /// </summary>
+        /// <param name="coords">Piece coordinates</param>
+        /// <param name="pointsList">Pointspots of the shape</param>
+        /// <param name="pointAngle">0 original, 1 rotated, 2 turned</param>
+        /// <returns></returns>
+        public static List<double[]> CombineCoordTypes(List<double[]> coords, List<PointSpot> pointsList, int pointAngle)
+        {
+            if (pointsList.Count == 0) { return coords; }
+            List<double[]> searching = new List<double[]>();
+            searching.AddRange(coords);
+            // Original
+            if (pointAngle == 0)
+            {
+                foreach (PointSpot pointspot in pointsList)
+                {
+                    searching.Add(new double[] { pointspot.X, pointspot.Y });
+                }
+            }
+            // Rotated
+            else if (pointAngle == 1)
+            {
+                foreach (PointSpot pointspot in pointsList)
+                {
+                    searching.Add(new double[] { pointspot.XRight, pointspot.Y });
+                }
+            }
+            // Turned
+            else
+            {
+                foreach (PointSpot pointspot in pointsList)
+                {
+                    searching.Add(new double[] { pointspot.X, pointspot.YDown });
+                }
+            }
+            return searching;
         }
 
 

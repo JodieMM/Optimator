@@ -229,7 +229,9 @@ namespace Animator
         }
 
         /// <summary>
-        /// Finds the closest coordinate from the list.
+        /// Finds the closest coordinate from the lists.
+        /// If the index is above the coords length, returned index
+        /// is for the points list with index result - coords.Count.
         /// Returns -1 if none within 9 pixels of the given position.
         /// </summary>
         /// <param name="toSearch">The list of coordinates to search</param>
@@ -244,7 +246,7 @@ namespace Animator
             {
                 for (int index = 0; index < toSearch.Count(); index++)
                 {
-                    if (x >= toSearch[index][0] - range && x <= toSearch[index][0] + range 
+                    if (x >= toSearch[index][0] - range && x <= toSearch[index][0] + range
                         && y >= toSearch[index][1] - range && y <= toSearch[index][1] + range)
                     {
                         return index;
@@ -253,6 +255,8 @@ namespace Animator
             }
             return -1;
         }
+
+        
 
 
 
