@@ -486,11 +486,17 @@ namespace Animator
                 {
                     if (!CheckPiecesValid(oCoords, rCoords, tCoords)) { return; }
                     ApplySegmentFully();
+
+                    // Save Points
                     WIP.Name = NameTb.Text;
-                    foreach (PointSpot pointspot in pointSpots)
+                    double[] middle = Utilities.FindMid(oCoordsFull);
+                    Directory.CreateDirectory(Environment.CurrentDirectory + Constants.PointsFolder + WIP.Name);
+                    for (int index = 0; index < pointSpots.Count; index++)
                     {
-                        pointspot.SavePointSpot();
+                        pointSpots[index].Name = index.ToString();
+                        pointSpots[index].SavePointSpot(middle);
                     }
+
                     Utilities.SaveData(Utilities.GetDirectory(Constants.PiecesFolder, NameTb.Text), WIP.Data);
                     Close();
                 }
@@ -516,7 +522,7 @@ namespace Animator
         /// <param name="e"></param>
         private void AddPointBtn_Click(object sender, EventArgs e)
         {
-            pointSpots.Add(new PointSpot(pointSpots.Count, WIP));
+            pointSpots.Add(new PointSpot(WIP));
             DisplayDrawings();
         }
 
@@ -770,7 +776,7 @@ namespace Animator
                 int switchCount = 0;
                 for (int index = 0; index < o.Count - 1; index++)
                 {
-                    if (o[index][xy] > o[index + 1][xy] != bigger)
+                    if (o[index][xy] < o[index + 1][xy] != bigger)
                     {
                         bigger = !bigger;
                         switchCount++;
@@ -790,7 +796,7 @@ namespace Animator
                 int switchCount = 0;
                 for (int index = 0; index < r.Count - 1; index++)
                 {
-                    if (r[index][xy] > r[index + 1][xy] != bigger)
+                    if (r[index][xy] < r[index + 1][xy] != bigger)
                     {
                         bigger = !bigger;
                         switchCount++;
@@ -810,7 +816,7 @@ namespace Animator
                 int switchCount = 0;
                 for (int index = 0; index < t.Count - 1; index++)
                 {
-                    if (t[index][xy] > t[index + 1][xy] != bigger)
+                    if (t[index][xy] < t[index + 1][xy] != bigger)
                     {
                         bigger = !bigger;
                         switchCount++;
