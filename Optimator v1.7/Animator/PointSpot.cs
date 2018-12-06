@@ -125,7 +125,7 @@ namespace Animator
             // Coordinates
             WIPstring += original[0] + "," + original[1] + ";";
             WIPstring += rotated[0] + "," + rotated[1] + ";";
-            WIPstring += turned[0] + "," + turned[1] + ";";
+            WIPstring += turned[0] + "," + turned[1];
             return WIPstring;
         }
 
@@ -137,10 +137,35 @@ namespace Animator
         /// Gets the coordinates of the point based on the host Piece's angles
         /// </summary>
         /// <returns></returns>
-        public double[,] GetCurrentPoints()
+        public double[] GetCurrentPoints()
         {
-            string[] dataValues = Data[Utilities.FindRow(host.GetAngles()[0], host.GetAngles()[1], Data, 0)].Split(new Char[] { ';' });
-            return new double[,] { { dataValues[2][0], dataValues[2][3] } };
+            // Host Variables
+            double hostX = host.GetCoords()[0];
+            double hostY = host.GetCoords()[1];
+            double[] hostAngles = host.GetAngles();
+            double[] middle = Utilities.FindMid(host.GetCurrentPoints(false));
+            // Point Variables
+            string[] dataValues = Data[Utilities.FindRow(hostAngles[0], hostAngles[1], Data, 0)].Split(Constants.Semi);
+            double[] originals = new double[] { Convert.ToDouble(dataValues[2].Split(Constants.Comma)[0]),
+                Convert.ToDouble(dataValues[2].Split(Constants.Comma)[1]) };
+            double rotated = Convert.ToDouble(dataValues[3].Split(Constants.Comma)[0]);
+            double turned = Convert.ToDouble(dataValues[4].Split(Constants.Comma)[1]);
+            double[] angles = new double[] { Convert.ToDouble(dataValues[0].Split(Constants.Colon)[0]),
+                Convert.ToDouble(dataValues[0].Split(Constants.Colon)[1]),
+                Convert.ToDouble(dataValues[1].Split(Constants.Colon)[0]),
+                Convert.ToDouble(dataValues[1].Split(Constants.Colon)[1]) };
+
+            // Check if at start cutoff of angle
+            if (angles[0] == hostAngles[0] && angles[2] == hostAngles[1])
+            {
+                return new double[] { hostX + originals[0] - middle[0], hostY + originals[1] - middle[1] };
+            }
+
+            // Calculate rotated/turned point
+            double rMod = (hostAngles[0] - angles[0]) / (angles[1] - angles[0]);
+            double tMod = (hostAngles[1] - angles[2]) / (angles[3] - angles[2]);
+            return new double[] { hostX + (originals[0] + (rotated - originals[0]) * rMod) - middle[0],
+                hostY + (originals[1] + (turned - originals[1]) * tMod) - middle[1] };
         }
     }
 }

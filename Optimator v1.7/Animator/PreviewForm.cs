@@ -27,7 +27,7 @@ namespace Animator
         {
             InitializeComponent();
             WIP = piece;
-            WIP.X = Constants.MidX; WIP.Y = Constants.MidY;
+            WIP.X = DrawBoard.Width / 2.0; WIP.Y = DrawBoard.Height / 2.0;
         }
 
         /// <summary>

@@ -405,13 +405,11 @@ namespace Animator
             //Recentre
             if (recentre)
             {
-                double middleX = Utilities.FindMid(pointsArray)[0];
-                double middleY = Utilities.FindMid(pointsArray)[1];
-
+                double[] middle = Utilities.FindMid(pointsArray);
                 for (int index = 0; index < NumCoords; index++)
                 {
-                    pointsArray[index][0] = GetCoords()[0] + (pointsArray[index][0] - middleX);
-                    pointsArray[index][1] = GetCoords()[1] + (pointsArray[index][1] - middleY);
+                    pointsArray[index][0] = GetCoords()[0] + (pointsArray[index][0] - middle[0]);
+                    pointsArray[index][1] = GetCoords()[1] + (pointsArray[index][1] - middle[1]);
                 }
             }
 
@@ -496,10 +494,10 @@ namespace Animator
                 AttachPoint.X = Constants.MidX; AttachPoint.Y = Constants.MidY;
                 OwnPoint.X = Constants.MidX; OwnPoint.Y = Constants.MidY;
 
-                double[,] baseCoords = AttachPoint.GetCurrentPoints();
-                double[,] thisCoords = OwnPoint.GetCurrentPoints();
+                double[] baseCoords = AttachPoint.GetCurrentPoints();
+                double[] thisCoords = OwnPoint.GetCurrentPoints();
 
-                return new double[] { baseCoords[0, 0] - thisCoords[0, 0], baseCoords[0, 1] - thisCoords[0, 1] };
+                return new double[] { baseCoords[0] - thisCoords[0], baseCoords[1] - thisCoords[1] };
             }
         }
 

@@ -531,22 +531,6 @@ namespace Animator
         // ----- DRAWING FUNCTIONS -----
 
         /// <summary>
-        /// Draws a + at the given coordinate
-        /// </summary>
-        /// <param name="xcood">X coordinate of + centre</param>
-        /// <param name="ycood">Y coordinate of + centre</param>
-        /// <param name="colour">Colour of the +</param>
-        /// <param name="board">The graphics board to be drawn on</param>
-        private void DrawPoint(double xcood, double ycood, Color colour, Graphics board)
-        {
-            int x = (int)xcood;
-            int y = (int)ycood;
-            Pen pen = new Pen(colour);
-            board.DrawLine(pen, new Point(x - 2, y), new Point(x + 2, y));
-            board.DrawLine(pen, new Point(x, y - 2), new Point(x, y + 2));
-        }
-
-        /// <summary>
         /// Draws the points of the WIP to the board
         /// Angle: Original = 2, Rotated = 3, Turned = 4
         /// </summary>
@@ -559,7 +543,7 @@ namespace Animator
             for (int index = 0; index < coords.Count; index++)
             {
                 Color color = (index == selectedIndex) ? Color.Red : Color.Black;
-                DrawPoint(coords[index][0], coords[index][1], color, board);
+                Utilities.DrawPoint(coords[index][0], coords[index][1], color, board);
             }
         }
 
@@ -586,11 +570,11 @@ namespace Animator
             DrawPoints(original, 2);
             foreach (PointSpot spot in pointSpots)
             {
-                DrawPoint(spot.X, spot.Y, spot.FillColour, original);
+                Utilities.DrawPoint(spot.X, spot.Y, spot.FillColour, original);
             }
             if (oMoving && movingFar || (spotMoving != -1 && positionMoving[0] != -1 && positionMoving[1] != -1))
             {
-                DrawPoint(positionMoving[0], positionMoving[1], Color.DarkGray, original);
+                Utilities.DrawPoint(positionMoving[0], positionMoving[1], Color.DarkGray, original);
             }
 
             // Draw Rotated Board
@@ -600,21 +584,21 @@ namespace Animator
             DrawPoints(rotated, 3);
             foreach (PointSpot spot in pointSpots)
             {
-                DrawPoint(spot.XRight, spot.Y, spot.FillColour, rotated);
+                Utilities.DrawPoint(spot.XRight, spot.Y, spot.FillColour, rotated);
             }
             if (rMoving && movingFar)
             {
-                DrawPoint(positionMoving[0], positionMoving[1], Color.DarkGray, rotated);
+                Utilities.DrawPoint(positionMoving[0], positionMoving[1], Color.DarkGray, rotated);
             }
             else if (spotMoving != -1)
             {
                 if (positionMoving[1] == -1)
                 {
-                    DrawPoint(positionMoving[0], pointSpots[spotMoving].Y, Color.DarkGray, rotated);
+                    Utilities.DrawPoint(positionMoving[0], pointSpots[spotMoving].Y, Color.DarkGray, rotated);
                 }
                 else if (positionMoving[0] != -1)
                 {
-                    DrawPoint(pointSpots[spotMoving].XRight, positionMoving[1], Color.DarkGray, rotated);
+                    Utilities.DrawPoint(pointSpots[spotMoving].XRight, positionMoving[1], Color.DarkGray, rotated);
                 }
             }
 
@@ -625,21 +609,21 @@ namespace Animator
             DrawPoints(turned, 4);
             foreach (PointSpot spot in pointSpots)
             {
-                DrawPoint(spot.X, spot.YDown, spot.FillColour, turned);
+                Utilities.DrawPoint(spot.X, spot.YDown, spot.FillColour, turned);
             }
             if (tMoving && movingFar)
             {
-                DrawPoint(positionMoving[0], positionMoving[1], Color.DarkGray, turned);
+                Utilities.DrawPoint(positionMoving[0], positionMoving[1], Color.DarkGray, turned);
             }
             else if (spotMoving != -1)
             {
                 if (positionMoving[0] == -1)
                 {
-                    DrawPoint(pointSpots[spotMoving].X, positionMoving[1], Color.DarkGray, turned);
+                    Utilities.DrawPoint(pointSpots[spotMoving].X, positionMoving[1], Color.DarkGray, turned);
                 }
                 else if (positionMoving[1] != -1)
                 {
-                    DrawPoint(positionMoving[0], pointSpots[spotMoving].YDown, Color.DarkGray, turned);
+                    Utilities.DrawPoint(positionMoving[0], pointSpots[spotMoving].YDown, Color.DarkGray, turned);
                 }
             }
             WIP.T = 0;

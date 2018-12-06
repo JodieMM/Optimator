@@ -72,6 +72,22 @@ namespace Animator
         // ----- DRAW & RELATED FUNCTIONS -----
 
         /// <summary>
+        /// Draws a + at the given coordinate
+        /// </summary>
+        /// <param name="xcood">X coordinate of + centre</param>
+        /// <param name="ycood">Y coordinate of + centre</param>
+        /// <param name="colour">Colour of the +</param>
+        /// <param name="board">The graphics board to be drawn on</param>
+        public static void DrawPoint(double xcood, double ycood, Color colour, Graphics board)
+        {
+            int x = (int)xcood;
+            int y = (int)ycood;
+            Pen pen = new Pen(colour);
+            board.DrawLine(pen, new Point(x - 2, y), new Point(x + 2, y));
+            board.DrawLine(pen, new Point(x, y - 2), new Point(x, y + 2));
+        }
+
+        /// <summary>
         /// Draws a piece with outline and fill
         /// </summary>
         /// <param name="piece">The piece to be drawn</param>
@@ -255,8 +271,6 @@ namespace Animator
             }
             return -1;
         }
-
-        
 
 
 

@@ -108,11 +108,11 @@ namespace Animator
             {
                 Piece justAdded = new Piece(AddTb.Text);
                 piecesList.Add(justAdded);
-                justAdded.X = Constants.MidX; justAdded.Y = Constants.MidY;
+                justAdded.X = DrawPanel.Width / 2.0; justAdded.Y = DrawPanel.Height / 2.0;
                 justAdded.Originally = new Originals(justAdded);
                 justAdded.FindPointSpots();
                 SelectPiece(justAdded);
-                Utilities.DrawPieces(piecesList, g, DrawPanel);
+                DisplayDrawings();
             }
             catch (FileNotFoundException)
             {
@@ -135,14 +135,14 @@ namespace Animator
             {
                 Set addedSet = new Set(AddTb.Text);
                 piecesList.AddRange(addedSet.PiecesList);
-                addedSet.BasePiece.X = Constants.MidX; addedSet.BasePiece.Y = Constants.MidY;
+                addedSet.BasePiece.X = DrawPanel.Width / 2.0; addedSet.BasePiece.Y = DrawPanel.Height / 2.0;
                 foreach (Piece piece in addedSet.PiecesList)
                 {
                     piece.FindPointSpots();
                     piece.Originally = new Originals(piece);
                 }
                 SelectPiece(addedSet.BasePiece);
-                Utilities.DrawPieces(piecesList, g, DrawPanel);
+                DisplayDrawings();
             }
             catch (FileNotFoundException)
             {
@@ -186,7 +186,7 @@ namespace Animator
             if (selected == null) { return; }
             selected.Originally.R = RotationBar.Value;
             selected.R = (RotationBar.Value + RotationTrack.Value) % 360;
-            Utilities.DrawPieces(piecesList, g, DrawPanel);
+            DisplayDrawings();
         }
 
         /// <summary>
@@ -199,7 +199,7 @@ namespace Animator
             if (selected == null) { return; }
             selected.Originally.T = TurnBar.Value;
             selected.T = (TurnBar.Value + TurnTrack.Value) % 360;
-            Utilities.DrawPieces(piecesList, g, DrawPanel);
+            DisplayDrawings();
         }
 
         /// <summary>
@@ -212,7 +212,7 @@ namespace Animator
             if (selected == null) { return; }
             selected.Originally.S = SpinBar.Value;
             selected.S = SpinBar.Value;
-            Utilities.DrawPieces(piecesList, g, DrawPanel);
+            DisplayDrawings();
         }
 
         /// <summary>
@@ -225,7 +225,7 @@ namespace Animator
             if (selected == null) { return; }
             selected.Originally.SM = SizeBar.Value;
             selected.SM = SizeBar.Value;
-            Utilities.DrawPieces(piecesList, g, DrawPanel);
+            DisplayDrawings();
         }
 
 
@@ -250,7 +250,7 @@ namespace Animator
                 originalMoving = new int[] { e.X, e.Y };
             }
 
-            Utilities.DrawPieces(piecesList, g, DrawPanel);
+            DisplayDrawings();
         }
 
         /// <summary>
@@ -286,14 +286,12 @@ namespace Animator
                     }
                 }
             }
-            g = DrawPanel.CreateGraphics();
-            Utilities.DrawPieces(piecesList, g, DrawPanel);
             if (movingFar)
             {
                 shadow.X = selected.GetCoords()[0] + positionMoving[0] - originalMoving[0];
                 shadow.Y = selected.GetCoords()[1] + positionMoving[1] - originalMoving[1];
-                Utilities.DrawPiece(shadow, g, true);
             }
+            DisplayDrawings();
         }
 
         /// <summary>
@@ -318,7 +316,7 @@ namespace Animator
             SizeBar.Value = (int)selected.SM;
 
             moving = false; movingFar = false;
-            Utilities.DrawPieces(piecesList, g, DrawPanel);
+            DisplayDrawings();
         }
 
         /// <summary>
@@ -335,7 +333,7 @@ namespace Animator
                 if (selected == null) { return; }
                 piecesList.Remove(selected);
                 selected = null;
-                Utilities.DrawPieces(piecesList, g, DrawPanel);
+                DisplayDrawings();
             }
         }
 
@@ -351,7 +349,7 @@ namespace Animator
                 if (piece.AttachedTo == null)
                 {
                     piece.R = (piece.Originally.R + RotationTrack.Value) % 360;
-                    Utilities.DrawPieces(piecesList, g, DrawPanel);
+                    DisplayDrawings();
                     return;
                 }
             }
@@ -369,7 +367,7 @@ namespace Animator
                 if (piece.AttachedTo == null)
                 {
                     piece.T = (piece.Originally.T + TurnTrack.Value) % 360;
-                    Utilities.DrawPieces(piecesList, g, DrawPanel);
+                    DisplayDrawings();
                     return;
                 }
             }
@@ -380,6 +378,28 @@ namespace Animator
 
 
         // ----- OTHER FUNCTIONS -----
+
+        /// <summary>
+        /// Displays all of the current pieces and any
+        /// relevant points to the screen.
+        /// </summary>
+        private void DisplayDrawings()
+        {
+            g = DrawPanel.CreateGraphics();
+            Utilities.DrawPieces(piecesList, g, DrawPanel);
+            if (movingFar)
+            {
+                Utilities.DrawPiece(shadow, g, true);
+            }
+            else if (moving == false && selected != null)
+            {
+                foreach (PointSpot spot in selected.PiecePoints)
+                {
+                    double[] spotCoords = spot.GetCurrentPoints();
+                    Utilities.DrawPoint(spotCoords[0], spotCoords[1], Color.ForestGreen, g);
+                }
+            }
+        }
 
         /// <summary>
         /// Checks that all added pieces are connected to the set.
