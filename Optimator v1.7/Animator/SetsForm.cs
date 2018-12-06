@@ -17,7 +17,7 @@ namespace Animator
         #region Sets Form Variables
         private Graphics g;
         private List<Piece> piecesList = new List<Piece>();
-        private Set WIP = new Set(Constants.SetStructure);
+        private Set WIP = new Set();
 
         private Piece selected = null;
         private Join selectedSpot = null;
@@ -45,58 +45,6 @@ namespace Animator
 
 
         // ----- SET TAB -----
-
-        /// <summary>
-        /// Saves the set and/or closes the form.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void DoneBtn_Click(object sender, EventArgs e)
-        {
-            if (piecesList.Count < 1)
-            {
-                Close();
-            }
-            else if (!PermitChange())
-            {
-                // Error message shown as part of PermitChange function
-            }
-            else if (Constants.InvalidNames.Contains(NameTb.Text) || !Constants.PermittedName.IsMatch(NameTb.Text))
-            {
-                MessageBox.Show("Please choose a valid name for your set. Name can only include letters and numbers.", "Name Invalid", MessageBoxButtons.OK);
-            }
-            else if (Constants.ReservedNames.Contains(NameTb.Text))
-            {
-                MessageBox.Show("This name is reserved. Please choose a new name for your set.", "Name Reserved", MessageBoxButtons.OK);
-            }
-            // Name is valid
-            else
-            {
-                // Check name not already in use, or that overriding is okay
-                DialogResult result = DialogResult.Yes;
-                if (File.Exists(Utilities.GetDirectory(Constants.SetsFolder, NameTb.Text)))
-                {
-                    result = MessageBox.Show("This name is already in use. Do you want to override the existing set?", "Override Confirmation", MessageBoxButtons.YesNo);
-                }
-                if (result == DialogResult.No) { return; }
-
-                // Save Set and Close Form
-                try
-                {
-                    WIP.CreateData();
-                    Utilities.SaveData(Utilities.GetDirectory(Constants.SetsFolder, NameTb.Text), WIP.Data);
-                    Close();
-                }
-                catch (FileNotFoundException)
-                {
-                    MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
-                }
-                catch (ArgumentOutOfRangeException)
-                {
-                    MessageBox.Show("No data entered for point.", "Missing Data", MessageBoxButtons.OK);
-                }
-            }
-        }
 
         /// <summary>
         /// Adds a piece to the set.
@@ -170,6 +118,54 @@ namespace Animator
             if (result == DialogResult.Yes)
             {
                 Close();
+            }
+        }
+
+        /// <summary>
+        /// Saves the set and/or closes the form.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DoneBtn_Click(object sender, EventArgs e)
+        {
+            if (piecesList.Count < 1)
+            {
+                Close();
+            }
+            else if (!PermitChange())
+            {
+                // Error message shown as part of PermitChange function
+            }
+            else if (!Constants.PermittedName.IsMatch(NameTb.Text))
+            {
+                MessageBox.Show("Please choose a valid name for your set. Name can only include letters and numbers.", "Name Invalid", MessageBoxButtons.OK);
+            }
+            // Name is valid
+            else
+            {
+                // Check name not already in use, or that overriding is okay
+                DialogResult result = DialogResult.Yes;
+                if (File.Exists(Utilities.GetDirectory(Constants.SetsFolder, NameTb.Text)))
+                {
+                    result = MessageBox.Show("This name is already in use. Do you want to override the existing set?", "Override Confirmation", MessageBoxButtons.YesNo);
+                }
+                if (result == DialogResult.No) { return; }
+
+                // Save Set and Close Form
+                try
+                {
+                    WIP.CreateData();
+                    Utilities.SaveData(Utilities.GetDirectory(Constants.SetsFolder, NameTb.Text), WIP.Data);
+                    Close();
+                }
+                catch (FileNotFoundException)
+                {
+                    MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    MessageBox.Show("No data entered for point.", "Missing Data", MessageBoxButtons.OK);
+                }
             }
         }
 
@@ -614,39 +610,5 @@ namespace Animator
             shadow.X = selected.X + positionMoving[0] - originalMoving[0];
             shadow.Y = selected.Y + positionMoving[1] - originalMoving[1];
         }
-
-
-
-        // ----- TO UPDATE -----
-        #region To Update
-        /*
-        private void loadPointsBtn_Click(object sender, EventArgs e)
-        {
-            if (partsLb.SelectedIndex != -1 && basePointTb.Text != "" && joinPointTb.Text != "" && basePieceTb.Text != "-1")
-            {
-                try
-                {
-                    Boolean front = partsLb.SelectedIndex > int.Parse(basePieceTb.Text);
-                    double flip = flipsCb.Checked ? (double)flipsUpDown.Value : -1;
-
-                    piecesList[partsLb.SelectedIndex].AttachToPiece(piecesList[int.Parse(basePieceTb.Text)], new PointSpot(basePointTb.Text, piecesList[int.Parse(basePieceTb.Text)]),
-                        new PointSpot(joinPointTb.Text, piecesList[partsLb.SelectedIndex]), front, flip);
-
-                    xInitUpDown.Value = 0;
-                    yInitUpDown.Value = 0;
-
-                    DrawParts();
-                }
-                catch (System.IO.FileNotFoundException)
-                {
-                    MessageBox.Show("File not found. Check your file names and try again.", "File Not Found", MessageBoxButtons.OK);
-                }
-                catch (System.ArgumentOutOfRangeException)
-                {
-                    MessageBox.Show("Index entered does not relate to any existing piece", "Invalid Index", MessageBoxButtons.OK);
-                }
-            }
-        }*/
-        #endregion
     }
 }

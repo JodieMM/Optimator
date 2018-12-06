@@ -22,15 +22,8 @@ namespace Animator
         public static string ScenesFolder => "\\Scenes\\";
         public static string VideosFolder => "\\Videos\\";
 
-        // Reserved Names
-        public static string PieceStructure => "ZPieceScaffold";
-        public static string SetStructure => "ZSetScaffold";
-        public static string SceneStructure => "ZSceneScaffold";
-        public static string WIPName => "ZWIP";
-
         // Name Validation
-        public static string[] ReservedNames = { PieceStructure, SetStructure, WIPName };
-        public static string[] InvalidNames = { "", " ", "Piece Name", "Set Name", "Scene Name", "Video Name" };
+        public static string WIPName => "Z WIP";
         public static Regex PermittedName = new Regex(@"^[A-Za-z0-9]+$");
 
         // Characters
@@ -48,7 +41,7 @@ namespace Animator
 
         // Colours
         public static Color[] randomColours = { Color.Blue, Color.Pink, Color.Green, Color.Purple, Color.Aqua, Color.Orange};
-        public static Color shadowShade = Color.DarkGray;   //new Color[] { Color.FromArgb(155, 163, 163, 194) }
+        public static Color shadowShade = Color.DarkGray;
         public static Color highlight = Color.ForestGreen;
         public static Color select = Color.Red;
     }

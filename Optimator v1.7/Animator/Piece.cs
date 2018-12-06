@@ -25,7 +25,7 @@ namespace Animator
         public double T { get; set; } = 0;
         public double S { get; set; } = 0;
         public double SM { get; set; } = 100;
-        public int NumCoords { get; set; }
+        public int NumCoords { get; set; } = -1;
 
         // Colours and Details
         public string ColourType { get; set; }                     // Solid/Gradient colour and direction
@@ -62,6 +62,21 @@ namespace Animator
 
             // Get Points and Colours from File
             AssignValues(Data[0]);
+        }
+
+        /// <summary>
+        /// Piece constructor used when developing a
+        /// piece for the first time.
+        /// </summary>
+        public Piece()
+        {
+            Name = Constants.WIPName;
+            ColourType = "fill";
+            FillColour = new Color[] { Color.FromArgb(255, 204, 204, 255) };
+            OutlineColour = Color.FromArgb(255, 204, 240, 255);
+            OutlineWidth = 2;
+            PieceDetails = "wr100";
+            UpdateDataInfoLine();
         }
 
 
@@ -285,11 +300,9 @@ namespace Animator
             // Colours (Outline and Fill)
             string[] colours = angleData[1].Split(Constants.Colon);
             FillColour = new Color[colours.Length - 1];
-
             for (int index = 0; index < colours.Length; index++)
             {
                 string[] rgbValues = colours[index].Split(Constants.Comma);
-
                 if (index == 0)
                 {
                     OutlineColour = Color.FromArgb(int.Parse(rgbValues[0]), int.Parse(rgbValues[1]), int.Parse(rgbValues[2]), int.Parse(rgbValues[3]));

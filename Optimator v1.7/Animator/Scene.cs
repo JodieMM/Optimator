@@ -17,8 +17,8 @@ namespace Animator
         private List<Piece> partOrder = new List<Piece>();
         public List<Change> Changes { get; } = new List<Change>();
 
-        public int FrameRate { get; }
-        public int NumFrames { get; }
+        public int FrameRate { get; set; }
+        public int NumFrames { get; set; }
         #endregion
 
 
@@ -89,6 +89,15 @@ namespace Animator
             {
                 MessageBox.Show("Suspected outdated file.", "File Indexing Error", MessageBoxButtons.OK);
             }
+        }
+
+        /// <summary>
+        /// Scene constructor for creating a new scene.
+        /// </summary>
+        public Scene()
+        {
+            FrameRate = 120;
+            NumFrames = 1;
         }
 
 

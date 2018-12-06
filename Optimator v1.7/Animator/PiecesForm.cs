@@ -20,7 +20,7 @@ namespace Animator
         private Graphics turned;
         private List<Piece> sketch = new List<Piece>();
         private List<Join> pointSpots = new List<Join>();
-        private Piece WIP = new Piece(Constants.PieceStructure);
+        private Piece WIP = new Piece();
 
         private List<double[]> oCoords = new List<double[]>();
         private List<double[]> rCoords = new List<double[]>();
@@ -68,8 +68,6 @@ namespace Animator
             DrawDown.MouseDown += new MouseEventHandler(DrawDown_MouseDown);
             DrawDown.MouseUp += new MouseEventHandler(DrawDown_MouseUp);
             DrawDown.MouseMove += new MouseEventHandler(DrawDown_MouseMove);
-
-            WIP.Name = Constants.WIPName;
         }
 
 
@@ -464,52 +462,46 @@ namespace Animator
         private void CompleteBtn_Click(object sender, EventArgs e)
         {
             // Check Name is Valid for Saving
-            if (Constants.InvalidNames.Contains(NameTb.Text) || !Constants.PermittedName.IsMatch(NameTb.Text))
+            if (!Constants.PermittedName.IsMatch(NameTb.Text))
             {
                 MessageBox.Show("Please choose a valid name for your piece. Name can only include letters and numbers.", "Name Invalid", MessageBoxButtons.OK);
+                return;
             }
-            else if (Constants.ReservedNames.Contains(NameTb.Text))
+
+            // Check name not already in use, or that overriding is okay
+            DialogResult result = DialogResult.Yes;
+            if (File.Exists(Utilities.GetDirectory(Constants.PiecesFolder, NameTb.Text)))
             {
-                MessageBox.Show("This name is reserved. Please choose a new name for your piece.", "Name Reserved", MessageBoxButtons.OK);
+                result = MessageBox.Show("This name is already in use. Do you want to override the existing piece?", "Override Confirmation", MessageBoxButtons.YesNo);
             }
-            // Name is Valid
-            else
+            if (result == DialogResult.No) { return; }
+
+            // Save Piece and Close Form
+            try
             {
-                // Check name not already in use, or that overriding is okay
-                DialogResult result = DialogResult.Yes;
-                if (File.Exists(Utilities.GetDirectory(Constants.PiecesFolder, NameTb.Text)))
-                {
-                    result = MessageBox.Show("This name is already in use. Do you want to override the existing piece?", "Override Confirmation", MessageBoxButtons.YesNo);
-                }
-                if (result == DialogResult.No) { return; }
+                if (!CheckPiecesValid(oCoords, rCoords, tCoords)) { return; }
+                ApplySegmentFully();
 
-                // Save Piece and Close Form
-                try
+                // Save Points
+                WIP.Name = NameTb.Text;
+                double[] middle = Utilities.FindMid(oCoordsFull);
+                Directory.CreateDirectory(Environment.CurrentDirectory + Constants.JoinsFolder + WIP.Name);
+                for (int index = 0; index < pointSpots.Count; index++)
                 {
-                    if (!CheckPiecesValid(oCoords, rCoords, tCoords)) { return; }
-                    ApplySegmentFully();
+                    pointSpots[index].Name = index.ToString();
+                    pointSpots[index].SaveJoin(middle);
+                }
 
-                    // Save Points
-                    WIP.Name = NameTb.Text;
-                    double[] middle = Utilities.FindMid(oCoordsFull);
-                    Directory.CreateDirectory(Environment.CurrentDirectory + Constants.JoinsFolder + WIP.Name);
-                    for (int index = 0; index < pointSpots.Count; index++)
-                    {
-                        pointSpots[index].Name = index.ToString();
-                        pointSpots[index].SaveJoin(middle);
-                    }
-
-                    Utilities.SaveData(Utilities.GetDirectory(Constants.PiecesFolder, NameTb.Text), WIP.Data);
-                    Close();
-                }
-                catch (FileNotFoundException)
-                {
-                    MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
-                }
-                catch (ArgumentOutOfRangeException)
-                {
-                    MessageBox.Show("No data entered for point", "Missing Data", MessageBoxButtons.OK);
-                }
+                Utilities.SaveData(Utilities.GetDirectory(Constants.PiecesFolder, NameTb.Text), WIP.Data);
+                Close();
+            }
+            catch (FileNotFoundException)
+            {
+                MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                MessageBox.Show("No data entered for point", "Missing Data", MessageBoxButtons.OK);
             }
         }
 
@@ -870,22 +862,18 @@ namespace Animator
         {
             UpdateColours();
         }
-
         private void RedUpDown_ValueChanged(object sender, EventArgs e)
         {
             UpdateColours();
         }
-
         private void GreenUpDown_ValueChanged(object sender, EventArgs e)
         {
             UpdateColours();
         }
-
         private void BlueUpDown_ValueChanged(object sender, EventArgs e)
         {
             UpdateColours();
         }
-
         private void UpdateColours()
         {
             if (OutlineRb.Checked == true)

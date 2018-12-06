@@ -68,55 +68,48 @@ namespace Animator
         /// <param name="e"></param>
         private void SaveBtn_Click(object sender, EventArgs e)
         {
-            // Check Name is Valid for Saving
-            if (Constants.InvalidNames.Contains(NameTb.Text) || !Constants.PermittedName.IsMatch(NameTb.Text))
+            if (!Constants.PermittedName.IsMatch(NameTb.Text))
             {
                 MessageBox.Show("Please choose a valid name for your video. Name can only include letters and numbers.", "Name Invalid", MessageBoxButtons.OK);
+                return;
             }
-            else if (Constants.ReservedNames.Contains(NameTb.Text))
+
+            // Check name not already in use, or that overriding is okay
+            DialogResult result = DialogResult.Yes;
+            if (File.Exists(Utilities.GetDirectory(Constants.VideosFolder, NameTb.Text)))
             {
-                MessageBox.Show("This name is reserved. Please choose a new name for your video.", "Name Reserved", MessageBoxButtons.OK);
+                result = MessageBox.Show("This name is already in use. Do you want to override the existing video?", "Override Confirmation", MessageBoxButtons.YesNo);
             }
-            // Name is Valid
-            else
+            if (result == DialogResult.No) { return; }
+
+            // Save Video and Close Form
+            try
             {
-                // Check name not already in use, or that overriding is okay
-                DialogResult result = DialogResult.Yes;
-                if (File.Exists(Utilities.GetDirectory(Constants.VideosFolder, NameTb.Text)))
-                {
-                    result = MessageBox.Show("This name is already in use. Do you want to override the existing video?", "Override Confirmation", MessageBoxButtons.YesNo);
-                }
-                if (result == DialogResult.No) { return; }
+                // Prepare Save Location
+                string filePath = Environment.CurrentDirectory + Constants.VideosFolder + NameTb.Text;
+                Directory.CreateDirectory(filePath);
+                StreamWriter file = new StreamWriter(@filePath);
 
-                // Save Video and Close Form
-                try
+                // Save Images
+                for (sceneIndex = 0; sceneIndex < videoScenes.Count; sceneIndex++)
                 {
-                    // Prepare Save Location
-                    string filePath = Environment.CurrentDirectory + Constants.VideosFolder + NameTb.Text;
-                    Directory.CreateDirectory(filePath);
-                    StreamWriter file = new StreamWriter(@filePath);
-
-                    // Save Images
-                    for (sceneIndex = 0; sceneIndex < videoScenes.Count; sceneIndex++)
+                    videoScenes[sceneIndex].AssignOriginalPositions();
+                    for (frameIndex = 0; frameIndex < videoScenes[sceneIndex].NumFrames; frameIndex++)
                     {
-                        videoScenes[sceneIndex].AssignOriginalPositions();
-                        for (frameIndex = 0; frameIndex < videoScenes[sceneIndex].NumFrames; frameIndex++)
-                        {
-                            Bitmap bitmap = DrawOnBitmap(videoScenes[sceneIndex]);
-                            bitmap.Save(filePath + "\\" + (frameIndex + 1) + Constants.Png, System.Drawing.Imaging.ImageFormat.Png);
-                        }
-
+                        Bitmap bitmap = DrawOnBitmap(videoScenes[sceneIndex]);
+                        bitmap.Save(filePath + "\\" + (frameIndex + 1) + Constants.Png, System.Drawing.Imaging.ImageFormat.Png);
                     }
-                    Close();
+
                 }
-                catch (FileNotFoundException)
-                {
-                    MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
-                }
-                catch (ArgumentOutOfRangeException)
-                {
-                    MessageBox.Show("No data entered for point", "Missing Data", MessageBoxButtons.OK);
-                }
+                Close();
+            }
+            catch (FileNotFoundException)
+            {
+                MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                MessageBox.Show("No data entered for point", "Missing Data", MessageBoxButtons.OK);
             }
         }
 

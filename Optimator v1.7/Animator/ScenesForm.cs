@@ -351,73 +351,66 @@ namespace Animator
         private void FinishSceneBtn_Click(object sender, EventArgs e)
         {
             // Check Name is Valid for Saving
-            if (Constants.InvalidNames.Contains(NameTb.Text) || !Constants.PermittedName.IsMatch(NameTb.Text))
+            if (!Constants.PermittedName.IsMatch(NameTb.Text))
             {
                 MessageBox.Show("Please choose a valid name for your piece. Name can only include letters and numbers.", "Name Invalid", MessageBoxButtons.OK);
             }
-            else if (Constants.ReservedNames.Contains(NameTb.Text))
+
+            // Check name not already in use, or that overriding is okay
+            DialogResult result = DialogResult.Yes;
+            if (File.Exists(Utilities.GetDirectory(Constants.PiecesFolder, NameTb.Text)))
             {
-                MessageBox.Show("This name is reserved. Please choose a new name for your piece.", "Name Reserved", MessageBoxButtons.OK);
+                result = MessageBox.Show("This name is already in use. Do you want to override the existing piece?", "Override Confirmation", MessageBoxButtons.YesNo);
             }
-            // Name is Valid
-            else
+            if (result == DialogResult.No) { return; }
+
+            try
             {
-                // Check name not already in use, or that overriding is okay
-                DialogResult result = DialogResult.Yes;
-                if (File.Exists(Utilities.GetDirectory(Constants.PiecesFolder, NameTb.Text)))
+                // Save Data
+                List<string> file = new List<string>
                 {
-                    result = MessageBox.Show("This name is already in use. Do you want to override the existing piece?", "Override Confirmation", MessageBoxButtons.YesNo);
-                }
-                if (result == DialogResult.No) { return; }
+                    // Save FPS & Number of Frames (Line 1)
+                    FpsUpDown.Value + ";" + numFrames
+                };
 
-                try
+                // Save Parts
+                for (int index = 0; index < piecesList.Count; index++)
                 {
-                    // Save Data
-                    List<string> file = new List<string>
+                    // If piece is in 
+                    if (piecesList[index].PieceOf != null)
                     {
-                        // Save FPS & Number of Frames (Line 1)
-                        FpsUpDown.Value + ";" + numFrames
-                    };
-
-                    // Save Parts
-                    for (int index = 0; index < piecesList.Count; index++)
-                    {
-                        // If piece is in 
-                        if (piecesList[index].PieceOf != null)
+                        // If piece is base
+                        if (piecesList[index].AttachedTo == null)
                         {
-                            // If piece is base
-                            if (piecesList[index].AttachedTo == null)
-                            {
-                                file.Add("s:" + piecesList[index].PieceOf.Name);
-                            }
-                        }
-                        else
-                        {
-                            file.Add("p:" + piecesList[index].Name);
+                            file.Add("s:" + piecesList[index].PieceOf.Name);
                         }
                     }
-
-                    // Save Original States
-                    file.Add("Originals");
-                    foreach (Piece piece in piecesList)
+                    else
                     {
-                        file.Add(piece.Originally != null ? ";" + piece.Originally.GetSaveData() : ";500;250;0;0;0;100");
+                        file.Add("p:" + piecesList[index].Name);
                     }
-
-                    // Save Animation Changes
-                    foreach (Change change in changes)
-                    {
-                        file.Add(change.StartFrame + ";" + change.Action + ";" +
-                            piecesList.IndexOf(change.AffectedPiece) + ";" + change.HowMuch + ";" + change.HowLong);
-                    }
-
-                    Utilities.SaveData(Environment.CurrentDirectory + Constants.ScenesFolder + SceneNameTb.Text + Constants.Txt, file);
-                    Close();
                 }
-                catch (FileNotFoundException)
+
+                // Save Original States
+                file.Add("Originals");
+                foreach (Piece piece in piecesList)
                 {
-                    MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
+                    file.Add(piece.Originally != null ? ";" + piece.Originally.GetSaveData() : ";500;250;0;0;0;100");
                 }
+
+                // Save Animation Changes
+                foreach (Change change in changes)
+                {
+                    file.Add(change.StartFrame + ";" + change.Action + ";" +
+                        piecesList.IndexOf(change.AffectedPiece) + ";" + change.HowMuch + ";" + change.HowLong);
+                }
+
+                Utilities.SaveData(Environment.CurrentDirectory + Constants.ScenesFolder + SceneNameTb.Text + Constants.Txt, file);
+                Close();
+            }
+            catch (FileNotFoundException)
+            {
+                MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
             }
         }
 
@@ -507,6 +500,18 @@ namespace Animator
                 selected = null;
                 Utilities.DrawPieces(piecesList, g, DrawPanel);
             }
+        }
+
+
+
+        // ----- OTHER FUNTCIONS -----
+
+        /// <summary>
+        /// Draws the relevant scene to the screen.
+        /// </summary>
+        private void DisplayDrawings()
+        {
+            g = DrawPanel.CreateGraphics();
         }
     }
 }

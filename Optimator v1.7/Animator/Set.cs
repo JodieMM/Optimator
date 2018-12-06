@@ -29,6 +29,14 @@ namespace Animator
             ConvertData();
         }
 
+        /// <summary>
+        /// Set constructor for creating a new set.
+        /// </summary>
+        public Set()
+        {
+            Name = Constants.WIPName;
+        }
+
 
 
         // ----- DATA FUNCTIONS -----
@@ -68,8 +76,12 @@ namespace Animator
         public void CreateData()
         {
             Data.Clear();
-            foreach (Piece piece in PiecesList)
+            BasePiece.R = 0; BasePiece.T = 0; BasePiece.S = 0;
+            // ** TO DO SORT ORDER
+            int baseIndex = PiecesList.IndexOf(BasePiece);
+            for (int index = 0; index < PiecesList.Count; index++)
             {
+                Piece piece = PiecesList[index];
                 if (piece == BasePiece)
                 {
                     Data.Add(piece.Name + Constants.Semi + piece.X + Constants.Semi + piece.Y + Constants.Semi +
@@ -80,7 +92,7 @@ namespace Animator
                     Data.Add(piece.Name + Constants.Semi + piece.OwnPoint.Name + Constants.Semi + PiecesList.IndexOf(piece.AttachedTo) +
                         Constants.Semi + piece.AttachPoint + Constants.Semi + piece.X + Constants.Semi + piece.Y + Constants.Semi +
                         piece.R + Constants.Semi + piece.T + Constants.Semi + piece.S + Constants.Semi + piece.SM + Constants.Semi +
-                        piece.InFront + Constants.Semi + piece.AngleFlip);
+                        (index > baseIndex) + Constants.Semi + piece.AngleFlip);
                 }
             }
         }
