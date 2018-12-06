@@ -170,6 +170,8 @@ namespace Animator
             {
                 pointSpots[spotMoving].X = e.X;
                 pointSpots[spotMoving].Y = e.Y;
+                pointSpots[spotMoving].XRight = e.X;
+                pointSpots[spotMoving].YDown = e.Y;
             }
             StopMovement();
             DisplayDrawings();
@@ -598,7 +600,7 @@ namespace Animator
                 }
                 else if (positionMoving[0] != -1)
                 {
-                    Utilities.DrawPoint(pointSpots[spotMoving].XRight, positionMoving[1], Constants.shadowShade, rotated);
+                    Utilities.DrawPoint(positionMoving[0], positionMoving[1], Constants.shadowShade, rotated);
                 }
             }
 
@@ -623,7 +625,7 @@ namespace Animator
                 }
                 else if (positionMoving[1] != -1)
                 {
-                    Utilities.DrawPoint(positionMoving[0], pointSpots[spotMoving].YDown, Constants.shadowShade, turned);
+                    Utilities.DrawPoint(positionMoving[0], positionMoving[1], Constants.shadowShade, turned);
                 }
             }
             WIP.T = 0;
