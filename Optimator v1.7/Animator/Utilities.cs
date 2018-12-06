@@ -244,34 +244,6 @@ namespace Animator
             return order;
         }
 
-        /// <summary>
-        /// Finds the closest coordinate from the lists.
-        /// If the index is above the coords length, returned index
-        /// is for the points list with index result - coords.Count.
-        /// Returns -1 if none within 9 pixels of the given position.
-        /// </summary>
-        /// <param name="toSearch">The list of coordinates to search</param>
-        /// <param name="x">The x coord to be close to</param>
-        /// <param name="y">The y coord to be close to</param>
-        /// <returns>Index of list that is closest</returns>
-        public static int FindClosestIndex(List<double[]> toSearch, int x, int y)
-        {
-            int[] ranges = Constants.Ranges;
-
-            foreach (int range in ranges)
-            {
-                for (int index = 0; index < toSearch.Count(); index++)
-                {
-                    if (x >= toSearch[index][0] - range && x <= toSearch[index][0] + range
-                        && y >= toSearch[index][1] - range && y <= toSearch[index][1] + range)
-                    {
-                        return index;
-                    }
-                }
-            }
-            return -1;
-        }
-
 
 
         // ----- GENERAL FUNCTIONS -----
@@ -766,6 +738,62 @@ namespace Animator
                 foreach (int[] dot in contents)
                 {
                     if (dot[0] == x && dot[1] == y)
+                    {
+                        return index;
+                    }
+                }
+            }
+            return -1;
+        }
+
+        /// <summary>
+        /// Finds the top piece clicked from the list.
+        /// </summary>
+        /// <param name="piecesList">The list of pieces that could be clicked</param>
+        /// <param name="x">The x coordinate of the click</param>
+        /// <param name="y">The y coordinate of the click</param>
+        /// <param name="selectedIndex">An index that should be ignored</param>
+        /// <returns>The index of the piece clicked, or negative one if none selected</returns>
+        public static int FindClickedSelection(List<Piece> piecesList, int x, int y, int selectedIndex)
+        {
+            for (int index = piecesList.Count - 1; index >= 0; index--)
+            {
+                if (index != selectedIndex)
+                {
+                    List<double[]> coords = piecesList[index].GetCurrentPoints(true);
+                    List<int[]> contents = FindPieceSpace(FindPieceLines(coords,
+                        piecesList[index].GetLineArray(piecesList[index].R, piecesList[index].T)));
+
+                    foreach (int[] dot in contents)
+                    {
+                        if (dot[0] == x && dot[1] == y)
+                        {
+                            return index;
+                        }
+                    }
+                }
+            }
+            return -1;
+        }
+
+        /// <summary>
+        /// Finds the closest coordinate from the lists.
+        /// If the index is above the coords length, returned index
+        /// is for the points list with index result - coords.Count.
+        /// Returns -1 if none within 9 pixels of the given position.
+        /// </summary>
+        /// <param name="toSearch">The list of coordinates to search</param>
+        /// <param name="x">The x coord to be close to</param>
+        /// <param name="y">The y coord to be close to</param>
+        /// <returns>Index of list that is closest</returns>
+        public static int FindClosestIndex(List<double[]> toSearch, int x, int y)
+        {
+            foreach (int range in Constants.Ranges)
+            {
+                for (int index = 0; index < toSearch.Count(); index++)
+                {
+                    if (x >= toSearch[index][0] - range && x <= toSearch[index][0] + range
+                        && y >= toSearch[index][1] - range && y <= toSearch[index][1] + range)
                     {
                         return index;
                     }

@@ -36,10 +36,10 @@ namespace Animator
 
         // Sets
         public Piece AttachedTo { get; set; } = null;
-        public PointSpot AttachPoint { get; set; } = null;
-        public PointSpot OwnPoint { get; set; } = null;
+        public Join AttachPoint { get; set; } = null;
+        public Join OwnPoint { get; set; } = null;
         public Set PieceOf { get; set; }
-        public List<PointSpot> PiecePoints { get; set; } = new List<PointSpot>();
+        public List<Join> PiecePoints { get; set; } = new List<Join>();
         // Set Ordering
         public bool InFront { get; set; } = true;
         public double AngleFlip { get; set; } = -1;
@@ -102,8 +102,8 @@ namespace Animator
         {
             if (GetIsAttached())
             {
-                return new double[] { (R + AttachedTo.GetAngles()[0]) % 360, (T + AttachedTo.GetAngles()[1]
-                    + HookAngle(1)) % 360, (S + AttachedTo.GetAngles()[2] + HookAngle(2)) % 360 };
+                return new double[] { (R + AttachedTo.GetAngles()[0]) % 360, (T + AttachedTo.GetAngles()[1]) % 360,
+                    (S + AttachedTo.GetAngles()[2]) % 360 };
             }
             return new double[] { R, T, S };
         }
@@ -207,7 +207,7 @@ namespace Animator
         /// <param name="point">The point of the current piece</param>
         /// <param name="front">Whether this piece goes in front of the other</param>
         /// <param name="angleFlip">The angle when front is changed</param>
-        public void AttachToPiece(Piece attach, PointSpot attachmentPoint, PointSpot point, bool front, double angleFlip)
+        public void AttachToPiece(Piece attach, Join attachmentPoint, Join point, bool front, double angleFlip)
         {
             AttachedTo = attach;
             AttachPoint = attachmentPoint;
@@ -315,14 +315,14 @@ namespace Animator
         /// </summary>
         public void FindPointSpots()
         {
-            string directory = Environment.CurrentDirectory + Constants.PointsFolder + Name + "\\";
+            string directory = Environment.CurrentDirectory + Constants.JoinsFolder + Name + "\\";
             if (Directory.Exists(directory))
             {
                 string[] fileArray = Directory.GetFiles(directory, "*.txt");
                 foreach (string file in fileArray)
                 {
                     string fileName = Path.GetFileName(file);
-                    PiecePoints.Add(new PointSpot(fileName.Substring(0, fileName.Length - 4), this));
+                    PiecePoints.Add(new Join(fileName.Substring(0, fileName.Length - 4), this));
                 }
             }
         }
@@ -402,7 +402,7 @@ namespace Animator
                 }
             }
 
-            //Recentre
+            // Recentre
             if (recentre)
             {
                 double[] middle = Utilities.FindMid(pointsArray);
@@ -485,20 +485,10 @@ namespace Animator
         /// <returns>double[] { X change, Y change }</returns>
         private double[] GetPointChange()
         {
-            if (!GetIsAttached())
-            {
-                return new double[] { 0, 0 };
-            }
-            else
-            {
-                AttachPoint.X = Constants.MidX; AttachPoint.Y = Constants.MidY;
-                OwnPoint.X = Constants.MidX; OwnPoint.Y = Constants.MidY;
-
-                double[] baseCoords = AttachPoint.GetCurrentPoints();
-                double[] thisCoords = OwnPoint.GetCurrentPoints();
-
-                return new double[] { baseCoords[0] - thisCoords[0], baseCoords[1] - thisCoords[1] };
-            }
+            if (!GetIsAttached()) { return new double[] { 0, 0 }; }
+            double[] baseCoords = AttachPoint.GetCurrentPoints(Constants.MidX, Constants.MidY);
+            double[] thisCoords = OwnPoint.GetCurrentPoints(Constants.MidX, Constants.MidY);
+            return new double[] { baseCoords[0] - thisCoords[0], baseCoords[1] - thisCoords[1] };
         }
 
         /// <summary>

@@ -19,7 +19,7 @@ namespace Animator
         private Graphics rotated;
         private Graphics turned;
         private List<Piece> sketch = new List<Piece>();
-        private List<PointSpot> pointSpots = new List<PointSpot>();
+        private List<Join> pointSpots = new List<Join>();
         private Piece WIP = new Piece(Constants.PieceStructure);
 
         private List<double[]> oCoords = new List<double[]>();
@@ -490,11 +490,11 @@ namespace Animator
                     // Save Points
                     WIP.Name = NameTb.Text;
                     double[] middle = Utilities.FindMid(oCoordsFull);
-                    Directory.CreateDirectory(Environment.CurrentDirectory + Constants.PointsFolder + WIP.Name);
+                    Directory.CreateDirectory(Environment.CurrentDirectory + Constants.JoinsFolder + WIP.Name);
                     for (int index = 0; index < pointSpots.Count; index++)
                     {
                         pointSpots[index].Name = index.ToString();
-                        pointSpots[index].SavePointSpot(middle);
+                        pointSpots[index].SaveJoin(middle);
                     }
 
                     Utilities.SaveData(Utilities.GetDirectory(Constants.PiecesFolder, NameTb.Text), WIP.Data);
@@ -522,7 +522,7 @@ namespace Animator
         /// <param name="e"></param>
         private void AddPointBtn_Click(object sender, EventArgs e)
         {
-            pointSpots.Add(new PointSpot(WIP));
+            pointSpots.Add(new Join(WIP));
             DisplayDrawings();
         }
 
@@ -568,13 +568,13 @@ namespace Animator
             WIP.T = 0;
             Utilities.DrawPiece(WIP, original, false);
             DrawPoints(original, 2);
-            foreach (PointSpot spot in pointSpots)
+            foreach (Join spot in pointSpots)
             {
                 Utilities.DrawPoint(spot.X, spot.Y, spot.FillColour, original);
             }
             if (oMoving && movingFar || (spotMoving != -1 && positionMoving[0] != -1 && positionMoving[1] != -1))
             {
-                Utilities.DrawPoint(positionMoving[0], positionMoving[1], Color.DarkGray, original);
+                Utilities.DrawPoint(positionMoving[0], positionMoving[1], Constants.shadowShade, original);
             }
 
             // Draw Rotated Board
@@ -582,23 +582,23 @@ namespace Animator
             WIP.T = 0;
             Utilities.DrawPiece(WIP, rotated, false);
             DrawPoints(rotated, 3);
-            foreach (PointSpot spot in pointSpots)
+            foreach (Join spot in pointSpots)
             {
                 Utilities.DrawPoint(spot.XRight, spot.Y, spot.FillColour, rotated);
             }
             if (rMoving && movingFar)
             {
-                Utilities.DrawPoint(positionMoving[0], positionMoving[1], Color.DarkGray, rotated);
+                Utilities.DrawPoint(positionMoving[0], positionMoving[1], Constants.shadowShade, rotated);
             }
             else if (spotMoving != -1)
             {
                 if (positionMoving[1] == -1)
                 {
-                    Utilities.DrawPoint(positionMoving[0], pointSpots[spotMoving].Y, Color.DarkGray, rotated);
+                    Utilities.DrawPoint(positionMoving[0], pointSpots[spotMoving].Y, Constants.shadowShade, rotated);
                 }
                 else if (positionMoving[0] != -1)
                 {
-                    Utilities.DrawPoint(pointSpots[spotMoving].XRight, positionMoving[1], Color.DarkGray, rotated);
+                    Utilities.DrawPoint(pointSpots[spotMoving].XRight, positionMoving[1], Constants.shadowShade, rotated);
                 }
             }
 
@@ -607,23 +607,23 @@ namespace Animator
             WIP.T = 89.9999;
             Utilities.DrawPiece(WIP, turned, false);
             DrawPoints(turned, 4);
-            foreach (PointSpot spot in pointSpots)
+            foreach (Join spot in pointSpots)
             {
                 Utilities.DrawPoint(spot.X, spot.YDown, spot.FillColour, turned);
             }
             if (tMoving && movingFar)
             {
-                Utilities.DrawPoint(positionMoving[0], positionMoving[1], Color.DarkGray, turned);
+                Utilities.DrawPoint(positionMoving[0], positionMoving[1], Constants.shadowShade, turned);
             }
             else if (spotMoving != -1)
             {
                 if (positionMoving[0] == -1)
                 {
-                    Utilities.DrawPoint(pointSpots[spotMoving].X, positionMoving[1], Color.DarkGray, turned);
+                    Utilities.DrawPoint(pointSpots[spotMoving].X, positionMoving[1], Constants.shadowShade, turned);
                 }
                 else if (positionMoving[1] != -1)
                 {
-                    Utilities.DrawPoint(positionMoving[0], pointSpots[spotMoving].YDown, Color.DarkGray, turned);
+                    Utilities.DrawPoint(positionMoving[0], pointSpots[spotMoving].YDown, Constants.shadowShade, turned);
                 }
             }
             WIP.T = 0;
@@ -827,7 +827,7 @@ namespace Animator
         /// <param name="pointsList">Pointspots of the shape</param>
         /// <param name="pointAngle">0 original, 1 rotated, 2 turned</param>
         /// <returns></returns>
-        public static List<double[]> CombineCoordTypes(List<double[]> coords, List<PointSpot> pointsList, int pointAngle)
+        public static List<double[]> CombineCoordTypes(List<double[]> coords, List<Join> pointsList, int pointAngle)
         {
             if (pointsList.Count == 0) { return coords; }
             List<double[]> searching = new List<double[]>();
@@ -835,7 +835,7 @@ namespace Animator
             // Original
             if (pointAngle == 0)
             {
-                foreach (PointSpot pointspot in pointsList)
+                foreach (Join pointspot in pointsList)
                 {
                     searching.Add(new double[] { pointspot.X, pointspot.Y });
                 }
@@ -843,7 +843,7 @@ namespace Animator
             // Rotated
             else if (pointAngle == 1)
             {
-                foreach (PointSpot pointspot in pointsList)
+                foreach (Join pointspot in pointsList)
                 {
                     searching.Add(new double[] { pointspot.XRight, pointspot.Y });
                 }
@@ -851,7 +851,7 @@ namespace Animator
             // Turned
             else
             {
-                foreach (PointSpot pointspot in pointsList)
+                foreach (Join pointspot in pointsList)
                 {
                     searching.Add(new double[] { pointspot.X, pointspot.YDown });
                 }

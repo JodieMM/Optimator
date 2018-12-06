@@ -20,6 +20,7 @@ namespace Animator
         private Set WIP = new Set(Constants.SetStructure);
 
         private Piece selected = null;
+        private Join selectedSpot = null;
         private Color selectedOC;
         private Piece shadow = null;
         private bool moving = false;
@@ -228,6 +229,46 @@ namespace Animator
             DisplayDrawings();
         }
 
+        /// <summary>
+        /// Moves the selected piece upwards in order.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void UpBtn_Click(object sender, EventArgs e)
+        {
+            if (selected != null)
+            {
+                int selectedIndex = piecesList.IndexOf(selected);
+                if (selectedIndex != -1 && selectedIndex < piecesList.Count - 1)
+                {
+                    Piece holding = piecesList[selectedIndex];
+                    piecesList[selectedIndex] = piecesList[selectedIndex + 1];
+                    piecesList[selectedIndex + 1] = holding;
+                    DisplayDrawings();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Moves the selected piece down in order.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DownBtn_Click(object sender, EventArgs e)
+        {
+            if (selected != null)
+            {
+                int selectedIndex = piecesList.IndexOf(selected);
+                if (selectedIndex > 0)
+                {
+                    Piece holding = piecesList[selectedIndex];
+                    piecesList[selectedIndex] = piecesList[selectedIndex - 1];
+                    piecesList[selectedIndex - 1] = holding;
+                    DisplayDrawings();
+                }
+            }
+        }
+
 
 
         // ----- DRAW PANEL I/O -----
@@ -240,16 +281,28 @@ namespace Animator
         /// <param name="e"></param>
         private void DrawPanel_MouseDown(object sender, MouseEventArgs e)
         {
-            // Choose and Update Selected Piece (If Any)
-            DeselectPiece();
-            int selectedIndex = Utilities.FindClickedSelection(piecesList, e.X, e.Y);
+            int selectedIndex = -1;
+            if (selected != null) { selectedIndex = FindClosestPoint(selected, selected.PiecePoints, e.X, e.Y); }
             if (selectedIndex != -1)
             {
-                SelectPiece(piecesList[selectedIndex]);
+                // Move Selected's Join
+                selectedSpot = selected.PiecePoints[selectedIndex];
                 moving = true;
+                shadow = MakeShadow();
                 originalMoving = new int[] { e.X, e.Y };
             }
-
+            else
+            {
+                // Choose and Update Selected Piece (If Any)
+                DeselectPiece();
+                selectedIndex = Utilities.FindClickedSelection(piecesList, e.X, e.Y);
+                if (selectedIndex != -1)
+                {
+                    SelectPiece(piecesList[selectedIndex]);
+                    moving = true;
+                    originalMoving = new int[] { e.X, e.Y };
+                }
+            }
             DisplayDrawings();
         }
 
@@ -263,7 +316,15 @@ namespace Animator
             if (!moving) { return; }
             if (e.X < 0 || e.Y < 0 || e.X > DrawPanel.Size.Width || e.Y > DrawPanel.Size.Height)
             {
-                moving = false; movingFar = false;
+                StopMoving();
+            }
+            else if (selectedSpot != null)
+            {
+                positionMoving = new int[] { e.X, e.Y };
+                UpdateShadowPosition();
+                // CHECK IF HOVERING A PIECE
+                // IF SO, SHOW THAT PIECE'S POINTS
+                // IF THAT PIECE IS NOT SELECTED ** TO DO
             }
             else
             {
@@ -272,24 +333,9 @@ namespace Animator
                 {
                     movingFar = Math.Abs(originalMoving[0] - positionMoving[0]) > Constants.ClickPrecision
                         || Math.Abs(originalMoving[1] - positionMoving[1]) > Constants.ClickPrecision;
-                    if (movingFar)
-                    {
-                        shadow = new Piece(selected.Name)
-                        {
-                            R = selected.GetAngles()[0],
-                            T = selected.GetAngles()[1],
-                            S = selected.GetAngles()[2],
-                            SM = selected.GetSizeMod(),
-                            FillColour = new Color[] { Color.FromArgb(155, 163, 163, 194) },
-                            OutlineWidth = 0
-                        };
-                    }
+                    if (movingFar) { shadow = MakeShadow(); }
                 }
-            }
-            if (movingFar)
-            {
-                shadow.X = selected.GetCoords()[0] + positionMoving[0] - originalMoving[0];
-                shadow.Y = selected.GetCoords()[1] + positionMoving[1] - originalMoving[1];
+                if (movingFar) { UpdateShadowPosition(); }
             }
             DisplayDrawings();
         }
@@ -303,19 +349,29 @@ namespace Animator
         private void DrawPanel_MouseUp(object sender, MouseEventArgs e)
         {
             if (!moving) { return; }
-            if (movingFar)
+            if (selectedSpot != null)
+            {
+                // Connect Piece if new position is valid
+                int clickedIndex = Utilities.FindClickedSelection(piecesList, e.X, e.Y);
+                if (clickedIndex != -1 && piecesList[clickedIndex] != selected)
+                {
+                    Piece connectedTo = piecesList[clickedIndex];
+                    int joinIndex = FindClosestPoint(connectedTo, connectedTo.PiecePoints, e.X, e.Y);
+                    if (joinIndex != -1)
+                    {
+                        selected.AttachToPiece(connectedTo, connectedTo.PiecePoints[joinIndex],
+                            selectedSpot, true, -1);
+                        DeselectPiece();
+                        SelectPiece(connectedTo);
+                    }
+                }
+            }
+            else if (movingFar)
             {
                 selected.X += positionMoving[0] - originalMoving[0];
                 selected.Y += positionMoving[1] - originalMoving[1];
             }
-
-            // Update UI
-            RotationBar.Value = (int)selected.R;
-            TurnBar.Value = (int)selected.T;
-            SpinBar.Value = (int)selected.S;
-            SizeBar.Value = (int)selected.SM;
-
-            moving = false; movingFar = false;
+            StopMoving();
             DisplayDrawings();
         }
 
@@ -387,16 +443,18 @@ namespace Animator
         {
             g = DrawPanel.CreateGraphics();
             Utilities.DrawPieces(piecesList, g, DrawPanel);
-            if (movingFar)
+            // If moving a piece, draw the shadow
+            if (movingFar || selectedSpot != null)
             {
                 Utilities.DrawPiece(shadow, g, true);
             }
+            // If a piece is selected, show its PointSpots
             else if (moving == false && selected != null)
             {
-                foreach (PointSpot spot in selected.PiecePoints)
+                foreach (Join spot in selected.PiecePoints)
                 {
-                    double[] spotCoords = spot.GetCurrentPoints();
-                    Utilities.DrawPoint(spotCoords[0], spotCoords[1], Color.ForestGreen, g);
+                    double[] spotCoords = spot.GetCurrentPoints(selected.GetCoords()[0], selected.GetCoords()[1]);
+                    Utilities.DrawPoint(spotCoords[0], spotCoords[1], Constants.highlight, g);
                 }
             }
         }
@@ -465,11 +523,15 @@ namespace Animator
             DeselectPiece();
             selected = piece;
             selectedOC = selected.OutlineColour;
-            selected.OutlineColour = Color.Red;
+            selected.OutlineColour = Constants.select;
             RotationBar.Enabled = true;
             TurnBar.Enabled = true;
             SpinBar.Enabled = true;
             SizeBar.Enabled = true;
+            RotationBar.Value = (int)selected.R;
+            TurnBar.Value = (int)selected.T;
+            SpinBar.Value = (int)selected.S;
+            SizeBar.Value = (int)selected.SM;
         }
 
         /// <summary>
@@ -488,6 +550,70 @@ namespace Animator
             }
         }
 
+        /// <summary>
+        /// Resets all movement variables.
+        /// </summary>
+        private void StopMoving()
+        {
+            moving = false;
+            movingFar = false;
+            selectedSpot = null;
+        }
+
+        /// <summary>
+        /// Finds the closest spot to the click position.
+        /// </summary>
+        /// <param name="spots">Piece's PointSpots</param>
+        /// <param name="x">Click X coordinate</param>
+        /// <param name="y">Click y coordinate</param>
+        /// <returns>The closest point index or -1 if none in range</returns>
+        private int FindClosestPoint(Piece host, List<Join> spots, int x, int y)
+        {
+            foreach (int range in Constants.Ranges)
+            {
+                for (int index = 0; index < spots.Count(); index++)
+                {
+                    double[] coordinates = spots[index].GetCurrentPoints(host.GetCoords()[0], host.GetCoords()[1]);
+                    if (x >= coordinates[0] - range && x <= coordinates[0] + range
+                        && y >= coordinates[1] - range && y <= coordinates[1] + range)
+                    {
+                        return index;
+                    }
+                }
+            }
+            return -1;
+        }
+
+        /// <summary>
+        /// Makes a copy of the selected piece
+        /// in a dark colour.
+        /// </summary>
+        /// <returns></returns>
+        private Piece MakeShadow()
+        {
+            return new Piece(selected.Name)
+            {
+                X = selected.GetCoords()[0],
+                Y = selected.GetCoords()[1],
+                R = selected.GetAngles()[0],
+                T = selected.GetAngles()[1],
+                S = selected.GetAngles()[2],
+                SM = selected.GetSizeMod(),
+                FillColour = new Color[] { Constants.shadowShade },
+                OutlineWidth = 0
+            };
+        }
+
+        /// <summary>
+        /// Updates the shadow's position to reflect the
+        /// mouse's position.
+        /// </summary>
+        private void UpdateShadowPosition()
+        {
+            if (selected == null || positionMoving.Length == 0 || originalMoving.Length == 0) { return; }
+            shadow.X = selected.X + positionMoving[0] - originalMoving[0];
+            shadow.Y = selected.Y + positionMoving[1] - originalMoving[1];
+        }
 
 
 

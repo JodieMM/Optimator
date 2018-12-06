@@ -17,7 +17,7 @@ namespace Animator
 
         // Folders
         public static string PiecesFolder => "\\Pieces\\";
-        public static string PointsFolder => "\\Points\\";
+        public static string JoinsFolder => "\\Joins\\";
         public static string SetsFolder => "\\Sets\\";
         public static string ScenesFolder => "\\Scenes\\";
         public static string VideosFolder => "\\Videos\\";
@@ -46,7 +46,10 @@ namespace Animator
         public static string Txt => ".txt";
         public static string Png => ".png";
 
-        // Uncategorised Constants
+        // Colours
         public static Color[] randomColours = { Color.Blue, Color.Pink, Color.Green, Color.Purple, Color.Aqua, Color.Orange};
+        public static Color shadowShade = Color.DarkGray;   //new Color[] { Color.FromArgb(155, 163, 163, 194) }
+        public static Color highlight = Color.ForestGreen;
+        public static Color select = Color.Red;
     }
 }

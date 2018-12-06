@@ -51,8 +51,8 @@ namespace Animator
                 }
                 else
                 {
-                    WIP.AttachToPiece(PiecesList[int.Parse(dataSections[2])], new PointSpot(dataSections[3], PiecesList[int.Parse(dataSections[2])]),
-                        new PointSpot(dataSections[1], WIP), bool.Parse(dataSections[10]), double.Parse(dataSections[11]));
+                    WIP.AttachToPiece(PiecesList[int.Parse(dataSections[2])], new Join(dataSections[3], PiecesList[int.Parse(dataSections[2])]),
+                        new Join(dataSections[1], WIP), bool.Parse(dataSections[10]), double.Parse(dataSections[11]));
                     WIP.SetValues(double.Parse(dataSections[4]), double.Parse(dataSections[5]), double.Parse(dataSections[6]),
                         double.Parse(dataSections[7]), double.Parse(dataSections[8]), double.Parse(dataSections[9]));
                 }

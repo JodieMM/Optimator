@@ -11,7 +11,7 @@ namespace Animator
     /// 
     /// Author Jodie Muller
     /// </summary>
-    public class PointSpot
+    public class Join
     {
         #region Point Variables
         public string Name { get; set; }
@@ -28,11 +28,11 @@ namespace Animator
 
 
         /// <summary>
-        /// Point constructor for loading an existing point.
+        /// Join constructor for loading an existing join.
         /// </summary>
-        /// <param name="inName">Point to load</param>
-        /// <param name="owner">Piece point is in reference to</param>
-        public PointSpot(string inName, Piece owner)
+        /// <param name="inName">Join to load</param>
+        /// <param name="owner">Piece join is in reference to</param>
+        public Join(string inName, Piece owner)
         {
             Name = inName;
             host = owner;
@@ -40,9 +40,9 @@ namespace Animator
         }
 
         /// <summary>
-        /// Point constructor for creating a new point.
+        /// Join constructor for creating a new join.
         /// </summary>
-        public PointSpot(Piece owner)
+        public Join(Piece owner)
         {
             host = owner;
             Data = new List<string>();
@@ -56,12 +56,12 @@ namespace Animator
         // ----- GET FUNCTIONS -----
 
         /// <summary>
-        /// Returns the directory for the current piece.
+        /// Returns the directory for the current join.
         /// </summary>
         /// <returns>String file path</returns>
         private string GetFileDirectory()
         {
-            return Environment.CurrentDirectory + Constants.PointsFolder
+            return Environment.CurrentDirectory + Constants.JoinsFolder
                 + host.Name + "//" + Name + Constants.Txt;
         }
 
@@ -70,43 +70,43 @@ namespace Animator
         // ----- SAVE FUNCTIONS -----
 
         /// <summary>
-        /// Saves the current point spot to a file.
-        /// Used when creating the spot for the first time.
+        /// Saves the current join to a file.
+        /// Used when creating the join for the first time.
         /// </summary>
-        public void SavePointSpot(double[] middle)
+        public void SaveJoin(double[] middle)
         {
-            double XFlip = Utilities.FlipAroundCentre(middle[0], X);
-            double YFlip = Utilities.FlipAroundCentre(middle[1], Y);
-            double XRFlip = Utilities.FlipAroundCentre(middle[0], XRight);
-            double YDFlip = Utilities.FlipAroundCentre(middle[1], YDown);
+            X -= middle[0];
+            Y -= middle[1];
+            XRight -= middle[0];
+            YDown -= middle[1];
             Data = new List<string>
             {
                 MakeDataLine(0, 90, 0, 90, new double[] { X, Y }, new double[] { XRight, Y }, new double[] { X, YDown }),
-                MakeDataLine(90, 180, 0, 90, new double[] { XRight, Y }, new double[] { XFlip, Y }, new double[] { XRight, YDown }),
-                MakeDataLine(180, 270, 0, 90, new double[] { XFlip, Y }, new double[] { XRFlip, Y }, new double[] { XFlip, YDown }),
-                MakeDataLine(270, 360, 0, 90, new double[] { XRFlip, Y }, new double[] { X, Y }, new double[] { XRFlip, YDown }),
+                MakeDataLine(90, 180, 0, 90, new double[] { XRight, Y }, new double[] { -X, Y }, new double[] { XRight, YDown }),
+                MakeDataLine(180, 270, 0, 90, new double[] { -X, Y }, new double[] { -XRight, Y }, new double[] { -X, YDown }),
+                MakeDataLine(270, 360, 0, 90, new double[] { -XRight, Y }, new double[] { X, Y }, new double[] { -XRight, YDown }),
 
-                MakeDataLine(0, 90, 90, 180, new double[] { X, YDown }, new double[] { XRight, YDown }, new double[] { X, YFlip }),
-                MakeDataLine(90, 180, 90, 180, new double[] { XRight, YDown }, new double[] { XFlip, YDown }, new double[] { XRight, YFlip }),
-                MakeDataLine(180, 270, 90, 180, new double[] { XFlip, YDown }, new double[] { XRFlip, YDown }, new double[] { XFlip, YFlip }),
-                MakeDataLine(270, 360, 90, 180, new double[] { XRFlip, YDown }, new double[] { X, YDown }, new double[] { XRFlip, YFlip }),
+                MakeDataLine(0, 90, 90, 180, new double[] { X, YDown }, new double[] { XRight, YDown }, new double[] { X, -Y }),
+                MakeDataLine(90, 180, 90, 180, new double[] { XRight, YDown }, new double[] { -X, YDown }, new double[] { XRight, -Y }),
+                MakeDataLine(180, 270, 90, 180, new double[] { -X, YDown }, new double[] { -XRight, YDown }, new double[] { -X, -Y }),
+                MakeDataLine(270, 360, 90, 180, new double[] { -XRight, YDown }, new double[] { X, YDown }, new double[] { -XRight, -Y }),
 
-                MakeDataLine(0, 90, 180, 270, new double[] { X, YFlip }, new double[] { XRight, YFlip }, new double[] { X, YDFlip }),
-                MakeDataLine(90, 180, 180, 270, new double[] { XRight, YFlip }, new double[] { XFlip, YFlip }, new double[] { XRight, YDFlip }),
-                MakeDataLine(180, 270, 180, 270, new double[] { XFlip, YFlip }, new double[] { XRFlip, YFlip }, new double[] { XFlip, YDFlip }),
-                MakeDataLine(270, 360, 180, 270, new double[] { XRFlip, YFlip }, new double[] { X, YFlip }, new double[] { XRFlip, YDFlip }),
+                MakeDataLine(0, 90, 180, 270, new double[] { X, -Y }, new double[] { XRight, -Y }, new double[] { X, -YDown }),
+                MakeDataLine(90, 180, 180, 270, new double[] { XRight, -Y }, new double[] { -X, -Y }, new double[] { XRight, -YDown }),
+                MakeDataLine(180, 270, 180, 270, new double[] { -X, -Y }, new double[] { -XRight, -Y }, new double[] { -X, -YDown }),
+                MakeDataLine(270, 360, 180, 270, new double[] { -XRight, -Y }, new double[] { X, -Y }, new double[] { -XRight, -YDown }),
 
-                MakeDataLine(0, 90, 270, 360, new double[] { X, YDFlip }, new double[] { XRight, YDFlip }, new double[] { X, Y }),
-                MakeDataLine(90, 180, 270, 360, new double[] { XRight, YDFlip }, new double[] { XFlip, YDFlip }, new double[] { XRight, Y }),
-                MakeDataLine(180, 270, 270, 360, new double[] { XFlip, YDFlip }, new double[] { XRFlip, YDFlip }, new double[] { XFlip, Y }),
-                MakeDataLine(270, 360, 270, 360, new double[] { XRFlip, YDFlip }, new double[] { X, YDFlip }, new double[] { XRFlip, Y })
+                MakeDataLine(0, 90, 270, 360, new double[] { X, -YDown }, new double[] { XRight, -YDown }, new double[] { X, Y }),
+                MakeDataLine(90, 180, 270, 360, new double[] { XRight, -YDown }, new double[] { -X, -YDown }, new double[] { XRight, Y }),
+                MakeDataLine(180, 270, 270, 360, new double[] { -X, -YDown }, new double[] { -XRight, -YDown }, new double[] { -X, Y }),
+                MakeDataLine(270, 360, 270, 360, new double[] { -XRight, -YDown }, new double[] { X, -YDown }, new double[] { -XRight, Y })
             };
 
             Utilities.SaveData(GetFileDirectory(), Data);
         }
 
         /// <summary>
-        /// Converts the point data into the PointSpot file format.
+        /// Converts the join data into the join file format.
         /// </summary>
         /// <param name="rFrom">Starting rotation</param>
         /// <param name="rTo">Ending rotation</param>
@@ -134,16 +134,15 @@ namespace Animator
         // ----- FUNCTIONS -----
 
         /// <summary>
-        /// Gets the coordinates of the point based on the host Piece's angles
+        /// Gets the coordinates of the join based 
+        /// on the host Piece's angles.
         /// </summary>
         /// <returns></returns>
-        public double[] GetCurrentPoints()
+        public double[] GetCurrentPoints(double hostX, double hostY)
         {
             // Host Variables
-            double hostX = host.GetCoords()[0];
-            double hostY = host.GetCoords()[1];
             double[] hostAngles = host.GetAngles();
-            double[] middle = Utilities.FindMid(host.GetCurrentPoints(false));
+
             // Point Variables
             string[] dataValues = Data[Utilities.FindRow(hostAngles[0], hostAngles[1], Data, 0)].Split(Constants.Semi);
             double[] originals = new double[] { Convert.ToDouble(dataValues[2].Split(Constants.Comma)[0]),
@@ -158,14 +157,14 @@ namespace Animator
             // Check if at start cutoff of angle
             if (angles[0] == hostAngles[0] && angles[2] == hostAngles[1])
             {
-                return new double[] { hostX + originals[0] - middle[0], hostY + originals[1] - middle[1] };
+                return new double[] { hostX + originals[0], hostY + originals[1] };
             }
 
             // Calculate rotated/turned point
             double rMod = (hostAngles[0] - angles[0]) / (angles[1] - angles[0]);
             double tMod = (hostAngles[1] - angles[2]) / (angles[3] - angles[2]);
-            return new double[] { hostX + (originals[0] + (rotated - originals[0]) * rMod) - middle[0],
-                hostY + (originals[1] + (turned - originals[1]) * tMod) - middle[1] };
+            return new double[] { hostX + (originals[0] + (rotated - originals[0]) * rMod),
+                hostY + (originals[1] + (turned - originals[1]) * tMod) };
         }
     }
 }
