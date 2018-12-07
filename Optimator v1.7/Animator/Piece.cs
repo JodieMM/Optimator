@@ -31,7 +31,7 @@ namespace Animator
         public string ColourType { get; set; }                     // Solid/Gradient colour and direction
         public Color[] FillColour { get; set; }                    // Multiple colours for gradients
         public Color OutlineColour { get; set; }
-        public int OutlineWidth { get; set; }
+        public decimal OutlineWidth { get; set; }
         public string PieceDetails { get; set; }                   // Wind resistance and more
 
         // Sets
@@ -71,11 +71,12 @@ namespace Animator
         public Piece()
         {
             Name = Constants.WIPName;
-            ColourType = "fill";
+            ColourType = Constants.connectorOptions[0];
             FillColour = new Color[] { Constants.defaultFill };
             OutlineColour = Constants.defaultOutline;
-            OutlineWidth = 2;
-            PieceDetails = "wr100";
+            OutlineWidth = Constants.defaultOutlineWidth;
+            PieceDetails = Constants.defaultPieceDetails;
+            Data = new List<string>();
             UpdateDataInfoLine();
         }
 
@@ -277,7 +278,14 @@ namespace Animator
                 }
             }
             pieceInfo = pieceInfo.Remove(pieceInfo.Length - 1, 1) + ";" + OutlineWidth + ";" + PieceDetails;
-            Data[0] = pieceInfo;
+            if (Data.Count < 1)
+            {
+                Data.Add(pieceInfo);
+            }
+            else
+            {
+                Data[0] = pieceInfo;
+            }
         }
 
 

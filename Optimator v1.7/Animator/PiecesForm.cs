@@ -28,16 +28,16 @@ namespace Animator
         private List<double[]> oCoordsFull = new List<double[]>();
         private List<double[]> rCoordsFull = new List<double[]>();
         private List<double[]> tCoordsFull = new List<double[]>();
-        private List<string> joins = new List<string>();
+        private List<string> connectors = new List<string>();
         private List<string> solid = new List<string>();
         private List<string> joinsFull = new List<string>();
         private List<string> solidFull = new List<string>();
 
-        private int selectedIndex = 0;
+        private int selectedIndex = -1;
         private bool oMoving = false;
         private bool rMoving = false;
         private bool tMoving = false;
-        private int spotMoving = -1;
+        private int joinMoving = -1;
         private bool movingFar = false;
         private int[] originalMoving;
         private int[] positionMoving;
@@ -68,6 +68,10 @@ namespace Animator
             DrawDown.MouseDown += new MouseEventHandler(DrawDown_MouseDown);
             DrawDown.MouseUp += new MouseEventHandler(DrawDown_MouseUp);
             DrawDown.MouseMove += new MouseEventHandler(DrawDown_MouseMove);
+
+            FillBox.BackColor = Constants.defaultFill;
+            OutlineBox.BackColor = Constants.defaultOutline;
+            OutlineWidthBox.Value = Constants.defaultOutlineWidth;
         }
 
 
@@ -98,11 +102,12 @@ namespace Animator
                         string dataLine = WIP.Data[0];
                         WIP.Data.Clear();
                         WIP.Data.Add(dataLine);
-                        selectedIndex = 0;
+                        DeselectPoint();
                     }
                 }
                 else
                 {
+                    // Remove point or join
                     if (closestIndex < oCoords.Count)
                     {
                         // Remove selected point
@@ -112,7 +117,7 @@ namespace Animator
                         // Update Selected Index
                         if (selectedIndex >= closestIndex)
                         {
-                            selectedIndex = (selectedIndex - 1 < 0) ? 0 : selectedIndex - 1;
+                            SelectPoint((selectedIndex - 1 < 0) ? -1 : selectedIndex - 1);
                         }
                     }
                     else
@@ -123,28 +128,31 @@ namespace Animator
             }
             else if (PointBtn.Text == "Select")
             {
-                selectedIndex = (oCoords.Count() == 0) ? 0 : selectedIndex + 1;
-                oCoords.Insert(selectedIndex, new double[] { e.X, e.Y });
-                rCoords.Insert(selectedIndex, new double[] { e.X, e.Y });
-                tCoords.Insert(selectedIndex, new double[] { e.X, e.Y });
-                joins.Insert(selectedIndex, "line");
-                solid.Insert(selectedIndex, "s");
+                // Add Point
+                int ToSelect = (oCoords.Count() == 0) ? 0 : selectedIndex + 1;
+                oCoords.Insert(ToSelect, new double[] { e.X, e.Y });
+                rCoords.Insert(ToSelect, new double[] { e.X, e.Y });
+                tCoords.Insert(ToSelect, new double[] { e.X, e.Y });
+                connectors.Insert(ToSelect, "line");
+                solid.Insert(ToSelect, "s");
+                SelectPoint(ToSelect);
             }
             else
             {
+                // Select Point or Join
                 int closestIndex = Utilities.FindClosestIndex(CombineCoordTypes(oCoords, pointSpots, 0), e.X, e.Y);
                 if (closestIndex != -1)
                 {
                     if (closestIndex < oCoords.Count)
                     {
-                        selectedIndex = closestIndex;
+                        SelectPoint(closestIndex);
                         oMoving = true;
                         originalMoving = new int[] { (int)oCoords[closestIndex][0], (int)oCoords[closestIndex][1] };
                     }
                     else
                     {
-                        spotMoving = closestIndex - oCoords.Count;
-                        positionMoving = new int[] { (int)pointSpots[spotMoving].X, (int)pointSpots[spotMoving].Y };
+                        joinMoving = closestIndex - oCoords.Count;
+                        positionMoving = new int[] { (int)pointSpots[joinMoving].X, (int)pointSpots[joinMoving].Y };
                     }
                 }
             }
@@ -164,12 +172,12 @@ namespace Animator
                 rCoords[selectedIndex] = new double[] { e.X, e.Y };
                 tCoords[selectedIndex] = new double[] { e.X, e.Y };
             }
-            else if (spotMoving != -1)
+            else if (joinMoving != -1)
             {
-                pointSpots[spotMoving].X = e.X;
-                pointSpots[spotMoving].Y = e.Y;
-                pointSpots[spotMoving].XRight = e.X;
-                pointSpots[spotMoving].YDown = e.Y;
+                pointSpots[joinMoving].X = e.X;
+                pointSpots[joinMoving].Y = e.Y;
+                pointSpots[joinMoving].XRight = e.X;
+                pointSpots[joinMoving].YDown = e.Y;
             }
             StopMovement();
             DisplayDrawings();
@@ -197,7 +205,7 @@ namespace Animator
                 }
                 DisplayDrawings();
             }
-            else if (spotMoving != -1)
+            else if (joinMoving != -1)
             {
                 positionMoving = new int[] { e.X, e.Y };
                 DisplayDrawings();
@@ -212,10 +220,9 @@ namespace Animator
         private void DrawRight_MouseDown(object sender, MouseEventArgs e)
         {
             StopMovement();
-
-            int mouseX = e.X; int mouseY = e.Y;
             if (EraserBtn.Text == "Point")
             {
+                // Erase Rotated
                 DialogResult result = MessageBox.Show("Would you like to reset the rotated perspective?", "Reset Confirmation", MessageBoxButtons.YesNo);
                 if (result == DialogResult.Yes)
                 {
@@ -230,14 +237,16 @@ namespace Animator
                 {
                     if (closestIndex < rCoords.Count)
                     {
-                        selectedIndex = closestIndex;
+                        // Select a Point
+                        SelectPoint(closestIndex);
                         rMoving = true;
                         originalMoving = new int[] { (int)rCoords[closestIndex][0], (int)rCoords[closestIndex][1] };
                     }
                     else
                     {
-                        spotMoving = closestIndex - rCoords.Count;
-                        positionMoving = new int[] { (int)pointSpots[spotMoving].XRight, -1 };
+                        // Select a Join
+                        joinMoving = closestIndex - rCoords.Count;
+                        positionMoving = new int[] { (int)pointSpots[joinMoving].XRight, -1 };
                     }
                 }
             }
@@ -255,9 +264,9 @@ namespace Animator
             {
                 rCoords[selectedIndex] = new double[] { e.X, rCoords[selectedIndex][1] };
             }
-            else if (spotMoving != -1)
+            else if (joinMoving != -1)
             {
-                pointSpots[spotMoving].XRight = e.X;
+                pointSpots[joinMoving].XRight = e.X;
             }
             StopMovement();
             DisplayDrawings();
@@ -287,7 +296,7 @@ namespace Animator
                 }
                 DisplayDrawings();
             }
-            else if (spotMoving != -1)
+            else if (joinMoving != -1)
             {
                 positionMoving = new int[] { e.X, -1 };
                 DisplayDrawings();
@@ -302,10 +311,9 @@ namespace Animator
         private void DrawDown_MouseDown(object sender, MouseEventArgs e)
         {
             StopMovement();
-
-            int mouseX = e.X; int mouseY = e.Y;
             if (EraserBtn.Text == "Point")
             {
+                // Erase Turned
                 DialogResult result = MessageBox.Show("Would you like to reset the turned perspective?", "Reset Confirmation", MessageBoxButtons.YesNo);
                 if (result == DialogResult.Yes)
                 {
@@ -320,14 +328,16 @@ namespace Animator
                 {
                     if (closestIndex < tCoords.Count)
                     {
-                        selectedIndex = closestIndex;
+                        // Select a Point
+                        SelectPoint(closestIndex);
                         tMoving = true;
                         originalMoving = new int[] { (int)tCoords[closestIndex][0], (int)tCoords[closestIndex][1] };
                     }
                     else
                     {
-                        spotMoving = closestIndex - tCoords.Count;
-                        positionMoving = new int[] { -1, (int)pointSpots[spotMoving].YDown };
+                        // Select a Join
+                        joinMoving = closestIndex - tCoords.Count;
+                        positionMoving = new int[] { -1, (int)pointSpots[joinMoving].YDown };
                     }
                 }
             }
@@ -345,9 +355,9 @@ namespace Animator
             {
                 tCoords[selectedIndex] = new double[] { tCoords[selectedIndex][0], e.Y };
             }
-            else if (spotMoving != -1)
+            else if (joinMoving != -1)
             {
-                pointSpots[spotMoving].YDown = e.Y;
+                pointSpots[joinMoving].YDown = e.Y;
             }
             StopMovement();
             DisplayDrawings();
@@ -377,7 +387,7 @@ namespace Animator
                 }
                 DisplayDrawings();
             }
-            else if (spotMoving != -1)
+            else if (joinMoving != -1)
             {
                 positionMoving = new int[] { -1, e.Y };
                 DisplayDrawings();
@@ -393,7 +403,7 @@ namespace Animator
             rMoving = false;
             tMoving = false;
             movingFar = false;
-            spotMoving = -1;
+            joinMoving = -1;
         }
 
         #endregion
@@ -516,27 +526,77 @@ namespace Animator
         /// <param name="e"></param>
         private void FillBox_Click(object sender, EventArgs e)
         {
-
+            ColorDialog MyDialog = new ColorDialog
+            {
+                Color = FillBox.BackColor,
+                FullOpen = true
+            };
+            if (MyDialog.ShowDialog() == DialogResult.OK)
+            {
+                FillBox.BackColor = MyDialog.Color;
+                WIP.FillColour = new Color[] { MyDialog.Color };
+                DisplayDrawings();
+            }
         }
 
+        /// <summary>
+        /// Changes the outline colour of the shape.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OutlineBox_Click(object sender, EventArgs e)
         {
-
+            ColorDialog MyDialog = new ColorDialog
+            {
+                Color = OutlineBox.BackColor,
+                FullOpen = true
+            };
+            if (MyDialog.ShowDialog() == DialogResult.OK)
+            {
+                OutlineBox.BackColor = MyDialog.Color;
+                WIP.OutlineColour = MyDialog.Color;
+                DisplayDrawings();
+            }
         }
 
+        /// <summary>
+        /// Changes the outline width of the piece.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OutlineWidthBox_ValueChanged(object sender, EventArgs e)
         {
-
+            WIP.OutlineWidth = OutlineWidthBox.Value;
+            DisplayDrawings();
         }
 
-        private void JoinsOptions_SelectedIndexChanged(object sender, EventArgs e)
+        /// <summary>
+        /// Changes the join at the selected point.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ConnectorOptions_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            if (selectedIndex != -1)
+            {
+                connectors[selectedIndex] = Constants.connectorOptions[ConnectorOptions.SelectedIndex];
+                DisplayDrawings();
+            }
         }
 
+        /// <summary>
+        /// Changes whether the selected point is
+        /// solid or floating.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FixedCb_CheckedChanged(object sender, EventArgs e)
         {
-
+            if (selectedIndex != -1)
+            {
+                solid[selectedIndex] = (FixedCb.Checked) ? "s" : "f";
+                DisplayDrawings();
+            }
         }
 
 
@@ -581,7 +641,7 @@ namespace Animator
         private void DisplayDrawings()
         {
             // Prepare Piece
-            ConvertVariablesToData(rotationFrom, rotationTo, turnFrom, turnTo, oCoords, rCoords, tCoords, joins, solid);
+            ConvertVariablesToData(rotationFrom, rotationTo, turnFrom, turnTo, oCoords, rCoords, tCoords, connectors, solid);
 
             // Prepare Boards
             DrawBase.Refresh();
@@ -600,7 +660,7 @@ namespace Animator
             {
                 Utilities.DrawPoint(spot.X, spot.Y, spot.FillColour, original);
             }
-            if (oMoving && movingFar || (spotMoving != -1 && positionMoving[0] != -1 && positionMoving[1] != -1))
+            if (oMoving && movingFar || (joinMoving != -1 && positionMoving[0] != -1 && positionMoving[1] != -1))
             {
                 Utilities.DrawPoint(positionMoving[0], positionMoving[1], Constants.shadowShade, original);
             }
@@ -618,11 +678,11 @@ namespace Animator
             {
                 Utilities.DrawPoint(positionMoving[0], positionMoving[1], Constants.shadowShade, rotated);
             }
-            else if (spotMoving != -1)
+            else if (joinMoving != -1)
             {
                 if (positionMoving[1] == -1)
                 {
-                    Utilities.DrawPoint(positionMoving[0], pointSpots[spotMoving].Y, Constants.shadowShade, rotated);
+                    Utilities.DrawPoint(positionMoving[0], pointSpots[joinMoving].Y, Constants.shadowShade, rotated);
                 }
                 else if (positionMoving[0] != -1)
                 {
@@ -643,11 +703,11 @@ namespace Animator
             {
                 Utilities.DrawPoint(positionMoving[0], positionMoving[1], Constants.shadowShade, turned);
             }
-            else if (spotMoving != -1)
+            else if (joinMoving != -1)
             {
                 if (positionMoving[0] == -1)
                 {
-                    Utilities.DrawPoint(pointSpots[spotMoving].X, positionMoving[1], Constants.shadowShade, turned);
+                    Utilities.DrawPoint(pointSpots[joinMoving].X, positionMoving[1], Constants.shadowShade, turned);
                 }
                 else if (positionMoving[1] != -1)
                 {
@@ -671,7 +731,7 @@ namespace Animator
             // Update coords to include matching points to the right/left
             oCoordsFull.Clear(); tCoordsFull.Clear(); rCoordsFull.Clear(); joinsFull.Clear(); solidFull.Clear();
             oCoordsFull.AddRange(oCoords); tCoordsFull.AddRange(tCoords); rCoordsFull.AddRange(rCoords);
-            joinsFull.AddRange(joins); solidFull.AddRange(solid);
+            joinsFull.AddRange(connectors); solidFull.AddRange(solid);
             Utilities.CoordsOnAllSides(oCoordsFull, rCoordsFull, tCoordsFull, joinsFull, solidFull);
 
             // Get 4th (Combo R and T)
@@ -887,139 +947,38 @@ namespace Animator
             return searching;
         }
 
-
-
-        // ----- TO INCLUDE/ REDO -----
-        #region WIP
-        /*
-        private void AlphaUpDown_ValueChanged(object sender, EventArgs e)
+        /// <summary>
+        /// Selects a point and updates the form to
+        /// display relevant values.
+        /// </summary>
+        /// <param name="index"></param>
+        private void SelectPoint(int index)
         {
-            UpdateColours();
-        }
-        private void RedUpDown_ValueChanged(object sender, EventArgs e)
-        {
-            UpdateColours();
-        }
-        private void GreenUpDown_ValueChanged(object sender, EventArgs e)
-        {
-            UpdateColours();
-        }
-        private void BlueUpDown_ValueChanged(object sender, EventArgs e)
-        {
-            UpdateColours();
-        }
-        private void UpdateColours()
-        {
-            if (OutlineRb.Checked == true)
+            if (index < 0)
             {
-                WIP.SetOutlineColour(Color.FromArgb((int)AlphaUpDown.Value, (int)RedUpDown.Value, (int)GreenUpDown.Value, (int)BlueUpDown.Value));
+                DeselectPoint();
             }
             else
             {
-                // ALLOW FOR GRADIENTS      ** TO DO **
-                WIP.SetFillColour(new Color[] { Color.FromArgb((int)AlphaUpDown.Value, (int)RedUpDown.Value, (int)GreenUpDown.Value, (int)BlueUpDown.Value) });
+                selectedIndex = index;
+                ConnectorOptions.Enabled = true;
+                ConnectorOptions.SelectedIndex = Array.IndexOf(Constants.connectorOptions, connectors[selectedIndex]);
+                ShowFixedBtn.Enabled = true;
+                FixedCb.Enabled = true;
+                FixedCb.Checked = solid[selectedIndex] == "s";
             }
-            DrawPoints();
         }
 
-        private void FillRb_CheckedChanged(object sender, EventArgs e)
+        /// <summary>
+        /// Deselects a point and disables features
+        /// that require a point be selected.
+        /// </summary>
+        private void DeselectPoint()
         {
-            if (FillRb.Checked == true)
-            {
-                int[] coloursHold = new int[] { WIP.GetFillColour()[0].A, WIP.GetFillColour()[0].R, WIP.GetFillColour()[0].G, WIP.GetFillColour()[0].B };
-                AlphaUpDown.Value = coloursHold[0];
-                RedUpDown.Value = coloursHold[1];
-                GreenUpDown.Value = coloursHold[2];
-                BlueUpDown.Value = coloursHold[3];
-                label8.ForeColor = Color.Black;
-                label10.ForeColor = Color.Black;
-                midFillCb.ForeColor = Color.Black;
-                midFillCb.Enabled = true;
-                numColUpDown.Enabled = true;
-                gradAngleUpDown.Enabled = true;
-            }
-            DrawPoints();
+            selectedIndex = -1;
+            ConnectorOptions.Enabled = false;
+            ShowFixedBtn.Enabled = false;
+            FixedCb.Enabled = false;
         }
-
-        private void OutlineRb_CheckedChanged(object sender, EventArgs e)
-        {
-            if (OutlineRb.Checked == true)
-            {
-                int[] coloursHold = new int[] { WIP.GetOutlineColour().A, WIP.GetOutlineColour().R, WIP.GetOutlineColour().G, WIP.GetOutlineColour().B };
-                AlphaUpDown.Value = coloursHold[0];
-                RedUpDown.Value = coloursHold[1];
-                GreenUpDown.Value = coloursHold[2];
-                BlueUpDown.Value = coloursHold[3];
-                label8.ForeColor = Color.DimGray;
-                label10.ForeColor = Color.DimGray;
-                midFillCb.ForeColor = Color.DimGray;
-                midFillCb.Enabled = false;
-                numColUpDown.Enabled = false;
-                gradAngleUpDown.Enabled = false;
-            }
-            DrawPoints();
-        }
-
-        private void Joins_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (PointsLb.SelectedIndex != -1)
-            {
-                joins[PointsLb.SelectedIndex] = (string)JoinOptions.SelectedItem;
-            }
-        }
-
-        private void FixedCb_CheckedChanged(object sender, EventArgs e)
-        {
-            if (PointsLb.SelectedIndex != -1)
-            {
-                solid[PointsLb.SelectedIndex] = (FixedCb.Checked == true) ? "s" : "f";
-            }
-
-        }
-
-        private void OutlineWidthUpDown_ValueChanged(object sender, EventArgs e)
-        {
-            WIP.SetOutlineWidth((int)OutlineWidthUpDown.Value);
-            DrawPoints();
-        }
-
-        private void sketchBtn_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                sketch.Add(new Piece(loadTb.Text));
-                if (pointCb.Checked == true)
-                {
-                    sketchBtn.Enabled = false;
-                }
-                DrawPoints();
-            }
-            catch (System.IO.FileNotFoundException)        // ** ADD IN ERROR IF SET CHOSEN **
-            {
-                MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
-            }
-        }
-
-        private void loadBtn_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                new Piece(loadTb.Text);
-                PiecesForm_LoadMenu loadForm = new PiecesForm_LoadMenu(this);
-                //loadForm.Size = new System.Drawing.Size(875, 750);
-                loadForm.Show();
-            }
-            catch (System.IO.FileNotFoundException) // ** SET ERROR **
-            {
-                MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
-            }
-        }
-
-        private void wrUpDown_ValueChanged(object sender, EventArgs e)
-        {
-            WIP.SetPieceDetails("wr" + wrUpDown.Value);
-        }
-        */
-        #endregion
     }
 }

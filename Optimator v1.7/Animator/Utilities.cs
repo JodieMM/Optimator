@@ -99,7 +99,7 @@ namespace Animator
             if (FindRow(piece.GetAngles()[0], piece.GetAngles()[1], piece.Data, 1) != -1)
             {
                 // Prepare for drawing
-                Pen pen = new Pen(piece.OutlineColour, piece.OutlineWidth);
+                Pen pen = new Pen(piece.OutlineColour, (float)piece.OutlineWidth);
                 SolidBrush fill = new SolidBrush(piece.FillColour[0]);                          // ** NEEDS UPDATING WITH GRADIENTS
                 List<double[]> sketchCoords = piece.GetCurrentPoints(recentre);
                 List<string> joiners = piece.GetLineArray(piece.GetAngles()[0], piece.GetAngles()[1]);
