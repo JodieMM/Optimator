@@ -1,2 +1,0 @@
-branch;500;250;15;0;0;100
-branch2;branchPoint2;0;branchPoint;0;0;0;0;0;38;True;-1

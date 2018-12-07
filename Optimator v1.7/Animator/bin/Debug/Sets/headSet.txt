@@ -1,2 +1,0 @@
-head;500;250;0;0;0;100
-face;facePoint;0;headPoint;504;268;0;0;0;100
