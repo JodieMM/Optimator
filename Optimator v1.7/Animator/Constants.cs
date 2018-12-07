@@ -44,5 +44,7 @@ namespace Animator
         public static Color shadowShade = Color.DarkGray;
         public static Color highlight = Color.ForestGreen;
         public static Color select = Color.Red;
+        public static Color defaultFill = Color.FromArgb(255, 204, 204, 255);
+        public static Color defaultOutline = Color.FromArgb(255, 204, 240, 255);
     }
 }

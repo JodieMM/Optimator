@@ -400,7 +400,7 @@ namespace Animator
 
 
 
-        // ----- SHAPE TAB -----
+        // ----- OPTION BUTTONS -----
 
         /// <summary>
         /// Changes between placing points and selecting them
@@ -503,6 +503,40 @@ namespace Animator
             {
                 MessageBox.Show("No data entered for point", "Missing Data", MessageBoxButtons.OK);
             }
+        }
+
+
+
+        // ----- SHAPE TAB -----
+
+        /// <summary>
+        /// Changes the fill colour of the shape.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void FillBox_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void OutlineBox_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void OutlineWidthBox_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void JoinsOptions_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void FixedCb_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
 
 

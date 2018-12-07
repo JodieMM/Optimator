@@ -44,12 +44,27 @@
             this.button2 = new System.Windows.Forms.Button();
             this.ExitBtn = new System.Windows.Forms.Button();
             this.TestingButton = new System.Windows.Forms.Button();
+            this.ColoursLbl = new System.Windows.Forms.Label();
+            this.FillLbl = new System.Windows.Forms.Label();
+            this.OutlineLbl = new System.Windows.Forms.Label();
+            this.FillBox = new System.Windows.Forms.PictureBox();
+            this.OutlineBox = new System.Windows.Forms.PictureBox();
+            this.JoinsOptions = new System.Windows.Forms.ComboBox();
+            this.JoinsLbl = new System.Windows.Forms.Label();
+            this.FixedCb = new System.Windows.Forms.CheckBox();
+            this.PointLbl = new System.Windows.Forms.Label();
+            this.PieceLbl = new System.Windows.Forms.Label();
+            this.OutlineWidthBox = new System.Windows.Forms.NumericUpDown();
+            this.OutlineWLbl = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.DrawBase)).BeginInit();
             this.OptionsMenu.SuspendLayout();
             this.ShapeTab.SuspendLayout();
             this.SetsTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DrawDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawRight)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.FillBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.OutlineBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.OutlineWidthBox)).BeginInit();
             this.SuspendLayout();
             // 
             // DrawBase
@@ -78,6 +93,18 @@
             // ShapeTab
             // 
             this.ShapeTab.BackColor = System.Drawing.Color.Azure;
+            this.ShapeTab.Controls.Add(this.OutlineWLbl);
+            this.ShapeTab.Controls.Add(this.OutlineWidthBox);
+            this.ShapeTab.Controls.Add(this.PieceLbl);
+            this.ShapeTab.Controls.Add(this.PointLbl);
+            this.ShapeTab.Controls.Add(this.FixedCb);
+            this.ShapeTab.Controls.Add(this.JoinsLbl);
+            this.ShapeTab.Controls.Add(this.JoinsOptions);
+            this.ShapeTab.Controls.Add(this.OutlineBox);
+            this.ShapeTab.Controls.Add(this.FillBox);
+            this.ShapeTab.Controls.Add(this.OutlineLbl);
+            this.ShapeTab.Controls.Add(this.FillLbl);
+            this.ShapeTab.Controls.Add(this.ColoursLbl);
             this.ShapeTab.Controls.Add(this.NameTb);
             this.ShapeTab.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ShapeTab.Location = new System.Drawing.Point(4, 27);
@@ -252,6 +279,146 @@
             this.TestingButton.UseVisualStyleBackColor = false;
             this.TestingButton.Visible = false;
             // 
+            // ColoursLbl
+            // 
+            this.ColoursLbl.AutoSize = true;
+            this.ColoursLbl.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ColoursLbl.Location = new System.Drawing.Point(11, 107);
+            this.ColoursLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.ColoursLbl.Name = "ColoursLbl";
+            this.ColoursLbl.Size = new System.Drawing.Size(71, 23);
+            this.ColoursLbl.TabIndex = 92;
+            this.ColoursLbl.Text = "Colours";
+            // 
+            // FillLbl
+            // 
+            this.FillLbl.AutoSize = true;
+            this.FillLbl.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FillLbl.Location = new System.Drawing.Point(11, 143);
+            this.FillLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.FillLbl.Name = "FillLbl";
+            this.FillLbl.Size = new System.Drawing.Size(29, 19);
+            this.FillLbl.TabIndex = 111;
+            this.FillLbl.Text = "Fill";
+            // 
+            // OutlineLbl
+            // 
+            this.OutlineLbl.AutoSize = true;
+            this.OutlineLbl.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.OutlineLbl.Location = new System.Drawing.Point(11, 184);
+            this.OutlineLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.OutlineLbl.Name = "OutlineLbl";
+            this.OutlineLbl.Size = new System.Drawing.Size(60, 19);
+            this.OutlineLbl.TabIndex = 112;
+            this.OutlineLbl.Text = "Outline";
+            // 
+            // FillBox
+            // 
+            this.FillBox.BackColor = System.Drawing.Color.White;
+            this.FillBox.Location = new System.Drawing.Point(121, 143);
+            this.FillBox.Name = "FillBox";
+            this.FillBox.Size = new System.Drawing.Size(257, 30);
+            this.FillBox.TabIndex = 113;
+            this.FillBox.TabStop = false;
+            this.FillBox.Click += new System.EventHandler(this.FillBox_Click);
+            // 
+            // OutlineBox
+            // 
+            this.OutlineBox.BackColor = System.Drawing.Color.White;
+            this.OutlineBox.Location = new System.Drawing.Point(121, 184);
+            this.OutlineBox.Name = "OutlineBox";
+            this.OutlineBox.Size = new System.Drawing.Size(257, 30);
+            this.OutlineBox.TabIndex = 114;
+            this.OutlineBox.TabStop = false;
+            this.OutlineBox.Click += new System.EventHandler(this.OutlineBox_Click);
+            // 
+            // JoinsOptions
+            // 
+            this.JoinsOptions.FormattingEnabled = true;
+            this.JoinsOptions.Items.AddRange(new object[] {
+            "Line",
+            "Blank"});
+            this.JoinsOptions.Location = new System.Drawing.Point(121, 372);
+            this.JoinsOptions.Name = "JoinsOptions";
+            this.JoinsOptions.Size = new System.Drawing.Size(257, 27);
+            this.JoinsOptions.TabIndex = 115;
+            this.JoinsOptions.SelectedIndexChanged += new System.EventHandler(this.JoinsOptions_SelectedIndexChanged);
+            // 
+            // JoinsLbl
+            // 
+            this.JoinsLbl.AutoSize = true;
+            this.JoinsLbl.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.JoinsLbl.Location = new System.Drawing.Point(11, 372);
+            this.JoinsLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.JoinsLbl.Name = "JoinsLbl";
+            this.JoinsLbl.Size = new System.Drawing.Size(51, 23);
+            this.JoinsLbl.TabIndex = 116;
+            this.JoinsLbl.Text = "Joins";
+            // 
+            // FixedCb
+            // 
+            this.FixedCb.AutoSize = true;
+            this.FixedCb.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.FixedCb.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FixedCb.Location = new System.Drawing.Point(10, 427);
+            this.FixedCb.Name = "FixedCb";
+            this.FixedCb.Size = new System.Drawing.Size(73, 27);
+            this.FixedCb.TabIndex = 117;
+            this.FixedCb.Text = "Fixed";
+            this.FixedCb.UseVisualStyleBackColor = true;
+            this.FixedCb.CheckedChanged += new System.EventHandler(this.FixedCb_CheckedChanged);
+            // 
+            // PointLbl
+            // 
+            this.PointLbl.AutoSize = true;
+            this.PointLbl.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PointLbl.Location = new System.Drawing.Point(135, 333);
+            this.PointLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.PointLbl.Name = "PointLbl";
+            this.PointLbl.Size = new System.Drawing.Size(123, 23);
+            this.PointLbl.TabIndex = 118;
+            this.PointLbl.Text = "Point Based";
+            // 
+            // PieceLbl
+            // 
+            this.PieceLbl.AutoSize = true;
+            this.PieceLbl.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PieceLbl.Location = new System.Drawing.Point(135, 70);
+            this.PieceLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.PieceLbl.Name = "PieceLbl";
+            this.PieceLbl.Size = new System.Drawing.Size(123, 23);
+            this.PieceLbl.TabIndex = 119;
+            this.PieceLbl.Text = "Piece Based";
+            // 
+            // OutlineWidthBox
+            // 
+            this.OutlineWidthBox.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            65536});
+            this.OutlineWidthBox.Location = new System.Drawing.Point(163, 248);
+            this.OutlineWidthBox.Name = "OutlineWidthBox";
+            this.OutlineWidthBox.Size = new System.Drawing.Size(215, 27);
+            this.OutlineWidthBox.TabIndex = 120;
+            this.OutlineWidthBox.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.OutlineWidthBox.ValueChanged += new System.EventHandler(this.OutlineWidthBox_ValueChanged);
+            // 
+            // OutlineWLbl
+            // 
+            this.OutlineWLbl.AutoSize = true;
+            this.OutlineWLbl.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.OutlineWLbl.Location = new System.Drawing.Point(11, 247);
+            this.OutlineWLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.OutlineWLbl.Name = "OutlineWLbl";
+            this.OutlineWLbl.Size = new System.Drawing.Size(124, 23);
+            this.OutlineWLbl.TabIndex = 121;
+            this.OutlineWLbl.Text = "Outline Width";
+            // 
             // PiecesForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -281,6 +448,9 @@
             this.SetsTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.DrawDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawRight)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.FillBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.OutlineBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.OutlineWidthBox)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -303,5 +473,17 @@
         private System.Windows.Forms.Button TestingButton;
         private System.Windows.Forms.TabPage SetsTab;
         private System.Windows.Forms.Button AddPointBtn;
+        private System.Windows.Forms.Label ColoursLbl;
+        private System.Windows.Forms.Label FillLbl;
+        private System.Windows.Forms.PictureBox OutlineBox;
+        private System.Windows.Forms.PictureBox FillBox;
+        private System.Windows.Forms.Label OutlineLbl;
+        private System.Windows.Forms.Label PieceLbl;
+        private System.Windows.Forms.Label PointLbl;
+        private System.Windows.Forms.CheckBox FixedCb;
+        private System.Windows.Forms.Label JoinsLbl;
+        private System.Windows.Forms.ComboBox JoinsOptions;
+        private System.Windows.Forms.Label OutlineWLbl;
+        private System.Windows.Forms.NumericUpDown OutlineWidthBox;
     }
 }

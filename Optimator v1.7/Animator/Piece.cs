@@ -72,8 +72,8 @@ namespace Animator
         {
             Name = Constants.WIPName;
             ColourType = "fill";
-            FillColour = new Color[] { Color.FromArgb(255, 204, 204, 255) };
-            OutlineColour = Color.FromArgb(255, 204, 240, 255);
+            FillColour = new Color[] { Constants.defaultFill };
+            OutlineColour = Constants.defaultOutline;
             OutlineWidth = 2;
             PieceDetails = "wr100";
             UpdateDataInfoLine();
