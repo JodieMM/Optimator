@@ -747,36 +747,6 @@ namespace Animator
         }
 
         /// <summary>
-        /// Finds the top piece clicked from the list.
-        /// </summary>
-        /// <param name="piecesList">The list of pieces that could be clicked</param>
-        /// <param name="x">The x coordinate of the click</param>
-        /// <param name="y">The y coordinate of the click</param>
-        /// <param name="selectedIndex">An index that should be ignored</param>
-        /// <returns>The index of the piece clicked, or negative one if none selected</returns>
-        public static int FindClickedSelection(List<Piece> piecesList, int x, int y, int selectedIndex)
-        {
-            for (int index = piecesList.Count - 1; index >= 0; index--)
-            {
-                if (index != selectedIndex)
-                {
-                    List<double[]> coords = piecesList[index].GetCurrentPoints(true);
-                    List<int[]> contents = FindPieceSpace(FindPieceLines(coords,
-                        piecesList[index].GetLineArray(piecesList[index].R, piecesList[index].T)));
-
-                    foreach (int[] dot in contents)
-                    {
-                        if (dot[0] == x && dot[1] == y)
-                        {
-                            return index;
-                        }
-                    }
-                }
-            }
-            return -1;
-        }
-
-        /// <summary>
         /// Finds the closest coordinate from the lists.
         /// If the index is above the coords length, returned index
         /// is for the points list with index result - coords.Count.

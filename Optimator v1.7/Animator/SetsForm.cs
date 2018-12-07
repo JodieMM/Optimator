@@ -23,10 +23,12 @@ namespace Animator
         private Join selectedSpot = null;
         private Color selectedOC;
         private Piece shadow = null;
+
         private bool moving = false;
         private bool movingFar = false;
         private int[] originalMoving;
         private int[] positionMoving;
+        private int[] currentClosestPoint;
         #endregion
 
 
@@ -278,7 +280,7 @@ namespace Animator
         private void DrawPanel_MouseDown(object sender, MouseEventArgs e)
         {
             int selectedIndex = -1;
-            if (selected != null) { selectedIndex = FindClosestPoint(selected, selected.PiecePoints, e.X, e.Y); }
+            if (selected != null) { selectedIndex = FindClosestPoint(selected, e.X, e.Y); }
             if (selectedIndex != -1)
             {
                 // Move Selected's Join
@@ -286,6 +288,7 @@ namespace Animator
                 moving = true;
                 shadow = MakeShadow();
                 originalMoving = new int[] { e.X, e.Y };
+                currentClosestPoint = FindClosestPoint(piecesList, e.X, e.Y, piecesList.IndexOf(selected));
             }
             else
             {
@@ -314,14 +317,14 @@ namespace Animator
             {
                 StopMoving();
             }
+            // Move Join
             else if (selectedSpot != null)
             {
                 positionMoving = new int[] { e.X, e.Y };
                 UpdateShadowPosition();
-                // CHECK IF HOVERING A PIECE
-                // IF SO, SHOW THAT PIECE'S POINTS
-                // IF THAT PIECE IS NOT SELECTED ** TO DO
+                currentClosestPoint = FindClosestPoint(piecesList, e.X, e.Y, piecesList.IndexOf(selected));
             }
+            // Move Point
             else
             {
                 positionMoving = new int[] { e.X, e.Y };
@@ -352,7 +355,7 @@ namespace Animator
                 if (clickedIndex != -1 && piecesList[clickedIndex] != selected)
                 {
                     Piece connectedTo = piecesList[clickedIndex];
-                    int joinIndex = FindClosestPoint(connectedTo, connectedTo.PiecePoints, e.X, e.Y);
+                    int joinIndex = FindClosestPoint(connectedTo, e.X, e.Y);
                     if (joinIndex != -1)
                     {
                         selected.AttachToPiece(connectedTo, connectedTo.PiecePoints[joinIndex],
@@ -443,6 +446,25 @@ namespace Animator
             if (movingFar || selectedSpot != null)
             {
                 Utilities.DrawPiece(shadow, g, true);
+                // Draw Potential Joins
+                if (selectedSpot != null)
+                {
+                    foreach (Piece piece in piecesList)
+                    {
+                        foreach (Join spot in piece.PiecePoints)
+                        {
+                            double[] spotCoords = spot.GetCurrentPoints(piece.GetCoords()[0], piece.GetCoords()[1]);
+                            Utilities.DrawPoint(spotCoords[0], spotCoords[1], Constants.highlight, g);
+                        }
+                    }
+                    if (currentClosestPoint[0] != -1)
+                    {
+                        Piece host = piecesList[currentClosestPoint[0]];
+                        Join join = host.PiecePoints[currentClosestPoint[1]];
+                        double[] joinCoords = join.GetCurrentPoints(host.GetCoords()[0], host.GetCoords()[1]);
+                        Utilities.DrawPoint(joinCoords[0], joinCoords[1], Constants.select, g);
+                    }
+                }
             }
             // If a piece is selected, show its PointSpots
             else if (moving == false && selected != null)
@@ -453,6 +475,7 @@ namespace Animator
                     Utilities.DrawPoint(spotCoords[0], spotCoords[1], Constants.highlight, g);
                 }
             }
+            
         }
 
         /// <summary>
@@ -559,12 +582,46 @@ namespace Animator
         /// <summary>
         /// Finds the closest spot to the click position.
         /// </summary>
-        /// <param name="spots">Piece's PointSpots</param>
+        /// <param name="hosts">List of pieces to search the joins of</param>
+        /// <param name="x">Click X coordinate</param>
+        /// <param name="y">Click y coordinate</param>
+        /// <param name="ignoreIndex">Piece index to ignore, -1 if none</param>
+        /// <returns>The closest point in [piece index, join index] form or -1 if none found</returns>
+        private int[] FindClosestPoint(List<Piece> hosts, int x, int y, int ignoreIndex)
+        {
+            foreach (int range in Constants.Ranges)
+            {
+                for (int hostIndex = 0; hostIndex < hosts.Count; hostIndex++)
+                {
+                    if (hostIndex != ignoreIndex)
+                    {
+                        Piece host = hosts[hostIndex];
+                        List<Join> spots = host.PiecePoints;
+                        for (int index = 0; index < spots.Count(); index++)
+                        {
+                            double[] coordinates = spots[index].GetCurrentPoints(host.GetCoords()[0], host.GetCoords()[1]);
+                            if (x >= coordinates[0] - range && x <= coordinates[0] + range
+                                && y >= coordinates[1] - range && y <= coordinates[1] + range)
+                            {
+                                return new int[] { hostIndex, index };
+                            }
+                        }
+                    }
+                }
+            }
+            return new int[] { -1 };
+        }
+
+        /// <summary>
+        /// Finds the closest spot to the click position.
+        /// </summary>
+        /// <param name="host">Pieces to search the joins of</param>
         /// <param name="x">Click X coordinate</param>
         /// <param name="y">Click y coordinate</param>
         /// <returns>The closest point index or -1 if none in range</returns>
-        private int FindClosestPoint(Piece host, List<Join> spots, int x, int y)
+        private int FindClosestPoint(Piece host, int x, int y)
         {
+            List<Join> spots = host.PiecePoints;
             foreach (int range in Constants.Ranges)
             {
                 for (int index = 0; index < spots.Count(); index++)
