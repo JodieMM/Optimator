@@ -71,7 +71,7 @@ namespace Animator
         public Piece()
         {
             Name = Constants.WIPName;
-            ColourType = Constants.connectorOptions[0];
+            ColourType = Constants.fillOptions[0];
             FillColour = new Color[] { Constants.defaultFill };
             OutlineColour = Constants.defaultOutline;
             OutlineWidth = Constants.defaultOutlineWidth;

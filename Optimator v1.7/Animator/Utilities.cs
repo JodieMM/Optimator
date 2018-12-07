@@ -102,7 +102,7 @@ namespace Animator
                 Pen pen = new Pen(piece.OutlineColour, (float)piece.OutlineWidth);
                 SolidBrush fill = new SolidBrush(piece.FillColour[0]);                          // ** NEEDS UPDATING WITH GRADIENTS
                 List<double[]> sketchCoords = piece.GetCurrentPoints(recentre);
-                List<string> joiners = piece.GetLineArray(piece.GetAngles()[0], piece.GetAngles()[1]);
+                List<string> connectors = piece.GetLineArray(piece.GetAngles()[0], piece.GetAngles()[1]);
                 int numCoords = sketchCoords.Count;
 
                 // Fill Shape
@@ -127,29 +127,32 @@ namespace Animator
                 // Draw Connecting Lines
                 for (int pointIndex = 0; pointIndex < numCoords && numCoords > 1 && piece.OutlineWidth > 0; pointIndex++)
                 {
-                    Point start; Point end;
-                    // Draw Line Between Final Point and First Point
-                    if (pointIndex == numCoords - 1)
+                    if (connectors[pointIndex] != Constants.connectorOptions[1])
                     {
-                        start = new Point(Convert.ToInt32(sketchCoords[0][0]), Convert.ToInt32(sketchCoords[0][1]));
-                        end = new Point(Convert.ToInt32(sketchCoords[numCoords - 1][0]), Convert.ToInt32(sketchCoords[numCoords - 1][1]));
-                    }
-                    // Draw Remaining Lines
-                    else
-                    {
-                        start = new Point(Convert.ToInt32(sketchCoords[pointIndex][0]), Convert.ToInt32(sketchCoords[pointIndex][1]));
-                        end = new Point(Convert.ToInt32(sketchCoords[pointIndex + 1][0]), Convert.ToInt32(sketchCoords[pointIndex + 1][1]));
-                    }
+                        Point start; Point end;
+                        // Draw Line Between Final Point and First Point
+                        if (pointIndex == numCoords - 1)
+                        {
+                            start = new Point(Convert.ToInt32(sketchCoords[0][0]), Convert.ToInt32(sketchCoords[0][1]));
+                            end = new Point(Convert.ToInt32(sketchCoords[numCoords - 1][0]), Convert.ToInt32(sketchCoords[numCoords - 1][1]));
+                        }
+                        // Draw Remaining Lines
+                        else
+                        {
+                            start = new Point(Convert.ToInt32(sketchCoords[pointIndex][0]), Convert.ToInt32(sketchCoords[pointIndex][1]));
+                            end = new Point(Convert.ToInt32(sketchCoords[pointIndex + 1][0]), Convert.ToInt32(sketchCoords[pointIndex + 1][1]));
+                        }
 
-                    // Connected by Line
-                    if (joiners[numCoords - 1] == "line")
-                    {
-                        g.DrawLine(pen, start, end);
-                    }
-                    // Connected by Curve
-                    else
-                    {
-                        // TO DO **
+                        // Connected by Line
+                        if (connectors[pointIndex] == Constants.connectorOptions[0])
+                        {
+                            g.DrawLine(pen, start, end);
+                        }
+                        // Connected by Curve
+                        else
+                        {
+                            // TO DO **
+                        }
                     }
                 }
             }
@@ -462,8 +465,8 @@ namespace Animator
                         orCoords[Modulo(insertIndex - 1, orCoords.Count)], orCoords[index][1], 1, lineArray[adjustedIndex]));
                     tCoords.Insert(adjustedIndex, FindSymmetricalOppositeCoord(otCoords[insertIndex],
                         otCoords[Modulo(insertIndex - 1, otCoords.Count)], otCoords[index][1], 1, lineArray[adjustedIndex]));
-                    lineArray.Insert(adjustedIndex, "line");
-                    solidArray.Insert(adjustedIndex, "s");
+                    lineArray.Insert(adjustedIndex, lineArray[Modulo(adjustedIndex - 1, lineArray.Count)]);
+                    solidArray.Insert(adjustedIndex, solidArray[Modulo(adjustedIndex - 1, solidArray.Count)]);
                 }
             }
 
@@ -482,8 +485,8 @@ namespace Animator
                         orCoords[Modulo(insertIndex - 1, orCoords.Count)], orCoords[index][0], 0, lineArray[adjustedIndex]));
                     tCoords.Insert(adjustedIndex, FindSymmetricalOppositeCoord(otCoords[insertIndex],
                         otCoords[Modulo(insertIndex - 1, otCoords.Count)], otCoords[index][0], 0, lineArray[adjustedIndex]));
-                    lineArray.Insert(insertIndex, "line");
-                    solidArray.Insert(adjustedIndex, "s");
+                    lineArray.Insert(adjustedIndex, lineArray[Modulo(adjustedIndex - 1, lineArray.Count)]);
+                    solidArray.Insert(adjustedIndex, solidArray[Modulo(adjustedIndex - 1, solidArray.Count)]);
                 }
             }
         }
@@ -520,10 +523,11 @@ namespace Animator
         public static double[] FindSymmetricalOppositeCoord(double[] from, double[] to, double value, int xy, string line)
         {
             double gradient = -1;
-            if (line == "line")
+            if (line == Constants.connectorOptions[0] || line == Constants.connectorOptions[1])
             {
                 gradient = (from[1] - to[1]) / (from[0] - to[0]);
             }
+            // else if (line == Constants.connectorOptions[2])      CURVED ** TO DO
 
             if (xy == 0)
             {

@@ -51,8 +51,9 @@ namespace Animator
         public static decimal defaultOutlineWidth = 2;
         public static string defaultPieceDetails = "wr100";
 
-        // Connector Options    *Keep in same order
+        // Piece Options            Connectors: Line, Blank, Curve
         public static string[] connectorOptions = { "line", "none" };
         public static object[] connectorOptionsReadable = new object[] { "Line", "Blank" };
+        public static string[] fillOptions = { "fill", "gradient" };
     }
 }
