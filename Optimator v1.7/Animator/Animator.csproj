@@ -67,6 +67,12 @@
     <Compile Include="PiecesForm.Designer.cs">
       <DependentUpon>PiecesForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="PiecesForm_LoadMenu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PiecesForm_LoadMenu.Designer.cs">
+      <DependentUpon>PiecesForm_LoadMenu.cs</DependentUpon>
+    </Compile>
     <Compile Include="PreviewForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -99,6 +105,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="PiecesForm.resx">
       <DependentUpon>PiecesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PiecesForm_LoadMenu.resx">
+      <DependentUpon>PiecesForm_LoadMenu.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PreviewForm.resx">
       <DependentUpon>PreviewForm.cs</DependentUpon>

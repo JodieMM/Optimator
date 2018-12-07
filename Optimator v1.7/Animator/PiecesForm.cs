@@ -18,9 +18,9 @@ namespace Animator
         private Graphics original;
         private Graphics rotated;
         private Graphics turned;
-        private List<Piece> sketch = new List<Piece>();
+        public List<Piece> Sketch { get; set; } = new List<Piece>();
         private List<Join> pointSpots = new List<Join>();
-        private Piece WIP = new Piece();
+        public Piece WIP { get; } = new Piece();
 
         private List<double[]> oCoords = new List<double[]>();
         private List<double[]> rCoords = new List<double[]>();
@@ -41,6 +41,9 @@ namespace Animator
         private bool movingFar = false;
         private int[] originalMoving;
         private int[] positionMoving;
+
+        private Color button = Color.LightCyan;
+        private Color pressed = Color.FromArgb(255, 204, 255, 255);
         #endregion
 
         // TEMP
@@ -420,6 +423,7 @@ namespace Animator
         private void PointBtn_Click(object sender, EventArgs e)
         {
             PointBtn.Text = (PointBtn.Text == "Select") ? "Place" : "Select";
+            PointBtn.BackColor = (PointBtn.BackColor == button) ? pressed : button;
         }
 
         /// <summary>
@@ -430,6 +434,7 @@ namespace Animator
         private void EraserBtn_Click(object sender, EventArgs e)
         {
             EraserBtn.Text = (EraserBtn.Text == "Eraser") ? "Point" : "Eraser";
+            EraserBtn.BackColor = (EraserBtn.BackColor == button) ? pressed : button;
         }
 
         /// <summary>
@@ -443,6 +448,17 @@ namespace Animator
             ApplySegmentFully();
             PreviewForm previewForm = new PreviewForm(WIP);
             previewForm.Show();
+        }
+
+        /// <summary>
+        /// Load attributes and/or pieces.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void LoadBtn_Click(object sender, EventArgs e)
+        {
+            PiecesForm_LoadMenu loadMenu = new PiecesForm_LoadMenu(this);
+            loadMenu.Show();
         }
 
         /// <summary>
@@ -599,6 +615,18 @@ namespace Animator
             }
         }
 
+        /// <summary>
+        /// Draws a second layer of points that have different
+        /// colours to signify whether or not they are solid.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ShowFixedBtn_Click(object sender, EventArgs e)
+        {
+            ShowFixedBtn.Text = (ShowFixedBtn.Text == "Show Fixed") ? "Hide Fixed" : "Show Fixed";
+            ShowFixedBtn.BackColor = (ShowFixedBtn.BackColor == button) ? pressed : button;
+            DisplayDrawings();
+        }
 
 
         // ----- SETS TAB ------
@@ -630,7 +658,15 @@ namespace Animator
             if (coords == null) { return; }
             for (int index = 0; index < coords.Count; index++)
             {
-                Color color = (index == selectedIndex) ? Color.Red : Color.Black;
+                Color color;
+                if (ShowFixedBtn.Text == "Hide Fixed")
+                {
+                    color = (solid[index] == "s") ? Color.SaddleBrown: Color.PeachPuff;
+                }
+                else
+                {
+                    color = (index == selectedIndex) ? Color.Red : Color.Black;
+                }
                 Utilities.DrawPoint(coords[index][0], coords[index][1], color, board);
             }
         }
@@ -638,7 +674,7 @@ namespace Animator
         /// <summary>
         /// Draws the pieces on the 3 boards
         /// </summary>
-        private void DisplayDrawings()
+        public void DisplayDrawings()
         {
             // Prepare Piece
             ConvertVariablesToData(rotationFrom, rotationTo, turnFrom, turnTo, oCoords, rCoords, tCoords, connectors, solid);
@@ -979,6 +1015,17 @@ namespace Animator
             ConnectorOptions.Enabled = false;
             ShowFixedBtn.Enabled = false;
             FixedCb.Enabled = false;
+        }
+
+        /// <summary>
+        /// Updates colours and outline width
+        /// in the display.
+        /// </summary>
+        public void UpdateAttributes()
+        {
+            FillBox.BackColor = WIP.FillColour[0];
+            OutlineBox.BackColor = WIP.OutlineColour;
+            OutlineWidthBox.Value = WIP.OutlineWidth;
         }
     }
 }
