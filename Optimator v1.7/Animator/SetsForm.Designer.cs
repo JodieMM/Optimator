@@ -357,17 +357,19 @@
             // 
             // FlipsUpDown
             // 
+            this.FlipsUpDown.Enabled = false;
             this.FlipsUpDown.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FlipsUpDown.Location = new System.Drawing.Point(136, 523);
             this.FlipsUpDown.Margin = new System.Windows.Forms.Padding(2);
             this.FlipsUpDown.Maximum = new decimal(new int[] {
-            359,
+            179,
             0,
             0,
             0});
             this.FlipsUpDown.Name = "FlipsUpDown";
             this.FlipsUpDown.Size = new System.Drawing.Size(60, 46);
             this.FlipsUpDown.TabIndex = 104;
+            this.FlipsUpDown.ValueChanged += new System.EventHandler(this.FlipsUpDown_ValueChanged);
             // 
             // FlipsCb
             // 
@@ -380,6 +382,7 @@
             this.FlipsCb.TabIndex = 103;
             this.FlipsCb.Text = "Flips?";
             this.FlipsCb.UseVisualStyleBackColor = true;
+            this.FlipsCb.CheckedChanged += new System.EventHandler(this.FlipsCb_CheckedChanged);
             // 
             // SettingsPage
             // 

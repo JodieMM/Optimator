@@ -408,7 +408,6 @@
             this.RefineBtn.TabIndex = 12;
             this.RefineBtn.Text = "Refine";
             this.RefineBtn.UseVisualStyleBackColor = false;
-            this.RefineBtn.Visible = false;
             this.RefineBtn.Click += new System.EventHandler(this.RefineBtn_Click);
             // 
             // ExitBtn

@@ -30,6 +30,9 @@ namespace Animator
         public static char[] Comma = new char[] { ',' };
         public static char[] Colon = new char[] { ':' };
         public static char[] Semi = new char[] { ';' };
+        public static string CommaS = ",";
+        public static string ColonS = ":";
+        public static string SemiS = ";";
 
         // UI Precision
         public static int[] Ranges = new int[] { 0, 3, 5, 7, 9 };
@@ -55,5 +58,6 @@ namespace Animator
         public static string[] connectorOptions = { "line", "none" };
         public static object[] connectorOptionsReadable = new object[] { "Line", "Blank" };
         public static string[] fillOptions = { "fill", "gradient" };
+        public static string[] solidOptions = { "s", "f" };
     }
 }

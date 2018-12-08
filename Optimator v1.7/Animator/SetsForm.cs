@@ -16,7 +16,6 @@ namespace Animator
     {
         #region Sets Form Variables
         private Graphics g;
-        private List<Piece> piecesList = new List<Piece>();
         private Set WIP = new Set();
 
         private Piece selected = null;
@@ -58,9 +57,10 @@ namespace Animator
             try
             {
                 Piece justAdded = new Piece(AddTb.Text);
-                piecesList.Add(justAdded);
+                WIP.PiecesList.Add(justAdded);
                 justAdded.X = DrawPanel.Width / 2.0; justAdded.Y = DrawPanel.Height / 2.0;
                 justAdded.Originally = new Originals(justAdded);
+                justAdded.PieceOf = WIP;
                 justAdded.FindPointSpots();
                 SelectPiece(justAdded);
                 DisplayDrawings();
@@ -85,11 +85,12 @@ namespace Animator
             try
             {
                 Set addedSet = new Set(AddTb.Text);
-                piecesList.AddRange(addedSet.PiecesList);
+                WIP.PiecesList.AddRange(addedSet.PiecesList);
                 addedSet.BasePiece.X = DrawPanel.Width / 2.0; addedSet.BasePiece.Y = DrawPanel.Height / 2.0;
                 foreach (Piece piece in addedSet.PiecesList)
                 {
                     piece.FindPointSpots();
+                    piece.PieceOf = WIP;
                     piece.Originally = new Originals(piece);
                 }
                 SelectPiece(addedSet.BasePiece);
@@ -113,7 +114,7 @@ namespace Animator
         private void ExitBtn_Click(object sender, EventArgs e)
         {
             DialogResult result = DialogResult.Yes;
-            if (piecesList.Count > 1)
+            if (WIP.PiecesList.Count > 1)
             {
                 result = MessageBox.Show("Do you want to exit without saving? Your set will be lost.", "Exit Confirmation", MessageBoxButtons.YesNo);
             }
@@ -130,7 +131,7 @@ namespace Animator
         /// <param name="e"></param>
         private void DoneBtn_Click(object sender, EventArgs e)
         {
-            if (piecesList.Count < 1)
+            if (WIP.PiecesList.Count < 1)
             {
                 Close();
             }
@@ -236,12 +237,12 @@ namespace Animator
         {
             if (selected != null)
             {
-                int selectedIndex = piecesList.IndexOf(selected);
-                if (selectedIndex != -1 && selectedIndex < piecesList.Count - 1)
+                int selectedIndex = WIP.PiecesList.IndexOf(selected);
+                if (selectedIndex != -1 && selectedIndex < WIP.PiecesList.Count - 1)
                 {
-                    Piece holding = piecesList[selectedIndex];
-                    piecesList[selectedIndex] = piecesList[selectedIndex + 1];
-                    piecesList[selectedIndex + 1] = holding;
+                    Piece holding = WIP.PiecesList[selectedIndex];
+                    WIP.PiecesList[selectedIndex] = WIP.PiecesList[selectedIndex + 1];
+                    WIP.PiecesList[selectedIndex + 1] = holding;
                     DisplayDrawings();
                 }
             }
@@ -256,17 +257,44 @@ namespace Animator
         {
             if (selected != null)
             {
-                int selectedIndex = piecesList.IndexOf(selected);
+                int selectedIndex = WIP.PiecesList.IndexOf(selected);
                 if (selectedIndex > 0)
                 {
-                    Piece holding = piecesList[selectedIndex];
-                    piecesList[selectedIndex] = piecesList[selectedIndex - 1];
-                    piecesList[selectedIndex - 1] = holding;
+                    Piece holding = WIP.PiecesList[selectedIndex];
+                    WIP.PiecesList[selectedIndex] = WIP.PiecesList[selectedIndex - 1];
+                    WIP.PiecesList[selectedIndex - 1] = holding;
                     DisplayDrawings();
                 }
             }
         }
 
+        /// <summary>
+        /// Changes the flipped attributes of the selected piece.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void FlipsCb_CheckedChanged(object sender, EventArgs e)
+        {
+            if (selected != null)
+            {
+                FlipsUpDown.Enabled = FlipsCb.Checked;
+                selected.AngleFlip = (FlipsCb.Checked) ? (double)FlipsUpDown.Value : -1;
+
+            }
+        }
+
+        /// <summary>
+        /// Changes the flip angle of the selected piece.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void FlipsUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            if (selected != null)
+            {
+                selected.AngleFlip = (double)FlipsUpDown.Value;
+            }
+        }
 
 
         // ----- DRAW PANEL I/O -----
@@ -288,16 +316,16 @@ namespace Animator
                 moving = true;
                 shadow = MakeShadow();
                 originalMoving = new int[] { e.X, e.Y };
-                currentClosestPoint = FindClosestPoint(piecesList, e.X, e.Y, piecesList.IndexOf(selected));
+                currentClosestPoint = FindClosestPoint(WIP.PiecesList, e.X, e.Y, WIP.PiecesList.IndexOf(selected));
             }
             else
             {
                 // Choose and Update Selected Piece (If Any)
                 DeselectPiece();
-                selectedIndex = Utilities.FindClickedSelection(piecesList, e.X, e.Y);
+                selectedIndex = Utilities.FindClickedSelection(WIP.PiecesList, e.X, e.Y);
                 if (selectedIndex != -1)
                 {
-                    SelectPiece(piecesList[selectedIndex]);
+                    SelectPiece(WIP.PiecesList[selectedIndex]);
                     moving = true;
                     originalMoving = new int[] { e.X, e.Y };
                 }
@@ -322,7 +350,7 @@ namespace Animator
             {
                 positionMoving = new int[] { e.X, e.Y };
                 UpdateShadowPosition();
-                currentClosestPoint = FindClosestPoint(piecesList, e.X, e.Y, piecesList.IndexOf(selected));
+                currentClosestPoint = FindClosestPoint(WIP.PiecesList, e.X, e.Y, WIP.PiecesList.IndexOf(selected));
             }
             // Move Point
             else
@@ -351,10 +379,10 @@ namespace Animator
             if (selectedSpot != null)
             {
                 // Connect Piece if new position is valid
-                int clickedIndex = Utilities.FindClickedSelection(piecesList, e.X, e.Y);
-                if (clickedIndex != -1 && piecesList[clickedIndex] != selected)
+                int clickedIndex = Utilities.FindClickedSelection(WIP.PiecesList, e.X, e.Y);
+                if (clickedIndex != -1 && WIP.PiecesList[clickedIndex] != selected)
                 {
-                    Piece connectedTo = piecesList[clickedIndex];
+                    Piece connectedTo = WIP.PiecesList[clickedIndex];
                     int joinIndex = FindClosestPoint(connectedTo, e.X, e.Y);
                     if (joinIndex != -1)
                     {
@@ -386,7 +414,7 @@ namespace Animator
             if (e.KeyCode == Keys.Delete)
             {
                 if (selected == null) { return; }
-                piecesList.Remove(selected);
+                WIP.PiecesList.Remove(selected);
                 selected = null;
                 DisplayDrawings();
             }
@@ -399,7 +427,7 @@ namespace Animator
         /// <param name="e"></param>
         private void RotationTrack_Scroll(object sender, EventArgs e)
         {
-            foreach (Piece piece in piecesList)
+            foreach (Piece piece in WIP.PiecesList)
             {
                 if (piece.AttachedTo == null)
                 {
@@ -417,7 +445,7 @@ namespace Animator
         /// <param name="e"></param>
         private void TurnTrack_Scroll(object sender, EventArgs e)
         {
-            foreach (Piece piece in piecesList)
+            foreach (Piece piece in WIP.PiecesList)
             {
                 if (piece.AttachedTo == null)
                 {
@@ -441,7 +469,7 @@ namespace Animator
         private void DisplayDrawings()
         {
             g = DrawPanel.CreateGraphics();
-            Utilities.DrawPieces(piecesList, g, DrawPanel);
+            Utilities.DrawPieces(WIP.PiecesList, g, DrawPanel);
             // If moving a piece, draw the shadow
             if (movingFar || selectedSpot != null)
             {
@@ -449,7 +477,7 @@ namespace Animator
                 // Draw Potential Joins
                 if (selectedSpot != null)
                 {
-                    foreach (Piece piece in piecesList)
+                    foreach (Piece piece in WIP.PiecesList)
                     {
                         foreach (Join spot in piece.PiecePoints)
                         {
@@ -459,7 +487,7 @@ namespace Animator
                     }
                     if (currentClosestPoint[0] != -1)
                     {
-                        Piece host = piecesList[currentClosestPoint[0]];
+                        Piece host = WIP.PiecesList[currentClosestPoint[0]];
                         Join join = host.PiecePoints[currentClosestPoint[1]];
                         double[] joinCoords = join.GetCurrentPoints(host.GetCoords()[0], host.GetCoords()[1]);
                         Utilities.DrawPoint(joinCoords[0], joinCoords[1], Constants.select, g);
@@ -486,7 +514,7 @@ namespace Animator
         private bool PermitChange()
         {
             int count = 0;
-            foreach (Piece piece in piecesList)
+            foreach (Piece piece in WIP.PiecesList)
             {
                 if (piece.GetIsAttached())
                 {
@@ -500,37 +528,6 @@ namespace Animator
                 }
             }
             return true;
-        }
-
-        /// <summary>
-        /// Converts the set into string data for saving.
-        /// </summary>
-        /// <returns></returns>
-        private List<string> GetSaveData()
-        {
-            List<string> returnData = new List<string>();
-            foreach (Piece piece in piecesList)
-            {
-                bool notBase = WIP.BasePiece != piece;
-                string pieceData = piece.Name + ";";
-
-                if (notBase)
-                {
-                    pieceData += piece.OwnPoint.Name + ";" + piecesList.IndexOf(piece.AttachedTo)
-                        + ";" + piece.AttachPoint.Name + ";";
-                }
-
-                // Save Piece Attributes
-                pieceData += piece.X + ";" + piece.Y + ";" + piece.R + ";" + piece.T + ";" + piece.S + ";" + piece.SM;
-
-                // Save flip values
-                if (notBase)
-                {
-                    pieceData += ";" + piece.InFront + ";" + piece.AngleFlip;
-                }
-                returnData.Add(pieceData);
-            }
-            return returnData;
         }
 
         /// <summary>

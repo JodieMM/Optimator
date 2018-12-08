@@ -171,11 +171,10 @@ namespace Animator
             g = DrawPanel.CreateGraphics();
 
             // Draw Parts
-            // List<Piece> orderedPieces = SortOrder(piecesList);
+            List<Piece> orderedPieces = SortOrder(piecesList);
             for (int index = 0; index < piecesList.Count; index++)
             {
-                DrawPiece(piecesList[index], g, true);
-                //DrawPiece(orderedPieces[index], g, true);
+                DrawPiece(orderedPieces[index], g, true);
             }
         }
 
@@ -184,64 +183,70 @@ namespace Animator
         /// </summary>
         /// <param name="piecesList">The list of pieces in original order</param>
         /// <returns>Ordered list of pieces</returns>
-        public List<Piece> SortOrder(List<Piece> piecesList)
+        public static List<Piece> SortOrder(List<Piece> piecesList)
         {
             List<Piece> order = new List<Piece>();
-            order.AddRange(piecesList);
 
-            Boolean change = true;
-            while (change)
+            for (int index = 0; index < piecesList.Count; index++)
             {
-                change = false;
-
-                // Go from the bottom (first) to the top
-                for (int index = 0; index < piecesList.Count;)
+                // If Piece
+                if (piecesList[index].PieceOf == null)
                 {
-                    // If attached and has to change height at some stage
-                    if (order[index].AttachedTo != null && order[index].AngleFlip != -1)
+                    order.Add(piecesList[index]);
+                }
+                // If Set
+                else
+                {
+                    List<Piece> tempOrder = new List<Piece>();
+                    Set set = piecesList[index].PieceOf;
+                    int baseIndex = set.PiecesList.IndexOf(set.BasePiece);
+                    List<Piece> putInFront = new List<Piece>();
+                    List<Piece> putInBack = new List<Piece>();
+                    for (int subindex = 0; subindex < set.PiecesList.Count; subindex++)
                     {
-                        // Find if should be above or below attachedTo
-                        if (order[index].GetAngles()[0] <= order[index].AngleFlip &&                   // One set to is the one is at "most" of the time (181 vs 179 degrees)
-                            order[index].GetAngles()[0] >= order[index].AngleFlip + 180 % 360)
+                        Piece working = set.PiecesList[subindex];
+                        // Behind Base
+                        if (subindex < baseIndex)
                         {
-                            // In given position
-
-                            // If should be in front, and not
-                            if (order[index].InFront == true && index < order.IndexOf(order[index].AttachedTo))
+                            if (working.AngleFlip == -1)
                             {
-                                order.Insert(order.IndexOf(order[index].AttachedTo), order[index]);
-                                order.RemoveAt(index + 1);
-                                change = true;
+                                tempOrder.Add(working);
                             }
-                            // If should be behind, and not
-                            else if (order[index].InFront == false && index > order.IndexOf(order[index].AttachedTo))
+                            else if (working.GetAngles()[0] > working.AngleFlip && working.GetAngles()[0] < working.AngleFlip + 180)
                             {
-                                order.Insert(order.IndexOf(order[index].AttachedTo) - 1, order[index]);        // ** Potential error here calling and changing
-                                order.RemoveAt(index);
-                                change = true;
+                                putInFront.Add(working);
+                            }
+                            else
+                            {
+                                putInBack.Add(working);
+                            }
+                        }
+                        // In Front of Base
+                        else if (subindex > baseIndex)
+                        {
+                            if (working.AngleFlip == -1)
+                            {
+                                tempOrder.Add(working);
+                            }
+                            else if (working.GetAngles()[0] > working.AngleFlip && working.GetAngles()[0] < working.AngleFlip + 180)
+                            {
+                                putInBack.Add(working);
+                            }
+                            else
+                            {
+                                putInFront.Add(working);
                             }
                         }
                         else
                         {
-                            // In taken position
-
-                            // If should be in front normally and still is in opposite
-                            if (order[index].InFront == true && index > order.IndexOf(order[index].AttachedTo))
-                            {
-                                order.Insert(order.IndexOf(order[index].AttachedTo) - 1, order[index]);
-                                order.RemoveAt(index);
-                                change = true;
-                            }
-                            // If should be behind normally and still is in opposite
-                            else if (order[index].InFront == false && index < order.IndexOf(order[index].AttachedTo))
-                            {
-                                order.Insert(order.IndexOf(order[index].AttachedTo), order[index]);
-                                order.RemoveAt(index + 1);
-                                change = true;
-                            }
+                            tempOrder.Add(set.PiecesList[baseIndex]);
                         }
+                        index++;
                     }
-                    // No action if lone piece or base
+                    tempOrder.InsertRange(0, putInBack);
+                    tempOrder.AddRange(putInFront);
+                    order.AddRange(tempOrder);
+                    index--;
                 }
             }
             return order;
@@ -277,6 +282,20 @@ namespace Animator
             return clone;
         }
 
+        /// <summary>
+        /// Switches the positions of two values in the list.
+        /// Note that index order is not important.
+        /// </summary>
+        /// <param name="toSwitch">The list of values</param>
+        /// <param name="index1">The index of the first value</param>
+        /// <param name="index2">The index of the second value</param>
+        public static void SwitchPositions(List<double[]> toSwitch, int index1, int index2)
+        {
+            double[] holding = toSwitch[index1];
+            toSwitch[index1] = toSwitch[index2];
+            toSwitch[index2] = holding;
+        }
+
 
 
         // ----- PIECE FUNCTIONS -----
@@ -307,7 +326,7 @@ namespace Animator
         /// <summary>
         /// Finds the minimum and maximum x and y coordinates of a point.
         /// </summary>
-        /// <param name="entries">Shape points</param>
+        /// <param name="coords">Shape points</param>
         /// <returns>The mins and maxes as [minX, maxX, minY, maxY]</returns>
         public static double[] FindMinMax(List<double[]> coords)
         {
@@ -351,86 +370,46 @@ namespace Animator
         /// <summary>
         /// Flips a shape vertically and/or horizontally
         /// </summary>
-        /// <param name="coords">Shape coordinates</param>
-        /// <param name="lineArray">Lines that connect points</param>
+        /// <param name="spots">Shape coordinates</param>
+        /// <param name="angle">Original [0], rotated [1], turned [2]</param>
         /// <param name="right">Flip vertically</param>
         /// <param name="down">Flip horizontally</param>
         /// <returns></returns>
-        public static List<double[]> FlipCoords(List<double[]> coords, List<string> lineArray, bool right, bool down)
+        public static List<double[]> FlipCoords(List<Spot> spots, int angle, bool right, bool down)
         {
+            List<double[]> coords = ConvertSpotsToCoords(spots, angle);
             double[] middle = FindMid(coords);
             double[] minMax = FindMinMax(coords);
             List<double[]> clone = CloneMe(coords);
 
-            // Flip Vertically (Right)
-            if (right)
+            // Flip Horizontally (Down) and Vertically (Right)
+            for (int xy = 0; xy < 2; xy++)
             {
-                for (int index = 0; index < coords.Count; index++)
+                int yx = Modulo(xy + 1, 2);
+                if (down && xy == 0 || right && xy == 1)
                 {
-                    // Assign coords to their symmetric match
-                    int matchIndex = FindSymmetricalCoord(coords, index, 1);
-                    if (coords[index][1] != minMax[2] && coords[index][1] != minMax[3])
+                    for (int index = 0; index < coords.Count; index++)
                     {
-                        if (matchIndex == -1)
+                        // Assign coords to their symmetric match
+                        int matchIndex = FindSymmetricalCoord(spots, index, xy);
+                        if (coords[index][xy] != minMax[0 + 2 * xy] && coords[index][xy] != minMax[1 + 2 * xy])
                         {
-                            int searchIndex = FindSymmetricalCoordHome(coords, index, 1);
-                            clone[index][0] = FindSymmetricalOppositeCoord(coords[searchIndex],
-                                coords[Modulo(searchIndex - 1, coords.Count)], coords[index][1], 1, lineArray[searchIndex])[0];
+                            if (matchIndex == -1)
+                            {
+                                int searchIndex = FindSymmetricalCoordHome(spots, index, xy);
+                                clone[index][yx] = FindSymmetricalOppositeCoord(coords[searchIndex],
+                                    coords[Modulo(searchIndex - 1, coords.Count)], coords[index][xy], xy, spots[searchIndex].Connector)[yx];
+                            }
+                            else
+                            {
+                                clone[index][yx] = coords[matchIndex][yx];
+                            }
                         }
-                        else
-                        {
-                            clone[index][0] = coords[matchIndex][0];
-                        }
+                        clone[index][yx] = FlipAroundCentre(middle[yx], clone[index][yx]);
                     }
-                    clone[index][0] = FlipAroundCentre(middle[0], clone[index][0]);
-                }
-            }
-
-            // Flip Horizontally (Down)
-            if (down)
-            {
-                for (int index = 0; index < coords.Count; index++)
-                {
-                    // Assign coords to their symmetric match
-                    int matchIndex = FindSymmetricalCoord(coords, index, 0);
-                    if (coords[index][0] != minMax[0] && coords[index][0] != minMax[1])
-                    {
-                        if (matchIndex == -1)
-                        {
-                            int searchIndex = FindSymmetricalCoordHome(coords, index, 0);
-                            clone[index][1] = FindSymmetricalOppositeCoord(coords[searchIndex],
-                                coords[Modulo(searchIndex - 1, coords.Count)], coords[index][0], 0, lineArray[searchIndex])[1];
-                        }
-                        else
-                        {
-                            clone[index][1] = coords[matchIndex][1];
-                        }
-                    }
-                    clone[index][1] = FlipAroundCentre(middle[1], clone[index][1]);
                 }
             }
             return clone;
-        }
-
-        /// <summary>
-        /// Finds the equivalent index in a larger set of coordinates and finds
-        /// its symmetrical match.
-        /// </summary>
-        /// <param name="current">Larger set of coordinates</param>
-        /// <param name="original">Smaller set of coordinates</param>
-        /// <param name="findIndex">Index of original to match</param>
-        /// <param name="xy">Whether the resulting index should be searched via x (0) or y (1)</param>
-        /// <returns>The equivalent index or -1 if error</returns>
-        public static int FindAdjustedIndex(List<double[]> current, List<double[]> original, int findIndex, int xy)
-        {
-            for (int index = findIndex; index < current.Count; index++)
-            {
-                if (current[index][0] == original[findIndex][0] && current[index][1] == original[findIndex][1])
-                {
-                    return FindSymmetricalCoordHome(current, index, xy);
-                }
-            }
-            return -1;
         }
 
         /// <summary>
@@ -443,50 +422,27 @@ namespace Animator
         /// <param name="tCoords">Turned coordinates</param>
         /// <param name="lineArray">Lines that connect points</param>
         /// <returns>Shape coordinates with extra coords on both sides</returns>
-        public static void CoordsOnAllSides(List<double[]> oCoords, List<double[]> rCoords, List<double[]> tCoords, List<string> lineArray, List<string> solidArray)
+        public static void CoordsOnAllSides(List<Spot> spots)
         {
-            double[] highestPoints = FindMinMax(oCoords);
-            List<double[]> ooCoords = CloneMe(oCoords);
-            List<double[]> orCoords = CloneMe(rCoords);
-            List<double[]> otCoords = CloneMe(tCoords);
+            double[] highestPoints = FindMinMax(ConvertSpotsToCoords(spots, 0));
 
-            // Horizontal Allignment (Same Y Value)
-            for (int index = 0; index < ooCoords.Count; index++)
+            // Flip Vertically (Same X) and Horizontally (Same Y)
+            for (int xy = 0; xy < 2; xy++)
             {
-                // Check if there is already a matching on the other side and that the coordinate is not the bottom
-                if (FindSymmetricalCoord(ooCoords, index, 1) == -1 &&
-                    ooCoords[index][1] != highestPoints[3] && ooCoords[index][1] != highestPoints[2])
+                for (int index = 0; index < spots.Count; index++)
                 {
-                    int insertIndex = FindSymmetricalCoordHome(ooCoords, index, 1);
-                    int adjustedIndex = FindAdjustedIndex(oCoords, ooCoords, index, 1);
-                    oCoords.Insert(adjustedIndex, FindSymmetricalOppositeCoord(ooCoords[insertIndex],
-                        ooCoords[Modulo(insertIndex - 1, ooCoords.Count)], ooCoords[index][1], 1, lineArray[adjustedIndex]));
-                    rCoords.Insert(adjustedIndex, FindSymmetricalOppositeCoord(orCoords[insertIndex],
-                        orCoords[Modulo(insertIndex - 1, orCoords.Count)], orCoords[index][1], 1, lineArray[adjustedIndex]));
-                    tCoords.Insert(adjustedIndex, FindSymmetricalOppositeCoord(otCoords[insertIndex],
-                        otCoords[Modulo(insertIndex - 1, otCoords.Count)], otCoords[index][1], 1, lineArray[adjustedIndex]));
-                    lineArray.Insert(adjustedIndex, lineArray[Modulo(adjustedIndex - 1, lineArray.Count)]);
-                    solidArray.Insert(adjustedIndex, solidArray[Modulo(adjustedIndex - 1, solidArray.Count)]);
-                }
-            }
-
-            // Vertical Allignment (Same X Value)
-            for (int index = 0; index < ooCoords.Count; index++)
-            {
-                // Check if there is already a matching on the other side and that the coordinate is not the bottom
-                if (FindSymmetricalCoord(ooCoords, index, 0) == -1 && 
-                    ooCoords[index][0] != highestPoints[1] && ooCoords[index][0] != highestPoints[0])
-                {
-                    int insertIndex = FindSymmetricalCoordHome(ooCoords, index, 0);
-                    int adjustedIndex = FindAdjustedIndex(oCoords, ooCoords, index, 0);
-                    oCoords.Insert(adjustedIndex, FindSymmetricalOppositeCoord(ooCoords[insertIndex],
-                        ooCoords[Modulo(insertIndex - 1, ooCoords.Count)], ooCoords[index][0], 0, lineArray[adjustedIndex]));
-                    rCoords.Insert(adjustedIndex, FindSymmetricalOppositeCoord(orCoords[insertIndex],
-                        orCoords[Modulo(insertIndex - 1, orCoords.Count)], orCoords[index][0], 0, lineArray[adjustedIndex]));
-                    tCoords.Insert(adjustedIndex, FindSymmetricalOppositeCoord(otCoords[insertIndex],
-                        otCoords[Modulo(insertIndex - 1, otCoords.Count)], otCoords[index][0], 0, lineArray[adjustedIndex]));
-                    lineArray.Insert(adjustedIndex, lineArray[Modulo(adjustedIndex - 1, lineArray.Count)]);
-                    solidArray.Insert(adjustedIndex, solidArray[Modulo(adjustedIndex - 1, solidArray.Count)]);
+                    if (spots[index].IsDrawn && FindSymmetricalCoord(spots, index, xy) == -1
+                        && spots[index].GetCoords(0)[xy] != highestPoints[1 + 2 * xy] && spots[index].GetCoords(0)[xy] != highestPoints[0 + 2 * xy])
+                    {
+                        int insertIndex = FindSymmetricalCoordHome(spots, index, xy);
+                        double[] original = FindSymmetricalOppositeCoord(spots[insertIndex].GetCoords(0),
+                            spots[Modulo(insertIndex - 1, spots.Count)].GetCoords(0), spots[index].GetCoords(0)[xy], xy, spots[insertIndex].Connector);
+                        double rotated = FindSymmetricalOppositeCoord(spots[insertIndex].GetCoords(1),
+                            spots[Modulo(insertIndex - 1, spots.Count)].GetCoords(1), spots[index].GetCoords(1)[xy], xy, spots[insertIndex].Connector)[0];
+                        double turned = FindSymmetricalOppositeCoord(spots[insertIndex].GetCoords(2),
+                            spots[Modulo(insertIndex - 1, spots.Count)].GetCoords(2), spots[index].GetCoords(2)[xy], xy, spots[insertIndex].Connector)[1];
+                        spots.Insert(insertIndex, new Spot(original[0], rotated, original[1], turned, spots[insertIndex].Connector, spots[insertIndex].Solid));
+                    }
                 }
             }
         }
@@ -499,11 +455,11 @@ namespace Animator
         /// <param name="matchIndex">The index of the selected coordinate</param>
         /// <param name="xy">Whether searching for a match in x (0) or y (1)</param>
         /// <returns>The symmetrical point's index or -1 if none exists</returns>
-        public static int FindSymmetricalCoord(List<double[]> coords, int matchIndex, int xy)
+        public static int FindSymmetricalCoord(List<Spot> spots, int matchIndex, int xy)
         {
-            for (int index = 0; index < coords.Count; index++)
+            for (int index = 0; index < spots.Count; index++)
             {
-                if (coords[index][xy] == coords[matchIndex][xy] && index != matchIndex)
+                if (index != matchIndex && spots[index].GetCoords(0)[xy] == spots[matchIndex].GetCoords(0)[xy])
                 {
                     return index;
                 }
@@ -535,61 +491,88 @@ namespace Animator
             }
             else
             {
-                return new double[] { from[0] + (value - from[1]) / gradient, value };  // x = y / gradient
+                double[] hold = new double[] { from[0] + (value - from[1]) / gradient, value };  // x = y / gradient
+                return hold;
             }
         }
 
         /// <summary>
         /// Finds where a matching point would go if it existed.
         /// </summary>
-        /// <param name="coords">List of piece coordinates</param>
+        /// <param name="spots">List of piece spots</param>
         /// <param name="matchIndex">The index of the selected coordinate</param>
         /// <param name="xy">Whether searching for a match in x (0) or y (1)</param>
         /// <returns>The index where the matching point would go or -1 in error</returns>
-        public static int FindSymmetricalCoordHome(List<double[]> coords, int matchIndex, int xy)
+        public static int FindSymmetricalCoordHome(List<Spot> spots, int matchIndex, int xy)
         {
-            double goal = coords[matchIndex][xy];
+            double goal = spots[matchIndex].GetCoords(0)[xy];
             bool bigger = false;
             int searchIndex = -1;
 
             // Find whether we're searching above or below the goal
-            for (int index = 0; index < coords.Count && searchIndex == -1; index++)
+            for (int index = 0; index < spots.Count && searchIndex == -1; index++)
             {
-                if (coords[index][xy] != goal)
+                if (spots[index].GetCoords(0)[xy] != goal)
                 {
-                    bigger = (coords[index][xy] > goal);
-                    searchIndex = (index + 1) % coords.Count;
+                    bigger = (spots[index].GetCoords(0)[xy] > goal);
+                    searchIndex = (index + 1) % spots.Count;
                 }
             }
 
             // Find index position
-            for (int index = 0; index < coords.Count; index++)
+            for (int index = 0; index < spots.Count; index++)
             {
-                if (coords[searchIndex][xy] == goal)
+                if (spots[searchIndex].GetCoords(0)[xy] == goal)
                 {
                     bigger = !bigger;
                 }
-                else if (coords[searchIndex][xy] > goal != bigger)
+                else if (spots[searchIndex].GetCoords(0)[xy] > goal != bigger)
                 {
                     return searchIndex;
                 }
-                searchIndex = (searchIndex + 1) % coords.Count;
+                searchIndex = (searchIndex + 1) % spots.Count;
             }
             return -1;       // Error
         }
 
         /// <summary>
-        /// Switches the positions of two values in the list.
-        /// Note that index order is not important.
+        /// Converts the spots into a list of their original
+        /// coordinates as double[].
         /// </summary>
-        /// <param name="toSwitch">The list of values</param>
-        /// <param name="index1">The index of the first value</param>
-        /// <param name="index2">The index of the second value</param>
-        public static void SwitchPositions(List<double[]> toSwitch, int index1, int index2)
+        /// <param name="spots">The list of spots to convert</param>
+        /// <param name="angle">Original [0], rotated[1], turned[2]</param>
+        /// <returns>A list of coordinates</returns>
+        public static List<double[]> ConvertSpotsToCoords(List<Spot> spots, int angle)
         {
-            double[] holding = toSwitch[index1];
-            toSwitch[index1] = toSwitch[index2];
-            toSwitch[index2] = holding;
+            List<double[]> toReturn = new List<double[]>();
+            switch (angle)
+            {
+                case 1:
+                    foreach (Spot spot in spots)
+                    {
+                        toReturn.Add(new double[] { spot.XRight, spot.Y });
+                    }
+                    break;
+                case 2:
+                    foreach (Spot spot in spots)
+                    {
+                        toReturn.Add(new double[] { spot.X, spot.YDown });
+                    }
+                    break;
+                case 3:
+                    foreach (Spot spot in spots)
+                    {
+                        toReturn.Add(new double[] { spot.XRight, spot.YDown });
+                    }
+                    break;
+                default:
+                    foreach (Spot spot in spots)
+                    {
+                        toReturn.Add(new double[] { spot.X, spot.Y });
+                    }
+                    break;
+            }
+            return toReturn;
         }
 
         #endregion

@@ -38,7 +38,7 @@ namespace Animator
         public Piece AttachedTo { get; set; } = null;
         public Join AttachPoint { get; set; } = null;
         public Join OwnPoint { get; set; } = null;
-        public Set PieceOf { get; set; }
+        public Set PieceOf { get; set; } = null;
         public List<Join> PiecePoints { get; set; } = new List<Join>();
         // Set Ordering
         public bool InFront { get; set; } = true;

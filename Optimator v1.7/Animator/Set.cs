@@ -12,8 +12,8 @@ namespace Animator
     {
         #region Set Variables
         public string Name { get; }
-        public List<string> Data { get; }
-        public List<Piece> PiecesList { get; } = new List<Piece>();
+        public List<string> Data { get; } = new List<string>();
+        public List<Piece> PiecesList { get; set; } = new List<Piece>();
         public Piece BasePiece { get; set; }
         #endregion
 
@@ -26,26 +26,6 @@ namespace Animator
         {
             Name = inName;
             Data = Utilities.ReadFile(Environment.CurrentDirectory + Constants.SetsFolder + Name + Constants.Txt);
-            ConvertData();
-        }
-
-        /// <summary>
-        /// Set constructor for creating a new set.
-        /// </summary>
-        public Set()
-        {
-            Name = Constants.WIPName;
-        }
-
-
-
-        // ----- DATA FUNCTIONS -----
-
-        /// <summary>
-        /// Used in constructor to create pieces and assign them correct values.
-        /// </summary>
-        private void ConvertData()
-        {
             for (int index = 0; index < Data.Count; index++)
             {
                 string[] dataSections = Data[index].Split(Constants.Semi);
@@ -71,28 +51,56 @@ namespace Animator
         }
 
         /// <summary>
+        /// Set constructor for creating a new set.
+        /// </summary>
+        public Set()
+        {
+            Name = Constants.WIPName;
+        }
+
+
+
+        // ----- FUNCTIONS -----
+
+        /// <summary>
         /// Takes the current state and saves it in the data.
         /// </summary>
         public void CreateData()
         {
             Data.Clear();
+            FindBasePiece();
             BasePiece.R = 0; BasePiece.T = 0; BasePiece.S = 0;
-            // ** TO DO SORT ORDER
+            PiecesList = Utilities.SortOrder(PiecesList);
             int baseIndex = PiecesList.IndexOf(BasePiece);
             for (int index = 0; index < PiecesList.Count; index++)
             {
                 Piece piece = PiecesList[index];
                 if (piece == BasePiece)
                 {
-                    Data.Add(piece.Name + Constants.Semi + piece.X + Constants.Semi + piece.Y + Constants.Semi +
-                        piece.R + Constants.Semi + piece.T + Constants.Semi + piece.S + Constants.Semi + piece.SM);
+                    Data.Add(piece.Name + Constants.SemiS + piece.X + Constants.SemiS + piece.Y + Constants.SemiS +
+                        piece.R + Constants.SemiS + piece.T + Constants.SemiS + piece.S + Constants.SemiS + piece.SM);
                 }
                 else
                 {
-                    Data.Add(piece.Name + Constants.Semi + piece.OwnPoint.Name + Constants.Semi + PiecesList.IndexOf(piece.AttachedTo) +
-                        Constants.Semi + piece.AttachPoint + Constants.Semi + piece.X + Constants.Semi + piece.Y + Constants.Semi +
-                        piece.R + Constants.Semi + piece.T + Constants.Semi + piece.S + Constants.Semi + piece.SM + Constants.Semi +
-                        (index > baseIndex) + Constants.Semi + piece.AngleFlip);
+                    Data.Add(piece.Name + Constants.SemiS + piece.OwnPoint.Name + Constants.SemiS + PiecesList.IndexOf(piece.AttachedTo) +
+                        Constants.SemiS + piece.AttachPoint + Constants.SemiS + piece.X + Constants.SemiS + piece.Y + Constants.SemiS +
+                        piece.R + Constants.SemiS + piece.T + Constants.SemiS + piece.S + Constants.SemiS + piece.SM + Constants.SemiS +
+                        (index > baseIndex) + Constants.SemiS + piece.AngleFlip);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Finds the base piece from the pieceslist.
+        /// </summary>
+        private void FindBasePiece()
+        {
+            foreach (Piece piece in PiecesList)
+            {
+                if (piece.AttachedTo == null)
+                {
+                    BasePiece = piece;
+                    return;
                 }
             }
         }

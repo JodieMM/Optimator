@@ -1,0 +1,2 @@
+headSystem.Char[]325System.Char[]325System.Char[]0System.Char[]0System.Char[]0System.Char[]100
+hatSystem.Char[]0System.Char[]0System.Char[]Animator.JoinSystem.Char[]0System.Char[]0System.Char[]0System.Char[]0System.Char[]0System.Char[]100System.Char[]TrueSystem.Char[]-1
