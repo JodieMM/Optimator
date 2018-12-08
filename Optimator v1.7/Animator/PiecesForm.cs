@@ -462,6 +462,16 @@ namespace Animator
         }
 
         /// <summary>
+        /// REMOVED -- CURRENTLY EMPTY BUTTON
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RefineBtn_Click(object sender, EventArgs e)
+        {
+            // EMPTY
+        }
+
+        /// <summary>
         /// Closes the form
         /// </summary>
         /// <param name="sender"></param>
@@ -690,12 +700,21 @@ namespace Animator
             // Draw Base Board
             WIP.R = 0;
             WIP.T = 0;
+            // Draw Sketches
+            foreach (Piece piece in Sketch)
+            {
+                piece.R = rotationFrom;
+                piece.T = turnFrom;
+                Utilities.DrawPiece(piece, original, false);
+            }
             Utilities.DrawPiece(WIP, original, false);
             DrawPoints(original, 2);
+            // Draw Joins
             foreach (Join spot in pointSpots)
             {
                 Utilities.DrawPoint(spot.X, spot.Y, spot.FillColour, original);
             }
+            // Draw Shadow Join
             if (oMoving && movingFar || (joinMoving != -1 && positionMoving[0] != -1 && positionMoving[1] != -1))
             {
                 Utilities.DrawPoint(positionMoving[0], positionMoving[1], Constants.shadowShade, original);
@@ -704,16 +723,25 @@ namespace Animator
             // Draw Rotated Board
             WIP.R = 89.9999;
             WIP.T = 0;
+            // Draw Sketches
+            foreach (Piece piece in Sketch)
+            {
+                piece.R = rotationTo;
+                Utilities.DrawPiece(piece, rotated, false);
+            }
             Utilities.DrawPiece(WIP, rotated, false);
             DrawPoints(rotated, 3);
+            // Draw Joins
             foreach (Join spot in pointSpots)
             {
                 Utilities.DrawPoint(spot.XRight, spot.Y, spot.FillColour, rotated);
             }
+            // Draw Shadow Point
             if (rMoving && movingFar)
             {
                 Utilities.DrawPoint(positionMoving[0], positionMoving[1], Constants.shadowShade, rotated);
             }
+            // Draw Shadow Joint
             else if (joinMoving != -1)
             {
                 if (positionMoving[1] == -1)
@@ -729,16 +757,25 @@ namespace Animator
             // Draw Turned Board
             WIP.R = 0;
             WIP.T = 89.9999;
+            // Draw Sketches
+            foreach (Piece piece in Sketch)
+            {
+                piece.T = turnTo;
+                Utilities.DrawPiece(piece, turned, false);
+            }
             Utilities.DrawPiece(WIP, turned, false);
             DrawPoints(turned, 4);
+            // Draw Joins
             foreach (Join spot in pointSpots)
             {
                 Utilities.DrawPoint(spot.X, spot.YDown, spot.FillColour, turned);
             }
+            // Draw Shadow Point
             if (tMoving && movingFar)
             {
                 Utilities.DrawPoint(positionMoving[0], positionMoving[1], Constants.shadowShade, turned);
             }
+            // Draw Shadow Joint
             else if (joinMoving != -1)
             {
                 if (positionMoving[0] == -1)

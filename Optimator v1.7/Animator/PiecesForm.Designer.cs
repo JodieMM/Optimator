@@ -54,7 +54,7 @@
             this.PreviewBtn = new System.Windows.Forms.Button();
             this.EraserBtn = new System.Windows.Forms.Button();
             this.CompleteBtn = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.RefineBtn = new System.Windows.Forms.Button();
             this.ExitBtn = new System.Windows.Forms.Button();
             this.LoadBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.DrawBase)).BeginInit();
@@ -396,19 +396,20 @@
             this.CompleteBtn.UseVisualStyleBackColor = false;
             this.CompleteBtn.Click += new System.EventHandler(this.CompleteBtn_Click);
             // 
-            // button2
+            // RefineBtn
             // 
-            this.button2.BackColor = System.Drawing.Color.LightCyan;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(465, 465);
-            this.button2.Margin = new System.Windows.Forms.Padding(6);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(90, 90);
-            this.button2.TabIndex = 12;
-            this.button2.Text = "TBD";
-            this.button2.UseVisualStyleBackColor = false;
-            this.button2.Visible = false;
+            this.RefineBtn.BackColor = System.Drawing.Color.LightCyan;
+            this.RefineBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.RefineBtn.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RefineBtn.Location = new System.Drawing.Point(465, 465);
+            this.RefineBtn.Margin = new System.Windows.Forms.Padding(6);
+            this.RefineBtn.Name = "RefineBtn";
+            this.RefineBtn.Size = new System.Drawing.Size(90, 90);
+            this.RefineBtn.TabIndex = 12;
+            this.RefineBtn.Text = "Refine";
+            this.RefineBtn.UseVisualStyleBackColor = false;
+            this.RefineBtn.Visible = false;
+            this.RefineBtn.Click += new System.EventHandler(this.RefineBtn_Click);
             // 
             // ExitBtn
             // 
@@ -443,7 +444,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.PaleTurquoise;
             this.ClientSize = new System.Drawing.Size(1100, 700);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.RefineBtn);
             this.Controls.Add(this.ExitBtn);
             this.Controls.Add(this.LoadBtn);
             this.Controls.Add(this.CompleteBtn);
@@ -487,7 +488,7 @@
         private System.Windows.Forms.Button PreviewBtn;
         private System.Windows.Forms.Button EraserBtn;
         private System.Windows.Forms.Button CompleteBtn;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button RefineBtn;
         private System.Windows.Forms.Button ExitBtn;
         private System.Windows.Forms.Button LoadBtn;
         private System.Windows.Forms.TabPage SetsTab;
