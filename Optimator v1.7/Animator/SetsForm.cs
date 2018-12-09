@@ -308,7 +308,7 @@ namespace Animator
         private void DrawPanel_MouseDown(object sender, MouseEventArgs e)
         {
             int selectedIndex = -1;
-            if (selected != null) { selectedIndex = FindClosestPoint(selected, e.X, e.Y); }
+            if (selected != null && selected.AttachedTo == null) { selectedIndex = FindClosestPoint(selected, e.X, e.Y); }
             if (selectedIndex != -1)
             {
                 // Move Selected's Join
@@ -376,11 +376,13 @@ namespace Animator
         private void DrawPanel_MouseUp(object sender, MouseEventArgs e)
         {
             if (!moving) { return; }
+            // If moving a Join
             if (selectedSpot != null)
             {
                 // Connect Piece if new position is valid
                 int clickedIndex = Utilities.FindClickedSelection(WIP.PiecesList, e.X, e.Y);
-                if (clickedIndex != -1 && WIP.PiecesList[clickedIndex] != selected)
+                if (clickedIndex != -1 && WIP.PiecesList[clickedIndex] != selected 
+                    && WIP.PiecesList[clickedIndex].AttachedTo != selected)
                 {
                     Piece connectedTo = WIP.PiecesList[clickedIndex];
                     int joinIndex = FindClosestPoint(connectedTo, e.X, e.Y);
@@ -393,6 +395,7 @@ namespace Animator
                     }
                 }
             }
+            // If moving a piece
             else if (movingFar)
             {
                 selected.X += positionMoving[0] - originalMoving[0];
@@ -495,7 +498,7 @@ namespace Animator
                 }
             }
             // If a piece is selected, show its PointSpots
-            else if (moving == false && selected != null)
+            else if (moving == false && selected != null && selected.AttachedTo == null)
             {
                 foreach (Join spot in selected.PiecePoints)
                 {
@@ -590,7 +593,7 @@ namespace Animator
             {
                 for (int hostIndex = 0; hostIndex < hosts.Count; hostIndex++)
                 {
-                    if (hostIndex != ignoreIndex)
+                    if (hostIndex != ignoreIndex && hosts[hostIndex].AttachedTo != hosts[ignoreIndex])
                     {
                         Piece host = hosts[hostIndex];
                         List<Join> spots = host.PiecePoints;
@@ -661,8 +664,8 @@ namespace Animator
         private void UpdateShadowPosition()
         {
             if (selected == null || positionMoving.Length == 0 || originalMoving.Length == 0) { return; }
-            shadow.X = selected.X + positionMoving[0] - originalMoving[0];
-            shadow.Y = selected.Y + positionMoving[1] - originalMoving[1];
+            shadow.X = selected.GetCoords()[0] + positionMoving[0] - originalMoving[0];
+            shadow.Y = selected.GetCoords()[1] + positionMoving[1] - originalMoving[1];
         }
     }
 }

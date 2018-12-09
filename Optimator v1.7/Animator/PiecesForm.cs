@@ -753,6 +753,7 @@ namespace Animator
             // Draw Sketches
             foreach (Piece piece in Sketch)
             {
+                piece.R = rotationFrom;
                 piece.T = turnTo;
                 Utilities.DrawPiece(piece, turned, false);
             }
