@@ -297,6 +297,33 @@ namespace Animator
         }
 
 
+
+        // ----- SETTINGS TAB -----
+
+        /// <summary>
+        /// Changes the back colour of the drawing panels.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BackColourBox_Click(object sender, EventArgs e)
+        {
+            ColorDialog MyDialog = new ColorDialog
+            {
+                Color = BackColourBox.BackColor,
+                FullOpen = true
+            };
+            if (MyDialog.ShowDialog() == DialogResult.OK)
+            {
+                DrawPanel.BackColor = MyDialog.Color;
+                TurnTrack.BackColor = MyDialog.Color;
+                RotationTrack.BackColor = MyDialog.Color;
+                BackColourBox.BackColor = MyDialog.Color;
+                DisplayDrawings();
+            }
+        }
+
+
+
         // ----- DRAW PANEL I/O -----
         #region Draw Panel I/O
 

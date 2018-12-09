@@ -29,8 +29,16 @@ namespace Animator
             for (int index = 0; index < Data.Count; index++)
             {
                 string[] dataSections = Data[index].Split(Constants.Semi);
-                Piece WIP = new Piece(dataSections[0]);
-
+                Piece WIP = new Piece(dataSections[0])
+                {
+                    PieceOf = this
+                };
+                PiecesList.Add(WIP);
+            }
+            for (int index = 0; index < Data.Count; index++)
+            {
+                string[] dataSections = Data[index].Split(Constants.Semi);
+                Piece WIP = PiecesList[index];
                 if (dataSections.Length == 7)
                 {
                     BasePiece = WIP;
@@ -44,9 +52,6 @@ namespace Animator
                     WIP.SetValues(double.Parse(dataSections[4]), double.Parse(dataSections[5]), double.Parse(dataSections[6]),
                         double.Parse(dataSections[7]), double.Parse(dataSections[8]), double.Parse(dataSections[9]));
                 }
-
-                WIP.PieceOf = this;
-                PiecesList.Add(WIP);
             }
         }
 
@@ -82,8 +87,8 @@ namespace Animator
                 }
                 else
                 {
-                    Data.Add(piece.Name + Constants.SemiS + piece.OwnPoint.GetName() + Constants.SemiS + PiecesList.IndexOf(piece.AttachedTo) +
-                        Constants.SemiS + piece.AttachPoint + Constants.SemiS + piece.X + Constants.SemiS + piece.Y + Constants.SemiS +
+                    Data.Add(piece.Name + Constants.SemiS + piece.OwnPoint.Name + Constants.SemiS + PiecesList.IndexOf(piece.AttachedTo) +
+                        Constants.SemiS + piece.AttachPoint.Name + Constants.SemiS + piece.X + Constants.SemiS + piece.Y + Constants.SemiS +
                         piece.R + Constants.SemiS + piece.T + Constants.SemiS + piece.S + Constants.SemiS + piece.SM + Constants.SemiS +
                         (index > baseIndex) + Constants.SemiS + piece.AngleFlip);
                 }

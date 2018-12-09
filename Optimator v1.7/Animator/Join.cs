@@ -56,17 +56,6 @@ namespace Animator
         // ----- GET FUNCTIONS -----
 
         /// <summary>
-        /// Returns the name of the join including
-        /// the host component.
-        /// Used in save files.
-        /// </summary>
-        /// <returns></returns>
-        public string GetName()
-        {
-            return Host.Name + "//" + Name;
-        }
-
-        /// <summary>
         /// Returns the directory for the current join.
         /// </summary>
         /// <returns>String file path</returns>

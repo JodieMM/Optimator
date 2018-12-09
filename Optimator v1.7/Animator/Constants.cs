@@ -33,6 +33,7 @@ namespace Animator
         public static string CommaS = ",";
         public static string ColonS = ":";
         public static string SemiS = ";";
+        public static string DoubleSlash = "//";
 
         // UI Precision
         public static int[] Ranges = new int[] { 0, 3, 5, 7, 9 };
