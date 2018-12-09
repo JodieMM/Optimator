@@ -16,7 +16,7 @@ namespace Animator
         #region Point Variables
         public string Name { get; set; }
         public List<string> Data { get; set; }
-        private readonly Piece host;
+        public Piece Host { get; }
 
         // Attributes
         public double X { get; set; }
@@ -35,7 +35,7 @@ namespace Animator
         public Join(string inName, Piece owner)
         {
             Name = inName;
-            host = owner;
+            Host = owner;
             Data = Utilities.ReadFile(GetFileDirectory());
         }
 
@@ -44,7 +44,7 @@ namespace Animator
         /// </summary>
         public Join(Piece owner)
         {
-            host = owner;
+            Host = owner;
             Data = new List<string>();
             X = 150; Y = 150; XRight = 150; YDown = 150;
             Random rnd = new Random();
@@ -62,7 +62,7 @@ namespace Animator
         private string GetFileDirectory()
         {
             return Environment.CurrentDirectory + Constants.JoinsFolder
-                + host.Name + "//" + Name + Constants.Txt;
+                + Host.Name + "//" + Name + Constants.Txt;
         }
 
 
@@ -135,13 +135,13 @@ namespace Animator
 
         /// <summary>
         /// Gets the coordinates of the join based 
-        /// on the host Piece's angles.
+        /// on the Host Piece's angles.
         /// </summary>
         /// <returns></returns>
-        public double[] GetCurrentPoints(double hostX, double hostY)
+        public double[] GetCurrentPoints(double HostX, double HostY)
         {
-            double[] hostAngles = host.GetAngles();
-            string[] dataValues = Data[Utilities.FindRow(hostAngles[0], hostAngles[1], Data, 0)].Split(Constants.Semi);
+            double[] HostAngles = Host.GetAngles();
+            string[] dataValues = Data[Utilities.FindRow(HostAngles[0], HostAngles[1], Data, 0)].Split(Constants.Semi);
             double[] originals = new double[] { Convert.ToDouble(dataValues[2].Split(Constants.Comma)[0]),
                 Convert.ToDouble(dataValues[2].Split(Constants.Comma)[1]) };
             double rotated = Convert.ToDouble(dataValues[3].Split(Constants.Comma)[0]);
@@ -153,21 +153,21 @@ namespace Animator
             double[] returning;
 
             // Check if at start cutoff of angle
-            if (angles[0] == hostAngles[0] && angles[2] == hostAngles[1])
+            if (angles[0] == HostAngles[0] && angles[2] == HostAngles[1])
             {
-                returning = new double[] { hostX + originals[0], hostY + originals[1] };
+                returning = new double[] { HostX + originals[0], HostY + originals[1] };
             }
             // Calculate rotated/turned point
             else
             {
-                double rMod = (hostAngles[0] - angles[0]) / (angles[1] - angles[0]);
-                double tMod = (hostAngles[1] - angles[2]) / (angles[3] - angles[2]);
-                returning = new double[] { hostX + (originals[0] + (rotated - originals[0]) * rMod),
-                hostY + (originals[1] + (turned - originals[1]) * tMod) };
+                double rMod = (HostAngles[0] - angles[0]) / (angles[1] - angles[0]);
+                double tMod = (HostAngles[1] - angles[2]) / (angles[3] - angles[2]);
+                returning = new double[] { HostX + (originals[0] + (rotated - originals[0]) * rMod),
+                HostY + (originals[1] + (turned - originals[1]) * tMod) };
             }
 
             // Calculate Spin
-            return SpinMeRound(returning, host.SM / 100.0, hostX, hostY);
+            return SpinMeRound(returning, Host.SM / 100.0, HostX, HostY);
             // return returning;
         }
 
@@ -176,56 +176,56 @@ namespace Animator
         /// </summary>
         /// <param name="point">The point to be spun</param>
         /// <param name="sizeModifier">The size modifier to be applied</param>
-        /// <param name="hostX">Host's centre X position</param>
-        /// <param name="hostY">Host's centre Y position</param>
+        /// <param name="HostX">Host's centre X position</param>
+        /// <param name="HostY">Host's centre Y position</param>
         /// <returns></returns>
-        public double[] SpinMeRound(double[] point, double sizeModifier, double hostX, double hostY)
+        public double[] SpinMeRound(double[] point, double sizeModifier, double HostX, double HostY)
         {
             // Spin Adjustment
-                if (!(point[0] == hostX && point[1] == hostY))
+                if (!(point[0] == HostX && point[1] == HostY))
                 {
-                    double hypotenuse = Math.Sqrt(Math.Pow(hostX - point[0], 2) + Math.Pow(hostY - point[1], 2)) * sizeModifier;
+                    double hypotenuse = Math.Sqrt(Math.Pow(HostX - point[0], 2) + Math.Pow(HostY - point[1], 2)) * sizeModifier;
                     // Find Angle
                     double pointAngle;
-                    if (point[0] == hostX && point[1] < hostY)
+                    if (point[0] == HostX && point[1] < HostY)
                     {
                         pointAngle = 0;
                     }
-                    else if (point[0] == hostX && point[1] > hostY)
+                    else if (point[0] == HostX && point[1] > HostY)
                     {
                         pointAngle = 180;
                     }
-                    else if (point[0] > hostX && point[1] == hostY)
+                    else if (point[0] > HostX && point[1] == HostY)
                     {
                         pointAngle = 90;
                     }
-                    else if (point[0] < hostX && point[1] == hostY)
+                    else if (point[0] < HostX && point[1] == HostY)
                     {
                         pointAngle = 270;
                     }
                     //  Second || First
                     //  Third  || Fourth
-                    else if (point[0] > hostX && point[1] < hostY) // First Quadrant
+                    else if (point[0] > HostX && point[1] < HostY) // First Quadrant
                     {
-                        pointAngle = (180 / Math.PI) * Math.Atan(Math.Abs((hostX - point[0]) / (hostY - point[1])));
+                        pointAngle = (180 / Math.PI) * Math.Atan(Math.Abs((HostX - point[0]) / (HostY - point[1])));
                     }
-                    else if (point[0] > hostX && point[1] > hostY) // Fourth Quadrant
+                    else if (point[0] > HostX && point[1] > HostY) // Fourth Quadrant
                     {
-                        pointAngle = 90 + (180 / Math.PI) * Math.Atan(Math.Abs((hostY - point[1]) / (hostX - point[0])));
+                        pointAngle = 90 + (180 / Math.PI) * Math.Atan(Math.Abs((HostY - point[1]) / (HostX - point[0])));
                     }
-                    else if (point[0] < hostX && point[1] < hostY) // Second Quadrant
+                    else if (point[0] < HostX && point[1] < HostY) // Second Quadrant
                     {
-                        pointAngle = 270 + (180 / Math.PI) * Math.Atan(Math.Abs((hostY - point[1]) / (hostX - point[0])));
+                        pointAngle = 270 + (180 / Math.PI) * Math.Atan(Math.Abs((HostY - point[1]) / (HostX - point[0])));
                     }
                     else  // Third Quadrant
                     {
-                        pointAngle = 180 + (180 / Math.PI) * Math.Atan(Math.Abs((hostX - point[0]) / (hostY - point[1])));
+                        pointAngle = 180 + (180 / Math.PI) * Math.Atan(Math.Abs((HostX - point[0]) / (HostY - point[1])));
                     }
-                    double findAngle = ((pointAngle + host.GetAngles()[2]) % 360) * Math.PI / 180;
+                    double findAngle = ((pointAngle + Host.GetAngles()[2]) % 360) * Math.PI / 180;
 
                     // Find Points
-                    point[0] = Convert.ToInt32((hostX + hypotenuse * Math.Sin(findAngle)));
-                    point[1] = Convert.ToInt32((hostY - hypotenuse * Math.Cos(findAngle)));
+                    point[0] = Convert.ToInt32((HostX + hypotenuse * Math.Sin(findAngle)));
+                    point[1] = Convert.ToInt32((HostY - hypotenuse * Math.Cos(findAngle)));
                 }
             return point;
         }
