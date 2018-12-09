@@ -82,7 +82,7 @@ namespace Animator
                 }
                 else
                 {
-                    Data.Add(piece.Name + Constants.SemiS + piece.OwnPoint.Name + Constants.SemiS + PiecesList.IndexOf(piece.AttachedTo) +
+                    Data.Add(piece.Name + Constants.SemiS + piece.OwnPoint.GetName() + Constants.SemiS + PiecesList.IndexOf(piece.AttachedTo) +
                         Constants.SemiS + piece.AttachPoint + Constants.SemiS + piece.X + Constants.SemiS + piece.Y + Constants.SemiS +
                         piece.R + Constants.SemiS + piece.T + Constants.SemiS + piece.S + Constants.SemiS + piece.SM + Constants.SemiS +
                         (index > baseIndex) + Constants.SemiS + piece.AngleFlip);

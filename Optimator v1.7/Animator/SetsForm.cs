@@ -61,7 +61,7 @@ namespace Animator
                 justAdded.X = DrawPanel.Width / 2.0; justAdded.Y = DrawPanel.Height / 2.0;
                 justAdded.Originally = new Originals(justAdded);
                 justAdded.PieceOf = WIP;
-                justAdded.FindPointSpots();
+                justAdded.FindJoins();
                 SelectPiece(justAdded);
                 DisplayDrawings();
             }
@@ -89,7 +89,7 @@ namespace Animator
                 addedSet.BasePiece.X = DrawPanel.Width / 2.0; addedSet.BasePiece.Y = DrawPanel.Height / 2.0;
                 foreach (Piece piece in addedSet.PiecesList)
                 {
-                    piece.FindPointSpots();
+                    piece.FindJoins();
                     piece.PieceOf = WIP;
                     piece.Originally = new Originals(piece);
                 }
@@ -312,7 +312,7 @@ namespace Animator
             if (selectedIndex != -1)
             {
                 // Move Selected's Join
-                selectedSpot = selected.PiecePoints[selectedIndex];
+                selectedSpot = selected.Joins[selectedIndex];
                 moving = true;
                 shadow = MakeShadow();
                 originalMoving = new int[] { e.X, e.Y };
@@ -475,7 +475,7 @@ namespace Animator
                 {
                     foreach (Piece piece in WIP.PiecesList)
                     {
-                        foreach (Join spot in piece.PiecePoints)
+                        foreach (Join spot in piece.Joins)
                         {
                             double[] spotCoords = spot.GetCurrentPoints(piece.GetCoords()[0], piece.GetCoords()[1]);
                             Utilities.DrawPoint(spotCoords[0], spotCoords[1], Constants.highlight, g);
@@ -491,7 +491,7 @@ namespace Animator
             // If a piece is selected, show its PointSpots
             else if (moving == false && selected != null && selected.AttachedTo == null)
             {
-                foreach (Join spot in selected.PiecePoints)
+                foreach (Join spot in selected.Joins)
                 {
                     double[] spotCoords = spot.GetCurrentPoints(selected.GetCoords()[0], selected.GetCoords()[1]);
                     Utilities.DrawPoint(spotCoords[0], spotCoords[1], Constants.highlight, g);
@@ -510,7 +510,7 @@ namespace Animator
             int count = 0;
             foreach (Piece piece in WIP.PiecesList)
             {
-                if (piece.GetIsAttached())
+                if (!piece.GetIsAttached())
                 {
                     count++;
                     if (count > 1)
@@ -587,14 +587,14 @@ namespace Animator
                     if (hostIndex != ignoreIndex && hosts[hostIndex].AttachedTo != hosts[ignoreIndex])
                     {
                         Piece host = hosts[hostIndex];
-                        List<Join> joins = host.PiecePoints;
+                        List<Join> joins = host.Joins;
                         for (int index = 0; index < joins.Count(); index++)
                         {
                             double[] coordinates = joins[index].GetCurrentPoints(host.GetCoords()[0], host.GetCoords()[1]);
                             if (x >= coordinates[0] - range && x <= coordinates[0] + range
                                 && y >= coordinates[1] - range && y <= coordinates[1] + range)
                             {
-                                return hosts[hostIndex].PiecePoints[index];
+                                return hosts[hostIndex].Joins[index];
                             }
                         }
                     }
@@ -612,7 +612,7 @@ namespace Animator
         /// <returns>The closest point index or -1 if none in range</returns>
         private int FindClosestPoint(Piece host, int x, int y)
         {
-            List<Join> spots = host.PiecePoints;
+            List<Join> spots = host.Joins;
             foreach (int range in Constants.Ranges)
             {
                 for (int index = 0; index < spots.Count(); index++)

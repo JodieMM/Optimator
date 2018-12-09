@@ -39,7 +39,7 @@ namespace Animator
         public Join AttachPoint { get; set; } = null;
         public Join OwnPoint { get; set; } = null;
         public Set PieceOf { get; set; } = null;
-        public List<Join> PiecePoints { get; set; } = new List<Join>();
+        public List<Join> Joins { get; set; } = new List<Join>();
         // Set Ordering
         public bool InFront { get; set; } = true;
         public double AngleFlip { get; set; } = -1;
@@ -334,7 +334,7 @@ namespace Animator
         /// <summary>
         /// Finds all of the points that connect to this piece.
         /// </summary>
-        public void FindPointSpots()
+        public void FindJoins()
         {
             string directory = Environment.CurrentDirectory + Constants.JoinsFolder + Name + "\\";
             if (Directory.Exists(directory))
@@ -343,7 +343,7 @@ namespace Animator
                 foreach (string file in fileArray)
                 {
                     string fileName = Path.GetFileName(file);
-                    PiecePoints.Add(new Join(fileName.Substring(0, fileName.Length - 4), this));
+                    Joins.Add(new Join(fileName.Substring(0, fileName.Length - 4), this));
                 }
             }
         }
