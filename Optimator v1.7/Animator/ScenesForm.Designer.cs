@@ -28,26 +28,20 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.SceneNumber = new System.Windows.Forms.TextBox();
-            this.FrameLengthUpDown = new System.Windows.Forms.NumericUpDown();
-            this.FpsUpDown = new System.Windows.Forms.NumericUpDown();
-            this.SceneNameTb = new System.Windows.Forms.TextBox();
+            this.SecondsUpDown = new System.Windows.Forms.NumericUpDown();
             this.BackBtn = new System.Windows.Forms.Button();
-            this.CalculatorBtn = new System.Windows.Forms.Button();
-            this.BasePrevCb = new System.Windows.Forms.CheckBox();
-            this.NextFrameBtn = new System.Windows.Forms.Button();
+            this.ForwardBtn = new System.Windows.Forms.Button();
             this.AnimationAmountTb = new System.Windows.Forms.NumericUpDown();
             this.ChangeTypeCb = new System.Windows.Forms.ComboBox();
-            this.DeleteAnimationBtn = new System.Windows.Forms.Button();
             this.AnimationLb = new System.Windows.Forms.ListBox();
             this.AddAnimationBtn = new System.Windows.Forms.Button();
-            this.label6 = new System.Windows.Forms.Label();
+            this.SMLbl = new System.Windows.Forms.Label();
             this.SizeUpDown = new System.Windows.Forms.NumericUpDown();
-            this.label5 = new System.Windows.Forms.Label();
+            this.YLbl = new System.Windows.Forms.Label();
             this.YUpDown = new System.Windows.Forms.NumericUpDown();
-            this.label4 = new System.Windows.Forms.Label();
+            this.XLbl = new System.Windows.Forms.Label();
             this.XUpDown = new System.Windows.Forms.NumericUpDown();
-            this.label3 = new System.Windows.Forms.Label();
+            this.SpinLbl = new System.Windows.Forms.Label();
             this.SpinUpDown = new System.Windows.Forms.NumericUpDown();
             this.AttributesLbl = new System.Windows.Forms.Label();
             this.TurnUpDown = new System.Windows.Forms.NumericUpDown();
@@ -64,12 +58,21 @@
             this.AddSetBtn = new System.Windows.Forms.Button();
             this.AddPieceBtn = new System.Windows.Forms.Button();
             this.AnimationTab = new System.Windows.Forms.TabPage();
+            this.PreviewBtn = new System.Windows.Forms.Button();
+            this.SecondsLbl = new System.Windows.Forms.Label();
+            this.AmountLbl = new System.Windows.Forms.Label();
             this.SceneTab = new System.Windows.Forms.TabPage();
             this.ExitBtn = new System.Windows.Forms.Button();
             this.SceneTb = new System.Windows.Forms.TextBox();
             this.FinishSceneBtn = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.FrameLengthUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.FpsUpDown)).BeginInit();
+            this.DisplayPanel = new System.Windows.Forms.Panel();
+            this.CurrentTimeLbl = new System.Windows.Forms.Label();
+            this.CurrentTimeUpDown = new System.Windows.Forms.NumericUpDown();
+            this.PastPreviewBox = new System.Windows.Forms.PictureBox();
+            this.FuturePreviewBox = new System.Windows.Forms.PictureBox();
+            this.Future2PreviewBox = new System.Windows.Forms.PictureBox();
+            this.UpArrowImg = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.SecondsUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.AnimationAmountTb)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.SizeUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.YUpDown)).BeginInit();
@@ -82,112 +85,66 @@
             this.PartsTab.SuspendLayout();
             this.AnimationTab.SuspendLayout();
             this.SceneTab.SuspendLayout();
+            this.DisplayPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.CurrentTimeUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PastPreviewBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.FuturePreviewBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Future2PreviewBox)).BeginInit();
             this.SuspendLayout();
             // 
-            // SceneNumber
+            // SecondsUpDown
             // 
-            this.SceneNumber.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SceneNumber.Location = new System.Drawing.Point(150, 387);
-            this.SceneNumber.Margin = new System.Windows.Forms.Padding(2);
-            this.SceneNumber.Name = "SceneNumber";
-            this.SceneNumber.Size = new System.Drawing.Size(32, 46);
-            this.SceneNumber.TabIndex = 28;
-            this.SceneNumber.Text = "0";
-            // 
-            // FrameLengthUpDown
-            // 
-            this.FrameLengthUpDown.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FrameLengthUpDown.Location = new System.Drawing.Point(22, 324);
-            this.FrameLengthUpDown.Margin = new System.Windows.Forms.Padding(2);
-            this.FrameLengthUpDown.Name = "FrameLengthUpDown";
-            this.FrameLengthUpDown.Size = new System.Drawing.Size(142, 46);
-            this.FrameLengthUpDown.TabIndex = 27;
-            // 
-            // FpsUpDown
-            // 
-            this.FpsUpDown.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FpsUpDown.Location = new System.Drawing.Point(125, 428);
-            this.FpsUpDown.Margin = new System.Windows.Forms.Padding(2);
-            this.FpsUpDown.Name = "FpsUpDown";
-            this.FpsUpDown.Size = new System.Drawing.Size(72, 46);
-            this.FpsUpDown.TabIndex = 24;
-            this.FpsUpDown.Visible = false;
-            // 
-            // SceneNameTb
-            // 
-            this.SceneNameTb.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SceneNameTb.Location = new System.Drawing.Point(22, 358);
-            this.SceneNameTb.Margin = new System.Windows.Forms.Padding(2);
-            this.SceneNameTb.Name = "SceneNameTb";
-            this.SceneNameTb.Size = new System.Drawing.Size(144, 46);
-            this.SceneNameTb.TabIndex = 19;
-            this.SceneNameTb.Text = "Scene Name";
+            this.SecondsUpDown.DecimalPlaces = 3;
+            this.SecondsUpDown.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SecondsUpDown.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            65536});
+            this.SecondsUpDown.Location = new System.Drawing.Point(72, 289);
+            this.SecondsUpDown.Margin = new System.Windows.Forms.Padding(2);
+            this.SecondsUpDown.Name = "SecondsUpDown";
+            this.SecondsUpDown.Size = new System.Drawing.Size(125, 27);
+            this.SecondsUpDown.TabIndex = 27;
+            this.SecondsUpDown.ValueChanged += new System.EventHandler(this.SecondsUpDown_ValueChanged);
             // 
             // BackBtn
             // 
             this.BackBtn.BackColor = System.Drawing.Color.Khaki;
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BackBtn.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BackBtn.Location = new System.Drawing.Point(20, 580);
+            this.BackBtn.Location = new System.Drawing.Point(670, 10);
             this.BackBtn.Margin = new System.Windows.Forms.Padding(2);
             this.BackBtn.Name = "BackBtn";
-            this.BackBtn.Size = new System.Drawing.Size(142, 29);
+            this.BackBtn.Size = new System.Drawing.Size(200, 30);
             this.BackBtn.TabIndex = 23;
-            this.BackBtn.Text = "Prev Frame";
+            this.BackBtn.Text = "Back";
             this.BackBtn.UseVisualStyleBackColor = false;
             this.BackBtn.Click += new System.EventHandler(this.BackBtn_Click);
             // 
-            // CalculatorBtn
+            // ForwardBtn
             // 
-            this.CalculatorBtn.BackColor = System.Drawing.Color.Khaki;
-            this.CalculatorBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CalculatorBtn.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CalculatorBtn.Location = new System.Drawing.Point(22, 387);
-            this.CalculatorBtn.Margin = new System.Windows.Forms.Padding(2);
-            this.CalculatorBtn.Name = "CalculatorBtn";
-            this.CalculatorBtn.Size = new System.Drawing.Size(98, 50);
-            this.CalculatorBtn.TabIndex = 22;
-            this.CalculatorBtn.Text = "Movement Calculator";
-            this.CalculatorBtn.UseVisualStyleBackColor = false;
-            // 
-            // BasePrevCb
-            // 
-            this.BasePrevCb.AutoSize = true;
-            this.BasePrevCb.Checked = true;
-            this.BasePrevCb.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.BasePrevCb.Enabled = false;
-            this.BasePrevCb.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BasePrevCb.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.BasePrevCb.Location = new System.Drawing.Point(22, 489);
-            this.BasePrevCb.Margin = new System.Windows.Forms.Padding(2);
-            this.BasePrevCb.Name = "BasePrevCb";
-            this.BasePrevCb.Size = new System.Drawing.Size(199, 43);
-            this.BasePrevCb.TabIndex = 21;
-            this.BasePrevCb.Text = "Base Prev.";
-            this.BasePrevCb.UseVisualStyleBackColor = true;
-            // 
-            // NextFrameBtn
-            // 
-            this.NextFrameBtn.BackColor = System.Drawing.Color.Khaki;
-            this.NextFrameBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.NextFrameBtn.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.NextFrameBtn.Location = new System.Drawing.Point(20, 549);
-            this.NextFrameBtn.Margin = new System.Windows.Forms.Padding(2);
-            this.NextFrameBtn.Name = "NextFrameBtn";
-            this.NextFrameBtn.Size = new System.Drawing.Size(142, 28);
-            this.NextFrameBtn.TabIndex = 19;
-            this.NextFrameBtn.Text = "Next Frame";
-            this.NextFrameBtn.UseVisualStyleBackColor = false;
-            this.NextFrameBtn.Click += new System.EventHandler(this.NextFrameBtn_Click);
+            this.ForwardBtn.BackColor = System.Drawing.Color.Khaki;
+            this.ForwardBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ForwardBtn.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ForwardBtn.Location = new System.Drawing.Point(460, 10);
+            this.ForwardBtn.Margin = new System.Windows.Forms.Padding(2);
+            this.ForwardBtn.Name = "ForwardBtn";
+            this.ForwardBtn.Size = new System.Drawing.Size(200, 30);
+            this.ForwardBtn.TabIndex = 19;
+            this.ForwardBtn.Text = "Forward";
+            this.ForwardBtn.UseVisualStyleBackColor = false;
+            this.ForwardBtn.Click += new System.EventHandler(this.ForwardBtn_Click);
             // 
             // AnimationAmountTb
             // 
             this.AnimationAmountTb.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AnimationAmountTb.Location = new System.Drawing.Point(22, 297);
+            this.AnimationAmountTb.Location = new System.Drawing.Point(72, 240);
             this.AnimationAmountTb.Margin = new System.Windows.Forms.Padding(2);
             this.AnimationAmountTb.Name = "AnimationAmountTb";
-            this.AnimationAmountTb.Size = new System.Drawing.Size(142, 46);
+            this.AnimationAmountTb.Size = new System.Drawing.Size(125, 27);
             this.AnimationAmountTb.TabIndex = 12;
+            this.AnimationAmountTb.ValueChanged += new System.EventHandler(this.AnimationAmountTb_ValueChanged);
             // 
             // ChangeTypeCb
             // 
@@ -203,61 +160,49 @@
             "Size",
             "Order",
             "Removed"});
-            this.ChangeTypeCb.Location = new System.Drawing.Point(22, 266);
+            this.ChangeTypeCb.Location = new System.Drawing.Point(5, 198);
             this.ChangeTypeCb.Margin = new System.Windows.Forms.Padding(2);
             this.ChangeTypeCb.Name = "ChangeTypeCb";
-            this.ChangeTypeCb.Size = new System.Drawing.Size(144, 47);
+            this.ChangeTypeCb.Size = new System.Drawing.Size(192, 27);
             this.ChangeTypeCb.TabIndex = 11;
-            // 
-            // DeleteAnimationBtn
-            // 
-            this.DeleteAnimationBtn.BackColor = System.Drawing.Color.Khaki;
-            this.DeleteAnimationBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DeleteAnimationBtn.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DeleteAnimationBtn.Location = new System.Drawing.Point(22, 234);
-            this.DeleteAnimationBtn.Margin = new System.Windows.Forms.Padding(2);
-            this.DeleteAnimationBtn.Name = "DeleteAnimationBtn";
-            this.DeleteAnimationBtn.Size = new System.Drawing.Size(142, 29);
-            this.DeleteAnimationBtn.TabIndex = 10;
-            this.DeleteAnimationBtn.Text = "Delete";
-            this.DeleteAnimationBtn.UseVisualStyleBackColor = false;
+            this.ChangeTypeCb.SelectedIndexChanged += new System.EventHandler(this.ChangeTypeCb_SelectedIndexChanged);
             // 
             // AnimationLb
             // 
             this.AnimationLb.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.AnimationLb.FormattingEnabled = true;
-            this.AnimationLb.ItemHeight = 39;
-            this.AnimationLb.Location = new System.Drawing.Point(20, 17);
+            this.AnimationLb.ItemHeight = 19;
+            this.AnimationLb.Location = new System.Drawing.Point(0, 0);
             this.AnimationLb.Margin = new System.Windows.Forms.Padding(2);
             this.AnimationLb.Name = "AnimationLb";
-            this.AnimationLb.Size = new System.Drawing.Size(144, 121);
+            this.AnimationLb.Size = new System.Drawing.Size(202, 194);
             this.AnimationLb.TabIndex = 4;
+            this.AnimationLb.SelectedIndexChanged += new System.EventHandler(this.AnimationLb_SelectedIndexChanged);
             // 
             // AddAnimationBtn
             // 
             this.AddAnimationBtn.BackColor = System.Drawing.Color.Khaki;
-            this.AddAnimationBtn.FlatAppearance.BorderSize = 0;
             this.AddAnimationBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AddAnimationBtn.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AddAnimationBtn.Location = new System.Drawing.Point(22, 201);
+            this.AddAnimationBtn.Location = new System.Drawing.Point(5, 331);
             this.AddAnimationBtn.Margin = new System.Windows.Forms.Padding(2);
             this.AddAnimationBtn.Name = "AddAnimationBtn";
-            this.AddAnimationBtn.Size = new System.Drawing.Size(142, 29);
+            this.AddAnimationBtn.Size = new System.Drawing.Size(192, 29);
             this.AddAnimationBtn.TabIndex = 1;
             this.AddAnimationBtn.Text = "Add";
             this.AddAnimationBtn.UseVisualStyleBackColor = false;
             this.AddAnimationBtn.Click += new System.EventHandler(this.AddAnimationBtn_Click);
             // 
-            // label6
+            // SMLbl
             // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(6, 596);
-            this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(170, 46);
-            this.label6.TabIndex = 18;
-            this.label6.Text = "Size Mod";
+            this.SMLbl.AutoSize = true;
+            this.SMLbl.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SMLbl.Location = new System.Drawing.Point(6, 596);
+            this.SMLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.SMLbl.Name = "SMLbl";
+            this.SMLbl.Size = new System.Drawing.Size(72, 19);
+            this.SMLbl.TabIndex = 18;
+            this.SMLbl.Text = "Size Mod";
             // 
             // SizeUpDown
             // 
@@ -270,20 +215,20 @@
             0,
             0});
             this.SizeUpDown.Name = "SizeUpDown";
-            this.SizeUpDown.Size = new System.Drawing.Size(182, 46);
+            this.SizeUpDown.Size = new System.Drawing.Size(182, 27);
             this.SizeUpDown.TabIndex = 17;
             this.SizeUpDown.ValueChanged += new System.EventHandler(this.SizeUpDown_ValueChanged);
             // 
-            // label5
+            // YLbl
             // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(6, 534);
-            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(42, 46);
-            this.label5.TabIndex = 16;
-            this.label5.Text = "Y";
+            this.YLbl.AutoSize = true;
+            this.YLbl.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.YLbl.Location = new System.Drawing.Point(6, 534);
+            this.YLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.YLbl.Name = "YLbl";
+            this.YLbl.Size = new System.Drawing.Size(19, 19);
+            this.YLbl.TabIndex = 16;
+            this.YLbl.Text = "Y";
             // 
             // YUpDown
             // 
@@ -301,20 +246,20 @@
             0,
             -2147483648});
             this.YUpDown.Name = "YUpDown";
-            this.YUpDown.Size = new System.Drawing.Size(182, 46);
+            this.YUpDown.Size = new System.Drawing.Size(182, 27);
             this.YUpDown.TabIndex = 15;
             this.YUpDown.ValueChanged += new System.EventHandler(this.YUpDown_ValueChanged);
             // 
-            // label4
+            // XLbl
             // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(6, 472);
-            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(42, 46);
-            this.label4.TabIndex = 14;
-            this.label4.Text = "X";
+            this.XLbl.AutoSize = true;
+            this.XLbl.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.XLbl.Location = new System.Drawing.Point(6, 472);
+            this.XLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.XLbl.Name = "XLbl";
+            this.XLbl.Size = new System.Drawing.Size(18, 19);
+            this.XLbl.TabIndex = 14;
+            this.XLbl.Text = "X";
             // 
             // XUpDown
             // 
@@ -332,20 +277,20 @@
             0,
             -2147483648});
             this.XUpDown.Name = "XUpDown";
-            this.XUpDown.Size = new System.Drawing.Size(182, 46);
+            this.XUpDown.Size = new System.Drawing.Size(182, 27);
             this.XUpDown.TabIndex = 13;
             this.XUpDown.ValueChanged += new System.EventHandler(this.XUpDown_ValueChanged);
             // 
-            // label3
+            // SpinLbl
             // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(6, 410);
-            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(92, 46);
-            this.label3.TabIndex = 9;
-            this.label3.Text = "Spin";
+            this.SpinLbl.AutoSize = true;
+            this.SpinLbl.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SpinLbl.Location = new System.Drawing.Point(6, 410);
+            this.SpinLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.SpinLbl.Name = "SpinLbl";
+            this.SpinLbl.Size = new System.Drawing.Size(40, 19);
+            this.SpinLbl.TabIndex = 9;
+            this.SpinLbl.Text = "Spin";
             // 
             // SpinUpDown
             // 
@@ -363,20 +308,20 @@
             0,
             -2147483648});
             this.SpinUpDown.Name = "SpinUpDown";
-            this.SpinUpDown.Size = new System.Drawing.Size(182, 46);
+            this.SpinUpDown.Size = new System.Drawing.Size(182, 27);
             this.SpinUpDown.TabIndex = 8;
             this.SpinUpDown.ValueChanged += new System.EventHandler(this.SpinUpDown_ValueChanged);
             // 
             // AttributesLbl
             // 
             this.AttributesLbl.AutoSize = true;
-            this.AttributesLbl.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AttributesLbl.Location = new System.Drawing.Point(5, 169);
+            this.AttributesLbl.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AttributesLbl.Location = new System.Drawing.Point(6, 162);
             this.AttributesLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.AttributesLbl.Name = "AttributesLbl";
-            this.AttributesLbl.Size = new System.Drawing.Size(201, 51);
+            this.AttributesLbl.Size = new System.Drawing.Size(160, 23);
             this.AttributesLbl.TabIndex = 6;
-            this.AttributesLbl.Text = "Attributes";
+            this.AttributesLbl.Text = "Original Attributes";
             // 
             // TurnUpDown
             // 
@@ -394,7 +339,7 @@
             0,
             -2147483648});
             this.TurnUpDown.Name = "TurnUpDown";
-            this.TurnUpDown.Size = new System.Drawing.Size(182, 46);
+            this.TurnUpDown.Size = new System.Drawing.Size(182, 27);
             this.TurnUpDown.TabIndex = 3;
             this.TurnUpDown.ValueChanged += new System.EventHandler(this.TurnUpDown_ValueChanged);
             // 
@@ -414,7 +359,7 @@
             0,
             -2147483648});
             this.RotationUpDown.Name = "RotationUpDown";
-            this.RotationUpDown.Size = new System.Drawing.Size(182, 46);
+            this.RotationUpDown.Size = new System.Drawing.Size(182, 27);
             this.RotationUpDown.TabIndex = 2;
             this.RotationUpDown.ValueChanged += new System.EventHandler(this.RotationUpDown_ValueChanged);
             // 
@@ -424,7 +369,7 @@
             this.NameTb.Location = new System.Drawing.Point(10, 13);
             this.NameTb.Margin = new System.Windows.Forms.Padding(2);
             this.NameTb.Name = "NameTb";
-            this.NameTb.Size = new System.Drawing.Size(182, 53);
+            this.NameTb.Size = new System.Drawing.Size(182, 30);
             this.NameTb.TabIndex = 0;
             this.NameTb.Text = "Part Name";
             // 
@@ -459,55 +404,55 @@
             this.PartsTab.Controls.Add(this.DownBtn);
             this.PartsTab.Controls.Add(this.UpBtn);
             this.PartsTab.Controls.Add(this.AddSetBtn);
-            this.PartsTab.Controls.Add(this.label6);
+            this.PartsTab.Controls.Add(this.SMLbl);
             this.PartsTab.Controls.Add(this.AddPieceBtn);
             this.PartsTab.Controls.Add(this.SizeUpDown);
             this.PartsTab.Controls.Add(this.NameTb);
-            this.PartsTab.Controls.Add(this.label5);
+            this.PartsTab.Controls.Add(this.YLbl);
             this.PartsTab.Controls.Add(this.AttributesLbl);
             this.PartsTab.Controls.Add(this.YUpDown);
             this.PartsTab.Controls.Add(this.XUpDown);
-            this.PartsTab.Controls.Add(this.label4);
+            this.PartsTab.Controls.Add(this.XLbl);
             this.PartsTab.Controls.Add(this.RotationUpDown);
             this.PartsTab.Controls.Add(this.TurnUpDown);
             this.PartsTab.Controls.Add(this.SpinUpDown);
-            this.PartsTab.Controls.Add(this.label3);
-            this.PartsTab.Location = new System.Drawing.Point(8, 50);
+            this.PartsTab.Controls.Add(this.SpinLbl);
+            this.PartsTab.Location = new System.Drawing.Point(4, 27);
             this.PartsTab.Name = "PartsTab";
-            this.PartsTab.Size = new System.Drawing.Size(194, 642);
+            this.PartsTab.Size = new System.Drawing.Size(202, 669);
             this.PartsTab.TabIndex = 2;
             this.PartsTab.Text = "Parts";
             // 
             // OrderLbl
             // 
             this.OrderLbl.AutoSize = true;
-            this.OrderLbl.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.OrderLbl.Location = new System.Drawing.Point(6, 204);
+            this.OrderLbl.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.OrderLbl.Location = new System.Drawing.Point(6, 192);
             this.OrderLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.OrderLbl.Name = "OrderLbl";
-            this.OrderLbl.Size = new System.Drawing.Size(116, 46);
+            this.OrderLbl.Size = new System.Drawing.Size(50, 19);
             this.OrderLbl.TabIndex = 33;
             this.OrderLbl.Text = "Order";
             // 
             // TurnLbl
             // 
             this.TurnLbl.AutoSize = true;
-            this.TurnLbl.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TurnLbl.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TurnLbl.Location = new System.Drawing.Point(6, 348);
             this.TurnLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.TurnLbl.Name = "TurnLbl";
-            this.TurnLbl.Size = new System.Drawing.Size(98, 46);
+            this.TurnLbl.Size = new System.Drawing.Size(43, 19);
             this.TurnLbl.TabIndex = 32;
             this.TurnLbl.Text = "Turn";
             // 
             // RotationLbl
             // 
             this.RotationLbl.AutoSize = true;
-            this.RotationLbl.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RotationLbl.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.RotationLbl.Location = new System.Drawing.Point(6, 286);
             this.RotationLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.RotationLbl.Name = "RotationLbl";
-            this.RotationLbl.Size = new System.Drawing.Size(162, 46);
+            this.RotationLbl.Size = new System.Drawing.Size(68, 19);
             this.RotationLbl.TabIndex = 31;
             this.RotationLbl.Text = "Rotation";
             // 
@@ -515,8 +460,8 @@
             // 
             this.DownBtn.BackColor = System.Drawing.Color.Khaki;
             this.DownBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DownBtn.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownBtn.Location = new System.Drawing.Point(106, 234);
+            this.DownBtn.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DownBtn.Location = new System.Drawing.Point(106, 221);
             this.DownBtn.Margin = new System.Windows.Forms.Padding(2);
             this.DownBtn.Name = "DownBtn";
             this.DownBtn.Size = new System.Drawing.Size(86, 34);
@@ -528,8 +473,8 @@
             // 
             this.UpBtn.BackColor = System.Drawing.Color.Khaki;
             this.UpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.UpBtn.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpBtn.Location = new System.Drawing.Point(10, 234);
+            this.UpBtn.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpBtn.Location = new System.Drawing.Point(10, 221);
             this.UpBtn.Margin = new System.Windows.Forms.Padding(2);
             this.UpBtn.Name = "UpBtn";
             this.UpBtn.Size = new System.Drawing.Size(86, 34);
@@ -568,25 +513,56 @@
             // AnimationTab
             // 
             this.AnimationTab.BackColor = System.Drawing.Color.LemonChiffon;
-            this.AnimationTab.Controls.Add(this.SceneNumber);
+            this.AnimationTab.Controls.Add(this.PreviewBtn);
+            this.AnimationTab.Controls.Add(this.SecondsLbl);
+            this.AnimationTab.Controls.Add(this.AmountLbl);
             this.AnimationTab.Controls.Add(this.AnimationLb);
-            this.AnimationTab.Controls.Add(this.FrameLengthUpDown);
+            this.AnimationTab.Controls.Add(this.SecondsUpDown);
             this.AnimationTab.Controls.Add(this.AddAnimationBtn);
-            this.AnimationTab.Controls.Add(this.FpsUpDown);
-            this.AnimationTab.Controls.Add(this.DeleteAnimationBtn);
-            this.AnimationTab.Controls.Add(this.SceneNameTb);
             this.AnimationTab.Controls.Add(this.ChangeTypeCb);
-            this.AnimationTab.Controls.Add(this.BackBtn);
             this.AnimationTab.Controls.Add(this.AnimationAmountTb);
-            this.AnimationTab.Controls.Add(this.CalculatorBtn);
-            this.AnimationTab.Controls.Add(this.NextFrameBtn);
-            this.AnimationTab.Controls.Add(this.BasePrevCb);
-            this.AnimationTab.Location = new System.Drawing.Point(8, 50);
+            this.AnimationTab.Location = new System.Drawing.Point(4, 27);
             this.AnimationTab.Name = "AnimationTab";
             this.AnimationTab.Padding = new System.Windows.Forms.Padding(3);
-            this.AnimationTab.Size = new System.Drawing.Size(194, 642);
+            this.AnimationTab.Size = new System.Drawing.Size(202, 669);
             this.AnimationTab.TabIndex = 0;
             this.AnimationTab.Text = "Animation";
+            // 
+            // PreviewBtn
+            // 
+            this.PreviewBtn.BackColor = System.Drawing.Color.Khaki;
+            this.PreviewBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PreviewBtn.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PreviewBtn.Location = new System.Drawing.Point(5, 364);
+            this.PreviewBtn.Margin = new System.Windows.Forms.Padding(2);
+            this.PreviewBtn.Name = "PreviewBtn";
+            this.PreviewBtn.Size = new System.Drawing.Size(192, 29);
+            this.PreviewBtn.TabIndex = 36;
+            this.PreviewBtn.Text = "Preview";
+            this.PreviewBtn.UseVisualStyleBackColor = false;
+            this.PreviewBtn.MouseHover += new System.EventHandler(this.PreviewBtn_Hover);
+            // 
+            // SecondsLbl
+            // 
+            this.SecondsLbl.AutoSize = true;
+            this.SecondsLbl.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SecondsLbl.Location = new System.Drawing.Point(2, 291);
+            this.SecondsLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.SecondsLbl.Name = "SecondsLbl";
+            this.SecondsLbl.Size = new System.Drawing.Size(67, 19);
+            this.SecondsLbl.TabIndex = 35;
+            this.SecondsLbl.Text = "Seconds";
+            // 
+            // AmountLbl
+            // 
+            this.AmountLbl.AutoSize = true;
+            this.AmountLbl.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AmountLbl.Location = new System.Drawing.Point(2, 242);
+            this.AmountLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.AmountLbl.Name = "AmountLbl";
+            this.AmountLbl.Size = new System.Drawing.Size(66, 19);
+            this.AmountLbl.TabIndex = 34;
+            this.AmountLbl.Text = "Amount";
             // 
             // SceneTab
             // 
@@ -594,10 +570,10 @@
             this.SceneTab.Controls.Add(this.ExitBtn);
             this.SceneTab.Controls.Add(this.SceneTb);
             this.SceneTab.Controls.Add(this.FinishSceneBtn);
-            this.SceneTab.Location = new System.Drawing.Point(8, 50);
+            this.SceneTab.Location = new System.Drawing.Point(4, 27);
             this.SceneTab.Name = "SceneTab";
             this.SceneTab.Padding = new System.Windows.Forms.Padding(3);
-            this.SceneTab.Size = new System.Drawing.Size(194, 642);
+            this.SceneTab.Size = new System.Drawing.Size(202, 669);
             this.SceneTab.TabIndex = 1;
             this.SceneTab.Text = "Scene";
             // 
@@ -619,11 +595,11 @@
             // SceneTb
             // 
             this.SceneTb.BackColor = System.Drawing.Color.White;
-            this.SceneTb.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SceneTb.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SceneTb.Location = new System.Drawing.Point(10, 9);
             this.SceneTb.Margin = new System.Windows.Forms.Padding(6);
             this.SceneTb.Name = "SceneTb";
-            this.SceneTb.Size = new System.Drawing.Size(182, 58);
+            this.SceneTb.Size = new System.Drawing.Size(182, 30);
             this.SceneTb.TabIndex = 22;
             this.SceneTb.Text = "Scene Name";
             // 
@@ -640,12 +616,97 @@
             this.FinishSceneBtn.TabIndex = 21;
             this.FinishSceneBtn.Text = "Finish Scene";
             this.FinishSceneBtn.UseVisualStyleBackColor = false;
+            this.FinishSceneBtn.Click += new System.EventHandler(this.FinishSceneBtn_Click);
+            // 
+            // DisplayPanel
+            // 
+            this.DisplayPanel.BackColor = System.Drawing.Color.PaleGoldenrod;
+            this.DisplayPanel.Controls.Add(this.UpArrowImg);
+            this.DisplayPanel.Controls.Add(this.Future2PreviewBox);
+            this.DisplayPanel.Controls.Add(this.FuturePreviewBox);
+            this.DisplayPanel.Controls.Add(this.PastPreviewBox);
+            this.DisplayPanel.Controls.Add(this.CurrentTimeLbl);
+            this.DisplayPanel.Controls.Add(this.CurrentTimeUpDown);
+            this.DisplayPanel.Controls.Add(this.ForwardBtn);
+            this.DisplayPanel.Controls.Add(this.BackBtn);
+            this.DisplayPanel.Location = new System.Drawing.Point(0, 515);
+            this.DisplayPanel.Name = "DisplayPanel";
+            this.DisplayPanel.Size = new System.Drawing.Size(880, 185);
+            this.DisplayPanel.TabIndex = 29;
+            // 
+            // CurrentTimeLbl
+            // 
+            this.CurrentTimeLbl.AutoSize = true;
+            this.CurrentTimeLbl.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CurrentTimeLbl.Location = new System.Drawing.Point(11, 16);
+            this.CurrentTimeLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.CurrentTimeLbl.Name = "CurrentTimeLbl";
+            this.CurrentTimeLbl.Size = new System.Drawing.Size(103, 19);
+            this.CurrentTimeLbl.TabIndex = 37;
+            this.CurrentTimeLbl.Text = "Current Time";
+            // 
+            // CurrentTimeUpDown
+            // 
+            this.CurrentTimeUpDown.DecimalPlaces = 3;
+            this.CurrentTimeUpDown.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CurrentTimeUpDown.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            65536});
+            this.CurrentTimeUpDown.Location = new System.Drawing.Point(127, 13);
+            this.CurrentTimeUpDown.Margin = new System.Windows.Forms.Padding(2);
+            this.CurrentTimeUpDown.Name = "CurrentTimeUpDown";
+            this.CurrentTimeUpDown.Size = new System.Drawing.Size(125, 27);
+            this.CurrentTimeUpDown.TabIndex = 37;
+            this.CurrentTimeUpDown.ValueChanged += new System.EventHandler(this.CurrentTimeUpDown_ValueChanged);
+            // 
+            // PastPreviewBox
+            // 
+            this.PastPreviewBox.BackColor = System.Drawing.Color.White;
+            this.PastPreviewBox.Location = new System.Drawing.Point(10, 48);
+            this.PastPreviewBox.Margin = new System.Windows.Forms.Padding(2);
+            this.PastPreviewBox.Name = "PastPreviewBox";
+            this.PastPreviewBox.Size = new System.Drawing.Size(240, 135);
+            this.PastPreviewBox.TabIndex = 30;
+            this.PastPreviewBox.TabStop = false;
+            // 
+            // FuturePreviewBox
+            // 
+            this.FuturePreviewBox.BackColor = System.Drawing.Color.White;
+            this.FuturePreviewBox.Location = new System.Drawing.Point(380, 48);
+            this.FuturePreviewBox.Margin = new System.Windows.Forms.Padding(2);
+            this.FuturePreviewBox.Name = "FuturePreviewBox";
+            this.FuturePreviewBox.Size = new System.Drawing.Size(240, 135);
+            this.FuturePreviewBox.TabIndex = 38;
+            this.FuturePreviewBox.TabStop = false;
+            // 
+            // Future2PreviewBox
+            // 
+            this.Future2PreviewBox.BackColor = System.Drawing.Color.White;
+            this.Future2PreviewBox.Location = new System.Drawing.Point(630, 48);
+            this.Future2PreviewBox.Margin = new System.Windows.Forms.Padding(2);
+            this.Future2PreviewBox.Name = "Future2PreviewBox";
+            this.Future2PreviewBox.Size = new System.Drawing.Size(240, 135);
+            this.Future2PreviewBox.TabIndex = 39;
+            this.Future2PreviewBox.TabStop = false;
+            // 
+            // UpArrowImg
+            // 
+            this.UpArrowImg.AutoSize = true;
+            this.UpArrowImg.Font = new System.Drawing.Font("Tahoma", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpArrowImg.Location = new System.Drawing.Point(298, 48);
+            this.UpArrowImg.Name = "UpArrowImg";
+            this.UpArrowImg.Size = new System.Drawing.Size(35, 33);
+            this.UpArrowImg.TabIndex = 40;
+            this.UpArrowImg.Text = "^";
             // 
             // ScenesForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.Khaki;
             this.ClientSize = new System.Drawing.Size(1100, 700);
+            this.Controls.Add(this.DisplayPanel);
             this.Controls.Add(this.OptionsMenu);
             this.Controls.Add(this.DrawPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -654,8 +715,7 @@
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ScenesForm";
-            ((System.ComponentModel.ISupportInitialize)(this.FrameLengthUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.FpsUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SecondsUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.AnimationAmountTb)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.SizeUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.YUpDown)).EndInit();
@@ -671,31 +731,31 @@
             this.AnimationTab.PerformLayout();
             this.SceneTab.ResumeLayout(false);
             this.SceneTab.PerformLayout();
+            this.DisplayPanel.ResumeLayout(false);
+            this.DisplayPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.CurrentTimeUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PastPreviewBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.FuturePreviewBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Future2PreviewBox)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-        private System.Windows.Forms.TextBox SceneNumber;
-        private System.Windows.Forms.NumericUpDown FrameLengthUpDown;
-        private System.Windows.Forms.NumericUpDown FpsUpDown;
-        private System.Windows.Forms.TextBox SceneNameTb;
+        private System.Windows.Forms.NumericUpDown SecondsUpDown;
         private System.Windows.Forms.Button BackBtn;
-        private System.Windows.Forms.Button CalculatorBtn;
-        private System.Windows.Forms.CheckBox BasePrevCb;
-        private System.Windows.Forms.Button NextFrameBtn;
+        private System.Windows.Forms.Button ForwardBtn;
         private System.Windows.Forms.NumericUpDown AnimationAmountTb;
         private System.Windows.Forms.ComboBox ChangeTypeCb;
-        private System.Windows.Forms.Button DeleteAnimationBtn;
         private System.Windows.Forms.ListBox AnimationLb;
         private System.Windows.Forms.Button AddAnimationBtn;
-        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label SMLbl;
         private System.Windows.Forms.NumericUpDown SizeUpDown;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label YLbl;
         private System.Windows.Forms.NumericUpDown YUpDown;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label XLbl;
         private System.Windows.Forms.NumericUpDown XUpDown;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label SpinLbl;
         private System.Windows.Forms.NumericUpDown SpinUpDown;
         private System.Windows.Forms.Label AttributesLbl;
         private System.Windows.Forms.NumericUpDown TurnUpDown;
@@ -716,5 +776,15 @@
         private System.Windows.Forms.Button FinishSceneBtn;
         private System.Windows.Forms.TextBox SceneTb;
         private System.Windows.Forms.Button ExitBtn;
+        private System.Windows.Forms.Label SecondsLbl;
+        private System.Windows.Forms.Label AmountLbl;
+        private System.Windows.Forms.Panel DisplayPanel;
+        private System.Windows.Forms.Button PreviewBtn;
+        private System.Windows.Forms.Label CurrentTimeLbl;
+        private System.Windows.Forms.NumericUpDown CurrentTimeUpDown;
+        private System.Windows.Forms.PictureBox Future2PreviewBox;
+        private System.Windows.Forms.PictureBox FuturePreviewBox;
+        private System.Windows.Forms.PictureBox PastPreviewBox;
+        private System.Windows.Forms.Label UpArrowImg;
     }
 }

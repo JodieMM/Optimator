@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
-using System.Linq;
 
 namespace Animator
 {
@@ -17,12 +16,10 @@ namespace Animator
     public partial class ScenesForm : Form
     {
         #region Scenes Form Variables
-        //private Scene WIP = new Scene(Constants.SceneStructure);
-        private List<Piece> piecesList = new List<Piece>();
-        private List<Change> changes = new List<Change>();
+        private Scene WIP = new Scene();
 
-        private int numFrames = 1;
-        private int workingFrame = 0;
+        private decimal timeLength = 0;
+        private decimal workingTime = 0;
 
         private Graphics g;
         private Piece selected = null;
@@ -41,8 +38,10 @@ namespace Animator
             KeyPreview = true;
             KeyUp += KeyPress;
             DrawPanel.MouseDown += new MouseEventHandler(DrawPanel_MouseDown);
+
             midX = DrawPanel.Size.Width / 2;
             midY = DrawPanel.Size.Height / 2;
+            g = DrawPanel.CreateGraphics();
         }
 
 
@@ -60,12 +59,12 @@ namespace Animator
             try
             {
                 // Add piece to lists
-                piecesList.Add(new Piece(NameTb.Text));
-                piecesList[piecesList.Count - 1].X = midX; piecesList[piecesList.Count - 1].Y = midY;
-                piecesList[piecesList.Count - 1].Originally = new Originals(piecesList[piecesList.Count - 1]);
-                selected = piecesList[piecesList.Count - 1];
+                WIP.PiecesList.Add(new Piece(NameTb.Text));
+                WIP.PiecesList[WIP.PiecesList.Count - 1].X = midX; WIP.PiecesList[WIP.PiecesList.Count - 1].Y = midY;
+                WIP.PiecesList[WIP.PiecesList.Count - 1].Originally = new Originals(WIP.PiecesList[WIP.PiecesList.Count - 1]);
+                selected = WIP.PiecesList[WIP.PiecesList.Count - 1];
 
-                Utilities.DrawPieces(piecesList, g, DrawPanel);
+                DisplayDrawings();
             }
             catch (FileNotFoundException)
             {
@@ -88,7 +87,7 @@ namespace Animator
             {
                 // Add pieces to lists
                 Set newbie = new Set(NameTb.Text);
-                piecesList.AddRange(newbie.PiecesList);
+                WIP.PiecesList.AddRange(newbie.PiecesList);
                 selected = newbie.BasePiece;
                 selected.X = midX; selected.Y = midY;
 
@@ -98,7 +97,7 @@ namespace Animator
                     piece.Originally = new Originals(piece);
                 }
 
-                Utilities.DrawPieces(piecesList, g, DrawPanel);
+                DisplayDrawings();
             }
             catch (FileNotFoundException)
             {
@@ -118,14 +117,14 @@ namespace Animator
         private void UpBtn_Click(object sender, EventArgs e)
         {
             if (selected == null) { return; }
-            int selectedIndex = piecesList.IndexOf(selected);
-            if (selectedIndex == -1 || selectedIndex == piecesList.Count - 1) { return; }
+            int selectedIndex = WIP.PiecesList.IndexOf(selected);
+            if (selectedIndex == -1 || selectedIndex == WIP.PiecesList.Count - 1) { return; }
 
             // Update piecesList
-            piecesList[selectedIndex] = piecesList[selectedIndex + 1];
-            piecesList[selectedIndex + 1] = selected;
+            WIP.PiecesList[selectedIndex] = WIP.PiecesList[selectedIndex + 1];
+            WIP.PiecesList[selectedIndex + 1] = selected;
 
-            Utilities.DrawPieces(piecesList, g, DrawPanel);
+            DisplayDrawings();
         }
 
         /// <summary>
@@ -136,14 +135,14 @@ namespace Animator
         private void DownBtn_Click(object sender, EventArgs e)
         {
             if (selected == null) { return; }
-            int selectedIndex = piecesList.IndexOf(selected);
+            int selectedIndex = WIP.PiecesList.IndexOf(selected);
             if (selectedIndex == -1 || selectedIndex == 0) { return; }
 
             // Update piecesList
-            piecesList[selectedIndex] = piecesList[selectedIndex - 1];
-            piecesList[selectedIndex - 1] = selected;
+            WIP.PiecesList[selectedIndex] = WIP.PiecesList[selectedIndex - 1];
+            WIP.PiecesList[selectedIndex - 1] = selected;
 
-            Utilities.DrawPieces(piecesList, g, DrawPanel);
+            DisplayDrawings();
         }
 
         /// <summary>
@@ -162,7 +161,7 @@ namespace Animator
             // Update Piece
             selected.Originally.R = (double)RotationUpDown.Value;
 
-            Utilities.DrawPieces(piecesList, g, DrawPanel);
+            DisplayDrawings();
         }
 
         /// <summary>
@@ -181,7 +180,7 @@ namespace Animator
             // Update Piece
             selected.Originally.T = (int)TurnUpDown.Value;
 
-            Utilities.DrawPieces(piecesList, g, DrawPanel);
+            DisplayDrawings();
         }
 
         /// <summary>
@@ -200,7 +199,7 @@ namespace Animator
             // Update Piece
             selected.Originally.S = (int)SpinUpDown.Value;
 
-            Utilities.DrawPieces(piecesList, g, DrawPanel);
+            DisplayDrawings();
         }
 
         /// <summary>
@@ -215,7 +214,7 @@ namespace Animator
             // Update Piece
             selected.Originally.X = (int)XUpDown.Value;
 
-            Utilities.DrawPieces(piecesList, g, DrawPanel);
+            DisplayDrawings();
         }
 
         /// <summary>
@@ -230,7 +229,7 @@ namespace Animator
             // Update Piece
             selected.Originally.Y = (int)YUpDown.Value;
 
-            Utilities.DrawPieces(piecesList, g, DrawPanel);
+            DisplayDrawings();
         }
 
         /// <summary>
@@ -245,7 +244,7 @@ namespace Animator
             // Update Piece
             selected.Originally.SM = (int)SizeUpDown.Value;
 
-            Utilities.DrawPieces(piecesList, g, DrawPanel);
+            DisplayDrawings();
         }
 
         #endregion
@@ -253,6 +252,16 @@ namespace Animator
 
 
         // ----- ANIMATIONS TAB -----
+
+        /// <summary>
+        /// Selects a change for modification.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void AnimationLb_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // ** TO DO
+        }
 
         /// <summary>
         /// Adds a movement/effect to the animations of the scene.
@@ -263,8 +272,19 @@ namespace Animator
         {
             if (selected == null) { return; }
 
-            changes.Add(new Change(workingFrame, ChangeTypeCb.Text, selected, (double)AnimationAmountTb.Value, (int)FrameLengthUpDown.Value));
+            WIP.Changes.Add(new Change(workingTime, ChangeTypeCb.Text, selected, (double)AnimationAmountTb.Value, (int)SecondsUpDown.Value, WIP));
             UpdateAnimationListbox();
+        }
+
+        /// <summary>
+        /// Shows what the scene will look like with the suggested
+        /// change after the change is completed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void PreviewBtn_Hover(object sender, EventArgs e)
+        {
+            // ** TO DO
         }
 
         /// <summary>
@@ -273,9 +293,9 @@ namespace Animator
         private void UpdateAnimationListbox()
         {
             AnimationLb.Items.Clear();
-            foreach (Change change in changes)
+            foreach (Change change in WIP.Changes)
             {
-                if (workingFrame >= change.StartFrame && workingFrame <= change.StartFrame + change.HowLong - 1)
+                if (workingTime >= change.StartTime && workingTime <= change.StartTime + change.HowLong)
                 {
                     string summary = "";
                     if (change.AffectedPiece.PieceOf != null)
@@ -284,7 +304,7 @@ namespace Animator
                     }
 
                     summary += change.Action + " : " + change.AffectedPiece.Name + " : " + change.HowMuch.ToString()
-                        + " : " + (change.HowLong - (workingFrame - change.StartFrame)).ToString();
+                        + " : " + (change.HowLong - (workingTime - change.StartTime)).ToString();
 
                     AnimationLb.Items.Add(summary);
                 }
@@ -292,28 +312,67 @@ namespace Animator
         }
 
         /// <summary>
+        /// Updates what attribute is changing.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ChangeTypeCb_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // ** TO DO
+        }
+
+        /// <summary>
+        /// Updates how much the selected item will change.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void AnimationAmountTb_ValueChanged(object sender, EventArgs e)
+        {
+            // ** TO DO
+        }
+
+        /// <summary>
+        /// Updates how long the change will take affect.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SecondsUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            // ** TO DO
+        }
+
+
+
+        // ----- DISPLAY PANEL -----
+
+        /// <summary>
+        /// Changes the current working time.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CurrentTimeUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            workingTime = CurrentTimeUpDown.Value;
+        }
+
+        /// <summary>
         /// Progresses to the next frame of the animation.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void NextFrameBtn_Click(object sender, EventArgs e)
+        private void ForwardBtn_Click(object sender, EventArgs e)
         {
-            foreach (Change change in changes)
+            workingTime += (decimal)0.5;
+            CurrentTimeUpDown.Value = workingTime;
+            if (timeLength < workingTime) { timeLength = workingTime; }
+
+            // Run Changes
+            foreach (Change change in WIP.Changes)
             {
-                if (workingFrame >= change.StartFrame && workingFrame <= change.StartFrame + change.HowLong - 1)
-                {
-                    change.Run(true);
-                }
+                change.Run(true, workingTime);
             }
-
-            Utilities.DrawPieces(piecesList, g, DrawPanel);
-
-            // If new, create new frame
-            if (numFrames - 1 == workingFrame) { numFrames++; }
-
-            workingFrame++;
+            DisplayDrawings();
             UpdateAnimationListbox();
-            SceneNumber.Text = workingFrame.ToString();
         }
 
         /// <summary>
@@ -323,21 +382,17 @@ namespace Animator
         /// <param name="e"></param>
         private void BackBtn_Click(object sender, EventArgs e)
         {
-            if (workingFrame <= 0) { return; }
+            if (workingTime < (decimal)0.5) { return; }
+            workingTime -= (decimal)0.5;
+            CurrentTimeUpDown.Value = workingTime;
 
-            foreach (Change change in changes)
+            // Undo Changes
+            foreach (Change change in WIP.Changes)
             {
-                if (workingFrame >= change.StartFrame + 1 && workingFrame <= change.StartFrame + change.HowLong)
-                {
-                    change.Run(false);
-                }
+                change.Run(false, workingTime);
             }
-
-            Utilities.DrawPieces(piecesList, g, DrawPanel);
-
-            workingFrame--;
+            DisplayDrawings();
             UpdateAnimationListbox();
-            SceneNumber.Text = workingFrame.ToString();
         }
 
 
@@ -370,43 +425,42 @@ namespace Animator
                 // Save Data
                 List<string> file = new List<string>
                 {
-                    // Save FPS & Number of Frames (Line 1)
-                    FpsUpDown.Value + ";" + numFrames
+                    timeLength.ToString()
                 };
 
                 // Save Parts
-                for (int index = 0; index < piecesList.Count; index++)
+                for (int index = 0; index < WIP.PiecesList.Count; index++)
                 {
                     // If piece is in 
-                    if (piecesList[index].PieceOf != null)
+                    if (WIP.PiecesList[index].PieceOf != null)
                     {
                         // If piece is base
-                        if (piecesList[index].AttachedTo == null)
+                        if (WIP.PiecesList[index].AttachedTo == null)
                         {
-                            file.Add("s:" + piecesList[index].PieceOf.Name);
+                            file.Add("s:" + WIP.PiecesList[index].PieceOf.Name);
                         }
                     }
                     else
                     {
-                        file.Add("p:" + piecesList[index].Name);
+                        file.Add("p:" + WIP.PiecesList[index].Name);
                     }
                 }
 
                 // Save Original States
                 file.Add("Originals");
-                foreach (Piece piece in piecesList)
+                foreach (Piece piece in WIP.PiecesList)
                 {
-                    file.Add(piece.Originally != null ? ";" + piece.Originally.GetSaveData() : ";500;250;0;0;0;100");
+                    file.Add(piece.Originally != null ? piece.Originally.GetSaveData() : "500;250;0;0;0;100");
                 }
 
                 // Save Animation Changes
-                foreach (Change change in changes)
+                foreach (Change change in WIP.Changes)
                 {
-                    file.Add(change.StartFrame + ";" + change.Action + ";" +
-                        piecesList.IndexOf(change.AffectedPiece) + ";" + change.HowMuch + ";" + change.HowLong);
+                    file.Add(change.StartTime + ";" + change.Action + ";" +
+                        WIP.PiecesList.IndexOf(change.AffectedPiece) + ";" + change.HowMuch + ";" + change.HowLong);
                 }
 
-                Utilities.SaveData(Environment.CurrentDirectory + Constants.ScenesFolder + SceneNameTb.Text + Constants.Txt, file);
+                Utilities.SaveData(Environment.CurrentDirectory + Constants.ScenesFolder + SceneTb.Text + Constants.Txt, file);
                 Close();
             }
             catch (FileNotFoundException)
@@ -422,7 +476,7 @@ namespace Animator
         /// <param name="e"></param>
         private void ExitBtn_Click(object sender, EventArgs e)
         {
-            if (piecesList.Count == 0) { Close(); return; } // If nothing to save, exit without confirmation
+            if (WIP.PiecesList.Count == 0) { Close(); return; } // If nothing to save, exit without confirmation
             DialogResult query = MessageBox.Show("Do you wish to exit without saving?", "Exit Confirmation", MessageBoxButtons.YesNo);
             if (query == DialogResult.Yes) { Close(); }
         }
@@ -430,6 +484,7 @@ namespace Animator
 
 
         // ----- DRAW PANEL I/O -----
+        #region Draw Panel I/O
 
         /// <summary>
         /// Selects a piece if it is clicked on.
@@ -438,24 +493,49 @@ namespace Animator
         /// <param name="e"></param>
         private void DrawPanel_MouseDown(object sender, MouseEventArgs e)
         {
-            // Update old selected outline
-            if (selected != null) { selected.OutlineColour = selected.Originally.OC; }
-
             // Choose and Update Selected Piece (If Any)
-            int selectedIndex = Utilities.FindClickedSelection(piecesList, e.X, e.Y);
-            if (selectedIndex == -1) { return; }
-            selected = piecesList[selectedIndex];
-            selected.OutlineColour = Color.Red;
+            int selectedIndex = Utilities.FindClickedSelection(WIP.PiecesList, e.X, e.Y);
+            if (selectedIndex == -1)
+            {
+                Deselect();
+            }
+            else
+            {
+                SelectPiece(WIP.PiecesList[selectedIndex]);
+            }
+            DisplayDrawings();
+        }
 
-            // Update UI
+        /// <summary>
+        /// Makes the entered piece selected, 
+        /// deselecting the old selected if
+        /// necessary.
+        /// </summary>
+        /// <param name="select"></param>
+        private void SelectPiece(Piece select)
+        {
+            Deselect();
+            selected = select;
+            selected.OutlineColour = Color.Red;
             RotationUpDown.Value = (decimal)selected.R;
             TurnUpDown.Value = (decimal)selected.T;
             SpinUpDown.Value = (decimal)selected.S;
             XUpDown.Value = (decimal)selected.X;
             YUpDown.Value = (decimal)selected.Y;
             SizeUpDown.Value = (decimal)selected.SM;
+        }
 
-            Utilities.DrawPieces(piecesList, g, DrawPanel);
+        /// <summary>
+        /// Deselects the selected piece, returning
+        /// its outline colour to normal.
+        /// </summary>
+        private void Deselect()
+        {
+            if (selected != null)
+            {
+                selected.OutlineColour = selected.Originally.OC;
+                selected = null;
+            }
         }
 
         /// <summary>
@@ -482,25 +562,26 @@ namespace Animator
                         Set deleting = selected.PieceOf;
                         foreach (Piece piece in deleting.PiecesList)
                         {
-                            piecesList.Remove(piece);
+                            WIP.PiecesList.Remove(piece);
                         }
                     }
-                    else // Piece is lone
+                    // Piece is lone
+                    else
                     {
-                        piecesList.Remove(selected);
+                        WIP.PiecesList.Remove(selected);
                     }
 
                     // Update changes to remove those made redundant by deleting a piece/set
-                    foreach (Change change in changes)
+                    foreach (Change change in WIP.Changes)
                     {
-                        if (!piecesList.Contains(change.AffectedPiece))
+                        if (!WIP.PiecesList.Contains(change.AffectedPiece))
                         {
-                            changes.Remove(change);
+                            WIP.Changes.Remove(change);
                         }
                     }
 
                     selected = null;
-                    Utilities.DrawPieces(piecesList, g, DrawPanel);
+                    DisplayDrawings();
                     break;
 
                 // Do nothing for any other key
@@ -508,6 +589,8 @@ namespace Animator
                     break;
             }
         }
+
+        #endregion
 
 
 
@@ -518,7 +601,7 @@ namespace Animator
         /// </summary>
         private void DisplayDrawings()
         {
-            g = DrawPanel.CreateGraphics();
+            Utilities.DrawPieces(WIP.PiecesList, g, DrawPanel);
         }
     }
 }

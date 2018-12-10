@@ -14,11 +14,8 @@ namespace Animator
     {
         #region Scene Variables
         public List<Piece> PiecesList { get; } = new List<Piece>();
-        private List<Piece> partOrder = new List<Piece>();
         public List<Change> Changes { get; } = new List<Change>();
-
-        public int FrameRate { get; set; }
-        public int NumFrames { get; set; }
+        public decimal TimeLength { get; set; }
         #endregion
 
 
@@ -34,13 +31,10 @@ namespace Animator
                 // Open File
                 string filePath = Environment.CurrentDirectory + Constants.ScenesFolder + fileName + Constants.Txt;
                 System.IO.StreamReader file = new System.IO.StreamReader(@filePath);
-
-                // Read Data
-                string[] dataLines = file.ReadLine().Split(Constants.Semi);
-                FrameRate = int.Parse(dataLines[0]);
-                NumFrames = int.Parse(dataLines[1]);
+                TimeLength = decimal.Parse(file.ReadLine());
 
                 // Read parts
+                string[] dataLines;
                 string dataLine = file.ReadLine();
                 while (dataLine != "Originals")
                 {
@@ -60,8 +54,8 @@ namespace Animator
                 foreach (Piece piece in PiecesList)
                 {
                     dataLines = file.ReadLine().Split(Constants.Semi);
-                    piece.SetValues(double.Parse(dataLines[1]), double.Parse(dataLines[2]), double.Parse(dataLines[3]),
-                                double.Parse(dataLines[4]), double.Parse(dataLines[5]), double.Parse(dataLines[6]));
+                    piece.SetValues(double.Parse(dataLines[0]), double.Parse(dataLines[1]), double.Parse(dataLines[2]),
+                                double.Parse(dataLines[3]), double.Parse(dataLines[4]), double.Parse(dataLines[5]));
                     piece.Originally = new Originals(piece);
                 }
 
@@ -71,11 +65,11 @@ namespace Animator
                     string[] data = dataLine.Split(Constants.Semi);
                     if (data.Length == 5) 
                     {
-                        Changes.Add(new Change(int.Parse(data[0]), data[1], PiecesList[int.Parse(data[2])], double.Parse(data[3]), int.Parse(data[4])));
+                        Changes.Add(new Change(int.Parse(data[0]), data[1], PiecesList[int.Parse(data[2])], double.Parse(data[3]), int.Parse(data[4]), this));
                     }
                     else
                     {
-                        Changes.Add(new Change(int.Parse(data[0]), data[1], PiecesList[int.Parse(data[2])], double.Parse(data[3]), int.Parse(data[4]), data[5]));
+                        Changes.Add(new Change(int.Parse(data[0]), data[1], PiecesList[int.Parse(data[2])], double.Parse(data[3]), int.Parse(data[4]), data[5], this));
                     }
                 }
 
@@ -96,8 +90,7 @@ namespace Animator
         /// </summary>
         public Scene()
         {
-            FrameRate = 120;
-            NumFrames = 1;
+            TimeLength = 0;
         }
 
 
@@ -114,10 +107,6 @@ namespace Animator
             {
                 piece.TakeOriginalState();
             }
-
-            // Reset partOrder
-            partOrder.Clear();
-            partOrder.AddRange(PiecesList);
         }
     }
 }

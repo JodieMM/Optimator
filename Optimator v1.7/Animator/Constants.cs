@@ -60,5 +60,8 @@ namespace Animator
         public static object[] connectorOptionsReadable = new object[] { "Line", "Blank" };
         public static string[] fillOptions = { "fill", "gradient" };
         public static string[] solidOptions = { "s", "f" };
+
+        // Scene Options
+        public static object[] possibleChanges = new object[] { "X", "Y", "Rotation", "Turn", "Spin", "Size", "Order", "Removed" };
     }
 }

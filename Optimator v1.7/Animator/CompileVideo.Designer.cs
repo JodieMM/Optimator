@@ -49,7 +49,7 @@
             // 
             // SaveBtn
             // 
-            this.SaveBtn.BackColor = System.Drawing.Color.Salmon;
+            this.SaveBtn.BackColor = System.Drawing.Color.LightCoral;
             this.SaveBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SaveBtn.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SaveBtn.Location = new System.Drawing.Point(10, 550);
@@ -95,7 +95,7 @@
             this.SceneTb.Location = new System.Drawing.Point(10, 10);
             this.SceneTb.Margin = new System.Windows.Forms.Padding(2);
             this.SceneTb.Name = "SceneTb";
-            this.SceneTb.Size = new System.Drawing.Size(182, 53);
+            this.SceneTb.Size = new System.Drawing.Size(182, 30);
             this.SceneTb.TabIndex = 0;
             this.SceneTb.Text = "Scene Name";
             // 
@@ -132,10 +132,10 @@
             this.ScenesTab.Controls.Add(this.PlayBtn);
             this.ScenesTab.Controls.Add(this.SceneTb);
             this.ScenesTab.Controls.Add(this.SubmitScene);
-            this.ScenesTab.Location = new System.Drawing.Point(8, 50);
+            this.ScenesTab.Location = new System.Drawing.Point(4, 27);
             this.ScenesTab.Name = "ScenesTab";
             this.ScenesTab.Padding = new System.Windows.Forms.Padding(3);
-            this.ScenesTab.Size = new System.Drawing.Size(194, 642);
+            this.ScenesTab.Size = new System.Drawing.Size(202, 669);
             this.ScenesTab.TabIndex = 0;
             this.ScenesTab.Text = "Scenes";
             // 
@@ -145,16 +145,16 @@
             this.VideoTab.Controls.Add(this.SaveBtn);
             this.VideoTab.Controls.Add(this.ExitBtn);
             this.VideoTab.Controls.Add(this.NameTb);
-            this.VideoTab.Location = new System.Drawing.Point(8, 50);
+            this.VideoTab.Location = new System.Drawing.Point(4, 27);
             this.VideoTab.Name = "VideoTab";
             this.VideoTab.Padding = new System.Windows.Forms.Padding(3);
-            this.VideoTab.Size = new System.Drawing.Size(194, 642);
+            this.VideoTab.Size = new System.Drawing.Size(202, 669);
             this.VideoTab.TabIndex = 1;
             this.VideoTab.Text = "Video";
             // 
             // ExitBtn
             // 
-            this.ExitBtn.BackColor = System.Drawing.Color.Salmon;
+            this.ExitBtn.BackColor = System.Drawing.Color.LightCoral;
             this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ExitBtn.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ExitBtn.ForeColor = System.Drawing.Color.Black;
@@ -165,6 +165,7 @@
             this.ExitBtn.TabIndex = 26;
             this.ExitBtn.Text = "Exit";
             this.ExitBtn.UseVisualStyleBackColor = false;
+            this.ExitBtn.Click += new System.EventHandler(this.ExitBtn_Click);
             // 
             // NameTb
             // 
@@ -173,23 +174,23 @@
             this.NameTb.Location = new System.Drawing.Point(10, 10);
             this.NameTb.Margin = new System.Windows.Forms.Padding(6);
             this.NameTb.Name = "NameTb";
-            this.NameTb.Size = new System.Drawing.Size(182, 58);
+            this.NameTb.Size = new System.Drawing.Size(182, 33);
             this.NameTb.TabIndex = 25;
             this.NameTb.Text = "Video Name";
             // 
             // SettingsTab
             // 
             this.SettingsTab.BackColor = System.Drawing.Color.MistyRose;
-            this.SettingsTab.Location = new System.Drawing.Point(8, 50);
+            this.SettingsTab.Location = new System.Drawing.Point(4, 27);
             this.SettingsTab.Name = "SettingsTab";
-            this.SettingsTab.Size = new System.Drawing.Size(194, 642);
+            this.SettingsTab.Size = new System.Drawing.Size(202, 669);
             this.SettingsTab.TabIndex = 2;
             this.SettingsTab.Text = "Settings";
             // 
             // CompileVideo
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.BackColor = System.Drawing.Color.Salmon;
+            this.BackColor = System.Drawing.Color.LightCoral;
             this.ClientSize = new System.Drawing.Size(1100, 700);
             this.Controls.Add(this.OptionsMenu);
             this.Controls.Add(this.DrawPanel);

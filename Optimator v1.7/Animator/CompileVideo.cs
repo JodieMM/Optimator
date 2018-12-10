@@ -18,8 +18,8 @@ namespace Animator
         #region Video Variables
         private List<Scene> videoScenes = new List<Scene>();
         private int sceneIndex = 0;
-        private int frameIndex = 0;
-        private int numFrames = 0;
+        private decimal workingTime = 0;
+        private decimal sceneLength = 0;
         private Graphics g;
         #endregion
 
@@ -44,7 +44,7 @@ namespace Animator
         private void SubmitScene_Click(object sender, EventArgs e)
         {
             videoScenes.Add(new Scene(SceneTb.Text));
-            numFrames += videoScenes[videoScenes.Count - 1].NumFrames;
+            sceneLength += videoScenes[videoScenes.Count - 1].TimeLength;
         }
 
         /// <summary>
@@ -55,10 +55,20 @@ namespace Animator
         private void PlayBtn_Click(object sender, EventArgs e)
         {
             sceneIndex = 0;
-            frameIndex = 0;
+            workingTime = 0;
             videoScenes[sceneIndex].AssignOriginalPositions();
             DrawFrame(videoScenes[sceneIndex], DrawPanel.CreateGraphics(), true);
             AnimationTimer.Start();
+        }
+
+        /// <summary>
+        /// Closes the form without saving.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ExitBtn_Click(object sender, EventArgs e)
+        {
+            Close();
         }
 
         /// <summary>
@@ -94,10 +104,10 @@ namespace Animator
                 for (sceneIndex = 0; sceneIndex < videoScenes.Count; sceneIndex++)
                 {
                     videoScenes[sceneIndex].AssignOriginalPositions();
-                    for (frameIndex = 0; frameIndex < videoScenes[sceneIndex].NumFrames; frameIndex++)
+                    for (workingTime = 0; workingTime < videoScenes[sceneIndex].TimeLength; workingTime++)
                     {
                         Bitmap bitmap = DrawOnBitmap(videoScenes[sceneIndex]);
-                        bitmap.Save(filePath + "\\" + (frameIndex + 1) + Constants.Png, System.Drawing.Imaging.ImageFormat.Png);
+                        bitmap.Save(filePath + "\\" + (workingTime + 1) + Constants.Png, System.Drawing.Imaging.ImageFormat.Png);
                     }
 
                 }
@@ -132,10 +142,7 @@ namespace Animator
             // Update Pieces
             foreach (Change change in baseScene.Changes)
             {
-                if (frameIndex >= change.StartFrame && (frameIndex <= change.StartFrame + change.HowLong - 1))
-                {
-                    change.Run(true);
-                }
+                change.Run(true, workingTime);
             }            
 
             // Draw Parts
@@ -174,11 +181,11 @@ namespace Animator
         /// <param name="e"></param>
         private void AnimationTimer_Tick(object sender, EventArgs e)
         {
-            frameIndex++;
-            if (frameIndex >= videoScenes[sceneIndex].NumFrames)
+            workingTime++;
+            if (workingTime >= videoScenes[sceneIndex].TimeLength)
             {
                 sceneIndex++;
-                frameIndex = 0;
+                workingTime = 0;
                 if (sceneIndex >= videoScenes.Count)
                 {
                     AnimationTimer.Stop();
