@@ -37,7 +37,8 @@ namespace Animator
         public SetsForm()
         {
             InitializeComponent();
-            DrawPanel.KeyDown += KeyPress;
+            KeyPreview = true;
+            KeyUp += KeyPress;
             DrawPanel.MouseDown += new MouseEventHandler(DrawPanel_MouseDown);
             DrawPanel.MouseMove += new MouseEventHandler(DrawPanel_MouseMove);
             DrawPanel.MouseUp += new MouseEventHandler(DrawPanel_MouseUp);
@@ -433,13 +434,19 @@ namespace Animator
         /// <param name="e"></param>
         private new void KeyPress(object sender, KeyEventArgs e)
         {
-            // Delete selected piece
-            if (e.KeyCode == Keys.Delete)
+            switch (e.KeyCode)
             {
-                if (selected == null) { return; }
-                WIP.PiecesList.Remove(selected);
-                selected = null;
-                DisplayDrawings();
+                // Delete Selected Piece
+                case Keys.Delete:
+                    if (selected == null) { return; }
+                    WIP.PiecesList.Remove(selected);
+                    selected = null;
+                    DisplayDrawings();
+                    break;
+
+                // Do nothing for any other key
+                default:
+                    break;
             }
         }
 
@@ -524,7 +531,6 @@ namespace Animator
                     Utilities.DrawPoint(spotCoords[0], spotCoords[1], Constants.highlight, g);
                 }
             }
-            
         }
 
         /// <summary>

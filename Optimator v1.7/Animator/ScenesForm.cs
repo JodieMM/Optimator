@@ -38,7 +38,8 @@ namespace Animator
         public ScenesForm()
         {
             InitializeComponent();
-            DrawPanel.KeyDown += KeyPress;
+            KeyPreview = true;
+            KeyUp += KeyPress;
             DrawPanel.MouseDown += new MouseEventHandler(DrawPanel_MouseDown);
             midX = DrawPanel.Size.Width / 2;
             midY = DrawPanel.Size.Height / 2;
@@ -465,40 +466,46 @@ namespace Animator
         /// <param name="e"></param>
         private new void KeyPress(object sender, KeyEventArgs e)
         {
-            // Delete selected shape
-            if (e.KeyCode == Keys.Delete)
+            switch (e.KeyCode)
             {
-                if (selected == null) { return; }
+                // Delete Selected Shape
+                case Keys.Delete:
+                    if (selected == null) { return; }
 
-                // If piece is involved in set
-                if (selected.PieceOf != null)
-                {
-                    DialogResult result = MessageBox.Show("This will delete the entire set. Do you wish to continue?",
-                        "Overwrite Confirmation", MessageBoxButtons.YesNo);
-                    if (result == DialogResult.No) { return; }
-
-                    Set deleting = selected.PieceOf;
-                    foreach (Piece piece in deleting.PiecesList)
+                    // If piece is involved in set
+                    if (selected.PieceOf != null)
                     {
-                        piecesList.Remove(piece);
-                    }
-                }
-                else // Piece is lone
-                {
-                    piecesList.Remove(selected);
-                }
+                        DialogResult result = MessageBox.Show("This will delete the entire set. Do you wish to continue?",
+                            "Overwrite Confirmation", MessageBoxButtons.YesNo);
+                        if (result == DialogResult.No) { return; }
 
-                // Update changes to remove those made redundant by deleting a piece/set
-                foreach (Change change in changes)
-                {
-                    if (!piecesList.Contains(change.AffectedPiece))
+                        Set deleting = selected.PieceOf;
+                        foreach (Piece piece in deleting.PiecesList)
+                        {
+                            piecesList.Remove(piece);
+                        }
+                    }
+                    else // Piece is lone
                     {
-                        changes.Remove(change);
+                        piecesList.Remove(selected);
                     }
-                }
 
-                selected = null;
-                Utilities.DrawPieces(piecesList, g, DrawPanel);
+                    // Update changes to remove those made redundant by deleting a piece/set
+                    foreach (Change change in changes)
+                    {
+                        if (!piecesList.Contains(change.AffectedPiece))
+                        {
+                            changes.Remove(change);
+                        }
+                    }
+
+                    selected = null;
+                    Utilities.DrawPieces(piecesList, g, DrawPanel);
+                    break;
+
+                // Do nothing for any other key
+                default:
+                    break;
             }
         }
 

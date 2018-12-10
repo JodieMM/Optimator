@@ -617,7 +617,7 @@ namespace Animator
                 // If diagonal line
                 else
                 {
-                    gradient = (from[1] - to[1]) / (from[0] - to[0]);
+                    gradient = (lower[1] - upper[1]) / (lower[0] - upper[0]);
                 }
             }
             // ** TO DO - CURVES
@@ -626,7 +626,7 @@ namespace Animator
             line.Add(from);
             for (int index = (int)lower[1] + 1; index < upper[1]; index++)
             {
-                line.Add(new double[] { lower[0] + ((index - lower[1]) * gradient), index });
+                line.Add(new double[] { lower[0] + ((index - lower[1]) / gradient), index });
             }
             line.Add(to);
             return line;
@@ -641,7 +641,6 @@ namespace Animator
         public static List<double[]> FindPieceLines(List<double[]> coords, List<string> lineArray)
         {
             List<double[]> line = new List<double[]>();
-
             for (int index = 0; index < coords.Count; index++)
             {
                 if (index == coords.Count - 1)
