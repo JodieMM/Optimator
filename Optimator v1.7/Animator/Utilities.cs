@@ -351,8 +351,8 @@ namespace Animator
         #region Piece Functions
 
         /// <summary>
-        /// Finds the correct row in the piece data for the given rotation and turn values
-        /// RowNum is 1 for pieces, 0 for points
+        /// Finds the correct row in the piece data for the given rotation and turn values.
+        /// RowNum is 1 for pieces, 0 for points.
         /// </summary>
         /// <param name="r">Rotation</param>
         /// <param name="t">Turn</param>
@@ -417,7 +417,7 @@ namespace Animator
         }
 
         /// <summary>
-        /// Flips a shape vertically and/or horizontally
+        /// Flips a shape vertically and/or horizontally.
         /// </summary>
         /// <param name="spots">Shape coordinates</param>
         /// <param name="angle">Original [0], rotated [1], turned [2]</param>
@@ -462,9 +462,8 @@ namespace Animator
         }
 
         /// <summary>
-        /// Checks shape coordinates are valid and returns a set of coordinates where
-        /// all coordinates have a matching coord horizontally and vertically to them if
-        /// it is valid.
+        /// Returns a set of coordinates where all coordinates have a matching coord 
+        /// horizontally and vertically to them.
         /// </summary>
         /// <param name="oCoords">Original coordinates</param>
         /// <param name="rCoords">Rotated coordinates</param>

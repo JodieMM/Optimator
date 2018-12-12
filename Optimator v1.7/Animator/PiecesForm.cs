@@ -896,8 +896,7 @@ namespace Animator
         /// <param name="o">Original coordinates</param>
         /// <param name="r">Rotated coordinates</param>
         /// <param name="t">Turned coordinates</param>
-        /// <param name="connectorsList">Connectors between points</param>
-        /// <param name="detailsList">Details of points</param>
+        /// <param name="spotsList">Spot representation of the coordinates in the same order</param>
         private void ConvertVariablesToData (double rFrom, double rTo, double tFrom, double tTo, List<double[]> o,
             List<double[]> r, List<double[]> t, List<Spot> spotsList)
         {

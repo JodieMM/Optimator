@@ -59,13 +59,11 @@ namespace Animator
         {
             try
             {
-                // Add piece to lists
                 Piece added = new Piece(NameTb.Text);
                 WIP.PiecesList.Add(added);
                 added.X = midX; added.Y = midY;
                 added.Originally = new Originals(added);
                 SelectPiece(added);
-
                 DisplayDrawings();
             }
             catch (FileNotFoundException)
@@ -87,18 +85,14 @@ namespace Animator
         {
             try
             {
-                // Add pieces to lists
                 Set newbie = new Set(NameTb.Text);
                 WIP.PiecesList.AddRange(newbie.PiecesList);
-                SelectPiece(newbie.BasePiece);
-                selected.X = midX; selected.Y = midY;
-
-                // Set Originals
+                newbie.BasePiece.X = midX; newbie.BasePiece.Y = midY;
                 foreach (Piece piece in newbie.PiecesList)
                 {
                     piece.Originally = new Originals(piece);
                 }
-
+                SelectPiece(newbie.BasePiece);
                 DisplayDrawings();
             }
             catch (FileNotFoundException)
@@ -152,18 +146,14 @@ namespace Animator
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void RotationUpDown_ValueChanged(object sender, EventArgs e)
+        private void RotationBar_ValueChanged(object sender, EventArgs e)
         {
             if (selected == null) { return; }
 
-            // Check for Overflow
-            if (RotationUpDown.Value == 360) { RotationUpDown.Value = 0; }
-            else if (RotationUpDown.Value == -1) { RotationUpDown.Value = 359; }
-
             // Update Piece
-            selected.Originally.R = (double)RotationUpDown.Value;
+            selected.Originally.R = RotationBar.Value;
 
-            if (RotationUpDown == ActiveControl)
+            if (RotationBar == ActiveControl)
             {
                 DisplayDrawings();
             }
@@ -174,18 +164,14 @@ namespace Animator
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void TurnUpDown_ValueChanged(object sender, EventArgs e)
+        private void TurnBar_ValueChanged(object sender, EventArgs e)
         {
             if (selected == null) { return; }
 
-            // Check for Overflow
-            if (TurnUpDown.Value == 360) { TurnUpDown.Value = 0; }
-            else if (TurnUpDown.Value == -1) { TurnUpDown.Value = 359; }
-
             // Update Piece
-            selected.Originally.T = (int)TurnUpDown.Value;
+            selected.Originally.T = TurnBar.Value;
 
-            if (TurnUpDown == ActiveControl)
+            if (TurnBar == ActiveControl)
             {
                 DisplayDrawings();
             }
@@ -196,18 +182,14 @@ namespace Animator
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void SpinUpDown_ValueChanged(object sender, EventArgs e)
+        private void SpinBar_ValueChanged(object sender, EventArgs e)
         {
             if (selected == null) { return; }
 
-            // Check for Overflow
-            if (SpinUpDown.Value == 360) { SpinUpDown.Value = 0; }
-            else if (SpinUpDown.Value == -1) { SpinUpDown.Value = 359; }
-
             // Update Piece
-            selected.Originally.S = (int)SpinUpDown.Value;
+            selected.Originally.S = SpinBar.Value;
 
-            if (SpinUpDown == ActiveControl)
+            if (SpinBar == ActiveControl)
             {
                 DisplayDrawings();
             }
@@ -254,14 +236,14 @@ namespace Animator
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void SizeUpDown_ValueChanged(object sender, EventArgs e)
+        private void SizeBar_ValueChanged(object sender, EventArgs e)
         {
             if (selected == null) { return; }
 
             // Update Piece
-            selected.Originally.SM = (double)SizeUpDown.Value;
+            selected.Originally.SM = SizeBar.Value;
 
-            if (SizeUpDown == ActiveControl)
+            if (SizeBar == ActiveControl)
             {
                 DisplayDrawings();
             }
@@ -535,12 +517,12 @@ namespace Animator
             Deselect();
             selected = select;
             selected.OutlineColour = Color.Red;
-            RotationUpDown.Value = (decimal)selected.Originally.R;
-            TurnUpDown.Value = (decimal)selected.Originally.T;
-            SpinUpDown.Value = (decimal)selected.Originally.S;
+            RotationBar.Value = (int)selected.Originally.R;
+            TurnBar.Value = (int)selected.Originally.T;
+            SpinBar.Value = (int)selected.Originally.S;
             XUpDown.Value = (decimal)selected.Originally.X;
             YUpDown.Value = (decimal)selected.Originally.Y;
-            SizeUpDown.Value = (decimal)selected.Originally.SM;
+            SizeBar.Value = (int)selected.Originally.SM;
         }
 
         /// <summary>
@@ -573,8 +555,8 @@ namespace Animator
                     // If Listbox is highlighted, delete change/animation
                     if (ActiveControl == AnimationLb && AnimationLb.SelectedIndex != -1)
                     {
+                        RemoveChangeIndex(AnimationLb.SelectedIndex);
                         AnimationLb.Items.RemoveAt(AnimationLb.SelectedIndex);
-                        // ** TO DO Remove connected change (put them in LB with index as tag?)
                     }
                     // Delete selected piece
                     else
@@ -655,20 +637,65 @@ namespace Animator
 
             // Update Animation listbox
             AnimationLb.Items.Clear();
+            AnimationLb.Items.Add("Piece: Action: How Much: Start");
+            List<string> back = new List<string>();
+            foreach (Change change in WIP.Changes)
+            {
+                string summary = "";
+                if (change.AffectedPiece.PieceOf != null)
+                {
+                    summary += change.AffectedPiece.AttachedTo != null ? "** " : "* ";
+                }
+                summary += change.AffectedPiece.Name + " :" + change.Action + " :" + 
+                    change.HowMuch.ToString() + " :" + change.StartTime.ToString();
+
+                if (CurrentTimeUpDown.Value >= change.StartTime && CurrentTimeUpDown.Value <= change.StartTime + change.HowLong)
+                {
+                    AnimationLb.Items.Add(summary);
+                }
+                else
+                {
+                    back.Add(summary);
+                }
+            }
+            foreach (string summary in back)
+            {
+                AnimationLb.Items.Add(summary);
+            }
+        }
+
+        /// <summary>
+        /// Removes the change at the entered
+        /// AnimationLb index.
+        /// </summary>
+        /// <param name="index"></param>
+        private void RemoveChangeIndex(int index)
+        {
+            int counter = 0;
+            // Search Running Changes
             foreach (Change change in WIP.Changes)
             {
                 if (CurrentTimeUpDown.Value >= change.StartTime && CurrentTimeUpDown.Value <= change.StartTime + change.HowLong)
                 {
-                    string summary = "";
-                    if (change.AffectedPiece.PieceOf != null)
+                    if (counter == index)
                     {
-                        summary += change.AffectedPiece.AttachedTo != null ? "** " : "* ";
+                        WIP.Changes.Remove(change);
+                        return;
                     }
-
-                    summary += change.Action + " : " + change.AffectedPiece.Name + " : " + change.HowMuch.ToString()
-                        + " : " + (change.HowLong - (CurrentTimeUpDown.Value - change.StartTime)).ToString();
-
-                    AnimationLb.Items.Add(summary);
+                    counter++;
+                }
+            }
+            // Search Back Changes
+            foreach (Change change in WIP.Changes)
+            {
+                if (!(CurrentTimeUpDown.Value >= change.StartTime) || !(CurrentTimeUpDown.Value <= change.StartTime + change.HowLong))
+                {
+                    if (counter == index)
+                    {
+                        WIP.Changes.Remove(change);
+                        return;
+                    }
+                    counter++;
                 }
             }
         }
