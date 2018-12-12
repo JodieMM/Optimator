@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace Animator
@@ -19,8 +18,9 @@ namespace Animator
         private List<Scene> videoScenes = new List<Scene>();
         private int sceneIndex = 0;
         private decimal workingTime = 0;
-        private decimal sceneLength = 0;
+
         private Graphics g;
+        private Color backgroundColor = Color.White;
         #endregion
 
 
@@ -44,7 +44,6 @@ namespace Animator
         private void SubmitScene_Click(object sender, EventArgs e)
         {
             videoScenes.Add(new Scene(SceneTb.Text));
-            sceneLength += videoScenes[videoScenes.Count - 1].TimeLength;
         }
 
         /// <summary>
@@ -56,8 +55,7 @@ namespace Animator
         {
             sceneIndex = 0;
             workingTime = 0;
-            videoScenes[sceneIndex].AssignOriginalPositions();
-            DrawFrame(videoScenes[sceneIndex], DrawPanel.CreateGraphics(), true);
+            DrawFrame(videoScenes[0]);
             AnimationTimer.Start();
         }
 
@@ -68,7 +66,19 @@ namespace Animator
         /// <param name="e"></param>
         private void ExitBtn_Click(object sender, EventArgs e)
         {
-            Close();
+            // If nothing to save, exit without confirmation
+            if (videoScenes.Count == 0)
+            {
+                Close();
+            }
+            else
+            {
+                DialogResult query = MessageBox.Show("Do you wish to exit without saving?", "Exit Confirmation", MessageBoxButtons.YesNo);
+                if (query == DialogResult.Yes)
+                {
+                    Close();
+                }
+            }
         }
 
         /// <summary>
@@ -85,31 +95,29 @@ namespace Animator
             }
 
             // Check name not already in use, or that overriding is okay
-            DialogResult result = DialogResult.Yes;
-            if (File.Exists(Utilities.GetDirectory(Constants.VideosFolder, NameTb.Text)))
+            if (Directory.Exists(Utilities.GetDirectory(Constants.VideosFolder, NameTb.Text)))
             {
-                result = MessageBox.Show("This name is already in use. Do you want to override the existing video?", "Override Confirmation", MessageBoxButtons.YesNo);
+                DialogResult result = MessageBox.Show("This name is already in use. Do you want to override the existing video?", "Override Confirmation", MessageBoxButtons.YesNo);
+                if (result == DialogResult.No) { return; }
             }
-            if (result == DialogResult.No) { return; }
 
             // Save Video and Close Form
             try
             {
                 // Prepare Save Location
-                string filePath = Environment.CurrentDirectory + Constants.VideosFolder + NameTb.Text;
-                Directory.CreateDirectory(filePath);
-                StreamWriter file = new StreamWriter(@filePath);
+                Directory.CreateDirectory(Utilities.GetDirectory(Constants.VideosFolder, NameTb.Text));
 
                 // Save Images
+                int numFrames = 0;
+                decimal timeIncrement = 1 / FpsUpDown.Value;
                 for (sceneIndex = 0; sceneIndex < videoScenes.Count; sceneIndex++)
                 {
-                    videoScenes[sceneIndex].AssignOriginalPositions();
-                    for (workingTime = 0; workingTime < videoScenes[sceneIndex].TimeLength; workingTime++)
+                    for (workingTime = 0; workingTime <= videoScenes[sceneIndex].TimeLength; workingTime += timeIncrement)
                     {
-                        Bitmap bitmap = DrawOnBitmap(videoScenes[sceneIndex]);
-                        bitmap.Save(filePath + "\\" + (workingTime + 1) + Constants.Png, System.Drawing.Imaging.ImageFormat.Png);
+                        Bitmap bitmap = DrawOnBitmap();
+                        bitmap.Save(Utilities.GetDirectory(Constants.VideosFolder, NameTb.Text, numFrames.ToString(), Constants.Png), System.Drawing.Imaging.ImageFormat.Png);
+                        numFrames++;
                     }
-
                 }
                 Close();
             }
@@ -125,48 +133,70 @@ namespace Animator
 
 
 
+        // ----- SETTINGS TAB -----
+
+        /// <summary>
+        /// Hides or shows the preview panel.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void PreviewCb_CheckedChanged(object sender, EventArgs e)
+        {
+            DisplayPanel.Visible = PreviewCb.Checked;
+        }
+
+
+
         // ----- DRAWING FUNCTIONS -----
 
         /// <summary>
-        /// Draws a frame to the display.
+        /// Draws a frame to a bitmap.
         /// </summary>
         /// <param name="baseScene">The frame to draw</param>
         /// <param name="g">The graphics to display with</param>
-        /// <param name="refresh">Whether the drawing panel should be cleared first</param>
-        private void DrawFrame(Scene baseScene, Graphics g, bool refresh)
+        private void DrawFrame(Scene baseScene, Graphics g)
         {
-            // Prepare
-            if (refresh) { DrawPanel.Refresh(); }
-            List<Piece> piecesList = baseScene.PiecesList;
-
-            // Update Pieces
-            foreach (Change change in baseScene.Changes)
-            {
-                change.Run(true, workingTime);
-            }            
+            baseScene.RunScene(workingTime);      
 
             // Draw Parts
             foreach(Piece piece in baseScene.PiecesList)
             {
                 Utilities.DrawPiece(piece, g, true);
             }
-        }    
+        }
+
+        /// <summary>
+        /// Draws a frame to the display.
+        /// </summary>
+        /// <param name="baseScene">The frame to draw</param>
+        /// <param name="g">The graphics to display with</param>
+        private void DrawFrame(Scene baseScene)
+        {
+            DrawPanel.Refresh();
+            g = DrawPanel.CreateGraphics();
+            baseScene.RunScene(workingTime);
+
+            // Draw Parts
+            foreach (Piece piece in baseScene.PiecesList)
+            {
+                Utilities.DrawPiece(piece, g, true);
+            }
+        }
 
         /// <summary>
         /// Draws the graphics created on a bitmap for exporting.
         /// </summary>
         /// <param name="toDraw">Scene to be drawn</param>
         /// <returns></returns>
-        private Bitmap DrawOnBitmap(Scene toDraw)
+        private Bitmap DrawOnBitmap()
         {
             Bitmap bitmap = new Bitmap(DrawPanel.Width, DrawPanel.Height);
             g = Graphics.FromImage(bitmap);
-            using (SolidBrush brush = new SolidBrush(Color.White))
+            using (SolidBrush brush = new SolidBrush(backgroundColor))
             {
                 g.FillRectangle(brush, 0, 0, bitmap.Width, bitmap.Height);
             }
-
-            DrawFrame(toDraw, g, false);
+            DrawFrame(videoScenes[sceneIndex], g);
             return bitmap;
         }
 
@@ -181,25 +211,16 @@ namespace Animator
         /// <param name="e"></param>
         private void AnimationTimer_Tick(object sender, EventArgs e)
         {
-            workingTime++;
-            if (workingTime >= videoScenes[sceneIndex].TimeLength)
+            if (++workingTime > videoScenes[sceneIndex].TimeLength)
             {
-                sceneIndex++;
-                workingTime = 0;
-                if (sceneIndex >= videoScenes.Count)
+                if (++sceneIndex >= videoScenes.Count)
                 {
                     AnimationTimer.Stop();
+                    return;
                 }
-                else
-                {
-                    videoScenes[sceneIndex].AssignOriginalPositions();
-                    DrawFrame(videoScenes[sceneIndex], DrawPanel.CreateGraphics(), true);
-                }
+                workingTime = 0;
             }
-            else
-            {
-                DrawFrame(videoScenes[sceneIndex], DrawPanel.CreateGraphics(), true);
-            }
+            DrawFrame(videoScenes[sceneIndex]);
         }
     }
 }

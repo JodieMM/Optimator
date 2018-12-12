@@ -65,13 +65,16 @@
             this.ExitBtn = new System.Windows.Forms.Button();
             this.SceneTb = new System.Windows.Forms.TextBox();
             this.FinishSceneBtn = new System.Windows.Forms.Button();
+            this.SettingsTab = new System.Windows.Forms.TabPage();
+            this.PreviewCb = new System.Windows.Forms.CheckBox();
             this.DisplayPanel = new System.Windows.Forms.Panel();
+            this.VidLengthLbl = new System.Windows.Forms.Label();
+            this.UpArrowImg = new System.Windows.Forms.Label();
+            this.Future2PreviewBox = new System.Windows.Forms.PictureBox();
+            this.FuturePreviewBox = new System.Windows.Forms.PictureBox();
+            this.PastPreviewBox = new System.Windows.Forms.PictureBox();
             this.CurrentTimeLbl = new System.Windows.Forms.Label();
             this.CurrentTimeUpDown = new System.Windows.Forms.NumericUpDown();
-            this.PastPreviewBox = new System.Windows.Forms.PictureBox();
-            this.FuturePreviewBox = new System.Windows.Forms.PictureBox();
-            this.Future2PreviewBox = new System.Windows.Forms.PictureBox();
-            this.UpArrowImg = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.SecondsUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.AnimationAmountTb)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.SizeUpDown)).BeginInit();
@@ -85,11 +88,12 @@
             this.PartsTab.SuspendLayout();
             this.AnimationTab.SuspendLayout();
             this.SceneTab.SuspendLayout();
+            this.SettingsTab.SuspendLayout();
             this.DisplayPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.CurrentTimeUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.PastPreviewBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.FuturePreviewBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Future2PreviewBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.FuturePreviewBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PastPreviewBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CurrentTimeUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // SecondsUpDown
@@ -103,17 +107,21 @@
             65536});
             this.SecondsUpDown.Location = new System.Drawing.Point(72, 289);
             this.SecondsUpDown.Margin = new System.Windows.Forms.Padding(2);
+            this.SecondsUpDown.Maximum = new decimal(new int[] {
+            600,
+            0,
+            0,
+            0});
             this.SecondsUpDown.Name = "SecondsUpDown";
-            this.SecondsUpDown.Size = new System.Drawing.Size(125, 27);
+            this.SecondsUpDown.Size = new System.Drawing.Size(125, 46);
             this.SecondsUpDown.TabIndex = 27;
-            this.SecondsUpDown.ValueChanged += new System.EventHandler(this.SecondsUpDown_ValueChanged);
             // 
             // BackBtn
             // 
             this.BackBtn.BackColor = System.Drawing.Color.Khaki;
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BackBtn.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BackBtn.Location = new System.Drawing.Point(670, 10);
+            this.BackBtn.Location = new System.Drawing.Point(460, 10);
             this.BackBtn.Margin = new System.Windows.Forms.Padding(2);
             this.BackBtn.Name = "BackBtn";
             this.BackBtn.Size = new System.Drawing.Size(200, 30);
@@ -127,7 +135,7 @@
             this.ForwardBtn.BackColor = System.Drawing.Color.Khaki;
             this.ForwardBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ForwardBtn.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ForwardBtn.Location = new System.Drawing.Point(460, 10);
+            this.ForwardBtn.Location = new System.Drawing.Point(670, 10);
             this.ForwardBtn.Margin = new System.Windows.Forms.Padding(2);
             this.ForwardBtn.Name = "ForwardBtn";
             this.ForwardBtn.Size = new System.Drawing.Size(200, 30);
@@ -142,9 +150,8 @@
             this.AnimationAmountTb.Location = new System.Drawing.Point(72, 240);
             this.AnimationAmountTb.Margin = new System.Windows.Forms.Padding(2);
             this.AnimationAmountTb.Name = "AnimationAmountTb";
-            this.AnimationAmountTb.Size = new System.Drawing.Size(125, 27);
+            this.AnimationAmountTb.Size = new System.Drawing.Size(125, 46);
             this.AnimationAmountTb.TabIndex = 12;
-            this.AnimationAmountTb.ValueChanged += new System.EventHandler(this.AnimationAmountTb_ValueChanged);
             // 
             // ChangeTypeCb
             // 
@@ -163,21 +170,19 @@
             this.ChangeTypeCb.Location = new System.Drawing.Point(5, 198);
             this.ChangeTypeCb.Margin = new System.Windows.Forms.Padding(2);
             this.ChangeTypeCb.Name = "ChangeTypeCb";
-            this.ChangeTypeCb.Size = new System.Drawing.Size(192, 27);
+            this.ChangeTypeCb.Size = new System.Drawing.Size(192, 47);
             this.ChangeTypeCb.TabIndex = 11;
-            this.ChangeTypeCb.SelectedIndexChanged += new System.EventHandler(this.ChangeTypeCb_SelectedIndexChanged);
             // 
             // AnimationLb
             // 
             this.AnimationLb.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.AnimationLb.FormattingEnabled = true;
-            this.AnimationLb.ItemHeight = 19;
+            this.AnimationLb.ItemHeight = 39;
             this.AnimationLb.Location = new System.Drawing.Point(0, 0);
             this.AnimationLb.Margin = new System.Windows.Forms.Padding(2);
             this.AnimationLb.Name = "AnimationLb";
-            this.AnimationLb.Size = new System.Drawing.Size(202, 194);
+            this.AnimationLb.Size = new System.Drawing.Size(202, 121);
             this.AnimationLb.TabIndex = 4;
-            this.AnimationLb.SelectedIndexChanged += new System.EventHandler(this.AnimationLb_SelectedIndexChanged);
             // 
             // AddAnimationBtn
             // 
@@ -200,7 +205,7 @@
             this.SMLbl.Location = new System.Drawing.Point(6, 596);
             this.SMLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.SMLbl.Name = "SMLbl";
-            this.SMLbl.Size = new System.Drawing.Size(72, 19);
+            this.SMLbl.Size = new System.Drawing.Size(143, 39);
             this.SMLbl.TabIndex = 18;
             this.SMLbl.Text = "Size Mod";
             // 
@@ -215,7 +220,7 @@
             0,
             0});
             this.SizeUpDown.Name = "SizeUpDown";
-            this.SizeUpDown.Size = new System.Drawing.Size(182, 27);
+            this.SizeUpDown.Size = new System.Drawing.Size(182, 46);
             this.SizeUpDown.TabIndex = 17;
             this.SizeUpDown.ValueChanged += new System.EventHandler(this.SizeUpDown_ValueChanged);
             // 
@@ -226,7 +231,7 @@
             this.YLbl.Location = new System.Drawing.Point(6, 534);
             this.YLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.YLbl.Name = "YLbl";
-            this.YLbl.Size = new System.Drawing.Size(19, 19);
+            this.YLbl.Size = new System.Drawing.Size(35, 39);
             this.YLbl.TabIndex = 16;
             this.YLbl.Text = "Y";
             // 
@@ -246,7 +251,7 @@
             0,
             -2147483648});
             this.YUpDown.Name = "YUpDown";
-            this.YUpDown.Size = new System.Drawing.Size(182, 27);
+            this.YUpDown.Size = new System.Drawing.Size(182, 46);
             this.YUpDown.TabIndex = 15;
             this.YUpDown.ValueChanged += new System.EventHandler(this.YUpDown_ValueChanged);
             // 
@@ -257,7 +262,7 @@
             this.XLbl.Location = new System.Drawing.Point(6, 472);
             this.XLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.XLbl.Name = "XLbl";
-            this.XLbl.Size = new System.Drawing.Size(18, 19);
+            this.XLbl.Size = new System.Drawing.Size(36, 39);
             this.XLbl.TabIndex = 14;
             this.XLbl.Text = "X";
             // 
@@ -277,7 +282,7 @@
             0,
             -2147483648});
             this.XUpDown.Name = "XUpDown";
-            this.XUpDown.Size = new System.Drawing.Size(182, 27);
+            this.XUpDown.Size = new System.Drawing.Size(182, 46);
             this.XUpDown.TabIndex = 13;
             this.XUpDown.ValueChanged += new System.EventHandler(this.XUpDown_ValueChanged);
             // 
@@ -288,7 +293,7 @@
             this.SpinLbl.Location = new System.Drawing.Point(6, 410);
             this.SpinLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.SpinLbl.Name = "SpinLbl";
-            this.SpinLbl.Size = new System.Drawing.Size(40, 19);
+            this.SpinLbl.Size = new System.Drawing.Size(78, 39);
             this.SpinLbl.TabIndex = 9;
             this.SpinLbl.Text = "Spin";
             // 
@@ -308,7 +313,7 @@
             0,
             -2147483648});
             this.SpinUpDown.Name = "SpinUpDown";
-            this.SpinUpDown.Size = new System.Drawing.Size(182, 27);
+            this.SpinUpDown.Size = new System.Drawing.Size(182, 46);
             this.SpinUpDown.TabIndex = 8;
             this.SpinUpDown.ValueChanged += new System.EventHandler(this.SpinUpDown_ValueChanged);
             // 
@@ -319,7 +324,7 @@
             this.AttributesLbl.Location = new System.Drawing.Point(6, 162);
             this.AttributesLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.AttributesLbl.Name = "AttributesLbl";
-            this.AttributesLbl.Size = new System.Drawing.Size(160, 23);
+            this.AttributesLbl.Size = new System.Drawing.Size(326, 46);
             this.AttributesLbl.TabIndex = 6;
             this.AttributesLbl.Text = "Original Attributes";
             // 
@@ -339,7 +344,7 @@
             0,
             -2147483648});
             this.TurnUpDown.Name = "TurnUpDown";
-            this.TurnUpDown.Size = new System.Drawing.Size(182, 27);
+            this.TurnUpDown.Size = new System.Drawing.Size(182, 46);
             this.TurnUpDown.TabIndex = 3;
             this.TurnUpDown.ValueChanged += new System.EventHandler(this.TurnUpDown_ValueChanged);
             // 
@@ -359,7 +364,7 @@
             0,
             -2147483648});
             this.RotationUpDown.Name = "RotationUpDown";
-            this.RotationUpDown.Size = new System.Drawing.Size(182, 27);
+            this.RotationUpDown.Size = new System.Drawing.Size(182, 46);
             this.RotationUpDown.TabIndex = 2;
             this.RotationUpDown.ValueChanged += new System.EventHandler(this.RotationUpDown_ValueChanged);
             // 
@@ -369,7 +374,7 @@
             this.NameTb.Location = new System.Drawing.Point(10, 13);
             this.NameTb.Margin = new System.Windows.Forms.Padding(2);
             this.NameTb.Name = "NameTb";
-            this.NameTb.Size = new System.Drawing.Size(182, 30);
+            this.NameTb.Size = new System.Drawing.Size(182, 53);
             this.NameTb.TabIndex = 0;
             this.NameTb.Text = "Part Name";
             // 
@@ -388,6 +393,7 @@
             this.OptionsMenu.Controls.Add(this.PartsTab);
             this.OptionsMenu.Controls.Add(this.AnimationTab);
             this.OptionsMenu.Controls.Add(this.SceneTab);
+            this.OptionsMenu.Controls.Add(this.SettingsTab);
             this.OptionsMenu.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.OptionsMenu.Location = new System.Drawing.Point(890, 0);
             this.OptionsMenu.Name = "OptionsMenu";
@@ -417,9 +423,9 @@
             this.PartsTab.Controls.Add(this.TurnUpDown);
             this.PartsTab.Controls.Add(this.SpinUpDown);
             this.PartsTab.Controls.Add(this.SpinLbl);
-            this.PartsTab.Location = new System.Drawing.Point(4, 27);
+            this.PartsTab.Location = new System.Drawing.Point(8, 50);
             this.PartsTab.Name = "PartsTab";
-            this.PartsTab.Size = new System.Drawing.Size(202, 669);
+            this.PartsTab.Size = new System.Drawing.Size(194, 642);
             this.PartsTab.TabIndex = 2;
             this.PartsTab.Text = "Parts";
             // 
@@ -430,7 +436,7 @@
             this.OrderLbl.Location = new System.Drawing.Point(6, 192);
             this.OrderLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.OrderLbl.Name = "OrderLbl";
-            this.OrderLbl.Size = new System.Drawing.Size(50, 19);
+            this.OrderLbl.Size = new System.Drawing.Size(99, 39);
             this.OrderLbl.TabIndex = 33;
             this.OrderLbl.Text = "Order";
             // 
@@ -441,7 +447,7 @@
             this.TurnLbl.Location = new System.Drawing.Point(6, 348);
             this.TurnLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.TurnLbl.Name = "TurnLbl";
-            this.TurnLbl.Size = new System.Drawing.Size(43, 19);
+            this.TurnLbl.Size = new System.Drawing.Size(84, 39);
             this.TurnLbl.TabIndex = 32;
             this.TurnLbl.Text = "Turn";
             // 
@@ -452,7 +458,7 @@
             this.RotationLbl.Location = new System.Drawing.Point(6, 286);
             this.RotationLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.RotationLbl.Name = "RotationLbl";
-            this.RotationLbl.Size = new System.Drawing.Size(68, 19);
+            this.RotationLbl.Size = new System.Drawing.Size(135, 39);
             this.RotationLbl.TabIndex = 31;
             this.RotationLbl.Text = "Rotation";
             // 
@@ -521,10 +527,10 @@
             this.AnimationTab.Controls.Add(this.AddAnimationBtn);
             this.AnimationTab.Controls.Add(this.ChangeTypeCb);
             this.AnimationTab.Controls.Add(this.AnimationAmountTb);
-            this.AnimationTab.Location = new System.Drawing.Point(4, 27);
+            this.AnimationTab.Location = new System.Drawing.Point(8, 50);
             this.AnimationTab.Name = "AnimationTab";
             this.AnimationTab.Padding = new System.Windows.Forms.Padding(3);
-            this.AnimationTab.Size = new System.Drawing.Size(202, 669);
+            this.AnimationTab.Size = new System.Drawing.Size(194, 642);
             this.AnimationTab.TabIndex = 0;
             this.AnimationTab.Text = "Animation";
             // 
@@ -540,7 +546,7 @@
             this.PreviewBtn.TabIndex = 36;
             this.PreviewBtn.Text = "Preview";
             this.PreviewBtn.UseVisualStyleBackColor = false;
-            this.PreviewBtn.MouseHover += new System.EventHandler(this.PreviewBtn_Hover);
+            this.PreviewBtn.MouseHover += new System.EventHandler(this.PreviewBtn_Click);
             // 
             // SecondsLbl
             // 
@@ -549,7 +555,7 @@
             this.SecondsLbl.Location = new System.Drawing.Point(2, 291);
             this.SecondsLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.SecondsLbl.Name = "SecondsLbl";
-            this.SecondsLbl.Size = new System.Drawing.Size(67, 19);
+            this.SecondsLbl.Size = new System.Drawing.Size(134, 39);
             this.SecondsLbl.TabIndex = 35;
             this.SecondsLbl.Text = "Seconds";
             // 
@@ -560,7 +566,7 @@
             this.AmountLbl.Location = new System.Drawing.Point(2, 242);
             this.AmountLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.AmountLbl.Name = "AmountLbl";
-            this.AmountLbl.Size = new System.Drawing.Size(66, 19);
+            this.AmountLbl.Size = new System.Drawing.Size(127, 39);
             this.AmountLbl.TabIndex = 34;
             this.AmountLbl.Text = "Amount";
             // 
@@ -570,10 +576,10 @@
             this.SceneTab.Controls.Add(this.ExitBtn);
             this.SceneTab.Controls.Add(this.SceneTb);
             this.SceneTab.Controls.Add(this.FinishSceneBtn);
-            this.SceneTab.Location = new System.Drawing.Point(4, 27);
+            this.SceneTab.Location = new System.Drawing.Point(8, 50);
             this.SceneTab.Name = "SceneTab";
             this.SceneTab.Padding = new System.Windows.Forms.Padding(3);
-            this.SceneTab.Size = new System.Drawing.Size(202, 669);
+            this.SceneTab.Size = new System.Drawing.Size(194, 642);
             this.SceneTab.TabIndex = 1;
             this.SceneTab.Text = "Scene";
             // 
@@ -599,7 +605,7 @@
             this.SceneTb.Location = new System.Drawing.Point(10, 9);
             this.SceneTb.Margin = new System.Windows.Forms.Padding(6);
             this.SceneTb.Name = "SceneTb";
-            this.SceneTb.Size = new System.Drawing.Size(182, 30);
+            this.SceneTb.Size = new System.Drawing.Size(182, 53);
             this.SceneTb.TabIndex = 22;
             this.SceneTb.Text = "Scene Name";
             // 
@@ -618,9 +624,34 @@
             this.FinishSceneBtn.UseVisualStyleBackColor = false;
             this.FinishSceneBtn.Click += new System.EventHandler(this.FinishSceneBtn_Click);
             // 
+            // SettingsTab
+            // 
+            this.SettingsTab.BackColor = System.Drawing.Color.LemonChiffon;
+            this.SettingsTab.Controls.Add(this.PreviewCb);
+            this.SettingsTab.Location = new System.Drawing.Point(8, 50);
+            this.SettingsTab.Name = "SettingsTab";
+            this.SettingsTab.Size = new System.Drawing.Size(194, 642);
+            this.SettingsTab.TabIndex = 3;
+            this.SettingsTab.Text = "Settings";
+            // 
+            // PreviewCb
+            // 
+            this.PreviewCb.AutoSize = true;
+            this.PreviewCb.Checked = true;
+            this.PreviewCb.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.PreviewCb.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PreviewCb.Location = new System.Drawing.Point(15, 15);
+            this.PreviewCb.Name = "PreviewCb";
+            this.PreviewCb.Size = new System.Drawing.Size(247, 43);
+            this.PreviewCb.TabIndex = 0;
+            this.PreviewCb.Text = "Show Preview";
+            this.PreviewCb.UseVisualStyleBackColor = true;
+            this.PreviewCb.CheckedChanged += new System.EventHandler(this.PreviewCb_CheckedChanged);
+            // 
             // DisplayPanel
             // 
             this.DisplayPanel.BackColor = System.Drawing.Color.PaleGoldenrod;
+            this.DisplayPanel.Controls.Add(this.VidLengthLbl);
             this.DisplayPanel.Controls.Add(this.UpArrowImg);
             this.DisplayPanel.Controls.Add(this.Future2PreviewBox);
             this.DisplayPanel.Controls.Add(this.FuturePreviewBox);
@@ -634,6 +665,57 @@
             this.DisplayPanel.Size = new System.Drawing.Size(880, 185);
             this.DisplayPanel.TabIndex = 29;
             // 
+            // VidLengthLbl
+            // 
+            this.VidLengthLbl.AutoSize = true;
+            this.VidLengthLbl.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.VidLengthLbl.Location = new System.Drawing.Point(265, 15);
+            this.VidLengthLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.VidLengthLbl.Name = "VidLengthLbl";
+            this.VidLengthLbl.Size = new System.Drawing.Size(255, 39);
+            this.VidLengthLbl.TabIndex = 41;
+            this.VidLengthLbl.Text = "Video Length: 0s";
+            // 
+            // UpArrowImg
+            // 
+            this.UpArrowImg.AutoSize = true;
+            this.UpArrowImg.Font = new System.Drawing.Font("Tahoma", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpArrowImg.Location = new System.Drawing.Point(298, 48);
+            this.UpArrowImg.Name = "UpArrowImg";
+            this.UpArrowImg.Size = new System.Drawing.Size(67, 65);
+            this.UpArrowImg.TabIndex = 40;
+            this.UpArrowImg.Text = "^";
+            // 
+            // Future2PreviewBox
+            // 
+            this.Future2PreviewBox.BackColor = System.Drawing.Color.White;
+            this.Future2PreviewBox.Location = new System.Drawing.Point(630, 48);
+            this.Future2PreviewBox.Margin = new System.Windows.Forms.Padding(2);
+            this.Future2PreviewBox.Name = "Future2PreviewBox";
+            this.Future2PreviewBox.Size = new System.Drawing.Size(240, 135);
+            this.Future2PreviewBox.TabIndex = 39;
+            this.Future2PreviewBox.TabStop = false;
+            // 
+            // FuturePreviewBox
+            // 
+            this.FuturePreviewBox.BackColor = System.Drawing.Color.White;
+            this.FuturePreviewBox.Location = new System.Drawing.Point(380, 48);
+            this.FuturePreviewBox.Margin = new System.Windows.Forms.Padding(2);
+            this.FuturePreviewBox.Name = "FuturePreviewBox";
+            this.FuturePreviewBox.Size = new System.Drawing.Size(240, 135);
+            this.FuturePreviewBox.TabIndex = 38;
+            this.FuturePreviewBox.TabStop = false;
+            // 
+            // PastPreviewBox
+            // 
+            this.PastPreviewBox.BackColor = System.Drawing.Color.White;
+            this.PastPreviewBox.Location = new System.Drawing.Point(10, 48);
+            this.PastPreviewBox.Margin = new System.Windows.Forms.Padding(2);
+            this.PastPreviewBox.Name = "PastPreviewBox";
+            this.PastPreviewBox.Size = new System.Drawing.Size(240, 135);
+            this.PastPreviewBox.TabIndex = 30;
+            this.PastPreviewBox.TabStop = false;
+            // 
             // CurrentTimeLbl
             // 
             this.CurrentTimeLbl.AutoSize = true;
@@ -641,7 +723,7 @@
             this.CurrentTimeLbl.Location = new System.Drawing.Point(11, 16);
             this.CurrentTimeLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.CurrentTimeLbl.Name = "CurrentTimeLbl";
-            this.CurrentTimeLbl.Size = new System.Drawing.Size(103, 19);
+            this.CurrentTimeLbl.Size = new System.Drawing.Size(204, 39);
             this.CurrentTimeLbl.TabIndex = 37;
             this.CurrentTimeLbl.Text = "Current Time";
             // 
@@ -657,49 +739,9 @@
             this.CurrentTimeUpDown.Location = new System.Drawing.Point(127, 13);
             this.CurrentTimeUpDown.Margin = new System.Windows.Forms.Padding(2);
             this.CurrentTimeUpDown.Name = "CurrentTimeUpDown";
-            this.CurrentTimeUpDown.Size = new System.Drawing.Size(125, 27);
+            this.CurrentTimeUpDown.Size = new System.Drawing.Size(125, 46);
             this.CurrentTimeUpDown.TabIndex = 37;
             this.CurrentTimeUpDown.ValueChanged += new System.EventHandler(this.CurrentTimeUpDown_ValueChanged);
-            // 
-            // PastPreviewBox
-            // 
-            this.PastPreviewBox.BackColor = System.Drawing.Color.White;
-            this.PastPreviewBox.Location = new System.Drawing.Point(10, 48);
-            this.PastPreviewBox.Margin = new System.Windows.Forms.Padding(2);
-            this.PastPreviewBox.Name = "PastPreviewBox";
-            this.PastPreviewBox.Size = new System.Drawing.Size(240, 135);
-            this.PastPreviewBox.TabIndex = 30;
-            this.PastPreviewBox.TabStop = false;
-            // 
-            // FuturePreviewBox
-            // 
-            this.FuturePreviewBox.BackColor = System.Drawing.Color.White;
-            this.FuturePreviewBox.Location = new System.Drawing.Point(380, 48);
-            this.FuturePreviewBox.Margin = new System.Windows.Forms.Padding(2);
-            this.FuturePreviewBox.Name = "FuturePreviewBox";
-            this.FuturePreviewBox.Size = new System.Drawing.Size(240, 135);
-            this.FuturePreviewBox.TabIndex = 38;
-            this.FuturePreviewBox.TabStop = false;
-            // 
-            // Future2PreviewBox
-            // 
-            this.Future2PreviewBox.BackColor = System.Drawing.Color.White;
-            this.Future2PreviewBox.Location = new System.Drawing.Point(630, 48);
-            this.Future2PreviewBox.Margin = new System.Windows.Forms.Padding(2);
-            this.Future2PreviewBox.Name = "Future2PreviewBox";
-            this.Future2PreviewBox.Size = new System.Drawing.Size(240, 135);
-            this.Future2PreviewBox.TabIndex = 39;
-            this.Future2PreviewBox.TabStop = false;
-            // 
-            // UpArrowImg
-            // 
-            this.UpArrowImg.AutoSize = true;
-            this.UpArrowImg.Font = new System.Drawing.Font("Tahoma", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpArrowImg.Location = new System.Drawing.Point(298, 48);
-            this.UpArrowImg.Name = "UpArrowImg";
-            this.UpArrowImg.Size = new System.Drawing.Size(35, 33);
-            this.UpArrowImg.TabIndex = 40;
-            this.UpArrowImg.Text = "^";
             // 
             // ScenesForm
             // 
@@ -731,12 +773,14 @@
             this.AnimationTab.PerformLayout();
             this.SceneTab.ResumeLayout(false);
             this.SceneTab.PerformLayout();
+            this.SettingsTab.ResumeLayout(false);
+            this.SettingsTab.PerformLayout();
             this.DisplayPanel.ResumeLayout(false);
             this.DisplayPanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.CurrentTimeUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.PastPreviewBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.FuturePreviewBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Future2PreviewBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.FuturePreviewBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PastPreviewBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CurrentTimeUpDown)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -786,5 +830,8 @@
         private System.Windows.Forms.PictureBox FuturePreviewBox;
         private System.Windows.Forms.PictureBox PastPreviewBox;
         private System.Windows.Forms.Label UpArrowImg;
+        private System.Windows.Forms.Label VidLengthLbl;
+        private System.Windows.Forms.TabPage SettingsTab;
+        private System.Windows.Forms.CheckBox PreviewCb;
     }
 }

@@ -29,7 +29,7 @@ namespace Animator
             try
             {
                 // Open File
-                string filePath = Environment.CurrentDirectory + Constants.ScenesFolder + fileName + Constants.Txt;
+                string filePath = Utilities.GetDirectory(Constants.ScenesFolder, fileName, Constants.Txt);
                 System.IO.StreamReader file = new System.IO.StreamReader(@filePath);
                 TimeLength = decimal.Parse(file.ReadLine());
 
@@ -65,11 +65,11 @@ namespace Animator
                     string[] data = dataLine.Split(Constants.Semi);
                     if (data.Length == 5) 
                     {
-                        Changes.Add(new Change(int.Parse(data[0]), data[1], PiecesList[int.Parse(data[2])], double.Parse(data[3]), int.Parse(data[4]), this));
+                        Changes.Add(new Change(int.Parse(data[0]), data[1], PiecesList[int.Parse(data[2])], double.Parse(data[3]), decimal.Parse(data[4]), this));
                     }
                     else
                     {
-                        Changes.Add(new Change(int.Parse(data[0]), data[1], PiecesList[int.Parse(data[2])], double.Parse(data[3]), int.Parse(data[4]), data[5], this));
+                        Changes.Add(new Change(int.Parse(data[0]), data[1], PiecesList[int.Parse(data[2])], double.Parse(data[3]), decimal.Parse(data[4]), data[5], this));
                     }
                 }
 
@@ -99,13 +99,18 @@ namespace Animator
 
         /// <summary>
         /// Assigns the original values to all pieces
-        /// in the scene, restarting the scene.
+        /// in the scene and runs all changes to
+        /// the specified time.
         /// </summary>
-        public void AssignOriginalPositions()
+        public void RunScene(decimal time)
         {
             foreach (Piece piece in PiecesList)
             {
                 piece.TakeOriginalState();
+            }
+            foreach (Change change in Changes)
+            {
+                change.Run(time);
             }
         }
     }

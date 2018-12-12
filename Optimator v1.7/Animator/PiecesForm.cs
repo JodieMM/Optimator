@@ -492,12 +492,11 @@ namespace Animator
             }
 
             // Check name not already in use, or that overriding is okay
-            DialogResult result = DialogResult.Yes;
-            if (File.Exists(Utilities.GetDirectory(Constants.PiecesFolder, NameTb.Text)))
+            if (File.Exists(Utilities.GetDirectory(Constants.PiecesFolder, NameTb.Text, Constants.Txt)))
             {
-                result = MessageBox.Show("This name is already in use. Do you want to override the existing piece?", "Override Confirmation", MessageBoxButtons.YesNo);
+                DialogResult result = MessageBox.Show("This name is already in use. Do you want to override the existing piece?", "Override Confirmation", MessageBoxButtons.YesNo);
+                if (result == DialogResult.No) { return; }
             }
-            if (result == DialogResult.No) { return; }
 
             // Save Piece and Close Form
             try
@@ -508,9 +507,9 @@ namespace Animator
                 // Save Points
                 WIP.Name = NameTb.Text;
                 double[] middle = Utilities.FindMid(Utilities.ConvertSpotsToCoords(spots, 0));            // ** Potential Error: Middle of original, not r/t
-                if (!Directory.Exists(Environment.CurrentDirectory + Constants.JoinsFolder + WIP.Name))
+                if (!Directory.Exists(Utilities.GetDirectory(Constants.JoinsFolder, WIP.Name)))
                 {
-                    Directory.CreateDirectory(Environment.CurrentDirectory + Constants.JoinsFolder + WIP.Name);
+                    Directory.CreateDirectory(Utilities.GetDirectory(Constants.JoinsFolder, WIP.Name));
                 }
                 for (int index = 0; index < joins.Count; index++)
                 {
@@ -518,7 +517,7 @@ namespace Animator
                     joins[index].SaveJoin(middle);
                 }
 
-                Utilities.SaveData(Utilities.GetDirectory(Constants.PiecesFolder, NameTb.Text), WIP.Data);
+                Utilities.SaveData(Utilities.GetDirectory(Constants.PiecesFolder, NameTb.Text, Constants.Txt), WIP.Data);
                 Close();
             }
             catch (FileNotFoundException)

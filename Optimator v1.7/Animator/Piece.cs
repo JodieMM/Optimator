@@ -58,7 +58,7 @@ namespace Animator
         {
             // Get Piece Data
             Name = inName;
-            Data = Utilities.ReadFile(Utilities.GetDirectory(Constants.PiecesFolder, Name));
+            Data = Utilities.ReadFile(Utilities.GetDirectory(Constants.PiecesFolder, Name, Constants.Txt));
 
             // Get Points and Colours from File
             AssignValues(Data[0]);
@@ -336,7 +336,7 @@ namespace Animator
         /// </summary>
         public void FindJoins()
         {
-            string directory = Environment.CurrentDirectory + Constants.JoinsFolder + Name + "\\";
+            string directory = Utilities.GetDirectory(Constants.JoinsFolder, Name);
             if (Directory.Exists(directory))
             {
                 string[] fileArray = Directory.GetFiles(directory, "*.txt");

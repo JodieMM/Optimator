@@ -16,11 +16,11 @@ namespace Animator
         public static double MidY = 150;
 
         // Folders
-        public static string PiecesFolder => "\\Pieces\\";
-        public static string JoinsFolder => "\\Joins\\";
-        public static string SetsFolder => "\\Sets\\";
-        public static string ScenesFolder => "\\Scenes\\";
-        public static string VideosFolder => "\\Videos\\";
+        public static string PiecesFolder => "Pieces";
+        public static string JoinsFolder => "Joins";
+        public static string SetsFolder => "Sets";
+        public static string ScenesFolder => "Scenes";
+        public static string VideosFolder => "Videos";
 
         // Name Validation
         public static string WIPName => "Z WIP";
@@ -33,7 +33,6 @@ namespace Animator
         public static string CommaS = ",";
         public static string ColonS = ":";
         public static string SemiS = ";";
-        public static string DoubleSlash = "//";
 
         // UI Precision
         public static int[] Ranges = new int[] { 0, 3, 5, 7, 9 };

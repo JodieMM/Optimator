@@ -25,7 +25,7 @@ namespace Animator
         public Set(string inName)
         {
             Name = inName;
-            Data = Utilities.ReadFile(Environment.CurrentDirectory + Constants.SetsFolder + Name + Constants.Txt);
+            Data = Utilities.ReadFile(Utilities.GetDirectory(Constants.SetsFolder, Name, Constants.Txt));
             for (int index = 0; index < Data.Count; index++)
             {
                 string[] dataSections = Data[index].Split(Constants.Semi);

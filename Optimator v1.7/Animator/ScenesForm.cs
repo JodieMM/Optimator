@@ -17,15 +17,16 @@ namespace Animator
     {
         #region Scenes Form Variables
         private Scene WIP = new Scene();
-
-        private decimal timeLength = 0;
-        private decimal workingTime = 0;
-
+        private decimal videoLength = 0;
         private Graphics g;
         private Piece selected = null;
 
         private double midX;
         private double midY;
+        private decimal timeIncrement = (decimal)0.5;
+
+        private Color button = Color.Khaki;
+        private Color pressed = Color.Gold;
         #endregion
 
 
@@ -59,10 +60,11 @@ namespace Animator
             try
             {
                 // Add piece to lists
-                WIP.PiecesList.Add(new Piece(NameTb.Text));
-                WIP.PiecesList[WIP.PiecesList.Count - 1].X = midX; WIP.PiecesList[WIP.PiecesList.Count - 1].Y = midY;
-                WIP.PiecesList[WIP.PiecesList.Count - 1].Originally = new Originals(WIP.PiecesList[WIP.PiecesList.Count - 1]);
-                selected = WIP.PiecesList[WIP.PiecesList.Count - 1];
+                Piece added = new Piece(NameTb.Text);
+                WIP.PiecesList.Add(added);
+                added.X = midX; added.Y = midY;
+                added.Originally = new Originals(added);
+                SelectPiece(added);
 
                 DisplayDrawings();
             }
@@ -88,7 +90,7 @@ namespace Animator
                 // Add pieces to lists
                 Set newbie = new Set(NameTb.Text);
                 WIP.PiecesList.AddRange(newbie.PiecesList);
-                selected = newbie.BasePiece;
+                SelectPiece(newbie.BasePiece);
                 selected.X = midX; selected.Y = midY;
 
                 // Set Originals
@@ -161,7 +163,10 @@ namespace Animator
             // Update Piece
             selected.Originally.R = (double)RotationUpDown.Value;
 
-            DisplayDrawings();
+            if (RotationUpDown == ActiveControl)
+            {
+                DisplayDrawings();
+            }
         }
 
         /// <summary>
@@ -180,7 +185,10 @@ namespace Animator
             // Update Piece
             selected.Originally.T = (int)TurnUpDown.Value;
 
-            DisplayDrawings();
+            if (TurnUpDown == ActiveControl)
+            {
+                DisplayDrawings();
+            }
         }
 
         /// <summary>
@@ -199,7 +207,10 @@ namespace Animator
             // Update Piece
             selected.Originally.S = (int)SpinUpDown.Value;
 
-            DisplayDrawings();
+            if (SpinUpDown == ActiveControl)
+            {
+                DisplayDrawings();
+            }
         }
 
         /// <summary>
@@ -214,7 +225,10 @@ namespace Animator
             // Update Piece
             selected.Originally.X = (int)XUpDown.Value;
 
-            DisplayDrawings();
+            if (XUpDown == ActiveControl)
+            {
+                DisplayDrawings();
+            }
         }
 
         /// <summary>
@@ -229,7 +243,10 @@ namespace Animator
             // Update Piece
             selected.Originally.Y = (int)YUpDown.Value;
 
-            DisplayDrawings();
+            if (YUpDown == ActiveControl)
+            {
+                DisplayDrawings();
+            }
         }
 
         /// <summary>
@@ -242,9 +259,12 @@ namespace Animator
             if (selected == null) { return; }
 
             // Update Piece
-            selected.Originally.SM = (int)SizeUpDown.Value;
+            selected.Originally.SM = (double)SizeUpDown.Value;
 
-            DisplayDrawings();
+            if (SizeUpDown == ActiveControl)
+            {
+                DisplayDrawings();
+            }
         }
 
         #endregion
@@ -254,26 +274,25 @@ namespace Animator
         // ----- ANIMATIONS TAB -----
 
         /// <summary>
-        /// Selects a change for modification.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void AnimationLb_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            // ** TO DO
-        }
-
-        /// <summary>
         /// Adds a movement/effect to the animations of the scene.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void AddAnimationBtn_Click(object sender, EventArgs e)
         {
-            if (selected == null) { return; }
+            if (selected == null || ChangeTypeCb.SelectedIndex == -1 || AnimationAmountTb.Value == 0) { return; }
 
-            WIP.Changes.Add(new Change(workingTime, ChangeTypeCb.Text, selected, (double)AnimationAmountTb.Value, (int)SecondsUpDown.Value, WIP));
-            UpdateAnimationListbox();
+            WIP.Changes.Add(new Change(CurrentTimeUpDown.Value, ChangeTypeCb.Text, selected, (double)AnimationAmountTb.Value, SecondsUpDown.Value, WIP));
+            if (CurrentTimeUpDown.Value + SecondsUpDown.Value > videoLength)
+            {
+                UpdateVideoLength(CurrentTimeUpDown.Value + SecondsUpDown.Value);
+            }
+
+            if (PreviewBtn.BackColor == pressed)
+            {
+                PreviewBtn_Click(sender, e);
+            }
+            DisplayDrawings();
         }
 
         /// <summary>
@@ -282,117 +301,25 @@ namespace Animator
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void PreviewBtn_Hover(object sender, EventArgs e)
+        private void PreviewBtn_Click(object sender, EventArgs e)
         {
-            // ** TO DO
-        }
-
-        /// <summary>
-        /// Updates the animation listbox to show all current animations.
-        /// </summary>
-        private void UpdateAnimationListbox()
-        {
-            AnimationLb.Items.Clear();
-            foreach (Change change in WIP.Changes)
+            if (PreviewBtn.BackColor == pressed)
             {
-                if (workingTime >= change.StartTime && workingTime <= change.StartTime + change.HowLong)
-                {
-                    string summary = "";
-                    if (change.AffectedPiece.PieceOf != null)
-                    {
-                        summary += change.AffectedPiece.AttachedTo != null ? "** " : "* ";
-                    }
-
-                    summary += change.Action + " : " + change.AffectedPiece.Name + " : " + change.HowMuch.ToString()
-                        + " : " + (change.HowLong - (workingTime - change.StartTime)).ToString();
-
-                    AnimationLb.Items.Add(summary);
-                }
+                PreviewBtn.BackColor = button;
+                WIP.RunScene(CurrentTimeUpDown.Value);
             }
-        }
-
-        /// <summary>
-        /// Updates what attribute is changing.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ChangeTypeCb_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            // ** TO DO
-        }
-
-        /// <summary>
-        /// Updates how much the selected item will change.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void AnimationAmountTb_ValueChanged(object sender, EventArgs e)
-        {
-            // ** TO DO
-        }
-
-        /// <summary>
-        /// Updates how long the change will take affect.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void SecondsUpDown_ValueChanged(object sender, EventArgs e)
-        {
-            // ** TO DO
-        }
-
-
-
-        // ----- DISPLAY PANEL -----
-
-        /// <summary>
-        /// Changes the current working time.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void CurrentTimeUpDown_ValueChanged(object sender, EventArgs e)
-        {
-            workingTime = CurrentTimeUpDown.Value;
-        }
-
-        /// <summary>
-        /// Progresses to the next frame of the animation.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ForwardBtn_Click(object sender, EventArgs e)
-        {
-            workingTime += (decimal)0.5;
-            CurrentTimeUpDown.Value = workingTime;
-            if (timeLength < workingTime) { timeLength = workingTime; }
-
-            // Run Changes
-            foreach (Change change in WIP.Changes)
+            else
             {
-                change.Run(true, workingTime);
+                if (selected == null || ChangeTypeCb.SelectedIndex == -1 || AnimationAmountTb.Value == 0) { return; }
+                PreviewBtn.BackColor = pressed;
+                WIP.RunScene(CurrentTimeUpDown.Value + SecondsUpDown.Value);
+                Change tempChange = new Change(CurrentTimeUpDown.Value, ChangeTypeCb.Text, selected, (double)AnimationAmountTb.Value, SecondsUpDown.Value, WIP);
+                tempChange.Run(CurrentTimeUpDown.Value + SecondsUpDown.Value);
             }
-            DisplayDrawings();
-            UpdateAnimationListbox();
-        }
-
-        /// <summary>
-        /// Returns to the previous frame of the animation.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void BackBtn_Click(object sender, EventArgs e)
-        {
-            if (workingTime < (decimal)0.5) { return; }
-            workingTime -= (decimal)0.5;
-            CurrentTimeUpDown.Value = workingTime;
-
-            // Undo Changes
-            foreach (Change change in WIP.Changes)
+            if (PreviewBtn == ActiveControl)
             {
-                change.Run(false, workingTime);
+                Utilities.DrawPieces(WIP.PiecesList, g, DrawPanel);
             }
-            DisplayDrawings();
-            UpdateAnimationListbox();
         }
 
 
@@ -409,23 +336,23 @@ namespace Animator
             // Check Name is Valid for Saving
             if (!Constants.PermittedName.IsMatch(NameTb.Text))
             {
-                MessageBox.Show("Please choose a valid name for your piece. Name can only include letters and numbers.", "Name Invalid", MessageBoxButtons.OK);
+                MessageBox.Show("Please choose a valid name for your scene. Name can only include letters and numbers.", "Name Invalid", MessageBoxButtons.OK);
+                return;
             }
 
             // Check name not already in use, or that overriding is okay
-            DialogResult result = DialogResult.Yes;
-            if (File.Exists(Utilities.GetDirectory(Constants.PiecesFolder, NameTb.Text)))
+            if (File.Exists(Utilities.GetDirectory(Constants.ScenesFolder, NameTb.Text, Constants.Txt)))
             {
-                result = MessageBox.Show("This name is already in use. Do you want to override the existing piece?", "Override Confirmation", MessageBoxButtons.YesNo);
+                DialogResult result = MessageBox.Show("This name is already in use. Do you want to override the existing scene?", "Override Confirmation", MessageBoxButtons.YesNo);
+                if (result == DialogResult.No) { return; }
             }
-            if (result == DialogResult.No) { return; }
 
             try
             {
                 // Save Data
                 List<string> file = new List<string>
                 {
-                    timeLength.ToString()
+                    videoLength.ToString()
                 };
 
                 // Save Parts
@@ -460,7 +387,7 @@ namespace Animator
                         WIP.PiecesList.IndexOf(change.AffectedPiece) + ";" + change.HowMuch + ";" + change.HowLong);
                 }
 
-                Utilities.SaveData(Environment.CurrentDirectory + Constants.ScenesFolder + SceneTb.Text + Constants.Txt, file);
+                Utilities.SaveData(Utilities.GetDirectory(Constants.ScenesFolder, SceneTb.Text, Constants.Txt), file);
                 Close();
             }
             catch (FileNotFoundException)
@@ -476,9 +403,100 @@ namespace Animator
         /// <param name="e"></param>
         private void ExitBtn_Click(object sender, EventArgs e)
         {
-            if (WIP.PiecesList.Count == 0) { Close(); return; } // If nothing to save, exit without confirmation
-            DialogResult query = MessageBox.Show("Do you wish to exit without saving?", "Exit Confirmation", MessageBoxButtons.YesNo);
-            if (query == DialogResult.Yes) { Close(); }
+            // If nothing to save, exit without confirmation
+            if (WIP.PiecesList.Count == 0)
+            {
+                Close();
+            }
+            else
+            {
+                DialogResult query = MessageBox.Show("Do you wish to exit without saving?", "Exit Confirmation", MessageBoxButtons.YesNo);
+                if (query == DialogResult.Yes)
+                {
+                    Close();
+                }
+            }
+        }
+
+
+
+        // ----- SETTINGS TAB -----
+
+        /// <summary>
+        /// Hides or shows the preview panel.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void PreviewCb_CheckedChanged(object sender, EventArgs e)
+        {
+            DisplayPanel.Visible = PreviewCb.Checked;
+        }
+
+
+
+        // ----- DISPLAY PANEL -----
+
+        /// <summary>
+        /// Changes the current working time.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CurrentTimeUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            if (CurrentTimeUpDown.Value > videoLength)
+            {
+                UpdateVideoLength(CurrentTimeUpDown.Value);
+            }
+            DisplayDrawings();
+        }
+
+        /// <summary>
+        /// Updates the code and visuals for the video length.
+        /// </summary>
+        /// <param name="newTime">The new video length</param>
+        private void UpdateVideoLength(decimal newTime)
+        {
+            videoLength = newTime;
+            int hr = (int)Math.Floor(videoLength / 3600);
+            int min = (int)Math.Floor((videoLength - hr * 3600) / 60);
+            int s = (int)Math.Floor(videoLength - (hr * 3600 + min * 60));
+            VidLengthLbl.Text = "Video Length: ";
+            if (hr > 0)
+            {
+                VidLengthLbl.Text += hr + "hrs ";
+            }
+            if (min > 0)
+            {
+                VidLengthLbl.Text += min + "mins ";
+            }
+            VidLengthLbl.Text += s + "s";
+        }
+
+        /// <summary>
+        /// Progresses to the next frame of the animation.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ForwardBtn_Click(object sender, EventArgs e)
+        {
+            CurrentTimeUpDown.Value += timeIncrement;
+            if (videoLength < CurrentTimeUpDown.Value)
+            {
+                videoLength = CurrentTimeUpDown.Value;
+            }
+            DisplayDrawings();
+        }
+
+        /// <summary>
+        /// Returns to the previous frame of the animation.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BackBtn_Click(object sender, EventArgs e)
+        {
+            if (CurrentTimeUpDown.Value < timeIncrement) { return; }
+            CurrentTimeUpDown.Value -= timeIncrement;
+            DisplayDrawings();
         }
 
 
@@ -517,12 +535,12 @@ namespace Animator
             Deselect();
             selected = select;
             selected.OutlineColour = Color.Red;
-            RotationUpDown.Value = (decimal)selected.R;
-            TurnUpDown.Value = (decimal)selected.T;
-            SpinUpDown.Value = (decimal)selected.S;
-            XUpDown.Value = (decimal)selected.X;
-            YUpDown.Value = (decimal)selected.Y;
-            SizeUpDown.Value = (decimal)selected.SM;
+            RotationUpDown.Value = (decimal)selected.Originally.R;
+            TurnUpDown.Value = (decimal)selected.Originally.T;
+            SpinUpDown.Value = (decimal)selected.Originally.S;
+            XUpDown.Value = (decimal)selected.Originally.X;
+            YUpDown.Value = (decimal)selected.Originally.Y;
+            SizeUpDown.Value = (decimal)selected.Originally.SM;
         }
 
         /// <summary>
@@ -552,35 +570,44 @@ namespace Animator
                 case Keys.Delete:
                     if (selected == null) { return; }
 
-                    // If piece is involved in set
-                    if (selected.PieceOf != null)
+                    // If Listbox is highlighted, delete change/animation
+                    if (ActiveControl == AnimationLb && AnimationLb.SelectedIndex != -1)
                     {
-                        DialogResult result = MessageBox.Show("This will delete the entire set. Do you wish to continue?",
-                            "Overwrite Confirmation", MessageBoxButtons.YesNo);
-                        if (result == DialogResult.No) { return; }
-
-                        Set deleting = selected.PieceOf;
-                        foreach (Piece piece in deleting.PiecesList)
-                        {
-                            WIP.PiecesList.Remove(piece);
-                        }
+                        AnimationLb.Items.RemoveAt(AnimationLb.SelectedIndex);
+                        // ** TO DO Remove connected change (put them in LB with index as tag?)
                     }
-                    // Piece is lone
+                    // Delete selected piece
                     else
                     {
-                        WIP.PiecesList.Remove(selected);
-                    }
-
-                    // Update changes to remove those made redundant by deleting a piece/set
-                    foreach (Change change in WIP.Changes)
-                    {
-                        if (!WIP.PiecesList.Contains(change.AffectedPiece))
+                        // If piece is involved in set
+                        if (selected.PieceOf != null)
                         {
-                            WIP.Changes.Remove(change);
-                        }
-                    }
+                            DialogResult result = MessageBox.Show("This will delete the entire set. Do you wish to continue?",
+                                "Overwrite Confirmation", MessageBoxButtons.YesNo);
+                            if (result == DialogResult.No) { return; }
 
-                    selected = null;
+                            Set deleting = selected.PieceOf;
+                            foreach (Piece piece in deleting.PiecesList)
+                            {
+                                WIP.PiecesList.Remove(piece);
+                            }
+                        }
+                        // Piece is lone
+                        else
+                        {
+                            WIP.PiecesList.Remove(selected);
+                        }
+
+                        // Update changes to remove those made redundant by deleting a piece/set
+                        foreach (Change change in WIP.Changes)
+                        {
+                            if (!WIP.PiecesList.Contains(change.AffectedPiece))
+                            {
+                                WIP.Changes.Remove(change);
+                            }
+                        }
+                        selected = null;
+                    }
                     DisplayDrawings();
                     break;
 
@@ -594,14 +621,56 @@ namespace Animator
 
 
 
-        // ----- OTHER FUNTCIONS -----
+        // ----- OTHER FUNCTIONS -----
 
         /// <summary>
         /// Draws the relevant scene to the screen.
         /// </summary>
         private void DisplayDrawings()
         {
+            // Past Preview
+            if (CurrentTimeUpDown.Value < timeIncrement && PreviewCb.Checked)
+            {
+                PastPreviewBox.BackColor = Color.PaleGoldenrod;
+            }
+            else
+            {
+                PastPreviewBox.BackColor = Color.White;
+                WIP.RunScene(CurrentTimeUpDown.Value - timeIncrement);
+                Utilities.DrawPieces(WIP.PiecesList, g, PastPreviewBox, 3/11.0F);
+            }
+
+            // Draw Panel (Current)
+            WIP.RunScene(CurrentTimeUpDown.Value);
             Utilities.DrawPieces(WIP.PiecesList, g, DrawPanel);
+
+            // Preview Panels (Future, Future++)
+            if (PreviewCb.Checked)
+            {
+                WIP.RunScene(CurrentTimeUpDown.Value + timeIncrement);
+                Utilities.DrawPieces(WIP.PiecesList, g, FuturePreviewBox, 3 / 11.0F);
+                WIP.RunScene(CurrentTimeUpDown.Value + 2 * timeIncrement);
+                Utilities.DrawPieces(WIP.PiecesList, g, Future2PreviewBox, 3 / 11.0F);
+            }
+
+            // Update Animation listbox
+            AnimationLb.Items.Clear();
+            foreach (Change change in WIP.Changes)
+            {
+                if (CurrentTimeUpDown.Value >= change.StartTime && CurrentTimeUpDown.Value <= change.StartTime + change.HowLong)
+                {
+                    string summary = "";
+                    if (change.AffectedPiece.PieceOf != null)
+                    {
+                        summary += change.AffectedPiece.AttachedTo != null ? "** " : "* ";
+                    }
+
+                    summary += change.Action + " : " + change.AffectedPiece.Name + " : " + change.HowMuch.ToString()
+                        + " : " + (change.HowLong - (CurrentTimeUpDown.Value - change.StartTime)).ToString();
+
+                    AnimationLb.Items.Add(summary);
+                }
+            }
         }
     }
 }

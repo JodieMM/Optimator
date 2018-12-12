@@ -36,7 +36,7 @@ namespace Animator
         {
             Name = inName;
             Host = owner;
-            Data = Utilities.ReadFile(GetFileDirectory());
+            Data = Utilities.ReadFile(Utilities.GetDirectory(Constants.JoinsFolder, Host.Name, Name, Constants.Txt));
         }
 
         /// <summary>
@@ -49,20 +49,6 @@ namespace Animator
             X = 150; Y = 150; XRight = 150; YDown = 150;
             Random rnd = new Random();
             FillColour = Constants.randomColours[rnd.Next(0, Constants.randomColours.Count())];
-        }
-
-
-
-        // ----- GET FUNCTIONS -----
-
-        /// <summary>
-        /// Returns the directory for the current join.
-        /// </summary>
-        /// <returns>String file path</returns>
-        private string GetFileDirectory()
-        {
-            return Environment.CurrentDirectory + Constants.JoinsFolder
-                + Host.Name + "//" + Name + Constants.Txt;
         }
 
 
@@ -102,7 +88,7 @@ namespace Animator
                 MakeDataLine(270, 360, 270, 360, new double[] { -XRight, -YDown }, new double[] { X, -YDown }, new double[] { -XRight, Y })
             };
 
-            Utilities.SaveData(GetFileDirectory(), Data);
+            Utilities.SaveData(Utilities.GetDirectory(Constants.JoinsFolder, Host.Name, Name, Constants.Txt), Data);
         }
 
         /// <summary>

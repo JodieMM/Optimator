@@ -148,18 +148,17 @@ namespace Animator
             else
             {
                 // Check name not already in use, or that overriding is okay
-                DialogResult result = DialogResult.Yes;
-                if (File.Exists(Utilities.GetDirectory(Constants.SetsFolder, NameTb.Text)))
+                if (File.Exists(Utilities.GetDirectory(Constants.SetsFolder, NameTb.Text, Constants.Txt)))
                 {
-                    result = MessageBox.Show("This name is already in use. Do you want to override the existing set?", "Override Confirmation", MessageBoxButtons.YesNo);
+                    DialogResult result = MessageBox.Show("This name is already in use. Do you want to override the existing set?", "Override Confirmation", MessageBoxButtons.YesNo);
+                    if (result == DialogResult.No) { return; }
                 }
-                if (result == DialogResult.No) { return; }
 
                 // Save Set and Close Form
                 try
                 {
                     WIP.CreateData();
-                    Utilities.SaveData(Utilities.GetDirectory(Constants.SetsFolder, NameTb.Text), WIP.Data);
+                    Utilities.SaveData(Utilities.GetDirectory(Constants.SetsFolder, NameTb.Text, Constants.Txt), WIP.Data);
                     Close();
                 }
                 catch (FileNotFoundException)

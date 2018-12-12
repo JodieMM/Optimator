@@ -30,7 +30,7 @@
         /// <param name="affectedPiece">The piece to be changed</param>
         /// <param name="howMuch">How much the change should occur per </param>
         /// <param name="howLong">How many frames the change should continue for</param>
-        public Change(decimal startTime, string action, Piece affectedPiece, double howMuch, int howLong, Scene owner)
+        public Change(decimal startTime, string action, Piece affectedPiece, double howMuch, decimal howLong, Scene owner)
         {
             StartTime = startTime;
             Action = action;
@@ -49,7 +49,7 @@
         /// <param name="howMuch">How much the change should occur per </param>
         /// <param name="howLong">How many frames the change should continue for</param>
         /// <param name="options">Any additional notes for implementation</param>
-        public Change(decimal startTime, string action, Piece affectedPiece, double howMuch, int howLong, string options, Scene owner)
+        public Change(decimal startTime, string action, Piece affectedPiece, double howMuch, decimal howLong, string options, Scene owner)
         {
             StartTime = startTime;
             Action = action;
@@ -67,35 +67,42 @@
         /// <summary>
         /// Applies the change to the affected piece.
         /// </summary>
-        /// <param name="forward">Whether the change is being applied or removed</param>
-        public void Run(bool forward, decimal time)
+        /// <param name="time">Current time of the scene</param>
+        public void Run(decimal time)
         {
-            if (time <= StartTime || (time - StartTime) > HowLong) { return; }
+            if (time <= StartTime) { return; }
 
             // Allow for subtraction/ going back in time
-            int multiplier = (forward) ? 1 : -1;
-            double increment = multiplier * (double)(time / (time - StartTime));
+            double increment;
+            if ((time - StartTime) >= HowLong)
+            {
+                increment = HowMuch;
+            }
+            else
+            {
+                increment = (double)((time - StartTime) / HowLong) * HowMuch;
+            }
 
             // Update Parts
             switch (Action)
             {
                 case "X":
-                    AffectedPiece.X = AffectedPiece.GetCoords()[0] + increment * HowMuch;
+                    AffectedPiece.X += increment;
                     break;
                 case "Y":
-                    AffectedPiece.Y = AffectedPiece.GetCoords()[1] + increment * HowMuch;
+                    AffectedPiece.Y += increment;
                     break;
                 case "Rotation":
-                    AffectedPiece.SetRotation((int)AffectedPiece.GetAngles()[0] + increment * HowMuch);
+                    AffectedPiece.SetRotation(AffectedPiece.R + increment);
                     break;
                 case "Turn":
-                    AffectedPiece.SetTurn((int)AffectedPiece.GetAngles()[1] + increment * HowMuch);
+                    AffectedPiece.SetTurn(AffectedPiece.T + increment);
                     break;
                 case "Spin":
-                    AffectedPiece.SetSpin((int)AffectedPiece.GetAngles()[2] + increment * HowMuch);
+                    AffectedPiece.SetSpin(AffectedPiece.S + increment);
                     break;
                 case "Size":
-                    AffectedPiece.SM = AffectedPiece.GetSizeMod() + increment * HowMuch;
+                    AffectedPiece.SM += increment;
                     break;
             }
         }

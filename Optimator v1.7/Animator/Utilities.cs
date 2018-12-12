@@ -57,14 +57,38 @@ namespace Animator
         }
 
         /// <summary>
-        /// Takes a folder and item name and returns the directory name to reach that file
+        /// Takes a folder and item name and returns the directory name to reach that file.
         /// </summary>
         /// <param name="folder">The folder the item is in</param>
         /// <param name="name">The item name</param>
         /// <returns></returns>
         public static string GetDirectory(string folder, string name)
         {
-            return Environment.CurrentDirectory + folder + name + Constants.Txt;
+            return System.IO.Path.Combine(System.IO.Path.Combine(Environment.CurrentDirectory, folder), name);
+        }
+
+        /// <summary>
+        /// Takes a folder, item name and file type and returns the directory name to reach that file.
+        /// </summary>
+        /// <param name="folder">The folder the item is in</param>
+        /// <param name="name">The item name</param>
+        /// <param name="fileType">The file's type, e.g. txt, png</param>
+        /// <returns></returns>
+        public static string GetDirectory(string folder, string name, string fileType)
+        {
+            return System.IO.Path.Combine(System.IO.Path.Combine(Environment.CurrentDirectory, folder), name + Constants.Txt);
+        }
+
+        /// <summary>
+        /// Takes a folder, item name and file type and returns the directory name to reach that file.
+        /// </summary>
+        /// <param name="folder">The folder the item is in</param>
+        /// <param name="name">The item name</param>
+        /// <param name="fileType">The file's type, e.g. txt, png</param>
+        /// <returns></returns>
+        public static string GetDirectory(string folder, string subfolder, string name, string fileType)
+        {
+            return System.IO.Path.Combine(System.IO.Path.Combine(System.IO.Path.Combine(Environment.CurrentDirectory, folder), subfolder), name + fileType);
         }
 
 
@@ -159,7 +183,8 @@ namespace Animator
         }
 
         /// <summary>
-        /// Draws all pieces in a list
+        /// Draws all pieces in a list, including setting
+        /// the graphics and clearing the draw panel.
         /// </summary>
         /// <param name="DrawPanel">Panel to be drawn on</param>
         /// <param name="piecesList">Pieces to be drawn</param>
@@ -169,6 +194,30 @@ namespace Animator
             // Prepare
             DrawPanel.Refresh();
             g = DrawPanel.CreateGraphics();
+
+            // Draw Parts
+            List<Piece> orderedPieces = SortOrder(piecesList);
+            for (int index = 0; index < piecesList.Count; index++)
+            {
+                DrawPiece(orderedPieces[index], g, true);
+            }
+        }
+
+        /// <summary>
+        /// Draws all pieces in a list, including setting
+        /// the graphics and clearing the draw panel.
+        /// Also sets a scale on the image.
+        /// </summary>
+        /// <param name="DrawPanel">Panel to be drawn on</param>
+        /// <param name="piecesList">Pieces to be drawn</param>
+        /// <param name="g">Graphics to draw</param>
+        /// <param name="scale">Size modifier to entire image</param>
+        public static void DrawPieces(List<Piece> piecesList, Graphics g, PictureBox DrawPanel, float scale)
+        {
+            // Prepare
+            DrawPanel.Refresh();
+            g = DrawPanel.CreateGraphics();
+            g.ScaleTransform(scale, scale);
 
             // Draw Parts
             List<Piece> orderedPieces = SortOrder(piecesList);
@@ -580,6 +629,7 @@ namespace Animator
 
 
         // ----- SHAPE SURFACE FUNCTIONS -----
+        #region Shape Surface Functions
 
         /// <summary>
         /// Finds all of the coordinates between two points.
@@ -757,5 +807,7 @@ namespace Animator
             }
             return -1;
         }
+
+        #endregion
     }
 }
