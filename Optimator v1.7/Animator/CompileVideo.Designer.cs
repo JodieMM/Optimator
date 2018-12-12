@@ -41,6 +41,7 @@
             this.ExitBtn = new System.Windows.Forms.Button();
             this.NameTb = new System.Windows.Forms.TextBox();
             this.SettingsTab = new System.Windows.Forms.TabPage();
+            this.PreviewCb = new System.Windows.Forms.CheckBox();
             this.FpsLbl = new System.Windows.Forms.Label();
             this.FpsUpDown = new System.Windows.Forms.NumericUpDown();
             this.DisplayPanel = new System.Windows.Forms.Panel();
@@ -52,7 +53,6 @@
             this.CurrentTimeUpDown = new System.Windows.Forms.NumericUpDown();
             this.ForwardBtn = new System.Windows.Forms.Button();
             this.BackBtn = new System.Windows.Forms.Button();
-            this.PreviewCb = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.DrawPanel)).BeginInit();
             this.OptionsMenu.SuspendLayout();
             this.ScenesTab.SuspendLayout();
@@ -209,6 +209,19 @@
             this.SettingsTab.TabIndex = 2;
             this.SettingsTab.Text = "Settings";
             // 
+            // PreviewCb
+            // 
+            this.PreviewCb.AutoSize = true;
+            this.PreviewCb.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PreviewCb.Location = new System.Drawing.Point(17, 105);
+            this.PreviewCb.Name = "PreviewCb";
+            this.PreviewCb.Size = new System.Drawing.Size(127, 23);
+            this.PreviewCb.TabIndex = 37;
+            this.PreviewCb.Text = "Show Preview";
+            this.PreviewCb.UseVisualStyleBackColor = true;
+            this.PreviewCb.Visible = false;
+            this.PreviewCb.CheckedChanged += new System.EventHandler(this.PreviewCb_CheckedChanged);
+            // 
             // FpsLbl
             // 
             this.FpsLbl.AutoSize = true;
@@ -352,19 +365,6 @@
             this.BackBtn.TabIndex = 23;
             this.BackBtn.Text = "Back";
             this.BackBtn.UseVisualStyleBackColor = false;
-            // 
-            // PreviewCb
-            // 
-            this.PreviewCb.AutoSize = true;
-            this.PreviewCb.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PreviewCb.Location = new System.Drawing.Point(17, 105);
-            this.PreviewCb.Name = "PreviewCb";
-            this.PreviewCb.Size = new System.Drawing.Size(127, 23);
-            this.PreviewCb.TabIndex = 37;
-            this.PreviewCb.Text = "Show Preview";
-            this.PreviewCb.UseVisualStyleBackColor = true;
-            this.PreviewCb.Visible = false;
-            this.PreviewCb.CheckedChanged += new System.EventHandler(this.PreviewCb_CheckedChanged);
             // 
             // CompileVideo
             // 

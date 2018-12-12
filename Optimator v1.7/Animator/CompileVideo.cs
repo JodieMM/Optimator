@@ -104,6 +104,10 @@ namespace Animator
             // Save Video and Close Form
             try
             {
+                LoadingForm loading = new LoadingForm();
+                loading.Show();
+                Application.DoEvents();
+
                 // Prepare Save Location
                 Directory.CreateDirectory(Utilities.GetDirectory(Constants.VideosFolder, NameTb.Text));
 
@@ -119,6 +123,8 @@ namespace Animator
                         numFrames++;
                     }
                 }
+
+                loading.Close();
                 Close();
             }
             catch (FileNotFoundException)

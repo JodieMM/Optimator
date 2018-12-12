@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
+using System.Threading;
 
 namespace Animator
 {
@@ -610,6 +611,10 @@ namespace Animator
         /// </summary>
         private void DisplayDrawings()
         {
+            LoadingForm loading = new LoadingForm();
+            loading.Show();
+            Application.DoEvents();
+
             // Past Preview
             if (CurrentTimeUpDown.Value < timeIncrement && PreviewCb.Checked)
             {
@@ -662,6 +667,8 @@ namespace Animator
             {
                 AnimationLb.Items.Add(summary);
             }
+
+            loading.Close();
         }
 
         /// <summary>
