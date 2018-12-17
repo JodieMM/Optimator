@@ -317,6 +317,27 @@ namespace Animator
         }
 
         /// <summary>
+        /// Finds the mathematical modulus of a mod b.
+        /// </summary>
+        /// <param name="a">Value to be divided</param>
+        /// <param name="b">Modulus</param>
+        /// <returns>a modulo b</returns>
+        public static double Modulo(double a, double b)
+        {
+            return (a % b + b) % b;
+        }
+
+        /// <summary>
+        /// Converts an angle in degrees into radians.
+        /// </summary>
+        /// <param name="angle">The angle to convert</param>
+        /// <returns>Radian equivalent</returns>
+        public static double ToRad(double angle)
+        {
+            return angle * Math.PI / 180.0;
+        }
+
+        /// <summary>
         /// Returns a de-referenced clone of a double[] list.
         /// </summary>
         /// <param name="original">Original list</param>
