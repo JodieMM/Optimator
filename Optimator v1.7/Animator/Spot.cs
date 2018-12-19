@@ -9,8 +9,6 @@
     public class Spot
     {
         #region Spot Variables
-        public bool IsDrawn { get; set; }
-
         public double X { get; set; }
         public double XRight { get; set; }
         public double Y { get; set; }
@@ -18,6 +16,11 @@
 
         public string Connector { get; set; }
         public string Solid { get; set; }
+
+        public Spot MatchX { get; set; }
+        public Spot MatchY { get; set; }
+        public bool IsDrawn { get; set; }
+        public bool Set { get; set; }
         #endregion
 
 
@@ -77,6 +80,38 @@
                     return new double[] { XRight, YDown };
                 default:
                     return new double[] { X, Y };
+            }
+        }
+
+        /// <summary>
+        /// Sets a coordinate value based on the inputs provided.
+        /// </summary>
+        /// <param name="angle">The angle the coord is affected in</param>
+        /// <param name="xy">Whether the x (0) or y (1) coord is changed</param>
+        /// <param name="value">The new value for the coord</param>
+        public void SetCoords(int angle, int xy, double value)
+        {
+            if (xy == 0)
+            {
+                if (angle == 0 || angle == 2)
+                {
+                    X = value;
+                }
+                else
+                {
+                    XRight = value;
+                }
+            }
+            else
+            {
+                if (angle == 0 || angle == 1)
+                {
+                    Y = value;
+                }
+                else
+                {
+                    YDown = value;
+                }
             }
         }
     }

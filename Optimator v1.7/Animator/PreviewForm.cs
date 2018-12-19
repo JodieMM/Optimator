@@ -89,5 +89,53 @@ namespace Animator
             g = DrawBoard.CreateGraphics();
             Utilities.DrawPiece(WIP, g, true);
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            WIP.R = 0;
+            DrawScreen();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            WIP.R = 90;
+            DrawScreen();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            WIP.R = 180;
+            DrawScreen();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            WIP.R = 270;
+            DrawScreen();
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            WIP.T = 0;
+            DrawScreen();
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            WIP.T = 90;
+            DrawScreen();
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            WIP.T = 180;
+            DrawScreen();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            WIP.T = 270;
+            DrawScreen();
+        }
     }
 }

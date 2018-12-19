@@ -447,39 +447,52 @@ namespace Animator
         /// <returns></returns>
         public static List<double[]> FlipCoords(List<Spot> spots, int angle, bool right, bool down)
         {
-            List<double[]> coords = ConvertSpotsToCoords(spots, angle);
-            double[] middle = FindMid(coords);
-            double[] minMax = FindMinMax(coords);
-            List<double[]> clone = CloneMe(coords);
+            double[] middle = FindMid(ConvertSpotsToCoords(spots, angle));
+            List<Spot> cloneSpot = new List<Spot>();
 
-            // Flip Horizontally (Down) and Vertically (Right)
-            for (int xy = 0; xy < 2; xy++)
+            // Flip Vertically (Right, Same Y) and Horizontally (Down, Same X)
+            for (int index = 0; index < spots.Count; index++)
             {
-                int yx = Modulo(xy + 1, 2);
-                if (down && xy == 0 || right && xy == 1)
+                Spot spot = spots[index];
+                Spot insert = new Spot(spot.X, spot.Y);
+
+                // If spot needs to switch with another spot
+                if (spot.IsDrawn || right && spot.MatchY != null || down && spot.MatchX != null)
                 {
-                    for (int index = 0; index < coords.Count; index++)
+                    if (right)
                     {
-                        // Assign coords to their symmetric match
-                        int matchIndex = FindSymmetricalCoord(spots, index, xy);
-                        if (coords[index][xy] != minMax[0 + 2 * xy] && coords[index][xy] != minMax[1 + 2 * xy])
-                        {
-                            if (matchIndex == -1)
-                            {
-                                int searchIndex = FindSymmetricalCoordHome(spots, index, xy);
-                                clone[index][yx] = FindSymmetricalOppositeCoord(coords[searchIndex],
-                                    coords[Modulo(searchIndex - 1, coords.Count)], coords[index][xy], xy, spots[searchIndex].Connector)[yx];
-                            }
-                            else
-                            {
-                                clone[index][yx] = coords[matchIndex][yx];
-                            }
-                        }
-                        clone[index][yx] = FlipAroundCentre(middle[yx], clone[index][yx]);
+                        insert.X = (spot.MatchY != null) ? FlipAroundCentre(middle[0], spot.MatchY.GetCoords(angle)[0]) 
+                            : FlipAroundCentre(middle[0], spot.GetCoords(angle)[0]);
+                    }
+                    if (down)
+                    {
+                        insert.Y = (spot.MatchX != null) ? FlipAroundCentre(middle[1], spot.MatchX.GetCoords(angle)[1]) 
+                            : FlipAroundCentre(middle[1], spot.GetCoords(angle)[1]);
                     }
                 }
+                // If spot needs to flip but not swap
+                else
+                {
+                    if (right)
+                    {
+                        int searchIndex = FindSymmetricalCoordHome(spots, index, 1);
+                        double value = FindSymmetricalOppositeCoord(spots[searchIndex].GetCoords(angle),
+                                spots[Modulo(searchIndex - 1, spots.Count)].GetCoords(angle),
+                                spots[index].GetCoords(angle)[1], 1, spots[searchIndex].Connector)[0];
+                        insert.X = FlipAroundCentre(middle[0], value);
+                    }
+                    if (down)
+                    {
+                        int searchIndex = FindSymmetricalCoordHome(spots, index, 0);
+                        double value = FindSymmetricalOppositeCoord(spots[searchIndex].GetCoords(angle),
+                                spots[Modulo(searchIndex - 1, spots.Count)].GetCoords(angle),
+                                spots[index].GetCoords(angle)[0], 0, spots[searchIndex].Connector)[1];
+                        insert.Y = FlipAroundCentre(middle[1], value);
+                    }
+                }
+                cloneSpot.Add(insert);
             }
-            return clone;
+            return ConvertSpotsToCoords(cloneSpot, 0);
         }
 
         /// <summary>
@@ -500,8 +513,21 @@ namespace Animator
             {
                 for (int index = 0; index < spots.Count; index++)
                 {
-                    if (spots[index].IsDrawn && FindSymmetricalCoord(spots, index, xy) == -1
-                        && spots[index].GetCoords(0)[xy] != highestPoints[1 + 2 * xy] && spots[index].GetCoords(0)[xy] != highestPoints[0 + 2 * xy])
+                    if (FindSymmetricalCoord(spots, index, xy) != -1)
+                    {
+                        if (xy == 0)
+                        {
+                            spots[FindSymmetricalCoord(spots, index, xy)].MatchX = spots[index];
+                            spots[index].MatchX = spots[FindSymmetricalCoord(spots, index, xy)];
+                        }
+                        else
+                        {
+                            spots[FindSymmetricalCoord(spots, index, xy)].MatchY = spots[index];
+                            spots[index].MatchY = spots[FindSymmetricalCoord(spots, index, xy)];
+                        }
+                    }
+                    else if (spots[index].IsDrawn && spots[index].GetCoords(0)[xy] != highestPoints[1 + 2 * xy] 
+                        && spots[index].GetCoords(0)[xy] != highestPoints[0 + 2 * xy])
                     {
                         int insertIndex = FindSymmetricalCoordHome(spots, index, xy);
                         double[] original = FindSymmetricalOppositeCoord(spots[insertIndex].GetCoords(0),
@@ -510,7 +536,18 @@ namespace Animator
                             spots[Modulo(insertIndex - 1, spots.Count)].GetCoords(1), spots[index].GetCoords(1)[xy], xy, spots[insertIndex].Connector)[0];
                         double turned = FindSymmetricalOppositeCoord(spots[insertIndex].GetCoords(2),
                             spots[Modulo(insertIndex - 1, spots.Count)].GetCoords(2), spots[index].GetCoords(2)[xy], xy, spots[insertIndex].Connector)[1];
-                        spots.Insert(insertIndex, new Spot(original[0], rotated, original[1], turned, spots[insertIndex].Connector, spots[insertIndex].Solid));
+                        Spot newSpot = new Spot(original[0], rotated, original[1], turned, spots[insertIndex].Connector, spots[insertIndex].Solid);
+                        if (xy == 0)
+                        {
+                            newSpot.MatchX = spots[index];
+                            spots[index].MatchX = newSpot;
+                        }
+                        else
+                        {
+                            newSpot.MatchY = spots[index];
+                            spots[index].MatchY = newSpot;
+                        }
+                        spots.Insert(insertIndex, newSpot);
                     }
                 }
             }
@@ -560,8 +597,7 @@ namespace Animator
             }
             else
             {
-                double[] hold = new double[] { from[0] + (value - from[1]) / gradient, value };  // x = y / gradient
-                return hold;
+                return new double[] { from[0] + (value - from[1]) / gradient, value };  // x = y / gradient
             }
         }
 
