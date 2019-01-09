@@ -414,6 +414,16 @@ namespace Animator
             DisplayPanel.Visible = PreviewCb.Checked;
         }
 
+        /// <summary>
+        /// Changes the time between preview frames.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TimeIncrementUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            timeIncrement = TimeIncrementUpDown.Value;
+        }
+
 
 
         // ----- DISPLAY PANEL -----

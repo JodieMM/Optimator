@@ -53,6 +53,8 @@
             this.CurrentTimeUpDown = new System.Windows.Forms.NumericUpDown();
             this.ForwardBtn = new System.Windows.Forms.Button();
             this.BackBtn = new System.Windows.Forms.Button();
+            this.TimeIntervalLbl = new System.Windows.Forms.Label();
+            this.TimeIncrementUpDown = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.DrawPanel)).BeginInit();
             this.OptionsMenu.SuspendLayout();
             this.ScenesTab.SuspendLayout();
@@ -64,6 +66,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.FuturePreviewBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PastPreviewBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CurrentTimeUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TimeIncrementUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // SaveBtn
@@ -200,6 +203,8 @@
             // SettingsTab
             // 
             this.SettingsTab.BackColor = System.Drawing.Color.MistyRose;
+            this.SettingsTab.Controls.Add(this.TimeIntervalLbl);
+            this.SettingsTab.Controls.Add(this.TimeIncrementUpDown);
             this.SettingsTab.Controls.Add(this.PreviewCb);
             this.SettingsTab.Controls.Add(this.FpsLbl);
             this.SettingsTab.Controls.Add(this.FpsUpDown);
@@ -366,6 +371,36 @@
             this.BackBtn.Text = "Back";
             this.BackBtn.UseVisualStyleBackColor = false;
             // 
+            // TimeIntervalLbl
+            // 
+            this.TimeIntervalLbl.AutoSize = true;
+            this.TimeIntervalLbl.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TimeIntervalLbl.Location = new System.Drawing.Point(13, 154);
+            this.TimeIntervalLbl.Name = "TimeIntervalLbl";
+            this.TimeIntervalLbl.Size = new System.Drawing.Size(138, 19);
+            this.TimeIntervalLbl.TabIndex = 39;
+            this.TimeIntervalLbl.Text = "Preview Time Gap";
+            // 
+            // TimeIncrementUpDown
+            // 
+            this.TimeIncrementUpDown.DecimalPlaces = 1;
+            this.TimeIncrementUpDown.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TimeIncrementUpDown.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            65536});
+            this.TimeIncrementUpDown.Location = new System.Drawing.Point(17, 176);
+            this.TimeIncrementUpDown.Name = "TimeIncrementUpDown";
+            this.TimeIncrementUpDown.Size = new System.Drawing.Size(153, 27);
+            this.TimeIncrementUpDown.TabIndex = 38;
+            this.TimeIncrementUpDown.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            65536});
+            this.TimeIncrementUpDown.ValueChanged += new System.EventHandler(this.TimeIncrementUpDown_ValueChanged);
+            // 
             // CompileVideo
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -396,6 +431,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.FuturePreviewBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PastPreviewBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.CurrentTimeUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TimeIncrementUpDown)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -425,5 +461,7 @@
         private System.Windows.Forms.Button ForwardBtn;
         private System.Windows.Forms.Button BackBtn;
         private System.Windows.Forms.CheckBox PreviewCb;
+        private System.Windows.Forms.Label TimeIntervalLbl;
+        private System.Windows.Forms.NumericUpDown TimeIncrementUpDown;
     }
 }

@@ -84,6 +84,16 @@ namespace Animator
 
         // ----- GET FUNCTIONS -----
         #region Get Functions
+        
+        /// <summary>
+        /// Converts the piece into a name equivalent.
+        /// </summary>
+        /// <returns>The piece name</returns>
+        public override string ToString()
+        {
+            return Name;
+        }
+
         /// <summary>
         /// Gets the size modifier with considerations
         /// </summary>

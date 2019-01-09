@@ -60,6 +60,8 @@ namespace Animator
             KeyPreview = true;
             KeyUp += KeyPress;
 
+            SketchLb.ItemCheck += new ItemCheckEventHandler(SketchLbSelectChange);
+
             FillBox.BackColor = Constants.defaultFill;
             OutlineBox.BackColor = Constants.defaultOutline;
             OutlineWidthBox.Value = Constants.defaultOutlineWidth;
@@ -636,7 +638,7 @@ namespace Animator
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void AddPointBtn_Click(object sender, EventArgs e)
+        private void AddJoinBtn_Click(object sender, EventArgs e)
         {
             joins.Add(new Join(WIP));
             SelectJoin(joins[joins.Count - 1]);
@@ -715,16 +717,26 @@ namespace Animator
             rotated = DrawRight.CreateGraphics();
             turned = DrawDown.CreateGraphics();
 
+            // DRAW SKETCHES
+            for (int index = 0; index < Sketch.Count; index++)
+            {
+                if (SketchLb.GetItemCheckState(index) == CheckState.Checked)
+                {
+                    Piece piece = Sketch[index];
+                    piece.R = rotationFrom;
+                    piece.T = turnFrom;
+                    Utilities.DrawPiece(piece, original, false);
+                    piece.R = rotationTo;
+                    Utilities.DrawPiece(piece, rotated, false);
+                    piece.R = rotationFrom;
+                    piece.T = turnTo;
+                    Utilities.DrawPiece(piece, turned, false);
+                }
+            }
+
             // DRAW BASE BOARD
             WIP.R = 0;
             WIP.T = 0;
-            // Draw Sketches
-            foreach (Piece piece in Sketch)
-            {
-                piece.R = rotationFrom;
-                piece.T = turnFrom;
-                Utilities.DrawPiece(piece, original, false);
-            }
             Utilities.DrawPiece(WIP, original, false);
             DrawPoints(original, 2);
             // Draw Joins
@@ -753,12 +765,6 @@ namespace Animator
             // DRAW ROTATED BOARD
             WIP.R = 89.9999;
             WIP.T = 0;
-            // Draw Sketches
-            foreach (Piece piece in Sketch)
-            {
-                piece.R = rotationTo;
-                Utilities.DrawPiece(piece, rotated, false);
-            }
             Utilities.DrawPiece(WIP, rotated, false);
             DrawPoints(rotated, 3);
             // Draw Joins
@@ -801,13 +807,6 @@ namespace Animator
             // DRAW TURNED BOARD
             WIP.R = 0;
             WIP.T = 89.9999;
-            // Draw Sketches
-            foreach (Piece piece in Sketch)
-            {
-                piece.R = rotationFrom;
-                piece.T = turnTo;
-                Utilities.DrawPiece(piece, turned, false);
-            }
             Utilities.DrawPiece(WIP, turned, false);
             DrawPoints(turned, 4);
             // Draw Joins
@@ -1072,7 +1071,7 @@ namespace Animator
         }
 
         /// <summary>
-        /// Selects a point and updates the form to
+        /// Selects a spot and updates the form to
         /// display relevant values.
         /// </summary>
         /// <param name="index"></param>
@@ -1119,6 +1118,39 @@ namespace Animator
             FillBox.BackColor = WIP.FillColour[0];
             OutlineBox.BackColor = WIP.OutlineColour;
             OutlineWidthBox.Value = WIP.OutlineWidth;
+        }
+
+
+
+        // ----- SKETCH FUNCTIONS -----
+
+        /// <summary>
+        /// Adds a piece to the sketch list and listbox.
+        /// </summary>
+        /// <param name="toLoad">Piece to add to the sketch list</param>
+        public void AddSketch(Piece toLoad)
+        {
+            Sketch.Add(toLoad);
+            SketchLb.Items.Add(toLoad, true);
+        }
+
+        // ** TO DO
+        public void AddSketch(Set toLoad)
+        {
+
+        }
+
+        /// <summary>
+        /// Displays drawing with/without sketch item after
+        /// its visability is changed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SketchLbSelectChange(object sender, ItemCheckEventArgs e)
+        {
+            BeginInvoke((MethodInvoker)delegate {
+                DisplayDrawings();
+            });
         }
     }
 }

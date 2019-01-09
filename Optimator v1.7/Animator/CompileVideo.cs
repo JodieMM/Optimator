@@ -18,6 +18,7 @@ namespace Animator
         private List<Scene> videoScenes = new List<Scene>();
         private int sceneIndex = 0;
         private decimal workingTime = 0;
+        private decimal timeIncrement = (decimal)0.5;
 
         private Graphics g;
         private Color backgroundColor = Color.White;
@@ -149,6 +150,16 @@ namespace Animator
         private void PreviewCb_CheckedChanged(object sender, EventArgs e)
         {
             DisplayPanel.Visible = PreviewCb.Checked;
+        }
+
+        /// <summary>
+        /// Changes the time between preview frames.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TimeIncrementUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            timeIncrement = TimeIncrementUpDown.Value;
         }
 
 

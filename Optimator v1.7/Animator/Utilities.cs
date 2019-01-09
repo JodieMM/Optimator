@@ -454,10 +454,10 @@ namespace Animator
             for (int index = 0; index < spots.Count; index++)
             {
                 Spot spot = spots[index];
-                Spot insert = new Spot(spot.X, spot.Y);
+                Spot insert = new Spot(spot.GetCoords(angle)[0], spot.GetCoords(angle)[1]);
 
                 // If spot needs to switch with another spot
-                if (spot.IsDrawn || right && spot.MatchY != null || down && spot.MatchX != null)
+                if (spot.DrawnLevel == 0 || right && spot.MatchY != null || down && spot.MatchX != null)
                 {
                     if (right)
                     {
@@ -473,7 +473,16 @@ namespace Animator
                 // If spot needs to flip but not swap
                 else
                 {
-                    if (right)
+                    if (right && down)
+                    {
+                        int searchIndex = FindSymmetricalCoordHome(spots, index, 1);
+                        double[] value = FindSymmetricalOppositeCoord(spots[searchIndex].GetCoords(angle),
+                                spots[Modulo(searchIndex - 1, spots.Count)].GetCoords(angle),
+                                spots[index].GetCoords(angle)[1], 1, spots[searchIndex].Connector);
+                        insert.X = FlipAroundCentre(middle[0], value[0]);
+                        insert.Y = FlipAroundCentre(middle[1], value[1]);
+                    }
+                    else if (right)
                     {
                         int searchIndex = FindSymmetricalCoordHome(spots, index, 1);
                         double value = FindSymmetricalOppositeCoord(spots[searchIndex].GetCoords(angle),
@@ -481,7 +490,7 @@ namespace Animator
                                 spots[index].GetCoords(angle)[1], 1, spots[searchIndex].Connector)[0];
                         insert.X = FlipAroundCentre(middle[0], value);
                     }
-                    if (down)
+                    else if (down)
                     {
                         int searchIndex = FindSymmetricalCoordHome(spots, index, 0);
                         double value = FindSymmetricalOppositeCoord(spots[searchIndex].GetCoords(angle),
@@ -513,6 +522,7 @@ namespace Animator
             {
                 for (int index = 0; index < spots.Count; index++)
                 {
+                    // If spot has existing match
                     if (FindSymmetricalCoord(spots, index, xy) != -1)
                     {
                         if (xy == 0)
@@ -526,17 +536,18 @@ namespace Animator
                             spots[index].MatchY = spots[FindSymmetricalCoord(spots, index, xy)];
                         }
                     }
-                    else if (spots[index].IsDrawn && spots[index].GetCoords(0)[xy] != highestPoints[1 + 2 * xy] 
+                    // If spot has no existing match, was drawn and is not a min/max for its xy
+                    else if (spots[index].DrawnLevel == 0 && spots[index].GetCoords(0)[xy] != highestPoints[1 + 2 * xy] 
                         && spots[index].GetCoords(0)[xy] != highestPoints[0 + 2 * xy])
                     {
                         int insertIndex = FindSymmetricalCoordHome(spots, index, xy);
                         double[] original = FindSymmetricalOppositeCoord(spots[insertIndex].GetCoords(0),
                             spots[Modulo(insertIndex - 1, spots.Count)].GetCoords(0), spots[index].GetCoords(0)[xy], xy, spots[insertIndex].Connector);
                         double rotated = FindSymmetricalOppositeCoord(spots[insertIndex].GetCoords(1),
-                            spots[Modulo(insertIndex - 1, spots.Count)].GetCoords(1), spots[index].GetCoords(1)[xy], xy, spots[insertIndex].Connector)[0];
+                            spots[Modulo(insertIndex - 1, spots.Count)].GetCoords(1), original[1], 1, spots[insertIndex].Connector)[0];
                         double turned = FindSymmetricalOppositeCoord(spots[insertIndex].GetCoords(2),
-                            spots[Modulo(insertIndex - 1, spots.Count)].GetCoords(2), spots[index].GetCoords(2)[xy], xy, spots[insertIndex].Connector)[1];
-                        Spot newSpot = new Spot(original[0], rotated, original[1], turned, spots[insertIndex].Connector, spots[insertIndex].Solid);
+                            spots[Modulo(insertIndex - 1, spots.Count)].GetCoords(2), original[0], 0, spots[insertIndex].Connector)[1];
+                        Spot newSpot = new Spot(original[0], rotated, original[1], turned, 1, spots[insertIndex].Connector, spots[insertIndex].Solid);
                         if (xy == 0)
                         {
                             newSpot.MatchX = spots[index];
@@ -551,6 +562,31 @@ namespace Animator
                     }
                 }
             }
+
+            // Find DrawnLevel 2 Spots
+            /*
+            for (int index = 0; index < spots.Count; index++)
+            {
+                Spot selected = spots[index];
+                if (selected.DrawnLevel == 1)
+                {
+                    if (selected.MatchX == null)
+                    {
+                        int insertIndex = FindSymmetricalCoordHome(spots, index, 0);
+
+                        // TO DO **
+
+                        if (insertIndex <= index)
+                        {
+                            index++;
+                        }
+                    }
+                    else
+                    {
+                        // ** TO DO
+                    }
+                }
+            }*/
         }
 
         /// <summary>
@@ -747,18 +783,25 @@ namespace Animator
         public static List<double[]> FindPieceLines(List<double[]> coords, List<string> lineArray)
         {
             List<double[]> line = new List<double[]>();
-            for (int index = 0; index < coords.Count; index++)
+            if (coords.Count > 2)
             {
-                if (index == coords.Count - 1)
+                for (int index = 0; index < coords.Count; index++)
                 {
-                    line.AddRange(FindLineCoords(new double[] { coords[index][0], coords[index][1] },
-                        new double[] { coords[0][0], coords[0][1] }, lineArray[index]));
+                    if (index == coords.Count - 1)
+                    {
+                        line.AddRange(FindLineCoords(new double[] { coords[index][0], coords[index][1] },
+                            new double[] { coords[0][0], coords[0][1] }, lineArray[index]));
+                    }
+                    else
+                    {
+                        line.AddRange(FindLineCoords(new double[] { coords[index][0], coords[index][1] },
+                            new double[] { coords[index + 1][0], coords[index + 1][1] }, lineArray[index]));
+                    }
                 }
-                else
-                {
-                    line.AddRange(FindLineCoords(new double[] { coords[index][0], coords[index][1] }, 
-                        new double[] { coords[index + 1][0], coords[index + 1][1] }, lineArray[index]));
-                }
+            }
+            else
+            {
+                line.AddRange(coords);
             }
             return line;
         }
@@ -772,42 +815,60 @@ namespace Animator
         public static List<int[]> FindPieceSpace(List<double[]> outline)
         {
             List<int[]> pieceSpace = new List<int[]>();
-
-            // Sort pieceSpace by Y, then by X
-            for (int spot = 0; spot < outline.Count - 1; spot++)
+            if (outline.Count > 2)
             {
-                for (int position = 0; position < outline.Count - spot - 1; position++)
+                // Sort pieceSpace by Y, then by X
+                for (int spot = 0; spot < outline.Count - 1; spot++)
                 {
-                    if (outline[position][1] > outline[position + 1][1] 
-                        || (outline[position][1] == outline[position + 1][1] && outline[position][0] > outline[position + 1][0]))
+                    for (int position = 0; position < outline.Count - spot - 1; position++)
                     {
-                        SwitchPositions(outline, position, position + 1);
+                        if (outline[position][1] > outline[position + 1][1]
+                            || (outline[position][1] == outline[position + 1][1] && outline[position][0] > outline[position + 1][0]))
+                        {
+                            SwitchPositions(outline, position, position + 1);
+                        }
                     }
+                }
+
+                double[] minMax = FindMinMax(outline);
+                int y = (int)minMax[2];
+                int index = 0;
+                while (y < minMax[3])
+                {
+                    // Find all points in that row (should be a multiple of 2)
+                    List<double[]> row = new List<double[]>();
+                    while (outline[index][1] == y)
+                    {
+                        row.Add(outline[index]);
+                        index++;
+                    }
+
+                    // Add coords between point pairs to pieceSpace
+                    for (int column = 0; column + 1 < row.Count; column += 2)
+                    {
+                        for (int point = (int)row[column][0]; point < row[column + 1][0]; point++)
+                        {
+                            pieceSpace.Add(new int[] { point, y });
+                        }
+                    }
+                    y++;
                 }
             }
-
-            double[] minMax = FindMinMax(outline);
-            int y = (int)minMax[2];
-            int index = 0;
-            while (y < minMax[3])
+            else
             {
-                // Find all points in that row (should be a multiple of 2)
-                List<double[]> row = new List<double[]>();
-                while (outline[index][1] == y)
+                // TEMPORARY FIX FOR STRAIGHT LINES (NO FILL)
+                foreach (double[] point in outline)
                 {
-                    row.Add(outline[index]);
-                    index++;
+                    pieceSpace.Add(new int[] { (int)point[0], (int)point[1] });
+                    pieceSpace.Add(new int[] { (int)point[0]+1, (int)point[1] });
+                    pieceSpace.Add(new int[] { (int)point[0]-1, (int)point[1] });
+                    pieceSpace.Add(new int[] { (int)point[0], (int)point[1]+1 });
+                    pieceSpace.Add(new int[] { (int)point[0], (int)point[1]-1 });
+                    pieceSpace.Add(new int[] { (int)point[0]+1, (int)point[1]+1 });
+                    pieceSpace.Add(new int[] { (int)point[0]-1, (int)point[1]-1 });
+                    pieceSpace.Add(new int[] { (int)point[0] + 1, (int)point[1] - 1 });
+                    pieceSpace.Add(new int[] { (int)point[0] - 1, (int)point[1] + 1 });
                 }
-
-                // Add coords between point pairs to pieceSpace
-                for (int column = 0; column + 1 < row.Count; column += 2)
-                {
-                    for (int point = (int)row[column][0]; point < row[column + 1][0]; point++)
-                    {
-                        pieceSpace.Add(new int[] { point, y });
-                    }
-                }
-                y++;
             }
             return pieceSpace;
         }

@@ -19,8 +19,7 @@
 
         public Spot MatchX { get; set; }
         public Spot MatchY { get; set; }
-        public bool IsDrawn { get; set; }
-        public bool Set { get; set; }
+        public int DrawnLevel { get; set; } = 0;        // 0 = Drawn, 1 = First Symmetry, 2 = Second Symmetry
         #endregion
 
 
@@ -31,7 +30,6 @@
         /// <param name="y">Y position</param>
         public Spot(double x, double y)
         {
-            IsDrawn = true;
             X = x;
             XRight = x;
             Y = y;
@@ -47,9 +45,12 @@
         /// <param name="xr">Rotated X position</param>
         /// <param name="y">Y position</param>
         /// <param name="yd">Turned Y position</param>
-        public Spot(double x, double xr, double y, double yd, string connect, string solid)
+        /// <param name="drawn">DrawLevel integer</param>
+        /// <param name="connect">Connector from this spot to the next</param>
+        /// <param name="solid">Flexibility of the spot</param>
+        public Spot(double x, double xr, double y, double yd, int drawn, string connect, string solid)
         {
-            IsDrawn = false;
+            DrawnLevel = drawn;
             X = x;
             XRight = xr;
             Y = y;

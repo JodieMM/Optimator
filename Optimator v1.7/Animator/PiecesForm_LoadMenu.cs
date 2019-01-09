@@ -196,7 +196,7 @@ namespace Animator
             }
             if (SketchBtn.BackColor == select)
             {
-                from.Sketch.Add(loaded);
+                from.AddSketch(loaded);
             }
 
             from.DisplayDrawings();
