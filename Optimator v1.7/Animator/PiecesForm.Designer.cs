@@ -46,6 +46,21 @@
             this.ColoursLbl = new System.Windows.Forms.Label();
             this.NameTb = new System.Windows.Forms.TextBox();
             this.SetsTab = new System.Windows.Forms.TabPage();
+            this.YLbl = new System.Windows.Forms.Label();
+            this.XLbl = new System.Windows.Forms.Label();
+            this.SpinLbl = new System.Windows.Forms.Label();
+            this.SizeBar = new System.Windows.Forms.TrackBar();
+            this.TurnLbl = new System.Windows.Forms.Label();
+            this.SpinBar = new System.Windows.Forms.TrackBar();
+            this.RotationLbl = new System.Windows.Forms.Label();
+            this.TurnBar = new System.Windows.Forms.TrackBar();
+            this.RotationBar = new System.Windows.Forms.TrackBar();
+            this.SMLbl = new System.Windows.Forms.Label();
+            this.YUpDown = new System.Windows.Forms.NumericUpDown();
+            this.XUpDown = new System.Windows.Forms.NumericUpDown();
+            this.DeleteSketchBtn = new System.Windows.Forms.Button();
+            this.SketchesLbl = new System.Windows.Forms.Label();
+            this.SketchLb = new System.Windows.Forms.CheckedListBox();
             this.AddJoinBtn = new System.Windows.Forms.Button();
             this.SettingsTab = new System.Windows.Forms.TabPage();
             this.BackColourBox = new System.Windows.Forms.PictureBox();
@@ -59,8 +74,6 @@
             this.ExitBtn = new System.Windows.Forms.Button();
             this.LoadBtn = new System.Windows.Forms.Button();
             this.EmptyBtn = new System.Windows.Forms.Button();
-            this.SketchLb = new System.Windows.Forms.CheckedListBox();
-            this.SketchesLbl = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.DrawBase)).BeginInit();
             this.OptionsMenu.SuspendLayout();
             this.ShapeTab.SuspendLayout();
@@ -68,6 +81,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.OutlineBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.FillBox)).BeginInit();
             this.SetsTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SizeBar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SpinBar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TurnBar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.RotationBar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.YUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.XUpDown)).BeginInit();
             this.SettingsTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.BackColourBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawDown)).BeginInit();
@@ -294,6 +313,19 @@
             // SetsTab
             // 
             this.SetsTab.BackColor = System.Drawing.Color.Azure;
+            this.SetsTab.Controls.Add(this.YLbl);
+            this.SetsTab.Controls.Add(this.XLbl);
+            this.SetsTab.Controls.Add(this.SpinLbl);
+            this.SetsTab.Controls.Add(this.SizeBar);
+            this.SetsTab.Controls.Add(this.TurnLbl);
+            this.SetsTab.Controls.Add(this.SpinBar);
+            this.SetsTab.Controls.Add(this.RotationLbl);
+            this.SetsTab.Controls.Add(this.TurnBar);
+            this.SetsTab.Controls.Add(this.RotationBar);
+            this.SetsTab.Controls.Add(this.SMLbl);
+            this.SetsTab.Controls.Add(this.YUpDown);
+            this.SetsTab.Controls.Add(this.XUpDown);
+            this.SetsTab.Controls.Add(this.DeleteSketchBtn);
             this.SetsTab.Controls.Add(this.SketchesLbl);
             this.SetsTab.Controls.Add(this.SketchLb);
             this.SetsTab.Controls.Add(this.AddJoinBtn);
@@ -302,6 +334,190 @@
             this.SetsTab.Size = new System.Drawing.Size(392, 669);
             this.SetsTab.TabIndex = 2;
             this.SetsTab.Text = "Sets";
+            // 
+            // YLbl
+            // 
+            this.YLbl.AutoSize = true;
+            this.YLbl.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.YLbl.Location = new System.Drawing.Point(212, 465);
+            this.YLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.YLbl.Name = "YLbl";
+            this.YLbl.Size = new System.Drawing.Size(19, 19);
+            this.YLbl.TabIndex = 133;
+            this.YLbl.Text = "Y";
+            // 
+            // XLbl
+            // 
+            this.XLbl.AutoSize = true;
+            this.XLbl.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.XLbl.Location = new System.Drawing.Point(212, 403);
+            this.XLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.XLbl.Name = "XLbl";
+            this.XLbl.Size = new System.Drawing.Size(18, 19);
+            this.XLbl.TabIndex = 132;
+            this.XLbl.Text = "X";
+            // 
+            // SpinLbl
+            // 
+            this.SpinLbl.AutoSize = true;
+            this.SpinLbl.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SpinLbl.Location = new System.Drawing.Point(11, 524);
+            this.SpinLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.SpinLbl.Name = "SpinLbl";
+            this.SpinLbl.Size = new System.Drawing.Size(40, 19);
+            this.SpinLbl.TabIndex = 122;
+            this.SpinLbl.Text = "Spin";
+            // 
+            // SizeBar
+            // 
+            this.SizeBar.Location = new System.Drawing.Point(12, 619);
+            this.SizeBar.Maximum = 1000;
+            this.SizeBar.Name = "SizeBar";
+            this.SizeBar.Size = new System.Drawing.Size(189, 45);
+            this.SizeBar.SmallChange = 5;
+            this.SizeBar.TabIndex = 131;
+            this.SizeBar.TickFrequency = 100;
+            this.SizeBar.Value = 100;
+            this.SizeBar.Scroll += new System.EventHandler(this.SizeBar_Scroll);
+            // 
+            // TurnLbl
+            // 
+            this.TurnLbl.AutoSize = true;
+            this.TurnLbl.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TurnLbl.Location = new System.Drawing.Point(11, 460);
+            this.TurnLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.TurnLbl.Name = "TurnLbl";
+            this.TurnLbl.Size = new System.Drawing.Size(43, 19);
+            this.TurnLbl.TabIndex = 127;
+            this.TurnLbl.Text = "Turn";
+            // 
+            // SpinBar
+            // 
+            this.SpinBar.Location = new System.Drawing.Point(12, 551);
+            this.SpinBar.Maximum = 359;
+            this.SpinBar.Name = "SpinBar";
+            this.SpinBar.Size = new System.Drawing.Size(189, 45);
+            this.SpinBar.TabIndex = 130;
+            this.SpinBar.TickFrequency = 30;
+            this.SpinBar.Scroll += new System.EventHandler(this.SpinBar_Scroll);
+            // 
+            // RotationLbl
+            // 
+            this.RotationLbl.AutoSize = true;
+            this.RotationLbl.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RotationLbl.Location = new System.Drawing.Point(11, 398);
+            this.RotationLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.RotationLbl.Name = "RotationLbl";
+            this.RotationLbl.Size = new System.Drawing.Size(68, 19);
+            this.RotationLbl.TabIndex = 126;
+            this.RotationLbl.Text = "Rotation";
+            // 
+            // TurnBar
+            // 
+            this.TurnBar.Location = new System.Drawing.Point(12, 484);
+            this.TurnBar.Maximum = 359;
+            this.TurnBar.Name = "TurnBar";
+            this.TurnBar.Size = new System.Drawing.Size(189, 45);
+            this.TurnBar.TabIndex = 129;
+            this.TurnBar.TickFrequency = 30;
+            this.TurnBar.Scroll += new System.EventHandler(this.TurnBar_Scroll);
+            // 
+            // RotationBar
+            // 
+            this.RotationBar.Location = new System.Drawing.Point(12, 420);
+            this.RotationBar.Maximum = 359;
+            this.RotationBar.Name = "RotationBar";
+            this.RotationBar.Size = new System.Drawing.Size(189, 45);
+            this.RotationBar.TabIndex = 128;
+            this.RotationBar.TickFrequency = 30;
+            this.RotationBar.Scroll += new System.EventHandler(this.RotationBar_Scroll);
+            // 
+            // SMLbl
+            // 
+            this.SMLbl.AutoSize = true;
+            this.SMLbl.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SMLbl.Location = new System.Drawing.Point(11, 597);
+            this.SMLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.SMLbl.Name = "SMLbl";
+            this.SMLbl.Size = new System.Drawing.Size(72, 19);
+            this.SMLbl.TabIndex = 125;
+            this.SMLbl.Text = "Size Mod";
+            // 
+            // YUpDown
+            // 
+            this.YUpDown.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.YUpDown.Location = new System.Drawing.Point(216, 489);
+            this.YUpDown.Margin = new System.Windows.Forms.Padding(2);
+            this.YUpDown.Maximum = new decimal(new int[] {
+            3000,
+            0,
+            0,
+            0});
+            this.YUpDown.Minimum = new decimal(new int[] {
+            3000,
+            0,
+            0,
+            -2147483648});
+            this.YUpDown.Name = "YUpDown";
+            this.YUpDown.Size = new System.Drawing.Size(162, 27);
+            this.YUpDown.TabIndex = 124;
+            this.YUpDown.ValueChanged += new System.EventHandler(this.YUpDown_ValueChanged);
+            // 
+            // XUpDown
+            // 
+            this.XUpDown.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.XUpDown.Location = new System.Drawing.Point(216, 425);
+            this.XUpDown.Margin = new System.Windows.Forms.Padding(2);
+            this.XUpDown.Maximum = new decimal(new int[] {
+            3000,
+            0,
+            0,
+            0});
+            this.XUpDown.Minimum = new decimal(new int[] {
+            3000,
+            0,
+            0,
+            -2147483648});
+            this.XUpDown.Name = "XUpDown";
+            this.XUpDown.Size = new System.Drawing.Size(162, 27);
+            this.XUpDown.TabIndex = 123;
+            this.XUpDown.ValueChanged += new System.EventHandler(this.XUpDown_ValueChanged);
+            // 
+            // DeleteSketchBtn
+            // 
+            this.DeleteSketchBtn.BackColor = System.Drawing.Color.LightCyan;
+            this.DeleteSketchBtn.Enabled = false;
+            this.DeleteSketchBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DeleteSketchBtn.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DeleteSketchBtn.Location = new System.Drawing.Point(15, 353);
+            this.DeleteSketchBtn.Margin = new System.Windows.Forms.Padding(6);
+            this.DeleteSketchBtn.Name = "DeleteSketchBtn";
+            this.DeleteSketchBtn.Size = new System.Drawing.Size(363, 35);
+            this.DeleteSketchBtn.TabIndex = 121;
+            this.DeleteSketchBtn.Text = "Delete Sketch";
+            this.DeleteSketchBtn.UseVisualStyleBackColor = false;
+            this.DeleteSketchBtn.Click += new System.EventHandler(this.DeleteSketchBtn_Click);
+            // 
+            // SketchesLbl
+            // 
+            this.SketchesLbl.AutoSize = true;
+            this.SketchesLbl.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SketchesLbl.Location = new System.Drawing.Point(135, 110);
+            this.SketchesLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.SketchesLbl.Name = "SketchesLbl";
+            this.SketchesLbl.Size = new System.Drawing.Size(95, 23);
+            this.SketchesLbl.TabIndex = 120;
+            this.SketchesLbl.Text = "Sketches";
+            // 
+            // SketchLb
+            // 
+            this.SketchLb.BackColor = System.Drawing.SystemColors.Window;
+            this.SketchLb.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SketchLb.FormattingEnabled = true;
+            this.SketchLb.Location = new System.Drawing.Point(15, 142);
+            this.SketchLb.Name = "SketchLb";
+            this.SketchLb.Size = new System.Drawing.Size(363, 202);
+            this.SketchLb.TabIndex = 14;
             // 
             // AddJoinBtn
             // 
@@ -471,27 +687,6 @@
             this.EmptyBtn.UseVisualStyleBackColor = false;
             this.EmptyBtn.Visible = false;
             // 
-            // SketchesLb
-            // 
-            this.SketchLb.BackColor = System.Drawing.SystemColors.Window;
-            this.SketchLb.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SketchLb.FormattingEnabled = true;
-            this.SketchLb.Location = new System.Drawing.Point(15, 142);
-            this.SketchLb.Name = "SketchesLb";
-            this.SketchLb.Size = new System.Drawing.Size(363, 202);
-            this.SketchLb.TabIndex = 14;
-            // 
-            // SketchesLbl
-            // 
-            this.SketchesLbl.AutoSize = true;
-            this.SketchesLbl.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SketchesLbl.Location = new System.Drawing.Point(135, 110);
-            this.SketchesLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.SketchesLbl.Name = "SketchesLbl";
-            this.SketchesLbl.Size = new System.Drawing.Size(95, 23);
-            this.SketchesLbl.TabIndex = 120;
-            this.SketchesLbl.Text = "Sketches";
-            // 
             // PiecesForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -523,6 +718,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.FillBox)).EndInit();
             this.SetsTab.ResumeLayout(false);
             this.SetsTab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SizeBar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SpinBar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TurnBar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.RotationBar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.YUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.XUpDown)).EndInit();
             this.SettingsTab.ResumeLayout(false);
             this.SettingsTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.BackColourBox)).EndInit();
@@ -567,5 +768,18 @@
         private System.Windows.Forms.Button EmptyBtn;
         private System.Windows.Forms.CheckedListBox SketchLb;
         private System.Windows.Forms.Label SketchesLbl;
+        private System.Windows.Forms.Button DeleteSketchBtn;
+        private System.Windows.Forms.Label SpinLbl;
+        private System.Windows.Forms.TrackBar SizeBar;
+        private System.Windows.Forms.Label TurnLbl;
+        private System.Windows.Forms.TrackBar SpinBar;
+        private System.Windows.Forms.Label RotationLbl;
+        private System.Windows.Forms.TrackBar TurnBar;
+        private System.Windows.Forms.TrackBar RotationBar;
+        private System.Windows.Forms.Label SMLbl;
+        private System.Windows.Forms.NumericUpDown YUpDown;
+        private System.Windows.Forms.NumericUpDown XUpDown;
+        private System.Windows.Forms.Label YLbl;
+        private System.Windows.Forms.Label XLbl;
     }
 }

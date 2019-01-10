@@ -17,7 +17,7 @@ namespace Animator
         private Graphics original;
         private Graphics rotated;
         private Graphics turned;
-        public List<Piece> Sketch { get; set; } = new List<Piece>();
+        public List<Piece> Sketches { get; set; } = new List<Piece>();
         private List<Join> joins = new List<Join>();
         public Piece WIP { get; } = new Piece();
         private List<Spot> spots = new List<Spot>();
@@ -645,6 +645,91 @@ namespace Animator
             DisplayDrawings();
         }
 
+        /// <summary>
+        /// Deletes the selected sketch from the listbox and the list.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DeleteSketchBtn_Click(object sender, EventArgs e)
+        {
+            if (SketchLb.SelectedIndex == -1) { return; }
+            Sketches.RemoveAt(SketchLb.SelectedIndex);
+            SketchLb.Items.RemoveAt(SketchLb.SelectedIndex);
+            DisplayDrawings();
+        }
+
+        /// <summary>
+        /// Rotates the selected sketch.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RotationBar_Scroll(object sender, EventArgs e)
+        {
+            if (SketchLb.SelectedIndex == -1) { return; }
+            Sketches[SketchLb.SelectedIndex].R = RotationBar.Value;
+            DisplayDrawings();
+        }
+
+        /// <summary>
+        /// Turns the selected sketch.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TurnBar_Scroll(object sender, EventArgs e)
+        {
+            if (SketchLb.SelectedIndex == -1) { return; }
+            Sketches[SketchLb.SelectedIndex].R = TurnBar.Value;
+            DisplayDrawings();
+        }
+
+        /// <summary>
+        /// Spins the selected sketch.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SpinBar_Scroll(object sender, EventArgs e)
+        {
+            if (SketchLb.SelectedIndex == -1) { return; }
+            Sketches[SketchLb.SelectedIndex].S = SpinBar.Value;
+            DisplayDrawings();
+        }
+
+        /// <summary>
+        /// Resizes the selected sketch.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SizeBar_Scroll(object sender, EventArgs e)
+        {
+            if (SketchLb.SelectedIndex == -1) { return; }
+            Sketches[SketchLb.SelectedIndex].SM = SizeBar.Value;
+            DisplayDrawings();
+        }
+
+        /// <summary>
+        /// Moves the selected sketch horizontally.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void XUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            if (SketchLb.SelectedIndex == -1) { return; }
+            Sketches[SketchLb.SelectedIndex].X = (double)XUpDown.Value;
+            DisplayDrawings();
+        }
+
+        /// <summary>
+        /// Moves the selected sketch vertically.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void YUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            if (SketchLb.SelectedIndex == -1) { return; }
+            Sketches[SketchLb.SelectedIndex].Y = (double)YUpDown.Value;
+            DisplayDrawings();
+        }
+
 
 
         // ----- SETTINGS TAB -----
@@ -718,19 +803,18 @@ namespace Animator
             turned = DrawDown.CreateGraphics();
 
             // DRAW SKETCHES
-            for (int index = 0; index < Sketch.Count; index++)
+            for (int index = 0; index < Sketches.Count; index++)
             {
                 if (SketchLb.GetItemCheckState(index) == CheckState.Checked)
                 {
-                    Piece piece = Sketch[index];
-                    piece.R = rotationFrom;
-                    piece.T = turnFrom;
+                    Piece piece = Sketches[index];
                     Utilities.DrawPiece(piece, original, false);
-                    piece.R = rotationTo;
+                    piece.R += rotationTo - rotationFrom;
                     Utilities.DrawPiece(piece, rotated, false);
-                    piece.R = rotationFrom;
-                    piece.T = turnTo;
+                    piece.R -= rotationTo - rotationFrom;
+                    piece.T += turnTo - turnFrom;
                     Utilities.DrawPiece(piece, turned, false);
+                    piece.T -= turnTo - turnFrom;
                 }
             }
 
@@ -1130,7 +1214,7 @@ namespace Animator
         /// <param name="toLoad">Piece to add to the sketch list</param>
         public void AddSketch(Piece toLoad)
         {
-            Sketch.Add(toLoad);
+            Sketches.Add(toLoad);
             SketchLb.Items.Add(toLoad, true);
         }
 
