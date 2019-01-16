@@ -300,7 +300,7 @@ namespace Animator
             }
             if (PreviewBtn == ActiveControl)
             {
-                Utilities.DrawPieces(WIP.PiecesList, g, DrawPanel);
+                Visuals.DrawPieces(WIP.PiecesList, g, DrawPanel);
             }
         }
 
@@ -633,20 +633,20 @@ namespace Animator
             {
                 PastPreviewBox.BackColor = Color.White;
                 WIP.RunScene(CurrentTimeUpDown.Value - timeIncrement);
-                Utilities.DrawPieces(WIP.PiecesList, g, PastPreviewBox, 3/11.0F);
+                Visuals.DrawPieces(WIP.PiecesList, g, PastPreviewBox, 3/11.0F);
             }
 
             // Draw Panel (Current)
             WIP.RunScene(CurrentTimeUpDown.Value);
-            Utilities.DrawPieces(WIP.PiecesList, g, DrawPanel);
+            Visuals.DrawPieces(WIP.PiecesList, g, DrawPanel);
 
             // Preview Panels (Future, Future++)
             if (PreviewCb.Checked)
             {
                 WIP.RunScene(CurrentTimeUpDown.Value + timeIncrement);
-                Utilities.DrawPieces(WIP.PiecesList, g, FuturePreviewBox, 3 / 11.0F);
+                Visuals.DrawPieces(WIP.PiecesList, g, FuturePreviewBox, 3 / 11.0F);
                 WIP.RunScene(CurrentTimeUpDown.Value + 2 * timeIncrement);
-                Utilities.DrawPieces(WIP.PiecesList, g, Future2PreviewBox, 3 / 11.0F);
+                Visuals.DrawPieces(WIP.PiecesList, g, Future2PreviewBox, 3 / 11.0F);
             }
 
             // Update Animation listbox

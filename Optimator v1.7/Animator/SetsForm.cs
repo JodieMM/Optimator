@@ -498,11 +498,11 @@ namespace Animator
         private void DisplayDrawings()
         {
             g = DrawPanel.CreateGraphics();
-            Utilities.DrawPieces(WIP.PiecesList, g, DrawPanel);
+            Visuals.DrawPieces(WIP.PiecesList, g, DrawPanel);
             // If moving a piece, draw the shadow
             if (movingFar || selectedSpot != null)
             {
-                Utilities.DrawPiece(shadow, g, true);
+                Visuals.DrawPiece(shadow, g, true);
                 // Draw Potential Joins
                 if (selectedSpot != null)
                 {
@@ -511,13 +511,13 @@ namespace Animator
                         foreach (Join spot in piece.Joins)
                         {
                             double[] spotCoords = spot.GetCurrentPoints(piece.GetCoords()[0], piece.GetCoords()[1]);
-                            Utilities.DrawPoint(spotCoords[0], spotCoords[1], Constants.highlight, g);
+                            Visuals.DrawCross(spotCoords[0], spotCoords[1], Constants.highlight, g);
                         }
                     }
                     if (closestJoin != null)
                     {
                         double[] joinCoords = closestJoin.GetCurrentPoints(closestJoin.Host.GetCoords()[0], closestJoin.Host.GetCoords()[1]);
-                        Utilities.DrawPoint(joinCoords[0], joinCoords[1], Constants.select, g);
+                        Visuals.DrawCross(joinCoords[0], joinCoords[1], Constants.select, g);
                     }
                 }
             }
@@ -527,7 +527,7 @@ namespace Animator
                 foreach (Join spot in selected.Joins)
                 {
                     double[] spotCoords = spot.GetCurrentPoints(selected.GetCoords()[0], selected.GetCoords()[1]);
-                    Utilities.DrawPoint(spotCoords[0], spotCoords[1], Constants.highlight, g);
+                    Visuals.DrawCross(spotCoords[0], spotCoords[1], Constants.highlight, g);
                 }
             }
         }

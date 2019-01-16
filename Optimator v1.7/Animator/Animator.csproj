@@ -66,6 +66,7 @@
       <DependentUpon>Menu.cs</DependentUpon>
     </Compile>
     <Compile Include="Originals.cs" />
+    <Compile Include="Part.cs" />
     <Compile Include="Piece.cs" />
     <Compile Include="PiecesForm.cs">
       <SubType>Form</SubType>
@@ -104,6 +105,7 @@
     </Compile>
     <Compile Include="Spot.cs" />
     <Compile Include="Utilities.cs" />
+    <Compile Include="Visuals.cs" />
     <EmbeddedResource Include="CompileVideo.resx">
       <DependentUpon>CompileVideo.cs</DependentUpon>
     </EmbeddedResource>

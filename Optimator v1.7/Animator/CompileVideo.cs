@@ -178,7 +178,7 @@ namespace Animator
             // Draw Parts
             foreach(Piece piece in baseScene.PiecesList)
             {
-                Utilities.DrawPiece(piece, g, true);
+                Visuals.DrawPiece(piece, g, true);
             }
         }
 
@@ -196,7 +196,7 @@ namespace Animator
             // Draw Parts
             foreach (Piece piece in baseScene.PiecesList)
             {
-                Utilities.DrawPiece(piece, g, true);
+                Visuals.DrawPiece(piece, g, true);
             }
         }
 

@@ -96,143 +96,11 @@ namespace Animator
         // ----- DRAW & RELATED FUNCTIONS -----
 
         /// <summary>
-        /// Draws a + at the given coordinate
-        /// </summary>
-        /// <param name="xcood">X coordinate of + centre</param>
-        /// <param name="ycood">Y coordinate of + centre</param>
-        /// <param name="colour">Colour of the +</param>
-        /// <param name="board">The graphics board to be drawn on</param>
-        public static void DrawPoint(double xcood, double ycood, Color colour, Graphics board)
-        {
-            int x = (int)xcood;
-            int y = (int)ycood;
-            Pen pen = new Pen(colour);
-            board.DrawLine(pen, new Point(x - 2, y), new Point(x + 2, y));
-            board.DrawLine(pen, new Point(x, y - 2), new Point(x, y + 2));
-        }
-
-        /// <summary>
-        /// Draws a piece with outline and fill
-        /// </summary>
-        /// <param name="piece">The piece to be drawn</param>
-        /// <param name="g">The graphics to draw to</param>
-        /// <param name="recentre">See GetCurrentPoints</param>
-        public static void DrawPiece(Piece piece, Graphics g, bool recentre)
-        {
-            //Check piece defined at that point
-            if (FindRow(piece.GetAngles()[0], piece.GetAngles()[1], piece.Data, 1) != -1)
-            {
-                // Prepare for drawing
-                Pen pen = new Pen(piece.OutlineColour, (float)piece.OutlineWidth);
-                SolidBrush fill = new SolidBrush(piece.FillColour[0]);                          // ** NEEDS UPDATING WITH GRADIENTS
-                List<double[]> sketchCoords = piece.GetCurrentPoints(recentre);
-                List<string> connectors = piece.GetLineArray(piece.GetAngles()[0], piece.GetAngles()[1]);
-                int numCoords = sketchCoords.Count;
-
-                // Fill Shape
-                GraphicsPath path = new GraphicsPath();
-                for (int pointIndex = 0; pointIndex < numCoords && numCoords > 2; pointIndex++)
-                {
-                    // Draw Line Between Final Point and First Point
-                    if (pointIndex == numCoords - 1)
-                    {
-                        path.AddLine(new Point(Convert.ToInt32(sketchCoords[numCoords - 1][0]), Convert.ToInt32(sketchCoords[numCoords - 1][1])),
-                            new Point(Convert.ToInt32(sketchCoords[0][0]), Convert.ToInt32(sketchCoords[0][1])));
-                    }
-                    // Draw Remaining Lines
-                    else
-                    {
-                       path.AddLine(new Point(Convert.ToInt32(sketchCoords[pointIndex][0]), Convert.ToInt32(sketchCoords[pointIndex][1])),
-                            new Point(Convert.ToInt32(sketchCoords[pointIndex + 1][0]), Convert.ToInt32(sketchCoords[pointIndex + 1][1])));
-                    }
-                }
-                g.FillPath(fill, path);
-
-                // Draw Connecting Lines
-                for (int pointIndex = 0; pointIndex < numCoords && numCoords > 1 && piece.OutlineWidth > 0; pointIndex++)
-                {
-                    if (connectors[pointIndex] != Constants.connectorOptions[1])
-                    {
-                        Point start; Point end;
-                        // Draw Line Between Final Point and First Point
-                        if (pointIndex == numCoords - 1)
-                        {
-                            start = new Point(Convert.ToInt32(sketchCoords[0][0]), Convert.ToInt32(sketchCoords[0][1]));
-                            end = new Point(Convert.ToInt32(sketchCoords[numCoords - 1][0]), Convert.ToInt32(sketchCoords[numCoords - 1][1]));
-                        }
-                        // Draw Remaining Lines
-                        else
-                        {
-                            start = new Point(Convert.ToInt32(sketchCoords[pointIndex][0]), Convert.ToInt32(sketchCoords[pointIndex][1]));
-                            end = new Point(Convert.ToInt32(sketchCoords[pointIndex + 1][0]), Convert.ToInt32(sketchCoords[pointIndex + 1][1]));
-                        }
-
-                        // Connected by Line
-                        if (connectors[pointIndex] == Constants.connectorOptions[0])
-                        {
-                            g.DrawLine(pen, start, end);
-                        }
-                        // Connected by Curve
-                        else
-                        {
-                            // TO DO **
-                        }
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Draws all pieces in a list, including setting
-        /// the graphics and clearing the draw panel.
-        /// </summary>
-        /// <param name="DrawPanel">Panel to be drawn on</param>
-        /// <param name="piecesList">Pieces to be drawn</param>
-        /// <param name="g">Graphics to draw</param>
-        public static void DrawPieces(List<Piece> piecesList, Graphics g, PictureBox DrawPanel)
-        {
-            // Prepare
-            DrawPanel.Refresh();
-            g = DrawPanel.CreateGraphics();
-
-            // Draw Parts
-            List<Piece> orderedPieces = SortOrder(piecesList);
-            for (int index = 0; index < piecesList.Count; index++)
-            {
-                DrawPiece(orderedPieces[index], g, true);
-            }
-        }
-
-        /// <summary>
-        /// Draws all pieces in a list, including setting
-        /// the graphics and clearing the draw panel.
-        /// Also sets a scale on the image.
-        /// </summary>
-        /// <param name="DrawPanel">Panel to be drawn on</param>
-        /// <param name="piecesList">Pieces to be drawn</param>
-        /// <param name="g">Graphics to draw</param>
-        /// <param name="scale">Size modifier to entire image</param>
-        public static void DrawPieces(List<Piece> piecesList, Graphics g, PictureBox DrawPanel, float scale)
-        {
-            // Prepare
-            DrawPanel.Refresh();
-            g = DrawPanel.CreateGraphics();
-            g.ScaleTransform(scale, scale);
-
-            // Draw Parts
-            List<Piece> orderedPieces = SortOrder(piecesList);
-            for (int index = 0; index < piecesList.Count; index++)
-            {
-                DrawPiece(orderedPieces[index], g, true);
-            }
-        }
-
-        /// <summary>
         /// Finds the correct order to draw pieces so they are layered correctly.
         /// </summary>
         /// <param name="piecesList">The list of pieces in original order</param>
         /// <returns>Ordered list of pieces</returns>
-        public static List<Piece> SortOrder(List<Piece> piecesList)
+        public static List<Piece> SortOrder(List<Piece> piecesList) // TODO: Move to sets
         {
             List<Piece> order = new List<Piece>();
 
@@ -574,7 +442,7 @@ namespace Animator
                     {
                         int insertIndex = FindSymmetricalCoordHome(spots, index, 0);
 
-                        // TO DO **
+                        // TODO: DrawnLevel 2
 
                         if (insertIndex <= index)
                         {
@@ -583,7 +451,7 @@ namespace Animator
                     }
                     else
                     {
-                        // ** TO DO
+                        
                     }
                 }
             }*/
@@ -625,7 +493,8 @@ namespace Animator
             {
                 gradient = (from[1] - to[1]) / (from[0] - to[0]);
             }
-            // else if (line == Constants.connectorOptions[2])      CURVED ** TO DO
+            // else if (line == Constants.connectorOptions[2])      
+            //CURVE
 
             if (xy == 0)
             {
@@ -762,7 +631,7 @@ namespace Animator
                     gradient = (lower[1] - upper[1]) / (lower[0] - upper[0]);
                 }
             }
-            // ** TO DO - CURVES
+            // CURVE
 
             // Add point for each Y value
             line.Add(from);

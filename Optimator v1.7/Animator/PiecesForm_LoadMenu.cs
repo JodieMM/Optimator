@@ -49,7 +49,7 @@ namespace Animator
                 loaded = new Piece(NameTb.Text);
                 DrawPanel.Refresh();
                 g = DrawPanel.CreateGraphics();
-                Utilities.DrawPiece(loaded, g, false);
+                Visuals.DrawPiece(loaded, g, false);
             }
             catch (FileNotFoundException)
             {
@@ -192,7 +192,7 @@ namespace Animator
             }
             if (ShapeBtn.BackColor == select)
             {
-                // ** TO DO
+                // TODO: Copy shape from loaded piece
             }
             if (SketchBtn.BackColor == select)
             {

@@ -87,7 +87,7 @@ namespace Animator
         {
             DrawBoard.Refresh();
             g = DrawBoard.CreateGraphics();
-            Utilities.DrawPiece(WIP, g, true);
+            Visuals.DrawPiece(WIP, g, true);
         }
     }
 }

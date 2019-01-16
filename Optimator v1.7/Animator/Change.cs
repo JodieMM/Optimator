@@ -40,27 +40,6 @@
             host = owner;
         }
 
-        /// <summary>
-        /// Generates a Changes instance with special options
-        /// </summary>
-        /// <param name="startTime">The frame the change start to take effect</param>
-        /// <param name="action">What field of the piece will be modified</param>
-        /// <param name="affectedPiece">The piece to be changed</param>
-        /// <param name="howMuch">How much the change should occur per </param>
-        /// <param name="howLong">How many frames the change should continue for</param>
-        /// <param name="options">Any additional notes for implementation</param>
-        public Change(decimal startTime, string action, Piece affectedPiece, double howMuch, decimal howLong, string options, Scene owner)
-        {
-            StartTime = startTime;
-            Action = action;
-            AffectedPiece = affectedPiece;
-            HowMuch = howMuch;
-            HowLong = howLong;
-            Options = options;
-            host = owner;
-        }
-
-
 
         // ----- RUN CHANGES -----
 
@@ -93,13 +72,13 @@
                     AffectedPiece.Y += increment;
                     break;
                 case "Rotation":
-                    AffectedPiece.SetRotation(AffectedPiece.R + increment);
+                    AffectedPiece.R = (AffectedPiece.R + increment) % 360;
                     break;
                 case "Turn":
-                    AffectedPiece.SetTurn(AffectedPiece.T + increment);
+                    AffectedPiece.T = (AffectedPiece.T + increment) % 360;
                     break;
                 case "Spin":
-                    AffectedPiece.SetSpin(AffectedPiece.S + increment);
+                    AffectedPiece.S = (AffectedPiece.S + increment) % 360;
                     break;
                 case "Size":
                     AffectedPiece.SM += increment;

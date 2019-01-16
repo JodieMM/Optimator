@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Animator
 {
@@ -8,11 +7,11 @@ namespace Animator
     /// 
     /// Author Jodie Muller
     /// </summary>
-    public class Set
+    public class Set : Part
     {
         #region Set Variables
-        public string Name { get; }
-        public List<string> Data { get; } = new List<string>();
+        public override string Name { get; set; }
+        public override List<string> Data { get; set; } = new List<string>();
         public List<Piece> PiecesList { get; set; } = new List<Piece>();
         public Piece BasePiece { get; set; }
         #endregion

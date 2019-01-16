@@ -63,14 +63,7 @@ namespace Animator
                 while ((dataLine = file.ReadLine()) != null)
                 {
                     string[] data = dataLine.Split(Constants.Semi);
-                    if (data.Length == 5) 
-                    {
-                        Changes.Add(new Change(int.Parse(data[0]), data[1], PiecesList[int.Parse(data[2])], double.Parse(data[3]), decimal.Parse(data[4]), this));
-                    }
-                    else
-                    {
-                        Changes.Add(new Change(int.Parse(data[0]), data[1], PiecesList[int.Parse(data[2])], double.Parse(data[3]), decimal.Parse(data[4]), data[5], this));
-                    }
+                    Changes.Add(new Change(int.Parse(data[0]), data[1], PiecesList[int.Parse(data[2])], double.Parse(data[3]), decimal.Parse(data[4]), this));
                 }
 
                 file.Close();

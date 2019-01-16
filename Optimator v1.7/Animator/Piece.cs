@@ -12,11 +12,11 @@ namespace Animator
     /// 
     /// Author Jodie Muller
     /// </summary>
-    public class Piece
+    public class Piece : Part
     {
         #region Piece Variables
-        public string Name { get; set; }
-        public List<string> Data { get; set; }
+        public override string Name { get; set; }
+        public override List<string> Data { get; set; }
 
         // Coords and Angles
         public double X { get; set; }
@@ -25,7 +25,6 @@ namespace Animator
         public double T { get; set; } = 0;
         public double S { get; set; } = 0;
         public double SM { get; set; } = 100;
-        public int NumCoords { get; set; } = -1;
 
         // Colours and Details
         public string ColourType { get; set; }                     // Solid/Gradient colour and direction
@@ -61,7 +60,32 @@ namespace Animator
             Data = Utilities.ReadFile(Utilities.GetDirectory(Constants.PiecesFolder, Name, Constants.Txt));
 
             // Get Points and Colours from File
-            AssignValues(Data[0]);
+            string[] angleData = Data[0].Split(Constants.Semi);
+
+            // Colour Type
+            ColourType = angleData[0];
+
+            // Colours (Outline and Fill)
+            string[] colours = angleData[1].Split(Constants.Colon);
+            FillColour = new Color[colours.Length - 1];
+            for (int index = 0; index < colours.Length; index++)
+            {
+                string[] rgbValues = colours[index].Split(Constants.Comma);
+                if (index == 0)
+                {
+                    OutlineColour = Color.FromArgb(int.Parse(rgbValues[0]), int.Parse(rgbValues[1]), int.Parse(rgbValues[2]), int.Parse(rgbValues[3]));
+                }
+                else
+                {
+                    FillColour[index - 1] = Color.FromArgb(int.Parse(rgbValues[0]), int.Parse(rgbValues[1]), int.Parse(rgbValues[2]), int.Parse(rgbValues[3]));
+                }
+            }
+
+            // Outline Width
+            OutlineWidth = int.Parse(angleData[2]);
+
+            // Piece Details
+            PieceDetails = angleData[3];
         }
 
         /// <summary>
@@ -84,16 +108,7 @@ namespace Animator
 
         // ----- GET FUNCTIONS -----
         #region Get Functions
-        
-        /// <summary>
-        /// Converts the piece into a name equivalent.
-        /// </summary>
-        /// <returns>The piece name</returns>
-        public override string ToString()
-        {
-            return Name;
-        }
-
+       
         /// <summary>
         /// Gets the size modifier with considerations
         /// </summary>
@@ -199,33 +214,6 @@ namespace Animator
         #region Set Functions
 
         /// <summary>
-        /// Sets the rotation within a 360 degree boundary.
-        /// </summary>
-        /// <param name="inRotation"></param>
-        public void SetRotation(double inRotation)
-        {
-            R = inRotation % 360;
-        }
-
-        /// <summary>
-        /// Sets the turn within a 360 degree boundary.
-        /// </summary>
-        /// <param name="inTurn"></param>
-        public void SetTurn(double inTurn)
-        {
-            T = inTurn % 360;
-        }
-
-        /// <summary>
-        /// Sets the spin within a 360 degree boundary.
-        /// </summary>
-        /// <param name="inSpin"></param>
-        public void SetSpin(double inSpin)
-        {
-            S = inSpin % 360;
-        }
-
-        /// <summary>
         /// Sets all of the position/angle/size parameters at once.
         /// </summary>
         /// <param name="x">New X Coord</param>
@@ -258,6 +246,23 @@ namespace Animator
             Y = 0;
         }
 
+        /// <summary>
+        /// Finds all of the points that connect to this piece.
+        /// </summary>
+        public void FindJoins()
+        {
+            string directory = Utilities.GetDirectory(Constants.JoinsFolder, Name);
+            if (Directory.Exists(directory))
+            {
+                string[] fileArray = Directory.GetFiles(directory, "*.txt");
+                foreach (string file in fileArray)
+                {
+                    string fileName = Path.GetFileName(file);
+                    Joins.Add(new Join(fileName.Substring(0, fileName.Length - 4), this));
+                }
+            }
+        }
+
         #endregion
 
 
@@ -282,8 +287,6 @@ namespace Animator
             {
                 Data.Add(newLine);
             }
-
-            CalculateNumCoords();
         }
 
         /// <summary>
@@ -317,62 +320,6 @@ namespace Animator
         // ----- OTHER FUNCTIONS -----
 
         /// <summary>
-        /// Takes the first line of a piece's data and initialises variables accordingly.
-        /// Used in piece constructor.
-        /// </summary>
-        /// <param name="inData">The first line of piece data</param>
-        public void AssignValues(string inData)
-        {
-            string[] angleData = inData.Split(Constants.Semi);
-            // angleData    [0] colour type     [1] colour array   [2] outline width   [3] pieceDetails
-
-            // Colour Type
-            ColourType = angleData[0];
-
-            // Colours (Outline and Fill)
-            string[] colours = angleData[1].Split(Constants.Colon);
-            FillColour = new Color[colours.Length - 1];
-            for (int index = 0; index < colours.Length; index++)
-            {
-                string[] rgbValues = colours[index].Split(Constants.Comma);
-                if (index == 0)
-                {
-                    OutlineColour = Color.FromArgb(int.Parse(rgbValues[0]), int.Parse(rgbValues[1]), int.Parse(rgbValues[2]), int.Parse(rgbValues[3]));
-                }
-                else
-                {
-                    FillColour[index - 1] = Color.FromArgb(int.Parse(rgbValues[0]), int.Parse(rgbValues[1]), int.Parse(rgbValues[2]), int.Parse(rgbValues[3]));
-                }
-            }
-
-            // Outline Width
-            OutlineWidth = int.Parse(angleData[2]);
-
-            // Piece Details
-            PieceDetails = angleData[3];
-
-            // Get Num Points
-            CalculateNumCoords();
-        }
-
-        /// <summary>
-        /// Finds all of the points that connect to this piece.
-        /// </summary>
-        public void FindJoins()
-        {
-            string directory = Utilities.GetDirectory(Constants.JoinsFolder, Name);
-            if (Directory.Exists(directory))
-            {
-                string[] fileArray = Directory.GetFiles(directory, "*.txt");
-                foreach (string file in fileArray)
-                {
-                    string fileName = Path.GetFileName(file);
-                    Joins.Add(new Join(fileName.Substring(0, fileName.Length - 4), this));
-                }
-            }
-        }
-
-        /// <summary>
         /// Finds coordinates within a row.
         /// Original angle = 2, rotated angle = 3, turned angle = 4
         /// </summary>
@@ -386,11 +333,12 @@ namespace Animator
             if (row == -1) { return null; }
             List<double[]> returnPoints = new List<double[]>();
             string[] angleLine = Data[row].Split(Constants.Semi)[angle].Split(Constants.Colon);
+            int numCoords = angleLine.Count();
 
             // Find Points
-            if (row != -1 && NumCoords > 0)
+            if (row != -1 && numCoords > 0)
             {
-                for (int index = 0; index < NumCoords && angleLine[0] != ""; index++)
+                for (int index = 0; index < numCoords && angleLine[0] != ""; index++)
                 {
                     returnPoints.Add(new double[] { double.Parse(angleLine[index].Split(Constants.Comma)[0]),
                     double.Parse(angleLine[index].Split(Constants.Comma)[1]) });
@@ -422,7 +370,7 @@ namespace Animator
 
             // FIND POINTS
             // Rotation Adjustment
-            for (int index = 0; index < NumCoords; index++)
+            for (int index = 0; index < pointsArrayRotated.Count; index++)
             {
                 if (double.Parse(dataLine.Substring(4, 3)) != double.Parse(dataLine.Substring(0, 3)))
                 {
@@ -436,7 +384,7 @@ namespace Animator
             }
 
             // Turn Adjustment
-            for (int index = 0; index < NumCoords; index++)
+            for (int index = 0; index < pointsArrayTurned.Count; index++)
             {
                 if (double.Parse(dataLine.Substring(12, 3)) != double.Parse(dataLine.Substring(8, 3)))
                 {
@@ -451,7 +399,7 @@ namespace Animator
             if (recentre)
             {
                 double[] middle = Utilities.FindMid(pointsArray);
-                for (int index = 0; index < NumCoords; index++)
+                for (int index = 0; index < pointsArrayInitial.Count; index++)
                 {
                     pointsArray[index][0] = GetCoords()[0] + (pointsArray[index][0] - middle[0]);
                     pointsArray[index][1] = GetCoords()[1] + (pointsArray[index][1] - middle[1]);
@@ -546,21 +494,6 @@ namespace Animator
             {
                 X = Originally.X; Y = Originally.Y; R = Originally.R;
                 T = Originally.T; S = Originally.S; SM = Originally.SM;
-            }
-        }
-
-        /// <summary>
-        /// Finds the number of points in the piece.
-        /// </summary>
-        private void CalculateNumCoords()
-        {
-            if (Data.Count < 2)
-            {
-                NumCoords = 0;
-            }
-            else
-            {
-                NumCoords = Data[1].Split(Constants.Semi)[2].Split(Constants.Colon).Count();
             }
         }
     }

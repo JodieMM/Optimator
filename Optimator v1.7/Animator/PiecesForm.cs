@@ -455,7 +455,7 @@ namespace Animator
             }
             else
             {
-                // UNDO REFINEMENT ** TO DO
+                //TODO: Undo Refinement
             }
             DisplayDrawings();
         }
@@ -508,7 +508,7 @@ namespace Animator
 
                 // Save Points
                 WIP.Name = NameTb.Text;
-                double[] middle = Utilities.FindMid(Utilities.ConvertSpotsToCoords(spots, 0));            // ** Potential Error: Middle of original, not r/t
+                double[] middle = Utilities.FindMid(Utilities.ConvertSpotsToCoords(spots, 0));            //POTERROR: Middle of original, not r/t
                 if (!Directory.Exists(Utilities.GetDirectory(Constants.JoinsFolder, WIP.Name)))
                 {
                     Directory.CreateDirectory(Utilities.GetDirectory(Constants.JoinsFolder, WIP.Name));
@@ -781,7 +781,7 @@ namespace Animator
                 {
                     color = (index == spots.IndexOf(selectedSpot)) ? Constants.select : Color.Black;
                 }
-                Utilities.DrawPoint(coords[index][0], coords[index][1], color, board);
+                Visuals.DrawCross(coords[index][0], coords[index][1], color, board);
             }
         }
 
@@ -808,12 +808,12 @@ namespace Animator
                 if (SketchLb.GetItemCheckState(index) == CheckState.Checked)
                 {
                     Piece piece = Sketches[index];
-                    Utilities.DrawPiece(piece, original, false);
+                    Visuals.DrawPiece(piece, original, false);
                     piece.R += rotationTo - rotationFrom;
-                    Utilities.DrawPiece(piece, rotated, false);
+                    Visuals.DrawPiece(piece, rotated, false);
                     piece.R -= rotationTo - rotationFrom;
                     piece.T += turnTo - turnFrom;
-                    Utilities.DrawPiece(piece, turned, false);
+                    Visuals.DrawPiece(piece, turned, false);
                     piece.T -= turnTo - turnFrom;
                 }
             }
@@ -821,46 +821,46 @@ namespace Animator
             // DRAW BASE BOARD
             WIP.R = 0;
             WIP.T = 0;
-            Utilities.DrawPiece(WIP, original, false);
+            Visuals.DrawPiece(WIP, original, false);
             DrawPoints(original, 2);
             // Draw Joins
             foreach (Join join in joins)
             {
                 if (join == selectedJoin)
                 {
-                    Utilities.DrawPoint(join.X, join.Y, Constants.select, original);
+                    Visuals.DrawCross(join.X, join.Y, Constants.select, original);
                 }
                 else
                 {
-                    Utilities.DrawPoint(join.X, join.Y, join.FillColour, original);
+                    Visuals.DrawCross(join.X, join.Y, join.FillColour, original);
                 }
             }
             // Draw Shadow Point
             if (movingFar && selectedSpot != null && positionMoving[0] != -1 && positionMoving[1] != -1)
             {
-                Utilities.DrawPoint(positionMoving[0], positionMoving[1], Constants.shadowShade, original);
+                Visuals.DrawCross(positionMoving[0], positionMoving[1], Constants.shadowShade, original);
             }
             // Draw Shadow Join
             if (selectedJoin != null && movingFar && positionMoving[0] != -1 && positionMoving[1] != -1)
             {
-                Utilities.DrawPoint(positionMoving[0], positionMoving[1], Constants.shadowShade, original);
+                Visuals.DrawCross(positionMoving[0], positionMoving[1], Constants.shadowShade, original);
             }
 
             // DRAW ROTATED BOARD
             WIP.R = 89.9999;
             WIP.T = 0;
-            Utilities.DrawPiece(WIP, rotated, false);
+            Visuals.DrawPiece(WIP, rotated, false);
             DrawPoints(rotated, 3);
             // Draw Joins
             foreach (Join join in joins)
             {
                 if (join == selectedJoin)
                 {
-                    Utilities.DrawPoint(join.XRight, join.Y, Constants.select, rotated);
+                    Visuals.DrawCross(join.XRight, join.Y, Constants.select, rotated);
                 }
                 else
                 {
-                    Utilities.DrawPoint(join.XRight, join.Y, join.FillColour, rotated);
+                    Visuals.DrawCross(join.XRight, join.Y, join.FillColour, rotated);
                 }
             }
             // Draw Shadow Point
@@ -868,11 +868,11 @@ namespace Animator
             {
                 if (positionMoving[1] == -1)
                 {
-                    Utilities.DrawPoint(positionMoving[0], selectedSpot.Y, Constants.shadowShade, rotated);
+                    Visuals.DrawCross(positionMoving[0], selectedSpot.Y, Constants.shadowShade, rotated);
                 }
                 else if (positionMoving[0] != -1)
                 {
-                    Utilities.DrawPoint(positionMoving[0], positionMoving[1], Constants.shadowShade, rotated);
+                    Visuals.DrawCross(positionMoving[0], positionMoving[1], Constants.shadowShade, rotated);
                 }
             }
             // Draw Shadow Joint
@@ -880,29 +880,29 @@ namespace Animator
             {
                 if (positionMoving[1] == -1)
                 {
-                    Utilities.DrawPoint(positionMoving[0], selectedJoin.Y, Constants.shadowShade, rotated);
+                    Visuals.DrawCross(positionMoving[0], selectedJoin.Y, Constants.shadowShade, rotated);
                 }
                 else if (positionMoving[0] != -1)
                 {
-                    Utilities.DrawPoint(positionMoving[0], positionMoving[1], Constants.shadowShade, rotated);
+                    Visuals.DrawCross(positionMoving[0], positionMoving[1], Constants.shadowShade, rotated);
                 }
             }
 
             // DRAW TURNED BOARD
             WIP.R = 0;
             WIP.T = 89.9999;
-            Utilities.DrawPiece(WIP, turned, false);
+            Visuals.DrawPiece(WIP, turned, false);
             DrawPoints(turned, 4);
             // Draw Joins
             foreach (Join join in joins)
             {
                 if (join == selectedJoin)
                 {
-                    Utilities.DrawPoint(join.X, join.YDown, Constants.select, turned);
+                    Visuals.DrawCross(join.X, join.YDown, Constants.select, turned);
                 }
                 else
                 {
-                    Utilities.DrawPoint(join.X, join.YDown, join.FillColour, turned);
+                    Visuals.DrawCross(join.X, join.YDown, join.FillColour, turned);
                 }
             }
             // Draw Shadow Point
@@ -910,11 +910,11 @@ namespace Animator
             {
                 if (positionMoving[0] == -1)
                 {
-                    Utilities.DrawPoint(selectedSpot.X, positionMoving[1], Constants.shadowShade, turned);
+                    Visuals.DrawCross(selectedSpot.X, positionMoving[1], Constants.shadowShade, turned);
                 }
                 else if (positionMoving[1] != -1)
                 {
-                    Utilities.DrawPoint(positionMoving[0], positionMoving[1], Constants.shadowShade, turned);
+                    Visuals.DrawCross(positionMoving[0], positionMoving[1], Constants.shadowShade, turned);
                 }
             }
             // Draw Shadow Joint
@@ -922,11 +922,11 @@ namespace Animator
             {
                 if (positionMoving[0] == -1)
                 {
-                    Utilities.DrawPoint(selectedJoin.X, positionMoving[1], Constants.shadowShade, turned);
+                    Visuals.DrawCross(selectedJoin.X, positionMoving[1], Constants.shadowShade, turned);
                 }
                 else if (positionMoving[1] != -1)
                 {
-                    Utilities.DrawPoint(positionMoving[0], positionMoving[1], Constants.shadowShade, turned);
+                    Visuals.DrawCross(positionMoving[0], positionMoving[1], Constants.shadowShade, turned);
                 }
             }
             WIP.T = 0;
@@ -1218,7 +1218,7 @@ namespace Animator
             SketchLb.Items.Add(toLoad, true);
         }
 
-        // ** TO DO
+        //TODO: Sketch add functions
         public void AddSketch(Set toLoad)
         {
 
