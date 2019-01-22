@@ -17,10 +17,11 @@ namespace Animator
         #region Piece Variables
         public override string Name { get; set; }
         public override List<string> Data { get; set; }
+        public bool Recentre { get; set; } = true;
 
         // Coords and Angles
-        public double X { get; set; }
-        public double Y { get; set; }
+        public double X { get; set; } = 0;
+        public double Y { get; set; } = 0;
         public double R { get; set; } = 0;
         public double T { get; set; } = 0;
         public double S { get; set; } = 0;
@@ -33,7 +34,7 @@ namespace Animator
         public decimal OutlineWidth { get; set; }
         public string PieceDetails { get; set; }                   // Wind resistance and more
 
-        // Sets
+        // Sets         //TODO: Remove excess
         public Piece AttachedTo { get; set; } = null;
         public Join AttachPoint { get; set; } = null;
         public Join OwnPoint { get; set; } = null;
@@ -95,6 +96,7 @@ namespace Animator
         public Piece()
         {
             Name = Constants.WIPName;
+            Recentre = false;
             ColourType = Constants.fillOptions[0];
             FillColour = new Color[] { Constants.defaultFill };
             OutlineColour = Constants.defaultOutline;
@@ -318,6 +320,24 @@ namespace Animator
 
 
         // ----- OTHER FUNCTIONS -----
+        /// <summary>
+        /// Converts into itself to accommodate sets
+        /// in part.
+        /// </summary>
+        /// <returns>Itself</returns>
+        public override Piece ToPiece()
+        {
+            return this;
+        }
+
+        /// <summary>
+        /// Draws the piece to the provided graphics.
+        /// </summary>
+        /// <param name="g">Provided graphics</param>
+        public override void Draw(Graphics g)
+        {
+            Visuals.DrawPiece(this, g, Recentre);
+        }
 
         /// <summary>
         /// Finds coordinates within a row.

@@ -60,7 +60,7 @@ namespace Animator
             try
             {
                 Piece added = new Piece(NameTb.Text);
-                WIP.PiecesList.Add(added);
+                WIP.PartsList.Add(added);
                 added.X = midX; added.Y = midY;
                 added.Originally = new Originals(added);
                 SelectPiece(added);
@@ -86,7 +86,7 @@ namespace Animator
             try
             {
                 Set newbie = new Set(NameTb.Text);
-                WIP.PiecesList.AddRange(newbie.PiecesList);
+                WIP.PartsList.AddRange(newbie.PiecesList);
                 newbie.BasePiece.X = midX; newbie.BasePiece.Y = midY;
                 foreach (Piece piece in newbie.PiecesList)
                 {
@@ -113,12 +113,12 @@ namespace Animator
         private void UpBtn_Click(object sender, EventArgs e)
         {
             if (selected == null) { return; }
-            int selectedIndex = WIP.PiecesList.IndexOf(selected);
-            if (selectedIndex == -1 || selectedIndex == WIP.PiecesList.Count - 1) { return; }
+            int selectedIndex = WIP.PartsList.IndexOf(selected);
+            if (selectedIndex == -1 || selectedIndex == WIP.PartsList.Count - 1) { return; }
 
             // Update piecesList
-            WIP.PiecesList[selectedIndex] = WIP.PiecesList[selectedIndex + 1];
-            WIP.PiecesList[selectedIndex + 1] = selected;
+            WIP.PartsList[selectedIndex] = WIP.PartsList[selectedIndex + 1];
+            WIP.PartsList[selectedIndex + 1] = selected;
 
             DisplayDrawings();
         }
@@ -131,12 +131,12 @@ namespace Animator
         private void DownBtn_Click(object sender, EventArgs e)
         {
             if (selected == null) { return; }
-            int selectedIndex = WIP.PiecesList.IndexOf(selected);
+            int selectedIndex = WIP.PartsList.IndexOf(selected);
             if (selectedIndex == -1 || selectedIndex == 0) { return; }
 
             // Update piecesList
-            WIP.PiecesList[selectedIndex] = WIP.PiecesList[selectedIndex - 1];
-            WIP.PiecesList[selectedIndex - 1] = selected;
+            WIP.PartsList[selectedIndex] = WIP.PartsList[selectedIndex - 1];
+            WIP.PartsList[selectedIndex - 1] = selected;
 
             DisplayDrawings();
         }
@@ -151,7 +151,7 @@ namespace Animator
             if (selected == null) { return; }
 
             // Update Piece
-            selected.Originally.R = RotationBar.Value;
+            selected.ToPiece().Originally.R = RotationBar.Value;
 
             if (RotationBar == ActiveControl)
             {
@@ -169,7 +169,7 @@ namespace Animator
             if (selected == null) { return; }
 
             // Update Piece
-            selected.Originally.T = TurnBar.Value;
+            selected.ToPiece().Originally.T = TurnBar.Value;
 
             if (TurnBar == ActiveControl)
             {
@@ -187,7 +187,7 @@ namespace Animator
             if (selected == null) { return; }
 
             // Update Piece
-            selected.Originally.S = SpinBar.Value;
+            selected.ToPiece().Originally.S = SpinBar.Value;
 
             if (SpinBar == ActiveControl)
             {
@@ -205,7 +205,7 @@ namespace Animator
             if (selected == null) { return; }
 
             // Update Piece
-            selected.Originally.X = (int)XUpDown.Value;
+            selected.ToPiece().Originally.X = (int)XUpDown.Value;
 
             if (XUpDown == ActiveControl)
             {
@@ -223,7 +223,7 @@ namespace Animator
             if (selected == null) { return; }
 
             // Update Piece
-            selected.Originally.Y = (int)YUpDown.Value;
+            selected.ToPiece().Originally.Y = (int)YUpDown.Value;
 
             if (YUpDown == ActiveControl)
             {
@@ -241,7 +241,7 @@ namespace Animator
             if (selected == null) { return; }
 
             // Update Piece
-            selected.Originally.SM = SizeBar.Value;
+            selected.ToPiece().Originally.SM = SizeBar.Value;
 
             if (SizeBar == ActiveControl)
             {
@@ -264,7 +264,7 @@ namespace Animator
         {
             if (selected == null || ChangeTypeCb.SelectedIndex == -1 || AnimationAmountTb.Value == 0) { return; }
 
-            WIP.Changes.Add(new Change(CurrentTimeUpDown.Value, ChangeTypeCb.Text, selected, (double)AnimationAmountTb.Value, SecondsUpDown.Value, WIP));
+            WIP.Changes.Add(new Change(CurrentTimeUpDown.Value, ChangeTypeCb.Text, selected.ToPiece(), (double)AnimationAmountTb.Value, SecondsUpDown.Value, WIP));
             if (CurrentTimeUpDown.Value + SecondsUpDown.Value > videoLength)
             {
                 UpdateVideoLength(CurrentTimeUpDown.Value + SecondsUpDown.Value);
@@ -295,12 +295,12 @@ namespace Animator
                 if (selected == null || ChangeTypeCb.SelectedIndex == -1 || AnimationAmountTb.Value == 0) { return; }
                 PreviewBtn.BackColor = pressed;
                 WIP.RunScene(CurrentTimeUpDown.Value + SecondsUpDown.Value);
-                Change tempChange = new Change(CurrentTimeUpDown.Value, ChangeTypeCb.Text, selected, (double)AnimationAmountTb.Value, SecondsUpDown.Value, WIP);
+                Change tempChange = new Change(CurrentTimeUpDown.Value, ChangeTypeCb.Text, selected.ToPiece(), (double)AnimationAmountTb.Value, SecondsUpDown.Value, WIP);
                 tempChange.Run(CurrentTimeUpDown.Value + SecondsUpDown.Value);
             }
             if (PreviewBtn == ActiveControl)
             {
-                Visuals.DrawPieces(WIP.PiecesList, g, DrawPanel);
+                Visuals.DrawParts(WIP.PartsList, g, DrawPanel);
             }
         }
 
@@ -338,35 +338,23 @@ namespace Animator
                 };
 
                 // Save Parts
-                for (int index = 0; index < WIP.PiecesList.Count; index++)
+                foreach (Part part in WIP.PartsList)
                 {
-                    // If piece is in 
-                    if (WIP.PiecesList[index].PieceOf != null)
-                    {
-                        // If piece is base
-                        if (WIP.PiecesList[index].AttachedTo == null)
-                        {
-                            file.Add("s:" + WIP.PiecesList[index].PieceOf.Name);
-                        }
-                    }
-                    else
-                    {
-                        file.Add("p:" + WIP.PiecesList[index].Name);
-                    }
+                    file.Add((part is Piece ? "p:" : "s:") + part.Name);
                 }
 
                 // Save Original States
                 file.Add("Originals");
                 foreach (Piece piece in WIP.PiecesList)
                 {
-                    file.Add(piece.Originally != null ? piece.Originally.GetSaveData() : "500;250;0;0;0;100");
+                    file.Add(piece.Originally != null ? piece.Originally.GetSaveData() : Constants.MidX + ";" + Constants.MidY + ";0;0;0;100");
                 }
 
                 // Save Animation Changes
                 foreach (Change change in WIP.Changes)
                 {
                     file.Add(change.StartTime + ";" + change.Action + ";" +
-                        WIP.PiecesList.IndexOf(change.AffectedPiece) + ";" + change.HowMuch + ";" + change.HowLong);
+                        WIP.PartsList.IndexOf(change.AffectedPiece) + ";" + change.HowMuch + ";" + change.HowLong);
                 }
 
                 Utilities.SaveData(Utilities.GetDirectory(Constants.ScenesFolder, SceneTb.Text, Constants.Txt), file);
@@ -386,7 +374,7 @@ namespace Animator
         private void ExitBtn_Click(object sender, EventArgs e)
         {
             // If nothing to save, exit without confirmation
-            if (WIP.PiecesList.Count == 0)
+            if (WIP.PartsList.Count == 0)
             {
                 Close();
             }
@@ -504,7 +492,7 @@ namespace Animator
         private void DrawPanel_MouseDown(object sender, MouseEventArgs e)
         {
             // Choose and Update Selected Piece (If Any)
-            int selectedIndex = Utilities.FindClickedSelection(WIP.PiecesList, e.X, e.Y);
+            int selectedIndex = Utilities.FindClickedSelection(WIP.PiecesList, e.X, e.Y, SelectFromTopCb.Checked);
             if (selectedIndex == -1)
             {
                 Deselect();
@@ -527,12 +515,12 @@ namespace Animator
             Deselect();
             selected = select;
             selected.OutlineColour = Color.Red;
-            RotationBar.Value = (int)selected.Originally.R;
-            TurnBar.Value = (int)selected.Originally.T;
-            SpinBar.Value = (int)selected.Originally.S;
-            XUpDown.Value = (decimal)selected.Originally.X;
-            YUpDown.Value = (decimal)selected.Originally.Y;
-            SizeBar.Value = (int)selected.Originally.SM;
+            RotationBar.Value = (int)selected.ToPiece().Originally.R;
+            TurnBar.Value = (int)selected.ToPiece().Originally.T;
+            SpinBar.Value = (int)selected.ToPiece().Originally.S;
+            XUpDown.Value = (decimal)selected.ToPiece().Originally.X;
+            YUpDown.Value = (decimal)selected.ToPiece().Originally.Y;
+            SizeBar.Value = (int)selected.ToPiece().Originally.SM;
         }
 
         /// <summary>
@@ -543,7 +531,7 @@ namespace Animator
         {
             if (selected != null)
             {
-                selected.OutlineColour = selected.Originally.OC;
+                selected.OutlineColour = selected.ToPiece().Originally.OC;
                 selected = null;
             }
         }
@@ -581,19 +569,19 @@ namespace Animator
                             Set deleting = selected.PieceOf;
                             foreach (Piece piece in deleting.PiecesList)
                             {
-                                WIP.PiecesList.Remove(piece);
+                                WIP.PartsList.Remove(piece);
                             }
                         }
                         // Piece is lone
                         else
                         {
-                            WIP.PiecesList.Remove(selected);
+                            WIP.PartsList.Remove(selected);
                         }
 
                         // Update changes to remove those made redundant by deleting a piece/set
                         foreach (Change change in WIP.Changes)
                         {
-                            if (!WIP.PiecesList.Contains(change.AffectedPiece))
+                            if (!WIP.PartsList.Contains(change.AffectedPiece))
                             {
                                 WIP.Changes.Remove(change);
                             }
@@ -633,20 +621,20 @@ namespace Animator
             {
                 PastPreviewBox.BackColor = Color.White;
                 WIP.RunScene(CurrentTimeUpDown.Value - timeIncrement);
-                Visuals.DrawPieces(WIP.PiecesList, g, PastPreviewBox, 3/11.0F);
+                Visuals.DrawPartsScaled(WIP.PartsList, g, PastPreviewBox, 3/11.0F);
             }
 
             // Draw Panel (Current)
             WIP.RunScene(CurrentTimeUpDown.Value);
-            Visuals.DrawPieces(WIP.PiecesList, g, DrawPanel);
+            Visuals.DrawParts(WIP.PartsList, g, DrawPanel);
 
             // Preview Panels (Future, Future++)
             if (PreviewCb.Checked)
             {
                 WIP.RunScene(CurrentTimeUpDown.Value + timeIncrement);
-                Visuals.DrawPieces(WIP.PiecesList, g, FuturePreviewBox, 3 / 11.0F);
+                Visuals.DrawPartsScaled(WIP.PartsList, g, FuturePreviewBox, 3 / 11.0F);
                 WIP.RunScene(CurrentTimeUpDown.Value + 2 * timeIncrement);
-                Visuals.DrawPieces(WIP.PiecesList, g, Future2PreviewBox, 3 / 11.0F);
+                Visuals.DrawPartsScaled(WIP.PartsList, g, Future2PreviewBox, 3 / 11.0F);
             }
 
             // Update Animation listbox

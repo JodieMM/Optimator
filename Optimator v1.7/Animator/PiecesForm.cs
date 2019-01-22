@@ -17,7 +17,7 @@ namespace Animator
         private Graphics original;
         private Graphics rotated;
         private Graphics turned;
-        public List<Piece> Sketches { get; set; } = new List<Piece>();
+        public List<Part> Sketches { get; set; } = new List<Part>();
         private List<Join> joins = new List<Join>();
         public Piece WIP { get; } = new Piece();
         private List<Spot> spots = new List<Spot>();
@@ -666,7 +666,7 @@ namespace Animator
         private void RotationBar_Scroll(object sender, EventArgs e)
         {
             if (SketchLb.SelectedIndex == -1) { return; }
-            Sketches[SketchLb.SelectedIndex].R = RotationBar.Value;
+            Sketches[SketchLb.SelectedIndex].ToPiece().R = RotationBar.Value;
             DisplayDrawings();
         }
 
@@ -678,7 +678,7 @@ namespace Animator
         private void TurnBar_Scroll(object sender, EventArgs e)
         {
             if (SketchLb.SelectedIndex == -1) { return; }
-            Sketches[SketchLb.SelectedIndex].R = TurnBar.Value;
+            Sketches[SketchLb.SelectedIndex].ToPiece().T = TurnBar.Value;
             DisplayDrawings();
         }
 
@@ -690,7 +690,7 @@ namespace Animator
         private void SpinBar_Scroll(object sender, EventArgs e)
         {
             if (SketchLb.SelectedIndex == -1) { return; }
-            Sketches[SketchLb.SelectedIndex].S = SpinBar.Value;
+            Sketches[SketchLb.SelectedIndex].ToPiece().S = SpinBar.Value;
             DisplayDrawings();
         }
 
@@ -702,7 +702,7 @@ namespace Animator
         private void SizeBar_Scroll(object sender, EventArgs e)
         {
             if (SketchLb.SelectedIndex == -1) { return; }
-            Sketches[SketchLb.SelectedIndex].SM = SizeBar.Value;
+            Sketches[SketchLb.SelectedIndex].ToPiece().SM = SizeBar.Value;
             DisplayDrawings();
         }
 
@@ -714,7 +714,7 @@ namespace Animator
         private void XUpDown_ValueChanged(object sender, EventArgs e)
         {
             if (SketchLb.SelectedIndex == -1) { return; }
-            Sketches[SketchLb.SelectedIndex].X = (double)XUpDown.Value;
+            Sketches[SketchLb.SelectedIndex].ToPiece().X = (double)XUpDown.Value;
             DisplayDrawings();
         }
 
@@ -726,7 +726,7 @@ namespace Animator
         private void YUpDown_ValueChanged(object sender, EventArgs e)
         {
             if (SketchLb.SelectedIndex == -1) { return; }
-            Sketches[SketchLb.SelectedIndex].Y = (double)YUpDown.Value;
+            Sketches[SketchLb.SelectedIndex].ToPiece().Y = (double)YUpDown.Value;
             DisplayDrawings();
         }
 
@@ -807,14 +807,14 @@ namespace Animator
             {
                 if (SketchLb.GetItemCheckState(index) == CheckState.Checked)
                 {
-                    Piece piece = Sketches[index];
-                    Visuals.DrawPiece(piece, original, false);
-                    piece.R += rotationTo - rotationFrom;
-                    Visuals.DrawPiece(piece, rotated, false);
-                    piece.R -= rotationTo - rotationFrom;
-                    piece.T += turnTo - turnFrom;
-                    Visuals.DrawPiece(piece, turned, false);
-                    piece.T -= turnTo - turnFrom;
+                    Part sketch = Sketches[index];
+                    sketch.Draw(original);
+                    sketch.ToPiece().R += rotationTo - rotationFrom;
+                    sketch.Draw(rotated);
+                    sketch.ToPiece().R -= rotationTo - rotationFrom;
+                    sketch.ToPiece().T += turnTo - turnFrom;
+                    sketch.Draw(turned);
+                    sketch.ToPiece().T -= turnTo - turnFrom;
                 }
             }
 
@@ -1212,16 +1212,10 @@ namespace Animator
         /// Adds a piece to the sketch list and listbox.
         /// </summary>
         /// <param name="toLoad">Piece to add to the sketch list</param>
-        public void AddSketch(Piece toLoad)
+        public void AddSketch(Part toLoad)
         {
             Sketches.Add(toLoad);
             SketchLb.Items.Add(toLoad, true);
-        }
-
-        //TODO: Sketch add functions
-        public void AddSketch(Set toLoad)
-        {
-
         }
 
         /// <summary>

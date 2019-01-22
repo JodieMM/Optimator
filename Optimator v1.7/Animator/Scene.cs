@@ -13,6 +13,7 @@ namespace Animator
     public class Scene
     {
         #region Scene Variables
+        public List<Part> PartsList { get; } = new List<Part>();
         public List<Piece> PiecesList { get; } = new List<Piece>();
         public List<Change> Changes { get; } = new List<Change>();
         public decimal TimeLength { get; set; }
@@ -40,18 +41,21 @@ namespace Animator
                 {
                     if (dataLine.StartsWith("p"))
                     {
-                        PiecesList.Add(new Piece(dataLine.Remove(0, 2)));
+                        Piece newPiece = new Piece(dataLine.Remove(0, 2));
+                        PiecesList.Add(newPiece);
+                        PartsList.Add(newPiece);
                     }
                     else
                     {
                         Set newSet = new Set(dataLine.Remove(0, 2));
                         PiecesList.AddRange(newSet.PiecesList);
+                        PartsList.Add(newSet);
                     }
                     dataLine = file.ReadLine();
                 }
 
                 // Assign Original States
-                foreach (Piece piece in PiecesList)
+                foreach (Piece piece in PartsList)
                 {
                     dataLines = file.ReadLine().Split(Constants.Semi);
                     piece.SetValues(double.Parse(dataLines[0]), double.Parse(dataLines[1]), double.Parse(dataLines[2]),
@@ -97,7 +101,7 @@ namespace Animator
         /// </summary>
         public void RunScene(decimal time)
         {
-            foreach (Piece piece in PiecesList)
+            foreach (Piece piece in PartsList)
             {
                 piece.TakeOriginalState();
             }

@@ -66,6 +66,9 @@
             this.SceneTb = new System.Windows.Forms.TextBox();
             this.FinishSceneBtn = new System.Windows.Forms.Button();
             this.SettingsTab = new System.Windows.Forms.TabPage();
+            this.SelectFromTopCb = new System.Windows.Forms.CheckBox();
+            this.TimeIntervalLbl = new System.Windows.Forms.Label();
+            this.TimeIncrementUpDown = new System.Windows.Forms.NumericUpDown();
             this.PreviewCb = new System.Windows.Forms.CheckBox();
             this.DisplayPanel = new System.Windows.Forms.Panel();
             this.VidLengthLbl = new System.Windows.Forms.Label();
@@ -75,8 +78,6 @@
             this.PastPreviewBox = new System.Windows.Forms.PictureBox();
             this.CurrentTimeLbl = new System.Windows.Forms.Label();
             this.CurrentTimeUpDown = new System.Windows.Forms.NumericUpDown();
-            this.TimeIncrementUpDown = new System.Windows.Forms.NumericUpDown();
-            this.TimeIntervalLbl = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.SecondsUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.AnimationAmountTb)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.YUpDown)).BeginInit();
@@ -91,12 +92,12 @@
             this.AnimationTab.SuspendLayout();
             this.SceneTab.SuspendLayout();
             this.SettingsTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TimeIncrementUpDown)).BeginInit();
             this.DisplayPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Future2PreviewBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.FuturePreviewBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PastPreviewBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CurrentTimeUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.TimeIncrementUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // SecondsUpDown
@@ -184,7 +185,7 @@
             this.AnimationLb.Location = new System.Drawing.Point(0, 0);
             this.AnimationLb.Margin = new System.Windows.Forms.Padding(2);
             this.AnimationLb.Name = "AnimationLb";
-            this.AnimationLb.Size = new System.Drawing.Size(202, 80);
+            this.AnimationLb.Size = new System.Drawing.Size(202, 42);
             this.AnimationLb.TabIndex = 4;
             // 
             // AddAnimationBtn
@@ -597,6 +598,7 @@
             // SettingsTab
             // 
             this.SettingsTab.BackColor = System.Drawing.Color.LemonChiffon;
+            this.SettingsTab.Controls.Add(this.SelectFromTopCb);
             this.SettingsTab.Controls.Add(this.TimeIntervalLbl);
             this.SettingsTab.Controls.Add(this.TimeIncrementUpDown);
             this.SettingsTab.Controls.Add(this.PreviewCb);
@@ -605,6 +607,50 @@
             this.SettingsTab.Size = new System.Drawing.Size(202, 669);
             this.SettingsTab.TabIndex = 3;
             this.SettingsTab.Text = "Settings";
+            // 
+            // SelectFromTopCb
+            // 
+            this.SelectFromTopCb.AutoSize = true;
+            this.SelectFromTopCb.Checked = true;
+            this.SelectFromTopCb.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.SelectFromTopCb.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SelectFromTopCb.Location = new System.Drawing.Point(15, 142);
+            this.SelectFromTopCb.Margin = new System.Windows.Forms.Padding(2);
+            this.SelectFromTopCb.Name = "SelectFromTopCb";
+            this.SelectFromTopCb.Size = new System.Drawing.Size(182, 23);
+            this.SelectFromTopCb.TabIndex = 119;
+            this.SelectFromTopCb.Text = "Select Piece from Top";
+            this.SelectFromTopCb.UseVisualStyleBackColor = true;
+            // 
+            // TimeIntervalLbl
+            // 
+            this.TimeIntervalLbl.AutoSize = true;
+            this.TimeIntervalLbl.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TimeIntervalLbl.Location = new System.Drawing.Point(11, 53);
+            this.TimeIntervalLbl.Name = "TimeIntervalLbl";
+            this.TimeIntervalLbl.Size = new System.Drawing.Size(138, 19);
+            this.TimeIntervalLbl.TabIndex = 2;
+            this.TimeIntervalLbl.Text = "Preview Time Gap";
+            // 
+            // TimeIncrementUpDown
+            // 
+            this.TimeIncrementUpDown.DecimalPlaces = 1;
+            this.TimeIncrementUpDown.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TimeIncrementUpDown.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            65536});
+            this.TimeIncrementUpDown.Location = new System.Drawing.Point(15, 75);
+            this.TimeIncrementUpDown.Name = "TimeIncrementUpDown";
+            this.TimeIncrementUpDown.Size = new System.Drawing.Size(153, 27);
+            this.TimeIncrementUpDown.TabIndex = 1;
+            this.TimeIncrementUpDown.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            65536});
+            this.TimeIncrementUpDown.ValueChanged += new System.EventHandler(this.TimeIncrementUpDown_ValueChanged);
             // 
             // PreviewCb
             // 
@@ -715,36 +761,6 @@
             this.CurrentTimeUpDown.TabIndex = 37;
             this.CurrentTimeUpDown.ValueChanged += new System.EventHandler(this.CurrentTimeUpDown_ValueChanged);
             // 
-            // TimeIncrementUpDown
-            // 
-            this.TimeIncrementUpDown.DecimalPlaces = 1;
-            this.TimeIncrementUpDown.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TimeIncrementUpDown.Increment = new decimal(new int[] {
-            5,
-            0,
-            0,
-            65536});
-            this.TimeIncrementUpDown.Location = new System.Drawing.Point(15, 75);
-            this.TimeIncrementUpDown.Name = "TimeIncrementUpDown";
-            this.TimeIncrementUpDown.Size = new System.Drawing.Size(153, 27);
-            this.TimeIncrementUpDown.TabIndex = 1;
-            this.TimeIncrementUpDown.Value = new decimal(new int[] {
-            5,
-            0,
-            0,
-            65536});
-            this.TimeIncrementUpDown.ValueChanged += new System.EventHandler(this.TimeIncrementUpDown_ValueChanged);
-            // 
-            // TimeIntervalLbl
-            // 
-            this.TimeIntervalLbl.AutoSize = true;
-            this.TimeIntervalLbl.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TimeIntervalLbl.Location = new System.Drawing.Point(11, 53);
-            this.TimeIntervalLbl.Name = "TimeIntervalLbl";
-            this.TimeIntervalLbl.Size = new System.Drawing.Size(138, 19);
-            this.TimeIntervalLbl.TabIndex = 2;
-            this.TimeIntervalLbl.Text = "Preview Time Gap";
-            // 
             // ScenesForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -777,13 +793,13 @@
             this.SceneTab.PerformLayout();
             this.SettingsTab.ResumeLayout(false);
             this.SettingsTab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TimeIncrementUpDown)).EndInit();
             this.DisplayPanel.ResumeLayout(false);
             this.DisplayPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Future2PreviewBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.FuturePreviewBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PastPreviewBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.CurrentTimeUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.TimeIncrementUpDown)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -838,5 +854,6 @@
         private System.Windows.Forms.TrackBar RotationBar;
         private System.Windows.Forms.Label TimeIntervalLbl;
         private System.Windows.Forms.NumericUpDown TimeIncrementUpDown;
+        private System.Windows.Forms.CheckBox SelectFromTopCb;
     }
 }

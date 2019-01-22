@@ -749,9 +749,12 @@ namespace Animator
         /// <param name="x">The x coordinate of the click</param>
         /// <param name="y">The y coordinate of the click</param>
         /// <returns>The index of the piece clicked, or negative one if none selected</returns>
-        public static int FindClickedSelection(List<Piece> piecesList, int x, int y)
+        public static int FindClickedSelection(List<Piece> piecesList, int x, int y, bool fromTop)
         {
-            for (int index = piecesList.Count - 1; index >= 0; index--)
+            int index;
+            int increment = (fromTop) ? -1 : 1;
+
+            for (index = (fromTop) ? piecesList.Count - 1 : 0; (fromTop) ? index >= 0 : index < piecesList.Count; index += increment)
             {
                 List<double[]> coords = piecesList[index].GetCurrentPoints(true);
                 List<int[]> contents = FindPieceSpace(FindPieceLines(coords, 

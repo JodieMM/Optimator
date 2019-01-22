@@ -18,7 +18,7 @@ namespace Animator
         /// <param name="DrawPanel">Panel to draw on</param>
         public static void ResetPictureBox(Graphics g, PictureBox DrawPanel)
         {
-            DrawPanel.Refresh();
+            DrawPanel.Refresh();                        //TODO: Check usage- move to DrawParts?
             g = DrawPanel.CreateGraphics();
         }
 
@@ -44,7 +44,7 @@ namespace Animator
         /// <param name="piece">The piece to be drawn</param>
         /// <param name="g">The graphics to draw to</param>
         /// <param name="recentre">See GetCurrentPoints</param>
-        public static void DrawPiece(Piece piece, Graphics g, bool recentre)        //TODO: Make suitable for sets or pieces and add to part. Recentre only applied in PiecesForm and PiecesFormLoad
+        public static void DrawPiece(Piece piece, Graphics g, bool recentre)
         {
             //Check piece defined at that point
             if (Utilities.FindRow(piece.GetAngles()[0], piece.GetAngles()[1], piece.Data, 1) != -1)
@@ -110,21 +110,18 @@ namespace Animator
         }
 
         /// <summary>
-        /// Draws all pieces in a list, including setting
+        /// Draws all parts in a list, including setting
         /// the graphics and clearing the draw panel.
         /// </summary>
         /// <param name="DrawPanel">Panel to be drawn on</param>
-        /// <param name="piecesList">Pieces to be drawn</param>
+        /// <param name="partsList">Parts to be drawn</param>
         /// <param name="g">Graphics to draw</param>
-        public static void DrawPieces(List<Piece> piecesList, Graphics g, PictureBox DrawPanel)
+        public static void DrawParts(List<Part> partsList, Graphics g, PictureBox DrawPanel)
         {
             ResetPictureBox(g, DrawPanel);
-
-            // Draw Parts
-            List<Piece> orderedPieces = Utilities.SortOrder(piecesList);
-            for (int index = 0; index < piecesList.Count; index++)
+            foreach (Part part in partsList)
             {
-                DrawPiece(orderedPieces[index], g, true);
+                part.Draw(g);
             }
         }
 
@@ -134,20 +131,13 @@ namespace Animator
         /// Also sets a scale on the image.
         /// </summary>
         /// <param name="DrawPanel">Panel to be drawn on</param>
-        /// <param name="piecesList">Pieces to be drawn</param>
+        /// <param name="partsList">Pieces to be drawn</param>
         /// <param name="g">Graphics to draw</param>
         /// <param name="scale">Size modifier to entire image</param>
-        public static void DrawPieces(List<Piece> piecesList, Graphics g, PictureBox DrawPanel, float scale)
+        public static void DrawPartsScaled(List<Part> partsList, Graphics g, PictureBox DrawPanel, float scale)
         {
-            ResetPictureBox(g, DrawPanel);
             g.ScaleTransform(scale, scale);
-
-            // Draw Parts
-            List<Piece> orderedPieces = Utilities.SortOrder(piecesList);
-            for (int index = 0; index < piecesList.Count; index++)
-            {
-                DrawPiece(orderedPieces[index], g, true);
-            }
+            DrawParts(partsList, g, DrawPanel);
         }
     }
 }

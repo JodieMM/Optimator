@@ -13,7 +13,7 @@ namespace Animator
         #region Load Menu Variables
         private Piece WIP;
         private PiecesForm from;
-        private Piece loaded = null;
+        private Part loaded = null;
 
         private Graphics g;
 
@@ -38,7 +38,7 @@ namespace Animator
         // ----- MENU BUTTONS -----
 
         /// <summary>
-        /// Loads the entered point.
+        /// Loads the entered piece.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -46,10 +46,18 @@ namespace Animator
         {
             try
             {
-                loaded = new Piece(NameTb.Text);
+                if (sender == LoadSetBtn)
+                {
+                    loaded = new Set(NameTb.Text);
+                }
+                else
+                {
+                    loaded = new Piece(NameTb.Text);
+                }
+                loaded.ToPiece().Recentre = false;
                 DrawPanel.Refresh();
                 g = DrawPanel.CreateGraphics();
-                Visuals.DrawPiece(loaded, g, false);
+                loaded.Draw(g);
             }
             catch (FileNotFoundException)
             {
@@ -176,19 +184,19 @@ namespace Animator
         {
             if (FillColourBtn.BackColor == select || AllBtn.BackColor == select)
             {
-                WIP.FillColour = loaded.FillColour;
+                WIP.FillColour = loaded.ToPiece().FillColour;
             }
             if (OutlineColourBtn.BackColor == select || AllBtn.BackColor == select)
             {
-                WIP.OutlineColour = loaded.OutlineColour;
+                WIP.OutlineColour = loaded.ToPiece().OutlineColour;
             }
             if (OutlineWidthBtn.BackColor == select || AllBtn.BackColor == select)
             {
-                WIP.OutlineWidth = loaded.OutlineWidth;
+                WIP.OutlineWidth = loaded.ToPiece().OutlineWidth;
             }
             if (PieceDetailsBtn.BackColor == select || AllBtn.BackColor == select)
             {
-                WIP.PieceDetails = loaded.PieceDetails;
+                WIP.PieceDetails = loaded.ToPiece().PieceDetails;
             }
             if (ShapeBtn.BackColor == select)
             {

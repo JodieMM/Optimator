@@ -349,7 +349,7 @@ namespace Animator
             {
                 // Choose and Update Selected Piece (If Any)
                 DeselectPiece();
-                selectedIndex = Utilities.FindClickedSelection(WIP.PiecesList, e.X, e.Y);
+                selectedIndex = Utilities.FindClickedSelection(WIP.PiecesList, e.X, e.Y, SelectFromTopCb.Checked);
                 if (selectedIndex != -1)
                 {
                     SelectPiece(WIP.PiecesList[selectedIndex]);
@@ -498,9 +498,9 @@ namespace Animator
         private void DisplayDrawings()
         {
             g = DrawPanel.CreateGraphics();
-            Visuals.DrawPieces(WIP.PiecesList, g, DrawPanel);
+            WIP.Draw(g);
             // If moving a piece, draw the shadow
-            if (movingFar || selectedSpot != null)
+            if (movingFar || selectedSpot != null)      //TODO: Allow placing of pieces rather than points and joining
             {
                 Visuals.DrawPiece(shadow, g, true);
                 // Draw Potential Joins

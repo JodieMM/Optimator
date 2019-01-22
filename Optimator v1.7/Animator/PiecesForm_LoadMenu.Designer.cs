@@ -32,7 +32,7 @@
             this.DrawPanel = new System.Windows.Forms.PictureBox();
             this.FillColourBtn = new System.Windows.Forms.Button();
             this.NameTb = new System.Windows.Forms.TextBox();
-            this.LoadBtn = new System.Windows.Forms.Button();
+            this.LoadPieceBtn = new System.Windows.Forms.Button();
             this.OutlineColourBtn = new System.Windows.Forms.Button();
             this.ExitBtn = new System.Windows.Forms.Button();
             this.PieceDetailsBtn = new System.Windows.Forms.Button();
@@ -40,6 +40,7 @@
             this.AllBtn = new System.Windows.Forms.Button();
             this.OutlineWidthBtn = new System.Windows.Forms.Button();
             this.SketchBtn = new System.Windows.Forms.Button();
+            this.LoadSetBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.DrawPanel)).BeginInit();
             this.SuspendLayout();
             // 
@@ -49,7 +50,7 @@
             this.LoadLbl.Font = new System.Drawing.Font("Tahoma", 19.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LoadLbl.Location = new System.Drawing.Point(12, 20);
             this.LoadLbl.Name = "LoadLbl";
-            this.LoadLbl.Size = new System.Drawing.Size(140, 64);
+            this.LoadLbl.Size = new System.Drawing.Size(72, 33);
             this.LoadLbl.TabIndex = 2;
             this.LoadLbl.Text = "Load";
             // 
@@ -82,22 +83,22 @@
             this.NameTb.Location = new System.Drawing.Point(110, 22);
             this.NameTb.Margin = new System.Windows.Forms.Padding(6);
             this.NameTb.Name = "NameTb";
-            this.NameTb.Size = new System.Drawing.Size(210, 58);
+            this.NameTb.Size = new System.Drawing.Size(210, 33);
             this.NameTb.TabIndex = 15;
-            this.NameTb.Text = "Piece Name";
+            this.NameTb.Text = "Part Name";
             // 
-            // LoadBtn
+            // LoadPieceBtn
             // 
-            this.LoadBtn.BackColor = System.Drawing.Color.LightPink;
-            this.LoadBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.LoadBtn.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoadBtn.Location = new System.Drawing.Point(340, 22);
-            this.LoadBtn.Name = "LoadBtn";
-            this.LoadBtn.Size = new System.Drawing.Size(200, 33);
-            this.LoadBtn.TabIndex = 0;
-            this.LoadBtn.Text = "Load";
-            this.LoadBtn.UseVisualStyleBackColor = false;
-            this.LoadBtn.Click += new System.EventHandler(this.LoadBtn_Click);
+            this.LoadPieceBtn.BackColor = System.Drawing.Color.LightPink;
+            this.LoadPieceBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.LoadPieceBtn.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoadPieceBtn.Location = new System.Drawing.Point(340, 22);
+            this.LoadPieceBtn.Name = "LoadPieceBtn";
+            this.LoadPieceBtn.Size = new System.Drawing.Size(95, 33);
+            this.LoadPieceBtn.TabIndex = 0;
+            this.LoadPieceBtn.Text = "Piece";
+            this.LoadPieceBtn.UseVisualStyleBackColor = false;
+            this.LoadPieceBtn.Click += new System.EventHandler(this.LoadBtn_Click);
             // 
             // OutlineColourBtn
             // 
@@ -191,11 +192,25 @@
             this.SketchBtn.UseVisualStyleBackColor = false;
             this.SketchBtn.Click += new System.EventHandler(this.SketchBtn_Click);
             // 
+            // LoadSetBtn
+            // 
+            this.LoadSetBtn.BackColor = System.Drawing.Color.LightPink;
+            this.LoadSetBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.LoadSetBtn.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoadSetBtn.Location = new System.Drawing.Point(445, 22);
+            this.LoadSetBtn.Name = "LoadSetBtn";
+            this.LoadSetBtn.Size = new System.Drawing.Size(95, 33);
+            this.LoadSetBtn.TabIndex = 25;
+            this.LoadSetBtn.Text = "Set";
+            this.LoadSetBtn.UseVisualStyleBackColor = false;
+            this.LoadSetBtn.Click += new System.EventHandler(this.LoadBtn_Click);
+            // 
             // PiecesForm_LoadMenu
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.Pink;
             this.ClientSize = new System.Drawing.Size(550, 400);
+            this.Controls.Add(this.LoadSetBtn);
             this.Controls.Add(this.SketchBtn);
             this.Controls.Add(this.AllBtn);
             this.Controls.Add(this.OutlineWidthBtn);
@@ -203,7 +218,7 @@
             this.Controls.Add(this.ShapeBtn);
             this.Controls.Add(this.ExitBtn);
             this.Controls.Add(this.OutlineColourBtn);
-            this.Controls.Add(this.LoadBtn);
+            this.Controls.Add(this.LoadPieceBtn);
             this.Controls.Add(this.NameTb);
             this.Controls.Add(this.FillColourBtn);
             this.Controls.Add(this.DrawPanel);
@@ -225,7 +240,7 @@
         private System.Windows.Forms.PictureBox DrawPanel;
         private System.Windows.Forms.Button FillColourBtn;
         private System.Windows.Forms.TextBox NameTb;
-        private System.Windows.Forms.Button LoadBtn;
+        private System.Windows.Forms.Button LoadPieceBtn;
         private System.Windows.Forms.Button OutlineColourBtn;
         private System.Windows.Forms.Button ExitBtn;
         private System.Windows.Forms.Button PieceDetailsBtn;
@@ -233,5 +248,6 @@
         private System.Windows.Forms.Button AllBtn;
         private System.Windows.Forms.Button OutlineWidthBtn;
         private System.Windows.Forms.Button SketchBtn;
+        private System.Windows.Forms.Button LoadSetBtn;
     }
 }

@@ -176,7 +176,7 @@ namespace Animator
             baseScene.RunScene(workingTime);      
 
             // Draw Parts
-            foreach(Piece piece in baseScene.PiecesList)
+            foreach(Piece piece in baseScene.PartsList)
             {
                 Visuals.DrawPiece(piece, g, true);
             }
@@ -194,7 +194,7 @@ namespace Animator
             baseScene.RunScene(workingTime);
 
             // Draw Parts
-            foreach (Piece piece in baseScene.PiecesList)
+            foreach (Piece piece in baseScene.PartsList)
             {
                 Visuals.DrawPiece(piece, g, true);
             }

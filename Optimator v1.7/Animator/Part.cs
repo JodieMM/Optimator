@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
 
 namespace Animator
 {
@@ -21,5 +22,19 @@ namespace Animator
         {
             return Name;
         }
+
+        /// <summary>
+        /// Converts a part to a piece.
+        /// For pieces, it returns itself.
+        /// For sets, it returns the base piece.
+        /// </summary>
+        /// <returns>A piece representation of the part</returns>
+        public abstract Piece ToPiece();
+
+        /// <summary>
+        /// Draws the part to the supplied graphics.
+        /// </summary>
+        /// <param name="g">Supplied graphics</param>
+        public abstract void Draw(Graphics g);
     }
 }

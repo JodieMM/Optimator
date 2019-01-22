@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
 
 namespace Animator
 {
@@ -65,6 +66,28 @@ namespace Animator
 
 
         // ----- FUNCTIONS -----
+        /// <summary>
+        /// Returns the piece representation of a set.
+        /// </summary>
+        /// <returns>Base piece</returns>
+        public override Piece ToPiece()
+        {
+            return BasePiece;
+        }
+
+        /// <summary>
+        /// Draws the set to the provided graphics.
+        /// </summary>
+        /// <param name="g">Provided graphics</param>
+        public override void Draw(Graphics g)
+        {
+            //TODO: Sort order!
+            //List<Piece> orderedPieces = Utilities.SortOrder(partsList); <<< OLD
+            foreach (Piece piece in PiecesList)
+            {
+                piece.Draw(g);
+            }
+        }
 
         /// <summary>
         /// Takes the current state and saves it in the data.

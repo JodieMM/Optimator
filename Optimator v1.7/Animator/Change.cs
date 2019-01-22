@@ -16,7 +16,6 @@
         public decimal HowLong { get; }
 
         public string Action { get; }
-        private readonly string Options = null;
         #endregion
 
 
