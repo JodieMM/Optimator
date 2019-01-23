@@ -986,7 +986,7 @@ namespace Animator
             // When No Coords
             if (o.Count < 1)
             {
-                int workingRow = Utilities.FindRow(rFrom, tFrom, WIP.Data, 1);
+                int workingRow = Utilities.FindRow(rFrom, tFrom, WIP.Data, 2);
                 if (workingRow != -1) { WIP.Data.RemoveAt(workingRow); }
             }
             else
@@ -1193,15 +1193,28 @@ namespace Animator
             FixedCb.Enabled = false;
         }
 
+
+
+        // ----- LOAD MENU FUNCTIONS -----
+
         /// <summary>
         /// Updates colours and outline width
-        /// in the display. Connected to LoadMenu.
+        /// in the display.
         /// </summary>
         public void UpdateAttributes()
         {
             FillBox.BackColor = WIP.FillColour[0];
             OutlineBox.BackColor = WIP.OutlineColour;
             OutlineWidthBox.Value = WIP.OutlineWidth;
+        }
+
+        /// <summary>
+        /// Takes the shape of the loaded piece and implements it for WIP.
+        /// </summary>
+        /// <param name="spots">Shape coordinates</param>
+        public void LoadPieceOutline(List<Spot> spots)
+        {
+            this.spots = spots;
         }
 
 

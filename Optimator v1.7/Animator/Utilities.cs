@@ -241,12 +241,14 @@ namespace Animator
 
         /// <summary>
         /// Finds the correct row in the piece data for the given rotation and turn values.
-        /// RowNum is 1 for pieces, 0 for points.
+        /// RowNum is 2 for pieces, 0 for points.
         /// </summary>
         /// <param name="r">Rotation</param>
         /// <param name="t">Turn</param>
+        /// <param name="data">Data to search</param>
         /// <returns>The data row holding the information for the given angles</returns>
-        public static int FindRow(double r, double t, List<string> data, int rowNum)
+        public static int FindRow(double r, double t, List<string> data, int rowNum)        
+        //TODO: Remove this from joins & remove last parameter
         {
             int row; bool found = false;
 
@@ -415,7 +417,7 @@ namespace Animator
                             spots[Modulo(insertIndex - 1, spots.Count)].GetCoords(1), original[1], 1, spots[insertIndex].Connector)[0];
                         double turned = FindSymmetricalOppositeCoord(spots[insertIndex].GetCoords(2),
                             spots[Modulo(insertIndex - 1, spots.Count)].GetCoords(2), original[0], 0, spots[insertIndex].Connector)[1];
-                        Spot newSpot = new Spot(original[0], rotated, original[1], turned, 1, spots[insertIndex].Connector, spots[insertIndex].Solid);
+                        Spot newSpot = new Spot(original[0], rotated, original[1], turned, spots[insertIndex].Connector, spots[insertIndex].Solid, 1);
                         if (xy == 0)
                         {
                             newSpot.MatchX = spots[index];

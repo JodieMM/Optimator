@@ -200,7 +200,7 @@ namespace Animator
             }
             if (ShapeBtn.BackColor == select)
             {
-                // TODO: Copy shape from loaded piece
+                
             }
             if (SketchBtn.BackColor == select)
             {

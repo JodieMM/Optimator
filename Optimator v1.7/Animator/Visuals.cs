@@ -47,7 +47,7 @@ namespace Animator
         public static void DrawPiece(Piece piece, Graphics g, bool recentre)
         {
             //Check piece defined at that point
-            if (Utilities.FindRow(piece.GetAngles()[0], piece.GetAngles()[1], piece.Data, 1) != -1)
+            if (Utilities.FindRow(piece.GetAngles()[0], piece.GetAngles()[1], piece.Data, 2) != -1)
             {
                 // Prepare for drawing
                 Pen pen = new Pen(piece.OutlineColour, (float)piece.OutlineWidth);

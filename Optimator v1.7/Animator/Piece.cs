@@ -183,7 +183,7 @@ namespace Animator
         public List<string> GetLineArray(double r, double t)
         {
             List<string> joins = new List<string>();
-            string[] lineArray = Data[Utilities.FindRow(r, t, Data, 1)].ToString().Split(Constants.Semi)[5].Split(Constants.Comma);
+            string[] lineArray = Data[Utilities.FindRow(r, t, Data, 2)].ToString().Split(Constants.Semi)[5].Split(Constants.Comma);
             foreach (string join in lineArray)
             {
                 joins.Add(join);
@@ -200,7 +200,7 @@ namespace Animator
         public List<string> GetPointDataArray(double r, double t)
         {
             List<string> details = new List<string>();
-            string[] detailsArray = Data[Utilities.FindRow(r, t, Data, 1)].ToString().Split(Constants.Semi)[6].Split(Constants.Comma);
+            string[] detailsArray = Data[Utilities.FindRow(r, t, Data, 2)].ToString().Split(Constants.Semi)[6].Split(Constants.Comma);
             foreach (string detail in detailsArray)
             {
                 details.Add(detail);
@@ -280,7 +280,7 @@ namespace Animator
         /// <param name="newLine">Replacement data</param>
         public void UpdateDataLine(double rot, double turn, string newLine)
         {
-            int row = Utilities.FindRow(rot, turn, Data, 1);
+            int row = Utilities.FindRow(rot, turn, Data, 2);
             if (row != -1)
             {
                 Data[row] = newLine;
@@ -317,6 +317,22 @@ namespace Animator
             }
         }
 
+        /// <summary>
+        /// Updates the second line of data to display whether a spot is piece-defining
+        /// or added through refinement. Used when re-loading a piece for modification.
+        /// </summary>
+        /// <param name="spots">The list of spots to define</param>
+        public void UpdateDataSpotTypes(List<Spot> spots)
+        {
+            string dataSpotTypes = "";
+            foreach (Spot spot in spots)
+            {
+                dataSpotTypes += spot.DrawnLevel + Constants.SemiS;
+            }
+            dataSpotTypes.Remove(dataSpotTypes.Length - 1);
+            Data[1] = dataSpotTypes;
+        }
+
 
 
         // ----- OTHER FUNCTIONS -----
@@ -349,7 +365,7 @@ namespace Animator
         /// <returns>A list of coordinates for that angle</returns>
         public List<double[]> FindPoints(double r, double t, int angle)
         {
-            int row = Utilities.FindRow(r, t, Data, 1);
+            int row = Utilities.FindRow(r, t, Data, 2);
             if (row == -1) { return null; }
             List<double[]> returnPoints = new List<double[]>();
             string[] angleLine = Data[row].Split(Constants.Semi)[angle].Split(Constants.Colon);
@@ -374,7 +390,7 @@ namespace Animator
         /// <returns></returns>
         public List<double[]> GetCurrentPoints(bool recentre)
         {
-            int row = Utilities.FindRow(GetAngles()[0], GetAngles()[1], Data, 1);
+            int row = Utilities.FindRow(GetAngles()[0], GetAngles()[1], Data, 2);
             if (row == -1) { return null; }
             string dataLine = Data[row];
 

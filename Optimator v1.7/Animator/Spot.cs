@@ -45,18 +45,18 @@
         /// <param name="xr">Rotated X position</param>
         /// <param name="y">Y position</param>
         /// <param name="yd">Turned Y position</param>
-        /// <param name="drawn">DrawLevel integer</param>
         /// <param name="connect">Connector from this spot to the next</param>
         /// <param name="solid">Flexibility of the spot</param>
-        public Spot(double x, double xr, double y, double yd, int drawn, string connect, string solid)
+        /// /// <param name="drawn">DrawLevel integer</param>
+        public Spot(double x, double xr, double y, double yd, string connect, string solid, int drawn)
         {
-            DrawnLevel = drawn;
             X = x;
             XRight = xr;
             Y = y;
             YDown = yd;
             Connector = connect;
             Solid = solid;
+            DrawnLevel = drawn;
         }
 
 
