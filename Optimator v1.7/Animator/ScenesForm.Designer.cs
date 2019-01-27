@@ -471,7 +471,7 @@
             this.AddSetBtn.TabIndex = 28;
             this.AddSetBtn.Text = "+ Set  ";
             this.AddSetBtn.UseVisualStyleBackColor = false;
-            this.AddSetBtn.Click += new System.EventHandler(this.AddSetBtn_Click);
+            this.AddSetBtn.Click += new System.EventHandler(this.AddBtn_Click);
             // 
             // AddPieceBtn
             // 
@@ -485,7 +485,7 @@
             this.AddPieceBtn.TabIndex = 27;
             this.AddPieceBtn.Text = "+ Piece";
             this.AddPieceBtn.UseVisualStyleBackColor = false;
-            this.AddPieceBtn.Click += new System.EventHandler(this.AddPieceBtn_Click);
+            this.AddPieceBtn.Click += new System.EventHandler(this.AddBtn_Click);
             // 
             // AnimationTab
             // 

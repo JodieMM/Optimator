@@ -40,7 +40,7 @@
         }
 
 
-        // ----- RUN CHANGES -----
+        // ----- FUNCTIONS -----
 
         /// <summary>
         /// Applies the change to the affected piece.
@@ -83,6 +83,16 @@
                     AffectedPiece.SM += increment;
                     break;
             }
+        }
+
+        /// <summary>
+        /// Converts the change into a saveable string format.
+        /// </summary>
+        /// <returns>Change in string form</returns>
+        public override string ToString()
+        {
+            return StartTime + ";" + Action + ";" + host.PartsList.IndexOf(AffectedPiece) 
+                + ";" + HowMuch + ";" + HowLong;
         }
     }
 }

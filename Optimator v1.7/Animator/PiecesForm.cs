@@ -14,24 +14,23 @@ namespace Animator
     public partial class PiecesForm : Form
     {
         #region PiecesForm Variables
+        public Piece WIP { get; } = new Piece();
+        public DataRow DataRow { get; set; }
+        public List<Part> Sketches { get; set; } = new List<Part>();
+
         private Graphics original;
         private Graphics rotated;
         private Graphics turned;
-        public List<Part> Sketches { get; set; } = new List<Part>();
-        private List<Join> joins = new List<Join>();
-        public Piece WIP { get; } = new Piece();
-        private List<Spot> spots = new List<Spot>();
 
         private Spot selectedSpot = null;
-        private Join selectedJoin = null;
-        private bool movingFar = false;
-        private int[] positionMoving = new int[] { -2, -2 };
+        private int moving = 0;                     // 0 = not, 1 = X & Y, 2 = X, 3 = Y
+        private bool movingFar = false;             // Whether a piece is being selected or moved
 
         private Color button = Color.LightCyan;
         private Color pressed = Color.FromArgb(255, 153, 255, 255);
         #endregion
 
-        // TEMP
+        // TODO: Remove (these are temp)
         private double rotationTo = 90;
         private double turnTo = 90;
         private double rotationFrom = 0;
@@ -65,6 +64,8 @@ namespace Animator
             FillBox.BackColor = Constants.defaultFill;
             OutlineBox.BackColor = Constants.defaultOutline;
             OutlineWidthBox.Value = Constants.defaultOutlineWidth;
+
+            DataRow = new DataRow(rotationFrom, rotationTo, turnFrom, turnTo);
         }
 
 
@@ -79,39 +80,27 @@ namespace Animator
         /// <param name="e"></param>
         private void DrawBase_MouseDown(object sender, MouseEventArgs e)
         {
-            movingFar = false;
-
             // Place Point
-            if (PointBtn.BackColor == button)
+            if (PointBtn.BackColor == button && RefineBtn.BackColor == button)
             {
-                if (selectedSpot != null && spots.IndexOf(selectedSpot) != spots.Count - 1)
+                if (selectedSpot != null && DataRow.Spots.IndexOf(selectedSpot) != DataRow.Spots.Count - 1)
                 {
-                    spots.Insert(spots.IndexOf(selectedSpot) + 1, new Spot(e.X, e.Y));
+                    DataRow.Spots.Insert(DataRow.Spots.IndexOf(selectedSpot) + 1, new Spot(e.X, e.Y, 0));
                 }
                 else
                 {
-                    spots.Add(new Spot(e.X, e.Y));
+                    DataRow.Spots.Add(new Spot(e.X, e.Y, 0));
                 }
-                SelectSpot(spots[spots.Count - 1]);
-                positionMoving = new int[] { -2, -2 };
+                SelectSpot(DataRow.Spots[DataRow.Spots.Count - 1]);
             }
-            // Move Point
+            // Select Spot
             else
             {
-                // Select Point or Join
-                int closestIndex = Utilities.FindClosestIndex(CombineCoordTypes(spots, joins, 0), e.X, e.Y);
+                int closestIndex = Utilities.FindClosestIndex(DataRow.Spots, 0, e.X, e.Y);
                 if (closestIndex != -1)
                 {
-                    if (closestIndex < spots.Count)
-                    {
-                        SelectSpot(spots[closestIndex]);
-                        positionMoving = new int[] { (int)selectedSpot.X, (int)selectedSpot.Y };
-                    }
-                    else
-                    {
-                        SelectJoin(joins[closestIndex - spots.Count]);
-                        positionMoving = new int[] { (int)selectedJoin.X, (int)selectedJoin.Y };
-                    }
+                    SelectSpot(DataRow.Spots[closestIndex]);
+                    if (RefineBtn.BackColor == button) { moving = 1; }
                 }
                 else
                 {
@@ -122,31 +111,21 @@ namespace Animator
         }
 
         /// <summary>
-        /// Moves a point if move is in progress.
+        /// Moves a spot if move is in progress.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void DrawBase_MouseUp(object sender, MouseEventArgs e)
         {
-            if (movingFar && positionMoving[0] != -1 && positionMoving[1] != -1 && positionMoving[0] != -2)
+            if (movingFar && selectedSpot != null && moving == 1)
             {
-                if (selectedSpot != null)
-                {
                     selectedSpot.X = e.X;
                     selectedSpot.Y = e.Y;
                     selectedSpot.XRight = e.X;
                     selectedSpot.YDown = e.Y;
-                }
-                else if (selectedJoin != null)
-                {
-                    selectedJoin.X = e.X;
-                    selectedJoin.Y = e.Y;
-                    selectedJoin.XRight = e.X;
-                    selectedJoin.YDown = e.Y;
-                }
             }
+            moving = 0;
             movingFar = false;
-            positionMoving = new int[] { -2, -2 };
             DisplayDrawings();
         }
 
@@ -157,52 +136,41 @@ namespace Animator
         /// <param name="e"></param>
         private void DrawBase_MouseMove(object sender, MouseEventArgs e)
         {
-            if (e.X > DrawBase.Size.Width || e.Y > DrawBase.Size.Height || e.X < 0 || e.Y < 0 || (selectedSpot == null && selectedJoin == null))
+            if (selectedSpot == null || moving == 0 || e.X > DrawBase.Size.Width || e.Y > DrawBase.Size.Height || e.X < 0 || e.Y < 0)
             {
+                moving = 0;
                 movingFar = false;
                 return;
             }
 
-            if (positionMoving[0] != -1 && positionMoving[1] != -1 && positionMoving[0] != -2)
+            if (!movingFar)
             {
-                positionMoving = new int[] { e.X, e.Y };
-                if (!movingFar && selectedSpot != null)
-                {
-                    movingFar = Math.Abs(selectedSpot.X - positionMoving[0]) > Constants.ClickPrecision
-                        || Math.Abs(selectedSpot.Y - positionMoving[1]) > Constants.ClickPrecision;
-                }
-                else if (!movingFar)
-                {
-                    movingFar = Math.Abs(selectedJoin.X - positionMoving[0]) > Constants.ClickPrecision
-                        || Math.Abs(selectedJoin.Y - positionMoving[1]) > Constants.ClickPrecision;
-                }
+                movingFar = Math.Abs(selectedSpot.X - e.X) > Constants.ClickPrecision
+                    || Math.Abs(selectedSpot.Y - e.Y) > Constants.ClickPrecision;
+            }
+            if (movingFar)
+            {
                 DisplayDrawings();
+                Spot shadow = new Spot(e.X, e.Y, 0);
+                shadow.Draw(0, Constants.shadowShade, original);
+                shadow.Draw(1, Constants.shadowShade, rotated);
+                shadow.Draw(2, Constants.shadowShade, turned);
             }
         }
 
         /// <summary>
-        /// Places or selects a point on the rotation board
+        /// Selects a spot on the rotation board
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void DrawRight_MouseDown(object sender, MouseEventArgs e)
         {
-            movingFar = false;
-            int closestIndex = Utilities.FindClosestIndex(CombineCoordTypes(spots, joins, 1), e.X, e.Y);
+            // Select Spot
+            int closestIndex = Utilities.FindClosestIndex(DataRow.Spots, 1, e.X, e.Y);
             if (closestIndex != -1)
             {
-                // Select a Point
-                if (closestIndex < spots.Count)
-                {
-                    SelectSpot(spots[closestIndex]);
-                    positionMoving = new int[] { (int)selectedSpot.XRight, -1 };
-                }
-                // Select a Join
-                else
-                {
-                    SelectJoin(joins[closestIndex - spots.Count]);
-                    positionMoving = new int[] { (int)selectedJoin.XRight, -1 };
-                }
+                SelectSpot(DataRow.Spots[closestIndex]);
+                if (RefineBtn.BackColor == button) { moving = 2; }
             }
             else
             {
@@ -218,19 +186,12 @@ namespace Animator
         /// <param name="e"></param>
         private void DrawRight_MouseUp(object sender, MouseEventArgs e)
         {
-            if (movingFar && positionMoving[1] == -1)
+            if (movingFar && selectedSpot != null && moving == 2)
             {
-                if (selectedSpot != null)
-                {
-                    selectedSpot.XRight = e.X;
-                }
-                else if (selectedJoin != null)
-                {
-                    selectedJoin.XRight = e.X;
-                }
+                selectedSpot.XRight = e.X;
             }
+            moving = 0;
             movingFar = false;
-            positionMoving = new int[] { -2, -2 };
             DisplayDrawings();
         }
 
@@ -241,50 +202,38 @@ namespace Animator
         /// <param name="e"></param>
         private void DrawRight_MouseMove(object sender, MouseEventArgs e)
         {
-            if (e.X > DrawRight.Size.Width || e.Y > DrawRight.Size.Height || e.X < 0 || e.Y < 0 || (selectedSpot == null && selectedJoin == null))
+            if (selectedSpot == null || moving == 0 || e.X > DrawRight.Size.Width || e.Y > DrawRight.Size.Height || e.X < 0 || e.Y < 0)
             {
+                moving = 0;
                 movingFar = false;
                 return;
             }
 
-            if (positionMoving[1] == -1)
-            { 
-                positionMoving = new int[] { e.X, -1 };
-                if (!movingFar && selectedSpot != null)
-                {
-                    movingFar = Math.Abs(selectedSpot.XRight - positionMoving[0]) > Constants.ClickPrecision;
-                }
-                else if (!movingFar)
-                {
-                    movingFar = Math.Abs(selectedJoin.XRight - positionMoving[0]) > Constants.ClickPrecision;
-                }
+            if (!movingFar)
+            {
+                movingFar = Math.Abs(selectedSpot.XRight - e.X) > Constants.ClickPrecision;
+            }
+            if (movingFar)
+            {
                 DisplayDrawings();
+                Spot shadow = new Spot(e.X, selectedSpot.Y, 0);
+                shadow.Draw(1, Constants.shadowShade, rotated);
             }
         }
 
         /// <summary>
-        /// Places or selects a point on the turn board
+        /// Selects a point on the turn board
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void DrawDown_MouseDown(object sender, MouseEventArgs e)
         {
-            movingFar = false;
-            int closestIndex = Utilities.FindClosestIndex(CombineCoordTypes(spots, joins, 2), e.X, e.Y);
+            // Select Spot
+            int closestIndex = Utilities.FindClosestIndex(DataRow.Spots, 2, e.X, e.Y);
             if (closestIndex != -1)
             {
-                if (closestIndex < spots.Count)
-                {
-                    // Select a Point
-                    SelectSpot(spots[closestIndex]);
-                    positionMoving = new int[] { -1, (int)selectedSpot.YDown };
-                }
-                else
-                {
-                    // Select a Join
-                    SelectJoin(joins[closestIndex - spots.Count]);
-                    positionMoving = new int[] { -1, (int)selectedJoin.YDown };
-                }
+                SelectSpot(DataRow.Spots[closestIndex]);
+                if (RefineBtn.BackColor == button) { moving = 3; }
             }
             else
             {
@@ -300,19 +249,12 @@ namespace Animator
         /// <param name="e"></param>
         private void DrawDown_MouseUp(object sender, MouseEventArgs e)
         {
-            if (movingFar && positionMoving[0] == -1)
+            if (movingFar && selectedSpot != null && moving == 3)
             {
-                if (selectedSpot != null)
-                {
-                    selectedSpot.YDown = e.Y;
-                }
-                else if (selectedJoin != null)
-                {
-                    selectedJoin.YDown = e.Y;
-                }
+                selectedSpot.YDown = e.Y;
             }
+            moving = 0;
             movingFar = false;
-            positionMoving = new int[] { -2, -2 };
             DisplayDrawings();
         }
 
@@ -323,24 +265,22 @@ namespace Animator
         /// <param name="e"></param>
         private void DrawDown_MouseMove(object sender, MouseEventArgs e)
         {
-            if (e.X > DrawRight.Size.Width || e.Y > DrawRight.Size.Height || e.X < 0 || e.Y < 0 || (selectedSpot == null && selectedJoin == null))
+            if (selectedSpot == null || moving == 0 || e.X > DrawDown.Size.Width || e.Y > DrawDown.Size.Height || e.X < 0 || e.Y < 0)
             {
+                moving = 0;
                 movingFar = false;
                 return;
             }
 
-            if (positionMoving[0] == -1)
+            if (!movingFar)
             {
-                positionMoving = new int[] { -1, e.Y };
-                if (!movingFar && selectedSpot != null)
-                {
-                    movingFar = Math.Abs(selectedSpot.YDown - positionMoving[1]) > Constants.ClickPrecision;
-                }
-                else if (!movingFar)
-                {
-                    movingFar = Math.Abs(selectedJoin.YDown - positionMoving[1]) > Constants.ClickPrecision;
-                }
+                movingFar = Math.Abs(selectedSpot.YDown - e.Y) > Constants.ClickPrecision;
+            }
+            if (movingFar)
+            {
                 DisplayDrawings();
+                Spot shadow = new Spot(selectedSpot.X, e.Y, 0);
+                shadow.Draw(2, Constants.shadowShade, turned);
             }
         }
 
@@ -359,21 +299,16 @@ namespace Animator
                     // Delete Spot
                     if (selectedSpot != null)
                     {
-                        int selectedIndex = spots.IndexOf(selectedSpot);
-                        spots.Remove(selectedSpot);
-                        if (spots.Count == 0)
+                        int selectedIndex = DataRow.Spots.IndexOf(selectedSpot);
+                        DataRow.Spots.Remove(selectedSpot);
+                        if (DataRow.Spots.Count == 0)
                         {
                             Deselect();
                         }
                         else
                         {
-                            SelectSpot(spots[Utilities.Modulo(selectedIndex - 1, spots.Count)]);
+                            SelectSpot(DataRow.Spots[Utilities.Modulo(selectedIndex - 1, DataRow.Spots.Count)]);
                         }
-                    }
-                    // Delete Join
-                    else if (selectedJoin != null)
-                    {
-                        joins.Remove(selectedJoin);
                     }
                     // Delete Piece
                     else
@@ -381,9 +316,8 @@ namespace Animator
                         DialogResult result = MessageBox.Show("Would you like to restart the piece?", "Restart Confirmation", MessageBoxButtons.YesNo);
                         if (result == DialogResult.Yes)
                         {
-                            spots.Clear();
+                            DataRow.Spots.Clear();
                             WIP.Data.Clear();
-                            WIP.UpdateDataInfoLine();
                             Deselect();
                         }
                     }
@@ -420,8 +354,9 @@ namespace Animator
         /// <param name="e"></param>
         private void PreviewBtn_Click(object sender, EventArgs e)
         {
-            if (!CheckPiecesValid(spots)) { return; }
+            if (!CheckPiecesValid(DataRow.Spots)) { return; }
             ApplySegmentFully();
+            DataRow test = DataRow;
             DisplayDrawings();
             PreviewForm previewForm = new PreviewForm(WIP);
             previewForm.Show();
@@ -445,7 +380,7 @@ namespace Animator
         /// <param name="e"></param>
         private void RefineBtn_Click(object sender, EventArgs e)
         {
-            if (!CheckPiecesValid(spots)) { return; }
+            if (!CheckPiecesValid(DataRow.Spots)) { return; }
             RefineBtn.Text = (RefineBtn.Text == "Refine") ? "Simplify" : "Refine";
             RefineBtn.BackColor = (RefineBtn.BackColor == button) ? pressed : button;
 
@@ -455,7 +390,8 @@ namespace Animator
             }
             else
             {
-                //TODO: Undo Refinement
+                DataRow = WIP.Data[WIP.FindRow()].ToSimple();
+                WIP.Data[WIP.FindRow()] = DataRow;
             }
             DisplayDrawings();
         }
@@ -469,7 +405,7 @@ namespace Animator
         {
             DialogResult result = DialogResult.Yes;
             // Only ask if there is something to save
-            if (spots.Count > 0)
+            if (DataRow.Spots.Count > 0)
             {
                 result = MessageBox.Show("Do you want to exit without saving? Your piece will be lost.", "Exit Confirmation", MessageBoxButtons.YesNo);
             }
@@ -503,23 +439,24 @@ namespace Animator
             // Save Piece and Close Form
             try
             {
-                if (!CheckPiecesValid(spots)) { return; }
+                if (!CheckPiecesValid(DataRow.Spots)) { return; }
                 ApplySegmentFully();
 
-                // Save Points
-                WIP.Name = NameTb.Text;
-                double[] middle = Utilities.FindMid(Utilities.ConvertSpotsToCoords(spots, 0));            //POTERROR: Middle of original, not r/t
-                if (!Directory.Exists(Utilities.GetDirectory(Constants.JoinsFolder, WIP.Name)))
-                {
-                    Directory.CreateDirectory(Utilities.GetDirectory(Constants.JoinsFolder, WIP.Name));
-                }
-                for (int index = 0; index < joins.Count; index++)
-                {
-                    joins[index].Name = index.ToString();
-                    joins[index].SaveJoin(middle);
-                }
+                // TODO: Save joins (When figure out how to apply them!
+                //// Save Points
+                //WIP.Name = NameTb.Text;
+                //double[] middle = Utilities.FindMid(Utilities.ConvertSpotsToCoords(dataRow.Spots, 0));            //POTERROR: Middle of original, not r/t
+                //if (!Directory.Exists(Utilities.GetDirectory(Constants.JoinsFolder, WIP.Name)))
+                //{
+                //    Directory.CreateDirectory(Utilities.GetDirectory(Constants.JoinsFolder, WIP.Name));
+                //}
+                //for (int index = 0; index < joins.Count; index++)
+                //{
+                //    joins[index].Name = index.ToString();
+                //    joins[index].SaveJoin(middle);
+                //}
 
-                Utilities.SaveData(Utilities.GetDirectory(Constants.PiecesFolder, NameTb.Text, Constants.Txt), WIP.Data);
+                Utilities.SaveData(Utilities.GetDirectory(Constants.PiecesFolder, NameTb.Text, Constants.Txt), WIP.GetData());
                 Close();
             }
             catch (FileNotFoundException)
@@ -631,19 +568,7 @@ namespace Animator
 
 
 
-        // ----- SETS TAB ------
-
-        /// <summary>
-        /// Adds a new point to the piece's connections.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void AddJoinBtn_Click(object sender, EventArgs e)
-        {
-            joins.Add(new Join(WIP));
-            SelectJoin(joins[joins.Count - 1]);
-            DisplayDrawings();
-        }
+        // ----- SKETCHES TAB ------
 
         /// <summary>
         /// Deletes the selected sketch from the listbox and the list.
@@ -762,26 +687,21 @@ namespace Animator
 
         /// <summary>
         /// Draws the points of the WIP to the board
-        /// Angle: Original = 2, Rotated = 3, Turned = 4
+        /// Angle: Original = 0, Rotated = 1, Turned = 2
         /// </summary>
         /// <param name="board">The graphics board to be drawn on</param>
         /// <param name="angle">The angle to be drawn</param>
         private void DrawPoints(Graphics board, int angle)
         {
-            List<double[]> coords = WIP.FindPoints(WIP.R, WIP.T, angle);
-            if (coords == null) { return; }
-            for (int index = 0; index < coords.Count; index++)
+            foreach (Spot spot in DataRow.Spots)
             {
-                Color color;
-                if (ShowFixedBtn.BackColor == pressed)
+                // Check refinement is being shown
+                if (RefineBtn.BackColor == pressed || spot.DrawnLevel == 0)
                 {
-                    color = (spots[index].Solid == Constants.solidOptions[0]) ? Color.SaddleBrown: Color.PeachPuff;
+                    Color color = (ShowFixedBtn.BackColor == pressed) ? (spot.Solid == Constants.solidOptions[0]) ? Color.SaddleBrown : Color.PeachPuff 
+                        : (selectedSpot == spot) ? Constants.select : Color.Black;
+                    spot.Draw(angle, color, board);
                 }
-                else
-                {
-                    color = (index == spots.IndexOf(selectedSpot)) ? Constants.select : Color.Black;
-                }
-                Visuals.DrawCross(coords[index][0], coords[index][1], color, board);
             }
         }
 
@@ -791,8 +711,15 @@ namespace Animator
         public void DisplayDrawings()
         {
             // Prepare Piece
-            ConvertVariablesToData(rotationFrom, rotationTo, turnFrom, turnTo, Utilities.ConvertSpotsToCoords(spots, 0),
-                Utilities.ConvertSpotsToCoords(spots, 1), Utilities.ConvertSpotsToCoords(spots, 2), spots);
+            int row = WIP.FindRow();
+            if (row != -1)
+            {
+                WIP.Data[row] = DataRow;
+            }
+            else
+            {
+                WIP.Data.Add(DataRow);
+            }
 
             // Prepare Boards
             DrawBase.Refresh();
@@ -802,7 +729,7 @@ namespace Animator
             rotated = DrawRight.CreateGraphics();
             turned = DrawDown.CreateGraphics();
 
-            // DRAW SKETCHES
+            // Draw Sketches
             for (int index = 0; index < Sketches.Count; index++)
             {
                 if (SketchLb.GetItemCheckState(index) == CheckState.Checked)
@@ -818,117 +745,23 @@ namespace Animator
                 }
             }
 
-            // DRAW BASE BOARD
+            // Draw Base Board
             WIP.R = 0;
             WIP.T = 0;
-            Visuals.DrawPiece(WIP, original, false);
-            DrawPoints(original, 2);
-            // Draw Joins
-            foreach (Join join in joins)
-            {
-                if (join == selectedJoin)
-                {
-                    Visuals.DrawCross(join.X, join.Y, Constants.select, original);
-                }
-                else
-                {
-                    Visuals.DrawCross(join.X, join.Y, join.FillColour, original);
-                }
-            }
-            // Draw Shadow Point
-            if (movingFar && selectedSpot != null && positionMoving[0] != -1 && positionMoving[1] != -1)
-            {
-                Visuals.DrawCross(positionMoving[0], positionMoving[1], Constants.shadowShade, original);
-            }
-            // Draw Shadow Join
-            if (selectedJoin != null && movingFar && positionMoving[0] != -1 && positionMoving[1] != -1)
-            {
-                Visuals.DrawCross(positionMoving[0], positionMoving[1], Constants.shadowShade, original);
-            }
+            WIP.Draw(original);
+            DrawPoints(original, 0);
 
-            // DRAW ROTATED BOARD
+            // Draw Rotated Board
             WIP.R = 89.9999;
             WIP.T = 0;
-            Visuals.DrawPiece(WIP, rotated, false);
-            DrawPoints(rotated, 3);
-            // Draw Joins
-            foreach (Join join in joins)
-            {
-                if (join == selectedJoin)
-                {
-                    Visuals.DrawCross(join.XRight, join.Y, Constants.select, rotated);
-                }
-                else
-                {
-                    Visuals.DrawCross(join.XRight, join.Y, join.FillColour, rotated);
-                }
-            }
-            // Draw Shadow Point
-            if (movingFar && selectedSpot != null)
-            {
-                if (positionMoving[1] == -1)
-                {
-                    Visuals.DrawCross(positionMoving[0], selectedSpot.Y, Constants.shadowShade, rotated);
-                }
-                else if (positionMoving[0] != -1)
-                {
-                    Visuals.DrawCross(positionMoving[0], positionMoving[1], Constants.shadowShade, rotated);
-                }
-            }
-            // Draw Shadow Joint
-            else if (movingFar && selectedJoin != null)
-            {
-                if (positionMoving[1] == -1)
-                {
-                    Visuals.DrawCross(positionMoving[0], selectedJoin.Y, Constants.shadowShade, rotated);
-                }
-                else if (positionMoving[0] != -1)
-                {
-                    Visuals.DrawCross(positionMoving[0], positionMoving[1], Constants.shadowShade, rotated);
-                }
-            }
+            WIP.Draw(rotated);
+            DrawPoints(rotated, 1);
 
-            // DRAW TURNED BOARD
+            // Draw Turned Board
             WIP.R = 0;
             WIP.T = 89.9999;
-            Visuals.DrawPiece(WIP, turned, false);
-            DrawPoints(turned, 4);
-            // Draw Joins
-            foreach (Join join in joins)
-            {
-                if (join == selectedJoin)
-                {
-                    Visuals.DrawCross(join.X, join.YDown, Constants.select, turned);
-                }
-                else
-                {
-                    Visuals.DrawCross(join.X, join.YDown, join.FillColour, turned);
-                }
-            }
-            // Draw Shadow Point
-            if (movingFar && selectedSpot != null)
-            {
-                if (positionMoving[0] == -1)
-                {
-                    Visuals.DrawCross(selectedSpot.X, positionMoving[1], Constants.shadowShade, turned);
-                }
-                else if (positionMoving[1] != -1)
-                {
-                    Visuals.DrawCross(positionMoving[0], positionMoving[1], Constants.shadowShade, turned);
-                }
-            }
-            // Draw Shadow Joint
-            else if (movingFar && selectedJoin != null)
-            {
-                if (positionMoving[0] == -1)
-                {
-                    Visuals.DrawCross(selectedJoin.X, positionMoving[1], Constants.shadowShade, turned);
-                }
-                else if (positionMoving[1] != -1)
-                {
-                    Visuals.DrawCross(positionMoving[0], positionMoving[1], Constants.shadowShade, turned);
-                }
-            }
+            WIP.Draw(turned);
+            DrawPoints(turned, 2);
             WIP.T = 0;
         }
 
@@ -941,32 +774,35 @@ namespace Animator
         /// </summary>
         private void ApplySegmentFully()
         {
-            WIP.UpdateDataInfoLine();
-            Utilities.CoordsOnAllSides(spots);
-            List<double[]> originals = Utilities.ConvertSpotsToCoords(spots, 0);
-            List<double[]> rotateds = Utilities.ConvertSpotsToCoords(spots, 1);
-            List<double[]> turneds = Utilities.ConvertSpotsToCoords(spots, 2);
-            List<double[]> boths = Utilities.ConvertSpotsToCoords(spots, 3);
+            Utilities.CoordsOnAllSides(DataRow.Spots);
+            List<Spot> spotCopy = DataRow.CopySpots();
+            bool[] tt = { true, true };
+            bool[] tf = { true, false };
+            bool[] ft = { false, true };
+            bool[] ff = { false, false };
 
-            ConvertVariablesToData(0, 90, 0, 90, originals, rotateds, turneds, spots);
-            ConvertVariablesToData(90, 180, 0, 90, rotateds, Utilities.FlipCoords(spots, 0, true, false), boths, spots);
-            ConvertVariablesToData(180, 270, 0, 90, Utilities.FlipCoords(spots, 0, true, false), Utilities.FlipCoords(spots, 1, true, false), Utilities.FlipCoords(spots, 2, true, false), spots);
-            ConvertVariablesToData(270, 360, 0, 90, Utilities.FlipCoords(spots, 1, true, false), originals, Utilities.FlipCoords(spots, 3, true, false), spots);
+            List<DataRow> newRows = new List<DataRow> {
+                ConvertVariablesToData(0, 90, 0, 90, spotCopy, 0, new List<bool[]> { ff, ff, ff }),
+                ConvertVariablesToData(90, 180, 0, 90, spotCopy, 1, new List<bool[]> { ff, tf, ff }),
+                ConvertVariablesToData(180, 270, 0, 90, spotCopy, 0, new List<bool[]> { tf, tf, tf }),
+                ConvertVariablesToData(270, 360, 0, 90, spotCopy, 1, new List<bool[]> { tf, ff, tf }),
 
-            ConvertVariablesToData(0, 90, 90, 180, turneds, boths, Utilities.FlipCoords(spots, 0, false, true), spots);
-            ConvertVariablesToData(90, 180, 90, 180, boths, Utilities.FlipCoords(spots, 2, true, false), Utilities.FlipCoords(spots, 1, false, true), spots);
-            ConvertVariablesToData(180, 270, 90, 180, Utilities.FlipCoords(spots, 2, true, false), Utilities.FlipCoords(spots, 3, true, false), Utilities.FlipCoords(spots, 0, true, true), spots);
-            ConvertVariablesToData(270, 360, 90, 180, Utilities.FlipCoords(spots, 3, true, false), turneds, Utilities.FlipCoords(spots, 1, true, true), spots);
+                ConvertVariablesToData(0, 90, 90, 180, spotCopy, 2, new List<bool[]> { ff, ff, ft }),
+                ConvertVariablesToData(90, 180, 90, 180, spotCopy, 3, new List<bool[]> { ff, tf, ft }),
+                ConvertVariablesToData(180, 270, 90, 180, spotCopy, 2, new List<bool[]> { tf, tf, tt }),
+                ConvertVariablesToData(270, 360, 90, 180, spotCopy, 3, new List<bool[]> { tf, ff, tt }),
 
-            ConvertVariablesToData(0, 90, 180, 270, Utilities.FlipCoords(spots, 0, false, true), Utilities.FlipCoords(spots, 1, false, true), Utilities.FlipCoords(spots, 2, false, true), spots);
-            ConvertVariablesToData(90, 180, 180, 270, Utilities.FlipCoords(spots, 1, false, true), Utilities.FlipCoords(spots, 0, true, true), Utilities.FlipCoords(spots, 3, false, true), spots);
-            ConvertVariablesToData(180, 270, 180, 270, Utilities.FlipCoords(spots, 0, true, true), Utilities.FlipCoords(spots, 1, true, true), Utilities.FlipCoords(spots, 2, true, true), spots);
-            ConvertVariablesToData(270, 360, 180, 270, Utilities.FlipCoords(spots, 1, true, true), Utilities.FlipCoords(spots, 0, false, true), Utilities.FlipCoords(spots, 3, true, true), spots);
+                ConvertVariablesToData(0, 90, 180, 270, spotCopy, 0, new List<bool[]> { ft, ft, ft }),
+                ConvertVariablesToData(90, 180, 180, 270, spotCopy, 1, new List<bool[]> { ft, tt, ft }),
+                ConvertVariablesToData(180, 270, 180, 270, spotCopy, 0, new List<bool[]> { tt, tt, tt }),
+                ConvertVariablesToData(270, 360, 180, 270, spotCopy, 1, new List<bool[]> { tt, ft, tt }),
 
-            ConvertVariablesToData(0, 90, 270, 360, Utilities.FlipCoords(spots, 2, false, true), Utilities.FlipCoords(spots, 3, false, true), originals, spots);
-            ConvertVariablesToData(90, 180, 270, 360, Utilities.FlipCoords(spots, 3, false, true), Utilities.FlipCoords(spots, 2, true, true), rotateds, spots);
-            ConvertVariablesToData(180, 270, 270, 360, Utilities.FlipCoords(spots, 2, true, true), Utilities.FlipCoords(spots, 3, true, true), Utilities.FlipCoords(spots, 0, true, false), spots);
-            ConvertVariablesToData(270, 360, 270, 360, Utilities.FlipCoords(spots, 3, true, true), Utilities.FlipCoords(spots, 2, false, true), Utilities.FlipCoords(spots, 1, true, false), spots);
+                ConvertVariablesToData(0, 90, 270, 360, spotCopy, 2, new List<bool[]> { ft, ft, ff }),
+                ConvertVariablesToData(90, 180, 270, 360, spotCopy, 3, new List<bool[]> { ft, tt, ff }),
+                ConvertVariablesToData(180, 270, 270, 360, spotCopy, 2, new List<bool[]> { tt, tt, tf }),
+                ConvertVariablesToData(270, 360, 270, 360, spotCopy, 3, new List<bool[]> { tt, ft, tf })
+            };
+            WIP.Data = newRows;
         }
 
         /// <summary>
@@ -976,52 +812,47 @@ namespace Animator
         /// <param name="rTo">Rotation end</param>
         /// <param name="tFrom">Turn start</param>
         /// <param name="tTo">Turn end</param>
-        /// <param name="o">Original coordinates</param>
-        /// <param name="r">Rotated coordinates</param>
-        /// <param name="t">Turned coordinates</param>
-        /// <param name="spotsList">Spot representation of the coordinates in the same order</param>
-        private void ConvertVariablesToData (double rFrom, double rTo, double tFrom, double tTo, List<double[]> o,
-            List<double[]> r, List<double[]> t, List<Spot> spotsList)
+        /// <param name="spotsList">Original spots to convert</param>
+        /// <param name="origAngle">Angle at rFrom tFrom, (0) o (1) r (2) t (3) b</param>
+        /// <returns>The provided data in a DataRow</returns>
+        private DataRow ConvertVariablesToData (double rFrom, double rTo, double tFrom, double tTo, List<Spot> spts, int origAngle, List<bool[]> flips)
         {
-            // When No Coords
-            if (o.Count < 1)
+            DataRow newRow = new DataRow(rFrom, rTo, tFrom, tTo);
+            double[] middle = Utilities.FindMid(Utilities.ConvertSpotsToCoords(DataRow.Spots, origAngle));
+
+            // Find spots for DataRow
+            List<double[]> original = Utilities.FlipCoords(spts, origAngle, flips[0], middle);
+            int rotAngle; int turnAngle;
+            switch (origAngle)
             {
-                int workingRow = Utilities.FindRow(rFrom, tFrom, WIP.Data, 2);
-                if (workingRow != -1) { WIP.Data.RemoveAt(workingRow); }
+                case 1:
+                    rotAngle = 0;
+                    turnAngle = 3;
+                    break;
+                case 2:
+                    rotAngle = 3;
+                    turnAngle = 0;
+                    break;
+                case 3:
+                    rotAngle = 2;
+                    turnAngle = 1;
+                    break;
+                default:
+                    rotAngle = 1;
+                    turnAngle = 2;
+                    break;
             }
-            else
+            List<double[]> rotated = Utilities.FlipCoords(spts, rotAngle, flips[1], middle);
+            List<double[]> turned = Utilities.FlipCoords(spts, turnAngle, flips[2], middle);
+            for (int index = 0; index < spts.Count; index++)
             {
-                // Angles
-                string WIPstring = rFrom.ToString().PadLeft(3, '0') + ":" + rTo.ToString().PadLeft(3, '0') + ";" +
-                    tFrom.ToString().PadLeft(3, '0') + ":" + tTo.ToString().PadLeft(3, '0') + ";";
-
-                // Coords
-                List<double[]>[] CoordsArray = new List<double[]>[] { o, r, t };
-                foreach (List<double[]> coords in CoordsArray)
-                {
-                    for (int index = 0; index < coords.Count; index++)
-                    {
-                        WIPstring += coords[index][0] + "," + coords[index][1];
-                        WIPstring += (index == coords.Count - 1) ? ";" : ":";
-                    }
-                }
-
-                // Connectors
-                for (int index = 0; index < spotsList.Count; index++)
-                {
-                    WIPstring += spotsList[index].Connector;
-                    WIPstring += (index == spotsList.Count - 1) ? ";" : ",";
-                }
-
-                // Details
-                for (int index = 0; index < spotsList.Count; index++)
-                {
-                    WIPstring += spotsList[index].Solid;
-                    WIPstring += (index == spotsList.Count - 1) ? "" : ",";
-                }
-
-                WIP.UpdateDataLine(rFrom, tFrom, WIPstring);
+                double x = original[index][0];
+                double y = original[index][1];
+                double xr = rotated[index][0];
+                double yd = turned[index][1];
+                newRow.Spots.Add(new Spot(x, xr, y, yd, spts[index].Connector, spts[index].Solid, spts[index].DrawnLevel));
             }
+            return newRow;
         }
 
         /// <summary>
@@ -1029,7 +860,7 @@ namespace Animator
         /// </summary>
         /// <param name="o">Base piece coordinates</param>
         /// <returns>Whether piece is valid</returns>
-        private bool CheckPiecesValid(List<Spot> o)
+        private bool CheckPiecesValid(List<Spot> o)     //TODO: Remove need for this function
         {
             if (o.Count < 2) { return true; }
 
@@ -1105,56 +936,6 @@ namespace Animator
         // ----- UTILITY FUNCTIONS -----
 
         /// <summary>
-        /// Combines a list of coordinates with a list of points to
-        /// return a searchable list of double arrays.
-        /// </summary>
-        /// <param name="coords">Piece coordinates</param>
-        /// <param name="joinsList">Joins of the shape</param>
-        /// <param name="pointAngle">0 original, 1 rotated, 2 turned</param>
-        /// <returns></returns>
-        public static List<double[]> CombineCoordTypes(List<Spot> coords, List<Join> joinsList, int pointAngle)
-        {
-            List<double[]> searching = new List<double[]>();
-            // Original
-            if (pointAngle == 0)
-            {
-                foreach (Spot spot in coords)
-                {
-                    searching.Add(new double[] { spot.X, spot.Y });
-                }
-                foreach (Join join in joinsList)
-                {
-                    searching.Add(new double[] { join.X, join.Y });
-                }
-            }
-            // Rotated
-            else if (pointAngle == 1)
-            {
-                foreach (Spot spot in coords)
-                {
-                    searching.Add(new double[] { spot.XRight, spot.Y });
-                }
-                foreach (Join join in joinsList)
-                {
-                    searching.Add(new double[] { join.XRight, join.Y });
-                }
-            }
-            // Turned
-            else
-            {
-                foreach (Spot spot in coords)
-                {
-                    searching.Add(new double[] { spot.X, spot.YDown });
-                }
-                foreach (Join join in joinsList)
-                {
-                    searching.Add(new double[] { join.X, join.YDown });
-                }
-            }
-            return searching;
-        }
-
-        /// <summary>
         /// Selects a spot and updates the form to
         /// display relevant values.
         /// </summary>
@@ -1171,23 +952,12 @@ namespace Animator
         }
 
         /// <summary>
-        /// Selects a join.
-        /// </summary>
-        /// <param name="select"></param>
-        private void SelectJoin(Join select)
-        {
-            Deselect();
-            selectedJoin = select;
-        }
-
-        /// <summary>
         /// Deselects a point and disables features
         /// that require a point be selected.
         /// </summary>
         private void Deselect()
         {
             selectedSpot = null;
-            selectedJoin = null;
             ConnectorOptions.Enabled = false;
             ShowFixedBtn.Enabled = false;
             FixedCb.Enabled = false;
@@ -1214,7 +984,7 @@ namespace Animator
         /// <param name="spots">Shape coordinates</param>
         public void LoadPieceOutline(List<Spot> spots)
         {
-            this.spots = spots;
+            DataRow.Spots = spots;
         }
 
 

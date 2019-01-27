@@ -157,8 +157,7 @@ namespace Animator
                 // Save Set and Close Form
                 try
                 {
-                    WIP.CreateData();
-                    Utilities.SaveData(Utilities.GetDirectory(Constants.SetsFolder, NameTb.Text, Constants.Txt), WIP.Data);
+                    Utilities.SaveData(Utilities.GetDirectory(Constants.SetsFolder, NameTb.Text, Constants.Txt), WIP.GetData());
                     Close();
                 }
                 catch (FileNotFoundException)
@@ -502,7 +501,7 @@ namespace Animator
             // If moving a piece, draw the shadow
             if (movingFar || selectedSpot != null)      //TODO: Allow placing of pieces rather than points and joining
             {
-                Visuals.DrawPiece(shadow, g, true);
+                Visuals.DrawPiece(shadow, g);
                 // Draw Potential Joins
                 if (selectedSpot != null)
                 {

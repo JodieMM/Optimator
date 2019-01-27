@@ -43,7 +43,6 @@ namespace Animator
         public static string Png => ".png";
 
         // Colours
-        public static Color[] randomColours = { Color.Blue, Color.Pink, Color.Green, Color.Purple, Color.Aqua, Color.Orange};
         public static Color shadowShade = Color.DarkGray;
         public static Color highlight = Color.ForestGreen;
         public static Color select = Color.Red;
@@ -54,12 +53,11 @@ namespace Animator
         public static decimal defaultOutlineWidth = 2;
         public static string defaultPieceDetails = "wr100";
 
-        // Piece Options            Connectors: Line, Blank, Curve
+        // Piece Options
         public static string[] connectorOptions = { "line", "none" };
         public static object[] connectorOptionsReadable = new object[] { "Line", "Blank" };
         public static string[] fillOptions = { "fill", "gradient" };
         public static string[] solidOptions = { "s", "f" };
-        public static int numDataRows = 2;
 
         // Scene Options
         public static object[] possibleChanges = new object[] { "X", "Y", "Rotation", "Turn", "Spin", "Size", "Order", "Removed" };

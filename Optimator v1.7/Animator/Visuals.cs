@@ -18,7 +18,7 @@ namespace Animator
         /// <param name="DrawPanel">Panel to draw on</param>
         public static void ResetPictureBox(Graphics g, PictureBox DrawPanel)
         {
-            DrawPanel.Refresh();                        //TODO: Check usage- move to DrawParts?
+            DrawPanel.Refresh();
             g = DrawPanel.CreateGraphics();
         }
 
@@ -43,17 +43,17 @@ namespace Animator
         /// </summary>
         /// <param name="piece">The piece to be drawn</param>
         /// <param name="g">The graphics to draw to</param>
-        /// <param name="recentre">See GetCurrentPoints</param>
-        public static void DrawPiece(Piece piece, Graphics g, bool recentre)
+        public static void DrawPiece(Piece piece, Graphics g)
         {
-            //Check piece defined at that point
-            if (Utilities.FindRow(piece.GetAngles()[0], piece.GetAngles()[1], piece.Data, 2) != -1)
+            // Check piece defined at that point
+            int dataRow = piece.FindRow();
+            if (dataRow != -1)
             {
                 // Prepare for drawing
                 Pen pen = new Pen(piece.OutlineColour, (float)piece.OutlineWidth);
-                SolidBrush fill = new SolidBrush(piece.FillColour[0]);                          // TODO: Needs Updating with Gradients
-                List<double[]> sketchCoords = piece.GetCurrentPoints(recentre);
-                List<string> connectors = piece.GetLineArray(piece.GetAngles()[0], piece.GetAngles()[1]);
+                SolidBrush fill = new SolidBrush(piece.FillColour[0]);
+                List<double[]> sketchCoords = piece.GetCurrentPoints();
+                List<Spot> connectors = piece.Data[dataRow].Spots;
                 int numCoords = sketchCoords.Count;
 
                 // Fill Shape
@@ -78,7 +78,7 @@ namespace Animator
                 // Draw Connecting Lines
                 for (int pointIndex = 0; pointIndex < numCoords && numCoords > 1 && piece.OutlineWidth > 0; pointIndex++)
                 {
-                    if (connectors[pointIndex] != Constants.connectorOptions[1])
+                    if (connectors[pointIndex].Connector != Constants.connectorOptions[1])
                     {
                         Point start; Point end;
                         // Draw Line Between Final Point and First Point
@@ -95,7 +95,7 @@ namespace Animator
                         }
 
                         // Connected by Line
-                        if (connectors[pointIndex] == Constants.connectorOptions[0])
+                        if (connectors[pointIndex].Connector == Constants.connectorOptions[0])
                         {
                             g.DrawLine(pen, start, end);
                         }
@@ -110,15 +110,12 @@ namespace Animator
         }
 
         /// <summary>
-        /// Draws all parts in a list, including setting
-        /// the graphics and clearing the draw panel.
+        /// Draws all parts in a list.
         /// </summary>
-        /// <param name="DrawPanel">Panel to be drawn on</param>
         /// <param name="partsList">Parts to be drawn</param>
         /// <param name="g">Graphics to draw</param>
-        public static void DrawParts(List<Part> partsList, Graphics g, PictureBox DrawPanel)
+        public static void DrawParts(List<Part> partsList, Graphics g)
         {
-            ResetPictureBox(g, DrawPanel);
             foreach (Part part in partsList)
             {
                 part.Draw(g);
@@ -137,7 +134,8 @@ namespace Animator
         public static void DrawPartsScaled(List<Part> partsList, Graphics g, PictureBox DrawPanel, float scale)
         {
             g.ScaleTransform(scale, scale);
-            DrawParts(partsList, g, DrawPanel);
+            ResetPictureBox(g, DrawPanel);
+            DrawParts(partsList, g);
         }
     }
 }

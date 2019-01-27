@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
 
 namespace Animator
 {
@@ -15,15 +13,8 @@ namespace Animator
     {
         #region Point Variables
         public string Name { get; set; }
-        public List<string> Data { get; set; }
         public Piece Host { get; }
-
-        // Attributes
-        public double X { get; set; }
-        public double Y { get; set; }
-        public double XRight { get; set; }
-        public double YDown { get; set; }
-        public Color FillColour { get; set; } = Color.Black;
+        public List<DataRow> Coords { get; set; } = new List<DataRow>();
         #endregion
 
 
@@ -36,19 +27,21 @@ namespace Animator
         {
             Name = inName;
             Host = owner;
-            Data = Utilities.ReadFile(Utilities.GetDirectory(Constants.JoinsFolder, Host.Name, Name, Constants.Txt));
+            List<string> data = Utilities.ReadFile(Utilities.GetDirectory(Constants.JoinsFolder, Host.Name, Name, Constants.Txt));
+            foreach (string line in data)
+            {
+                Coords.Add(new DataRow(line));
+            }
         }
 
         /// <summary>
         /// Join constructor for creating a new join.
         /// </summary>
-        public Join(Piece owner)
+        public Join(Piece owner, double X, double XR, double Y, double YD)
         {
             Host = owner;
-            Data = new List<string>();
-            X = 150; Y = 150; XRight = 150; YDown = 150;
-            Random rnd = new Random();
-            FillColour = Constants.randomColours[rnd.Next(0, Constants.randomColours.Count())];
+            Coords.Add(new DataRow(0, 90, 0, 90));
+            Coords[0].Spots.Add(new Spot(X, XR, Y, YD));
         }
 
 
@@ -61,34 +54,35 @@ namespace Animator
         /// </summary>
         public void SaveJoin(double[] middle)
         {
-            X -= middle[0];
-            Y -= middle[1];
-            XRight -= middle[0];
-            YDown -= middle[1];
-            Data = new List<string>
+            double X = Coords[0].Spots[0].X - middle[0];
+            double Y = Coords[0].Spots[0].Y - middle[1];
+            double XR = Coords[0].Spots[0].XRight - middle[0];
+            double YD = Coords[0].Spots[0].YDown - middle[1];
+
+            List<string> data = new List<string>
             {
-                MakeDataLine(0, 90, 0, 90, new double[] { X, Y }, new double[] { XRight, Y }, new double[] { X, YDown }),
-                MakeDataLine(90, 180, 0, 90, new double[] { XRight, Y }, new double[] { -X, Y }, new double[] { XRight, YDown }),
-                MakeDataLine(180, 270, 0, 90, new double[] { -X, Y }, new double[] { -XRight, Y }, new double[] { -X, YDown }),
-                MakeDataLine(270, 360, 0, 90, new double[] { -XRight, Y }, new double[] { X, Y }, new double[] { -XRight, YDown }),
+                MakeDataLine(0, 90, 0, 90, new double[] { X, Y, XR, YD }),
+                MakeDataLine(90, 180, 0, 90, new double[] { XR, Y, -X, YD }),
+                MakeDataLine(180, 270, 0, 90, new double[] { -X, Y, -XR, YD }),
+                MakeDataLine(270, 360, 0, 90, new double[] { -XR, Y, X, YD }),
 
-                MakeDataLine(0, 90, 90, 180, new double[] { X, YDown }, new double[] { XRight, YDown }, new double[] { X, -Y }),
-                MakeDataLine(90, 180, 90, 180, new double[] { XRight, YDown }, new double[] { -X, YDown }, new double[] { XRight, -Y }),
-                MakeDataLine(180, 270, 90, 180, new double[] { -X, YDown }, new double[] { -XRight, YDown }, new double[] { -X, -Y }),
-                MakeDataLine(270, 360, 90, 180, new double[] { -XRight, YDown }, new double[] { X, YDown }, new double[] { -XRight, -Y }),
+                MakeDataLine(0, 90, 90, 180, new double[] { X, YD, XR, -Y }),
+                MakeDataLine(90, 180, 90, 180, new double[] { XR, YD, -X, -Y }),
+                MakeDataLine(180, 270, 90, 180, new double[] { -X, YD, -XR, -Y }),
+                MakeDataLine(270, 360, 90, 180, new double[] { -XR, YD, X, -Y }),
 
-                MakeDataLine(0, 90, 180, 270, new double[] { X, -Y }, new double[] { XRight, -Y }, new double[] { X, -YDown }),
-                MakeDataLine(90, 180, 180, 270, new double[] { XRight, -Y }, new double[] { -X, -Y }, new double[] { XRight, -YDown }),
-                MakeDataLine(180, 270, 180, 270, new double[] { -X, -Y }, new double[] { -XRight, -Y }, new double[] { -X, -YDown }),
-                MakeDataLine(270, 360, 180, 270, new double[] { -XRight, -Y }, new double[] { X, -Y }, new double[] { -XRight, -YDown }),
+                MakeDataLine(0, 90, 180, 270, new double[] { X, -Y, XR, -YD }),
+                MakeDataLine(90, 180, 180, 270, new double[] { XR, -Y, -X, -YD }),
+                MakeDataLine(180, 270, 180, 270, new double[] { -X, -Y, -XR, -YD }),
+                MakeDataLine(270, 360, 180, 270, new double[] { -XR, -Y, X, -YD }),
 
-                MakeDataLine(0, 90, 270, 360, new double[] { X, -YDown }, new double[] { XRight, -YDown }, new double[] { X, Y }),
-                MakeDataLine(90, 180, 270, 360, new double[] { XRight, -YDown }, new double[] { -X, -YDown }, new double[] { XRight, Y }),
-                MakeDataLine(180, 270, 270, 360, new double[] { -X, -YDown }, new double[] { -XRight, -YDown }, new double[] { -X, Y }),
-                MakeDataLine(270, 360, 270, 360, new double[] { -XRight, -YDown }, new double[] { X, -YDown }, new double[] { -XRight, Y })
+                MakeDataLine(0, 90, 270, 360, new double[] { X, -YD, XR, Y }),
+                MakeDataLine(90, 180, 270, 360, new double[] { XR, -YD, -X, Y }),
+                MakeDataLine(180, 270, 270, 360, new double[] { -X, -YD, -XR, Y }),
+                MakeDataLine(270, 360, 270, 360, new double[] { -XR, -YD, X, Y })
             };
 
-            Utilities.SaveData(Utilities.GetDirectory(Constants.JoinsFolder, Host.Name, Name, Constants.Txt), Data);
+            Utilities.SaveData(Utilities.GetDirectory(Constants.JoinsFolder, Host.Name, Name, Constants.Txt), data);
         }
 
         /// <summary>
@@ -102,17 +96,11 @@ namespace Animator
         /// <param name="rotated">Rotated coordinate</param>
         /// <param name="turned">Turned coordinate</param>
         /// <returns></returns>
-        private string MakeDataLine(double rFrom, double rTo, double tFrom, double tTo, double[] original, double[] rotated, double[] turned)
+        private string MakeDataLine(double rFrom, double rTo, double tFrom, double tTo, double[] coords)
         {
-            // Angles
-            string WIPstring = rFrom.ToString().PadLeft(3, '0') + ":" + rTo.ToString().PadLeft(3, '0') + ";" +
-                tFrom.ToString().PadLeft(3, '0') + ":" + tTo.ToString().PadLeft(3, '0') + ";";
-
-            // Coordinates
-            WIPstring += original[0] + "," + original[1] + ";";
-            WIPstring += rotated[0] + "," + rotated[1] + ";";
-            WIPstring += turned[0] + "," + turned[1];
-            return WIPstring;
+            DataRow newRow = new DataRow(rFrom, rTo, tFrom, tTo);
+            newRow.Spots.Add(new Spot(coords[0], coords[1], coords[2], coords[3]));
+            return newRow.ToString();
         }
 
 
@@ -126,35 +114,29 @@ namespace Animator
         /// <returns></returns>
         public double[] GetCurrentPoints(double HostX, double HostY)
         {
-            double[] HostAngles = Host.GetAngles();
-            string[] dataValues = Data[Utilities.FindRow(HostAngles[0], HostAngles[1], Data, 0)].Split(Constants.Semi);
-            double[] originals = new double[] { Convert.ToDouble(dataValues[2].Split(Constants.Comma)[0]),
-                Convert.ToDouble(dataValues[2].Split(Constants.Comma)[1]) };
-            double rotated = Convert.ToDouble(dataValues[3].Split(Constants.Comma)[0]);
-            double turned = Convert.ToDouble(dataValues[4].Split(Constants.Comma)[1]);
-            double[] angles = new double[] { Convert.ToDouble(dataValues[0].Split(Constants.Colon)[0]),
-                Convert.ToDouble(dataValues[0].Split(Constants.Colon)[1]),
-                Convert.ToDouble(dataValues[1].Split(Constants.Colon)[0]),
-                Convert.ToDouble(dataValues[1].Split(Constants.Colon)[1]) };
+            double[] hostAng = Host.GetAngles();
+            int row = Utilities.FindRow(hostAng[0], hostAng[1], Coords);
+            DataRow dataRow = Coords[row];
+            Spot line = dataRow.Spots[0];
+
             double[] returning;
 
             // Check if at start cutoff of angle
-            if (angles[0] == HostAngles[0] && angles[2] == HostAngles[1])
+            if (dataRow.RotFrom == hostAng[0] && dataRow.TurnFrom == hostAng[1])
             {
-                returning = new double[] { HostX + originals[0], HostY + originals[1] };
+                returning = new double[] { HostX + line.X, HostY + line.Y };
             }
             // Calculate rotated/turned point
             else
             {
-                double rMod = (HostAngles[0] - angles[0]) / (angles[1] - angles[0]);
-                double tMod = (HostAngles[1] - angles[2]) / (angles[3] - angles[2]);
-                returning = new double[] { HostX + (originals[0] + (rotated - originals[0]) * rMod),
-                HostY + (originals[1] + (turned - originals[1]) * tMod) };
+                double rMod = (hostAng[0] - dataRow.RotFrom) / (dataRow.RotTo - dataRow.RotFrom);
+                double tMod = (hostAng[1] - dataRow.TurnFrom) / (dataRow.TurnTo - dataRow.TurnFrom);
+                returning = new double[] { HostX + (line.X + (line.XRight - line.X) * rMod),
+                HostY + (line.Y + (line.YDown - line.Y) * tMod) };
             }
 
             // Calculate Spin
             return SpinMeRound(returning, Host.SM / 100.0, HostX, HostY);
-            // return returning;
         }
 
         /// <summary>

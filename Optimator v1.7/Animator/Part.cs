@@ -11,8 +11,13 @@ namespace Animator
     public abstract class Part
     {
         public abstract string Name { get; set; }
-        public abstract List<string> Data { get; set; }
 
+
+        /// <summary>
+        /// Gets part's current details in a string format.
+        /// Used to save the part.
+        /// </summary>
+        public abstract List<string> GetData();
 
         /// <summary>
         /// Converts the Part into a readable format.
@@ -30,6 +35,15 @@ namespace Animator
         /// </summary>
         /// <returns>A piece representation of the part</returns>
         public abstract Piece ToPiece();
+
+        /// <summary>
+        /// Converts a part to a set.
+        /// For pieces, it returns the set it is apart of
+        /// or null if that is null.
+        /// For sets, it returns itself.
+        /// </summary>
+        /// <returns>A set representation of the part</returns>
+        public abstract Set ToSet();
 
         /// <summary>
         /// Draws the part to the supplied graphics.

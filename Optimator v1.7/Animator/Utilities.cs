@@ -93,84 +93,6 @@ namespace Animator
 
 
 
-        // ----- DRAW & RELATED FUNCTIONS -----
-
-        /// <summary>
-        /// Finds the correct order to draw pieces so they are layered correctly.
-        /// </summary>
-        /// <param name="piecesList">The list of pieces in original order</param>
-        /// <returns>Ordered list of pieces</returns>
-        public static List<Piece> SortOrder(List<Piece> piecesList) // TODO: Move to sets
-        {
-            List<Piece> order = new List<Piece>();
-
-            for (int index = 0; index < piecesList.Count; index++)
-            {
-                // If Piece
-                if (piecesList[index].PieceOf == null)
-                {
-                    order.Add(piecesList[index]);
-                }
-                // If Set
-                else
-                {
-                    List<Piece> tempOrder = new List<Piece>();
-                    Set set = piecesList[index].PieceOf;
-                    int baseIndex = set.PiecesList.IndexOf(set.BasePiece);
-                    List<Piece> putInFront = new List<Piece>();
-                    List<Piece> putInBack = new List<Piece>();
-                    for (int subindex = 0; subindex < set.PiecesList.Count; subindex++)
-                    {
-                        Piece working = set.PiecesList[subindex];
-                        // Behind Base
-                        if (subindex < baseIndex)
-                        {
-                            if (working.AngleFlip == -1)
-                            {
-                                tempOrder.Add(working);
-                            }
-                            else if (working.GetAngles()[0] > working.AngleFlip && working.GetAngles()[0] < working.AngleFlip + 180)
-                            {
-                                putInFront.Add(working);
-                            }
-                            else
-                            {
-                                putInBack.Add(working);
-                            }
-                        }
-                        // In Front of Base
-                        else if (subindex > baseIndex)
-                        {
-                            if (working.AngleFlip == -1)
-                            {
-                                tempOrder.Add(working);
-                            }
-                            else if (working.GetAngles()[0] > working.AngleFlip && working.GetAngles()[0] < working.AngleFlip + 180)
-                            {
-                                putInBack.Add(working);
-                            }
-                            else
-                            {
-                                putInFront.Add(working);
-                            }
-                        }
-                        else
-                        {
-                            tempOrder.Add(set.PiecesList[baseIndex]);
-                        }
-                        index++;
-                    }
-                    tempOrder.InsertRange(0, putInBack);
-                    tempOrder.AddRange(putInFront);
-                    order.AddRange(tempOrder);
-                    index--;
-                }
-            }
-            return order;
-        }
-
-
-
         // ----- GENERAL FUNCTIONS -----
 
         /// <summary>
@@ -240,27 +162,22 @@ namespace Animator
         #region Piece Functions
 
         /// <summary>
-        /// Finds the correct row in the piece data for the given rotation and turn values.
-        /// RowNum is 2 for pieces, 0 for points.
+        /// Finds the correct row in the data for the given rotation and turn values.
         /// </summary>
         /// <param name="r">Rotation</param>
         /// <param name="t">Turn</param>
-        /// <param name="data">Data to search</param>
-        /// <returns>The data row holding the information for the given angles</returns>
-        public static int FindRow(double r, double t, List<string> data, int rowNum)        
-        //TODO: Remove this from joins & remove last parameter
+        /// <param name="dataRows">The data to search</param>
+        /// <returns>The index of the DataRow relevant to the provided angles or -1 if not found</returns>
+        public static int FindRow(double r, double t, List<DataRow> dataRows)
         {
-            int row; bool found = false;
-
-            for (row = rowNum; row < data.Count && !found; row++)
+            for (int index = 0; index < dataRows.Count; index++)
             {
-                if (r >= int.Parse(data[row].Substring(0, 3)) && r < int.Parse(data[row].Substring(4, 3))
-                        && t >= int.Parse(data[row].Substring(8, 3)) && t < int.Parse(data[row].Substring(12, 3)))
+                if (dataRows[index].IsWithin(r, t) && dataRows[index].Spots.Count > 0)
                 {
-                    found = true;
+                    return index;
                 }
             }
-            return (found) ? row - 1 : -1;
+            return -1;
         }
 
         /// <summary>
@@ -315,16 +232,17 @@ namespace Animator
         /// <param name="right">Flip vertically</param>
         /// <param name="down">Flip horizontally</param>
         /// <returns></returns>
-        public static List<double[]> FlipCoords(List<Spot> spots, int angle, bool right, bool down)
+        public static List<double[]> FlipCoords(List<Spot> spots, int angle, bool[] rightDown, double[] middle)
         {
-            double[] middle = FindMid(ConvertSpotsToCoords(spots, angle));
             List<Spot> cloneSpot = new List<Spot>();
+            bool right = rightDown[0];
+            bool down = rightDown[1];
 
             // Flip Vertically (Right, Same Y) and Horizontally (Down, Same X)
             for (int index = 0; index < spots.Count; index++)
             {
                 Spot spot = spots[index];
-                Spot insert = new Spot(spot.GetCoords(angle)[0], spot.GetCoords(angle)[1]);
+                Spot insert = new Spot(spot.GetCoords(angle)[0], spot.GetCoords(angle)[1], 1);
 
                 // If spot needs to switch with another spot
                 if (spot.DrawnLevel == 0 || right && spot.MatchY != null || down && spot.MatchX != null)
@@ -651,30 +569,35 @@ namespace Animator
         /// <param name="coords">Coordinates of the shape</param>
         /// <param name="lineArray">Lines that connect points</param>
         /// <returns>A list of int[] with the outline coordinates</returns>
-        public static List<double[]> FindPieceLines(List<double[]> coords, List<string> lineArray)
+        public static List<double[]> FindPieceLines(Piece toFind)
         {
-            List<double[]> line = new List<double[]>();
+            List<double[]> coords = toFind.GetCurrentPoints();
+            List<double[]> lines = new List<double[]>();
+            DataRow dataRow = toFind.Data[toFind.FindRow()];
+
+            // If lines exist for this piece
             if (coords.Count > 2)
             {
                 for (int index = 0; index < coords.Count; index++)
                 {
                     if (index == coords.Count - 1)
                     {
-                        line.AddRange(FindLineCoords(new double[] { coords[index][0], coords[index][1] },
-                            new double[] { coords[0][0], coords[0][1] }, lineArray[index]));
+                        lines.AddRange(FindLineCoords(new double[] { coords[index][0], coords[index][1] },
+                            new double[] { coords[0][0], coords[0][1] }, dataRow.Spots[index].Connector));
                     }
                     else
                     {
-                        line.AddRange(FindLineCoords(new double[] { coords[index][0], coords[index][1] },
-                            new double[] { coords[index + 1][0], coords[index + 1][1] }, lineArray[index]));
+                        lines.AddRange(FindLineCoords(new double[] { coords[index][0], coords[index][1] },
+                            new double[] { coords[index + 1][0], coords[index + 1][1] }, dataRow.Spots[index].Connector));
                     }
                 }
             }
+            // Single or no point
             else
             {
-                line.AddRange(coords);
+                lines.AddRange(coords);
             }
-            return line;
+            return lines;
         }
 
         /// <summary>
@@ -745,7 +668,7 @@ namespace Animator
         }
 
         /// <summary>
-        /// Finds the top piece clicked from the list.
+        /// Finds the piece clicked from the list.
         /// </summary>
         /// <param name="piecesList">The list of pieces that could be clicked</param>
         /// <param name="x">The x coordinate of the click</param>
@@ -753,14 +676,13 @@ namespace Animator
         /// <returns>The index of the piece clicked, or negative one if none selected</returns>
         public static int FindClickedSelection(List<Piece> piecesList, int x, int y, bool fromTop)
         {
+            // Searches pieces either from the top or the bottom of the list
             int index;
             int increment = (fromTop) ? -1 : 1;
-
             for (index = (fromTop) ? piecesList.Count - 1 : 0; (fromTop) ? index >= 0 : index < piecesList.Count; index += increment)
             {
-                List<double[]> coords = piecesList[index].GetCurrentPoints(true);
-                List<int[]> contents = FindPieceSpace(FindPieceLines(coords, 
-                    piecesList[index].GetLineArray(piecesList[index].R, piecesList[index].T)));
+                List<double[]> coords = piecesList[index].GetCurrentPoints();
+                List<int[]> contents = FindPieceSpace(FindPieceLines(piecesList[index]));
 
                 foreach (int[] dot in contents)
                 {
@@ -774,23 +696,21 @@ namespace Animator
         }
 
         /// <summary>
-        /// Finds the closest coordinate from the lists.
-        /// If the index is above the coords length, returned index
-        /// is for the points list with index result - coords.Count.
+        /// Finds the closest coordinate from the list.
         /// Returns -1 if none within 9 pixels of the given position.
         /// </summary>
-        /// <param name="toSearch">The list of coordinates to search</param>
+        /// <param name="toSearch">The list of spots to search</param>
         /// <param name="x">The x coord to be close to</param>
         /// <param name="y">The y coord to be close to</param>
         /// <returns>Index of list that is closest</returns>
-        public static int FindClosestIndex(List<double[]> toSearch, int x, int y)
+        public static int FindClosestIndex(List<Spot> toSearch, int angle, int x, int y)
         {
             foreach (int range in Constants.Ranges)
             {
                 for (int index = 0; index < toSearch.Count(); index++)
                 {
-                    if (x >= toSearch[index][0] - range && x <= toSearch[index][0] + range
-                        && y >= toSearch[index][1] - range && y <= toSearch[index][1] + range)
+                    if (x >= toSearch[index].GetCoords(angle)[0] - range && x <= toSearch[index].GetCoords(angle)[0] + range
+                        && y >= toSearch[index].GetCoords(angle)[1] - range && y <= toSearch[index].GetCoords(angle)[1] + range)
                     {
                         return index;
                     }

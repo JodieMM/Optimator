@@ -1,17 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace Animator
 {
+    /// <summary>
+    /// A display form to alert the user that the
+    /// program is loading.
+    /// 
+    /// Author Jodie Muller
+    /// </summary>
     public partial class LoadingForm : Form
     {
+        /// <summary>
+        /// Form initialiser.
+        /// </summary>
         public LoadingForm()
         {
             InitializeComponent();

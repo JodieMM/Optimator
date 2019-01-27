@@ -27,6 +27,7 @@ namespace Animator
         {
             InitializeComponent();
             WIP = piece;
+            WIP.Recentre = true;
             WIP.X = DrawBoard.Width / 2.0; WIP.Y = DrawBoard.Height / 2.0;
         }
 
@@ -87,7 +88,7 @@ namespace Animator
         {
             DrawBoard.Refresh();
             g = DrawBoard.CreateGraphics();
-            Visuals.DrawPiece(WIP, g, true);
+            WIP.Draw(g);
         }
     }
 }

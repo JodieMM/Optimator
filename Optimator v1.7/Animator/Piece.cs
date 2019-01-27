@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 
 namespace Animator
 {
@@ -16,7 +15,7 @@ namespace Animator
     {
         #region Piece Variables
         public override string Name { get; set; }
-        public override List<string> Data { get; set; }
+        public List<DataRow> Data { get; set; } = new List<DataRow>();
         public bool Recentre { get; set; } = true;
 
         // Coords and Angles
@@ -58,10 +57,10 @@ namespace Animator
         {
             // Get Piece Data
             Name = inName;
-            Data = Utilities.ReadFile(Utilities.GetDirectory(Constants.PiecesFolder, Name, Constants.Txt));
+            List<string> data = Utilities.ReadFile(Utilities.GetDirectory(Constants.PiecesFolder, Name, Constants.Txt));
 
             // Get Points and Colours from File
-            string[] angleData = Data[0].Split(Constants.Semi);
+            string[] angleData = data[0].Split(Constants.Semi);
 
             // Colour Type
             ColourType = angleData[0];
@@ -87,6 +86,12 @@ namespace Animator
 
             // Piece Details
             PieceDetails = angleData[3];
+
+            // Spots
+            for (int index = 1; index < data.Count; index++)
+            {
+                Data.Add(new DataRow(data[index]));
+            }
         }
 
         /// <summary>
@@ -102,8 +107,6 @@ namespace Animator
             OutlineColour = Constants.defaultOutline;
             OutlineWidth = Constants.defaultOutlineWidth;
             PieceDetails = Constants.defaultPieceDetails;
-            Data = new List<string>();
-            UpdateDataInfoLine();
         }
 
 
@@ -175,37 +178,27 @@ namespace Animator
         }
 
         /// <summary>
-        /// Finds which join should be used to connect points- line, curve etc. at a specific angle.
+        /// Gets piece's current details in a string format.
         /// </summary>
-        /// <param name="r">Rotation</param>
-        /// <param name="t">Turn</param>
-        /// <returns>Joins</returns>
-        public List<string> GetLineArray(double r, double t)
+        public override List<string> GetData()
         {
-            List<string> joins = new List<string>();
-            string[] lineArray = Data[Utilities.FindRow(r, t, Data, 2)].ToString().Split(Constants.Semi)[5].Split(Constants.Comma);
-            foreach (string join in lineArray)
-            {
-                joins.Add(join);
-            }
-            return joins;
-        }
+            List<string> newData = new List<string>();
 
-        /// <summary>
-        /// Finds the type, solid or float, of each point at a specified angle.
-        /// </summary>
-        /// <param name="r">Rotation</param>
-        /// <param name="t">Turn</param>
-        /// <returns>Point Type</returns>
-        public List<string> GetPointDataArray(double r, double t)
-        {
-            List<string> details = new List<string>();
-            string[] detailsArray = Data[Utilities.FindRow(r, t, Data, 2)].ToString().Split(Constants.Semi)[6].Split(Constants.Comma);
-            foreach (string detail in detailsArray)
+            // Update first line of data            [0] colour type     [1] colour array        [2] outline width       [3] pieceDetails
+            string pieceInfo = ColourType + ";" + OutlineColour.A + "," + OutlineColour.R + "," + OutlineColour.G + "," + OutlineColour.B + ":";
+            foreach (Color col in FillColour)
             {
-                details.Add(detail);
+                pieceInfo += col.A + "," + col.R + "," + col.G + "," + col.B + ":";
             }
-            return details;
+            pieceInfo = pieceInfo.Remove(pieceInfo.Length - 1, 1) + ";" + OutlineWidth + ";" + PieceDetails;
+            newData.Add(pieceInfo);
+
+            // Add DataRows
+            foreach (DataRow row in Data)
+            {
+                newData.Add(row.ToString());
+            }
+            return newData;
         }
 
         #endregion
@@ -269,73 +262,8 @@ namespace Animator
 
 
 
-        // ----- DATA MODIFICATION -----
-
-        /// <summary>
-        /// Replaces the data for the piece at the given angle. Used when creating the piece.
-        /// Adds a new data line if the current data does not exist.
-        /// </summary>
-        /// <param name="rot">Rotation to update</param>
-        /// <param name="turn">Turn to update</param>
-        /// <param name="newLine">Replacement data</param>
-        public void UpdateDataLine(double rot, double turn, string newLine)
-        {
-            int row = Utilities.FindRow(rot, turn, Data, 2);
-            if (row != -1)
-            {
-                Data[row] = newLine;
-            }
-            else
-            {
-                Data.Add(newLine);
-            }
-        }
-
-        /// <summary>
-        /// Updates the first line of data; colour type, colour array, outline width and piece details to match
-        /// current status. Used during piece creation.
-        /// </summary>
-        public void UpdateDataInfoLine()
-        {
-            // Update first line of data            [0] colour type     [1] colour array        [2] outline width       [3] pieceDetails
-            string pieceInfo = ColourType + ";" + OutlineColour.A + "," + OutlineColour.R + "," + OutlineColour.G + "," + OutlineColour.B + ":";
-            if (FillColour != null)
-            {
-                foreach (Color col in FillColour)
-                {
-                    pieceInfo += col.A + "," + col.R + "," + col.G + "," + col.B + ":";
-                }
-            }
-            pieceInfo = pieceInfo.Remove(pieceInfo.Length - 1, 1) + ";" + OutlineWidth + ";" + PieceDetails;
-            if (Data.Count < 1)
-            {
-                Data.Add(pieceInfo);
-            }
-            else
-            {
-                Data[0] = pieceInfo;
-            }
-        }
-
-        /// <summary>
-        /// Updates the second line of data to display whether a spot is piece-defining
-        /// or added through refinement. Used when re-loading a piece for modification.
-        /// </summary>
-        /// <param name="spots">The list of spots to define</param>
-        public void UpdateDataSpotTypes(List<Spot> spots)
-        {
-            string dataSpotTypes = "";
-            foreach (Spot spot in spots)
-            {
-                dataSpotTypes += spot.DrawnLevel + Constants.SemiS;
-            }
-            dataSpotTypes.Remove(dataSpotTypes.Length - 1);
-            Data[1] = dataSpotTypes;
-        }
-
-
-
         // ----- OTHER FUNCTIONS -----
+
         /// <summary>
         /// Converts into itself to accommodate sets
         /// in part.
@@ -347,109 +275,99 @@ namespace Animator
         }
 
         /// <summary>
+        /// Returns the set a piece may belong to.
+        /// </summary>
+        /// <returns>Set it is part of</returns>
+        public override Set ToSet()
+        {
+            return PieceOf;
+        }
+
+        /// <summary>
         /// Draws the piece to the provided graphics.
         /// </summary>
         /// <param name="g">Provided graphics</param>
         public override void Draw(Graphics g)
         {
-            Visuals.DrawPiece(this, g, Recentre);
+            Visuals.DrawPiece(this, g);
         }
 
         /// <summary>
-        /// Finds coordinates within a row.
-        /// Original angle = 2, rotated angle = 3, turned angle = 4
+        /// Finds the correct row in the piece data for the given rotation and turn values.
         /// </summary>
-        /// <param name="r">The rotation to be searched</param>
-        /// <param name="t">The turn to be searched</param>
-        /// <param name="angle">Original, rotated or turned perspective</param>
-        /// <returns>A list of coordinates for that angle</returns>
-        public List<double[]> FindPoints(double r, double t, int angle)
+        /// <returns>The index of the DataRow relevant to the provided angles or -1 if not found</returns>
+        public int FindRow()
         {
-            int row = Utilities.FindRow(r, t, Data, 2);
-            if (row == -1) { return null; }
-            List<double[]> returnPoints = new List<double[]>();
-            string[] angleLine = Data[row].Split(Constants.Semi)[angle].Split(Constants.Colon);
-            int numCoords = angleLine.Count();
-
-            // Find Points
-            if (row != -1 && numCoords > 0)
+            double r = GetAngles()[0];
+            double t = GetAngles()[1];
+            for (int index = 0; index < Data.Count; index++)
             {
-                for (int index = 0; index < numCoords && angleLine[0] != ""; index++)
+                if (Data[index].IsWithin(r, t) && Data[index].Spots.Count > 0)
                 {
-                    returnPoints.Add(new double[] { double.Parse(angleLine[index].Split(Constants.Comma)[0]),
-                    double.Parse(angleLine[index].Split(Constants.Comma)[1]) });
+                    return index;
                 }
-                return returnPoints;
             }
-            return null;
+            return -1;
         }
 
         /// <summary>
         /// Finds the points to print based on the rotation, turn, spin and size of the piece
         /// </summary>
         /// <returns></returns>
-        public List<double[]> GetCurrentPoints(bool recentre)
+        public List<double[]> GetCurrentPoints()
         {
-            int row = Utilities.FindRow(GetAngles()[0], GetAngles()[1], Data, 2);
+            // Prepare Variables
+            int row = FindRow();
             if (row == -1) { return null; }
-            string dataLine = Data[row];
-
-            // Prepare Points
-            List<double[]> pointsArrayInitial = FindPoints(GetAngles()[0], GetAngles()[1], 2);
-            List<double[]> pointsArrayRotated = FindPoints(GetAngles()[0], GetAngles()[1], 3);
-            List<double[]> pointsArrayTurned = FindPoints(GetAngles()[0], GetAngles()[1], 4);
-            List<double[]> pointsArray = new List<double[]>();
+            DataRow dataRow = Data[row];
+            List<Spot> spts = dataRow.Spots;
+            List<double[]> currentPoints = new List<double[]>();
 
             // Find Multipliers - How far into the rotation range is required
-            double rotationMultiplier = (GetAngles()[0] - double.Parse(dataLine.Substring(0, 3))) / (double.Parse(dataLine.Substring(4, 3)) - double.Parse(dataLine.Substring(0, 3)));
-            double turnMultiplier = (GetAngles()[1] - double.Parse(dataLine.Substring(8, 3))) / (double.Parse(dataLine.Substring(12, 3)) - double.Parse(dataLine.Substring(8, 3)));
+            double rotationMultiplier = (GetAngles()[0] - dataRow.RotFrom) / (dataRow.RotTo - dataRow.RotFrom);
+            double turnMultiplier = (GetAngles()[1] - dataRow.TurnFrom) / (dataRow.TurnTo - dataRow.TurnFrom);
 
-            // FIND POINTS
             // Rotation Adjustment
-            for (int index = 0; index < pointsArrayRotated.Count; index++)
+            foreach (Spot spt in spts)
             {
-                if (double.Parse(dataLine.Substring(4, 3)) != double.Parse(dataLine.Substring(0, 3)))
+                if (dataRow.RotTo != dataRow.RotFrom)
                 {
-                    pointsArray.Add(new double[] { pointsArrayInitial[index][0] + (pointsArrayRotated[index][0] - pointsArrayInitial[index][0]) * rotationMultiplier,
-                        pointsArrayInitial[index][1] + (pointsArrayRotated[index][1] - pointsArrayInitial[index][1]) * rotationMultiplier });
+                    currentPoints.Add(new double[] { spt.X + (spt.XRight - spt.X) * rotationMultiplier, spt.Y });
                 }
                 else
                 {
-                    pointsArray.Add(pointsArrayInitial[index]);
+                    currentPoints.Add(new double[] { spt.X, spt.Y });
                 }
             }
 
             // Turn Adjustment
-            for (int index = 0; index < pointsArrayTurned.Count; index++)
+            for (int index = 0; index < spts.Count; index++)
             {
-                if (double.Parse(dataLine.Substring(12, 3)) != double.Parse(dataLine.Substring(8, 3)))
+                if (dataRow.TurnTo != dataRow.TurnFrom)
                 {
-                    // X
-                    pointsArray[index][0] += (pointsArrayTurned[index][0] - pointsArrayInitial[index][0]) * turnMultiplier;
-                    // Y
-                    pointsArray[index][1] += (pointsArrayTurned[index][1] - pointsArrayInitial[index][1]) * turnMultiplier;
+                    currentPoints[index][1] += (spts[index].YDown - spts[index].Y) * turnMultiplier;
                 }
             }
 
             // Recentre
-            if (recentre)
+            if (Recentre)
             {
-                double[] middle = Utilities.FindMid(pointsArray);
-                for (int index = 0; index < pointsArrayInitial.Count; index++)
+                double[] middle = Utilities.FindMid(currentPoints);
+                for (int index = 0; index < spts.Count; index++)
                 {
-                    pointsArray[index][0] = GetCoords()[0] + (pointsArray[index][0] - middle[0]);
-                    pointsArray[index][1] = GetCoords()[1] + (pointsArray[index][1] - middle[1]);
+                    currentPoints[index][0] = GetCoords()[0] + (currentPoints[index][0] - middle[0]);
+                    currentPoints[index][1] = GetCoords()[1] + (currentPoints[index][1] - middle[1]);
                 }
             }
 
             // Spin and Size Adjustment
-            pointsArray = SpinMeRound(pointsArray, GetSizeMod() / 100.0);
+            currentPoints = SpinMeRound(currentPoints, GetSizeMod() / 100.0);
 
-            return pointsArray;
+            return currentPoints;
         }
 
         /// <summary>
-        /// Spins the coords provided and modifies their size
+        /// Spins the coords provided and modifies their size.
         /// </summary>
         /// <param name="pointsArray">The points to be spun</param>
         /// <param name="sizeModifier">The size modifier to be applied</param>

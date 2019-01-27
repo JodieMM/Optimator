@@ -11,12 +11,11 @@ namespace Animator
     public class DataRow
     {
         #region DataRow Variables
-        public double RotationFrom { get; set; }
-        public double RotationTo { get; set; }
+        public double RotFrom { get; set; }
+        public double RotTo { get; set; }
         public double TurnFrom { get; set; }
         public double TurnTo { get; set; }
-        public List<Spot> Spots { get; private set; } = new List<Spot>();
-        public int NumSpots { get; private set; }
+        public List<Spot> Spots { get; set; } = new List<Spot>();
         #endregion
 
         /// <summary>
@@ -28,48 +27,123 @@ namespace Animator
         /// <param name="tt">Ending turn</param>
         public DataRow(double rf, double rt, double tf, double tt)
         {
-            RotationFrom = rf;
-            RotationTo = rt;
+            RotFrom = rf;
+            RotTo = rt;
             TurnFrom = tf;
             TurnTo = tt;
         }
 
         /// <summary>
         /// DataRow constructor for an existing piece, reading from a file.
+        /// Includes loading a join.
         /// </summary>
         /// <param name="Data">DataRow information in string form</param>
         public DataRow(string Data)
         {
             // Split string into sections
             string[] dataLine = Data.Split(Constants.Semi);
-            string[] rotations = dataLine[0].Split(Constants.Comma);
-            string[] turns = dataLine[1].Split(Constants.Comma);
-            string[] coords = dataLine[2].Split(Constants.Colon);
-            string[] joins = dataLine[3].Split(Constants.Comma);
-            string[] solids = dataLine[4].Split(Constants.Comma);
-            string[] drawns = dataLine[5].Split(Constants.Comma);
+            string[] angles = dataLine[0].Split(Constants.Colon);
+            string[] coords = dataLine[1].Split(Constants.Colon);
 
             // Set Angles
-            RotationFrom = Convert.ToDouble(rotations[0]);
-            RotationTo = Convert.ToDouble(rotations[1]);
-            TurnFrom = Convert.ToDouble(turns[0]);
-            TurnTo = Convert.ToDouble(turns[1]);
-            NumSpots = coords.Length;
+            RotFrom = Convert.ToDouble(angles[0]);
+            RotTo = Convert.ToDouble(angles[1]);
+            TurnFrom = Convert.ToDouble(angles[2]);
+            TurnTo = Convert.ToDouble(angles[3]);
 
-            // Create Spots
-            for (int index = 0; index < coords.Length; index++)
+            if (dataLine.Length > 1)
             {
-                string[] individualCoords = coords[index].Split(Constants.Comma);
+                string[] joins = dataLine[2].Split(Constants.Colon);
+                string[] solids = dataLine[3].Split(Constants.Colon);
+                string[] drawns = dataLine[4].Split(Constants.Colon);
+
+                // Create Spots
+                for (int index = 0; index < coords.Length; index++)
+                {
+                    string[] individualCoords = coords[index].Split(Constants.Comma);
+                    Spots.Add(new Spot(Convert.ToDouble(individualCoords[0]), Convert.ToDouble(individualCoords[1]),
+                        Convert.ToDouble(individualCoords[2]), Convert.ToDouble(individualCoords[3]), joins[index],
+                        solids[index], int.Parse(drawns[index])));
+                }
+            }
+            else
+            {
+                // Create Join
+                string[] individualCoords = coords[0].Split(Constants.Comma);
                 Spots.Add(new Spot(Convert.ToDouble(individualCoords[0]), Convert.ToDouble(individualCoords[1]),
-                    Convert.ToDouble(individualCoords[2]), Convert.ToDouble(individualCoords[3]), joins[index],
-                    solids[index], Convert.ToInt32(drawns[index])));
-                
+                    Convert.ToDouble(individualCoords[2]), Convert.ToDouble(individualCoords[3])));
             }
         }
 
 
 
         // ----- FUNCTIONS -----
+
+        /// <summary>
+        /// Converts the DataRow into a saveable string format.
+        /// </summary>
+        /// <returns>String version of data row</returns>
+        public override string ToString()
+        {
+            // Angles
+            string WIPstring = RotFrom.ToString() + Constants.ColonS + RotTo.ToString() + Constants.ColonS +
+                TurnFrom.ToString() + Constants.ColonS + TurnTo.ToString() + Constants.SemiS;
+
+            // Coords
+            for (int index = 0; index < Spots.Count; index++)
+            {
+                Spot spot = Spots[index];
+                WIPstring += spot.X + Constants.CommaS + spot.XRight + Constants.CommaS + spot.Y + Constants.CommaS + spot.YDown;
+                WIPstring += (index == Spots.Count - 1) ? "" : Constants.ColonS;
+            }
+
+            // Don't include if join
+            if (Spots[0].Connector != null)
+            {
+                WIPstring += Constants.SemiS;
+
+
+                // Connectors
+                for (int index = 0; index < Spots.Count; index++)
+                {
+                    WIPstring += Spots[index].Connector;
+                    WIPstring += (index == Spots.Count - 1) ? ";" : ":";
+                }
+
+                // Details
+                for (int index = 0; index < Spots.Count; index++)
+                {
+                    WIPstring += Spots[index].Solid;
+                    WIPstring += (index == Spots.Count - 1) ? ";" : ":";
+                }
+
+                // Drawns
+                for (int index = 0; index < Spots.Count; index++)
+                {
+                    WIPstring += Spots[index].DrawnLevel;
+                    WIPstring += (index == Spots.Count - 1) ? "" : ":";
+                }
+            }
+
+            return WIPstring;
+        }
+
+        /// <summary>
+        /// Converts the current data row into a non-refined version.
+        /// </summary>
+        /// <returns>A non-refined DataRow</returns>
+        public DataRow ToSimple()
+        {
+            DataRow newRow = new DataRow(RotFrom, RotTo, TurnFrom, TurnTo);
+            foreach (Spot spot in Spots)
+            {
+                if (spot.DrawnLevel == 0)
+                {
+                    newRow.Spots.Add(spot);
+                }
+            }
+            return newRow;
+        }
 
         /// <summary>
         /// Checks if the data row is displayed at the given rotation and turn.
@@ -79,18 +153,64 @@ namespace Animator
         /// <returns>True if data row is relevant to piece's current angles</returns>
         public bool IsWithin(double rotation, double turn)
         {
-            return (rotation >= RotationFrom && rotation < RotationTo &&
+            return (rotation >= RotFrom && rotation < RotTo &&
                 turn >= TurnFrom && turn < TurnTo);
         }
 
         /// <summary>
-        /// Used when creating a piece to adjust its spots.
+        /// Creates a de-referenced copy of the DataRow's spots.
         /// </summary>
-        /// <param name="spots">Updated list of spots</param>
-        public void UpdateSpots(List<Spot> spots)
+        /// <returns>DataRow's current spots</returns>
+        public List<Spot> CopySpots()
         {
-            Spots = spots;
-            NumSpots = Spots.Count;
+            List<Spot> newSpots = new List<Spot>();
+            foreach (Spot spot in Spots)
+            {
+                newSpots.Add(new Spot(spot.X, spot.XRight, spot.Y, spot.YDown, spot.Connector, spot.Solid, spot.DrawnLevel));
+            }
+
+            // Set MatchX and MatchY of new spots based on index to de-reference matches
+            for (int index = 0; index < Spots.Count; index++)
+            {
+                if (Spots[index].MatchX != null)
+                {
+                    int matchIndex = Spots.IndexOf(Spots[index].MatchX);
+                    newSpots[index].MatchX = newSpots[matchIndex];
+                }
+                if (Spots[index].MatchY != null)
+                {
+                    int matchIndex = Spots.IndexOf(Spots[index].MatchY);
+                    newSpots[index].MatchY = newSpots[matchIndex];
+                }
+            }
+            return newSpots;
+        }
+
+        /// <summary>
+        /// Converts the spot list to a double[] list for use
+        /// in drawing the piece.
+        /// </summary>
+        /// <param name="angle">Original [0] rotated [1] turned[2]</param>
+        /// <returns>A list of coords for the given angle</returns>
+        public List<double[]> ConvertToDoubles(int angle)
+        {
+            List<double[]> returnList = new List<double[]>();
+            foreach(Spot spot in Spots)
+            {
+                switch (angle)
+                {
+                    case 1:
+                        returnList.Add(new double[] { spot.XRight, spot.Y });
+                        break;
+                    case 2:
+                        returnList.Add(new double[] { spot.X, spot.YDown });
+                        break;
+                    default:
+                        returnList.Add(new double[] { spot.X, spot.Y });
+                        break;
+                }
+            }
+            return returnList;
         }
     }
 }

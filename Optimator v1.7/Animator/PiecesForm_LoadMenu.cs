@@ -18,7 +18,7 @@ namespace Animator
         private Graphics g;
 
         private Color button = Color.LightPink;
-        private Color select = Color.FromArgb(255, 255, 153, 179);
+        private Color selected = Color.FromArgb(255, 255, 153, 179);
         #endregion
 
 
@@ -78,8 +78,8 @@ namespace Animator
         {
             if (loaded != null)
             {
-                if (AllBtn.BackColor == select) { AllBtn.BackColor = button; }
-                FillColourBtn.BackColor = (FillColourBtn.BackColor == button) ? select : button;
+                if (AllBtn.BackColor == selected) { AllBtn.BackColor = button; }
+                FillColourBtn.BackColor = (FillColourBtn.BackColor == button) ? selected : button;
             }
         }
 
@@ -92,8 +92,8 @@ namespace Animator
         {
             if (loaded != null)
             {
-                if (AllBtn.BackColor == select) { AllBtn.BackColor = button; }
-                OutlineColourBtn.BackColor = (OutlineColourBtn.BackColor == button) ? select : button;
+                if (AllBtn.BackColor == selected) { AllBtn.BackColor = button; }
+                OutlineColourBtn.BackColor = (OutlineColourBtn.BackColor == button) ? selected : button;
             }
         }
 
@@ -106,8 +106,8 @@ namespace Animator
         {
             if (loaded != null)
             {
-                if (AllBtn.BackColor == select) { AllBtn.BackColor = button; }
-                OutlineWidthBtn.BackColor = (OutlineWidthBtn.BackColor == button) ? select : button;
+                if (AllBtn.BackColor == selected) { AllBtn.BackColor = button; }
+                OutlineWidthBtn.BackColor = (OutlineWidthBtn.BackColor == button) ? selected : button;
             }
         }
 
@@ -120,32 +120,8 @@ namespace Animator
         {
             if (loaded != null)
             {
-                if (AllBtn.BackColor == select) { AllBtn.BackColor = button; }
-                PieceDetailsBtn.BackColor = (PieceDetailsBtn.BackColor == button) ? select : button;
-            }
-        }
-
-        /// <summary>
-        /// Sets the WIP attributes to match the loaded piece.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void AllBtn_Click(object sender, EventArgs e)
-        {
-            if (loaded != null)
-            {
-                if (AllBtn.BackColor == button)
-                {
-                    if (FillColourBtn.BackColor == select) { FillColourBtn.BackColor = button; }
-                    if (OutlineColourBtn.BackColor == select) { OutlineColourBtn.BackColor = button; }
-                    if (OutlineWidthBtn.BackColor == select) { OutlineWidthBtn.BackColor = button; }
-                    if (PieceDetailsBtn.BackColor == select) { PieceDetailsBtn.BackColor = button; }
-                    AllBtn.BackColor = select;
-                }
-                else
-                {
-                    AllBtn.BackColor = button;
-                }
+                if (AllBtn.BackColor == selected) { AllBtn.BackColor = button; }
+                PieceDetailsBtn.BackColor = (PieceDetailsBtn.BackColor == button) ? selected : button;
             }
         }
 
@@ -158,7 +134,24 @@ namespace Animator
         {
             if (loaded != null)
             {
-                ShapeBtn.BackColor = (ShapeBtn.BackColor == button) ? select : button;
+                ShapeBtn.BackColor = (ShapeBtn.BackColor == button) ? selected : button;
+            }
+        }
+
+        /// <summary>
+        /// Sets the WIP attributes to match the loaded piece.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void AllBtn_Click(object sender, EventArgs e)
+        {
+            if (loaded != null)
+            {
+                FillColourBtn.BackColor = selected;
+                OutlineColourBtn.BackColor = selected;
+                OutlineWidthBtn.BackColor = selected;
+                PieceDetailsBtn.BackColor = selected;
+                ShapeBtn.BackColor = selected;
             }
         }
 
@@ -171,7 +164,7 @@ namespace Animator
         {
             if (loaded != null)
             {
-                SketchBtn.BackColor = (SketchBtn.BackColor == button) ? select : button;
+                SketchBtn.BackColor = (SketchBtn.BackColor == button) ? selected : button;
             }
         }
 
@@ -182,27 +175,29 @@ namespace Animator
         /// <param name="e"></param>
         private void ExitBtn_Click(object sender, EventArgs e)
         {
-            if (FillColourBtn.BackColor == select || AllBtn.BackColor == select)
+            if (FillColourBtn.BackColor == selected || AllBtn.BackColor == selected)
             {
                 WIP.FillColour = loaded.ToPiece().FillColour;
             }
-            if (OutlineColourBtn.BackColor == select || AllBtn.BackColor == select)
+            if (OutlineColourBtn.BackColor == selected || AllBtn.BackColor == selected)
             {
                 WIP.OutlineColour = loaded.ToPiece().OutlineColour;
             }
-            if (OutlineWidthBtn.BackColor == select || AllBtn.BackColor == select)
+            if (OutlineWidthBtn.BackColor == selected || AllBtn.BackColor == selected)
             {
                 WIP.OutlineWidth = loaded.ToPiece().OutlineWidth;
             }
-            if (PieceDetailsBtn.BackColor == select || AllBtn.BackColor == select)
+            if (PieceDetailsBtn.BackColor == selected || AllBtn.BackColor == selected)
             {
                 WIP.PieceDetails = loaded.ToPiece().PieceDetails;
             }
-            if (ShapeBtn.BackColor == select)
+            if (ShapeBtn.BackColor == selected)
             {
-                
+                WIP.Data = loaded.ToPiece().Data;
+                from.DataRow = loaded.ToPiece().Data[loaded.ToPiece().FindRow()].ToSimple();
+                WIP.Data[WIP.FindRow()] = from.DataRow;
             }
-            if (SketchBtn.BackColor == select)
+            if (SketchBtn.BackColor == selected)
             {
                 from.AddSketch(loaded);
             }

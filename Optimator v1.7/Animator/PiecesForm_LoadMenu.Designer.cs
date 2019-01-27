@@ -144,13 +144,12 @@
             this.ShapeBtn.BackColor = System.Drawing.Color.LightPink;
             this.ShapeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ShapeBtn.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ShapeBtn.Location = new System.Drawing.Point(445, 229);
+            this.ShapeBtn.Location = new System.Drawing.Point(340, 229);
             this.ShapeBtn.Name = "ShapeBtn";
             this.ShapeBtn.Size = new System.Drawing.Size(95, 70);
             this.ShapeBtn.TabIndex = 20;
             this.ShapeBtn.Text = "Shape";
             this.ShapeBtn.UseVisualStyleBackColor = false;
-            this.ShapeBtn.Visible = false;
             this.ShapeBtn.Click += new System.EventHandler(this.ShapeBtn_Click);
             // 
             // AllBtn
@@ -158,11 +157,11 @@
             this.AllBtn.BackColor = System.Drawing.Color.LightPink;
             this.AllBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AllBtn.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AllBtn.Location = new System.Drawing.Point(340, 229);
+            this.AllBtn.Location = new System.Drawing.Point(445, 229);
             this.AllBtn.Name = "AllBtn";
             this.AllBtn.Size = new System.Drawing.Size(95, 70);
             this.AllBtn.TabIndex = 23;
-            this.AllBtn.Text = "All Piece Attributes";
+            this.AllBtn.Text = "All";
             this.AllBtn.UseVisualStyleBackColor = false;
             this.AllBtn.Click += new System.EventHandler(this.AllBtn_Click);
             // 

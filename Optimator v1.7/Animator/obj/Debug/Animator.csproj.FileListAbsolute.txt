@@ -118,5 +118,5 @@ C:\Users\jodie\Documents\0 Documents\Projects\Programming\Optimator\Optimator v1
 C:\Users\jodie\Documents\0 Documents\Projects\Programming\Optimator\Optimator v1.7\Animator\obj\Debug\Animator.pdb
 C:\Users\jodie\Documents\0 Documents\Projects\Programming\Optimator\Optimator v1.7\Animator\obj\Debug\Animator.PreviewForm.resources
 C:\Users\jodie\Documents\0 Documents\Projects\Programming\Optimator\Optimator v1.7\Animator\obj\Debug\Animator.PiecesForm_LoadMenu.resources
-C:\Users\jodie\Documents\0 Documents\Projects\Programming\Optimator\Optimator v1.7\Animator\obj\Debug\Animator.csprojAssemblyReference.cache
 C:\Users\jodie\Documents\0 Documents\Projects\Programming\Optimator\Optimator v1.7\Animator\obj\Debug\Animator.LoadingForm.resources
+C:\Users\jodie\Documents\0 Documents\Projects\Programming\Optimator\Optimator v1.7\Animator\obj\Debug\Animator.csprojAssemblyReference.cache

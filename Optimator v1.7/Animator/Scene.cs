@@ -41,21 +41,18 @@ namespace Animator
                 {
                     if (dataLine.StartsWith("p"))
                     {
-                        Piece newPiece = new Piece(dataLine.Remove(0, 2));
-                        PiecesList.Add(newPiece);
-                        PartsList.Add(newPiece);
+                        PartsList.Add(new Piece(dataLine.Remove(0, 2)));
                     }
                     else
                     {
-                        Set newSet = new Set(dataLine.Remove(0, 2));
-                        PiecesList.AddRange(newSet.PiecesList);
-                        PartsList.Add(newSet);
+                        PartsList.Add(new Set(dataLine.Remove(0, 2)));
                     }
                     dataLine = file.ReadLine();
                 }
+                UpdatePiecesList();
 
                 // Assign Original States
-                foreach (Piece piece in PartsList)
+                foreach (Piece piece in PiecesList)
                 {
                     dataLines = file.ReadLine().Split(Constants.Semi);
                     piece.SetValues(double.Parse(dataLines[0]), double.Parse(dataLines[1]), double.Parse(dataLines[2]),
@@ -101,13 +98,32 @@ namespace Animator
         /// </summary>
         public void RunScene(decimal time)
         {
-            foreach (Piece piece in PartsList)
+            foreach (Piece piece in PiecesList)
             {
                 piece.TakeOriginalState();
             }
             foreach (Change change in Changes)
             {
                 change.Run(time);
+            }
+        }
+
+        /// <summary>
+        /// Updates PiecesList to match PartsList.
+        /// </summary>
+        public void UpdatePiecesList()
+        {
+            PiecesList.Clear();
+            for (int index = 0; index < PartsList.Count; index++)
+            {
+                if (PartsList[index] is Piece)
+                {
+                    PiecesList.Add(PartsList[index].ToPiece());
+                }
+                else
+                {
+                    PiecesList.AddRange(PartsList[index].ToSet().PiecesList);
+                }
             }
         }
     }

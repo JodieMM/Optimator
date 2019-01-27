@@ -27,7 +27,7 @@ namespace Animator
         /// Originals constructor. Keeps a copy of the 
         /// current (original) state of the provided piece.
         /// </summary>
-        /// <param name="piece">Piece to keep original copt of</param>
+        /// <param name="piece">Piece to keep original copy of</param>
         public Originals(Piece piece)
         {
             Piece = piece;
@@ -49,21 +49,10 @@ namespace Animator
         /// <summary>
         /// Returns the piece attributes seperated by colons.
         /// </summary>
-        /// <returns>Colon-seperated attribute string</returns>
+        /// <returns>Semicolon-seperated attribute string</returns>
         public string GetSaveData()
         {
             return X + ";" + Y + ";" + R + ";" + T + ";" + S + ";" + SM;
-        }
-
-        /// <summary>
-        /// Compares whether the entered piece matches the
-        /// piece whose data is saved.
-        /// </summary>
-        /// <param name="compare">Piece to check with</param>
-        /// <returns>Whether the two are a match</returns>
-        public bool IsMatch(Piece compare)
-        {
-            return (Piece == compare) ? true : false;
         }
     }
 }
