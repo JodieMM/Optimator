@@ -15,19 +15,17 @@ namespace Animator
     public partial class SetsForm : Form
     {
         #region Sets Form Variables
-        private Graphics g;
-        private Set WIP = new Set();
-
+        private Set WIP = new Set();        //TODO: Add preview button and a save that records the new joins
         private Piece selected = null;
-        private Join selectedSpot = null;
         private Color selectedOC;
-        private Piece shadow = null;
 
-        private bool moving = false;
-        private bool movingFar = false;
-        private int[] originalMoving;
-        private int[] positionMoving;
-        private Join closestJoin;
+        private Graphics original;
+        private Graphics rotated;
+        private Graphics turned;
+
+        private int moving = 0;             // 0 = not, 1 = X & Y, 2 = X, 3 = Y
+        private bool movingFar = false;     // Whether the piece is being selected or moved
+        private int[] originalMoving = new int[] { 0, 0 };
         #endregion
 
 
@@ -39,73 +37,16 @@ namespace Animator
             InitializeComponent();
             KeyPreview = true;
             KeyUp += KeyPress;
-            DrawPanel.MouseDown += new MouseEventHandler(DrawPanel_MouseDown);
-            DrawPanel.MouseMove += new MouseEventHandler(DrawPanel_MouseMove);
-            DrawPanel.MouseUp += new MouseEventHandler(DrawPanel_MouseUp);
+            DrawBase.MouseDown += new MouseEventHandler(DrawBase_MouseDown);
+            DrawBase.MouseMove += new MouseEventHandler(DrawBase_MouseMove);
+            DrawBase.MouseUp += new MouseEventHandler(DrawBase_MouseUp);
+
+            //TODO: DrawRight and DrawDown
         }
 
 
 
-        // ----- SET TAB -----
-
-        /// <summary>
-        /// Adds a piece to the set.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void AddPieceBtn_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                Piece justAdded = new Piece(AddTb.Text);
-                WIP.PiecesList.Add(justAdded);
-                justAdded.X = DrawPanel.Width / 2.0; justAdded.Y = DrawPanel.Height / 2.0;
-                justAdded.Originally = new Originals(justAdded);
-                justAdded.PieceOf = WIP;
-                justAdded.FindJoins();
-                SelectPiece(justAdded);
-                DisplayDrawings();
-            }
-            catch (FileNotFoundException)
-            {
-                MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                MessageBox.Show("Suspected outdated file.", "File Indexing Error", MessageBoxButtons.OK);
-            }
-        }
-
-        /// <summary>
-        /// Adds a set to the set.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void AddSetBtn_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                Set addedSet = new Set(AddTb.Text);
-                WIP.PiecesList.AddRange(addedSet.PiecesList);
-                addedSet.BasePiece.X = DrawPanel.Width / 2.0; addedSet.BasePiece.Y = DrawPanel.Height / 2.0;
-                foreach (Piece piece in addedSet.PiecesList)
-                {
-                    piece.FindJoins();
-                    piece.PieceOf = WIP;
-                    piece.Originally = new Originals(piece);
-                }
-                SelectPiece(addedSet.BasePiece);
-                DisplayDrawings();
-            }
-            catch (FileNotFoundException)
-            {
-                MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                MessageBox.Show("Suspected outdated file.", "File Indexing Error", MessageBoxButtons.OK);
-            }
-        }
+        // ----- OPTION BUTTONS -----
 
         /// <summary>
         /// Closes the form.
@@ -130,15 +71,11 @@ namespace Animator
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void DoneBtn_Click(object sender, EventArgs e)
+        private void CompleteBtn_Click(object sender, EventArgs e)
         {
             if (WIP.PiecesList.Count < 1)
             {
                 Close();
-            }
-            else if (!PermitChange())
-            {
-                // Error message shown as part of PermitChange function
             }
             else if (!Constants.PermittedName.IsMatch(NameTb.Text))
             {
@@ -173,8 +110,52 @@ namespace Animator
 
 
 
-        // ----- PIECES TAB -----
+        // ----- SET TAB -----
 
+        /// <summary>
+        /// Adds a piece to the set.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void AddBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Part justAdded;
+                if (sender == AddPieceBtn)
+                {
+                    justAdded = new Piece(AddTb.Text);
+                    WIP.PiecesList.Add(justAdded.ToPiece());
+                    justAdded.ToPiece().X = DrawBase.Width / 2.0; justAdded.ToPiece().Y = DrawBase.Height / 2.0;
+                    justAdded.ToPiece().PieceOf = WIP;
+                }
+                else
+                {
+                    justAdded = new Set(AddTb.Text);
+                    WIP.PiecesList.AddRange(justAdded.ToSet().PiecesList);
+                    justAdded.ToPiece().X = DrawBase.Width / 2.0; justAdded.ToPiece().Y = DrawBase.Height / 2.0;
+                    foreach (Piece piece in justAdded.ToSet().PiecesList)
+                    {
+                        piece.PieceOf = WIP;
+                    }
+                }
+                SelectPiece(justAdded.ToPiece());
+                DisplayDrawings();
+            }
+            catch (FileNotFoundException)
+            {
+                MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                MessageBox.Show("Suspected outdated file.", "File Indexing Error", MessageBoxButtons.OK);
+            }
+        }
+
+
+
+        // ----- PIECES TAB -----
+        #region Pieces Tab
         /// <summary>
         /// Updates the original rotation of the selected piece.
         /// </summary>
@@ -183,8 +164,7 @@ namespace Animator
         private void RotationBar_Scroll(object sender, EventArgs e)
         {
             if (selected == null) { return; }
-            selected.Originally.R = RotationBar.Value;
-            selected.R = (RotationBar.Value + RotationTrack.Value) % 360;
+            selected.R = RotationBar.Value;
             DisplayDrawings();
         }
 
@@ -196,8 +176,7 @@ namespace Animator
         private void TurnBar_Scroll(object sender, EventArgs e)
         {
             if (selected == null) { return; }
-            selected.Originally.T = TurnBar.Value;
-            selected.T = (TurnBar.Value + TurnTrack.Value) % 360;
+            selected.T = TurnBar.Value;
             DisplayDrawings();
         }
 
@@ -209,7 +188,6 @@ namespace Animator
         private void SpinBar_Scroll(object sender, EventArgs e)
         {
             if (selected == null) { return; }
-            selected.Originally.S = SpinBar.Value;
             selected.S = SpinBar.Value;
             DisplayDrawings();
         }
@@ -222,7 +200,6 @@ namespace Animator
         private void SizeBar_Scroll(object sender, EventArgs e)
         {
             if (selected == null) { return; }
-            selected.Originally.SM = SizeBar.Value;
             selected.SM = SizeBar.Value;
             DisplayDrawings();
         }
@@ -295,6 +272,8 @@ namespace Animator
             }
         }
 
+        #endregion
+
 
 
         // ----- SETTINGS TAB -----
@@ -313,9 +292,9 @@ namespace Animator
             };
             if (MyDialog.ShowDialog() == DialogResult.OK)
             {
-                DrawPanel.BackColor = MyDialog.Color;
-                TurnTrack.BackColor = MyDialog.Color;
-                RotationTrack.BackColor = MyDialog.Color;
+                DrawBase.BackColor = MyDialog.Color;
+                DrawRight.BackColor = MyDialog.Color;
+                DrawDown.BackColor = MyDialog.Color;
                 BackColourBox.BackColor = MyDialog.Color;
                 DisplayDrawings();
             }
@@ -331,30 +310,16 @@ namespace Animator
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void DrawPanel_MouseDown(object sender, MouseEventArgs e)
+        private void DrawBase_MouseDown(object sender, MouseEventArgs e)
         {
-            int selectedIndex = -1;
-            if (selected != null && selected.AttachedTo == null) { selectedIndex = FindClosestPoint(selected, e.X, e.Y); }
+            // Choose and Update Selected Piece (If Any)
+            DeselectPiece();
+            int selectedIndex = Utilities.FindClickedSelection(WIP.PiecesList, e.X, e.Y, SelectFromTopCb.Checked);
             if (selectedIndex != -1)
             {
-                // Move Selected's Join
-                selectedSpot = selected.Joins[selectedIndex];
-                moving = true;
-                shadow = MakeShadow();
+                SelectPiece(WIP.PiecesList[selectedIndex]);
                 originalMoving = new int[] { e.X, e.Y };
-                closestJoin = FindClosestPoint(WIP.PiecesList, e.X, e.Y, WIP.PiecesList.IndexOf(selected));
-            }
-            else
-            {
-                // Choose and Update Selected Piece (If Any)
-                DeselectPiece();
-                selectedIndex = Utilities.FindClickedSelection(WIP.PiecesList, e.X, e.Y, SelectFromTopCb.Checked);
-                if (selectedIndex != -1)
-                {
-                    SelectPiece(WIP.PiecesList[selectedIndex]);
-                    moving = true;
-                    originalMoving = new int[] { e.X, e.Y };
-                }
+                moving = 1;
             }
             DisplayDrawings();
         }
@@ -364,31 +329,31 @@ namespace Animator
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void DrawPanel_MouseMove(object sender, MouseEventArgs e)
+        private void DrawBase_MouseMove(object sender, MouseEventArgs e)
         {
-            if (!moving) { return; }
-            if (e.X < 0 || e.Y < 0 || e.X > DrawPanel.Size.Width || e.Y > DrawPanel.Size.Height)
+            if (moving != 1) { return; }
+            // Invalid Mouse Position
+            if (e.X < 0 || e.Y < 0 || e.X > DrawBase.Size.Width || e.Y > DrawBase.Size.Height)
             {
                 StopMoving();
-            }
-            // Move Join
-            else if (selectedSpot != null)
-            {
-                positionMoving = new int[] { e.X, e.Y };
-                UpdateShadowPosition();
-                closestJoin = FindClosestPoint(WIP.PiecesList, e.X, e.Y, WIP.PiecesList.IndexOf(selected));
             }
             // Move Point
             else
             {
-                positionMoving = new int[] { e.X, e.Y };
                 if (!movingFar)
                 {
-                    movingFar = Math.Abs(originalMoving[0] - positionMoving[0]) > Constants.ClickPrecision
-                        || Math.Abs(originalMoving[1] - positionMoving[1]) > Constants.ClickPrecision;
-                    if (movingFar) { shadow = MakeShadow(); }
+                    movingFar = Math.Abs(selected.X - e.X) > Constants.ClickPrecision
+                        || Math.Abs(selected.Y - e.Y) > Constants.ClickPrecision;
                 }
-                if (movingFar) { UpdateShadowPosition(); }
+                if (movingFar)
+                {
+                    Piece shadow = new Piece();
+                    shadow.Data.Add(selected.Data[selected.FindRow()]);
+                    shadow.FillColour = new Color[] { Constants.shadowShade };
+                    shadow.OutlineColour = Constants.invisible;
+                    shadow.X = e.X; shadow.Y = e.Y;
+                    shadow.Draw(original);
+                }
             }
             DisplayDrawings();
         }
@@ -399,29 +364,25 @@ namespace Animator
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void DrawPanel_MouseUp(object sender, MouseEventArgs e)
+        private void DrawBase_MouseUp(object sender, MouseEventArgs e)
         {
-            if (!moving) { return; }
-            // If moving a Join
-            if (selectedSpot != null)
+            if (moving != 1) { return; }
+            if (movingFar)
             {
-                // Connect Piece if new position is valid
-                Join closestPoint = FindClosestPoint(WIP.PiecesList, e.X, e.Y, WIP.PiecesList.IndexOf(selected));
-                if (closestPoint != null)
-                {
-                    selected.AttachToPiece(closestPoint.Host, closestPoint, selectedSpot, true, -1);
-                    DeselectPiece();
-                    SelectPiece(closestPoint.Host);
-                }
-            }
-            // If moving a piece
-            else if (movingFar)
-            {
-                selected.X += positionMoving[0] - originalMoving[0];
-                selected.Y += positionMoving[1] - originalMoving[1];
+                selected.X += e.X - originalMoving[0];
+                selected.Y += e.Y - originalMoving[1];
             }
             StopMoving();
             DisplayDrawings();
+        }
+
+        /// <summary>
+        /// Resets all moving variables.
+        /// </summary>
+        private void StopMoving()
+        {
+            moving = 0;
+            movingFar = false;
         }
 
         /// <summary>
@@ -448,42 +409,6 @@ namespace Animator
             }
         }
 
-        /// <summary>
-        /// Rotates the set on the DrawPanel.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void RotationTrack_Scroll(object sender, EventArgs e)
-        {
-            foreach (Piece piece in WIP.PiecesList)
-            {
-                if (piece.AttachedTo == null)
-                {
-                    piece.R = (piece.Originally.R + RotationTrack.Value) % 360;
-                    DisplayDrawings();
-                    return;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Turns the set on the DrawPanel.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void TurnTrack_Scroll(object sender, EventArgs e)
-        {
-            foreach (Piece piece in WIP.PiecesList)
-            {
-                if (piece.AttachedTo == null)
-                {
-                    piece.T = (piece.Originally.T + TurnTrack.Value) % 360;
-                    DisplayDrawings();
-                    return;
-                }
-            }
-        }
-
         #endregion
 
 
@@ -491,68 +416,33 @@ namespace Animator
         // ----- OTHER FUNCTIONS -----
 
         /// <summary>
-        /// Displays all of the current pieces and any
-        /// relevant points to the screen.
+        /// Displays all of the current piecesvto the screen.
         /// </summary>
         private void DisplayDrawings()
         {
-            g = DrawPanel.CreateGraphics();
-            WIP.Draw(g);
-            // If moving a piece, draw the shadow
-            if (movingFar || selectedSpot != null)      //TODO: Allow placing of pieces rather than points and joining
-            {
-                Visuals.DrawPiece(shadow, g);
-                // Draw Potential Joins
-                if (selectedSpot != null)
-                {
-                    foreach (Piece piece in WIP.PiecesList)
-                    {
-                        foreach (Join spot in piece.Joins)
-                        {
-                            double[] spotCoords = spot.GetCurrentPoints(piece.GetCoords()[0], piece.GetCoords()[1]);
-                            Visuals.DrawCross(spotCoords[0], spotCoords[1], Constants.highlight, g);
-                        }
-                    }
-                    if (closestJoin != null)
-                    {
-                        double[] joinCoords = closestJoin.GetCurrentPoints(closestJoin.Host.GetCoords()[0], closestJoin.Host.GetCoords()[1]);
-                        Visuals.DrawCross(joinCoords[0], joinCoords[1], Constants.select, g);
-                    }
-                }
-            }
-            // If a piece is selected, show its PointSpots
-            else if (moving == false && selected != null && selected.AttachedTo == null)
-            {
-                foreach (Join spot in selected.Joins)
-                {
-                    double[] spotCoords = spot.GetCurrentPoints(selected.GetCoords()[0], selected.GetCoords()[1]);
-                    Visuals.DrawCross(spotCoords[0], spotCoords[1], Constants.highlight, g);
-                }
-            }
-        }
+            // Prepare Boards
+            DrawBase.Refresh();
+            DrawRight.Refresh();
+            DrawDown.Refresh();
+            original = DrawBase.CreateGraphics();
+            rotated = DrawRight.CreateGraphics();
+            turned = DrawDown.CreateGraphics();
 
-        /// <summary>
-        /// Checks that all added pieces are connected to the set.
-        /// Shows relevant warning message.
-        /// </summary>
-        /// <returns></returns>
-        private bool PermitChange()
-        {
-            int count = 0;
-            foreach (Piece piece in WIP.PiecesList)
-            {
-                if (!piece.GetIsAttached())
-                {
-                    count++;
-                    if (count > 1)
-                    {
-                        selected = piece;
-                        MessageBox.Show("You must attach this piece to something, or delete it, to save the set.", "Detached Piece", MessageBoxButtons.OK);
-                        return false;
-                    }
-                }
-            }
-            return true;
+            // Draw Base Board
+            WIP.ToPiece().R = 0;
+            WIP.ToPiece().T = 0;
+            WIP.Draw(original);
+
+            // Draw Rotated Board
+            WIP.ToPiece().R = 89.9999;
+            WIP.ToPiece().T = 0;
+            WIP.Draw(rotated);
+
+            // Draw Turned Board
+            WIP.ToPiece().R = 0;
+            WIP.ToPiece().T = 89.9999;
+            WIP.Draw(turned);
+            WIP.ToPiece().T = 0;
         }
 
         /// <summary>
@@ -589,105 +479,6 @@ namespace Animator
                 SpinBar.Enabled = false;
                 SizeBar.Enabled = false;
             }
-        }
-
-        /// <summary>
-        /// Resets all movement variables.
-        /// </summary>
-        private void StopMoving()
-        {
-            moving = false;
-            movingFar = false;
-            selectedSpot = null;
-        }
-
-        /// <summary>
-        /// Finds the closest spot to the click position.
-        /// </summary>
-        /// <param name="hosts">List of pieces to search the joins of</param>
-        /// <param name="x">Click X coordinate</param>
-        /// <param name="y">Click y coordinate</param>
-        /// <param name="ignoreIndex">Piece index to ignore, -1 if none</param>
-        /// <returns>The closest point in [piece index, join index] form or -1 if none found</returns>
-        private Join FindClosestPoint(List<Piece> hosts, int x, int y, int ignoreIndex)
-        {
-            foreach (int range in Constants.Ranges)
-            {
-                for (int hostIndex = 0; hostIndex < hosts.Count; hostIndex++)
-                {
-                    if (hostIndex != ignoreIndex && hosts[hostIndex].AttachedTo != hosts[ignoreIndex])
-                    {
-                        Piece host = hosts[hostIndex];
-                        List<Join> joins = host.Joins;
-                        for (int index = 0; index < joins.Count(); index++)
-                        {
-                            double[] coordinates = joins[index].GetCurrentPoints(host.GetCoords()[0], host.GetCoords()[1]);
-                            if (x >= coordinates[0] - range && x <= coordinates[0] + range
-                                && y >= coordinates[1] - range && y <= coordinates[1] + range)
-                            {
-                                return hosts[hostIndex].Joins[index];
-                            }
-                        }
-                    }
-                }
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// Finds the closest spot to the click position.
-        /// </summary>
-        /// <param name="host">Pieces to search the joins of</param>
-        /// <param name="x">Click X coordinate</param>
-        /// <param name="y">Click y coordinate</param>
-        /// <returns>The closest point index or -1 if none in range</returns>
-        private int FindClosestPoint(Piece host, int x, int y)
-        {
-            List<Join> spots = host.Joins;
-            foreach (int range in Constants.Ranges)
-            {
-                for (int index = 0; index < spots.Count(); index++)
-                {
-                    double[] coordinates = spots[index].GetCurrentPoints(host.GetCoords()[0], host.GetCoords()[1]);
-                    if (x >= coordinates[0] - range && x <= coordinates[0] + range
-                        && y >= coordinates[1] - range && y <= coordinates[1] + range)
-                    {
-                        return index;
-                    }
-                }
-            }
-            return -1;
-        }
-
-        /// <summary>
-        /// Makes a copy of the selected piece
-        /// in a dark colour.
-        /// </summary>
-        /// <returns></returns>
-        private Piece MakeShadow()
-        {
-            return new Piece(selected.Name)
-            {
-                X = selected.GetCoords()[0],
-                Y = selected.GetCoords()[1],
-                R = selected.GetAngles()[0],
-                T = selected.GetAngles()[1],
-                S = selected.GetAngles()[2],
-                SM = selected.GetSizeMod(),
-                FillColour = new Color[] { Constants.shadowShade },
-                OutlineWidth = 0
-            };
-        }
-
-        /// <summary>
-        /// Updates the shadow's position to reflect the
-        /// mouse's position.
-        /// </summary>
-        private void UpdateShadowPosition()
-        {
-            if (selected == null || positionMoving.Length == 0 || originalMoving.Length == 0) { return; }
-            shadow.X = selected.GetCoords()[0] + positionMoving[0] - originalMoving[0];
-            shadow.Y = selected.GetCoords()[1] + positionMoving[1] - originalMoving[1];
         }
     }
 }

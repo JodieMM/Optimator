@@ -44,6 +44,7 @@ namespace Animator
 
         // Colours
         public static Color shadowShade = Color.DarkGray;
+        public static Color invisible = Color.FromArgb(0, 0, 0, 0);
         public static Color highlight = Color.ForestGreen;
         public static Color select = Color.Red;
 

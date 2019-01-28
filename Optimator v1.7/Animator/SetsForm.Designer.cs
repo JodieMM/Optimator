@@ -28,16 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.DoneBtn = new System.Windows.Forms.Button();
+            this.CompleteBtn = new System.Windows.Forms.Button();
             this.NameTb = new System.Windows.Forms.TextBox();
             this.AddSetBtn = new System.Windows.Forms.Button();
             this.AddTb = new System.Windows.Forms.TextBox();
             this.AddPieceBtn = new System.Windows.Forms.Button();
-            this.DrawPanel = new System.Windows.Forms.PictureBox();
             this.OptionsMenu = new System.Windows.Forms.TabControl();
             this.SetPage = new System.Windows.Forms.TabPage();
-            this.ExitBtn = new System.Windows.Forms.Button();
-            this.AddPartLbl = new System.Windows.Forms.Label();
             this.PiecesTab = new System.Windows.Forms.TabPage();
             this.SizeLbl = new System.Windows.Forms.Label();
             this.SizeBar = new System.Windows.Forms.TrackBar();
@@ -57,9 +54,12 @@
             this.SelectFromTopCb = new System.Windows.Forms.CheckBox();
             this.BackColourBox = new System.Windows.Forms.PictureBox();
             this.BackColourLbl = new System.Windows.Forms.Label();
-            this.TurnTrack = new System.Windows.Forms.TrackBar();
-            this.RotationTrack = new System.Windows.Forms.TrackBar();
-            ((System.ComponentModel.ISupportInitialize)(this.DrawPanel)).BeginInit();
+            this.DrawRight = new System.Windows.Forms.PictureBox();
+            this.DrawDown = new System.Windows.Forms.PictureBox();
+            this.DrawBase = new System.Windows.Forms.PictureBox();
+            this.ExitBtn = new System.Windows.Forms.Button();
+            this.AddPartLbl = new System.Windows.Forms.Label();
+            this.PreviewBtn = new System.Windows.Forms.Button();
             this.OptionsMenu.SuspendLayout();
             this.SetPage.SuspendLayout();
             this.PiecesTab.SuspendLayout();
@@ -70,23 +70,24 @@
             ((System.ComponentModel.ISupportInitialize)(this.FlipsUpDown)).BeginInit();
             this.SettingsPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.BackColourBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.TurnTrack)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.RotationTrack)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DrawRight)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DrawDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DrawBase)).BeginInit();
             this.SuspendLayout();
             // 
-            // DoneBtn
+            // CompleteBtn
             // 
-            this.DoneBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.DoneBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DoneBtn.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DoneBtn.Location = new System.Drawing.Point(206, 611);
-            this.DoneBtn.Margin = new System.Windows.Forms.Padding(2);
-            this.DoneBtn.Name = "DoneBtn";
-            this.DoneBtn.Size = new System.Drawing.Size(165, 40);
-            this.DoneBtn.TabIndex = 2;
-            this.DoneBtn.Text = "Done";
-            this.DoneBtn.UseVisualStyleBackColor = false;
-            this.DoneBtn.Click += new System.EventHandler(this.DoneBtn_Click);
+            this.CompleteBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.CompleteBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.CompleteBtn.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CompleteBtn.Location = new System.Drawing.Point(360, 570);
+            this.CompleteBtn.Margin = new System.Windows.Forms.Padding(2);
+            this.CompleteBtn.Name = "CompleteBtn";
+            this.CompleteBtn.Size = new System.Drawing.Size(300, 90);
+            this.CompleteBtn.TabIndex = 2;
+            this.CompleteBtn.Text = "Complete";
+            this.CompleteBtn.UseVisualStyleBackColor = false;
+            this.CompleteBtn.Click += new System.EventHandler(this.CompleteBtn_Click);
             // 
             // NameTb
             // 
@@ -95,7 +96,7 @@
             this.NameTb.Location = new System.Drawing.Point(15, 15);
             this.NameTb.Margin = new System.Windows.Forms.Padding(2);
             this.NameTb.Name = "NameTb";
-            this.NameTb.Size = new System.Drawing.Size(178, 33);
+            this.NameTb.Size = new System.Drawing.Size(300, 33);
             this.NameTb.TabIndex = 1;
             this.NameTb.Text = "Set Name";
             // 
@@ -104,48 +105,38 @@
             this.AddSetBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.AddSetBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AddSetBtn.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AddSetBtn.Location = new System.Drawing.Point(206, 172);
+            this.AddSetBtn.Location = new System.Drawing.Point(206, 148);
             this.AddSetBtn.Margin = new System.Windows.Forms.Padding(2);
             this.AddSetBtn.Name = "AddSetBtn";
             this.AddSetBtn.Size = new System.Drawing.Size(165, 40);
             this.AddSetBtn.TabIndex = 81;
             this.AddSetBtn.Text = "+ Set  ";
             this.AddSetBtn.UseVisualStyleBackColor = false;
-            this.AddSetBtn.Click += new System.EventHandler(this.AddSetBtn_Click);
+            this.AddSetBtn.Click += new System.EventHandler(this.AddBtn_Click);
             // 
             // AddTb
             // 
             this.AddTb.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AddTb.Location = new System.Drawing.Point(21, 131);
+            this.AddTb.Location = new System.Drawing.Point(21, 107);
             this.AddTb.Margin = new System.Windows.Forms.Padding(2);
             this.AddTb.Name = "AddTb";
             this.AddTb.Size = new System.Drawing.Size(350, 27);
             this.AddTb.TabIndex = 69;
-            this.AddTb.Text = "Item Name";
+            this.AddTb.Text = "Part Name";
             // 
             // AddPieceBtn
             // 
             this.AddPieceBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.AddPieceBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AddPieceBtn.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AddPieceBtn.Location = new System.Drawing.Point(21, 172);
+            this.AddPieceBtn.Location = new System.Drawing.Point(21, 148);
             this.AddPieceBtn.Margin = new System.Windows.Forms.Padding(2);
             this.AddPieceBtn.Name = "AddPieceBtn";
             this.AddPieceBtn.Size = new System.Drawing.Size(165, 40);
             this.AddPieceBtn.TabIndex = 26;
             this.AddPieceBtn.Text = "+ Piece";
             this.AddPieceBtn.UseVisualStyleBackColor = false;
-            this.AddPieceBtn.Click += new System.EventHandler(this.AddPieceBtn_Click);
-            // 
-            // DrawPanel
-            // 
-            this.DrawPanel.BackColor = System.Drawing.Color.White;
-            this.DrawPanel.Location = new System.Drawing.Point(25, 25);
-            this.DrawPanel.Margin = new System.Windows.Forms.Padding(2);
-            this.DrawPanel.Name = "DrawPanel";
-            this.DrawPanel.Size = new System.Drawing.Size(650, 650);
-            this.DrawPanel.TabIndex = 2;
-            this.DrawPanel.TabStop = false;
+            this.AddPieceBtn.Click += new System.EventHandler(this.AddBtn_Click);
             // 
             // OptionsMenu
             // 
@@ -162,10 +153,8 @@
             // SetPage
             // 
             this.SetPage.BackColor = System.Drawing.Color.Honeydew;
-            this.SetPage.Controls.Add(this.ExitBtn);
             this.SetPage.Controls.Add(this.AddPartLbl);
             this.SetPage.Controls.Add(this.AddTb);
-            this.SetPage.Controls.Add(this.DoneBtn);
             this.SetPage.Controls.Add(this.NameTb);
             this.SetPage.Controls.Add(this.AddPieceBtn);
             this.SetPage.Controls.Add(this.AddSetBtn);
@@ -175,31 +164,6 @@
             this.SetPage.Size = new System.Drawing.Size(392, 669);
             this.SetPage.TabIndex = 0;
             this.SetPage.Text = "Set";
-            // 
-            // ExitBtn
-            // 
-            this.ExitBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ExitBtn.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ExitBtn.Location = new System.Drawing.Point(21, 611);
-            this.ExitBtn.Margin = new System.Windows.Forms.Padding(2);
-            this.ExitBtn.Name = "ExitBtn";
-            this.ExitBtn.Size = new System.Drawing.Size(165, 40);
-            this.ExitBtn.TabIndex = 93;
-            this.ExitBtn.Text = "Exit";
-            this.ExitBtn.UseVisualStyleBackColor = false;
-            this.ExitBtn.Click += new System.EventHandler(this.ExitBtn_Click);
-            // 
-            // AddPartLbl
-            // 
-            this.AddPartLbl.AutoSize = true;
-            this.AddPartLbl.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AddPartLbl.Location = new System.Drawing.Point(15, 95);
-            this.AddPartLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.AddPartLbl.Name = "AddPartLbl";
-            this.AddPartLbl.Size = new System.Drawing.Size(82, 23);
-            this.AddPartLbl.TabIndex = 91;
-            this.AddPartLbl.Text = "Add Part";
             // 
             // PiecesTab
             // 
@@ -438,48 +402,91 @@
             this.BackColourLbl.TabIndex = 116;
             this.BackColourLbl.Text = "Back Colour";
             // 
-            // TurnTrack
+            // DrawRight
             // 
-            this.TurnTrack.BackColor = System.Drawing.Color.White;
-            this.TurnTrack.Cursor = System.Windows.Forms.Cursors.Default;
-            this.TurnTrack.Location = new System.Drawing.Point(625, 80);
-            this.TurnTrack.Maximum = 359;
-            this.TurnTrack.Name = "TurnTrack";
-            this.TurnTrack.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.TurnTrack.Size = new System.Drawing.Size(45, 540);
-            this.TurnTrack.TabIndex = 92;
-            this.TurnTrack.TickFrequency = 10;
-            this.TurnTrack.TickStyle = System.Windows.Forms.TickStyle.TopLeft;
-            this.TurnTrack.Scroll += new System.EventHandler(this.TurnTrack_Scroll);
+            this.DrawRight.BackColor = System.Drawing.Color.White;
+            this.DrawRight.Location = new System.Drawing.Point(360, 30);
+            this.DrawRight.Margin = new System.Windows.Forms.Padding(6);
+            this.DrawRight.Name = "DrawRight";
+            this.DrawRight.Size = new System.Drawing.Size(300, 300);
+            this.DrawRight.TabIndex = 93;
+            this.DrawRight.TabStop = false;
             // 
-            // RotationTrack
+            // DrawDown
             // 
-            this.RotationTrack.BackColor = System.Drawing.Color.White;
-            this.RotationTrack.Cursor = System.Windows.Forms.Cursors.Default;
-            this.RotationTrack.Location = new System.Drawing.Point(80, 625);
-            this.RotationTrack.Maximum = 359;
-            this.RotationTrack.Name = "RotationTrack";
-            this.RotationTrack.Size = new System.Drawing.Size(540, 45);
-            this.RotationTrack.TabIndex = 91;
-            this.RotationTrack.TickFrequency = 10;
-            this.RotationTrack.Scroll += new System.EventHandler(this.RotationTrack_Scroll);
+            this.DrawDown.BackColor = System.Drawing.Color.White;
+            this.DrawDown.Location = new System.Drawing.Point(30, 360);
+            this.DrawDown.Margin = new System.Windows.Forms.Padding(6);
+            this.DrawDown.Name = "DrawDown";
+            this.DrawDown.Size = new System.Drawing.Size(300, 300);
+            this.DrawDown.TabIndex = 92;
+            this.DrawDown.TabStop = false;
+            // 
+            // DrawBase
+            // 
+            this.DrawBase.BackColor = System.Drawing.Color.White;
+            this.DrawBase.Location = new System.Drawing.Point(30, 30);
+            this.DrawBase.Margin = new System.Windows.Forms.Padding(6);
+            this.DrawBase.Name = "DrawBase";
+            this.DrawBase.Size = new System.Drawing.Size(300, 300);
+            this.DrawBase.TabIndex = 91;
+            this.DrawBase.TabStop = false;
+            // 
+            // ExitBtn
+            // 
+            this.ExitBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ExitBtn.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ExitBtn.Location = new System.Drawing.Point(360, 465);
+            this.ExitBtn.Margin = new System.Windows.Forms.Padding(2);
+            this.ExitBtn.Name = "ExitBtn";
+            this.ExitBtn.Size = new System.Drawing.Size(300, 90);
+            this.ExitBtn.TabIndex = 94;
+            this.ExitBtn.Text = "Exit";
+            this.ExitBtn.UseVisualStyleBackColor = false;
+            // 
+            // AddPartLbl
+            // 
+            this.AddPartLbl.AutoSize = true;
+            this.AddPartLbl.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AddPartLbl.Location = new System.Drawing.Point(135, 70);
+            this.AddPartLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.AddPartLbl.Name = "AddPartLbl";
+            this.AddPartLbl.Size = new System.Drawing.Size(92, 23);
+            this.AddPartLbl.TabIndex = 120;
+            this.AddPartLbl.Text = "Add Part";
+            // 
+            // PreviewBtn
+            // 
+            this.PreviewBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.PreviewBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PreviewBtn.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PreviewBtn.Location = new System.Drawing.Point(360, 360);
+            this.PreviewBtn.Margin = new System.Windows.Forms.Padding(2);
+            this.PreviewBtn.Name = "PreviewBtn";
+            this.PreviewBtn.Size = new System.Drawing.Size(300, 90);
+            this.PreviewBtn.TabIndex = 95;
+            this.PreviewBtn.Text = "Preview";
+            this.PreviewBtn.UseVisualStyleBackColor = false;
             // 
             // SetsForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.PaleGreen;
             this.ClientSize = new System.Drawing.Size(1100, 700);
-            this.Controls.Add(this.TurnTrack);
-            this.Controls.Add(this.RotationTrack);
+            this.Controls.Add(this.PreviewBtn);
+            this.Controls.Add(this.ExitBtn);
+            this.Controls.Add(this.DrawRight);
+            this.Controls.Add(this.DrawDown);
+            this.Controls.Add(this.CompleteBtn);
+            this.Controls.Add(this.DrawBase);
             this.Controls.Add(this.OptionsMenu);
-            this.Controls.Add(this.DrawPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "SetsForm";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SetsForm";
-            ((System.ComponentModel.ISupportInitialize)(this.DrawPanel)).EndInit();
             this.OptionsMenu.ResumeLayout(false);
             this.SetPage.ResumeLayout(false);
             this.SetPage.PerformLayout();
@@ -493,25 +500,22 @@
             this.SettingsPage.ResumeLayout(false);
             this.SettingsPage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.BackColourBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.TurnTrack)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.RotationTrack)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DrawRight)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DrawDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DrawBase)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
         private System.Windows.Forms.TextBox NameTb;
-        private System.Windows.Forms.Button DoneBtn;
+        private System.Windows.Forms.Button CompleteBtn;
         private System.Windows.Forms.Button AddPieceBtn;
         private System.Windows.Forms.TextBox AddTb;
         private System.Windows.Forms.Button AddSetBtn;
-        private System.Windows.Forms.PictureBox DrawPanel;
         private System.Windows.Forms.TabControl OptionsMenu;
         private System.Windows.Forms.TabPage SetPage;
         private System.Windows.Forms.TabPage SettingsPage;
-        private System.Windows.Forms.Label AddPartLbl;
-        private System.Windows.Forms.Button ExitBtn;
         private System.Windows.Forms.TabPage PiecesTab;
         private System.Windows.Forms.Label SizeLbl;
         private System.Windows.Forms.TrackBar SizeBar;
@@ -527,10 +531,14 @@
         private System.Windows.Forms.Label OrderLbl;
         private System.Windows.Forms.NumericUpDown FlipsUpDown;
         private System.Windows.Forms.CheckBox FlipsCb;
-        private System.Windows.Forms.TrackBar TurnTrack;
-        private System.Windows.Forms.TrackBar RotationTrack;
         private System.Windows.Forms.PictureBox BackColourBox;
         private System.Windows.Forms.Label BackColourLbl;
         private System.Windows.Forms.CheckBox SelectFromTopCb;
+        private System.Windows.Forms.PictureBox DrawRight;
+        private System.Windows.Forms.PictureBox DrawDown;
+        private System.Windows.Forms.PictureBox DrawBase;
+        private System.Windows.Forms.Button ExitBtn;
+        private System.Windows.Forms.Label AddPartLbl;
+        private System.Windows.Forms.Button PreviewBtn;
     }
 }

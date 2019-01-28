@@ -74,7 +74,6 @@ namespace Animator
             List<string> newData = new List<string>();
 
             // Reset Set to Save
-            FindBasePiece();
             BasePiece.R = 0; BasePiece.T = 0; BasePiece.S = 0;
             PiecesList = SortOrder();
             int baseIndex = PiecesList.IndexOf(BasePiece);
@@ -128,21 +127,6 @@ namespace Animator
             foreach (Piece piece in PiecesList)
             {
                 piece.Draw(g);
-            }
-        }
-
-        /// <summary>
-        /// Finds the base piece from the pieceslist.
-        /// </summary>
-        private void FindBasePiece()
-        {
-            foreach (Piece piece in PiecesList)
-            {
-                if (piece.AttachedTo == null)
-                {
-                    BasePiece = piece;
-                    return;
-                }
             }
         }
 
