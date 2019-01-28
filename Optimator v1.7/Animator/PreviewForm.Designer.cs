@@ -50,7 +50,7 @@
             // 
             // OptionsMenu
             // 
-            this.OptionsMenu.BackColor = System.Drawing.Color.Honeydew;
+            this.OptionsMenu.BackColor = System.Drawing.Color.GhostWhite;
             this.OptionsMenu.Controls.Add(this.CloseBtn);
             this.OptionsMenu.Location = new System.Drawing.Point(700, 0);
             this.OptionsMenu.Name = "OptionsMenu";
@@ -59,7 +59,7 @@
             // 
             // CloseBtn
             // 
-            this.CloseBtn.BackColor = System.Drawing.Color.PaleGreen;
+            this.CloseBtn.BackColor = System.Drawing.Color.MediumPurple;
             this.CloseBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CloseBtn.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CloseBtn.Location = new System.Drawing.Point(15, 635);
@@ -77,7 +77,7 @@
             this.RotationTrack.Location = new System.Drawing.Point(80, 625);
             this.RotationTrack.Maximum = 359;
             this.RotationTrack.Name = "RotationTrack";
-            this.RotationTrack.Size = new System.Drawing.Size(540, 90);
+            this.RotationTrack.Size = new System.Drawing.Size(540, 45);
             this.RotationTrack.TabIndex = 2;
             this.RotationTrack.TickFrequency = 10;
             this.RotationTrack.Scroll += new System.EventHandler(this.RotationTrack_Scroll);
@@ -90,7 +90,7 @@
             this.TurnTrack.Maximum = 359;
             this.TurnTrack.Name = "TurnTrack";
             this.TurnTrack.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.TurnTrack.Size = new System.Drawing.Size(90, 540);
+            this.TurnTrack.Size = new System.Drawing.Size(45, 540);
             this.TurnTrack.TabIndex = 3;
             this.TurnTrack.TickFrequency = 10;
             this.TurnTrack.TickStyle = System.Windows.Forms.TickStyle.TopLeft;
@@ -99,7 +99,7 @@
             // PreviewForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.BackColor = System.Drawing.Color.PaleGreen;
+            this.BackColor = System.Drawing.Color.MediumPurple;
             this.ClientSize = new System.Drawing.Size(900, 700);
             this.Controls.Add(this.TurnTrack);
             this.Controls.Add(this.RotationTrack);

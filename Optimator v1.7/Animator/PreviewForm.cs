@@ -5,7 +5,7 @@ using System.Windows.Forms;
 namespace Animator
 {
     /// <summary>
-    /// Displays a rotating/turning view of the piece to get a 3D perspective
+    /// Displays a rotating/turning view of the part to get a 3D perspective
     /// of what it will look like.
     /// 
     /// Author Jodie Muller
@@ -13,7 +13,7 @@ namespace Animator
     public partial class PreviewForm : Form
     {
         #region Preview Variables
-        private Piece WIP;
+        private Part WIP;
         private Graphics g;
         #endregion
 
@@ -23,12 +23,12 @@ namespace Animator
         /// <summary>
         /// Constructor for the Preview form.
         /// </summary>
-        public PreviewForm(Piece piece)
+        public PreviewForm(Part part)
         {
             InitializeComponent();
-            WIP = piece;
-            WIP.Recentre = true;
-            WIP.X = DrawBoard.Width / 2.0; WIP.Y = DrawBoard.Height / 2.0;
+            WIP = part;
+            WIP.ToPiece().Recentre = true;
+            WIP.ToPiece().X = DrawBoard.Width / 2.0; WIP.ToPiece().Y = DrawBoard.Height / 2.0;
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace Animator
         /// <param name="e"></param>
         private void RotationTrack_Scroll(object sender, EventArgs e)
         {
-            WIP.R = RotationTrack.Value;
+            WIP.ToPiece().R = RotationTrack.Value;
             DrawScreen();
         }
 
@@ -77,7 +77,7 @@ namespace Animator
         /// <param name="e"></param>
         private void TurnTrack_Scroll(object sender, EventArgs e)
         {
-            WIP.T = TurnTrack.Value;
+            WIP.ToPiece().T = TurnTrack.Value;
             DrawScreen();
         }
 
