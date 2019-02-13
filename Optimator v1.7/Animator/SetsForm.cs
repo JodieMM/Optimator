@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
 using System.IO;
 
@@ -40,13 +38,43 @@ namespace Animator
             DrawBase.MouseDown += new MouseEventHandler(DrawBase_MouseDown);
             DrawBase.MouseMove += new MouseEventHandler(DrawBase_MouseMove);
             DrawBase.MouseUp += new MouseEventHandler(DrawBase_MouseUp);
-
-            //TODO: DrawRight and DrawDown
+            DrawRight.MouseDown += new MouseEventHandler(DrawBase_MouseDown);
+            DrawRight.MouseMove += new MouseEventHandler(DrawBase_MouseMove);
+            DrawRight.MouseUp += new MouseEventHandler(DrawBase_MouseUp);
+            DrawDown.MouseDown += new MouseEventHandler(DrawBase_MouseDown);
+            DrawDown.MouseMove += new MouseEventHandler(DrawBase_MouseMove);
+            DrawDown.MouseUp += new MouseEventHandler(DrawBase_MouseUp);
         }
 
 
 
         // ----- OPTION BUTTONS -----
+
+        /// <summary>
+        /// Sets the selected piece as base piece.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SetBasePiece_Click(object sender, EventArgs e)
+        {
+            if (selected != null)
+            {
+                WIP.BasePiece = selected;
+                SetBasePiece.Enabled = false;
+            }
+        }
+
+        /// <summary>
+        /// Displays a preview of the set.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void PreviewBtn_Click(object sender, EventArgs e)
+        {
+            CompleteSet();
+            PreviewForm previewForm = new PreviewForm(WIP);
+            previewForm.Show();
+        }
 
         /// <summary>
         /// Closes the form.
@@ -140,6 +168,13 @@ namespace Animator
                     }
                 }
                 SelectPiece(justAdded.ToPiece());
+
+                // If first piece, set as base
+                if (WIP.PiecesList.Count == 1)
+                {
+                    WIP.BasePiece = selected;
+                    SetBasePiece.Enabled = false;
+                }
                 DisplayDrawings();
             }
             catch (FileNotFoundException)
@@ -156,54 +191,35 @@ namespace Animator
 
         // ----- PIECES TAB -----
         #region Pieces Tab
-        /// <summary>
-        /// Updates the original rotation of the selected piece.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void RotationBar_Scroll(object sender, EventArgs e)
-        {
-            if (selected == null) { return; }
-            selected.R = RotationBar.Value;
-            DisplayDrawings();
-        }
 
         /// <summary>
-        /// Updates the original turn of the selected piece.
+        /// Updates the selected piece based on the UI object
+        /// that was interacted with.
         /// </summary>
-        /// <param name="sender"></param>
+        /// <param name="sender">Touched UI object</param>
         /// <param name="e"></param>
-        private void TurnBar_Scroll(object sender, EventArgs e)
+        private void UpdateSelectedPiece(object sender, EventArgs e)
         {
             if (selected == null) { return; }
-            selected.T = TurnBar.Value;
+            if (sender == RotationBar)
+            {
+                selected.R = RotationBar.Value;
+            }
+            else if (sender == TurnBar)
+            {
+                selected.T = TurnBar.Value;
+            }
+            else if (sender == SpinBar)
+            {
+                selected.S = SpinBar.Value;
+            }
+            else if (sender == SizeBar)
+            {
+                selected.SM = SizeBar.Value;
+            }
             DisplayDrawings();
         }
-
-        /// <summary>
-        /// Updates the original spin of the selected piece.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void SpinBar_Scroll(object sender, EventArgs e)
-        {
-            if (selected == null) { return; }
-            selected.S = SpinBar.Value;
-            DisplayDrawings();
-        }
-
-        /// <summary>
-        /// Updates the original size of the selected piece.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void SizeBar_Scroll(object sender, EventArgs e)
-        {
-            if (selected == null) { return; }
-            selected.SM = SizeBar.Value;
-            DisplayDrawings();
-        }
-
+        
         /// <summary>
         /// Moves the selected piece upwards in order.
         /// </summary>
@@ -255,7 +271,6 @@ namespace Animator
             {
                 FlipsUpDown.Enabled = FlipsCb.Checked;
                 selected.AngleFlip = (FlipsCb.Checked) ? (double)FlipsUpDown.Value : -1;
-
             }
         }
 
@@ -319,7 +334,7 @@ namespace Animator
             {
                 SelectPiece(WIP.PiecesList[selectedIndex]);
                 originalMoving = new int[] { e.X, e.Y };
-                moving = 1;
+                moving = (sender == DrawBase) ? 1 : (sender == DrawRight) ? 2 : 3;
             }
             DisplayDrawings();
         }
@@ -331,7 +346,9 @@ namespace Animator
         /// <param name="e"></param>
         private void DrawBase_MouseMove(object sender, MouseEventArgs e)
         {
-            if (moving != 1) { return; }
+            int movingCheck = (sender == DrawBase) ? 1 : (sender == DrawRight) ? 2 : 3;
+            if (moving != movingCheck) { return; }
+
             // Invalid Mouse Position
             if (e.X < 0 || e.Y < 0 || e.X > DrawBase.Size.Width || e.Y > DrawBase.Size.Height)
             {
@@ -345,15 +362,16 @@ namespace Animator
                     movingFar = Math.Abs(selected.X - e.X) > Constants.ClickPrecision
                         || Math.Abs(selected.Y - e.Y) > Constants.ClickPrecision;
                 }
-                if (movingFar)
-                {
-                    Piece shadow = new Piece();
-                    shadow.Data.Add(selected.Data[selected.FindRow()]);
-                    shadow.FillColour = new Color[] { Constants.shadowShade };
-                    shadow.OutlineColour = Constants.invisible;
-                    shadow.X = e.X; shadow.Y = e.Y;
-                    shadow.Draw(original);
-                }
+                // TODO: Fix!
+                //if (movingFar)
+                //{
+                //    Piece shadow = new Piece();
+                //    shadow.Data.Add(selected.Data[selected.FindRow()]);
+                //    shadow.FillColour = new Color[] { Constants.shadowShade };
+                //    shadow.OutlineColour = Constants.invisible;
+                //    shadow.X = e.X; shadow.Y = e.Y;
+                //    shadow.Draw(original);
+                //}
             }
             DisplayDrawings();
         }
@@ -366,9 +384,11 @@ namespace Animator
         /// <param name="e"></param>
         private void DrawBase_MouseUp(object sender, MouseEventArgs e)
         {
-            if (moving != 1) { return; }
+            int movingCheck = (sender == DrawBase) ? 1 : (sender == DrawRight) ? 2 : 3;
+            if (moving != movingCheck) { return; }
             if (movingFar)
             {
+                // TODO: Fix!
                 selected.X += e.X - originalMoving[0];
                 selected.Y += e.Y - originalMoving[1];
             }
@@ -431,17 +451,26 @@ namespace Animator
             // Draw Base Board
             WIP.ToPiece().R = 0;
             WIP.ToPiece().T = 0;
-            WIP.Draw(original);
+            foreach (Piece piece in WIP.PiecesList)
+            {
+                piece.Draw(original);
+            }
 
             // Draw Rotated Board
             WIP.ToPiece().R = 89.9999;
             WIP.ToPiece().T = 0;
-            WIP.Draw(rotated);
+            foreach (Piece piece in WIP.PiecesList)
+            {
+                piece.Draw(rotated);
+            }
 
             // Draw Turned Board
             WIP.ToPiece().R = 0;
             WIP.ToPiece().T = 89.9999;
-            WIP.Draw(turned);
+            foreach (Piece piece in WIP.PiecesList)
+            {
+                piece.Draw(turned);
+            }
             WIP.ToPiece().T = 0;
         }
 
@@ -463,6 +492,7 @@ namespace Animator
             TurnBar.Value = (int)selected.T;
             SpinBar.Value = (int)selected.S;
             SizeBar.Value = (int)selected.SM;
+            SetBasePiece.Enabled = (WIP.BasePiece != selected);
         }
 
         /// <summary>
@@ -478,7 +508,17 @@ namespace Animator
                 TurnBar.Enabled = false;
                 SpinBar.Enabled = false;
                 SizeBar.Enabled = false;
+                SetBasePiece.Enabled = false;
             }
+        }
+
+        /// <summary>
+        /// Adds joins to the set 
+        /// </summary>
+        /// <returns></returns>
+        private void CompleteSet()
+        {
+            // TODO: Enter!
         }
     }
 }

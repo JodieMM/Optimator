@@ -376,7 +376,7 @@
             this.SizeBar.TabIndex = 131;
             this.SizeBar.TickFrequency = 100;
             this.SizeBar.Value = 100;
-            this.SizeBar.Scroll += new System.EventHandler(this.SizeBar_Scroll);
+            this.SizeBar.Scroll += new System.EventHandler(this.SketchUpdate);
             // 
             // TurnLbl
             // 
@@ -397,7 +397,7 @@
             this.SpinBar.Size = new System.Drawing.Size(189, 45);
             this.SpinBar.TabIndex = 130;
             this.SpinBar.TickFrequency = 30;
-            this.SpinBar.Scroll += new System.EventHandler(this.SpinBar_Scroll);
+            this.SpinBar.Scroll += new System.EventHandler(this.SketchUpdate);
             // 
             // RotationLbl
             // 
@@ -418,7 +418,7 @@
             this.TurnBar.Size = new System.Drawing.Size(189, 45);
             this.TurnBar.TabIndex = 129;
             this.TurnBar.TickFrequency = 30;
-            this.TurnBar.Scroll += new System.EventHandler(this.TurnBar_Scroll);
+            this.TurnBar.Scroll += new System.EventHandler(this.SketchUpdate);
             // 
             // RotationBar
             // 
@@ -428,7 +428,7 @@
             this.RotationBar.Size = new System.Drawing.Size(189, 45);
             this.RotationBar.TabIndex = 128;
             this.RotationBar.TickFrequency = 30;
-            this.RotationBar.Scroll += new System.EventHandler(this.RotationBar_Scroll);
+            this.RotationBar.Scroll += new System.EventHandler(this.SketchUpdate);
             // 
             // SMLbl
             // 
@@ -459,7 +459,7 @@
             this.YUpDown.Name = "YUpDown";
             this.YUpDown.Size = new System.Drawing.Size(162, 27);
             this.YUpDown.TabIndex = 124;
-            this.YUpDown.ValueChanged += new System.EventHandler(this.YUpDown_ValueChanged);
+            this.YUpDown.ValueChanged += new System.EventHandler(this.SketchUpdate);
             // 
             // XUpDown
             // 
@@ -479,7 +479,7 @@
             this.XUpDown.Name = "XUpDown";
             this.XUpDown.Size = new System.Drawing.Size(162, 27);
             this.XUpDown.TabIndex = 123;
-            this.XUpDown.ValueChanged += new System.EventHandler(this.XUpDown_ValueChanged);
+            this.XUpDown.ValueChanged += new System.EventHandler(this.SketchUpdate);
             // 
             // DeleteSketchBtn
             // 
@@ -494,7 +494,7 @@
             this.DeleteSketchBtn.TabIndex = 121;
             this.DeleteSketchBtn.Text = "Delete Sketch";
             this.DeleteSketchBtn.UseVisualStyleBackColor = false;
-            this.DeleteSketchBtn.Click += new System.EventHandler(this.DeleteSketchBtn_Click);
+            this.DeleteSketchBtn.Click += new System.EventHandler(this.SketchUpdate);
             // 
             // SketchesLbl
             // 

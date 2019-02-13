@@ -26,7 +26,7 @@ namespace Animator
         private int moving = 0;                     // 0 = not, 1 = X & Y, 2 = X, 3 = Y
         private bool movingFar = false;             // Whether a piece is being selected or moved
 
-        private Color button = Color.LightCyan;
+        private Color unpressed = Color.LightCyan;
         private Color pressed = Color.FromArgb(255, 153, 255, 255);
         #endregion
 
@@ -81,7 +81,7 @@ namespace Animator
         private void DrawBase_MouseDown(object sender, MouseEventArgs e)
         {
             // Place Point
-            if (PointBtn.BackColor == button && RefineBtn.BackColor == button)
+            if (PointBtn.BackColor == unpressed && RefineBtn.BackColor == unpressed)
             {
                 if (selectedSpot != null && DataRow.Spots.IndexOf(selectedSpot) != DataRow.Spots.Count - 1)
                 {
@@ -100,7 +100,7 @@ namespace Animator
                 if (closestIndex != -1)
                 {
                     SelectSpot(DataRow.Spots[closestIndex]);
-                    if (RefineBtn.BackColor == button) { moving = 1; }
+                    if (RefineBtn.BackColor == unpressed) { moving = 1; }
                 }
                 else
                 {
@@ -170,7 +170,7 @@ namespace Animator
             if (closestIndex != -1)
             {
                 SelectSpot(DataRow.Spots[closestIndex]);
-                if (RefineBtn.BackColor == button) { moving = 2; }
+                if (RefineBtn.BackColor == unpressed) { moving = 2; }
             }
             else
             {
@@ -233,7 +233,7 @@ namespace Animator
             if (closestIndex != -1)
             {
                 SelectSpot(DataRow.Spots[closestIndex]);
-                if (RefineBtn.BackColor == button) { moving = 3; }
+                if (RefineBtn.BackColor == unpressed) { moving = 3; }
             }
             else
             {
@@ -344,7 +344,7 @@ namespace Animator
         private void PointBtn_Click(object sender, EventArgs e)
         {
             PointBtn.Text = (PointBtn.Text == "Select") ? "Place" : "Select";
-            PointBtn.BackColor = (PointBtn.BackColor == button) ? pressed : button;
+            PointBtn.BackColor = (PointBtn.BackColor == unpressed) ? pressed : unpressed;
         }
 
         /// <summary>
@@ -382,7 +382,7 @@ namespace Animator
         {
             if (!CheckPiecesValid(DataRow.Spots)) { return; }
             RefineBtn.Text = (RefineBtn.Text == "Refine") ? "Simplify" : "Refine";
-            RefineBtn.BackColor = (RefineBtn.BackColor == button) ? pressed : button;
+            RefineBtn.BackColor = (RefineBtn.BackColor == unpressed) ? pressed : unpressed;
 
             if (RefineBtn.BackColor == pressed)
             {
@@ -562,7 +562,7 @@ namespace Animator
         private void ShowFixedBtn_Click(object sender, EventArgs e)
         {
             ShowFixedBtn.Text = (ShowFixedBtn.Text == "Show Fixed") ? "Hide Fixed" : "Show Fixed";
-            ShowFixedBtn.BackColor = (ShowFixedBtn.BackColor == button) ? pressed : button;
+            ShowFixedBtn.BackColor = (ShowFixedBtn.BackColor == unpressed) ? pressed : unpressed;
             DisplayDrawings();
         }
 
@@ -571,87 +571,42 @@ namespace Animator
         // ----- SKETCHES TAB ------
 
         /// <summary>
-        /// Deletes the selected sketch from the listbox and the list.
+        /// Updates the selected sketch according to the sender's input.
         /// </summary>
-        /// <param name="sender"></param>
+        /// <param name="sender">The UI object that sent the update</param>
         /// <param name="e"></param>
-        private void DeleteSketchBtn_Click(object sender, EventArgs e)
+        private void SketchUpdate(object sender, EventArgs e)
         {
             if (SketchLb.SelectedIndex == -1) { return; }
-            Sketches.RemoveAt(SketchLb.SelectedIndex);
-            SketchLb.Items.RemoveAt(SketchLb.SelectedIndex);
-            DisplayDrawings();
-        }
-
-        /// <summary>
-        /// Rotates the selected sketch.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void RotationBar_Scroll(object sender, EventArgs e)
-        {
-            if (SketchLb.SelectedIndex == -1) { return; }
-            Sketches[SketchLb.SelectedIndex].ToPiece().R = RotationBar.Value;
-            DisplayDrawings();
-        }
-
-        /// <summary>
-        /// Turns the selected sketch.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void TurnBar_Scroll(object sender, EventArgs e)
-        {
-            if (SketchLb.SelectedIndex == -1) { return; }
-            Sketches[SketchLb.SelectedIndex].ToPiece().T = TurnBar.Value;
-            DisplayDrawings();
-        }
-
-        /// <summary>
-        /// Spins the selected sketch.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void SpinBar_Scroll(object sender, EventArgs e)
-        {
-            if (SketchLb.SelectedIndex == -1) { return; }
-            Sketches[SketchLb.SelectedIndex].ToPiece().S = SpinBar.Value;
-            DisplayDrawings();
-        }
-
-        /// <summary>
-        /// Resizes the selected sketch.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void SizeBar_Scroll(object sender, EventArgs e)
-        {
-            if (SketchLb.SelectedIndex == -1) { return; }
-            Sketches[SketchLb.SelectedIndex].ToPiece().SM = SizeBar.Value;
-            DisplayDrawings();
-        }
-
-        /// <summary>
-        /// Moves the selected sketch horizontally.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void XUpDown_ValueChanged(object sender, EventArgs e)
-        {
-            if (SketchLb.SelectedIndex == -1) { return; }
-            Sketches[SketchLb.SelectedIndex].ToPiece().X = (double)XUpDown.Value;
-            DisplayDrawings();
-        }
-
-        /// <summary>
-        /// Moves the selected sketch vertically.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void YUpDown_ValueChanged(object sender, EventArgs e)
-        {
-            if (SketchLb.SelectedIndex == -1) { return; }
-            Sketches[SketchLb.SelectedIndex].ToPiece().Y = (double)YUpDown.Value;
+            if (sender == DeleteSketchBtn)
+            {
+                Sketches.RemoveAt(SketchLb.SelectedIndex);
+                SketchLb.Items.RemoveAt(SketchLb.SelectedIndex);
+            }
+            else if (sender == RotationBar)
+            {
+                Sketches[SketchLb.SelectedIndex].ToPiece().R = RotationBar.Value;
+            }
+            else if (sender == TurnBar)
+            {
+                Sketches[SketchLb.SelectedIndex].ToPiece().T = TurnBar.Value;
+            }
+            else if (sender == SpinBar)
+            {
+                Sketches[SketchLb.SelectedIndex].ToPiece().S = SpinBar.Value;
+            }
+            else if (sender == SizeBar)
+            {
+                Sketches[SketchLb.SelectedIndex].ToPiece().SM = SizeBar.Value;
+            }
+            else if (sender == XUpDown)
+            {
+                Sketches[SketchLb.SelectedIndex].ToPiece().X = (double)XUpDown.Value;
+            }
+            else if (sender == YUpDown)
+            {
+                Sketches[SketchLb.SelectedIndex].ToPiece().Y = (double)YUpDown.Value;
+            }
             DisplayDrawings();
         }
 

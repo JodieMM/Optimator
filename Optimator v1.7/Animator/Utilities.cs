@@ -57,37 +57,28 @@ namespace Animator
         }
 
         /// <summary>
-        /// Takes a folder and item name and returns the directory name to reach that file.
-        /// </summary>
-        /// <param name="folder">The folder the item is in</param>
-        /// <param name="name">The item name</param>
-        /// <returns></returns>
-        public static string GetDirectory(string folder, string name)
-        {
-            return System.IO.Path.Combine(System.IO.Path.Combine(Environment.CurrentDirectory, folder), name);
-        }
-
-        /// <summary>
         /// Takes a folder, item name and file type and returns the directory name to reach that file.
         /// </summary>
         /// <param name="folder">The folder the item is in</param>
         /// <param name="name">The item name</param>
         /// <param name="fileType">The file's type, e.g. txt, png</param>
         /// <returns></returns>
-        public static string GetDirectory(string folder, string name, string fileType)
+        public static string GetDirectory(string folder, string name, string fileType = "")
         {
-            return System.IO.Path.Combine(System.IO.Path.Combine(Environment.CurrentDirectory, folder), name + Constants.Txt);
+            return System.IO.Path.Combine(System.IO.Path.Combine(Environment.CurrentDirectory, folder), name + fileType);
         }
 
         /// <summary>
         /// Takes a folder, item name and file type and returns the directory name to reach that file.
         /// </summary>
         /// <param name="folder">The folder the item is in</param>
+        /// <param name="subfolder">The subfolder the item is in</param>
         /// <param name="name">The item name</param>
         /// <param name="fileType">The file's type, e.g. txt, png</param>
         /// <returns></returns>
         public static string GetDirectory(string folder, string subfolder, string name, string fileType)
         {
+            // TODO: Remove/ absorb into above
             return System.IO.Path.Combine(System.IO.Path.Combine(System.IO.Path.Combine(Environment.CurrentDirectory, folder), subfolder), name + fileType);
         }
 
@@ -101,20 +92,11 @@ namespace Animator
         /// <param name="a">Value to be divided</param>
         /// <param name="b">Modulus</param>
         /// <returns>a modulo b</returns>
-        public static int Modulo(int a, int b)
+        public static dynamic Modulo(dynamic a, dynamic b)
         {
-            return (a % b + b) % b;
-        }
-
-        /// <summary>
-        /// Finds the mathematical modulus of a mod b.
-        /// </summary>
-        /// <param name="a">Value to be divided</param>
-        /// <param name="b">Modulus</param>
-        /// <returns>a modulo b</returns>
-        public static double Modulo(double a, double b)
-        {
-            return (a % b + b) % b;
+            double mod = (a % b + b) % b;
+            if (a is int && b is int) { return (int)mod; }
+            return mod;
         }
 
         /// <summary>

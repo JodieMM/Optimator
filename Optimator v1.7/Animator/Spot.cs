@@ -16,12 +16,12 @@ namespace Animator
         public double Y { get; set; }
         public double YDown { get; set; }
 
-        public string Connector { get; set; } = null;
-        public string Solid { get; set; } = null;
+        public string Connector { get; set; }
+        public string Solid { get; set; }
 
         public Spot MatchX { get; set; }
         public Spot MatchY { get; set; }
-        public int DrawnLevel { get; set; } = 0;        // 0 = Drawn, 1 = First Symmetry, 2 = Second Symmetry
+        public int DrawnLevel { get; set; }             // 0 = Drawn, 1 = First Symmetry, 2 = Second Symmetry
         #endregion
 
 
@@ -41,21 +41,6 @@ namespace Animator
         }
 
         /// <summary>
-        /// Constructor for a spot used in joins.
-        /// </summary>
-        /// <param name="x">X position</param>
-        /// <param name="xr">Rotated X position</param>
-        /// <param name="y">Y position</param>
-        /// <param name="yd">Turned Y position</param>
-        public Spot(double x, double xr, double y, double yd)
-        {
-            X = x;
-            XRight = xr;
-            Y = y;
-            YDown = yd;
-        }
-
-        /// <summary>
         /// Constructor for a spot built during refinement or loaded.
         /// </summary>
         /// <param name="x">X position</param>
@@ -65,7 +50,7 @@ namespace Animator
         /// <param name="connect">Connector from this spot to the next</param>
         /// <param name="solid">Flexibility of the spot</param>
         /// /// <param name="drawn">DrawLevel integer</param>
-        public Spot(double x, double xr, double y, double yd, string connect, string solid, int drawn)
+        public Spot(double x, double xr, double y, double yd, string connect = null, string solid = null, int drawn = 0)
         {
             X = x;
             XRight = xr;

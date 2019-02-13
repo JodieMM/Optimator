@@ -134,7 +134,7 @@ namespace Animator
         /// Finds the correct order to draw pieces so they are layered correctly.
         /// </summary>
         /// <returns>Ordered list of pieces</returns>
-        private List<Piece> SortOrder() //TODO: Check
+        private List<Piece> SortOrder()
         {
             List<Piece> order = new List<Piece>();
             List<Piece> putInFront = new List<Piece>();

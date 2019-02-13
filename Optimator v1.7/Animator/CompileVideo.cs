@@ -171,30 +171,17 @@ namespace Animator
         /// </summary>
         /// <param name="baseScene">The frame to draw</param>
         /// <param name="g">The graphics to display with</param>
-        private void DrawFrame(Scene baseScene, Graphics g)
+        private void DrawFrame(Scene baseScene, Graphics g = null)
         {
+            if (g == null)
+            {
+                DrawPanel.Refresh();
+                g = DrawPanel.CreateGraphics();
+            }
             baseScene.RunScene(workingTime);      
 
             // Draw Parts
             foreach(Part part in baseScene.PartsList)
-            {
-                part.Draw(g);
-            }
-        }
-
-        /// <summary>
-        /// Draws a frame to the display.
-        /// </summary>
-        /// <param name="baseScene">The frame to draw</param>
-        /// <param name="g">The graphics to display with</param>
-        private void DrawFrame(Scene baseScene)
-        {
-            DrawPanel.Refresh();
-            g = DrawPanel.CreateGraphics();
-            baseScene.RunScene(workingTime);
-
-            // Draw Parts
-            foreach (Part part in baseScene.PartsList)
             {
                 part.Draw(g);
             }

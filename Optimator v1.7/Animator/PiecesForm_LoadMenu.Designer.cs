@@ -74,7 +74,7 @@
             this.FillColourBtn.TabIndex = 14;
             this.FillColourBtn.Text = "Fill Colour";
             this.FillColourBtn.UseVisualStyleBackColor = false;
-            this.FillColourBtn.Click += new System.EventHandler(this.FillColourBtn_Click);
+            this.FillColourBtn.Click += new System.EventHandler(this.ToggleButton);
             // 
             // NameTb
             // 
@@ -111,7 +111,7 @@
             this.OutlineColourBtn.TabIndex = 17;
             this.OutlineColourBtn.Text = "Outline Colour";
             this.OutlineColourBtn.UseVisualStyleBackColor = false;
-            this.OutlineColourBtn.Click += new System.EventHandler(this.OutlineColourBtn_Click);
+            this.OutlineColourBtn.Click += new System.EventHandler(this.ToggleButton);
             // 
             // ExitBtn
             // 
@@ -137,7 +137,7 @@
             this.PieceDetailsBtn.TabIndex = 21;
             this.PieceDetailsBtn.Text = "Piece Details";
             this.PieceDetailsBtn.UseVisualStyleBackColor = false;
-            this.PieceDetailsBtn.Click += new System.EventHandler(this.PieceDetailsBtn_Click);
+            this.PieceDetailsBtn.Click += new System.EventHandler(this.ToggleButton);
             // 
             // ShapeBtn
             // 
@@ -150,7 +150,7 @@
             this.ShapeBtn.TabIndex = 20;
             this.ShapeBtn.Text = "Shape";
             this.ShapeBtn.UseVisualStyleBackColor = false;
-            this.ShapeBtn.Click += new System.EventHandler(this.ShapeBtn_Click);
+            this.ShapeBtn.Click += new System.EventHandler(this.ToggleButton);
             // 
             // AllBtn
             // 
@@ -176,7 +176,7 @@
             this.OutlineWidthBtn.TabIndex = 22;
             this.OutlineWidthBtn.Text = "Outline Width";
             this.OutlineWidthBtn.UseVisualStyleBackColor = false;
-            this.OutlineWidthBtn.Click += new System.EventHandler(this.OutlineWidthBtn_Click);
+            this.OutlineWidthBtn.Click += new System.EventHandler(this.ToggleButton);
             // 
             // SketchBtn
             // 
@@ -189,7 +189,7 @@
             this.SketchBtn.TabIndex = 24;
             this.SketchBtn.Text = "Sketch";
             this.SketchBtn.UseVisualStyleBackColor = false;
-            this.SketchBtn.Click += new System.EventHandler(this.SketchBtn_Click);
+            this.SketchBtn.Click += new System.EventHandler(this.ToggleButton);
             // 
             // LoadSetBtn
             // 

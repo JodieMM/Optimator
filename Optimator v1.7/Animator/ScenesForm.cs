@@ -127,111 +127,38 @@ namespace Animator
         }
 
         /// <summary>
-        /// Sets the initial rotation of the selected piece.
+        /// Reacts to UI elements to update the selected piece.
         /// </summary>
-        /// <param name="sender"></param>
+        /// <param name="sender">Modified UI element</param>
         /// <param name="e"></param>
-        private void RotationBar_ValueChanged(object sender, EventArgs e)
+        private void UpdateSelectedPiece(object sender, EventArgs e)
         {
             if (selected == null) { return; }
-
-            // Update Piece
-            selected.ToPiece().Originally.R = RotationBar.Value;
-
-            if (RotationBar == ActiveControl)
+            if (sender == RotationBar)
             {
-                DisplayDrawings();
+                selected.ToPiece().Originally.R = RotationBar.Value;
             }
-        }
-
-        /// <summary>
-        /// Sets the initial turn of the selected piece.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void TurnBar_ValueChanged(object sender, EventArgs e)
-        {
-            if (selected == null) { return; }
-
-            // Update Piece
-            selected.ToPiece().Originally.T = TurnBar.Value;
-
-            if (TurnBar == ActiveControl)
+            else if (sender == TurnBar)
             {
-                DisplayDrawings();
+                selected.ToPiece().Originally.T = TurnBar.Value;
             }
-        }
-
-        /// <summary>
-        /// Sets the initial spin of the selected piece.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void SpinBar_ValueChanged(object sender, EventArgs e)
-        {
-            if (selected == null) { return; }
-
-            // Update Piece
-            selected.ToPiece().Originally.S = SpinBar.Value;
-
-            if (SpinBar == ActiveControl)
+            else if (sender == SpinBar)
             {
-                DisplayDrawings();
+                selected.ToPiece().Originally.S = SpinBar.Value;
             }
-        }
-
-        /// <summary>
-        /// Sets the initial X position of the selected piece.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void XUpDown_ValueChanged(object sender, EventArgs e)
-        {
-            if (selected == null) { return; }
-
-            // Update Piece
-            selected.ToPiece().Originally.X = (int)XUpDown.Value;
-
-            if (XUpDown == ActiveControl)
+            else if (sender == XUpDown)
             {
-                DisplayDrawings();
+                selected.ToPiece().Originally.X = (int)XUpDown.Value;
             }
-        }
-
-        /// <summary>
-        /// Sets the initial Y position of the selected piece.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void YUpDown_ValueChanged(object sender, EventArgs e)
-        {
-            if (selected == null) { return; }
-
-            // Update Piece
-            selected.ToPiece().Originally.Y = (int)YUpDown.Value;
-
-            if (YUpDown == ActiveControl)
+            else if (sender == YUpDown)
             {
-                DisplayDrawings();
+                selected.ToPiece().Originally.Y = (int)YUpDown.Value;
             }
-        }
-
-        /// <summary>
-        /// Sets the initial size modifier of the selected piece.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void SizeBar_ValueChanged(object sender, EventArgs e)
-        {
-            if (selected == null) { return; }
-
-            // Update Piece
-            selected.ToPiece().Originally.SM = SizeBar.Value;
-
-            if (SizeBar == ActiveControl)
+            else if (sender == SizeBar)
             {
-                DisplayDrawings();
+                selected.ToPiece().Originally.SM = SizeBar.Value;
             }
+            if (sender == ActiveControl) { DisplayDrawings(); }
         }
 
         #endregion

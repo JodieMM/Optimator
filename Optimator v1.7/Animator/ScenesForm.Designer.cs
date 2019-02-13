@@ -242,7 +242,7 @@
             this.YUpDown.Name = "YUpDown";
             this.YUpDown.Size = new System.Drawing.Size(182, 27);
             this.YUpDown.TabIndex = 15;
-            this.YUpDown.ValueChanged += new System.EventHandler(this.YUpDown_ValueChanged);
+            this.YUpDown.ValueChanged += new System.EventHandler(this.UpdateSelectedPiece);
             // 
             // XLbl
             // 
@@ -273,7 +273,7 @@
             this.XUpDown.Name = "XUpDown";
             this.XUpDown.Size = new System.Drawing.Size(182, 27);
             this.XUpDown.TabIndex = 13;
-            this.XUpDown.ValueChanged += new System.EventHandler(this.XUpDown_ValueChanged);
+            this.XUpDown.ValueChanged += new System.EventHandler(this.UpdateSelectedPiece);
             // 
             // SpinLbl
             // 
@@ -368,7 +368,7 @@
             this.SizeBar.TabIndex = 119;
             this.SizeBar.TickFrequency = 100;
             this.SizeBar.Value = 100;
-            this.SizeBar.ValueChanged += new System.EventHandler(this.SizeBar_ValueChanged);
+            this.SizeBar.ValueChanged += new System.EventHandler(this.UpdateSelectedPiece);
             // 
             // OrderLbl
             // 
@@ -400,7 +400,7 @@
             this.SpinBar.Size = new System.Drawing.Size(189, 45);
             this.SpinBar.TabIndex = 118;
             this.SpinBar.TickFrequency = 30;
-            this.SpinBar.ValueChanged += new System.EventHandler(this.SpinBar_ValueChanged);
+            this.SpinBar.ValueChanged += new System.EventHandler(this.UpdateSelectedPiece);
             // 
             // RotationLbl
             // 
@@ -421,7 +421,7 @@
             this.TurnBar.Size = new System.Drawing.Size(189, 45);
             this.TurnBar.TabIndex = 117;
             this.TurnBar.TickFrequency = 30;
-            this.TurnBar.ValueChanged += new System.EventHandler(this.TurnBar_ValueChanged);
+            this.TurnBar.ValueChanged += new System.EventHandler(this.UpdateSelectedPiece);
             // 
             // DownBtn
             // 
@@ -444,7 +444,7 @@
             this.RotationBar.Size = new System.Drawing.Size(189, 45);
             this.RotationBar.TabIndex = 116;
             this.RotationBar.TickFrequency = 30;
-            this.RotationBar.ValueChanged += new System.EventHandler(this.RotationBar_ValueChanged);
+            this.RotationBar.ValueChanged += new System.EventHandler(this.UpdateSelectedPiece);
             // 
             // UpBtn
             // 

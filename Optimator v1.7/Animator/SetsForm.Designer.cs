@@ -35,6 +35,7 @@
             this.AddPieceBtn = new System.Windows.Forms.Button();
             this.OptionsMenu = new System.Windows.Forms.TabControl();
             this.SetPage = new System.Windows.Forms.TabPage();
+            this.AddPartLbl = new System.Windows.Forms.Label();
             this.PiecesTab = new System.Windows.Forms.TabPage();
             this.SizeLbl = new System.Windows.Forms.Label();
             this.SizeBar = new System.Windows.Forms.TrackBar();
@@ -58,8 +59,8 @@
             this.DrawDown = new System.Windows.Forms.PictureBox();
             this.DrawBase = new System.Windows.Forms.PictureBox();
             this.ExitBtn = new System.Windows.Forms.Button();
-            this.AddPartLbl = new System.Windows.Forms.Label();
             this.PreviewBtn = new System.Windows.Forms.Button();
+            this.SetBasePiece = new System.Windows.Forms.Button();
             this.OptionsMenu.SuspendLayout();
             this.SetPage.SuspendLayout();
             this.PiecesTab.SuspendLayout();
@@ -96,7 +97,7 @@
             this.NameTb.Location = new System.Drawing.Point(15, 15);
             this.NameTb.Margin = new System.Windows.Forms.Padding(2);
             this.NameTb.Name = "NameTb";
-            this.NameTb.Size = new System.Drawing.Size(300, 33);
+            this.NameTb.Size = new System.Drawing.Size(300, 58);
             this.NameTb.TabIndex = 1;
             this.NameTb.Text = "Set Name";
             // 
@@ -120,7 +121,7 @@
             this.AddTb.Location = new System.Drawing.Point(21, 107);
             this.AddTb.Margin = new System.Windows.Forms.Padding(2);
             this.AddTb.Name = "AddTb";
-            this.AddTb.Size = new System.Drawing.Size(350, 27);
+            this.AddTb.Size = new System.Drawing.Size(350, 46);
             this.AddTb.TabIndex = 69;
             this.AddTb.Text = "Part Name";
             // 
@@ -158,12 +159,23 @@
             this.SetPage.Controls.Add(this.NameTb);
             this.SetPage.Controls.Add(this.AddPieceBtn);
             this.SetPage.Controls.Add(this.AddSetBtn);
-            this.SetPage.Location = new System.Drawing.Point(4, 27);
+            this.SetPage.Location = new System.Drawing.Point(8, 50);
             this.SetPage.Name = "SetPage";
             this.SetPage.Padding = new System.Windows.Forms.Padding(3);
-            this.SetPage.Size = new System.Drawing.Size(392, 669);
+            this.SetPage.Size = new System.Drawing.Size(384, 642);
             this.SetPage.TabIndex = 0;
             this.SetPage.Text = "Set";
+            // 
+            // AddPartLbl
+            // 
+            this.AddPartLbl.AutoSize = true;
+            this.AddPartLbl.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AddPartLbl.Location = new System.Drawing.Point(135, 70);
+            this.AddPartLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.AddPartLbl.Name = "AddPartLbl";
+            this.AddPartLbl.Size = new System.Drawing.Size(185, 46);
+            this.AddPartLbl.TabIndex = 120;
+            this.AddPartLbl.Text = "Add Part";
             // 
             // PiecesTab
             // 
@@ -182,9 +194,9 @@
             this.PiecesTab.Controls.Add(this.OrderLbl);
             this.PiecesTab.Controls.Add(this.FlipsUpDown);
             this.PiecesTab.Controls.Add(this.FlipsCb);
-            this.PiecesTab.Location = new System.Drawing.Point(4, 27);
+            this.PiecesTab.Location = new System.Drawing.Point(8, 50);
             this.PiecesTab.Name = "PiecesTab";
-            this.PiecesTab.Size = new System.Drawing.Size(392, 669);
+            this.PiecesTab.Size = new System.Drawing.Size(384, 642);
             this.PiecesTab.TabIndex = 2;
             this.PiecesTab.Text = "Pieces";
             // 
@@ -195,7 +207,7 @@
             this.SizeLbl.Location = new System.Drawing.Point(15, 295);
             this.SizeLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.SizeLbl.Name = "SizeLbl";
-            this.SizeLbl.Size = new System.Drawing.Size(37, 19);
+            this.SizeLbl.Size = new System.Drawing.Size(73, 39);
             this.SizeLbl.TabIndex = 116;
             this.SizeLbl.Text = "Size";
             // 
@@ -204,12 +216,12 @@
             this.SizeBar.Location = new System.Drawing.Point(21, 322);
             this.SizeBar.Maximum = 1000;
             this.SizeBar.Name = "SizeBar";
-            this.SizeBar.Size = new System.Drawing.Size(350, 45);
+            this.SizeBar.Size = new System.Drawing.Size(350, 90);
             this.SizeBar.SmallChange = 5;
             this.SizeBar.TabIndex = 115;
             this.SizeBar.TickFrequency = 100;
             this.SizeBar.Value = 100;
-            this.SizeBar.Scroll += new System.EventHandler(this.SizeBar_Scroll);
+            this.SizeBar.Scroll += new System.EventHandler(this.UpdateSelectedPiece);
             // 
             // SpinLbl
             // 
@@ -218,7 +230,7 @@
             this.SpinLbl.Location = new System.Drawing.Point(15, 215);
             this.SpinLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.SpinLbl.Name = "SpinLbl";
-            this.SpinLbl.Size = new System.Drawing.Size(40, 19);
+            this.SpinLbl.Size = new System.Drawing.Size(78, 39);
             this.SpinLbl.TabIndex = 114;
             this.SpinLbl.Text = "Spin";
             // 
@@ -227,10 +239,10 @@
             this.SpinBar.Location = new System.Drawing.Point(21, 242);
             this.SpinBar.Maximum = 359;
             this.SpinBar.Name = "SpinBar";
-            this.SpinBar.Size = new System.Drawing.Size(350, 45);
+            this.SpinBar.Size = new System.Drawing.Size(350, 90);
             this.SpinBar.TabIndex = 113;
             this.SpinBar.TickFrequency = 10;
-            this.SpinBar.Scroll += new System.EventHandler(this.SpinBar_Scroll);
+            this.SpinBar.Scroll += new System.EventHandler(this.UpdateSelectedPiece);
             // 
             // TurnLbl
             // 
@@ -239,7 +251,7 @@
             this.TurnLbl.Location = new System.Drawing.Point(15, 135);
             this.TurnLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.TurnLbl.Name = "TurnLbl";
-            this.TurnLbl.Size = new System.Drawing.Size(43, 19);
+            this.TurnLbl.Size = new System.Drawing.Size(84, 39);
             this.TurnLbl.TabIndex = 112;
             this.TurnLbl.Text = "Turn";
             // 
@@ -248,10 +260,10 @@
             this.TurnBar.Location = new System.Drawing.Point(21, 162);
             this.TurnBar.Maximum = 359;
             this.TurnBar.Name = "TurnBar";
-            this.TurnBar.Size = new System.Drawing.Size(350, 45);
+            this.TurnBar.Size = new System.Drawing.Size(350, 90);
             this.TurnBar.TabIndex = 111;
             this.TurnBar.TickFrequency = 10;
-            this.TurnBar.Scroll += new System.EventHandler(this.TurnBar_Scroll);
+            this.TurnBar.Scroll += new System.EventHandler(this.UpdateSelectedPiece);
             // 
             // RotationLbl
             // 
@@ -260,7 +272,7 @@
             this.RotationLbl.Location = new System.Drawing.Point(15, 55);
             this.RotationLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.RotationLbl.Name = "RotationLbl";
-            this.RotationLbl.Size = new System.Drawing.Size(68, 19);
+            this.RotationLbl.Size = new System.Drawing.Size(135, 39);
             this.RotationLbl.TabIndex = 110;
             this.RotationLbl.Text = "Rotation";
             // 
@@ -269,10 +281,10 @@
             this.RotationBar.Location = new System.Drawing.Point(21, 82);
             this.RotationBar.Maximum = 359;
             this.RotationBar.Name = "RotationBar";
-            this.RotationBar.Size = new System.Drawing.Size(350, 45);
+            this.RotationBar.Size = new System.Drawing.Size(350, 90);
             this.RotationBar.TabIndex = 109;
             this.RotationBar.TickFrequency = 10;
-            this.RotationBar.Scroll += new System.EventHandler(this.RotationBar_Scroll);
+            this.RotationBar.Scroll += new System.EventHandler(this.UpdateSelectedPiece);
             // 
             // OriginalLbl
             // 
@@ -281,7 +293,7 @@
             this.OriginalLbl.Location = new System.Drawing.Point(15, 15);
             this.OriginalLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.OriginalLbl.Name = "OriginalLbl";
-            this.OriginalLbl.Size = new System.Drawing.Size(151, 23);
+            this.OriginalLbl.Size = new System.Drawing.Size(311, 46);
             this.OriginalLbl.TabIndex = 108;
             this.OriginalLbl.Text = "Original Positions";
             // 
@@ -320,7 +332,7 @@
             this.OrderLbl.Location = new System.Drawing.Point(18, 424);
             this.OrderLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.OrderLbl.Name = "OrderLbl";
-            this.OrderLbl.Size = new System.Drawing.Size(58, 23);
+            this.OrderLbl.Size = new System.Drawing.Size(116, 46);
             this.OrderLbl.TabIndex = 105;
             this.OrderLbl.Text = "Order";
             // 
@@ -336,7 +348,7 @@
             0,
             0});
             this.FlipsUpDown.Name = "FlipsUpDown";
-            this.FlipsUpDown.Size = new System.Drawing.Size(60, 27);
+            this.FlipsUpDown.Size = new System.Drawing.Size(60, 46);
             this.FlipsUpDown.TabIndex = 104;
             this.FlipsUpDown.ValueChanged += new System.EventHandler(this.FlipsUpDown_ValueChanged);
             // 
@@ -347,7 +359,7 @@
             this.FlipsCb.Location = new System.Drawing.Point(24, 524);
             this.FlipsCb.Margin = new System.Windows.Forms.Padding(2);
             this.FlipsCb.Name = "FlipsCb";
-            this.FlipsCb.Size = new System.Drawing.Size(68, 23);
+            this.FlipsCb.Size = new System.Drawing.Size(127, 43);
             this.FlipsCb.TabIndex = 103;
             this.FlipsCb.Text = "Flips?";
             this.FlipsCb.UseVisualStyleBackColor = true;
@@ -359,10 +371,10 @@
             this.SettingsPage.Controls.Add(this.SelectFromTopCb);
             this.SettingsPage.Controls.Add(this.BackColourBox);
             this.SettingsPage.Controls.Add(this.BackColourLbl);
-            this.SettingsPage.Location = new System.Drawing.Point(4, 27);
+            this.SettingsPage.Location = new System.Drawing.Point(8, 50);
             this.SettingsPage.Name = "SettingsPage";
             this.SettingsPage.Padding = new System.Windows.Forms.Padding(3);
-            this.SettingsPage.Size = new System.Drawing.Size(392, 669);
+            this.SettingsPage.Size = new System.Drawing.Size(384, 642);
             this.SettingsPage.TabIndex = 1;
             this.SettingsPage.Text = "Settings";
             // 
@@ -375,7 +387,7 @@
             this.SelectFromTopCb.Location = new System.Drawing.Point(18, 81);
             this.SelectFromTopCb.Margin = new System.Windows.Forms.Padding(2);
             this.SelectFromTopCb.Name = "SelectFromTopCb";
-            this.SelectFromTopCb.Size = new System.Drawing.Size(182, 23);
+            this.SelectFromTopCb.Size = new System.Drawing.Size(358, 43);
             this.SelectFromTopCb.TabIndex = 118;
             this.SelectFromTopCb.Text = "Select Piece from Top";
             this.SelectFromTopCb.UseVisualStyleBackColor = true;
@@ -398,7 +410,7 @@
             this.BackColourLbl.Location = new System.Drawing.Point(14, 21);
             this.BackColourLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.BackColourLbl.Name = "BackColourLbl";
-            this.BackColourLbl.Size = new System.Drawing.Size(93, 19);
+            this.BackColourLbl.Size = new System.Drawing.Size(184, 39);
             this.BackColourLbl.TabIndex = 116;
             this.BackColourLbl.Text = "Back Colour";
             // 
@@ -436,7 +448,7 @@
             // 
             this.ExitBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ExitBtn.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ExitBtn.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ExitBtn.Location = new System.Drawing.Point(360, 465);
             this.ExitBtn.Margin = new System.Windows.Forms.Padding(2);
             this.ExitBtn.Name = "ExitBtn";
@@ -444,36 +456,42 @@
             this.ExitBtn.TabIndex = 94;
             this.ExitBtn.Text = "Exit";
             this.ExitBtn.UseVisualStyleBackColor = false;
-            // 
-            // AddPartLbl
-            // 
-            this.AddPartLbl.AutoSize = true;
-            this.AddPartLbl.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AddPartLbl.Location = new System.Drawing.Point(135, 70);
-            this.AddPartLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.AddPartLbl.Name = "AddPartLbl";
-            this.AddPartLbl.Size = new System.Drawing.Size(92, 23);
-            this.AddPartLbl.TabIndex = 120;
-            this.AddPartLbl.Text = "Add Part";
+            this.ExitBtn.Click += new System.EventHandler(this.ExitBtn_Click);
             // 
             // PreviewBtn
             // 
             this.PreviewBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.PreviewBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PreviewBtn.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PreviewBtn.Location = new System.Drawing.Point(360, 360);
+            this.PreviewBtn.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PreviewBtn.Location = new System.Drawing.Point(503, 360);
             this.PreviewBtn.Margin = new System.Windows.Forms.Padding(2);
             this.PreviewBtn.Name = "PreviewBtn";
-            this.PreviewBtn.Size = new System.Drawing.Size(300, 90);
+            this.PreviewBtn.Size = new System.Drawing.Size(157, 90);
             this.PreviewBtn.TabIndex = 95;
             this.PreviewBtn.Text = "Preview";
             this.PreviewBtn.UseVisualStyleBackColor = false;
+            this.PreviewBtn.Click += new System.EventHandler(this.PreviewBtn_Click);
+            // 
+            // SetBasePiece
+            // 
+            this.SetBasePiece.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.SetBasePiece.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.SetBasePiece.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SetBasePiece.Location = new System.Drawing.Point(360, 360);
+            this.SetBasePiece.Margin = new System.Windows.Forms.Padding(2);
+            this.SetBasePiece.Name = "SetBasePiece";
+            this.SetBasePiece.Size = new System.Drawing.Size(139, 90);
+            this.SetBasePiece.TabIndex = 96;
+            this.SetBasePiece.Text = "Set As Base";
+            this.SetBasePiece.UseVisualStyleBackColor = false;
+            this.SetBasePiece.Click += new System.EventHandler(this.SetBasePiece_Click);
             // 
             // SetsForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.PaleGreen;
             this.ClientSize = new System.Drawing.Size(1100, 700);
+            this.Controls.Add(this.SetBasePiece);
             this.Controls.Add(this.PreviewBtn);
             this.Controls.Add(this.ExitBtn);
             this.Controls.Add(this.DrawRight);
@@ -540,5 +558,6 @@
         private System.Windows.Forms.Button ExitBtn;
         private System.Windows.Forms.Label AddPartLbl;
         private System.Windows.Forms.Button PreviewBtn;
+        private System.Windows.Forms.Button SetBasePiece;
     }
 }

@@ -70,71 +70,17 @@ namespace Animator
         }
 
         /// <summary>
-        /// Sets the WIP fill colour to match the loaded piece.
+        /// Changes the background colour of the clicked button to indicate
+        /// selection/deselection.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void FillColourBtn_Click(object sender, EventArgs e)
+        private void ToggleButton(object sender, EventArgs e)
         {
-            if (loaded != null)
+            if (loaded != null && sender is Button)
             {
-                if (AllBtn.BackColor == selected) { AllBtn.BackColor = button; }
-                FillColourBtn.BackColor = (FillColourBtn.BackColor == button) ? selected : button;
-            }
-        }
-
-        /// <summary>
-        /// Sets the WIP outline colour to match the loaded piece.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OutlineColourBtn_Click(object sender, EventArgs e)
-        {
-            if (loaded != null)
-            {
-                if (AllBtn.BackColor == selected) { AllBtn.BackColor = button; }
-                OutlineColourBtn.BackColor = (OutlineColourBtn.BackColor == button) ? selected : button;
-            }
-        }
-
-        /// <summary>
-        /// Sets the WIP outline width to match the loaded piece.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OutlineWidthBtn_Click(object sender, EventArgs e)
-        {
-            if (loaded != null)
-            {
-                if (AllBtn.BackColor == selected) { AllBtn.BackColor = button; }
-                OutlineWidthBtn.BackColor = (OutlineWidthBtn.BackColor == button) ? selected : button;
-            }
-        }
-
-        /// <summary>
-        /// Sets the WIP piece details to match the loaded piece.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void PieceDetailsBtn_Click(object sender, EventArgs e)
-        {
-            if (loaded != null)
-            {
-                if (AllBtn.BackColor == selected) { AllBtn.BackColor = button; }
-                PieceDetailsBtn.BackColor = (PieceDetailsBtn.BackColor == button) ? selected : button;
-            }
-        }
-
-        /// <summary>
-        /// Loads the entire piece.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ShapeBtn_Click(object sender, EventArgs e)
-        {
-            if (loaded != null)
-            {
-                ShapeBtn.BackColor = (ShapeBtn.BackColor == button) ? selected : button;
+                Button clicked = (Button)sender;
+                clicked.BackColor = (clicked.BackColor == button) ? selected : button;
             }
         }
 
@@ -152,19 +98,6 @@ namespace Animator
                 OutlineWidthBtn.BackColor = selected;
                 PieceDetailsBtn.BackColor = selected;
                 ShapeBtn.BackColor = selected;
-            }
-        }
-
-        /// <summary>
-        /// Adds the loaded piece to the sketch list.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void SketchBtn_Click(object sender, EventArgs e)
-        {
-            if (loaded != null)
-            {
-                SketchBtn.BackColor = (SketchBtn.BackColor == button) ? selected : button;
             }
         }
 
