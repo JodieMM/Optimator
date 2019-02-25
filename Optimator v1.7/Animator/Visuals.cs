@@ -43,14 +43,16 @@ namespace Animator
         /// </summary>
         /// <param name="piece">The piece to be drawn</param>
         /// <param name="g">The graphics to draw to</param>
-        public static void DrawPiece(Piece piece, Graphics g)
+        public static void DrawPiece(Piece piece, Graphics g, Color? outlineColour = null)
         {
             // Check piece defined at that point
             int dataRow = piece.FindRow();
             if (dataRow != -1)
             {
                 // Prepare for drawing
-                Pen pen = new Pen(piece.OutlineColour, (float)piece.OutlineWidth);
+                if (outlineColour is null)
+                    outlineColour = piece.OutlineColour;
+                Pen pen = new Pen((Color)outlineColour, (float)piece.OutlineWidth);
                 SolidBrush fill = new SolidBrush(piece.FillColour[0]);
                 List<double[]> sketchCoords = piece.GetCurrentPoints();
                 List<Spot> connectors = piece.Data[dataRow].Spots;

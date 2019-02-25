@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
 
 namespace Animator
 {
@@ -15,50 +16,35 @@ namespace Animator
         public double XRight { get; set; }
         public double Y { get; set; }
         public double YDown { get; set; }
+        public List<DataRow> data = new List<DataRow>();
 
         public string Connector { get; set; }
         public string Solid { get; set; }
 
         public Spot MatchX { get; set; }
         public Spot MatchY { get; set; }
-        public int DrawnLevel { get; set; }             // 0 = Drawn, 1 = First Symmetry, 2 = Second Symmetry
+        public int DrawnLevel { get; set; }     // TODO Remove?        // 0 = Drawn, 1 = First Symmetry, 2 = Second Symmetry
         #endregion
-
+        
 
         /// <summary>
-        /// Constructor for a drawn spot.
+        /// Constructor for a spot.
         /// </summary>
         /// <param name="x">X position</param>
         /// <param name="y">Y position</param>
-        public Spot(double x, double y, int drawn)
-        {
-            X = x;
-            XRight = x;
-            Y = y;
-            YDown = y;
-            Connector = Constants.connectorOptions[0];
-            Solid = Constants.solidOptions[0];
-        }
-
-        /// <summary>
-        /// Constructor for a spot built during refinement or loaded.
-        /// </summary>
-        /// <param name="x">X position</param>
         /// <param name="xr">Rotated X position</param>
-        /// <param name="y">Y position</param>
         /// <param name="yd">Turned Y position</param>
         /// <param name="connect">Connector from this spot to the next</param>
         /// <param name="solid">Flexibility of the spot</param>
         /// /// <param name="drawn">DrawLevel integer</param>
-        public Spot(double x, double xr, double y, double yd, string connect = null, string solid = null, int drawn = 0)
+        public Spot(double x, double y, double? xr = null, double? yd = null, string connect = null, string solid = null)
         {
             X = x;
-            XRight = xr;
             Y = y;
-            YDown = yd;
-            Connector = connect;
-            Solid = solid;
-            DrawnLevel = drawn;
+            XRight = xr ?? x;
+            YDown = yd ?? y;
+            Connector = connect ?? Constants.connectorOptions[0];
+            Solid = solid ?? Constants.solidOptions[0];
         }
 
 
@@ -71,7 +57,7 @@ namespace Animator
         /// </summary>
         /// <param name="angle">Original [0], rotated [1], turned [2]</param>
         /// <returns>Coordinates of the piece as a double</returns>
-        public double[] GetCoords(int angle)
+        public double[] GetCoordCombination(int angle)
         {
             switch (angle)
             {
@@ -86,6 +72,11 @@ namespace Animator
             }
         }
 
+        
+        public void GenerateData()
+        {
+            // TODO &Joins
+        }
 
 
         // ----- SET FUNCTIONS -----

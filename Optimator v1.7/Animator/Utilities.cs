@@ -224,20 +224,20 @@ namespace Animator
             for (int index = 0; index < spots.Count; index++)
             {
                 Spot spot = spots[index];
-                Spot insert = new Spot(spot.GetCoords(angle)[0], spot.GetCoords(angle)[1], 1);
+                Spot insert = new Spot(spot.GetCoordCombination(angle)[0], spot.GetCoordCombination(angle)[1], 1);
 
                 // If spot needs to switch with another spot
                 if (spot.DrawnLevel == 0 || right && spot.MatchY != null || down && spot.MatchX != null)
                 {
                     if (right)
                     {
-                        insert.X = (spot.MatchY != null) ? FlipAroundCentre(middle[0], spot.MatchY.GetCoords(angle)[0]) 
-                            : FlipAroundCentre(middle[0], spot.GetCoords(angle)[0]);
+                        insert.X = (spot.MatchY != null) ? FlipAroundCentre(middle[0], spot.MatchY.GetCoordCombination(angle)[0]) 
+                            : FlipAroundCentre(middle[0], spot.GetCoordCombination(angle)[0]);
                     }
                     if (down)
                     {
-                        insert.Y = (spot.MatchX != null) ? FlipAroundCentre(middle[1], spot.MatchX.GetCoords(angle)[1]) 
-                            : FlipAroundCentre(middle[1], spot.GetCoords(angle)[1]);
+                        insert.Y = (spot.MatchX != null) ? FlipAroundCentre(middle[1], spot.MatchX.GetCoordCombination(angle)[1]) 
+                            : FlipAroundCentre(middle[1], spot.GetCoordCombination(angle)[1]);
                     }
                 }
                 // If spot needs to flip but not swap
@@ -246,26 +246,26 @@ namespace Animator
                     if (right && down)
                     {
                         int searchIndex = FindSymmetricalCoordHome(spots, index, 1);
-                        double[] value = FindSymmetricalOppositeCoord(spots[searchIndex].GetCoords(angle),
-                                spots[Modulo(searchIndex - 1, spots.Count)].GetCoords(angle),
-                                spots[index].GetCoords(angle)[1], 1, spots[searchIndex].Connector);
+                        double[] value = FindSymmetricalOppositeCoord(spots[searchIndex].GetCoordCombination(angle),
+                                spots[Modulo(searchIndex - 1, spots.Count)].GetCoordCombination(angle),
+                                spots[index].GetCoordCombination(angle)[1], 1, spots[searchIndex].Connector);
                         insert.X = FlipAroundCentre(middle[0], value[0]);
                         insert.Y = FlipAroundCentre(middle[1], value[1]);
                     }
                     else if (right)
                     {
                         int searchIndex = FindSymmetricalCoordHome(spots, index, 1);
-                        double value = FindSymmetricalOppositeCoord(spots[searchIndex].GetCoords(angle),
-                                spots[Modulo(searchIndex - 1, spots.Count)].GetCoords(angle),
-                                spots[index].GetCoords(angle)[1], 1, spots[searchIndex].Connector)[0];
+                        double value = FindSymmetricalOppositeCoord(spots[searchIndex].GetCoordCombination(angle),
+                                spots[Modulo(searchIndex - 1, spots.Count)].GetCoordCombination(angle),
+                                spots[index].GetCoordCombination(angle)[1], 1, spots[searchIndex].Connector)[0];
                         insert.X = FlipAroundCentre(middle[0], value);
                     }
                     else if (down)
                     {
                         int searchIndex = FindSymmetricalCoordHome(spots, index, 0);
-                        double value = FindSymmetricalOppositeCoord(spots[searchIndex].GetCoords(angle),
-                                spots[Modulo(searchIndex - 1, spots.Count)].GetCoords(angle),
-                                spots[index].GetCoords(angle)[0], 0, spots[searchIndex].Connector)[1];
+                        double value = FindSymmetricalOppositeCoord(spots[searchIndex].GetCoordCombination(angle),
+                                spots[Modulo(searchIndex - 1, spots.Count)].GetCoordCombination(angle),
+                                spots[index].GetCoordCombination(angle)[0], 0, spots[searchIndex].Connector)[1];
                         insert.Y = FlipAroundCentre(middle[1], value);
                     }
                 }
@@ -307,17 +307,20 @@ namespace Animator
                         }
                     }
                     // If spot has no existing match, was drawn and is not a min/max for its xy
-                    else if (spots[index].DrawnLevel == 0 && spots[index].GetCoords(0)[xy] != highestPoints[1 + 2 * xy] 
-                        && spots[index].GetCoords(0)[xy] != highestPoints[0 + 2 * xy])
+                    else if (spots[index].DrawnLevel == 0 && spots[index].GetCoordCombination(0)[xy] != highestPoints[1 + 2 * xy] 
+                        && spots[index].GetCoordCombination(0)[xy] != highestPoints[0 + 2 * xy])
                     {
                         int insertIndex = FindSymmetricalCoordHome(spots, index, xy);
-                        double[] original = FindSymmetricalOppositeCoord(spots[insertIndex].GetCoords(0),
-                            spots[Modulo(insertIndex - 1, spots.Count)].GetCoords(0), spots[index].GetCoords(0)[xy], xy, spots[insertIndex].Connector);
-                        double rotated = FindSymmetricalOppositeCoord(spots[insertIndex].GetCoords(1),
-                            spots[Modulo(insertIndex - 1, spots.Count)].GetCoords(1), original[1], 1, spots[insertIndex].Connector)[0];
-                        double turned = FindSymmetricalOppositeCoord(spots[insertIndex].GetCoords(2),
-                            spots[Modulo(insertIndex - 1, spots.Count)].GetCoords(2), original[0], 0, spots[insertIndex].Connector)[1];
-                        Spot newSpot = new Spot(original[0], rotated, original[1], turned, spots[insertIndex].Connector, spots[insertIndex].Solid, 1);
+                        double[] original = FindSymmetricalOppositeCoord(spots[insertIndex].GetCoordCombination(0),
+                            spots[Modulo(insertIndex - 1, spots.Count)].GetCoordCombination(0), spots[index].GetCoordCombination(0)[xy], xy, spots[insertIndex].Connector);
+                        double rotated = FindSymmetricalOppositeCoord(spots[insertIndex].GetCoordCombination(1),
+                            spots[Modulo(insertIndex - 1, spots.Count)].GetCoordCombination(1), original[1], 1, spots[insertIndex].Connector)[0];
+                        double turned = FindSymmetricalOppositeCoord(spots[insertIndex].GetCoordCombination(2),
+                            spots[Modulo(insertIndex - 1, spots.Count)].GetCoordCombination(2), original[0], 0, spots[insertIndex].Connector)[1];
+                        Spot newSpot = new Spot(original[0], original[1], rotated, turned, spots[insertIndex].Connector, spots[insertIndex].Solid)
+                        {
+                            DrawnLevel = 1
+                        };
                         if (xy == 0)
                         {
                             newSpot.MatchX = spots[index];
@@ -371,7 +374,7 @@ namespace Animator
         {
             for (int index = 0; index < spots.Count; index++)
             {
-                if (index != matchIndex && spots[index].GetCoords(0)[xy] == spots[matchIndex].GetCoords(0)[xy])
+                if (index != matchIndex && spots[index].GetCoordCombination(0)[xy] == spots[matchIndex].GetCoordCombination(0)[xy])
                 {
                     return index;
                 }
@@ -417,16 +420,16 @@ namespace Animator
         /// <returns>The index where the matching point would go or -1 in error</returns>
         public static int FindSymmetricalCoordHome(List<Spot> spots, int matchIndex, int xy)
         {
-            double goal = spots[matchIndex].GetCoords(0)[xy];
+            double goal = spots[matchIndex].GetCoordCombination(0)[xy];
             bool bigger = false;
             int searchIndex = -1;
 
             // Find whether we're searching above or below the goal
             for (int index = 0; index < spots.Count && searchIndex == -1; index++)
             {
-                if (spots[index].GetCoords(0)[xy] != goal)
+                if (spots[index].GetCoordCombination(0)[xy] != goal)
                 {
-                    bigger = (spots[index].GetCoords(0)[xy] > goal);
+                    bigger = (spots[index].GetCoordCombination(0)[xy] > goal);
                     searchIndex = (index + 1) % spots.Count;
                 }
             }
@@ -434,11 +437,11 @@ namespace Animator
             // Find index position
             for (int index = 0; index < spots.Count; index++)
             {
-                if (spots[searchIndex].GetCoords(0)[xy] == goal)
+                if (spots[searchIndex].GetCoordCombination(0)[xy] == goal)
                 {
                     bigger = !bigger;
                 }
-                else if (spots[searchIndex].GetCoords(0)[xy] > goal != bigger)
+                else if (spots[searchIndex].GetCoordCombination(0)[xy] > goal != bigger)
                 {
                     return searchIndex;
                 }
@@ -656,7 +659,7 @@ namespace Animator
         /// <param name="x">The x coordinate of the click</param>
         /// <param name="y">The y coordinate of the click</param>
         /// <returns>The index of the piece clicked, or negative one if none selected</returns>
-        public static int FindClickedSelection(List<Piece> piecesList, int x, int y, bool fromTop)
+        public static int FindClickedSelection(List<Piece> piecesList, int x, int y, bool fromTop = true)
         {
             // Searches pieces either from the top or the bottom of the list
             int index;
@@ -691,8 +694,8 @@ namespace Animator
             {
                 for (int index = 0; index < toSearch.Count(); index++)
                 {
-                    if (x >= toSearch[index].GetCoords(angle)[0] - range && x <= toSearch[index].GetCoords(angle)[0] + range
-                        && y >= toSearch[index].GetCoords(angle)[1] - range && y <= toSearch[index].GetCoords(angle)[1] + range)
+                    if (x >= toSearch[index].GetCoordCombination(angle)[0] - range && x <= toSearch[index].GetCoordCombination(angle)[0] + range
+                        && y >= toSearch[index].GetCoordCombination(angle)[1] - range && y <= toSearch[index].GetCoordCombination(angle)[1] + range)
                     {
                         return index;
                     }

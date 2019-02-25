@@ -85,11 +85,11 @@ namespace Animator
             {
                 if (selectedSpot != null && DataRow.Spots.IndexOf(selectedSpot) != DataRow.Spots.Count - 1)
                 {
-                    DataRow.Spots.Insert(DataRow.Spots.IndexOf(selectedSpot) + 1, new Spot(e.X, e.Y, 0));
+                    DataRow.Spots.Insert(DataRow.Spots.IndexOf(selectedSpot) + 1, new Spot(e.X, e.Y));
                 }
                 else
                 {
-                    DataRow.Spots.Add(new Spot(e.X, e.Y, 0));
+                    DataRow.Spots.Add(new Spot(e.X, e.Y));
                 }
                 SelectSpot(DataRow.Spots[DataRow.Spots.Count - 1]);
             }
@@ -151,7 +151,7 @@ namespace Animator
             if (movingFar)
             {
                 DisplayDrawings();
-                Spot shadow = new Spot(e.X, e.Y, 0);
+                Spot shadow = new Spot(e.X, e.Y);
                 shadow.Draw(0, Constants.shadowShade, original);
                 shadow.Draw(1, Constants.shadowShade, rotated);
                 shadow.Draw(2, Constants.shadowShade, turned);
@@ -216,7 +216,7 @@ namespace Animator
             if (movingFar)
             {
                 DisplayDrawings();
-                Spot shadow = new Spot(e.X, selectedSpot.Y, 0);
+                Spot shadow = new Spot(e.X, selectedSpot.Y);
                 shadow.Draw(1, Constants.shadowShade, rotated);
             }
         }
@@ -279,7 +279,7 @@ namespace Animator
             if (movingFar)
             {
                 DisplayDrawings();
-                Spot shadow = new Spot(selectedSpot.X, e.Y, 0);
+                Spot shadow = new Spot(selectedSpot.X, e.Y);
                 shadow.Draw(2, Constants.shadowShade, turned);
             }
         }
@@ -441,21 +441,6 @@ namespace Animator
             {
                 if (!CheckPiecesValid(DataRow.Spots)) { return; }
                 ApplySegmentFully();
-
-                // TODO: Save joins (When figure out how to apply them!
-                //// Save Points
-                //WIP.Name = NameTb.Text;
-                //double[] middle = Utilities.FindMid(Utilities.ConvertSpotsToCoords(dataRow.Spots, 0));            //POTERROR: Middle of original, not r/t
-                //if (!Directory.Exists(Utilities.GetDirectory(Constants.JoinsFolder, WIP.Name)))
-                //{
-                //    Directory.CreateDirectory(Utilities.GetDirectory(Constants.JoinsFolder, WIP.Name));
-                //}
-                //for (int index = 0; index < joins.Count; index++)
-                //{
-                //    joins[index].Name = index.ToString();
-                //    joins[index].SaveJoin(middle);
-                //}
-
                 Utilities.SaveData(Utilities.GetDirectory(Constants.PiecesFolder, NameTb.Text, Constants.Txt), WIP.GetData());
                 Close();
             }
@@ -472,6 +457,7 @@ namespace Animator
 
 
         // ----- SHAPE TAB -----
+        #region Shape Tab
 
         /// <summary>
         /// Changes the fill colour of the shape.
@@ -565,6 +551,8 @@ namespace Animator
             ShowFixedBtn.BackColor = (ShowFixedBtn.BackColor == unpressed) ? pressed : unpressed;
             DisplayDrawings();
         }
+
+        #endregion
 
 
 
@@ -805,7 +793,8 @@ namespace Animator
                 double y = original[index][1];
                 double xr = rotated[index][0];
                 double yd = turned[index][1];
-                newRow.Spots.Add(new Spot(x, xr, y, yd, spts[index].Connector, spts[index].Solid, spts[index].DrawnLevel));
+                newRow.Spots.Add(new Spot(x, xr, y, yd, spts[index].Connector, spts[index].Solid));
+                newRow.Spots[newRow.Spots.Count - 1].DrawnLevel = spts[index].DrawnLevel;
             }
             return newRow;
         }

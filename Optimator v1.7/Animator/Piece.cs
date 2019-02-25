@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 
 namespace Animator
 {
@@ -33,15 +32,14 @@ namespace Animator
         public decimal OutlineWidth { get; set; }
         public string PieceDetails { get; set; }                   // Wind resistance and more
 
-        // Sets         //TODO: Remove excess
+        // Sets
         public Piece AttachedTo { get; set; } = null;
-        public Join AttachPoint { get; set; } = null;
-        public Join OwnPoint { get; set; } = null;
+        public Spot Join { get; set; } = null;
         public Set PieceOf { get; set; } = null;
 
         // Set Ordering
-        public bool InFront { get; set; } = true;
         public double AngleFlip { get; set; } = -1;
+        public int IndexSwitch { get; set; } = 0;
 
         //Scenes
         public Originals Originally { get; set; } = null;
@@ -115,16 +113,12 @@ namespace Animator
         #region Get Functions
        
         /// <summary>
-        /// Gets the size modifier with considerations
+        /// Gets the size modifier with considerations as a decimal
         /// </summary>
         /// <returns>Size Modifier</returns>
         public double GetSizeMod()
         {
-            if (GetIsAttached())
-            {
-                return (SM/100.0) * (AttachedTo.GetSizeMod()/100.0) * 100.0;
-            }
-            return SM;
+            return IsAttached() ? (SM / 100.0) * (AttachedTo.GetSizeMod()) : SM / 100;
         }
 
         /// <summary>
@@ -133,11 +127,8 @@ namespace Animator
         /// <returns>double[] { X, Y }</returns>
         public double[] GetCoords()
         {
-            if (GetIsAttached())
-            {
-                return new double[] { X + AttachedTo.GetCoords()[0] + GetPointChange()[0], Y + AttachedTo.GetCoords()[1] + GetPointChange()[1] };
-            }
-            return new double[] { X, Y };
+            return IsAttached() ? new double[] { X + AttachedTo.GetCoords()[0] + GetPointChange()[0],
+                Y + AttachedTo.GetCoords()[1] + GetPointChange()[1] } : new double[] { X, Y };
         }
 
         /// <summary>
@@ -150,15 +141,15 @@ namespace Animator
 
             // Original Angles
             angles[0] = R; // + S * Math.Sin(Utilities.ToRad(T));
-            angles[1] = T + S * Math.Sin(Utilities.ToRad(R));
-            angles[2] = S * Math.Cos(Utilities.ToRad(R)); // + S * Math.Cos(Utilities.ToRad(T));
+            angles[1] = T; //+ S * Math.Sin(Utilities.ToRad(R));
+            angles[2] = S; //* Math.Cos(Utilities.ToRad(R)); // + S * Math.Cos(Utilities.ToRad(T));
 
             // Build Off Attached
-            if (GetIsAttached())
+            if (IsAttached())
             {
-                angles[0] += AttachedTo.GetAngles()[0];
-                angles[1] += AttachedTo.GetAngles()[1];
-                angles[2] += AttachedTo.GetAngles()[2];
+                angles[0] += AttachedTo.GetAngles()[0] % 360;
+                angles[1] += AttachedTo.GetAngles()[1] % 360;
+                angles[2] += AttachedTo.GetAngles()[2] % 360;
             }
 
             // Modulus of 360 degrees
@@ -172,7 +163,7 @@ namespace Animator
         /// Finds whether the piece is attached to another piece
         /// </summary>
         /// <returns>If attached</returns>
-        public bool GetIsAttached()
+        public bool IsAttached()
         {
             return AttachedTo != null;
         }
@@ -226,19 +217,31 @@ namespace Animator
         /// Attaches this piece to another, forming or continuing a set
         /// </summary>
         /// <param name="attach">The piece being attached to</param>
-        /// <param name="attachmentPoint">The point of the attaching piece</param>
-        /// <param name="point">The point of the current piece</param>
-        /// <param name="front">Whether this piece goes in front of the other</param>
+        /// <param name="join">The point where the piece attaches to its base</param>
         /// <param name="angleFlip">The angle when front is changed</param>
-        public void AttachToPiece(Piece attach, Join attachmentPoint, Join point, bool front, double angleFlip)
+        /// <param name="indexSwitch">The index position the piece takes when flipped</param>
+        public void AttachToPiece(Piece attach, Spot join = null, double angleFlip = -1, int indexSwitch = 0)
         {
             AttachedTo = attach;
-            AttachPoint = attachmentPoint;
-            OwnPoint = point;
-            InFront = front;
+            if (join == null)
+                join = new Spot(GetCoords()[0], GetCoords()[1]);
+            join.GenerateData();
+            Join = join;
             AngleFlip = angleFlip;
-            X = 0;
-            Y = 0;
+            IndexSwitch = indexSwitch;
+        }
+
+        /// <summary>
+        /// Detaches the piece from its current base.
+        /// </summary>
+        public void Deattach()
+        {
+            X = GetCoords()[0];
+            Y = GetCoords()[1];
+            AttachedTo = null;
+            Join = null;
+            AngleFlip = -1;
+            IndexSwitch = 0;
         }
 
         #endregion
@@ -273,6 +276,15 @@ namespace Animator
         public override void Draw(Graphics g)
         {
             Visuals.DrawPiece(this, g);
+        }
+
+        /// <summary>
+        /// Draws the piece to the provided graphics with a specific outline colour.
+        /// </summary>
+        /// <param name="g">Provided graphics</param>
+        public void Draw(Graphics g, Color outline)
+        {
+            Visuals.DrawPiece(this, g, outline);
         }
 
         /// <summary>
@@ -314,23 +326,15 @@ namespace Animator
             foreach (Spot spt in spts)
             {
                 if (dataRow.RotTo != dataRow.RotFrom)
-                {
                     currentPoints.Add(new double[] { spt.X + (spt.XRight - spt.X) * rotationMultiplier, spt.Y });
-                }
                 else
-                {
                     currentPoints.Add(new double[] { spt.X, spt.Y });
-                }
             }
 
             // Turn Adjustment
             for (int index = 0; index < spts.Count; index++)
-            {
                 if (dataRow.TurnTo != dataRow.TurnFrom)
-                {
                     currentPoints[index][1] += (spts[index].YDown - spts[index].Y) * turnMultiplier;
-                }
-            }
 
             // Recentre
             if (Recentre)
@@ -344,7 +348,7 @@ namespace Animator
             }
 
             // Spin and Size Adjustment
-            currentPoints = SpinMeRound(currentPoints, GetSizeMod() / 100.0);
+            currentPoints = SpinMeRound(currentPoints);
 
             return currentPoints;
         }
@@ -353,16 +357,15 @@ namespace Animator
         /// Spins the coords provided and modifies their size.
         /// </summary>
         /// <param name="pointsArray">The points to be spun</param>
-        /// <param name="sizeModifier">The size modifier to be applied</param>
         /// <returns></returns>
-        public List<double[]> SpinMeRound(List<double[]> pointsArray, double sizeModifier)
+        public List<double[]> SpinMeRound(List<double[]> pointsArray)
         {
             // Spin Adjustment
             for (int index = 0; index < pointsArray.Count; index++)
             {
                 if (!(pointsArray[index][0] == GetCoords()[0] && pointsArray[index][1] == GetCoords()[1]))
                 {
-                    double hypotenuse = Math.Sqrt(Math.Pow(GetCoords()[0] - pointsArray[index][0], 2) + Math.Pow(GetCoords()[1] - pointsArray[index][1], 2)) * sizeModifier;
+                    double hypotenuse = Math.Sqrt(Math.Pow(GetCoords()[0] - pointsArray[index][0], 2) + Math.Pow(GetCoords()[1] - pointsArray[index][1], 2)) * GetSizeMod();
                     // Find Angle
                     double pointAngle;
                     if (pointsArray[index][0] == GetCoords()[0] && pointsArray[index][1] < GetCoords()[1])
@@ -410,15 +413,21 @@ namespace Animator
         }
 
         /// <summary>
-        /// Finds how much the point has changed from its attached to piece.
+        /// Finds how much the join has changed from its original join position.
         /// </summary>
         /// <returns>double[] { X change, Y change }</returns>
         private double[] GetPointChange()
         {
-            if (!GetIsAttached()) { return new double[] { 0, 0 }; }
-            double[] baseCoords = AttachPoint.GetCurrentPoints(Constants.MidX, Constants.MidY);
-            double[] thisCoords = OwnPoint.GetCurrentPoints(Constants.MidX, Constants.MidY);
-            return new double[] { baseCoords[0] - thisCoords[0], baseCoords[1] - thisCoords[1] };
+            DataRow dataRow = Join.data[Utilities.FindRow(R, T, Join.data)];
+            Spot currentSpot = dataRow.Spots[0];
+
+            double rMod = (dataRow.RotFrom == dataRow.RotTo) ? 0 : (R - dataRow.RotFrom) / (dataRow.RotTo - dataRow.RotFrom);
+            double tMod = (dataRow.TurnFrom == dataRow.TurnTo) ? 0 : (T - dataRow.TurnFrom) / (dataRow.TurnTo - dataRow.TurnFrom);
+
+            double[] returning = new double[] { (currentSpot.X + (currentSpot.XRight - currentSpot.X) * rMod) - Join.X,
+            (currentSpot.Y + (currentSpot.YDown - currentSpot.Y) * tMod) - Join.Y };
+            List<double[]> listSpot = new List<double[]> { returning };
+            return SpinMeRound(listSpot)[0];
         }
 
         /// <summary>

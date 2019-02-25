@@ -37,19 +37,21 @@ namespace Animator
             for (int index = 0; index < data.Count; index++)
             {
                 string[] dataSections = data[index].Split(Constants.Semi);
+                string[] pieceData = dataSections[1].Split(Constants.Colon);
+
+                // Create piece with status
                 Piece WIP = PiecesList[index];
-                if (dataSections.Length == 7)
-                {
+                WIP.SetValues(double.Parse(pieceData[0]), double.Parse(pieceData[1]), double.Parse(pieceData[2]),
+                        double.Parse(pieceData[3]), double.Parse(pieceData[4]), double.Parse(pieceData[5]));
+
+                // Set base piece or attach piece to base
+                if (dataSections.Length == 2)
                     BasePiece = WIP;
-                    WIP.SetValues(double.Parse(dataSections[1]), double.Parse(dataSections[2]), double.Parse(dataSections[3]),
-                        double.Parse(dataSections[4]), double.Parse(dataSections[5]), double.Parse(dataSections[6]));
-                }
                 else
                 {
-                    WIP.AttachToPiece(PiecesList[int.Parse(dataSections[2])], new Join(dataSections[3], PiecesList[int.Parse(dataSections[2])]),
-                        new Join(dataSections[1], WIP), bool.Parse(dataSections[10]), double.Parse(dataSections[11]));
-                    WIP.SetValues(double.Parse(dataSections[4]), double.Parse(dataSections[5]), double.Parse(dataSections[6]),
-                        double.Parse(dataSections[7]), double.Parse(dataSections[8]), double.Parse(dataSections[9]));
+                    string[] spotCoords = dataSections[3].Split(Constants.Colon);
+                    WIP.AttachToPiece(PiecesList[int.Parse(dataSections[2])], new Spot(double.Parse(spotCoords[0]), double.Parse(spotCoords[1]),
+                        double.Parse(spotCoords[2]), double.Parse(spotCoords[3])), double.Parse(dataSections[4]), int.Parse(dataSections[5]));
                 }
             }
         }
@@ -82,18 +84,13 @@ namespace Animator
             for (int index = 0; index < PiecesList.Count; index++)
             {
                 Piece piece = PiecesList[index];
-                if (piece == BasePiece)
-                {
-                    newData.Add(piece.Name + Constants.SemiS + piece.X + Constants.SemiS + piece.Y + Constants.SemiS +
-                        piece.R + Constants.SemiS + piece.T + Constants.SemiS + piece.S + Constants.SemiS + piece.SM);
-                }
-                else
-                {
-                    newData.Add(piece.Name + Constants.SemiS + piece.OwnPoint.Name + Constants.SemiS + PiecesList.IndexOf(piece.AttachedTo) +
-                        Constants.SemiS + piece.AttachPoint.Name + Constants.SemiS + piece.X + Constants.SemiS + piece.Y + Constants.SemiS +
-                        piece.R + Constants.SemiS + piece.T + Constants.SemiS + piece.S + Constants.SemiS + piece.SM + Constants.SemiS +
-                        (index > baseIndex) + Constants.SemiS + piece.AngleFlip);
-                }
+                string pieceDetails = piece.Name + Constants.SemiS + piece.X + Constants.ColonS + piece.Y + Constants.ColonS +
+                        piece.R + Constants.ColonS + piece.T + Constants.ColonS + piece.S + Constants.ColonS + piece.SM;
+                if (piece != BasePiece)
+                    pieceDetails += Constants.SemiS + PiecesList.IndexOf(piece.AttachedTo) + Constants.SemiS + piece.Join.X + Constants.ColonS +
+                        piece.Join.Y + Constants.ColonS + piece.Join.XRight + Constants.ColonS + piece.Join.YDown + Constants.SemiS +
+                        piece.AngleFlip + Constants.SemiS + piece.IndexSwitch;
+                newData.Add(pieceDetails);
             }
             return newData;
         }
@@ -122,12 +119,10 @@ namespace Animator
         /// <param name="g">Provided graphics</param>
         public override void Draw(Graphics g)
         {
-            //TODO: Sort order!
-            //List<Piece> orderedPieces = Utilities.SortOrder(partsList); <<< OLD
-            foreach (Piece piece in PiecesList)
-            {
+            // TODO: Sort order! - update to include flip index
+            List<Piece> orderedPieces = SortOrder();
+            foreach (Piece piece in orderedPieces)
                 piece.Draw(g);
-            }
         }
 
         /// <summary>
@@ -148,31 +143,21 @@ namespace Animator
                 if (index < baseIndex)
                 {
                     if (working.GetAngles()[0] > working.AngleFlip && working.GetAngles()[0] < working.AngleFlip + 180)
-                    {
                         putInFront.Add(working);
-                    }
                     else
-                    {
                         order.Add(working);
-                    }
                 }
                 // In Front of Base
                 else if (index > baseIndex)
                 {
                     if (working.GetAngles()[0] > working.AngleFlip && working.GetAngles()[0] < working.AngleFlip + 180)
-                    {
                         order.Add(working);
-                    }
                     else
-                    {
                         putInFront.Add(working);
-                    }
                 }
                 // Is Base
                 else
-                {
                     order.Add(BasePiece);
-                }
                 order.AddRange(putInFront);
             }
             return order;

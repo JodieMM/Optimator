@@ -18,6 +18,7 @@ namespace Animator
         public List<Spot> Spots { get; set; } = new List<Spot>();
         #endregion
 
+
         /// <summary>
         /// DataRow constructor for a new DataRow/ new Piece.
         /// </summary>
@@ -63,7 +64,8 @@ namespace Animator
                     string[] individualCoords = coords[index].Split(Constants.Comma);
                     Spots.Add(new Spot(Convert.ToDouble(individualCoords[0]), Convert.ToDouble(individualCoords[1]),
                         Convert.ToDouble(individualCoords[2]), Convert.ToDouble(individualCoords[3]), joins[index],
-                        solids[index], int.Parse(drawns[index])));
+                        solids[index]));
+                    Spots[Spots.Count - 1].DrawnLevel = int.Parse(drawns[index]);
                 }
             }
             else
@@ -93,7 +95,7 @@ namespace Animator
             for (int index = 0; index < Spots.Count; index++)
             {
                 Spot spot = Spots[index];
-                WIPstring += spot.X + Constants.CommaS + spot.XRight + Constants.CommaS + spot.Y + Constants.CommaS + spot.YDown;
+                WIPstring += spot.X + Constants.CommaS + spot.Y + Constants.CommaS + spot.XRight + Constants.CommaS + spot.YDown;
                 WIPstring += (index == Spots.Count - 1) ? "" : Constants.ColonS;
             }
 
@@ -166,7 +168,8 @@ namespace Animator
             List<Spot> newSpots = new List<Spot>();
             foreach (Spot spot in Spots)
             {
-                newSpots.Add(new Spot(spot.X, spot.XRight, spot.Y, spot.YDown, spot.Connector, spot.Solid, spot.DrawnLevel));
+                newSpots.Add(new Spot(spot.X, spot.XRight, spot.Y, spot.YDown, spot.Connector, spot.Solid));
+                newSpots[newSpots.Count - 1].DrawnLevel = spot.DrawnLevel;
             }
 
             // Set MatchX and MatchY of new spots based on index to de-reference matches

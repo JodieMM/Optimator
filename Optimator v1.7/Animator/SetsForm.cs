@@ -13,9 +13,8 @@ namespace Animator
     public partial class SetsForm : Form
     {
         #region Sets Form Variables
-        private Set WIP = new Set();        //TODO: Add preview button and a save that records the new joins
+        private Set WIP = new Set();
         private Piece selected = null;
-        private Color selectedOC;
 
         private Graphics original;
         private Graphics rotated;
@@ -23,7 +22,10 @@ namespace Animator
 
         private int moving = 0;             // 0 = not, 1 = X & Y, 2 = X, 3 = Y
         private bool movingFar = false;     // Whether the piece is being selected or moved
-        private int[] originalMoving = new int[] { 0, 0 };
+        private int[] originalMoving;
+
+        private Color unpressed = Color.FromArgb(192, 255, 192);
+        private Color pressed = Color.FromArgb(153, 255, 153);
         #endregion
 
 
@@ -51,29 +53,17 @@ namespace Animator
         // ----- OPTION BUTTONS -----
 
         /// <summary>
-        /// Sets the selected piece as base piece.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void SetBasePiece_Click(object sender, EventArgs e)
-        {
-            if (selected != null)
-            {
-                WIP.BasePiece = selected;
-                SetBasePiece.Enabled = false;
-            }
-        }
-
-        /// <summary>
         /// Displays a preview of the set.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void PreviewBtn_Click(object sender, EventArgs e)
         {
-            CompleteSet();
-            PreviewForm previewForm = new PreviewForm(WIP);
-            previewForm.Show();
+            if (CheckSingularBasePiece())
+            {
+                PreviewForm previewForm = new PreviewForm(WIP);
+                previewForm.Show();
+            }
         }
 
         /// <summary>
@@ -102,13 +92,11 @@ namespace Animator
         private void CompleteBtn_Click(object sender, EventArgs e)
         {
             if (WIP.PiecesList.Count < 1)
-            {
                 Close();
-            }
+            else if (!CheckSingularBasePiece())
+                MessageBox.Show("Please connect all pieces or remove unconnected pieces.", "Multiple Sets", MessageBoxButtons.OK);
             else if (!Constants.PermittedName.IsMatch(NameTb.Text))
-            {
                 MessageBox.Show("Please choose a valid name for your set. Name can only include letters and numbers.", "Name Invalid", MessageBoxButtons.OK);
-            }
             // Name is valid
             else
             {
@@ -116,7 +104,8 @@ namespace Animator
                 if (File.Exists(Utilities.GetDirectory(Constants.SetsFolder, NameTb.Text, Constants.Txt)))
                 {
                     DialogResult result = MessageBox.Show("This name is already in use. Do you want to override the existing set?", "Override Confirmation", MessageBoxButtons.YesNo);
-                    if (result == DialogResult.No) { return; }
+                    if (result == DialogResult.No)
+                        return;
                 }
 
                 // Save Set and Close Form
@@ -139,9 +128,10 @@ namespace Animator
 
 
         // ----- SET TAB -----
+        #region Set Tab
 
         /// <summary>
-        /// Adds a piece to the set.
+        /// Adds a part to the set.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -173,7 +163,6 @@ namespace Animator
                 if (WIP.PiecesList.Count == 1)
                 {
                     WIP.BasePiece = selected;
-                    SetBasePiece.Enabled = false;
                 }
                 DisplayDrawings();
             }
@@ -187,76 +176,47 @@ namespace Animator
             }
         }
 
-
-
-        // ----- PIECES TAB -----
-        #region Pieces Tab
-
         /// <summary>
-        /// Updates the selected piece based on the UI object
-        /// that was interacted with.
-        /// </summary>
-        /// <param name="sender">Touched UI object</param>
-        /// <param name="e"></param>
-        private void UpdateSelectedPiece(object sender, EventArgs e)
-        {
-            if (selected == null) { return; }
-            if (sender == RotationBar)
-            {
-                selected.R = RotationBar.Value;
-            }
-            else if (sender == TurnBar)
-            {
-                selected.T = TurnBar.Value;
-            }
-            else if (sender == SpinBar)
-            {
-                selected.S = SpinBar.Value;
-            }
-            else if (sender == SizeBar)
-            {
-                selected.SM = SizeBar.Value;
-            }
-            DisplayDrawings();
-        }
-        
-        /// <summary>
-        /// Moves the selected piece upwards in order.
+        /// Changes the selection option to allow for base piece choice,
+        /// join movement or normal selection.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void UpBtn_Click(object sender, EventArgs e)
+        private void SetSelectionMod_Click(object sender, EventArgs e)
         {
-            if (selected != null)
+            if (selected == null || (sender == MoveJoinBtn && !selected.IsAttached()))
+                return;
+
+            Button sent = (Button)sender;
+            if (sent.BackColor == unpressed)
             {
-                int selectedIndex = WIP.PiecesList.IndexOf(selected);
-                if (selectedIndex != -1 && selectedIndex < WIP.PiecesList.Count - 1)
-                {
-                    Piece holding = WIP.PiecesList[selectedIndex];
-                    WIP.PiecesList[selectedIndex] = WIP.PiecesList[selectedIndex + 1];
-                    WIP.PiecesList[selectedIndex + 1] = holding;
-                    DisplayDrawings();
-                }
+                SelectBaseBtn.BackColor = unpressed;
+                MoveJoinBtn.BackColor = unpressed;
+                sent.BackColor = pressed;
             }
+            else
+                sent.BackColor = unpressed;
         }
 
         /// <summary>
-        /// Moves the selected piece down in order.
+        /// Moves the selected piece upwards or downwards in order.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void DownBtn_Click(object sender, EventArgs e)
+        private void UpOrDownBtn_Click(object sender, EventArgs e)
         {
-            if (selected != null)
+            if (selected == null)
+                return;
+
+            int selectedIndex = WIP.PiecesList.IndexOf(selected);
+            bool condition = sender == UpBtn ? selectedIndex != -1 && selectedIndex < WIP.PiecesList.Count - 1 : selectedIndex > 0;
+            if (condition)
             {
-                int selectedIndex = WIP.PiecesList.IndexOf(selected);
-                if (selectedIndex > 0)
-                {
-                    Piece holding = WIP.PiecesList[selectedIndex];
-                    WIP.PiecesList[selectedIndex] = WIP.PiecesList[selectedIndex - 1];
-                    WIP.PiecesList[selectedIndex - 1] = holding;
-                    DisplayDrawings();
-                }
+                int change = sender == UpBtn ? 1 : -1;
+                Piece holding = WIP.PiecesList[selectedIndex];
+                WIP.PiecesList[selectedIndex] = WIP.PiecesList[selectedIndex + change];
+                WIP.PiecesList[selectedIndex + change] = holding;
+                DisplayDrawings();
             }
         }
 
@@ -291,6 +251,38 @@ namespace Animator
 
 
 
+        // ----- PIECES TAB -----
+
+        /// <summary>
+        /// Updates the selected piece based on the UI object
+        /// that was interacted with.
+        /// </summary>
+        /// <param name="sender">Touched UI object</param>
+        /// <param name="e"></param>
+        private void UpdateSelectedPiece(object sender, EventArgs e)
+        {
+            if (selected == null) { return; }
+            if (sender == RotationBar)
+            {
+                selected.R = RotationBar.Value;
+            }
+            else if (sender == TurnBar)
+            {
+                selected.T = TurnBar.Value;
+            }
+            else if (sender == SpinBar)
+            {
+                selected.S = SpinBar.Value;
+            }
+            else if (sender == SizeBar)
+            {
+                selected.SM = SizeBar.Value;
+            }
+            DisplayDrawings();
+        }
+
+
+
         // ----- SETTINGS TAB -----
 
         /// <summary>
@@ -322,19 +314,44 @@ namespace Animator
 
         /// <summary>
         /// Starts click preparation, checking for a click or drag.
+        /// May act differently if buttons are pressed.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void DrawBase_MouseDown(object sender, MouseEventArgs e)
         {
-            // Choose and Update Selected Piece (If Any)
-            DeselectPiece();
-            int selectedIndex = Utilities.FindClickedSelection(WIP.PiecesList, e.X, e.Y, SelectFromTopCb.Checked);
-            if (selectedIndex != -1)
+            // Move the Piece's Join            
+            if (MoveJoinBtn.BackColor == pressed && Math.Abs(e.X - selected.Join.X) > Constants.ClickPrecision && 
+                Math.Abs(e.Y - selected.Join.Y) > Constants.ClickPrecision)
             {
-                SelectPiece(WIP.PiecesList[selectedIndex]);
-                originalMoving = new int[] { e.X, e.Y };
-                moving = (sender == DrawBase) ? 1 : (sender == DrawRight) ? 2 : 3;
+                // TODO: &Joins
+                //selected.Join = NEW JOIN
+            }
+            else
+            {
+                // Check if Piece Selected
+                int selectedIndex = Utilities.FindClickedSelection(WIP.PiecesList, e.X, e.Y, SelectFromTopCb.Checked);
+                if (selectedIndex != -1)
+                {
+                    // Set a new base for the selected piece and adjust coords and join
+                    if (SelectBaseBtn.BackColor == pressed && selected != WIP.PiecesList[selectedIndex])
+                        selected.AttachToPiece(WIP.PiecesList[selectedIndex]);
+
+                    // Select self as base
+                    else if (SelectBaseBtn.BackColor == pressed)
+                        selected.Deattach();
+
+                    // Select a new piece
+                    else
+                    {
+                        DeselectPiece();
+                        SelectPiece(WIP.PiecesList[selectedIndex]);
+                        originalMoving = new int[] { e.X, e.Y };
+                        moving = (sender == DrawBase) ? 1 : (sender == DrawRight) ? 2 : 3;
+                    }
+                }
+                else
+                    DeselectPiece();
             }
             DisplayDrawings();
         }
@@ -351,17 +368,15 @@ namespace Animator
 
             // Invalid Mouse Position
             if (e.X < 0 || e.Y < 0 || e.X > DrawBase.Size.Width || e.Y > DrawBase.Size.Height)
-            {
                 StopMoving();
-            }
+
             // Move Point
             else
             {
                 if (!movingFar)
-                {
                     movingFar = Math.Abs(selected.X - e.X) > Constants.ClickPrecision
                         || Math.Abs(selected.Y - e.Y) > Constants.ClickPrecision;
-                }
+
                 // TODO: Fix!
                 //if (movingFar)
                 //{
@@ -388,7 +403,6 @@ namespace Animator
             if (moving != movingCheck) { return; }
             if (movingFar)
             {
-                // TODO: Fix!
                 selected.X += e.X - originalMoving[0];
                 selected.Y += e.Y - originalMoving[1];
             }
@@ -417,7 +431,8 @@ namespace Animator
             {
                 // Delete Selected Piece
                 case Keys.Delete:
-                    if (selected == null) { return; }
+                    if (selected == null)
+                        return;
                     WIP.PiecesList.Remove(selected);
                     selected = null;
                     DisplayDrawings();
@@ -448,30 +463,36 @@ namespace Animator
             rotated = DrawRight.CreateGraphics();
             turned = DrawDown.CreateGraphics();
 
-            // Draw Base Board
-            WIP.ToPiece().R = 0;
+            // Draw To Boards
+            WIP.ToPiece().R = 0; WIP.ToPiece().T = 0;
+            DrawToBoard(original);
+            WIP.ToPiece().R = 89.9999; WIP.ToPiece().T = 0;
+            DrawToBoard(rotated);
+            WIP.ToPiece().R = 0; WIP.ToPiece().T = 89.9999;
+            DrawToBoard(turned);
             WIP.ToPiece().T = 0;
-            foreach (Piece piece in WIP.PiecesList)
-            {
-                piece.Draw(original);
-            }
+        }
 
-            // Draw Rotated Board
-            WIP.ToPiece().R = 89.9999;
-            WIP.ToPiece().T = 0;
+        /// <summary>
+        /// Draws the WIP to the selected board including displaying
+        /// select colours.
+        /// </summary>
+        /// <param name="board">The graphics to be display the piece on</param>
+        private void DrawToBoard(Graphics board)
+        {
             foreach (Piece piece in WIP.PiecesList)
             {
-                piece.Draw(rotated);
-            }
+                if (selected != null && piece == selected)
+                    piece.Draw(board, Constants.select);
+                else if (selected != null && piece == selected.AttachedTo)
+                    piece.Draw(board, Constants.highlight);
+                else
+                    piece.Draw(board);
 
-            // Draw Turned Board
-            WIP.ToPiece().R = 0;
-            WIP.ToPiece().T = 89.9999;
-            foreach (Piece piece in WIP.PiecesList)
-            {
-                piece.Draw(turned);
+                if (MoveJoinBtn.BackColor == pressed)
+                    Visuals.DrawCross(selected.Join.X + selected.GetCoords()[0], 
+                        selected.Join.Y + selected.GetCoords()[1], Constants.highlight, board);
             }
-            WIP.ToPiece().T = 0;
         }
 
         /// <summary>
@@ -482,17 +503,16 @@ namespace Animator
         {
             DeselectPiece();
             selected = piece;
-            selectedOC = selected.OutlineColour;
-            selected.OutlineColour = Constants.select;
             RotationBar.Enabled = true;
             TurnBar.Enabled = true;
             SpinBar.Enabled = true;
             SizeBar.Enabled = true;
+            MoveJoinBtn.Enabled = true;
+            SelectBaseBtn.Enabled = true;
             RotationBar.Value = (int)selected.R;
             TurnBar.Value = (int)selected.T;
             SpinBar.Value = (int)selected.S;
             SizeBar.Value = (int)selected.SM;
-            SetBasePiece.Enabled = (WIP.BasePiece != selected);
         }
 
         /// <summary>
@@ -502,23 +522,41 @@ namespace Animator
         {
             if (selected != null)
             {
-                selected.OutlineColour = selectedOC;
                 selected = null;
                 RotationBar.Enabled = false;
                 TurnBar.Enabled = false;
                 SpinBar.Enabled = false;
                 SizeBar.Enabled = false;
-                SetBasePiece.Enabled = false;
+                MoveJoinBtn.BackColor = unpressed;
+                SelectBaseBtn.BackColor = unpressed;
+                MoveJoinBtn.Enabled = false;
+                SelectBaseBtn.Enabled = false;
             }
         }
 
         /// <summary>
-        /// Adds joins to the set 
+        /// Checks that all pieces bar one are connected to something.
+        /// Also sets the base piece of the set.
         /// </summary>
-        /// <returns></returns>
-        private void CompleteSet()
+        /// <returns>True if only one unconnected piece</returns>
+        private bool CheckSingularBasePiece()
         {
-            // TODO: Enter!
+            WIP.BasePiece = null;
+            foreach(Piece piece in WIP.PiecesList)
+            {
+                if (!piece.IsAttached())
+                {
+                    if (WIP.BasePiece == null)
+                    {
+                        WIP.BasePiece = piece;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
     }
 }
