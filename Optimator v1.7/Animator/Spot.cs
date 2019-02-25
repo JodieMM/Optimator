@@ -88,46 +88,72 @@ namespace Animator
         /// </summary>
         /// <param name="r">Current rotation</param>
         /// <param name="t">Current turn</param>
-        public double[] GetCurrentCoords(double r, double t)
+        /// <param name="mid">The middle of the piece the spot belongs to</param>
+        public double[] GetCurrentCoords(double r, double t, double[] mid = null)
         {
+            mid = mid ?? new double[] { 0, 0 };
             double[] currentCoords = new double[2];
+            double lower;
+            double upper;
+            int bottomAngle;
 
             // X / Rotation
+            if (r < 90)
+            {
+                lower = X;
+                upper = XRight;
+                bottomAngle = 0;
+            }
+            else if (r < 180)
+            {
+                lower = XRight;
+                upper = (MatchX == null) ? X : 2 * mid[0] - MatchX.X;
+                bottomAngle = 90;
+            }
+            else if (r < 270)
+            {
+                lower = (MatchX == null) ? X : 2 * mid[0] - MatchX.X;
+                upper = (MatchX == null) ? -XRight : 2 * mid[0] - MatchX.XRight;
+                bottomAngle = 180;
+            }
+            else
+            {
+                lower = (MatchX == null) ? -XRight : 2 * mid[0] - MatchX.XRight;
+                upper = X;
+                bottomAngle = 270;
+            }
+            double rMod = (r - bottomAngle) / 90.0;
+            currentCoords[0] = lower + (upper - lower) * rMod;
 
+            // Y / Turn
+            if (t < 90)
+            {
+                lower = Y;
+                upper = YDown;
+                bottomAngle = 0;
+            }
+            else if (t < 180)
+            {
+                lower = YDown;
+                upper = (MatchY == null) ? Y : 2 * mid[0] - MatchY.Y;
+                bottomAngle = 90;
+            }
+            else if (t < 270)
+            {
+                lower = (MatchY == null) ? Y : 2 * mid[0] - MatchY.Y;
+                upper = (MatchY == null) ? -YDown : 2 * mid[0] - MatchY.YDown;
+                bottomAngle = 180;
+            }
+            else
+            {
+                lower = (MatchY == null) ? -YDown : 2 * mid[0] - MatchY.YDown;
+                upper = Y;
+                bottomAngle = 270;
+            }
+            double tMod = (t - bottomAngle) / 90.0;
+            currentCoords[1] = lower + (upper - lower) * tMod;
 
-            // 0-90 : X -> XR
-            // 90 - 180: XR -> Opp X Flipped Middle
-            // 180 - 270: Opp X Flipped Middle -> Opp XR Flipped Middle
-            // 270 - 360/0: Opp XR Flipped Middle -> X
-
-            // TODO &Joins
-
-            //double rMod = (dataRow.RotFrom == dataRow.RotTo) ? 0 : (R - dataRow.RotFrom) / (dataRow.RotTo - dataRow.RotFrom);
-            //double tMod = (dataRow.TurnFrom == dataRow.TurnTo) ? 0 : (T - dataRow.TurnFrom) / (dataRow.TurnTo - dataRow.TurnFrom);
-            // new double[] { (currentSpot.X + (currentSpot.XRight - currentSpot.X) * rMod) - Join.X,
-            //(currentSpot.Y + (currentSpot.YDown - currentSpot.Y) * tMod) - Join.Y };
-
-
-
-            //// Find Multipliers - How far into the rotation/turn range is required
-            //double rotationMultiplier = dataRow.RotFrom == dataRow.RotTo ? (GetAngles()[0] - dataRow.RotFrom) / (dataRow.RotTo - dataRow.RotFrom) : 0;
-            //double turnMultiplier = dataRow.TurnFrom == dataRow.TurnTo ? (GetAngles()[1] - dataRow.TurnFrom) / (dataRow.TurnTo - dataRow.TurnFrom) : 0;
-
-            //// Rotation Adjustment
-            //foreach (Spot spot in spots)
-            //{
-            //    if (dataRow.RotTo != dataRow.RotFrom)
-            //        currentPoints.Add(new double[] { spot.X + (spot.XRight - spot.X) * rotationMultiplier, spot.Y });
-            //    else
-            //        currentPoints.Add(new double[] { spot.X, spot.Y });
-            //}
-
-            //// Turn Adjustment
-            //for (int index = 0; index < spots.Count; index++)
-            //    if (dataRow.TurnTo != dataRow.TurnFrom)
-            //        currentPoints[index][1] += (spots[index].YDown - spots[index].Y) * turnMultiplier;
-
-            return new double[] { 0, 0 };
+            return currentCoords;
         }
 
 

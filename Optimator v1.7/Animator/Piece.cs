@@ -291,7 +291,7 @@ namespace Animator
             // Get Current Spot Coords
             List<double[]> currentPoints = new List<double[]>();
             foreach (Spot spot in Data)
-                currentPoints.Add(spot.GetCurrentCoords(GetAngles()[0], GetAngles()[1]));
+                currentPoints.Add(spot.GetCurrentCoords(GetAngles()[0], GetAngles()[1], middle));
 
             // Recentre
             for (int index = 0; index < currentPoints.Count; index++)
