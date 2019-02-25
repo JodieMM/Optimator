@@ -69,10 +69,10 @@
             this.PointBtn = new System.Windows.Forms.Button();
             this.PreviewBtn = new System.Windows.Forms.Button();
             this.CompleteBtn = new System.Windows.Forms.Button();
-            this.RefineBtn = new System.Windows.Forms.Button();
             this.ExitBtn = new System.Windows.Forms.Button();
             this.LoadBtn = new System.Windows.Forms.Button();
             this.EmptyBtn = new System.Windows.Forms.Button();
+            this.EmptyBtn2 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.DrawBase)).BeginInit();
             this.OptionsMenu.SuspendLayout();
             this.ShapeTab.SuspendLayout();
@@ -133,11 +133,11 @@
             this.ShapeTab.Controls.Add(this.ColoursLbl);
             this.ShapeTab.Controls.Add(this.NameTb);
             this.ShapeTab.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ShapeTab.Location = new System.Drawing.Point(4, 27);
+            this.ShapeTab.Location = new System.Drawing.Point(8, 50);
             this.ShapeTab.Margin = new System.Windows.Forms.Padding(6);
             this.ShapeTab.Name = "ShapeTab";
             this.ShapeTab.Padding = new System.Windows.Forms.Padding(6);
-            this.ShapeTab.Size = new System.Drawing.Size(392, 669);
+            this.ShapeTab.Size = new System.Drawing.Size(384, 642);
             this.ShapeTab.TabIndex = 0;
             this.ShapeTab.Text = "Shape";
             // 
@@ -163,7 +163,7 @@
             this.OutlineWLbl.Location = new System.Drawing.Point(11, 247);
             this.OutlineWLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.OutlineWLbl.Name = "OutlineWLbl";
-            this.OutlineWLbl.Size = new System.Drawing.Size(124, 23);
+            this.OutlineWLbl.Size = new System.Drawing.Size(250, 46);
             this.OutlineWLbl.TabIndex = 121;
             this.OutlineWLbl.Text = "Outline Width";
             // 
@@ -171,7 +171,7 @@
             // 
             this.OutlineWidthBox.Location = new System.Drawing.Point(139, 248);
             this.OutlineWidthBox.Name = "OutlineWidthBox";
-            this.OutlineWidthBox.Size = new System.Drawing.Size(239, 27);
+            this.OutlineWidthBox.Size = new System.Drawing.Size(239, 46);
             this.OutlineWidthBox.TabIndex = 120;
             this.OutlineWidthBox.Value = new decimal(new int[] {
             2,
@@ -187,7 +187,7 @@
             this.PieceLbl.Location = new System.Drawing.Point(135, 70);
             this.PieceLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.PieceLbl.Name = "PieceLbl";
-            this.PieceLbl.Size = new System.Drawing.Size(123, 23);
+            this.PieceLbl.Size = new System.Drawing.Size(249, 46);
             this.PieceLbl.TabIndex = 119;
             this.PieceLbl.Text = "Piece Based";
             // 
@@ -198,7 +198,7 @@
             this.PointLbl.Location = new System.Drawing.Point(135, 333);
             this.PointLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.PointLbl.Name = "PointLbl";
-            this.PointLbl.Size = new System.Drawing.Size(123, 23);
+            this.PointLbl.Size = new System.Drawing.Size(246, 46);
             this.PointLbl.TabIndex = 118;
             this.PointLbl.Text = "Point Based";
             // 
@@ -212,7 +212,7 @@
             this.FixedCb.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FixedCb.Location = new System.Drawing.Point(10, 427);
             this.FixedCb.Name = "FixedCb";
-            this.FixedCb.Size = new System.Drawing.Size(73, 27);
+            this.FixedCb.Size = new System.Drawing.Size(141, 50);
             this.FixedCb.TabIndex = 117;
             this.FixedCb.Text = "Fixed";
             this.FixedCb.UseVisualStyleBackColor = true;
@@ -225,7 +225,7 @@
             this.ConnectorsLbl.Location = new System.Drawing.Point(11, 372);
             this.ConnectorsLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.ConnectorsLbl.Name = "ConnectorsLbl";
-            this.ConnectorsLbl.Size = new System.Drawing.Size(95, 23);
+            this.ConnectorsLbl.Size = new System.Drawing.Size(192, 46);
             this.ConnectorsLbl.TabIndex = 116;
             this.ConnectorsLbl.Text = "Connector";
             // 
@@ -239,7 +239,7 @@
             "Blank"});
             this.ConnectorOptions.Location = new System.Drawing.Point(139, 372);
             this.ConnectorOptions.Name = "ConnectorOptions";
-            this.ConnectorOptions.Size = new System.Drawing.Size(239, 27);
+            this.ConnectorOptions.Size = new System.Drawing.Size(239, 47);
             this.ConnectorOptions.TabIndex = 115;
             this.ConnectorOptions.SelectedIndexChanged += new System.EventHandler(this.ConnectorOptions_SelectedIndexChanged);
             // 
@@ -272,7 +272,7 @@
             this.OutlineLbl.Location = new System.Drawing.Point(11, 184);
             this.OutlineLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.OutlineLbl.Name = "OutlineLbl";
-            this.OutlineLbl.Size = new System.Drawing.Size(60, 19);
+            this.OutlineLbl.Size = new System.Drawing.Size(118, 39);
             this.OutlineLbl.TabIndex = 112;
             this.OutlineLbl.Text = "Outline";
             // 
@@ -283,7 +283,7 @@
             this.FillLbl.Location = new System.Drawing.Point(11, 143);
             this.FillLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.FillLbl.Name = "FillLbl";
-            this.FillLbl.Size = new System.Drawing.Size(29, 19);
+            this.FillLbl.Size = new System.Drawing.Size(55, 39);
             this.FillLbl.TabIndex = 111;
             this.FillLbl.Text = "Fill";
             // 
@@ -294,7 +294,7 @@
             this.ColoursLbl.Location = new System.Drawing.Point(11, 107);
             this.ColoursLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.ColoursLbl.Name = "ColoursLbl";
-            this.ColoursLbl.Size = new System.Drawing.Size(71, 23);
+            this.ColoursLbl.Size = new System.Drawing.Size(146, 46);
             this.ColoursLbl.TabIndex = 92;
             this.ColoursLbl.Text = "Colours";
             // 
@@ -305,7 +305,7 @@
             this.NameTb.Location = new System.Drawing.Point(15, 15);
             this.NameTb.Margin = new System.Windows.Forms.Padding(6);
             this.NameTb.Name = "NameTb";
-            this.NameTb.Size = new System.Drawing.Size(300, 33);
+            this.NameTb.Size = new System.Drawing.Size(300, 58);
             this.NameTb.TabIndex = 5;
             this.NameTb.Text = "Piece Name";
             // 
@@ -327,9 +327,9 @@
             this.SketchesTab.Controls.Add(this.DeleteSketchBtn);
             this.SketchesTab.Controls.Add(this.SketchesLbl);
             this.SketchesTab.Controls.Add(this.SketchLb);
-            this.SketchesTab.Location = new System.Drawing.Point(4, 27);
+            this.SketchesTab.Location = new System.Drawing.Point(8, 50);
             this.SketchesTab.Name = "SketchesTab";
-            this.SketchesTab.Size = new System.Drawing.Size(392, 669);
+            this.SketchesTab.Size = new System.Drawing.Size(384, 642);
             this.SketchesTab.TabIndex = 2;
             this.SketchesTab.Text = "Sketch";
             // 
@@ -340,7 +340,7 @@
             this.YLbl.Location = new System.Drawing.Point(212, 323);
             this.YLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.YLbl.Name = "YLbl";
-            this.YLbl.Size = new System.Drawing.Size(19, 19);
+            this.YLbl.Size = new System.Drawing.Size(35, 39);
             this.YLbl.TabIndex = 133;
             this.YLbl.Text = "Y";
             // 
@@ -351,7 +351,7 @@
             this.XLbl.Location = new System.Drawing.Point(212, 261);
             this.XLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.XLbl.Name = "XLbl";
-            this.XLbl.Size = new System.Drawing.Size(18, 19);
+            this.XLbl.Size = new System.Drawing.Size(36, 39);
             this.XLbl.TabIndex = 132;
             this.XLbl.Text = "X";
             // 
@@ -362,7 +362,7 @@
             this.SpinLbl.Location = new System.Drawing.Point(11, 385);
             this.SpinLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.SpinLbl.Name = "SpinLbl";
-            this.SpinLbl.Size = new System.Drawing.Size(40, 19);
+            this.SpinLbl.Size = new System.Drawing.Size(78, 39);
             this.SpinLbl.TabIndex = 122;
             this.SpinLbl.Text = "Spin";
             // 
@@ -371,7 +371,7 @@
             this.SizeBar.Location = new System.Drawing.Point(12, 477);
             this.SizeBar.Maximum = 1000;
             this.SizeBar.Name = "SizeBar";
-            this.SizeBar.Size = new System.Drawing.Size(189, 45);
+            this.SizeBar.Size = new System.Drawing.Size(189, 90);
             this.SizeBar.SmallChange = 5;
             this.SizeBar.TabIndex = 131;
             this.SizeBar.TickFrequency = 100;
@@ -385,7 +385,7 @@
             this.TurnLbl.Location = new System.Drawing.Point(11, 321);
             this.TurnLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.TurnLbl.Name = "TurnLbl";
-            this.TurnLbl.Size = new System.Drawing.Size(43, 19);
+            this.TurnLbl.Size = new System.Drawing.Size(84, 39);
             this.TurnLbl.TabIndex = 127;
             this.TurnLbl.Text = "Turn";
             // 
@@ -394,7 +394,7 @@
             this.SpinBar.Location = new System.Drawing.Point(12, 409);
             this.SpinBar.Maximum = 359;
             this.SpinBar.Name = "SpinBar";
-            this.SpinBar.Size = new System.Drawing.Size(189, 45);
+            this.SpinBar.Size = new System.Drawing.Size(189, 90);
             this.SpinBar.TabIndex = 130;
             this.SpinBar.TickFrequency = 30;
             this.SpinBar.Scroll += new System.EventHandler(this.SketchUpdate);
@@ -406,7 +406,7 @@
             this.RotationLbl.Location = new System.Drawing.Point(11, 256);
             this.RotationLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.RotationLbl.Name = "RotationLbl";
-            this.RotationLbl.Size = new System.Drawing.Size(68, 19);
+            this.RotationLbl.Size = new System.Drawing.Size(135, 39);
             this.RotationLbl.TabIndex = 126;
             this.RotationLbl.Text = "Rotation";
             // 
@@ -415,7 +415,7 @@
             this.TurnBar.Location = new System.Drawing.Point(12, 342);
             this.TurnBar.Maximum = 359;
             this.TurnBar.Name = "TurnBar";
-            this.TurnBar.Size = new System.Drawing.Size(189, 45);
+            this.TurnBar.Size = new System.Drawing.Size(189, 90);
             this.TurnBar.TabIndex = 129;
             this.TurnBar.TickFrequency = 30;
             this.TurnBar.Scroll += new System.EventHandler(this.SketchUpdate);
@@ -425,7 +425,7 @@
             this.RotationBar.Location = new System.Drawing.Point(12, 278);
             this.RotationBar.Maximum = 359;
             this.RotationBar.Name = "RotationBar";
-            this.RotationBar.Size = new System.Drawing.Size(189, 45);
+            this.RotationBar.Size = new System.Drawing.Size(189, 90);
             this.RotationBar.TabIndex = 128;
             this.RotationBar.TickFrequency = 30;
             this.RotationBar.Scroll += new System.EventHandler(this.SketchUpdate);
@@ -437,7 +437,7 @@
             this.SMLbl.Location = new System.Drawing.Point(11, 455);
             this.SMLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.SMLbl.Name = "SMLbl";
-            this.SMLbl.Size = new System.Drawing.Size(72, 19);
+            this.SMLbl.Size = new System.Drawing.Size(143, 39);
             this.SMLbl.TabIndex = 125;
             this.SMLbl.Text = "Size Mod";
             // 
@@ -457,7 +457,7 @@
             0,
             -2147483648});
             this.YUpDown.Name = "YUpDown";
-            this.YUpDown.Size = new System.Drawing.Size(162, 27);
+            this.YUpDown.Size = new System.Drawing.Size(162, 46);
             this.YUpDown.TabIndex = 124;
             this.YUpDown.ValueChanged += new System.EventHandler(this.SketchUpdate);
             // 
@@ -477,7 +477,7 @@
             0,
             -2147483648});
             this.XUpDown.Name = "XUpDown";
-            this.XUpDown.Size = new System.Drawing.Size(162, 27);
+            this.XUpDown.Size = new System.Drawing.Size(162, 46);
             this.XUpDown.TabIndex = 123;
             this.XUpDown.ValueChanged += new System.EventHandler(this.SketchUpdate);
             // 
@@ -503,7 +503,7 @@
             this.SketchesLbl.Location = new System.Drawing.Point(135, 10);
             this.SketchesLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.SketchesLbl.Name = "SketchesLbl";
-            this.SketchesLbl.Size = new System.Drawing.Size(95, 23);
+            this.SketchesLbl.Size = new System.Drawing.Size(193, 46);
             this.SketchesLbl.TabIndex = 120;
             this.SketchesLbl.Text = "Sketches";
             // 
@@ -514,7 +514,7 @@
             this.SketchLb.FormattingEnabled = true;
             this.SketchLb.Location = new System.Drawing.Point(15, 42);
             this.SketchLb.Name = "SketchLb";
-            this.SketchLb.Size = new System.Drawing.Size(363, 158);
+            this.SketchLb.Size = new System.Drawing.Size(363, 127);
             this.SketchLb.TabIndex = 14;
             // 
             // SettingsTab
@@ -522,11 +522,11 @@
             this.SettingsTab.BackColor = System.Drawing.Color.Azure;
             this.SettingsTab.Controls.Add(this.BackColourBox);
             this.SettingsTab.Controls.Add(this.BackColourLbl);
-            this.SettingsTab.Location = new System.Drawing.Point(4, 27);
+            this.SettingsTab.Location = new System.Drawing.Point(8, 50);
             this.SettingsTab.Margin = new System.Windows.Forms.Padding(6);
             this.SettingsTab.Name = "SettingsTab";
             this.SettingsTab.Padding = new System.Windows.Forms.Padding(6);
-            this.SettingsTab.Size = new System.Drawing.Size(392, 669);
+            this.SettingsTab.Size = new System.Drawing.Size(384, 642);
             this.SettingsTab.TabIndex = 1;
             this.SettingsTab.Text = "Settings";
             // 
@@ -548,7 +548,7 @@
             this.BackColourLbl.Location = new System.Drawing.Point(18, 23);
             this.BackColourLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.BackColourLbl.Name = "BackColourLbl";
-            this.BackColourLbl.Size = new System.Drawing.Size(93, 19);
+            this.BackColourLbl.Size = new System.Drawing.Size(184, 39);
             this.BackColourLbl.TabIndex = 114;
             this.BackColourLbl.Text = "Back Colour";
             // 
@@ -614,20 +614,6 @@
             this.CompleteBtn.UseVisualStyleBackColor = false;
             this.CompleteBtn.Click += new System.EventHandler(this.CompleteBtn_Click);
             // 
-            // RefineBtn
-            // 
-            this.RefineBtn.BackColor = System.Drawing.Color.LightCyan;
-            this.RefineBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.RefineBtn.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RefineBtn.Location = new System.Drawing.Point(465, 360);
-            this.RefineBtn.Margin = new System.Windows.Forms.Padding(6);
-            this.RefineBtn.Name = "RefineBtn";
-            this.RefineBtn.Size = new System.Drawing.Size(90, 90);
-            this.RefineBtn.TabIndex = 12;
-            this.RefineBtn.Text = "Refine";
-            this.RefineBtn.UseVisualStyleBackColor = false;
-            this.RefineBtn.Click += new System.EventHandler(this.RefineBtn_Click);
-            // 
             // ExitBtn
             // 
             this.ExitBtn.BackColor = System.Drawing.Color.LightCyan;
@@ -671,13 +657,28 @@
             this.EmptyBtn.UseVisualStyleBackColor = false;
             this.EmptyBtn.Visible = false;
             // 
+            // EmptyBtn2
+            // 
+            this.EmptyBtn2.BackColor = System.Drawing.Color.LightCyan;
+            this.EmptyBtn2.Enabled = false;
+            this.EmptyBtn2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.EmptyBtn2.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.EmptyBtn2.Location = new System.Drawing.Point(465, 360);
+            this.EmptyBtn2.Margin = new System.Windows.Forms.Padding(6);
+            this.EmptyBtn2.Name = "EmptyBtn2";
+            this.EmptyBtn2.Size = new System.Drawing.Size(90, 90);
+            this.EmptyBtn2.TabIndex = 14;
+            this.EmptyBtn2.Text = "TBD";
+            this.EmptyBtn2.UseVisualStyleBackColor = false;
+            this.EmptyBtn2.Visible = false;
+            // 
             // PiecesForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.PaleTurquoise;
             this.ClientSize = new System.Drawing.Size(1100, 700);
+            this.Controls.Add(this.EmptyBtn2);
             this.Controls.Add(this.EmptyBtn);
-            this.Controls.Add(this.RefineBtn);
             this.Controls.Add(this.ExitBtn);
             this.Controls.Add(this.LoadBtn);
             this.Controls.Add(this.CompleteBtn);
@@ -729,7 +730,6 @@
         private System.Windows.Forms.Button PointBtn;
         private System.Windows.Forms.Button PreviewBtn;
         private System.Windows.Forms.Button CompleteBtn;
-        private System.Windows.Forms.Button RefineBtn;
         private System.Windows.Forms.Button ExitBtn;
         private System.Windows.Forms.Button LoadBtn;
         private System.Windows.Forms.TabPage SketchesTab;
@@ -764,5 +764,6 @@
         private System.Windows.Forms.NumericUpDown XUpDown;
         private System.Windows.Forms.Label YLbl;
         private System.Windows.Forms.Label XLbl;
+        private System.Windows.Forms.Button EmptyBtn2;
     }
 }

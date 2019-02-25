@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using System.Drawing.Drawing2D;
 using System.Windows.Forms;
+using System.IO;
 
 namespace Animator
 {
@@ -65,7 +64,7 @@ namespace Animator
         /// <returns></returns>
         public static string GetDirectory(string folder, string name, string fileType = "")
         {
-            return System.IO.Path.Combine(System.IO.Path.Combine(Environment.CurrentDirectory, folder), name + fileType);
+            return Path.Combine(Path.Combine(Environment.CurrentDirectory, folder), name + fileType);
         }
 
         /// <summary>
@@ -79,7 +78,31 @@ namespace Animator
         public static string GetDirectory(string folder, string subfolder, string name, string fileType)
         {
             // TODO: Remove/ absorb into above
-            return System.IO.Path.Combine(System.IO.Path.Combine(System.IO.Path.Combine(Environment.CurrentDirectory, folder), subfolder), name + fileType);
+            return Path.Combine(Path.Combine(Path.Combine(Environment.CurrentDirectory, folder), subfolder), name + fileType);
+        }
+
+        /// <summary>
+        /// Checks that the name given for the file is valid for use.
+        /// </summary>
+        /// <param name="name">The name of the file</param>
+        /// <param name="folder">The folder the file belongs in</param>
+        /// <returns></returns>
+        public static bool CheckValidNewName(string name, string folder)
+        {
+            // Check Name is Valid for Saving
+            if (!Constants.PermittedName.IsMatch(name))
+            {
+                MessageBox.Show("Please choose a valid name for your piece. Name can only include letters and numbers.", "Name Invalid", MessageBoxButtons.OK);
+                return false;
+            }
+
+            // Check name not already in use, or that overriding is okay
+            if (File.Exists(GetDirectory(folder, name, Constants.Txt)))
+            {
+                DialogResult result = MessageBox.Show("This name is already in use. Do you want to override the existing piece?", "Override Confirmation", MessageBoxButtons.YesNo);
+                if (result == DialogResult.No) { return false; }
+            }
+            return true;
         }
 
 

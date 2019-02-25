@@ -15,7 +15,6 @@ namespace Animator
     {
         #region PiecesForm Variables
         public Piece WIP { get; } = new Piece();
-        public DataRow DataRow { get; set; }
         public List<Part> Sketches { get; set; } = new List<Part>();
 
         private Graphics original;
@@ -59,8 +58,6 @@ namespace Animator
             FillBox.BackColor = Constants.defaultFill;
             OutlineBox.BackColor = Constants.defaultOutline;
             OutlineWidthBox.Value = Constants.defaultOutlineWidth;
-
-            DataRow = new DataRow(0, 90, 0, 90);
         }
 
 
@@ -76,31 +73,26 @@ namespace Animator
         private void DrawBase_MouseDown(object sender, MouseEventArgs e)
         {
             // Place Point
-            if (PointBtn.BackColor == unpressed && RefineBtn.BackColor == unpressed)
+            if (PointBtn.BackColor == unpressed)
             {
-                if (selectedSpot != null && DataRow.Spots.IndexOf(selectedSpot) != DataRow.Spots.Count - 1)
-                {
-                    DataRow.Spots.Insert(DataRow.Spots.IndexOf(selectedSpot) + 1, new Spot(e.X, e.Y));
-                }
+                if (selectedSpot != null && WIP.Data.IndexOf(selectedSpot) != WIP.Data.Count - 1)
+                    WIP.Data.Insert(WIP.Data.IndexOf(selectedSpot) + 1, new Spot(e.X, e.Y));
                 else
-                {
-                    DataRow.Spots.Add(new Spot(e.X, e.Y));
-                }
-                SelectSpot(DataRow.Spots[DataRow.Spots.Count - 1]);
+                    WIP.Data.Add(new Spot(e.X, e.Y));
+
+                SelectSpot(WIP.Data[WIP.Data.Count - 1]);
             }
             // Select Spot
             else
             {
-                int closestIndex = Utilities.FindClosestIndex(DataRow.Spots, 0, e.X, e.Y);
+                int closestIndex = Utilities.FindClosestIndex(WIP.Data, 0, e.X, e.Y);
                 if (closestIndex != -1)
                 {
-                    SelectSpot(DataRow.Spots[closestIndex]);
-                    if (RefineBtn.BackColor == unpressed) { moving = 1; }
+                    SelectSpot(WIP.Data[closestIndex]);
+                    moving = 1;
                 }
                 else
-                {
                     Deselect();
-                }
             }
             DisplayDrawings();
         }
@@ -112,15 +104,14 @@ namespace Animator
         /// <param name="e"></param>
         private void DrawBase_MouseUp(object sender, MouseEventArgs e)
         {
-            if (movingFar && selectedSpot != null && moving == 1)
+            if (selectedSpot != null && movingFar && moving == 1)
             {
                     selectedSpot.X = e.X;
                     selectedSpot.Y = e.Y;
                     selectedSpot.XRight = e.X;
                     selectedSpot.YDown = e.Y;
             }
-            moving = 0;
-            movingFar = false;
+            StopMoving();
             DisplayDrawings();
         }
 
@@ -133,16 +124,14 @@ namespace Animator
         {
             if (selectedSpot == null || moving == 0 || e.X > DrawBase.Size.Width || e.Y > DrawBase.Size.Height || e.X < 0 || e.Y < 0)
             {
-                moving = 0;
-                movingFar = false;
+                StopMoving();
                 return;
             }
 
             if (!movingFar)
-            {
                 movingFar = Math.Abs(selectedSpot.X - e.X) > Constants.ClickPrecision
                     || Math.Abs(selectedSpot.Y - e.Y) > Constants.ClickPrecision;
-            }
+
             if (movingFar)
             {
                 DisplayDrawings();
@@ -161,16 +150,15 @@ namespace Animator
         private void DrawRight_MouseDown(object sender, MouseEventArgs e)
         {
             // Select Spot
-            int closestIndex = Utilities.FindClosestIndex(DataRow.Spots, 1, e.X, e.Y);
+            int closestIndex = Utilities.FindClosestIndex(WIP.Data, 1, e.X, e.Y);
             if (closestIndex != -1)
             {
-                SelectSpot(DataRow.Spots[closestIndex]);
-                if (RefineBtn.BackColor == unpressed) { moving = 2; }
+                SelectSpot(WIP.Data[closestIndex]);
+                moving = 2;
             }
             else
-            {
                 Deselect();
-            }
+
             DisplayDrawings();
         }
 
@@ -182,11 +170,9 @@ namespace Animator
         private void DrawRight_MouseUp(object sender, MouseEventArgs e)
         {
             if (movingFar && selectedSpot != null && moving == 2)
-            {
                 selectedSpot.XRight = e.X;
-            }
-            moving = 0;
-            movingFar = false;
+
+            StopMoving();
             DisplayDrawings();
         }
 
@@ -199,15 +185,13 @@ namespace Animator
         {
             if (selectedSpot == null || moving == 0 || e.X > DrawRight.Size.Width || e.Y > DrawRight.Size.Height || e.X < 0 || e.Y < 0)
             {
-                moving = 0;
-                movingFar = false;
+                StopMoving();
                 return;
             }
 
             if (!movingFar)
-            {
                 movingFar = Math.Abs(selectedSpot.XRight - e.X) > Constants.ClickPrecision;
-            }
+
             if (movingFar)
             {
                 DisplayDrawings();
@@ -224,16 +208,15 @@ namespace Animator
         private void DrawDown_MouseDown(object sender, MouseEventArgs e)
         {
             // Select Spot
-            int closestIndex = Utilities.FindClosestIndex(DataRow.Spots, 2, e.X, e.Y);
+            int closestIndex = Utilities.FindClosestIndex(WIP.Data, 2, e.X, e.Y);
             if (closestIndex != -1)
             {
-                SelectSpot(DataRow.Spots[closestIndex]);
-                if (RefineBtn.BackColor == unpressed) { moving = 3; }
+                SelectSpot(WIP.Data[closestIndex]);
+                moving = 3;
             }
             else
-            {
                 Deselect();
-            }
+
             DisplayDrawings();
         }
 
@@ -245,11 +228,9 @@ namespace Animator
         private void DrawDown_MouseUp(object sender, MouseEventArgs e)
         {
             if (movingFar && selectedSpot != null && moving == 3)
-            {
                 selectedSpot.YDown = e.Y;
-            }
-            moving = 0;
-            movingFar = false;
+
+            StopMoving();
             DisplayDrawings();
         }
 
@@ -262,15 +243,13 @@ namespace Animator
         {
             if (selectedSpot == null || moving == 0 || e.X > DrawDown.Size.Width || e.Y > DrawDown.Size.Height || e.X < 0 || e.Y < 0)
             {
-                moving = 0;
-                movingFar = false;
+                StopMoving();
                 return;
             }
 
             if (!movingFar)
-            {
                 movingFar = Math.Abs(selectedSpot.YDown - e.Y) > Constants.ClickPrecision;
-            }
+
             if (movingFar)
             {
                 DisplayDrawings();
@@ -294,16 +273,12 @@ namespace Animator
                     // Delete Spot
                     if (selectedSpot != null)
                     {
-                        int selectedIndex = DataRow.Spots.IndexOf(selectedSpot);
-                        DataRow.Spots.Remove(selectedSpot);
-                        if (DataRow.Spots.Count == 0)
-                        {
+                        int selectedIndex = WIP.Data.IndexOf(selectedSpot);
+                        WIP.Data.Remove(selectedSpot);
+                        if (WIP.Data.Count == 0)
                             Deselect();
-                        }
                         else
-                        {
-                            SelectSpot(DataRow.Spots[Utilities.Modulo(selectedIndex - 1, DataRow.Spots.Count)]);
-                        }
+                            SelectSpot(WIP.Data[Utilities.Modulo(selectedIndex - 1, WIP.Data.Count)]);
                     }
                     // Delete Piece
                     else
@@ -311,7 +286,6 @@ namespace Animator
                         DialogResult result = MessageBox.Show("Would you like to restart the piece?", "Restart Confirmation", MessageBoxButtons.YesNo);
                         if (result == DialogResult.Yes)
                         {
-                            DataRow.Spots.Clear();
                             WIP.Data.Clear();
                             Deselect();
                         }
@@ -332,7 +306,7 @@ namespace Animator
         // ----- OPTION BUTTONS -----
 
         /// <summary>
-        /// Changes between placing points and selecting them
+        /// Changes between placing points and selecting them.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -349,10 +323,6 @@ namespace Animator
         /// <param name="e"></param>
         private void PreviewBtn_Click(object sender, EventArgs e)
         {
-            if (!CheckPiecesValid(DataRow.Spots)) { return; }
-            ApplySegmentFully();
-            DataRow test = DataRow;
-            DisplayDrawings();
             PreviewForm previewForm = new PreviewForm(WIP);
             previewForm.Show();
         }
@@ -369,29 +339,6 @@ namespace Animator
         }
 
         /// <summary>
-        /// Finds the spots needed for symmetry rotation/turns
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void RefineBtn_Click(object sender, EventArgs e)
-        {
-            if (!CheckPiecesValid(DataRow.Spots)) { return; }
-            RefineBtn.Text = (RefineBtn.Text == "Refine") ? "Simplify" : "Refine";
-            RefineBtn.BackColor = (RefineBtn.BackColor == unpressed) ? pressed : unpressed;
-
-            if (RefineBtn.BackColor == pressed)
-            {
-                ApplySegmentFully();
-            }
-            else
-            {
-                DataRow = WIP.Data[WIP.FindRow()].ToSimple();
-                WIP.Data[WIP.FindRow()] = DataRow;
-            }
-            DisplayDrawings();
-        }
-
-        /// <summary>
         /// Closes the form
         /// </summary>
         /// <param name="sender"></param>
@@ -399,15 +346,13 @@ namespace Animator
         private void ExitBtn_Click(object sender, EventArgs e)
         {
             DialogResult result = DialogResult.Yes;
+
             // Only ask if there is something to save
-            if (DataRow.Spots.Count > 0)
-            {
+            if (WIP.Data.Count > 0)
                 result = MessageBox.Show("Do you want to exit without saving? Your piece will be lost.", "Exit Confirmation", MessageBoxButtons.YesNo);
-            }
+
             if (result == DialogResult.Yes)
-            {
                 Close();
-            }
         }
 
         /// <summary>
@@ -417,25 +362,11 @@ namespace Animator
         /// <param name="e"></param>
         private void CompleteBtn_Click(object sender, EventArgs e)
         {
-            // Check Name is Valid for Saving
-            if (!Constants.PermittedName.IsMatch(NameTb.Text))
-            {
-                MessageBox.Show("Please choose a valid name for your piece. Name can only include letters and numbers.", "Name Invalid", MessageBoxButtons.OK);
-                return;
-            }
-
-            // Check name not already in use, or that overriding is okay
-            if (File.Exists(Utilities.GetDirectory(Constants.PiecesFolder, NameTb.Text, Constants.Txt)))
-            {
-                DialogResult result = MessageBox.Show("This name is already in use. Do you want to override the existing piece?", "Override Confirmation", MessageBoxButtons.YesNo);
-                if (result == DialogResult.No) { return; }
-            }
+            if (!Utilities.CheckValidNewName(NameTb.Text, Constants.PiecesFolder)) { return; }
 
             // Save Piece and Close Form
             try
-            {
-                if (!CheckPiecesValid(DataRow.Spots)) { return; }
-                ApplySegmentFully();
+            {                
                 Utilities.SaveData(Utilities.GetDirectory(Constants.PiecesFolder, NameTb.Text, Constants.Txt), WIP.GetData());
                 Close();
             }
@@ -631,15 +562,11 @@ namespace Animator
         /// <param name="angle">The angle to be drawn</param>
         private void DrawPoints(Graphics board, int angle)
         {
-            foreach (Spot spot in DataRow.Spots)
+            foreach (Spot spot in WIP.Data)
             {
-                // Check refinement is being shown
-                if (RefineBtn.BackColor == pressed || spot.DrawnLevel == 0)
-                {
-                    Color color = (ShowFixedBtn.BackColor == pressed) ? (spot.Solid == Constants.solidOptions[0]) ? Color.SaddleBrown : Color.PeachPuff 
-                        : (selectedSpot == spot) ? Constants.select : Color.Black;
-                    spot.Draw(angle, color, board);
-                }
+                Color color = (ShowFixedBtn.BackColor == pressed) ? (spot.Solid == Constants.solidOptions[0]) ? Color.SaddleBrown : Color.PeachPuff 
+                    : (selectedSpot == spot) ? Constants.select : Color.Black;
+                spot.Draw(angle, color, board);
             }
         }
 
@@ -648,17 +575,6 @@ namespace Animator
         /// </summary>
         public void DisplayDrawings()
         {
-            // Prepare Piece
-            int row = WIP.FindRow();
-            if (row != -1)
-            {
-                WIP.Data[row] = DataRow;
-            }
-            else
-            {
-                WIP.Data.Add(DataRow);
-            }
-
             // Prepare Boards
             DrawBase.Refresh();
             DrawRight.Refresh();
@@ -674,199 +590,31 @@ namespace Animator
                 {
                     Part sketch = Sketches[index];
                     sketch.Draw(original);
-                    sketch.ToPiece().R += 90 - 0;
+                    sketch.ToPiece().R += 90 % 360;
                     sketch.Draw(rotated);
-                    sketch.ToPiece().R -= 90 - 0;
-                    sketch.ToPiece().T += 90 - 0;
+                    sketch.ToPiece().R -= 90 % 360;
+                    sketch.ToPiece().T += 90 % 360;
                     sketch.Draw(turned);
-                    sketch.ToPiece().T -= 90 - 0;
+                    sketch.ToPiece().T -= 90 % 360;
                 }
             }
 
             // Draw Base Board
-            WIP.R = 0;
-            WIP.T = 0;
             WIP.Draw(original);
             DrawPoints(original, 0);
 
             // Draw Rotated Board
-            WIP.R = 89.9999;
+            WIP.R = 90;
             WIP.T = 0;
             WIP.Draw(rotated);
             DrawPoints(rotated, 1);
 
             // Draw Turned Board
             WIP.R = 0;
-            WIP.T = 89.9999;
+            WIP.T = 90;
             WIP.Draw(turned);
             DrawPoints(turned, 2);
             WIP.T = 0;
-        }
-
-
-
-        // ----- DATA FUNCTIONS -----
-
-        /// <summary>
-        /// Applies the 3-board segment across the entire piece.
-        /// </summary>
-        private void ApplySegmentFully()
-        {
-            Utilities.CoordsOnAllSides(DataRow.Spots);
-            List<Spot> spotCopy = DataRow.CopySpots();
-            bool[] tt = { true, true };
-            bool[] tf = { true, false };
-            bool[] ft = { false, true };
-            bool[] ff = { false, false };
-
-            List<DataRow> newRows = new List<DataRow> {
-                ConvertVariablesToData(0, 90, 0, 90, spotCopy, 0, new List<bool[]> { ff, ff, ff }),
-                ConvertVariablesToData(90, 180, 0, 90, spotCopy, 1, new List<bool[]> { ff, tf, ff }),
-                ConvertVariablesToData(180, 270, 0, 90, spotCopy, 0, new List<bool[]> { tf, tf, tf }),
-                ConvertVariablesToData(270, 360, 0, 90, spotCopy, 1, new List<bool[]> { tf, ff, tf }),
-
-                ConvertVariablesToData(0, 90, 90, 180, spotCopy, 2, new List<bool[]> { ff, ff, ft }),
-                ConvertVariablesToData(90, 180, 90, 180, spotCopy, 3, new List<bool[]> { ff, tf, ft }),
-                ConvertVariablesToData(180, 270, 90, 180, spotCopy, 2, new List<bool[]> { tf, tf, tt }),
-                ConvertVariablesToData(270, 360, 90, 180, spotCopy, 3, new List<bool[]> { tf, ff, tt }),
-
-                ConvertVariablesToData(0, 90, 180, 270, spotCopy, 0, new List<bool[]> { ft, ft, ft }),
-                ConvertVariablesToData(90, 180, 180, 270, spotCopy, 1, new List<bool[]> { ft, tt, ft }),
-                ConvertVariablesToData(180, 270, 180, 270, spotCopy, 0, new List<bool[]> { tt, tt, tt }),
-                ConvertVariablesToData(270, 360, 180, 270, spotCopy, 1, new List<bool[]> { tt, ft, tt }),
-
-                ConvertVariablesToData(0, 90, 270, 360, spotCopy, 2, new List<bool[]> { ft, ft, ff }),
-                ConvertVariablesToData(90, 180, 270, 360, spotCopy, 3, new List<bool[]> { ft, tt, ff }),
-                ConvertVariablesToData(180, 270, 270, 360, spotCopy, 2, new List<bool[]> { tt, tt, tf }),
-                ConvertVariablesToData(270, 360, 270, 360, spotCopy, 3, new List<bool[]> { tt, ft, tf })
-            };
-            WIP.Data = newRows;
-        }
-
-        /// <summary>
-        /// Converts relevant variables for a piece's angle into a data line and saves to piece data.
-        /// </summary>
-        /// <param name="rFrom">Rotation start</param>
-        /// <param name="rTo">Rotation end</param>
-        /// <param name="tFrom">Turn start</param>
-        /// <param name="tTo">Turn end</param>
-        /// <param name="spotsList">Original spots to convert</param>
-        /// <param name="origAngle">Angle at rFrom tFrom, (0) o (1) r (2) t (3) b</param>
-        /// <returns>The provided data in a DataRow</returns>
-        private DataRow ConvertVariablesToData (double rFrom, double rTo, double tFrom, double tTo, List<Spot> spts, int origAngle, List<bool[]> flips)
-        {
-            DataRow newRow = new DataRow(rFrom, rTo, tFrom, tTo);
-            double[] middle = Utilities.FindMid(Utilities.ConvertSpotsToCoords(DataRow.Spots, origAngle));
-
-            // Find spots for DataRow
-            List<double[]> original = Utilities.FlipCoords(spts, origAngle, flips[0], middle);
-            int rotAngle; int turnAngle;
-            switch (origAngle)
-            {
-                case 1:
-                    rotAngle = 0;
-                    turnAngle = 3;
-                    break;
-                case 2:
-                    rotAngle = 3;
-                    turnAngle = 0;
-                    break;
-                case 3:
-                    rotAngle = 2;
-                    turnAngle = 1;
-                    break;
-                default:
-                    rotAngle = 1;
-                    turnAngle = 2;
-                    break;
-            }
-            List<double[]> rotated = Utilities.FlipCoords(spts, rotAngle, flips[1], middle);
-            List<double[]> turned = Utilities.FlipCoords(spts, turnAngle, flips[2], middle);
-            for (int index = 0; index < spts.Count; index++)
-            {
-                double x = original[index][0];
-                double y = original[index][1];
-                double xr = rotated[index][0];
-                double yd = turned[index][1];
-                newRow.Spots.Add(new Spot(x, xr, y, yd, spts[index].Connector, spts[index].Solid, spts[index].DrawnLevel));
-            }
-            return newRow;
-        }
-
-        /// <summary>
-        /// Checks whether the pieces drawn can be calculated correctly.
-        /// </summary>
-        /// <param name="o">Base piece coordinates</param>
-        /// <returns>Whether piece is valid</returns>
-        private bool CheckPiecesValid(List<Spot> o)     //TODO: Remove need for this function
-        {
-            if (o.Count < 2) { return true; }
-
-            // Check X
-            bool bigger = (o[0].X < o[1].X);
-            int switchCount = 0;
-            for (int index = 0; index < o.Count - 1; index++)
-            {
-                if (o[index].X < o[index + 1].X != bigger)
-                {
-                    bigger = !bigger;
-                    switchCount++;
-                }
-            }
-            if (switchCount > 2)
-            {
-                MessageBox.Show("Invalid base shape. Ensure shape does not fold back on itself.", "Invalid base shape", MessageBoxButtons.OK);
-                return false;
-            }
-            // Check Y
-            bigger = (o[0].Y < o[1].Y);
-            switchCount = 0;
-            for (int index = 0; index < o.Count - 1; index++)
-            {
-                if (o[index].Y < o[index + 1].Y != bigger)
-                {
-                    bigger = !bigger;
-                    switchCount++;
-                }
-            }
-            if (switchCount > 2)
-            {
-                MessageBox.Show("Invalid base shape. Ensure shape does not fold back on itself.", "Invalid base shape", MessageBoxButtons.OK);
-                return false;
-            }
-            // Check XRight
-            bigger = (o[0].XRight < o[1].XRight);
-            switchCount = 0;
-            for (int index = 0; index < o.Count - 1; index++)
-            {
-                if (o[index].XRight < o[index + 1].XRight != bigger)
-                {
-                    bigger = !bigger;
-                    switchCount++;
-                }
-            }
-            if (switchCount > 2)
-            {
-                MessageBox.Show("Invalid rotated shape. Ensure shape does not fold back on itself.", "Invalid rotated shape", MessageBoxButtons.OK);
-                return false;
-            }
-            // Check YDown
-            bigger = (o[0].YDown < o[1].YDown);
-            switchCount = 0;
-            for (int index = 0; index < o.Count - 1; index++)
-            {
-                if (o[index].YDown < o[index + 1].YDown != bigger)
-                {
-                    bigger = !bigger;
-                    switchCount++;
-                }
-            }
-            if (switchCount > 2)
-            {
-                MessageBox.Show("Invalid turned shape. Ensure shape does not fold back on itself.", "Invalid turned shape", MessageBoxButtons.OK);
-                return false;
-            }
-            return true;
         }
 
 
@@ -901,6 +649,16 @@ namespace Animator
             FixedCb.Enabled = false;
         }
 
+        /// <summary>
+        /// Changes moving variables to indicate no
+        /// movement is in process.
+        /// </summary>
+        private void StopMoving()
+        {
+            moving = 0;
+            movingFar = false;
+        }
+
 
 
         // ----- LOAD MENU FUNCTIONS -----
@@ -922,7 +680,7 @@ namespace Animator
         /// <param name="spots">Shape coordinates</param>
         public void LoadPieceOutline(List<Spot> spots)
         {
-            DataRow.Spots = spots;
+            WIP.Data = spots;
         }
 
 
@@ -951,5 +709,172 @@ namespace Animator
                 DisplayDrawings();
             });
         }
+
+
+
+
+        //// ----- DATA FUNCTIONS -----
+
+        ///// <summary>
+        ///// Applies the 3-board segment across the entire piece.
+        ///// </summary>
+        //private void ApplySegmentFully()
+        //{
+        //    Utilities.CoordsOnAllSides(WIP.Data);
+        //    List<Spot> spotCopy = DataRow.CopySpots();
+        //    bool[] tt = { true, true };
+        //    bool[] tf = { true, false };
+        //    bool[] ft = { false, true };
+        //    bool[] ff = { false, false };
+
+        //    List<DataRow> newRows = new List<DataRow> {
+        //        ConvertVariablesToData(0, 90, 0, 90, spotCopy, 0, new List<bool[]> { ff, ff, ff }),
+        //        ConvertVariablesToData(90, 180, 0, 90, spotCopy, 1, new List<bool[]> { ff, tf, ff }),
+        //        ConvertVariablesToData(180, 270, 0, 90, spotCopy, 0, new List<bool[]> { tf, tf, tf }),
+        //        ConvertVariablesToData(270, 360, 0, 90, spotCopy, 1, new List<bool[]> { tf, ff, tf }),
+
+        //        ConvertVariablesToData(0, 90, 90, 180, spotCopy, 2, new List<bool[]> { ff, ff, ft }),
+        //        ConvertVariablesToData(90, 180, 90, 180, spotCopy, 3, new List<bool[]> { ff, tf, ft }),
+        //        ConvertVariablesToData(180, 270, 90, 180, spotCopy, 2, new List<bool[]> { tf, tf, tt }),
+        //        ConvertVariablesToData(270, 360, 90, 180, spotCopy, 3, new List<bool[]> { tf, ff, tt }),
+
+        //        ConvertVariablesToData(0, 90, 180, 270, spotCopy, 0, new List<bool[]> { ft, ft, ft }),
+        //        ConvertVariablesToData(90, 180, 180, 270, spotCopy, 1, new List<bool[]> { ft, tt, ft }),
+        //        ConvertVariablesToData(180, 270, 180, 270, spotCopy, 0, new List<bool[]> { tt, tt, tt }),
+        //        ConvertVariablesToData(270, 360, 180, 270, spotCopy, 1, new List<bool[]> { tt, ft, tt }),
+
+        //        ConvertVariablesToData(0, 90, 270, 360, spotCopy, 2, new List<bool[]> { ft, ft, ff }),
+        //        ConvertVariablesToData(90, 180, 270, 360, spotCopy, 3, new List<bool[]> { ft, tt, ff }),
+        //        ConvertVariablesToData(180, 270, 270, 360, spotCopy, 2, new List<bool[]> { tt, tt, tf }),
+        //        ConvertVariablesToData(270, 360, 270, 360, spotCopy, 3, new List<bool[]> { tt, ft, tf })
+        //    };
+        //    WIP.Data = newRows;
+        //}
+
+        ///// <summary>
+        ///// Converts relevant variables for a piece's angle into a data line and saves to piece data.
+        ///// </summary>
+        ///// <param name="rFrom">Rotation start</param>
+        ///// <param name="rTo">Rotation end</param>
+        ///// <param name="tFrom">Turn start</param>
+        ///// <param name="tTo">Turn end</param>
+        ///// <param name="spotsList">Original spots to convert</param>
+        ///// <param name="origAngle">Angle at rFrom tFrom, (0) o (1) r (2) t (3) b</param>
+        ///// <returns>The provided data in a DataRow</returns>
+        //private DataRow ConvertVariablesToData(double rFrom, double rTo, double tFrom, double tTo, List<Spot> spts, int origAngle, List<bool[]> flips)
+        //{
+        //    DataRow newRow = new DataRow(rFrom, rTo, tFrom, tTo);
+        //    double[] middle = Utilities.FindMid(Utilities.ConvertSpotsToCoords(WIP.Data, origAngle));
+
+        //    // Find spots for DataRow
+        //    List<double[]> original = Utilities.FlipCoords(spts, origAngle, flips[0], middle);
+        //    int rotAngle; int turnAngle;
+        //    switch (origAngle)
+        //    {
+        //        case 1:
+        //            rotAngle = 0;
+        //            turnAngle = 3;
+        //            break;
+        //        case 2:
+        //            rotAngle = 3;
+        //            turnAngle = 0;
+        //            break;
+        //        case 3:
+        //            rotAngle = 2;
+        //            turnAngle = 1;
+        //            break;
+        //        default:
+        //            rotAngle = 1;
+        //            turnAngle = 2;
+        //            break;
+        //    }
+        //    List<double[]> rotated = Utilities.FlipCoords(spts, rotAngle, flips[1], middle);
+        //    List<double[]> turned = Utilities.FlipCoords(spts, turnAngle, flips[2], middle);
+        //    for (int index = 0; index < spts.Count; index++)
+        //    {
+        //        double x = original[index][0];
+        //        double y = original[index][1];
+        //        double xr = rotated[index][0];
+        //        double yd = turned[index][1];
+        //        newRow.Spots.Add(new Spot(x, xr, y, yd, spts[index].Connector, spts[index].Solid, spts[index].DrawnLevel));
+        //    }
+        //    return newRow;
+        //}
+
+        ///// <summary>
+        ///// Checks whether the pieces drawn can be calculated correctly.
+        ///// </summary>
+        ///// <param name="o">Base piece coordinates</param>
+        ///// <returns>Whether piece is valid</returns>
+        //private bool CheckPiecesValid(List<Spot> o)     //TODO: Remove need for this function
+        //{
+        //    if (o.Count < 2) { return true; }
+
+        //    // Check X
+        //    bool bigger = (o[0].X < o[1].X);
+        //    int switchCount = 0;
+        //    for (int index = 0; index < o.Count - 1; index++)
+        //    {
+        //        if (o[index].X < o[index + 1].X != bigger)
+        //        {
+        //            bigger = !bigger;
+        //            switchCount++;
+        //        }
+        //    }
+        //    if (switchCount > 2)
+        //    {
+        //        MessageBox.Show("Invalid base shape. Ensure shape does not fold back on itself.", "Invalid base shape", MessageBoxButtons.OK);
+        //        return false;
+        //    }
+        //    // Check Y
+        //    bigger = (o[0].Y < o[1].Y);
+        //    switchCount = 0;
+        //    for (int index = 0; index < o.Count - 1; index++)
+        //    {
+        //        if (o[index].Y < o[index + 1].Y != bigger)
+        //        {
+        //            bigger = !bigger;
+        //            switchCount++;
+        //        }
+        //    }
+        //    if (switchCount > 2)
+        //    {
+        //        MessageBox.Show("Invalid base shape. Ensure shape does not fold back on itself.", "Invalid base shape", MessageBoxButtons.OK);
+        //        return false;
+        //    }
+        //    // Check XRight
+        //    bigger = (o[0].XRight < o[1].XRight);
+        //    switchCount = 0;
+        //    for (int index = 0; index < o.Count - 1; index++)
+        //    {
+        //        if (o[index].XRight < o[index + 1].XRight != bigger)
+        //        {
+        //            bigger = !bigger;
+        //            switchCount++;
+        //        }
+        //    }
+        //    if (switchCount > 2)
+        //    {
+        //        MessageBox.Show("Invalid rotated shape. Ensure shape does not fold back on itself.", "Invalid rotated shape", MessageBoxButtons.OK);
+        //        return false;
+        //    }
+        //    // Check YDown
+        //    bigger = (o[0].YDown < o[1].YDown);
+        //    switchCount = 0;
+        //    for (int index = 0; index < o.Count - 1; index++)
+        //    {
+        //        if (o[index].YDown < o[index + 1].YDown != bigger)
+        //        {
+        //            bigger = !bigger;
+        //            switchCount++;
+        //        }
+        //    }
+        //    if (switchCount > 2)
+        //    {
+        //        MessageBox.Show("Invalid turned shape. Ensure shape does not fold back on itself.", "Invalid turned shape", MessageBoxButtons.OK);
+        //        return false;
+        //    }
+        //    return true;
+        //}
     }
 }

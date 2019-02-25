@@ -15,7 +15,7 @@ namespace Animator
     {
         #region Piece Variables
         public override string Name { get; set; }
-        public List<DataRow> Data { get; set; } = new List<DataRow>();
+        public List<Spot> Data { get; set; } = new List<Spot>();
 
         // Coords and Angles
         public double X { get; set; } = 0;
@@ -24,6 +24,7 @@ namespace Animator
         public double T { get; set; } = 0;
         public double S { get; set; } = 0;
         public double SM { get; set; } = 100;
+        private readonly double[] middle;
 
         // Colours and Details
         public string ColourType { get; set; }                     // Solid/Gradient colour and direction
@@ -84,8 +85,17 @@ namespace Animator
             PieceDetails = angleData[3];
 
             // Spots
+            List<double[]> currentPoints = new List<double[]>();
             for (int index = 1; index < data.Count; index++)
-                Data.Add(new DataRow(data[index]));
+            {
+                string[] spotData = data[index].Split(Constants.Semi);
+                string[] coords = spotData[0].Split(Constants.Colon);
+
+                Data.Add(new Spot(double.Parse(coords[0]), double.Parse(coords[1]), double.Parse(coords[2]),
+                    double.Parse(coords[3]), spotData[1], spotData[2]));
+                currentPoints.Add(Data[Data.Count - 1].GetCoordCombination(0));
+            }
+            middle = Utilities.FindMid(currentPoints);
         }
 
         /// <summary>
@@ -169,8 +179,8 @@ namespace Animator
             newData.Add(pieceInfo);
 
             // Add DataRows
-            foreach (DataRow row in Data)
-                newData.Add(row.ToString());
+            foreach (Spot spot in Data)
+                newData.Add(spot.ToString());
             return newData;
         }
 
@@ -273,57 +283,18 @@ namespace Animator
         }
 
         /// <summary>
-        /// Finds the correct row in the piece data for the given rotation and turn values.
-        /// </summary>
-        /// <returns>The index of the DataRow relevant to the provided angles or -1 if not found</returns>
-        public int FindRow()
-        {
-            double r = GetAngles()[0];
-            double t = GetAngles()[1];
-            for (int index = 0; index < Data.Count; index++)
-            {
-                if (Data[index].IsWithin(r, t) && Data[index].Spots.Count > 0)
-                    return index;
-            }
-            return -1;
-        }
-
-        /// <summary>
         /// Finds the points to print based on the rotation, turn, spin and size of the piece
         /// </summary>
         /// <returns></returns>
         public List<double[]> GetCurrentPoints()
         {
-            // Check Row Exists
-            int row = FindRow();
-            if (row == -1) { return null; }
-
-            // Prepare Variables
-            DataRow dataRow = Data[row];
-            List<Spot> spots = dataRow.Spots;
+            // Get Current Spot Coords
             List<double[]> currentPoints = new List<double[]>();
-
-            // Find Multipliers - How far into the rotation/turn range is required
-            double rotationMultiplier = dataRow.RotFrom == dataRow.RotTo ? (GetAngles()[0] - dataRow.RotFrom) / (dataRow.RotTo - dataRow.RotFrom) : 0;
-            double turnMultiplier = dataRow.TurnFrom == dataRow.TurnTo ? (GetAngles()[1] - dataRow.TurnFrom) / (dataRow.TurnTo - dataRow.TurnFrom) : 0;
-
-            // Rotation Adjustment
-            foreach (Spot spot in spots)
-            {
-                if (dataRow.RotTo != dataRow.RotFrom)
-                    currentPoints.Add(new double[] { spot.X + (spot.XRight - spot.X) * rotationMultiplier, spot.Y });
-                else
-                    currentPoints.Add(new double[] { spot.X, spot.Y });
-            }
-
-            // Turn Adjustment
-            for (int index = 0; index < spots.Count; index++)
-                if (dataRow.TurnTo != dataRow.TurnFrom)
-                    currentPoints[index][1] += (spots[index].YDown - spots[index].Y) * turnMultiplier;
+            foreach (Spot spot in Data)
+                currentPoints.Add(spot.GetCurrentCoords(GetAngles()[0], GetAngles()[1]));
 
             // Recentre
-            double[] middle = Utilities.FindMid(currentPoints);
-            for (int index = 0; index < spots.Count; index++)
+            for (int index = 0; index < currentPoints.Count; index++)
             {
                 currentPoints[index][0] = GetCoords()[0] + (currentPoints[index][0] - middle[0]);
                 currentPoints[index][1] = GetCoords()[1] + (currentPoints[index][1] - middle[1]);
