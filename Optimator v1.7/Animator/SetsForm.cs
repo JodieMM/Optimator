@@ -144,18 +144,16 @@ namespace Animator
                 {
                     justAdded = new Piece(AddTb.Text);
                     WIP.PiecesList.Add(justAdded.ToPiece());
-                    justAdded.ToPiece().X = DrawBase.Width / 2.0; justAdded.ToPiece().Y = DrawBase.Height / 2.0;
+                    justAdded.ToPiece().SetCoordsAsMid(DrawBase);
                     justAdded.ToPiece().PieceOf = WIP;
                 }
                 else
                 {
                     justAdded = new Set(AddTb.Text);
                     WIP.PiecesList.AddRange(justAdded.ToSet().PiecesList);
-                    justAdded.ToPiece().X = DrawBase.Width / 2.0; justAdded.ToPiece().Y = DrawBase.Height / 2.0;
+                    justAdded.ToPiece().SetCoordsAsMid(DrawBase);
                     foreach (Piece piece in justAdded.ToSet().PiecesList)
-                    {
                         piece.PieceOf = WIP;
-                    }
                 }
                 SelectPiece(justAdded.ToPiece());
 
@@ -184,7 +182,7 @@ namespace Animator
         /// <param name="e"></param>
         private void SetSelectionMod_Click(object sender, EventArgs e)
         {
-            if (selected == null || (sender == MoveJoinBtn && !selected.IsAttached()))
+            if (selected == null || (sender == MoveJoinBtn && selected.AttachedTo == null))
                 return;
 
             Button sent = (Button)sender;
@@ -544,16 +542,12 @@ namespace Animator
             WIP.BasePiece = null;
             foreach(Piece piece in WIP.PiecesList)
             {
-                if (!piece.IsAttached())
+                if (piece.AttachedTo == null)
                 {
                     if (WIP.BasePiece == null)
-                    {
                         WIP.BasePiece = piece;
-                    }
                     else
-                    {
                         return false;
-                    }
                 }
             }
             return true;

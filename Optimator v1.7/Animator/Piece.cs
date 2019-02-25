@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace Animator
 {
@@ -15,7 +16,6 @@ namespace Animator
         #region Piece Variables
         public override string Name { get; set; }
         public List<DataRow> Data { get; set; } = new List<DataRow>();
-        public bool Recentre { get; set; } = true;
 
         // Coords and Angles
         public double X { get; set; } = 0;
@@ -36,8 +36,6 @@ namespace Animator
         public Piece AttachedTo { get; set; } = null;
         public Spot Join { get; set; } = null;
         public Set PieceOf { get; set; } = null;
-
-        // Set Ordering
         public double AngleFlip { get; set; } = -1;
         public int IndexSwitch { get; set; } = 0;
 
@@ -87,9 +85,7 @@ namespace Animator
 
             // Spots
             for (int index = 1; index < data.Count; index++)
-            {
                 Data.Add(new DataRow(data[index]));
-            }
         }
 
         /// <summary>
@@ -99,7 +95,6 @@ namespace Animator
         public Piece()
         {
             Name = Constants.WIPName;
-            Recentre = false;
             ColourType = Constants.fillOptions[0];
             FillColour = new Color[] { Constants.defaultFill };
             OutlineColour = Constants.defaultOutline;
@@ -118,7 +113,7 @@ namespace Animator
         /// <returns>Size Modifier</returns>
         public double GetSizeMod()
         {
-            return IsAttached() ? (SM / 100.0) * (AttachedTo.GetSizeMod()) : SM / 100;
+            return AttachedTo != null ? (SM / 100.0) * (AttachedTo.GetSizeMod()) : SM / 100;
         }
 
         /// <summary>
@@ -127,7 +122,7 @@ namespace Animator
         /// <returns>double[] { X, Y }</returns>
         public double[] GetCoords()
         {
-            return IsAttached() ? new double[] { X + AttachedTo.GetCoords()[0] + GetPointChange()[0],
+            return AttachedTo != null ? new double[] { X + AttachedTo.GetCoords()[0] + GetPointChange()[0],
                 Y + AttachedTo.GetCoords()[1] + GetPointChange()[1] } : new double[] { X, Y };
         }
 
@@ -145,27 +140,18 @@ namespace Animator
             angles[2] = S; //* Math.Cos(Utilities.ToRad(R)); // + S * Math.Cos(Utilities.ToRad(T));
 
             // Build Off Attached
-            if (IsAttached())
+            if (AttachedTo != null)
             {
-                angles[0] += AttachedTo.GetAngles()[0] % 360;
-                angles[1] += AttachedTo.GetAngles()[1] % 360;
-                angles[2] += AttachedTo.GetAngles()[2] % 360;
+                angles[0] += AttachedTo.GetAngles()[0];
+                angles[1] += AttachedTo.GetAngles()[1];
+                angles[2] += AttachedTo.GetAngles()[2];
             }
 
             // Modulus of 360 degrees
-            angles[0] = Utilities.Modulo(angles[0], 360);
-            angles[1] = Utilities.Modulo(angles[1], 360);
-            angles[2] = Utilities.Modulo(angles[2], 360);
+            angles[0] = angles[0] % 360;
+            angles[1] = angles[1] % 360;
+            angles[2] = angles[2] % 360;
             return angles;
-        }
-
-        /// <summary>
-        /// Finds whether the piece is attached to another piece
-        /// </summary>
-        /// <returns>If attached</returns>
-        public bool IsAttached()
-        {
-            return AttachedTo != null;
         }
 
         /// <summary>
@@ -178,17 +164,13 @@ namespace Animator
             // Update first line of data            [0] colour type     [1] colour array        [2] outline width       [3] pieceDetails
             string pieceInfo = ColourType + ";" + OutlineColour.A + "," + OutlineColour.R + "," + OutlineColour.G + "," + OutlineColour.B + ":";
             foreach (Color col in FillColour)
-            {
                 pieceInfo += col.A + "," + col.R + "," + col.G + "," + col.B + ":";
-            }
             pieceInfo = pieceInfo.Remove(pieceInfo.Length - 1, 1) + ";" + OutlineWidth + ";" + PieceDetails;
             newData.Add(pieceInfo);
 
             // Add DataRows
             foreach (DataRow row in Data)
-            {
                 newData.Add(row.ToString());
-            }
             return newData;
         }
 
@@ -214,7 +196,17 @@ namespace Animator
         }
 
         /// <summary>
-        /// Attaches this piece to another, forming or continuing a set
+        /// Sets the centre of the point to the board it's being displayed on.
+        /// </summary>
+        /// <param name="pictureBox">The board the piece is to be drawn on</param>
+        public void SetCoordsAsMid(PictureBox pictureBox)
+        {
+            X = pictureBox.Width / 2.0;
+            Y = pictureBox.Height / 2.0;
+        }
+
+        /// <summary>
+        /// Attaches this piece to another, forming or continuing a set.
         /// </summary>
         /// <param name="attach">The piece being attached to</param>
         /// <param name="join">The point where the piece attaches to its base</param>
@@ -225,7 +217,6 @@ namespace Animator
             AttachedTo = attach;
             if (join == null)
                 join = new Spot(GetCoords()[0], GetCoords()[1]);
-            join.GenerateData();
             Join = join;
             AngleFlip = angleFlip;
             IndexSwitch = indexSwitch;
@@ -273,18 +264,12 @@ namespace Animator
         /// Draws the piece to the provided graphics.
         /// </summary>
         /// <param name="g">Provided graphics</param>
-        public override void Draw(Graphics g)
+        public override void Draw(Graphics g, Color? outline = null)
         {
-            Visuals.DrawPiece(this, g);
-        }
-
-        /// <summary>
-        /// Draws the piece to the provided graphics with a specific outline colour.
-        /// </summary>
-        /// <param name="g">Provided graphics</param>
-        public void Draw(Graphics g, Color outline)
-        {
-            Visuals.DrawPiece(this, g, outline);
+            if (outline == null)
+                Visuals.DrawPiece(this, g);
+            else
+                Visuals.DrawPiece(this, g, outline);
         }
 
         /// <summary>
@@ -298,9 +283,7 @@ namespace Animator
             for (int index = 0; index < Data.Count; index++)
             {
                 if (Data[index].IsWithin(r, t) && Data[index].Spots.Count > 0)
-                {
                     return index;
-                }
             }
             return -1;
         }
@@ -311,40 +294,39 @@ namespace Animator
         /// <returns></returns>
         public List<double[]> GetCurrentPoints()
         {
-            // Prepare Variables
+            // Check Row Exists
             int row = FindRow();
             if (row == -1) { return null; }
+
+            // Prepare Variables
             DataRow dataRow = Data[row];
-            List<Spot> spts = dataRow.Spots;
+            List<Spot> spots = dataRow.Spots;
             List<double[]> currentPoints = new List<double[]>();
 
-            // Find Multipliers - How far into the rotation range is required
-            double rotationMultiplier = (GetAngles()[0] - dataRow.RotFrom) / (dataRow.RotTo - dataRow.RotFrom);
-            double turnMultiplier = (GetAngles()[1] - dataRow.TurnFrom) / (dataRow.TurnTo - dataRow.TurnFrom);
+            // Find Multipliers - How far into the rotation/turn range is required
+            double rotationMultiplier = dataRow.RotFrom == dataRow.RotTo ? (GetAngles()[0] - dataRow.RotFrom) / (dataRow.RotTo - dataRow.RotFrom) : 0;
+            double turnMultiplier = dataRow.TurnFrom == dataRow.TurnTo ? (GetAngles()[1] - dataRow.TurnFrom) / (dataRow.TurnTo - dataRow.TurnFrom) : 0;
 
             // Rotation Adjustment
-            foreach (Spot spt in spts)
+            foreach (Spot spot in spots)
             {
                 if (dataRow.RotTo != dataRow.RotFrom)
-                    currentPoints.Add(new double[] { spt.X + (spt.XRight - spt.X) * rotationMultiplier, spt.Y });
+                    currentPoints.Add(new double[] { spot.X + (spot.XRight - spot.X) * rotationMultiplier, spot.Y });
                 else
-                    currentPoints.Add(new double[] { spt.X, spt.Y });
+                    currentPoints.Add(new double[] { spot.X, spot.Y });
             }
 
             // Turn Adjustment
-            for (int index = 0; index < spts.Count; index++)
+            for (int index = 0; index < spots.Count; index++)
                 if (dataRow.TurnTo != dataRow.TurnFrom)
-                    currentPoints[index][1] += (spts[index].YDown - spts[index].Y) * turnMultiplier;
+                    currentPoints[index][1] += (spots[index].YDown - spots[index].Y) * turnMultiplier;
 
             // Recentre
-            if (Recentre)
+            double[] middle = Utilities.FindMid(currentPoints);
+            for (int index = 0; index < spots.Count; index++)
             {
-                double[] middle = Utilities.FindMid(currentPoints);
-                for (int index = 0; index < spts.Count; index++)
-                {
-                    currentPoints[index][0] = GetCoords()[0] + (currentPoints[index][0] - middle[0]);
-                    currentPoints[index][1] = GetCoords()[1] + (currentPoints[index][1] - middle[1]);
-                }
+                currentPoints[index][0] = GetCoords()[0] + (currentPoints[index][0] - middle[0]);
+                currentPoints[index][1] = GetCoords()[1] + (currentPoints[index][1] - middle[1]);
             }
 
             // Spin and Size Adjustment
@@ -418,16 +400,10 @@ namespace Animator
         /// <returns>double[] { X change, Y change }</returns>
         private double[] GetPointChange()
         {
-            DataRow dataRow = Join.data[Utilities.FindRow(R, T, Join.data)];
-            Spot currentSpot = dataRow.Spots[0];
-
-            double rMod = (dataRow.RotFrom == dataRow.RotTo) ? 0 : (R - dataRow.RotFrom) / (dataRow.RotTo - dataRow.RotFrom);
-            double tMod = (dataRow.TurnFrom == dataRow.TurnTo) ? 0 : (T - dataRow.TurnFrom) / (dataRow.TurnTo - dataRow.TurnFrom);
-
-            double[] returning = new double[] { (currentSpot.X + (currentSpot.XRight - currentSpot.X) * rMod) - Join.X,
-            (currentSpot.Y + (currentSpot.YDown - currentSpot.Y) * tMod) - Join.Y };
-            List<double[]> listSpot = new List<double[]> { returning };
-            return SpinMeRound(listSpot)[0];
+            double[] spotCoords = Join.GetCurrentCoords(GetCoords()[0], GetCoords()[1]);
+            List<double[]> spotCoordsList = new List<double[]> { spotCoords };
+            spotCoords = SpinMeRound(spotCoordsList)[0];
+            return new double[] { spotCoords[0] - Join.X, spotCoords[1] - Join.Y };            
         }
 
         /// <summary>

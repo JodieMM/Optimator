@@ -21,8 +21,6 @@ namespace Animator
         private Graphics g;
 
         private decimal videoLength = 0;
-        private double midX;
-        private double midY;
         private decimal timeIncrement = (decimal)0.5;
 
         private Color button = Color.Khaki;
@@ -40,8 +38,6 @@ namespace Animator
             KeyUp += KeyPress;
             DrawPanel.MouseDown += new MouseEventHandler(DrawPanel_MouseDown);
 
-            midX = DrawPanel.Size.Width / 2;
-            midY = DrawPanel.Size.Height / 2;
             g = DrawPanel.CreateGraphics();
         }
 
@@ -59,24 +55,22 @@ namespace Animator
         {
             try
             {
-                Part newbie;
+                Part loaded;
                 if (sender == AddPieceBtn)
                 {
-                    newbie = new Piece(NameTb.Text);
-                    newbie.ToPiece().X = midX; newbie.ToPiece().Y = midY;
-                    newbie.ToPiece().Originally = new Originals(newbie.ToPiece());
+                    loaded = new Piece(NameTb.Text);
+                    loaded.ToPiece().SetCoordsAsMid(DrawPanel);
+                    loaded.ToPiece().Originally = new Originals(loaded.ToPiece());
                 }
                 else
                 {
-                    newbie = new Set(NameTb.Text);
-                    newbie.ToPiece().X = midX; newbie.ToPiece().Y = midY;
-                    foreach (Piece piece in newbie.ToSet().PiecesList)
-                    {
+                    loaded = new Set(NameTb.Text);
+                    loaded.ToPiece().SetCoordsAsMid(DrawPanel);
+                    foreach (Piece piece in loaded.ToSet().PiecesList)
                         piece.Originally = new Originals(piece);
-                    }
                 }
-                WIP.PartsList.Add(newbie);
-                SelectPart(newbie);
+                WIP.PartsList.Add(loaded);
+                SelectPart(loaded);
                 WIP.UpdatePiecesList();
                 DisplayDrawings();
             }

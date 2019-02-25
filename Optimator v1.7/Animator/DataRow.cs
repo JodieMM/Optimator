@@ -64,8 +64,7 @@ namespace Animator
                     string[] individualCoords = coords[index].Split(Constants.Comma);
                     Spots.Add(new Spot(Convert.ToDouble(individualCoords[0]), Convert.ToDouble(individualCoords[1]),
                         Convert.ToDouble(individualCoords[2]), Convert.ToDouble(individualCoords[3]), joins[index],
-                        solids[index]));
-                    Spots[Spots.Count - 1].DrawnLevel = int.Parse(drawns[index]);
+                        solids[index], int.Parse(drawns[index])));
                 }
             }
             else
@@ -167,10 +166,7 @@ namespace Animator
         {
             List<Spot> newSpots = new List<Spot>();
             foreach (Spot spot in Spots)
-            {
-                newSpots.Add(new Spot(spot.X, spot.XRight, spot.Y, spot.YDown, spot.Connector, spot.Solid));
-                newSpots[newSpots.Count - 1].DrawnLevel = spot.DrawnLevel;
-            }
+                newSpots.Add(new Spot(spot.X, spot.XRight, spot.Y, spot.YDown, spot.Connector, spot.Solid, spot.DrawnLevel));
 
             // Set MatchX and MatchY of new spots based on index to de-reference matches
             for (int index = 0; index < Spots.Count; index++)

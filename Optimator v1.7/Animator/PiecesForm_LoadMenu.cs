@@ -47,14 +47,11 @@ namespace Animator
             try
             {
                 if (sender == LoadSetBtn)
-                {
                     loaded = new Set(NameTb.Text);
-                }
                 else
-                {
                     loaded = new Piece(NameTb.Text);
-                }
-                loaded.ToPiece().Recentre = false;
+
+                loaded.ToPiece().SetCoordsAsMid(DrawPanel);
                 DrawPanel.Refresh();
                 g = DrawPanel.CreateGraphics();
                 loaded.Draw(g);

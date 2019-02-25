@@ -224,7 +224,7 @@ namespace Animator
             for (int index = 0; index < spots.Count; index++)
             {
                 Spot spot = spots[index];
-                Spot insert = new Spot(spot.GetCoordCombination(angle)[0], spot.GetCoordCombination(angle)[1], 1);
+                Spot insert = new Spot(spot.GetCoordCombination(angle)[0], spot.GetCoordCombination(angle)[1], drawn: 1);
 
                 // If spot needs to switch with another spot
                 if (spot.DrawnLevel == 0 || right && spot.MatchY != null || down && spot.MatchX != null)
@@ -317,10 +317,7 @@ namespace Animator
                             spots[Modulo(insertIndex - 1, spots.Count)].GetCoordCombination(1), original[1], 1, spots[insertIndex].Connector)[0];
                         double turned = FindSymmetricalOppositeCoord(spots[insertIndex].GetCoordCombination(2),
                             spots[Modulo(insertIndex - 1, spots.Count)].GetCoordCombination(2), original[0], 0, spots[insertIndex].Connector)[1];
-                        Spot newSpot = new Spot(original[0], original[1], rotated, turned, spots[insertIndex].Connector, spots[insertIndex].Solid)
-                        {
-                            DrawnLevel = 1
-                        };
+                        Spot newSpot = new Spot(original[0], original[1], rotated, turned, spots[insertIndex].Connector, spots[insertIndex].Solid, 1);
                         if (xy == 0)
                         {
                             newSpot.MatchX = spots[index];

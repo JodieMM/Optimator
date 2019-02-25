@@ -30,11 +30,6 @@ namespace Animator
         private Color pressed = Color.FromArgb(255, 153, 255, 255);
         #endregion
 
-        // TODO: Remove (these are temp)
-        private double rotationTo = 90;
-        private double turnTo = 90;
-        private double rotationFrom = 0;
-        private double turnFrom = 0;
 
 
         /// <summary>
@@ -65,7 +60,7 @@ namespace Animator
             OutlineBox.BackColor = Constants.defaultOutline;
             OutlineWidthBox.Value = Constants.defaultOutlineWidth;
 
-            DataRow = new DataRow(rotationFrom, rotationTo, turnFrom, turnTo);
+            DataRow = new DataRow(0, 90, 0, 90);
         }
 
 
@@ -679,12 +674,12 @@ namespace Animator
                 {
                     Part sketch = Sketches[index];
                     sketch.Draw(original);
-                    sketch.ToPiece().R += rotationTo - rotationFrom;
+                    sketch.ToPiece().R += 90 - 0;
                     sketch.Draw(rotated);
-                    sketch.ToPiece().R -= rotationTo - rotationFrom;
-                    sketch.ToPiece().T += turnTo - turnFrom;
+                    sketch.ToPiece().R -= 90 - 0;
+                    sketch.ToPiece().T += 90 - 0;
                     sketch.Draw(turned);
-                    sketch.ToPiece().T -= turnTo - turnFrom;
+                    sketch.ToPiece().T -= 90 - 0;
                 }
             }
 
@@ -793,8 +788,7 @@ namespace Animator
                 double y = original[index][1];
                 double xr = rotated[index][0];
                 double yd = turned[index][1];
-                newRow.Spots.Add(new Spot(x, xr, y, yd, spts[index].Connector, spts[index].Solid));
-                newRow.Spots[newRow.Spots.Count - 1].DrawnLevel = spts[index].DrawnLevel;
+                newRow.Spots.Add(new Spot(x, xr, y, yd, spts[index].Connector, spts[index].Solid, spts[index].DrawnLevel));
             }
             return newRow;
         }

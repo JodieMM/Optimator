@@ -28,12 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.DrawBoard = new System.Windows.Forms.PictureBox();
+            this.DrawPanel = new System.Windows.Forms.PictureBox();
             this.OptionsMenu = new System.Windows.Forms.Panel();
             this.CloseBtn = new System.Windows.Forms.Button();
             this.RotationTrack = new System.Windows.Forms.TrackBar();
             this.TurnTrack = new System.Windows.Forms.TrackBar();
-            ((System.ComponentModel.ISupportInitialize)(this.DrawBoard)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DrawPanel)).BeginInit();
             this.OptionsMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.RotationTrack)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.TurnTrack)).BeginInit();
@@ -41,12 +41,12 @@
             // 
             // DrawBoard
             // 
-            this.DrawBoard.BackColor = System.Drawing.Color.White;
-            this.DrawBoard.Location = new System.Drawing.Point(25, 25);
-            this.DrawBoard.Name = "DrawBoard";
-            this.DrawBoard.Size = new System.Drawing.Size(650, 650);
-            this.DrawBoard.TabIndex = 0;
-            this.DrawBoard.TabStop = false;
+            this.DrawPanel.BackColor = System.Drawing.Color.White;
+            this.DrawPanel.Location = new System.Drawing.Point(25, 25);
+            this.DrawPanel.Name = "DrawBoard";
+            this.DrawPanel.Size = new System.Drawing.Size(650, 650);
+            this.DrawPanel.TabIndex = 0;
+            this.DrawPanel.TabStop = false;
             // 
             // OptionsMenu
             // 
@@ -104,7 +104,7 @@
             this.Controls.Add(this.TurnTrack);
             this.Controls.Add(this.RotationTrack);
             this.Controls.Add(this.OptionsMenu);
-            this.Controls.Add(this.DrawBoard);
+            this.Controls.Add(this.DrawPanel);
             this.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "PreviewForm";
@@ -112,7 +112,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Preview";
             this.Shown += new System.EventHandler(this.PiecesPreviewForm_Shown);
-            ((System.ComponentModel.ISupportInitialize)(this.DrawBoard)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DrawPanel)).EndInit();
             this.OptionsMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.RotationTrack)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.TurnTrack)).EndInit();
@@ -123,7 +123,7 @@
 
         #endregion
 
-        private System.Windows.Forms.PictureBox DrawBoard;
+        private System.Windows.Forms.PictureBox DrawPanel;
         private System.Windows.Forms.Panel OptionsMenu;
         private System.Windows.Forms.Button CloseBtn;
         private System.Windows.Forms.TrackBar RotationTrack;

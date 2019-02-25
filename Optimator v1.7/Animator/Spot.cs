@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
 
 namespace Animator
 {
@@ -16,14 +15,13 @@ namespace Animator
         public double XRight { get; set; }
         public double Y { get; set; }
         public double YDown { get; set; }
-        public List<DataRow> data = new List<DataRow>();
 
         public string Connector { get; set; }
         public string Solid { get; set; }
 
-        public Spot MatchX { get; set; }
-        public Spot MatchY { get; set; }
-        public int DrawnLevel { get; set; }     // TODO Remove?        // 0 = Drawn, 1 = First Symmetry, 2 = Second Symmetry
+        public Spot MatchX { get; set; } = null;
+        public Spot MatchY { get; set; } = null;
+        public int DrawnLevel { get; set; }
         #endregion
         
 
@@ -37,7 +35,7 @@ namespace Animator
         /// <param name="connect">Connector from this spot to the next</param>
         /// <param name="solid">Flexibility of the spot</param>
         /// /// <param name="drawn">DrawLevel integer</param>
-        public Spot(double x, double y, double? xr = null, double? yd = null, string connect = null, string solid = null)
+        public Spot(double x, double y, double? xr = null, double? yd = null, string connect = null, string solid = null, int drawn = 0)
         {
             X = x;
             Y = y;
@@ -45,6 +43,7 @@ namespace Animator
             YDown = yd ?? y;
             Connector = connect ?? Constants.connectorOptions[0];
             Solid = solid ?? Constants.solidOptions[0];
+            DrawnLevel = drawn;
         }
 
 
@@ -72,11 +71,25 @@ namespace Animator
             }
         }
 
-        
-        public void GenerateData()
+        /// <summary>
+        /// Gets the current coordinates of the spot based on
+        /// the current angles.
+        /// </summary>
+        /// <param name="r">Current rotation</param>
+        /// <param name="t">Current turn</param>
+        public double[] GetCurrentCoords(double r, double t)
         {
             // TODO &Joins
+            // TODO Include spin! (?)
+
+            //double rMod = (dataRow.RotFrom == dataRow.RotTo) ? 0 : (R - dataRow.RotFrom) / (dataRow.RotTo - dataRow.RotFrom);
+            //double tMod = (dataRow.TurnFrom == dataRow.TurnTo) ? 0 : (T - dataRow.TurnFrom) / (dataRow.TurnTo - dataRow.TurnFrom);
+            // new double[] { (currentSpot.X + (currentSpot.XRight - currentSpot.X) * rMod) - Join.X,
+            //(currentSpot.Y + (currentSpot.YDown - currentSpot.Y) * tMod) - Join.Y };
+
+            return new double[] { 0, 0 };
         }
+
 
 
         // ----- SET FUNCTIONS -----
@@ -92,24 +105,16 @@ namespace Animator
             if (xy == 0)
             {
                 if (angle == 0 || angle == 2)
-                {
                     X = value;
-                }
                 else
-                {
                     XRight = value;
-                }
             }
             else
             {
                 if (angle == 0 || angle == 1)
-                {
                     Y = value;
-                }
                 else
-                {
                     YDown = value;
-                }
             }
         }
 
@@ -125,13 +130,7 @@ namespace Animator
         /// <param name="board">The graphics board to be drawn on</param>
         public void Draw(int angle, Color colour, Graphics board)
         {
-            double xD = (angle != 1) ? X : XRight;
-            double yD = (angle != 2) ? Y : YDown;
-            int x = (int)xD;        //TODO: Remove once made redundant by new drawing features
-            int y = (int)yD;
-            Pen pen = new Pen(colour);
-            board.DrawLine(pen, new Point(x - 2, y), new Point(x + 2, y));
-            board.DrawLine(pen, new Point(x, y - 2), new Point(x, y + 2));
+            Visuals.DrawCross(GetCoordCombination(angle)[0], GetCoordCombination(angle)[1], colour, board);
         }
     }
 }

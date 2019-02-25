@@ -40,13 +40,10 @@ namespace Animator
                 while (dataLine != "Originals")
                 {
                     if (dataLine.StartsWith("p"))
-                    {
                         PartsList.Add(new Piece(dataLine.Remove(0, 2)));
-                    }
                     else
-                    {
                         PartsList.Add(new Set(dataLine.Remove(0, 2)));
-                    }
+
                     dataLine = file.ReadLine();
                 }
                 UpdatePiecesList();

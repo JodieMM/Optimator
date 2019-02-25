@@ -27,8 +27,7 @@ namespace Animator
         {
             InitializeComponent();
             WIP = part;
-            WIP.ToPiece().Recentre = true;
-            WIP.ToPiece().X = DrawBoard.Width / 2.0; WIP.ToPiece().Y = DrawBoard.Height / 2.0;
+            WIP.ToPiece().SetCoordsAsMid(DrawPanel);
         }
 
         /// <summary>
@@ -86,8 +85,8 @@ namespace Animator
         /// </summary>
         private void DrawScreen()
         {
-            DrawBoard.Refresh();
-            g = DrawBoard.CreateGraphics();
+            DrawPanel.Refresh();
+            g = DrawPanel.CreateGraphics();
             WIP.Draw(g);
         }
     }

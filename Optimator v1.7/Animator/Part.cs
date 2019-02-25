@@ -49,6 +49,6 @@ namespace Animator
         /// Draws the part to the supplied graphics.
         /// </summary>
         /// <param name="g">Supplied graphics</param>
-        public abstract void Draw(Graphics g);
+        public abstract void Draw(Graphics g, Color? outline = null);
     }
 }
