@@ -35,8 +35,10 @@ namespace Animator
         public SetsForm()
         {
             InitializeComponent();
+
             KeyPreview = true;
             KeyUp += KeyPress;
+
             DrawBase.MouseDown += new MouseEventHandler(DrawBase_MouseDown);
             DrawBase.MouseMove += new MouseEventHandler(DrawBase_MouseMove);
             DrawBase.MouseUp += new MouseEventHandler(DrawBase_MouseUp);
@@ -73,15 +75,7 @@ namespace Animator
         /// <param name="e"></param>
         private void ExitBtn_Click(object sender, EventArgs e)
         {
-            DialogResult result = DialogResult.Yes;
-            if (WIP.PiecesList.Count > 1)
-            {
-                result = MessageBox.Show("Do you want to exit without saving? Your set will be lost.", "Exit Confirmation", MessageBoxButtons.YesNo);
-            }
-            if (result == DialogResult.Yes)
-            {
-                Close();
-            }
+            if (Utilities.ExitBtn_Click(WIP.PiecesList.Count > 1)) { Close(); }
         }
 
         /// <summary>
@@ -93,22 +87,12 @@ namespace Animator
         {
             if (WIP.PiecesList.Count < 1)
                 Close();
+            else if (!Utilities.CheckValidNewName(NameTb.Text, Constants.SetsFolder))
+                return;
             else if (!CheckSingularBasePiece())
-                MessageBox.Show("Please connect all pieces or remove unconnected pieces.", "Multiple Sets", MessageBoxButtons.OK);
-            else if (!Constants.PermittedName.IsMatch(NameTb.Text))
-                MessageBox.Show("Please choose a valid name for your set. Name can only include letters and numbers.", "Name Invalid", MessageBoxButtons.OK);
-            // Name is valid
+                MessageBox.Show("Please connect all pieces but one or remove unconnected pieces.", "Multiple Sets", MessageBoxButtons.OK);
             else
             {
-                // Check name not already in use, or that overriding is okay
-                if (File.Exists(Utilities.GetDirectory(Constants.SetsFolder, NameTb.Text, Constants.Txt)))
-                {
-                    DialogResult result = MessageBox.Show("This name is already in use. Do you want to override the existing set?", "Override Confirmation", MessageBoxButtons.YesNo);
-                    if (result == DialogResult.No)
-                        return;
-                }
-
-                // Save Set and Close Form
                 try
                 {
                     Utilities.SaveData(Utilities.GetDirectory(Constants.SetsFolder, NameTb.Text, Constants.Txt), WIP.GetData());
@@ -159,9 +143,8 @@ namespace Animator
 
                 // If first piece, set as base
                 if (WIP.PiecesList.Count == 1)
-                {
                     WIP.BasePiece = selected;
-                }
+
                 DisplayDrawings();
             }
             catch (FileNotFoundException)
@@ -260,22 +243,16 @@ namespace Animator
         private void UpdateSelectedPiece(object sender, EventArgs e)
         {
             if (selected == null) { return; }
+
             if (sender == RotationBar)
-            {
                 selected.R = RotationBar.Value;
-            }
             else if (sender == TurnBar)
-            {
                 selected.T = TurnBar.Value;
-            }
             else if (sender == SpinBar)
-            {
                 selected.S = SpinBar.Value;
-            }
             else if (sender == SizeBar)
-            {
                 selected.SM = SizeBar.Value;
-            }
+
             DisplayDrawings();
         }
 
@@ -322,7 +299,7 @@ namespace Animator
             if (MoveJoinBtn.BackColor == pressed && Math.Abs(e.X - selected.Join.X) > Constants.ClickPrecision && 
                 Math.Abs(e.Y - selected.Join.Y) > Constants.ClickPrecision)
             {
-                // TODO: &Joins
+                // TODO: (Move Join) &Joins
                 //selected.Join = NEW JOIN
             }
             else
@@ -375,7 +352,7 @@ namespace Animator
                     movingFar = Math.Abs(selected.X - e.X) > Constants.ClickPrecision
                         || Math.Abs(selected.Y - e.Y) > Constants.ClickPrecision;
 
-                // TODO: Fix!
+                // TODO: (Shadows) Fix!
                 //if (movingFar)
                 //{
                 //    Piece shadow = new Piece();
@@ -398,7 +375,8 @@ namespace Animator
         private void DrawBase_MouseUp(object sender, MouseEventArgs e)
         {
             int movingCheck = (sender == DrawBase) ? 1 : (sender == DrawRight) ? 2 : 3;
-            if (moving != movingCheck) { return; }
+            if (moving != movingCheck)
+                return;
             if (movingFar)
             {
                 selected.X += e.X - originalMoving[0];
@@ -485,12 +463,11 @@ namespace Animator
                 else if (selected != null && piece == selected.AttachedTo)
                     piece.Draw(board, Constants.highlight);
                 else
-                    piece.Draw(board);
-
-                if (MoveJoinBtn.BackColor == pressed)
-                    Visuals.DrawCross(selected.Join.X + selected.GetCoords()[0], 
-                        selected.Join.Y + selected.GetCoords()[1], Constants.highlight, board);
+                    piece.Draw(board);              
             }
+            if (MoveJoinBtn.BackColor == pressed)
+                Visuals.DrawCross(selected.Join.X + selected.GetCoords()[0],
+                    selected.Join.Y + selected.GetCoords()[1], Constants.highlight, board);
         }
 
         /// <summary>
@@ -550,7 +527,7 @@ namespace Animator
                         return false;
                 }
             }
-            return true;
+            return WIP.BasePiece == null ? false: true;
         }
     }
 }

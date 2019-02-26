@@ -10,7 +10,6 @@ namespace Animator
     public class Originals
     {
         #region Originals Variables
-        public Piece Piece { get; }
         public double X { get; set; }
         public double Y { get; set; }
         public double R { get; set; }
@@ -30,7 +29,6 @@ namespace Animator
         /// <param name="piece">Piece to keep original copy of</param>
         public Originals(Piece piece)
         {
-            Piece = piece;
             X = piece.X;
             Y = piece.Y;
             R = piece.R;

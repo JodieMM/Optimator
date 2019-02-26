@@ -119,9 +119,7 @@ namespace Animator
         public static void DrawParts(List<Part> partsList, Graphics g)
         {
             foreach (Part part in partsList)
-            {
                 part.Draw(g);
-            }
         }
 
         /// <summary>
@@ -129,14 +127,14 @@ namespace Animator
         /// the graphics and clearing the draw panel.
         /// Also sets a scale on the image.
         /// </summary>
-        /// <param name="DrawPanel">Panel to be drawn on</param>
         /// <param name="partsList">Pieces to be drawn</param>
         /// <param name="g">Graphics to draw</param>
+        /// <param name="drawPanel">Panel to be drawn on</param>
         /// <param name="scale">Size modifier to entire image</param>
-        public static void DrawPartsScaled(List<Part> partsList, Graphics g, PictureBox DrawPanel, float scale)
+        public static void DrawPartsScaled(List<Part> partsList, Graphics g, PictureBox drawPanel, float scale)
         {
             g.ScaleTransform(scale, scale);
-            ResetPictureBox(g, DrawPanel);
+            ResetPictureBox(g, drawPanel);
             DrawParts(partsList, g);
         }
     }

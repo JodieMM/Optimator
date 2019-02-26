@@ -11,13 +11,8 @@ namespace Animator
     /// </summary>
     public static class Constants
     {
-        // Constant Values
-        public static double MidX = 150;
-        public static double MidY = 150;
-
         // Folders
         public static string PiecesFolder => "Pieces";
-        public static string JoinsFolder => "Joins";
         public static string SetsFolder => "Sets";
         public static string ScenesFolder => "Scenes";
         public static string VideosFolder => "Videos";
@@ -53,13 +48,14 @@ namespace Animator
         public static Color defaultOutline = Color.FromArgb(255, 204, 240, 255);
         public static decimal defaultOutlineWidth = 2;
         public static string defaultPieceDetails = "wr100";
+        public static string defaultAngleOptions = "150;150;0;0;0;100";
 
         // Piece Options
         public static string[] connectorOptions = { "line", "none" };
         public static object[] connectorOptionsReadable = new object[] { "Line", "Blank" };
         public static string[] fillOptions = { "fill", "gradient" };
         public static string[] solidOptions = { "s", "f" };
-
+        
         // Scene Options
         public static object[] possibleChanges = new object[] { "X", "Y", "Rotation", "Turn", "Spin", "Size", "Order", "Removed" };
     }

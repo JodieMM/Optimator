@@ -20,7 +20,6 @@ namespace Animator
         private Part selected = null;
         private Graphics g;
 
-        private decimal videoLength = 0;
         private decimal timeIncrement = (decimal)0.5;
 
         private Color button = Color.Khaki;
@@ -172,7 +171,7 @@ namespace Animator
 
             // Adds new change to scene
             WIP.Changes.Add(new Change(CurrentTimeUpDown.Value, ChangeTypeCb.Text, selected.ToPiece(), (double)AnimationAmountTb.Value, SecondsUpDown.Value, WIP));
-            if (CurrentTimeUpDown.Value + SecondsUpDown.Value > videoLength)
+            if (CurrentTimeUpDown.Value + SecondsUpDown.Value > WIP.TimeLength)
             {
                 UpdateVideoLength(CurrentTimeUpDown.Value + SecondsUpDown.Value);
             }
@@ -224,48 +223,10 @@ namespace Animator
         /// <param name="e"></param>
         private void FinishSceneBtn_Click(object sender, EventArgs e)
         {
-            // Check Name is Valid for Saving
-            if (!Constants.PermittedName.IsMatch(NameTb.Text))
-            {
-                MessageBox.Show("Please choose a valid name for your scene. Name can only include letters and numbers.", "Name Invalid", MessageBoxButtons.OK);
-                return;
-            }
-
-            // Check name not already in use, or that overriding is okay
-            if (File.Exists(Utilities.GetDirectory(Constants.ScenesFolder, NameTb.Text, Constants.Txt)))
-            {
-                DialogResult result = MessageBox.Show("This name is already in use. Do you want to override the existing scene?", "Override Confirmation", MessageBoxButtons.YesNo);
-                if (result == DialogResult.No) { return; }
-            }
-
+            if (!Utilities.CheckValidNewName(NameTb.Text, Constants.ScenesFolder)) { return; }            
             try
             {
-                // Save Data
-                List<string> file = new List<string>
-                {
-                    videoLength.ToString()
-                };
-
-                // Save Parts
-                foreach (Part part in WIP.PartsList)
-                {
-                    file.Add((part is Piece ? "p:" : "s:") + part.Name);
-                }
-
-                // Save Original States
-                file.Add("Originals");
-                foreach (Piece piece in WIP.PiecesList)
-                {
-                    file.Add(piece.Originally != null ? piece.Originally.GetSaveData() : Constants.MidX + ";" + Constants.MidY + ";0;0;0;100");
-                }
-
-                // Save Animation Changes
-                foreach (Change change in WIP.Changes)
-                {
-                    file.Add(change.ToString());
-                }
-
-                Utilities.SaveData(Utilities.GetDirectory(Constants.ScenesFolder, SceneTb.Text, Constants.Txt), file);
+                Utilities.SaveData(Utilities.GetDirectory(Constants.ScenesFolder, SceneTb.Text, Constants.Txt), WIP.GetData());
                 Close();
             }
             catch (FileNotFoundException)
@@ -281,19 +242,7 @@ namespace Animator
         /// <param name="e"></param>
         private void ExitBtn_Click(object sender, EventArgs e)
         {
-            // If nothing to save, exit without confirmation
-            if (WIP.PartsList.Count == 0)
-            {
-                Close();
-            }
-            else
-            {
-                DialogResult query = MessageBox.Show("Do you wish to exit without saving?", "Exit Confirmation", MessageBoxButtons.YesNo);
-                if (query == DialogResult.Yes)
-                {
-                    Close();
-                }
-            }
+            if (Utilities.ExitBtn_Click(WIP.PartsList.Count > 0)) { Close(); }
         }
 
 
@@ -331,10 +280,9 @@ namespace Animator
         /// <param name="e"></param>
         private void CurrentTimeUpDown_ValueChanged(object sender, EventArgs e)
         {
-            if (CurrentTimeUpDown.Value > videoLength)
-            {
+            if (CurrentTimeUpDown.Value > WIP.TimeLength)
                 UpdateVideoLength(CurrentTimeUpDown.Value);
-            }
+
             DisplayDrawings();
         }
 
@@ -344,19 +292,15 @@ namespace Animator
         /// <param name="newTime">The new video length</param>
         private void UpdateVideoLength(decimal newTime)
         {
-            videoLength = newTime;
-            int hr = (int)Math.Floor(videoLength / 3600);
-            int min = (int)Math.Floor((videoLength - hr * 3600) / 60);
-            int s = (int)Math.Floor(videoLength - (hr * 3600 + min * 60));
+            WIP.TimeLength = newTime;
+            int hr = (int)Math.Floor(WIP.TimeLength / 3600);
+            int min = (int)Math.Floor((WIP.TimeLength - hr * 3600) / 60);
+            int s = (int)Math.Floor(WIP.TimeLength - (hr * 3600 + min * 60));
             VidLengthLbl.Text = "Video Length: ";
             if (hr > 0)
-            {
                 VidLengthLbl.Text += hr + "hrs ";
-            }
             if (min > 0)
-            {
                 VidLengthLbl.Text += min + "mins ";
-            }
             VidLengthLbl.Text += s + "s";
         }
 
@@ -368,10 +312,9 @@ namespace Animator
         private void ForwardBtn_Click(object sender, EventArgs e)
         {
             CurrentTimeUpDown.Value += timeIncrement;
-            if (videoLength < CurrentTimeUpDown.Value)
-            {
-                videoLength = CurrentTimeUpDown.Value;
-            }
+            if (WIP.TimeLength < CurrentTimeUpDown.Value)
+                WIP.TimeLength = CurrentTimeUpDown.Value;
+
             DisplayDrawings();
         }
 
@@ -402,13 +345,11 @@ namespace Animator
             // Choose and Update Selected Piece (If Any)
             int selectedIndex = Utilities.FindClickedSelection(WIP.PiecesList, e.X, e.Y, SelectFromTopCb.Checked);
             if (selectedIndex == -1)
-            {
                 Deselect();
-            }
+
             else
-            {
                 SelectPart(WIP.PiecesList[selectedIndex]);
-            }
+
             DisplayDrawings();
         }
 
@@ -475,9 +416,7 @@ namespace Animator
 
                             Set deleting = selected.ToPiece().PieceOf;
                             foreach (Piece piece in deleting.PiecesList)
-                            {
                                 WIP.PartsList.Remove(piece);
-                            }
                         }
                         // Piece is lone
                         else
@@ -490,9 +429,7 @@ namespace Animator
                         foreach (Change change in WIP.Changes)
                         {
                             if (!WIP.PartsList.Contains(change.AffectedPiece))
-                            {
                                 WIP.Changes.Remove(change);
-                            }
                         }
                         selected = null;
                     }
@@ -522,9 +459,7 @@ namespace Animator
 
             // Past Preview
             if (CurrentTimeUpDown.Value < timeIncrement && PreviewCb.Checked)
-            {
                 PastPreviewBox.BackColor = Color.PaleGoldenrod;
-            }
             else
             {
                 PastPreviewBox.BackColor = Color.White;
@@ -554,25 +489,18 @@ namespace Animator
             {
                 string summary = "";
                 if (change.AffectedPiece.PieceOf != null)
-                {
                     summary += change.AffectedPiece.AttachedTo != null ? "** " : "* ";
-                }
+
                 summary += change.AffectedPiece.Name + " :" + change.Action + " :" + 
                     change.HowMuch.ToString() + " :" + change.StartTime.ToString();
 
                 if (CurrentTimeUpDown.Value >= change.StartTime && CurrentTimeUpDown.Value <= change.StartTime + change.HowLong)
-                {
                     AnimationLb.Items.Add(summary);
-                }
                 else
-                {
                     back.Add(summary);
-                }
             }
             foreach (string summary in back)
-            {
                 AnimationLb.Items.Add(summary);
-            }
 
             loading.Close();
         }
@@ -585,6 +513,7 @@ namespace Animator
         private void RemoveChangeIndex(int index)
         {
             int counter = 0;
+
             // Search Running Changes
             foreach (Change change in WIP.Changes)
             {

@@ -14,7 +14,6 @@
         public decimal StartTime { get; }
         public double HowMuch { get; }
         public decimal HowLong { get; }
-
         public string Action { get; }
         #endregion
 
@@ -29,6 +28,7 @@
         /// <param name="affectedPiece">The piece to be changed</param>
         /// <param name="howMuch">How much the change should occur per </param>
         /// <param name="howLong">How many frames the change should continue for</param>
+        /// <param name="owner">The scene the change belongs to</param>
         public Change(decimal startTime, string action, Piece affectedPiece, double howMuch, decimal howLong, Scene owner)
         {
             StartTime = startTime;
@@ -50,16 +50,8 @@
         {
             if (time <= StartTime) { return; }
 
-            // Allow for subtraction/ going back in time
-            double increment;
-            if ((time - StartTime) >= HowLong)
-            {
-                increment = HowMuch;
-            }
-            else
-            {
-                increment = (double)((time - StartTime) / HowLong) * HowMuch;
-            }
+            // Full increment if time passed, partial if in progress
+            double increment = ((time - StartTime) >= HowLong) ? HowMuch : (double)((time - StartTime) / HowLong) * HowMuch;
 
             // Update Parts
             switch (Action)

@@ -25,6 +25,8 @@ namespace Animator
         {
             Name = inName;
             List<string> data = Utilities.ReadFile(Utilities.GetDirectory(Constants.SetsFolder, Name, Constants.Txt));
+
+            // Add all pieces to the list
             for (int index = 0; index < data.Count; index++)
             {
                 string[] dataSections = data[index].Split(Constants.Semi);
@@ -34,12 +36,12 @@ namespace Animator
                 };
                 PiecesList.Add(WIP);
             }
+
+            // Add piece details
             for (int index = 0; index < data.Count; index++)
             {
                 string[] dataSections = data[index].Split(Constants.Semi);
                 string[] pieceData = dataSections[1].Split(Constants.Colon);
-
-                // Create piece with status
                 Piece WIP = PiecesList[index];
                 WIP.SetValues(double.Parse(pieceData[0]), double.Parse(pieceData[1]), double.Parse(pieceData[2]),
                         double.Parse(pieceData[3]), double.Parse(pieceData[4]), double.Parse(pieceData[5]));
@@ -117,9 +119,8 @@ namespace Animator
         /// Draws the set to the provided graphics.
         /// </summary>
         /// <param name="g">Provided graphics</param>
-        public override void Draw(Graphics g)
+        public override void Draw(Graphics g, Color? outline)
         {
-            // TODO: Sort order! - update to include flip index
             List<Piece> orderedPieces = SortOrder();
             foreach (Piece piece in orderedPieces)
                 piece.Draw(g);
@@ -131,6 +132,7 @@ namespace Animator
         /// <returns>Ordered list of pieces</returns>
         private List<Piece> SortOrder()
         {
+            // TODO: (SortOrder) Fix, including incorporating flip index
             List<Piece> order = new List<Piece>();
             List<Piece> putInFront = new List<Piece>();
             int baseIndex = PiecesList.IndexOf(BasePiece);

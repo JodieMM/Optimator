@@ -30,9 +30,8 @@ namespace Animator
             List<string> data = new List<string>();
             string line;
             while ((line = file.ReadLine()) != null)
-            {
                 data.Add(line);
-            }
+
             file.Close();
 
             // Return String
@@ -62,23 +61,11 @@ namespace Animator
         /// <param name="name">The item name</param>
         /// <param name="fileType">The file's type, e.g. txt, png</param>
         /// <returns></returns>
-        public static string GetDirectory(string folder, string name, string fileType = "")
+        public static string GetDirectory(string folder, string name, string fileType = "", string subfolder = "")
         {
-            return Path.Combine(Path.Combine(Environment.CurrentDirectory, folder), name + fileType);
-        }
-
-        /// <summary>
-        /// Takes a folder, item name and file type and returns the directory name to reach that file.
-        /// </summary>
-        /// <param name="folder">The folder the item is in</param>
-        /// <param name="subfolder">The subfolder the item is in</param>
-        /// <param name="name">The item name</param>
-        /// <param name="fileType">The file's type, e.g. txt, png</param>
-        /// <returns></returns>
-        public static string GetDirectory(string folder, string subfolder, string name, string fileType)
-        {
-            // TODO: Remove/ absorb into above
-            return Path.Combine(Path.Combine(Path.Combine(Environment.CurrentDirectory, folder), subfolder), name + fileType);
+            string fileFolder = Path.Combine(Environment.CurrentDirectory, folder);
+            if (subfolder != "") { fileFolder = Path.Combine(fileFolder, subfolder); }
+            return Path.Combine(fileFolder, name + fileType);
         }
 
         /// <summary>
@@ -92,14 +79,14 @@ namespace Animator
             // Check Name is Valid for Saving
             if (!Constants.PermittedName.IsMatch(name))
             {
-                MessageBox.Show("Please choose a valid name for your piece. Name can only include letters and numbers.", "Name Invalid", MessageBoxButtons.OK);
+                MessageBox.Show("Please choose a valid name for your file. Name can only include letters and numbers.", "Name Invalid", MessageBoxButtons.OK);
                 return false;
             }
 
             // Check name not already in use, or that overriding is okay
             if (File.Exists(GetDirectory(folder, name, Constants.Txt)))
             {
-                DialogResult result = MessageBox.Show("This name is already in use. Do you want to override the existing piece?", "Override Confirmation", MessageBoxButtons.YesNo);
+                DialogResult result = MessageBox.Show("This name is already in use. Do you want to override the existing file?", "Override Confirmation", MessageBoxButtons.YesNo);
                 if (result == DialogResult.No) { return false; }
             }
             return true;
@@ -161,6 +148,25 @@ namespace Animator
             toSwitch[index2] = holding;
         }
 
+
+
+        // ----- BUTTON FUNCTIONS -----
+
+        /// <summary>
+        /// Checks whether the user wants to exit without saving.
+        /// </summary>
+        /// <param name="saveCondition">The test to see if there is anything worth saving</param>
+        /// <returns>True if the form should be closed</returns>
+        public static bool ExitBtn_Click(bool saveCondition)
+        {
+            DialogResult result = DialogResult.Yes;
+
+            // Only check saving if something to save
+            if (saveCondition)
+                result = MessageBox.Show("Do you want to exit without saving? Your work will be lost.", "Exit Confirmation", MessageBoxButtons.YesNo);
+
+            return result == DialogResult.Yes;
+        }
 
 
         // ----- PIECE FUNCTIONS -----
@@ -367,7 +373,7 @@ namespace Animator
                     {
                         int insertIndex = FindSymmetricalCoordHome(spots, index, 0);
 
-                        // TODO: DrawnLevel 2
+                        // TODO: (DrawnLevel 2)
 
                         if (insertIndex <= index)
                         {

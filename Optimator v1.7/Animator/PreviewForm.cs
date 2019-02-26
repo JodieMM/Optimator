@@ -37,7 +37,7 @@ namespace Animator
         /// <param name="e"></param>
         private void PiecesPreviewForm_Shown(object sender, EventArgs e)
         {
-            DrawScreen();
+            DisplayDrawings();
         }
 
 
@@ -63,27 +63,20 @@ namespace Animator
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void RotationTrack_Scroll(object sender, EventArgs e)
+        private void Track_Scroll(object sender, EventArgs e)
         {
-            WIP.ToPiece().R = RotationTrack.Value;
-            DrawScreen();
-        }
+            if (sender == RotationTrack)
+                WIP.ToPiece().R = RotationTrack.Value;
+            else if (sender == TurnTrack)
+                WIP.ToPiece().T = TurnTrack.Value;
 
-        /// <summary>
-        /// Changes the turn of the piece.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void TurnTrack_Scroll(object sender, EventArgs e)
-        {
-            WIP.ToPiece().T = TurnTrack.Value;
-            DrawScreen();
+            DisplayDrawings();
         }
 
         /// <summary>
         /// Draws the piece to the screen.
         /// </summary>
-        private void DrawScreen()
+        private void DisplayDrawings()
         {
             DrawPanel.Refresh();
             g = DrawPanel.CreateGraphics();

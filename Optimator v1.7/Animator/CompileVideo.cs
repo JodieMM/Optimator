@@ -67,19 +67,14 @@ namespace Animator
         /// <param name="e"></param>
         private void ExitBtn_Click(object sender, EventArgs e)
         {
-            // If nothing to save, exit without confirmation
-            if (videoScenes.Count == 0)
-            {
+            DialogResult result = DialogResult.Yes;
+
+            // Only check if there is something to save
+            if (videoScenes.Count > 0)
+                result = MessageBox.Show("Do you wish to exit without saving?", "Exit Confirmation", MessageBoxButtons.YesNo);
+
+            if (result == DialogResult.Yes)
                 Close();
-            }
-            else
-            {
-                DialogResult query = MessageBox.Show("Do you wish to exit without saving?", "Exit Confirmation", MessageBoxButtons.YesNo);
-                if (query == DialogResult.Yes)
-                {
-                    Close();
-                }
-            }
         }
 
         /// <summary>
@@ -89,20 +84,7 @@ namespace Animator
         /// <param name="e"></param>
         private void SaveBtn_Click(object sender, EventArgs e)
         {
-            if (!Constants.PermittedName.IsMatch(NameTb.Text))
-            {
-                MessageBox.Show("Please choose a valid name for your video. Name can only include letters and numbers.", "Name Invalid", MessageBoxButtons.OK);
-                return;
-            }
-
-            // Check name not already in use, or that overriding is okay
-            if (Directory.Exists(Utilities.GetDirectory(Constants.VideosFolder, NameTb.Text)))
-            {
-                DialogResult result = MessageBox.Show("This name is already in use. Do you want to override the existing video?", "Override Confirmation", MessageBoxButtons.YesNo);
-                if (result == DialogResult.No) { return; }
-            }
-
-            // Save Video and Close Form
+            if (!Utilities.CheckValidNewName(NameTb.Text, Constants.VideosFolder)) { return; }
             try
             {
                 LoadingForm loading = new LoadingForm();
@@ -120,11 +102,10 @@ namespace Animator
                     for (workingTime = 0; workingTime <= videoScenes[sceneIndex].TimeLength; workingTime += timeIncrement)
                     {
                         Bitmap bitmap = DrawOnBitmap();
-                        bitmap.Save(Utilities.GetDirectory(Constants.VideosFolder, NameTb.Text, numFrames.ToString(), Constants.Png), System.Drawing.Imaging.ImageFormat.Png);
+                        bitmap.Save(Utilities.GetDirectory(Constants.VideosFolder, numFrames.ToString(), Constants.Png, NameTb.Text), System.Drawing.Imaging.ImageFormat.Png);
                         numFrames++;
                     }
                 }
-
                 loading.Close();
                 Close();
             }
@@ -182,9 +163,7 @@ namespace Animator
 
             // Draw Parts
             foreach(Part part in baseScene.PartsList)
-            {
                 part.Draw(g);
-            }
         }
 
         /// <summary>
@@ -197,9 +176,8 @@ namespace Animator
             Bitmap bitmap = new Bitmap(DrawPanel.Width, DrawPanel.Height);
             g = Graphics.FromImage(bitmap);
             using (SolidBrush brush = new SolidBrush(backgroundColor))
-            {
                 g.FillRectangle(brush, 0, 0, bitmap.Width, bitmap.Height);
-            }
+
             DrawFrame(videoScenes[sceneIndex], g);
             return bitmap;
         }

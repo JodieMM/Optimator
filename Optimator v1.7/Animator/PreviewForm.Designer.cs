@@ -80,7 +80,7 @@
             this.RotationTrack.Size = new System.Drawing.Size(540, 45);
             this.RotationTrack.TabIndex = 2;
             this.RotationTrack.TickFrequency = 10;
-            this.RotationTrack.Scroll += new System.EventHandler(this.RotationTrack_Scroll);
+            this.RotationTrack.Scroll += new System.EventHandler(this.Track_Scroll);
             // 
             // TurnTrack
             // 
@@ -94,7 +94,7 @@
             this.TurnTrack.TabIndex = 3;
             this.TurnTrack.TickFrequency = 10;
             this.TurnTrack.TickStyle = System.Windows.Forms.TickStyle.TopLeft;
-            this.TurnTrack.Scroll += new System.EventHandler(this.TurnTrack_Scroll);
+            this.TurnTrack.Scroll += new System.EventHandler(this.Track_Scroll);
             // 
             // PreviewForm
             // 

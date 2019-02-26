@@ -345,14 +345,7 @@ namespace Animator
         /// <param name="e"></param>
         private void ExitBtn_Click(object sender, EventArgs e)
         {
-            DialogResult result = DialogResult.Yes;
-
-            // Only ask if there is something to save
-            if (WIP.Data.Count > 0)
-                result = MessageBox.Show("Do you want to exit without saving? Your piece will be lost.", "Exit Confirmation", MessageBoxButtons.YesNo);
-
-            if (result == DialogResult.Yes)
-                Close();
+            if (Utilities.ExitBtn_Click(WIP.Data.Count > 0)) { Close(); }
         }
 
         /// <summary>

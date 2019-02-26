@@ -106,32 +106,23 @@ namespace Animator
         private void ExitBtn_Click(object sender, EventArgs e)
         {
             if (FillColourBtn.BackColor == selected || AllBtn.BackColor == selected)
-            {
                 WIP.FillColour = loaded.ToPiece().FillColour;
-            }
-            if (OutlineColourBtn.BackColor == selected || AllBtn.BackColor == selected)
-            {
-                WIP.OutlineColour = loaded.ToPiece().OutlineColour;
-            }
-            if (OutlineWidthBtn.BackColor == selected || AllBtn.BackColor == selected)
-            {
-                WIP.OutlineWidth = loaded.ToPiece().OutlineWidth;
-            }
-            if (PieceDetailsBtn.BackColor == selected || AllBtn.BackColor == selected)
-            {
-                WIP.PieceDetails = loaded.ToPiece().PieceDetails;
-            }
-            if (ShapeBtn.BackColor == selected)
-            {
-                WIP.Data = loaded.ToPiece().Data;
-                from.DataRow = loaded.ToPiece().Data[loaded.ToPiece().FindRow()].ToSimple();
-                WIP.Data[WIP.FindRow()] = from.DataRow;
-            }
-            if (SketchBtn.BackColor == selected)
-            {
-                from.AddSketch(loaded);
-            }
 
+            if (OutlineColourBtn.BackColor == selected || AllBtn.BackColor == selected)
+                WIP.OutlineColour = loaded.ToPiece().OutlineColour;
+
+            if (OutlineWidthBtn.BackColor == selected || AllBtn.BackColor == selected)
+                WIP.OutlineWidth = loaded.ToPiece().OutlineWidth;
+
+            if (PieceDetailsBtn.BackColor == selected || AllBtn.BackColor == selected)
+                WIP.PieceDetails = loaded.ToPiece().PieceDetails;
+
+            if (ShapeBtn.BackColor == selected)
+                WIP.Data = loaded.ToPiece().Data;
+
+            if (SketchBtn.BackColor == selected)
+                from.AddSketch(loaded);
+            
             from.DisplayDrawings();
             from.UpdateAttributes();
             Close();
