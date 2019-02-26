@@ -143,7 +143,7 @@ namespace Animator
         /// <param name="mid">The axis to flip on</param>
         /// <param name="point">The point to flip</param>
         /// <returns>The point reflected on the axis</returns>
-        public static double FlipAroundCentre(double mid, double point)
+        public static double FlipPoint(double mid, double point)
         {
             return 2 * mid - point;
         }
@@ -214,13 +214,13 @@ namespace Animator
                 {
                     if (right)
                     {
-                        insert.X = (spot.MatchY != null) ? FlipAroundCentre(middle[0], spot.MatchY.GetCoordCombination(angle)[0]) 
-                            : FlipAroundCentre(middle[0], spot.GetCoordCombination(angle)[0]);
+                        insert.X = (spot.MatchY != null) ? FlipPoint(middle[0], spot.MatchY.GetCoordCombination(angle)[0]) 
+                            : FlipPoint(middle[0], spot.GetCoordCombination(angle)[0]);
                     }
                     if (down)
                     {
-                        insert.Y = (spot.MatchX != null) ? FlipAroundCentre(middle[1], spot.MatchX.GetCoordCombination(angle)[1]) 
-                            : FlipAroundCentre(middle[1], spot.GetCoordCombination(angle)[1]);
+                        insert.Y = (spot.MatchX != null) ? FlipPoint(middle[1], spot.MatchX.GetCoordCombination(angle)[1]) 
+                            : FlipPoint(middle[1], spot.GetCoordCombination(angle)[1]);
                     }
                 }
                 // If spot needs to flip but not swap
@@ -232,8 +232,8 @@ namespace Animator
                         double[] value = FindSymmetricalOppositeCoord(spots[searchIndex].GetCoordCombination(angle),
                                 spots[Modulo(searchIndex - 1, spots.Count)].GetCoordCombination(angle),
                                 spots[index].GetCoordCombination(angle)[1], 1, spots[searchIndex].Connector);
-                        insert.X = FlipAroundCentre(middle[0], value[0]);
-                        insert.Y = FlipAroundCentre(middle[1], value[1]);
+                        insert.X = FlipPoint(middle[0], value[0]);
+                        insert.Y = FlipPoint(middle[1], value[1]);
                     }
                     else if (right)
                     {
@@ -241,7 +241,7 @@ namespace Animator
                         double value = FindSymmetricalOppositeCoord(spots[searchIndex].GetCoordCombination(angle),
                                 spots[Modulo(searchIndex - 1, spots.Count)].GetCoordCombination(angle),
                                 spots[index].GetCoordCombination(angle)[1], 1, spots[searchIndex].Connector)[0];
-                        insert.X = FlipAroundCentre(middle[0], value);
+                        insert.X = FlipPoint(middle[0], value);
                     }
                     else if (down)
                     {
@@ -249,7 +249,7 @@ namespace Animator
                         double value = FindSymmetricalOppositeCoord(spots[searchIndex].GetCoordCombination(angle),
                                 spots[Modulo(searchIndex - 1, spots.Count)].GetCoordCombination(angle),
                                 spots[index].GetCoordCombination(angle)[0], 0, spots[searchIndex].Connector)[1];
-                        insert.Y = FlipAroundCentre(middle[1], value);
+                        insert.Y = FlipPoint(middle[1], value);
                     }
                 }
                 cloneSpot.Add(insert);
@@ -493,7 +493,7 @@ namespace Animator
         /// <returns>A list of int[] with the outline coordinates</returns>
         public static List<double[]> FindPieceLines(Piece piece)
         {
-            List<double[]> coords = piece.GetCurrentPoints();
+            List<double[]> coords = piece.CurrentPoints();
             List<double[]> lines = new List<double[]>();
 
             // If lines exist for this piece

@@ -132,8 +132,8 @@ namespace Animator
         /// <returns>double[] { X, Y }</returns>
         public double[] GetCoords()
         {
-            return AttachedTo != null ? new double[] { X + AttachedTo.GetCoords()[0] + GetPointChange()[0],
-                Y + AttachedTo.GetCoords()[1] + GetPointChange()[1] } : new double[] { X, Y };
+            return AttachedTo != null ? new double[] { X + AttachedTo.GetCoords()[0] + PointChange()[0],
+                Y + AttachedTo.GetCoords()[1] + PointChange()[1] } : new double[] { X, Y };
         }
 
         /// <summary>
@@ -286,8 +286,13 @@ namespace Animator
         /// Finds the points to print based on the rotation, turn, spin and size of the piece
         /// </summary>
         /// <returns></returns>
-        public List<double[]> GetCurrentPoints()
+        public List<double[]> CurrentPoints()
         {
+            // Put in X matches
+            // Move X direction
+            // Put in Y matches (for all)
+            // Move Y direction (returning final coords)
+
             // Get Current Spot Coords
             List<double[]> currentPoints = new List<double[]>();
             foreach (Spot spot in Data)
@@ -369,7 +374,7 @@ namespace Animator
         /// Finds how much the join has changed from its original join position.
         /// </summary>
         /// <returns>double[] { X change, Y change }</returns>
-        private double[] GetPointChange()
+        private double[] PointChange()
         {
             double[] spotCoords = Join.GetCurrentCoords(GetCoords()[0], GetCoords()[1]);
             List<double[]> spotCoordsList = new List<double[]> { spotCoords };

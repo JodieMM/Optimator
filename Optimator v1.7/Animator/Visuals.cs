@@ -34,7 +34,7 @@ namespace Animator
         /// <param name="g">The graphics to draw to</param>
         public static void DrawPiece(Piece piece, Graphics g, Color? outlineColour = null)
         {
-            List<double[]> currentPoints = piece.GetCurrentPoints();
+            List<double[]> currentPoints = piece.CurrentPoints();
             if (currentPoints.Count < 1)
                 return;
 

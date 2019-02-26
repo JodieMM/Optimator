@@ -89,9 +89,8 @@ namespace Animator
         /// <param name="r">Current rotation</param>
         /// <param name="t">Current turn</param>
         /// <param name="mid">The middle of the piece the spot belongs to</param>
-        public double[] GetCurrentCoords(double r, double t, double[] mid = null)
+        public double[] GetCurrentCoords(double r, double t, double[] mid)
         {
-            mid = mid ?? new double[] { 0, 0 };
             double[] currentCoords = new double[2];
             double lower;
             double upper;
@@ -107,18 +106,18 @@ namespace Animator
             else if (r < 180)
             {
                 lower = XRight;
-                upper = (MatchX == null) ? X : 2 * mid[0] - MatchX.X;
+                upper = (MatchX == null) ? Utilities.FlipPoint(mid[0], X) : Utilities.FlipPoint(mid[0], MatchX.X);
                 bottomAngle = 90;
             }
             else if (r < 270)
             {
-                lower = (MatchX == null) ? X : 2 * mid[0] - MatchX.X;
-                upper = (MatchX == null) ? -XRight : 2 * mid[0] - MatchX.XRight;
+                lower = (MatchX == null) ? Utilities.FlipPoint(mid[0], X) : Utilities.FlipPoint(mid[0], MatchX.X);
+                upper = (MatchX == null) ? Utilities.FlipPoint(mid[0], XRight): Utilities.FlipPoint(mid[0], MatchX.XRight);
                 bottomAngle = 180;
             }
             else
             {
-                lower = (MatchX == null) ? -XRight : 2 * mid[0] - MatchX.XRight;
+                lower = (MatchX == null) ? Utilities.FlipPoint(mid[0], XRight): Utilities.FlipPoint(mid[0], MatchX.XRight);
                 upper = X;
                 bottomAngle = 270;
             }
@@ -135,13 +134,13 @@ namespace Animator
             else if (t < 180)
             {
                 lower = YDown;
-                upper = (MatchY == null) ? Y : 2 * mid[0] - MatchY.Y;
+                upper = (MatchY == null) ? Y : Utilities.FlipPoint(mid[1], MatchY.Y);
                 bottomAngle = 90;
             }
             else if (t < 270)
             {
-                lower = (MatchY == null) ? Y : 2 * mid[0] - MatchY.Y;
-                upper = (MatchY == null) ? -YDown : 2 * mid[0] - MatchY.YDown;
+                lower = (MatchY == null) ? Utilities.FlipPoint(mid[1], Y) : Utilities.FlipPoint(mid[1], MatchY.Y);
+                upper = (MatchY == null) ? Utilities.FlipPoint(mid[1], YDown) : Utilities.FlipPoint(mid[1], MatchY.YDown);
                 bottomAngle = 180;
             }
             else
