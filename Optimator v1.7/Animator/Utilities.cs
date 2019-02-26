@@ -24,7 +24,7 @@ namespace Animator
         {
             // Open File
             string filePath = directory;
-            System.IO.StreamReader file = new System.IO.StreamReader(@filePath);
+            StreamReader file = new StreamReader(@filePath);
 
             // Read Data
             List<string> data = new List<string>();
@@ -45,12 +45,9 @@ namespace Animator
         /// <param name="data">The data to save</param>
         public static void SaveData(string directory, List<string> data)
         {
-            System.IO.StreamWriter file = new System.IO.StreamWriter(@directory);
-
+            StreamWriter file = new StreamWriter(@directory);
             for (int index = 0; index < data.Count; index++)
-            {
                 file.WriteLine(data[index]);
-            }
             file.Close();
         }
 
@@ -102,93 +99,9 @@ namespace Animator
         /// <param name="a">Value to be divided</param>
         /// <param name="b">Modulus</param>
         /// <returns>a modulo b</returns>
-        public static dynamic Modulo(dynamic a, dynamic b)
+        public static int Modulo(int a, int b)
         {
-            double mod = (a % b + b) % b;
-            if (a is int && b is int) { return (int)mod; }
-            return mod;
-        }
-
-        /// <summary>
-        /// Converts an angle in degrees into radians.
-        /// </summary>
-        /// <param name="angle">The angle to convert</param>
-        /// <returns>Radian equivalent</returns>
-        public static double ToRad(double angle)
-        {
-            return angle * Math.PI / 180.0;
-        }
-
-        /// <summary>
-        /// Returns a de-referenced clone of a double[] list.
-        /// </summary>
-        /// <param name="original">Original list</param>
-        /// <returns>A de-referenced copy of original</returns>
-        public static List<double[]> CloneMe(List<double[]> original)
-        {
-            List<double[]> clone = new List<double[]>();
-            foreach (double[] entry in original)
-            {
-                clone.Add(new double[] { entry[0], entry[1] });
-            }
-            return clone;
-        }
-
-        /// <summary>
-        /// Switches the positions of two values in the list.
-        /// Note that index order is not important.
-        /// </summary>
-        /// <param name="toSwitch">The list of values</param>
-        /// <param name="index1">The index of the first value</param>
-        /// <param name="index2">The index of the second value</param>
-        public static void SwitchPositions(List<double[]> toSwitch, int index1, int index2)
-        {
-            double[] holding = toSwitch[index1];
-            toSwitch[index1] = toSwitch[index2];
-            toSwitch[index2] = holding;
-        }
-
-
-
-        // ----- BUTTON FUNCTIONS -----
-
-        /// <summary>
-        /// Checks whether the user wants to exit without saving.
-        /// </summary>
-        /// <param name="saveCondition">The test to see if there is anything worth saving</param>
-        /// <returns>True if the form should be closed</returns>
-        public static bool ExitBtn_Click(bool saveCondition)
-        {
-            DialogResult result = DialogResult.Yes;
-
-            // Only check saving if something to save
-            if (saveCondition)
-                result = MessageBox.Show("Do you want to exit without saving? Your work will be lost.", "Exit Confirmation", MessageBoxButtons.YesNo);
-
-            return result == DialogResult.Yes;
-        }
-
-
-        // ----- PIECE FUNCTIONS -----
-        #region Piece Functions
-
-        /// <summary>
-        /// Finds the correct row in the data for the given rotation and turn values.
-        /// </summary>
-        /// <param name="r">Rotation</param>
-        /// <param name="t">Turn</param>
-        /// <param name="dataRows">The data to search</param>
-        /// <returns>The index of the DataRow relevant to the provided angles or -1 if not found</returns>
-        public static int FindRow(double r, double t, List<DataRow> dataRows)
-        {
-            for (int index = 0; index < dataRows.Count; index++)
-            {
-                if (dataRows[index].IsWithin(r, t) && dataRows[index].Spots.Count > 0)
-                {
-                    return index;
-                }
-            }
-            return -1;
+            return (a % b + b) % b;
         }
 
         /// <summary>
@@ -220,7 +133,7 @@ namespace Animator
         public static double[] FindMid(List<double[]> coords)
         {
             double[] minMax = FindMinMax(coords);
-            return new double[] { minMax[0] + (minMax[1] - minMax[0]) / 2, minMax[2] + (minMax[3] - minMax[2]) / 2 };
+            return new double[] { minMax[0] + (minMax[1] - minMax[0]) / 2.0, minMax[2] + (minMax[3] - minMax[2]) / 2.0 };
         }
 
         /// <summary>
@@ -235,6 +148,47 @@ namespace Animator
             return 2 * mid - point;
         }
 
+        /// <summary>
+        /// Converts the spots into a list of their original
+        /// coordinates as double[].
+        /// </summary>
+        /// <param name="spots">The list of spots to convert</param>
+        /// <param name="angle">Original [0], rotated[1], turned[2]</param>
+        /// <returns>A list of coordinates</returns>
+        public static List<double[]> ConvertSpotsToCoords(List<Spot> spots, int angle)
+        {
+            List<double[]> toReturn = new List<double[]>();
+            foreach (Spot spot in spots)
+                toReturn.Add(spot.GetCoordCombination(angle));
+
+            return toReturn;
+        }
+
+
+
+        // ----- BUTTON FUNCTIONS -----
+
+        /// <summary>
+        /// Checks whether the user wants to exit without saving.
+        /// </summary>
+        /// <param name="saveCondition">The test to see if there is anything worth saving</param>
+        /// <returns>True if the form should be closed</returns>
+        public static bool ExitBtn_Click(bool saveCondition)
+        {
+            DialogResult result = DialogResult.Yes;
+
+            // Only check saving if something to save
+            if (saveCondition)
+                result = MessageBox.Show("Do you want to exit without saving? Your work will be lost.", "Exit Confirmation", MessageBoxButtons.YesNo);
+
+            return result == DialogResult.Yes;
+        }
+
+
+
+        // ----- PIECE FUNCTIONS -----
+        #region Piece Functions
+          
         /// <summary>
         /// Flips a shape vertically and/or horizontally.
         /// </summary>
@@ -476,45 +430,6 @@ namespace Animator
             return -1;       // Error
         }
 
-        /// <summary>
-        /// Converts the spots into a list of their original
-        /// coordinates as double[].
-        /// </summary>
-        /// <param name="spots">The list of spots to convert</param>
-        /// <param name="angle">Original [0], rotated[1], turned[2]</param>
-        /// <returns>A list of coordinates</returns>
-        public static List<double[]> ConvertSpotsToCoords(List<Spot> spots, int angle)
-        {
-            List<double[]> toReturn = new List<double[]>();
-            switch (angle)
-            {
-                case 1:
-                    foreach (Spot spot in spots)
-                    {
-                        toReturn.Add(new double[] { spot.XRight, spot.Y });
-                    }
-                    break;
-                case 2:
-                    foreach (Spot spot in spots)
-                    {
-                        toReturn.Add(new double[] { spot.X, spot.YDown });
-                    }
-                    break;
-                case 3:
-                    foreach (Spot spot in spots)
-                    {
-                        toReturn.Add(new double[] { spot.XRight, spot.YDown });
-                    }
-                    break;
-                default:
-                    foreach (Spot spot in spots)
-                    {
-                        toReturn.Add(new double[] { spot.X, spot.Y });
-                    }
-                    break;
-            }
-            return toReturn;
-        }
 
         #endregion
 
@@ -544,9 +459,8 @@ namespace Animator
                 if (from[0] - to[0] == 0)
                 {
                     for (int index = (int)lower[1]; index < upper[1]; index++)
-                    {
                         line.Add(new double[] { from[0], index });
-                    }
+
                     return line;
                 }
                 // If straight horizontal line
@@ -558,18 +472,15 @@ namespace Animator
                 }
                 // If diagonal line
                 else
-                {
                     gradient = (lower[1] - upper[1]) / (lower[0] - upper[0]);
-                }
             }
             // CURVE
 
             // Add point for each Y value
             line.Add(from);
             for (int index = (int)lower[1] + 1; index < upper[1]; index++)
-            {
                 line.Add(new double[] { lower[0] + ((index - lower[1]) / gradient), index });
-            }
+
             line.Add(to);
             return line;
         }
@@ -580,11 +491,10 @@ namespace Animator
         /// <param name="coords">Coordinates of the shape</param>
         /// <param name="lineArray">Lines that connect points</param>
         /// <returns>A list of int[] with the outline coordinates</returns>
-        public static List<double[]> FindPieceLines(Piece toFind)
+        public static List<double[]> FindPieceLines(Piece piece)
         {
-            List<double[]> coords = toFind.GetCurrentPoints();
+            List<double[]> coords = piece.GetCurrentPoints();
             List<double[]> lines = new List<double[]>();
-            DataRow dataRow = toFind.Data[toFind.FindRow()];
 
             // If lines exist for this piece
             if (coords.Count > 2)
@@ -592,22 +502,17 @@ namespace Animator
                 for (int index = 0; index < coords.Count; index++)
                 {
                     if (index == coords.Count - 1)
-                    {
                         lines.AddRange(FindLineCoords(new double[] { coords[index][0], coords[index][1] },
-                            new double[] { coords[0][0], coords[0][1] }, dataRow.Spots[index].Connector));
-                    }
+                            new double[] { coords[0][0], coords[0][1] }, piece.Data[index].Connector));
                     else
-                    {
                         lines.AddRange(FindLineCoords(new double[] { coords[index][0], coords[index][1] },
-                            new double[] { coords[index + 1][0], coords[index + 1][1] }, dataRow.Spots[index].Connector));
-                    }
+                            new double[] { coords[index + 1][0], coords[index + 1][1] }, piece.Data[index].Connector));
                 }
             }
             // Single or no point
             else
-            {
                 lines.AddRange(coords);
-            }
+
             return lines;
         }
 
@@ -630,7 +535,9 @@ namespace Animator
                         if (outline[position][1] > outline[position + 1][1]
                             || (outline[position][1] == outline[position + 1][1] && outline[position][0] > outline[position + 1][0]))
                         {
-                            SwitchPositions(outline, position, position + 1);
+                            double[] holding = outline[position];
+                            outline[position] = outline[position + 1];
+                            outline[position + 1] = holding;
                         }
                     }
                 }
@@ -692,15 +599,12 @@ namespace Animator
             int increment = (fromTop) ? -1 : 1;
             for (index = (fromTop) ? piecesList.Count - 1 : 0; (fromTop) ? index >= 0 : index < piecesList.Count; index += increment)
             {
-                List<double[]> coords = piecesList[index].GetCurrentPoints();
                 List<int[]> contents = FindPieceSpace(FindPieceLines(piecesList[index]));
 
                 foreach (int[] dot in contents)
                 {
                     if (dot[0] == x && dot[1] == y)
-                    {
                         return index;
-                    }
                 }
             }
             return -1;

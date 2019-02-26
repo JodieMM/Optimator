@@ -206,10 +206,7 @@ namespace Animator
                 tempChange.Run(CurrentTimeUpDown.Value + SecondsUpDown.Value);
             }
             if (PreviewBtn == ActiveControl)
-            {
-                Visuals.ResetPictureBox(g, DrawPanel);
-                Visuals.DrawParts(WIP.PartsList, g);
-            }
+                Visuals.DrawParts(WIP.PartsList, g, DrawPanel);
         }
 
 
@@ -469,8 +466,7 @@ namespace Animator
 
             // Draw Panel (Current)
             WIP.RunScene(CurrentTimeUpDown.Value);
-            Visuals.ResetPictureBox(g, DrawPanel);
-            Visuals.DrawParts(WIP.PartsList, g);
+            Visuals.DrawParts(WIP.PartsList, g, DrawPanel);
 
             // Preview Panels (Future, Future++)
             if (PreviewCb.Checked)

@@ -12,17 +12,6 @@ namespace Animator
     public class Visuals
     {
         /// <summary>
-        /// Clears the drawing board and prepares it for new visuals.
-        /// </summary>
-        /// <param name="g">Board graphics</param>
-        /// <param name="DrawPanel">Panel to draw on</param>
-        public static void ResetPictureBox(Graphics g, PictureBox DrawPanel)
-        {
-            DrawPanel.Refresh();
-            g = DrawPanel.CreateGraphics();
-        }
-
-        /// <summary>
         /// Draws a + at the given coordinate
         /// </summary>
         /// <param name="xcood">X coordinate of + centre</param>
@@ -45,67 +34,62 @@ namespace Animator
         /// <param name="g">The graphics to draw to</param>
         public static void DrawPiece(Piece piece, Graphics g, Color? outlineColour = null)
         {
-            // Check piece defined at that point
-            int dataRow = piece.FindRow();
-            if (dataRow != -1)
-            {
-                // Prepare for drawing
-                if (outlineColour is null)
-                    outlineColour = piece.OutlineColour;
-                Pen pen = new Pen((Color)outlineColour, (float)piece.OutlineWidth);
-                SolidBrush fill = new SolidBrush(piece.FillColour[0]);
-                List<double[]> sketchCoords = piece.GetCurrentPoints();
-                List<Spot> connectors = piece.Data[dataRow].Spots;
-                int numCoords = sketchCoords.Count;
+            List<double[]> currentPoints = piece.GetCurrentPoints();
+            if (currentPoints.Count < 1)
+                return;
 
-                // Fill Shape
-                GraphicsPath path = new GraphicsPath();
-                for (int pointIndex = 0; pointIndex < numCoords && numCoords > 2; pointIndex++)
+            // Prepare for drawing
+            if (outlineColour is null)
+                outlineColour = piece.OutlineColour;
+            Pen pen = new Pen((Color)outlineColour, (float)piece.OutlineWidth);
+            SolidBrush fill = new SolidBrush(piece.FillColour[0]);
+            List<Spot> spots = piece.Data;
+            int numCoords = currentPoints.Count;
+
+            // Fill Shape
+            GraphicsPath path = new GraphicsPath();
+            for (int pointIndex = 0; pointIndex < numCoords && numCoords > 2; pointIndex++)
+            {
+                // Draw Line Between Final Point and First Point
+                if (pointIndex == numCoords - 1)
+                    path.AddLine(new Point(Convert.ToInt32(currentPoints[numCoords - 1][0]), Convert.ToInt32(currentPoints[numCoords - 1][1])),
+                        new Point(Convert.ToInt32(currentPoints[0][0]), Convert.ToInt32(currentPoints[0][1])));
+
+                // Draw Remaining Lines
+                else
+                    path.AddLine(new Point(Convert.ToInt32(currentPoints[pointIndex][0]), Convert.ToInt32(currentPoints[pointIndex][1])),
+                            new Point(Convert.ToInt32(currentPoints[pointIndex + 1][0]), Convert.ToInt32(currentPoints[pointIndex + 1][1])));
+            }
+            g.FillPath(fill, path);
+
+            // Draw Outline
+            for (int pointIndex = 0; pointIndex < numCoords && numCoords > 1 && piece.OutlineWidth > 0; pointIndex++)
+            {
+                if (spots[pointIndex].Connector != Constants.connectorOptions[1])
                 {
+                    Point start; Point end;
                     // Draw Line Between Final Point and First Point
                     if (pointIndex == numCoords - 1)
                     {
-                        path.AddLine(new Point(Convert.ToInt32(sketchCoords[numCoords - 1][0]), Convert.ToInt32(sketchCoords[numCoords - 1][1])),
-                            new Point(Convert.ToInt32(sketchCoords[0][0]), Convert.ToInt32(sketchCoords[0][1])));
+                        start = new Point(Convert.ToInt32(currentPoints[0][0]), Convert.ToInt32(currentPoints[0][1]));
+                        end = new Point(Convert.ToInt32(currentPoints[numCoords - 1][0]), Convert.ToInt32(currentPoints[numCoords - 1][1]));
                     }
                     // Draw Remaining Lines
                     else
                     {
-                        path.AddLine(new Point(Convert.ToInt32(sketchCoords[pointIndex][0]), Convert.ToInt32(sketchCoords[pointIndex][1])),
-                             new Point(Convert.ToInt32(sketchCoords[pointIndex + 1][0]), Convert.ToInt32(sketchCoords[pointIndex + 1][1])));
+                        start = new Point(Convert.ToInt32(currentPoints[pointIndex][0]), Convert.ToInt32(currentPoints[pointIndex][1]));
+                        end = new Point(Convert.ToInt32(currentPoints[pointIndex + 1][0]), Convert.ToInt32(currentPoints[pointIndex + 1][1]));
                     }
-                }
-                g.FillPath(fill, path);
 
-                // Draw Connecting Lines
-                for (int pointIndex = 0; pointIndex < numCoords && numCoords > 1 && piece.OutlineWidth > 0; pointIndex++)
-                {
-                    if (connectors[pointIndex].Connector != Constants.connectorOptions[1])
+                    // Connected by Line
+                    if (spots[pointIndex].Connector == Constants.connectorOptions[0])
                     {
-                        Point start; Point end;
-                        // Draw Line Between Final Point and First Point
-                        if (pointIndex == numCoords - 1)
-                        {
-                            start = new Point(Convert.ToInt32(sketchCoords[0][0]), Convert.ToInt32(sketchCoords[0][1]));
-                            end = new Point(Convert.ToInt32(sketchCoords[numCoords - 1][0]), Convert.ToInt32(sketchCoords[numCoords - 1][1]));
-                        }
-                        // Draw Remaining Lines
-                        else
-                        {
-                            start = new Point(Convert.ToInt32(sketchCoords[pointIndex][0]), Convert.ToInt32(sketchCoords[pointIndex][1]));
-                            end = new Point(Convert.ToInt32(sketchCoords[pointIndex + 1][0]), Convert.ToInt32(sketchCoords[pointIndex + 1][1]));
-                        }
-
-                        // Connected by Line
-                        if (connectors[pointIndex].Connector == Constants.connectorOptions[0])
-                        {
-                            g.DrawLine(pen, start, end);
-                        }
-                        // Connected by Curve
-                        else
-                        {
-                            // CURVE
-                        }
+                        g.DrawLine(pen, start, end);
+                    }
+                    // Connected by Curve
+                    else
+                    {
+                        // CURVE
                     }
                 }
             }
@@ -116,8 +100,15 @@ namespace Animator
         /// </summary>
         /// <param name="partsList">Parts to be drawn</param>
         /// <param name="g">Graphics to draw</param>
-        public static void DrawParts(List<Part> partsList, Graphics g)
+        /// <param name="drawPanel">If the panel is being reset it is assigned</param>
+        public static void DrawParts(List<Part> partsList, Graphics g, PictureBox drawPanel = null)
         {
+            if (drawPanel != null)
+            {
+                drawPanel.Refresh();
+                g = drawPanel.CreateGraphics();
+            }
+
             foreach (Part part in partsList)
                 part.Draw(g);
         }
@@ -134,8 +125,7 @@ namespace Animator
         public static void DrawPartsScaled(List<Part> partsList, Graphics g, PictureBox drawPanel, float scale)
         {
             g.ScaleTransform(scale, scale);
-            ResetPictureBox(g, drawPanel);
-            DrawParts(partsList, g);
+            DrawParts(partsList, g, drawPanel);
         }
     }
 }
