@@ -78,9 +78,18 @@ namespace Animator
         /// </summary>
         private void DisplayDrawings()
         {
+            // TODO: Return to normal!
             DrawPanel.Refresh();
             g = DrawPanel.CreateGraphics();
-            WIP.Draw(g);
+            //WIP.Draw(g);
+
+
+            // Testing
+            var coords = WIP.ToPiece().CurrentPoints();
+            foreach (var point in coords)
+            {
+                Visuals.DrawCross(point[0], point[1], Color.Red, g);
+            }
         }
     }
 }

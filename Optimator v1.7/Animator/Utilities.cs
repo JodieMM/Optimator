@@ -14,6 +14,7 @@ namespace Animator
     public class Utilities
     {
         // ----- FILE I/O -----
+        #region File I/O
 
         /// <summary>
         /// Reads information from a text file and returns it
@@ -89,9 +90,12 @@ namespace Animator
             return true;
         }
 
+        #endregion
+
 
 
         // ----- GENERAL FUNCTIONS -----
+        #region General Functions
 
         /// <summary>
         /// Finds the mathematical modulus of a mod b.
@@ -164,6 +168,8 @@ namespace Animator
             return toReturn;
         }
 
+        #endregion
+
 
 
         // ----- BUTTON FUNCTIONS -----
@@ -186,9 +192,61 @@ namespace Animator
 
 
 
+        // ----- CLICK FUNCTIONS -----
+
+        /// <summary>
+        /// Finds the piece clicked from the list.
+        /// </summary>
+        /// <param name="piecesList">The list of pieces that could be clicked</param>
+        /// <param name="x">The x coordinate of the click</param>
+        /// <param name="y">The y coordinate of the click</param>
+        /// <returns>The index of the piece clicked, or negative one if none selected</returns>
+        public static int FindClickedSelection(List<Piece> piecesList, int x, int y, bool fromTop = true)
+        {
+            // Searches pieces either from the top or the bottom of the list
+            int index;
+            int increment = (fromTop) ? -1 : 1;
+            for (index = (fromTop) ? piecesList.Count - 1 : 0; (fromTop) ? index >= 0 : index < piecesList.Count; index += increment)
+            {
+                List<int[]> contents = FindPieceSpace(FindPieceLines(piecesList[index]));
+
+                foreach (int[] dot in contents)
+                {
+                    if (dot[0] == x && dot[1] == y)
+                        return index;
+                }
+            }
+            return -1;
+        }
+
+        /// <summary>
+        /// Finds the closest coordinate from the list.
+        /// Returns -1 if none within 9 pixels of the given position.
+        /// </summary>
+        /// <param name="toSearch">The list of spots to search</param>
+        /// <param name="x">The x coord to be close to</param>
+        /// <param name="y">The y coord to be close to</param>
+        /// <returns>Index of list that is closest</returns>
+        public static int FindClosestIndex(List<Spot> toSearch, int angle, int x, int y)
+        {
+            foreach (int range in Constants.Ranges)
+            {
+                for (int index = 0; index < toSearch.Count(); index++)
+                {
+                    if (x >= toSearch[index].GetCoordCombination(angle)[0] - range && x <= toSearch[index].GetCoordCombination(angle)[0] + range
+                        && y >= toSearch[index].GetCoordCombination(angle)[1] - range && y <= toSearch[index].GetCoordCombination(angle)[1] + range)
+                    {
+                        return index;
+                    }
+                }
+            }
+            return -1;
+        }
+
+
         // ----- PIECE FUNCTIONS -----
         #region Piece Functions
-          
+
         /// <summary>
         /// Flips a shape vertically and/or horizontally.
         /// </summary>
@@ -439,53 +497,6 @@ namespace Animator
         #region Shape Surface Functions
 
         /// <summary>
-        /// Finds all of the coordinates between two points.
-        /// </summary>
-        /// <param name="from">The starting point</param>
-        /// <param name="to">The end point</param>
-        /// <param name="join">How the two points are connected</param>
-        /// <returns>A list of int[] with the point coords</returns>
-        public static List<double[]> FindLineCoords(double[] from, double[] to, string join)
-        {
-            List<double[]> line = new List<double[]>();
-            double gradient = 1;
-            double[] lower = (from[1] < to[1]) ? from : to;
-            double[] upper = (from[1] < to[1]) ? to : from;
-
-            // Find Gradient
-            if (join == "line")
-            {
-                // If straight vertical line
-                if (from[0] - to[0] == 0)
-                {
-                    for (int index = (int)lower[1]; index < upper[1]; index++)
-                        line.Add(new double[] { from[0], index });
-
-                    return line;
-                }
-                // If straight horizontal line
-                else if (from[1] - to[1] == 0)
-                {
-                    line.Add(from);
-                    line.Add(to);
-                    return line;
-                }
-                // If diagonal line
-                else
-                    gradient = (lower[1] - upper[1]) / (lower[0] - upper[0]);
-            }
-            // CURVE
-
-            // Add point for each Y value
-            line.Add(from);
-            for (int index = (int)lower[1] + 1; index < upper[1]; index++)
-                line.Add(new double[] { lower[0] + ((index - lower[1]) / gradient), index });
-
-            line.Add(to);
-            return line;
-        }
-
-        /// <summary>
         /// Finds the coordinates along the outline of the shape.
         /// </summary>
         /// <param name="coords">Coordinates of the shape</param>
@@ -496,22 +507,22 @@ namespace Animator
             List<double[]> coords = piece.CurrentPoints();
             List<double[]> lines = new List<double[]>();
 
-            // If lines exist for this piece
-            if (coords.Count > 2)
-            {
-                for (int index = 0; index < coords.Count; index++)
-                {
-                    if (index == coords.Count - 1)
-                        lines.AddRange(FindLineCoords(new double[] { coords[index][0], coords[index][1] },
-                            new double[] { coords[0][0], coords[0][1] }, piece.Data[index].Connector));
-                    else
-                        lines.AddRange(FindLineCoords(new double[] { coords[index][0], coords[index][1] },
-                            new double[] { coords[index + 1][0], coords[index + 1][1] }, piece.Data[index].Connector));
-                }
-            }
-            // Single or no point
-            else
-                lines.AddRange(coords);
+            //// If lines exist for this piece
+            //if (coords.Count > 2)
+            //{
+            //    for (int index = 0; index < coords.Count; index++)
+            //    {
+            //        if (index == coords.Count - 1)
+            //            lines.AddRange(FindLineCoords(new double[] { coords[index][0], coords[index][1] },
+            //                new double[] { coords[0][0], coords[0][1] }, piece.Data[index].Connector));
+            //        else
+            //            lines.AddRange(FindLineCoords(new double[] { coords[index][0], coords[index][1] },
+            //                new double[] { coords[index + 1][0], coords[index + 1][1] }, piece.Data[index].Connector));
+            //    }
+            //}
+            //// Single or no point
+            //else
+            //    lines.AddRange(coords);
 
             return lines;
         }
@@ -583,55 +594,6 @@ namespace Animator
                 }
             }
             return pieceSpace;
-        }
-
-        /// <summary>
-        /// Finds the piece clicked from the list.
-        /// </summary>
-        /// <param name="piecesList">The list of pieces that could be clicked</param>
-        /// <param name="x">The x coordinate of the click</param>
-        /// <param name="y">The y coordinate of the click</param>
-        /// <returns>The index of the piece clicked, or negative one if none selected</returns>
-        public static int FindClickedSelection(List<Piece> piecesList, int x, int y, bool fromTop = true)
-        {
-            // Searches pieces either from the top or the bottom of the list
-            int index;
-            int increment = (fromTop) ? -1 : 1;
-            for (index = (fromTop) ? piecesList.Count - 1 : 0; (fromTop) ? index >= 0 : index < piecesList.Count; index += increment)
-            {
-                List<int[]> contents = FindPieceSpace(FindPieceLines(piecesList[index]));
-
-                foreach (int[] dot in contents)
-                {
-                    if (dot[0] == x && dot[1] == y)
-                        return index;
-                }
-            }
-            return -1;
-        }
-
-        /// <summary>
-        /// Finds the closest coordinate from the list.
-        /// Returns -1 if none within 9 pixels of the given position.
-        /// </summary>
-        /// <param name="toSearch">The list of spots to search</param>
-        /// <param name="x">The x coord to be close to</param>
-        /// <param name="y">The y coord to be close to</param>
-        /// <returns>Index of list that is closest</returns>
-        public static int FindClosestIndex(List<Spot> toSearch, int angle, int x, int y)
-        {
-            foreach (int range in Constants.Ranges)
-            {
-                for (int index = 0; index < toSearch.Count(); index++)
-                {
-                    if (x >= toSearch[index].GetCoordCombination(angle)[0] - range && x <= toSearch[index].GetCoordCombination(angle)[0] + range
-                        && y >= toSearch[index].GetCoordCombination(angle)[1] - range && y <= toSearch[index].GetCoordCombination(angle)[1] + range)
-                    {
-                        return index;
-                    }
-                }
-            }
-            return -1;
         }
 
         #endregion

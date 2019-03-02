@@ -568,46 +568,47 @@ namespace Animator
         /// </summary>
         public void DisplayDrawings()
         {
-            // Prepare Boards
-            DrawBase.Refresh();
-            DrawRight.Refresh();
-            DrawDown.Refresh();
-            original = DrawBase.CreateGraphics();
-            rotated = DrawRight.CreateGraphics();
-            turned = DrawDown.CreateGraphics();
+            // TODO : Return to normal
+            //// Prepare Boards
+            //DrawBase.Refresh();
+            //DrawRight.Refresh();
+            //DrawDown.Refresh();
+            //original = DrawBase.CreateGraphics();
+            //rotated = DrawRight.CreateGraphics();
+            //turned = DrawDown.CreateGraphics();
 
-            // Draw Sketches
-            for (int index = 0; index < Sketches.Count; index++)
-            {
-                if (SketchLb.GetItemCheckState(index) == CheckState.Checked)
-                {
-                    Part sketch = Sketches[index];
-                    sketch.Draw(original);
-                    sketch.ToPiece().R += 90 % 360;
-                    sketch.Draw(rotated);
-                    sketch.ToPiece().R -= 90 % 360;
-                    sketch.ToPiece().T += 90 % 360;
-                    sketch.Draw(turned);
-                    sketch.ToPiece().T -= 90 % 360;
-                }
-            }
+            //// Draw Sketches
+            //for (int index = 0; index < Sketches.Count; index++)
+            //{
+            //    if (SketchLb.GetItemCheckState(index) == CheckState.Checked)
+            //    {
+            //        Part sketch = Sketches[index];
+            //        sketch.Draw(original);
+            //        sketch.ToPiece().R += 90 % 360;
+            //        sketch.Draw(rotated);
+            //        sketch.ToPiece().R -= 90 % 360;
+            //        sketch.ToPiece().T += 90 % 360;
+            //        sketch.Draw(turned);
+            //        sketch.ToPiece().T -= 90 % 360;
+            //    }
+            //}
 
-            // Draw Base Board
-            WIP.Draw(original);
-            DrawPoints(original, 0);
+            //// Draw Base Board
+            //WIP.Draw(original);
+            //DrawPoints(original, 0);
 
-            // Draw Rotated Board
-            WIP.R = 90;
-            WIP.T = 0;
-            WIP.Draw(rotated);
-            DrawPoints(rotated, 1);
+            //// Draw Rotated Board
+            //WIP.R = 90;
+            //WIP.T = 0;
+            //WIP.Draw(rotated);
+            //DrawPoints(rotated, 1);
 
-            // Draw Turned Board
-            WIP.R = 0;
-            WIP.T = 90;
-            WIP.Draw(turned);
-            DrawPoints(turned, 2);
-            WIP.T = 0;
+            //// Draw Turned Board
+            //WIP.R = 0;
+            //WIP.T = 90;
+            //WIP.Draw(turned);
+            //DrawPoints(turned, 2);
+            //WIP.T = 0;
         }
 
 

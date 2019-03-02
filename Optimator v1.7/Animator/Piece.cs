@@ -249,7 +249,9 @@ namespace Animator
 
 
 
-        // ----- OTHER FUNCTIONS -----
+
+
+        // ----- PART FUNCTIONS -----
 
         /// <summary>
         /// Converts into itself to accommodate sets
@@ -282,33 +284,47 @@ namespace Animator
                 Visuals.DrawPiece(this, g, outline);
         }
 
+        
+
+        // ----- SHAPE FUNCTIONS -----
+
         /// <summary>
         /// Finds the points to print based on the rotation, turn, spin and size of the piece
         /// </summary>
         /// <returns></returns>
         public List<double[]> CurrentPoints()
         {
+            var coordsY = new List<double[]>();
+            for (int index = 0; index < Data.Count; index++)
+                coordsY.AddRange(LineCoords(Data[index].GetCoordCombination(0),
+                    Data[(index + 1) % Data.Count].GetCoordCombination(0), Data[index].Connector));
+
+
             // Put in X matches
             // Move X direction
             // Put in Y matches (for all)
             // Move Y direction (returning final coords)
 
-            // Get Current Spot Coords
-            List<double[]> currentPoints = new List<double[]>();
-            foreach (Spot spot in Data)
-                currentPoints.Add(spot.GetCurrentCoords(GetAngles()[0], GetAngles()[1], middle));
 
-            // Recentre
-            for (int index = 0; index < currentPoints.Count; index++)
-            {
-                currentPoints[index][0] = GetCoords()[0] + (currentPoints[index][0] - middle[0]);
-                currentPoints[index][1] = GetCoords()[1] + (currentPoints[index][1] - middle[1]);
-            }
 
-            // Spin and Size Adjustment
-            currentPoints = SpinMeRound(currentPoints);
 
-            return currentPoints;
+            //// Get Current Spot Coords
+            //var currentPoints = new List<double[]>();
+            //foreach (Spot spot in Data)
+            //    currentPoints.Add(spot.GetCurrentCoords(GetAngles()[0], GetAngles()[1], middle));
+
+            //// Recentre
+            //for (int index = 0; index < currentPoints.Count; index++)
+            //{
+            //    currentPoints[index][0] = GetCoords()[0] + (currentPoints[index][0] - middle[0]);
+            //    currentPoints[index][1] = GetCoords()[1] + (currentPoints[index][1] - middle[1]);
+            //}
+
+            //// Spin and Size Adjustment
+            //currentPoints = SpinMeRound(currentPoints);
+
+            //return currentPoints;
+            return coordsY;
         }
 
         /// <summary>
@@ -371,13 +387,77 @@ namespace Animator
         }
 
         /// <summary>
+        /// Finds all of the coordinates between two points.
+        /// Focuses on a Y-across system.
+        /// </summary>
+        /// <param name="from">The starting point</param>
+        /// <param name="to">The end point</param>
+        /// <param name="join">How the two points are connected</param>
+        /// <returns>A list of double[ x, (int)y ] with the point coords</returns>
+        public List<double[]> LineCoords(double[] from, double[] to, string join)
+        {
+            var line = new List<double[]> { from };
+            double[] lower = from[1] >= to[1] ? to : from;
+            double[] upper = from[1] >= to[1] ? from : to;
+
+            // Solid Line
+            if (join == Constants.connectorOptions[0] || join == Constants.connectorOptions[1])
+            {
+                // If straight vertical line
+                if (from[0] - to[0] == 0)
+                    for (int index = (int)lower[1] + 1; index < upper[1]; index++)
+                        line.Add(new double[] { from[0], index });
+
+                // If diagonal line
+                else if(from[1] - to[1] != 0)
+                {
+                    var gradient = (lower[1] - upper[1]) / (lower[0] - upper[0]);
+                    for (int index = (int)lower[1] + 1; index < upper[1]; index++)
+                        line.Add(new double[] { lower[0] + ((index - lower[1]) / gradient), index });
+                }
+            }
+            // Curve
+            else if (join == Constants.connectorOptions[2])
+            {
+            }
+            return line;
+        }
+
+        /// <summary>
+        /// Finds the ranges where the piece has space.
+        /// </summary>
+        /// <returns>double[ y, x min, x max]</returns>
+        public List<double[]> LineBounds()
+        {
+            var coordsY = new List<double[]>();
+            for (int index = 0; index < Data.Count; index++)
+                coordsY.AddRange(LineCoords(Data[index].GetCoordCombination(0),
+                    Data[(index + 1) % Data.Count].GetCoordCombination(0), Data[index].Connector));
+
+            var minMax = Utilities.FindMinMax(coordsY);
+            var ranges = new List<double[]>();
+            for (int index = (int)minMax[2]; index <= (int)minMax[3]; index++)
+            {
+                // Find all coords with that y = index
+                // Create relevant bound(s)
+                // Repeat
+            }
+
+            return ranges;
+        }
+
+
+
+        // ----- OTHER FUNCTIONS -----
+
+        /// <summary>
         /// Finds how much the join has changed from its original join position.
         /// </summary>
         /// <returns>double[] { X change, Y change }</returns>
         private double[] PointChange()
         {
-            double[] spotCoords = Join.GetCurrentCoords(GetCoords()[0], GetCoords()[1]);
-            List<double[]> spotCoordsList = new List<double[]> { spotCoords };
+            var spotCoords = Join.GetCurrentCoords(GetCoords()[0], GetCoords()[1], middle);
+            var spotCoordsList = new List<double[]> { spotCoords };
             spotCoords = SpinMeRound(spotCoordsList)[0];
             return new double[] { spotCoords[0] - Join.X, spotCoords[1] - Join.Y };            
         }
