@@ -294,10 +294,8 @@ namespace Animator
         /// <returns></returns>
         public List<double[]> CurrentPoints()
         {
-            var coordsY = new List<double[]>();
-            for (int index = 0; index < Data.Count; index++)
-                coordsY.AddRange(LineCoords(Data[index].GetCoordCombination(0),
-                    Data[(index + 1) % Data.Count].GetCoordCombination(0), Data[index].Connector));
+            // TODO: Update to use new functions and return correct values
+            return LineBounds();
 
 
             // Put in X matches
@@ -324,7 +322,6 @@ namespace Animator
             //currentPoints = SpinMeRound(currentPoints);
 
             //return currentPoints;
-            return coordsY;
         }
 
         /// <summary>
@@ -397,24 +394,32 @@ namespace Animator
         public List<double[]> LineCoords(double[] from, double[] to, string join)
         {
             var line = new List<double[]> { from };
-            double[] lower = from[1] >= to[1] ? to : from;
-            double[] upper = from[1] >= to[1] ? from : to;
+            var fromUpper = from[1] >= to[1];
+            double[] lower = fromUpper ? to : from;
+            double[] upper = fromUpper ? from : to;
 
             // Solid Line
             if (join == Constants.connectorOptions[0] || join == Constants.connectorOptions[1])
             {
+                var section = new List<double[]>();
+
                 // If straight vertical line
                 if (from[0] - to[0] == 0)
                     for (int index = (int)lower[1] + 1; index < upper[1]; index++)
-                        line.Add(new double[] { from[0], index });
+                        section.Add(new double[] { from[0], index });
 
                 // If diagonal line
-                else if(from[1] - to[1] != 0)
+                else if (from[1] - to[1] != 0)
                 {
                     var gradient = (lower[1] - upper[1]) / (lower[0] - upper[0]);
                     for (int index = (int)lower[1] + 1; index < upper[1]; index++)
-                        line.Add(new double[] { lower[0] + ((index - lower[1]) / gradient), index });
+                        section.Add(new double[] { lower[0] + ((index - lower[1]) / gradient), index });
                 }
+
+                // Add section to line, reversing if calculated as to --> from
+                if (fromUpper)
+                    section.Reverse();
+                line.AddRange(section);
             }
             // Curve
             else if (join == Constants.connectorOptions[2])
@@ -429,20 +434,57 @@ namespace Animator
         /// <returns>double[ y, x min, x max]</returns>
         public List<double[]> LineBounds()
         {
+            // Get all line coords
             var coordsY = new List<double[]>();
             for (int index = 0; index < Data.Count; index++)
                 coordsY.AddRange(LineCoords(Data[index].GetCoordCombination(0),
-                    Data[(index + 1) % Data.Count].GetCoordCombination(0), Data[index].Connector));
+                    Data[Utilities.Modulo(index + 1, Data.Count)].GetCoordCombination(0), Data[index].Connector));
 
+            // Turn coords into bound ranges
             var minMax = Utilities.FindMinMax(coordsY);
             var ranges = new List<double[]>();
             for (int index = (int)minMax[2]; index <= (int)minMax[3]; index++)
             {
-                // Find all coords with that y = index
-                // Create relevant bound(s)
-                // Repeat
-            }
+                // Get coords for the specific Y value that aren't corners
+                var yMatches = new List<double[]>();
+                for (int coordIndex = 0; coordIndex < coordsY.Count; coordIndex++)
+                    if (coordsY[coordIndex][1] == index &&
+                        !((coordsY[Utilities.Modulo(coordIndex + 1, coordsY.Count)][1] > coordsY[coordIndex][1] &&
+                            coordsY[Utilities.Modulo(coordIndex - 1, coordsY.Count)][1] > coordsY[coordIndex][1]) ||
+                            (coordsY[Utilities.Modulo(coordIndex + 1, coordsY.Count)][1] < coordsY[coordIndex][1] &&
+                            coordsY[Utilities.Modulo(coordIndex - 1, coordsY.Count)][1] < coordsY[coordIndex][1])))
+                        yMatches.Add(coordsY[coordIndex]);
 
+                // Pair Remaining Coords into Bounds
+                if (yMatches.Count % 2 != 0)
+                    throw new Exception("A range item is missing a matching bound.");
+
+                while (yMatches.Count > 1)
+                {
+                    double min1 = 999999;
+                    double min2 = 999999;
+                    int min1Index = -1;
+                    int min2Index = -1;
+                    for (int match = 0; match < yMatches.Count; match++)
+                    {
+                        if (yMatches[match][0] < min1)
+                        {
+                            min2 = min1;
+                            min2Index = min1Index;
+                            min1 = yMatches[match][0];
+                            min1Index = match;
+                        }
+                        else if (yMatches[match][0] < min2)
+                        {
+                            min2 = yMatches[match][0];
+                            min2Index = match;
+                        }
+                    }
+                    ranges.Add(new double[3] { index, min1, min2 });
+                    yMatches.RemoveAt(min1Index);
+                    yMatches.RemoveAt(min2Index > min1Index ? min2Index - 1 : min2Index);
+                }
+            }
             return ranges;
         }
 

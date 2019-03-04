@@ -85,11 +85,9 @@ namespace Animator
 
 
             // Testing
-            var coords = WIP.ToPiece().CurrentPoints();
-            foreach (var point in coords)
-            {
-                Visuals.DrawCross(point[0], point[1], Color.Red, g);
-            }
+            var ranges = WIP.ToPiece().CurrentPoints();
+            foreach (var range in ranges)
+                g.DrawLine(new Pen(Color.Red), (float)range[1], (float)range[0], (float)range[2], (float)range[0]);
         }
     }
 }

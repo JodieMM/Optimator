@@ -568,7 +568,7 @@ namespace Animator
         /// </summary>
         public void DisplayDrawings()
         {
-            // TODO : Return to normal
+            // TODO : Uncomment - Return to normal
             //// Prepare Boards
             //DrawBase.Refresh();
             //DrawRight.Refresh();
