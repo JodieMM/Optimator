@@ -24,7 +24,6 @@ namespace Animator
         public double T { get; set; } = 0;
         public double S { get; set; } = 0;
         public double SM { get; set; } = 100;
-        private readonly double[] middle;
 
         // Colours and Details
         public string ColourType { get; set; }                     // Solid/Gradient colour and direction
@@ -32,6 +31,10 @@ namespace Animator
         public Color OutlineColour { get; set; }
         public decimal OutlineWidth { get; set; }
         public string PieceDetails { get; set; }                   // Wind resistance and more
+
+        // Stored Values
+        private readonly double[] middle;
+        private List<double[]> outlineShape = new List<double[]>();
 
         // Sets
         public Piece AttachedTo { get; set; } = null;
@@ -95,7 +98,10 @@ namespace Animator
                     double.Parse(coords[3]), spotData[1], spotData[2]));
                 currentPoints.Add(Data[Data.Count - 1].GetCoordCombination(0));
             }
+
+            // Calculations
             middle = Utilities.FindMid(currentPoints);
+            outlineShape = LinesCoords();
         }
 
         /// <summary>
@@ -182,6 +188,17 @@ namespace Animator
             foreach (Spot spot in Data)
                 newData.Add(spot.ToString());
             return newData;
+        }
+
+        /// <summary>
+        /// Gets the outline shape, calculating it if necessary.
+        /// </summary>
+        /// <returns>The outline shape as a list of double[ x, (int)y ]</returns>
+        public List<double[]> GetOutlineShape()
+        {
+            if (outlineShape.Count == 0)
+                outlineShape = LinesCoords();
+            return outlineShape;
         }
 
         #endregion
@@ -294,8 +311,12 @@ namespace Animator
         /// <returns></returns>
         public List<double[]> CurrentPoints()
         {
+            var outline = GetOutlineShape();
+
+
+
             // TODO: Update to use new functions and return correct values
-            return LineBounds();
+            return outline;
 
 
             // Put in X matches
@@ -385,7 +406,7 @@ namespace Animator
 
         /// <summary>
         /// Finds all of the coordinates between two points.
-        /// Focuses on a Y-across system.
+        /// Uses a Y-across system.
         /// </summary>
         /// <param name="from">The starting point</param>
         /// <param name="to">The end point</param>
@@ -429,31 +450,39 @@ namespace Animator
         }
 
         /// <summary>
+        /// Finds all of the coordinates in the outline of the piece.
+        /// Uses a Y-across system.
+        /// </summary>
+        /// <returns>A list of double [ x, (int)y ] with the shape outline</returns>
+        public List<double[]> LinesCoords()
+        {
+            var linesCoords = new List<double[]>();
+            for (int index = 0; index < Data.Count; index++)
+                linesCoords.AddRange(LineCoords(Data[index].GetCoordCombination(0),
+                    Data[Utilities.Modulo(index + 1, Data.Count)].GetCoordCombination(0), Data[index].Connector));
+            return linesCoords;
+        }
+
+        /// <summary>
         /// Finds the ranges where the piece has space.
         /// </summary>
         /// <returns>double[ y, x min, x max]</returns>
-        public List<double[]> LineBounds()
+        public List<double[]> LineBounds(List<double[]> outlineShape)
         {
-            // Get all line coords
-            var coordsY = new List<double[]>();
-            for (int index = 0; index < Data.Count; index++)
-                coordsY.AddRange(LineCoords(Data[index].GetCoordCombination(0),
-                    Data[Utilities.Modulo(index + 1, Data.Count)].GetCoordCombination(0), Data[index].Connector));
-
             // Turn coords into bound ranges
-            var minMax = Utilities.FindMinMax(coordsY);
+            var minMax = Utilities.FindMinMax(outlineShape);
             var ranges = new List<double[]>();
             for (int index = (int)minMax[2]; index <= (int)minMax[3]; index++)
             {
                 // Get coords for the specific Y value that aren't corners
                 var yMatches = new List<double[]>();
-                for (int coordIndex = 0; coordIndex < coordsY.Count; coordIndex++)
-                    if (coordsY[coordIndex][1] == index &&
-                        !((coordsY[Utilities.Modulo(coordIndex + 1, coordsY.Count)][1] > coordsY[coordIndex][1] &&
-                            coordsY[Utilities.Modulo(coordIndex - 1, coordsY.Count)][1] > coordsY[coordIndex][1]) ||
-                            (coordsY[Utilities.Modulo(coordIndex + 1, coordsY.Count)][1] < coordsY[coordIndex][1] &&
-                            coordsY[Utilities.Modulo(coordIndex - 1, coordsY.Count)][1] < coordsY[coordIndex][1])))
-                        yMatches.Add(coordsY[coordIndex]);
+                for (int coordIndex = 0; coordIndex < outlineShape.Count; coordIndex++)
+                    if (outlineShape[coordIndex][1] == index &&
+                        !((outlineShape[Utilities.Modulo(coordIndex + 1, outlineShape.Count)][1] > outlineShape[coordIndex][1] &&
+                            outlineShape[Utilities.Modulo(coordIndex - 1, outlineShape.Count)][1] > outlineShape[coordIndex][1]) ||
+                            (outlineShape[Utilities.Modulo(coordIndex + 1, outlineShape.Count)][1] < outlineShape[coordIndex][1] &&
+                            outlineShape[Utilities.Modulo(coordIndex - 1, outlineShape.Count)][1] < outlineShape[coordIndex][1])))
+                        yMatches.Add(outlineShape[coordIndex]);
 
                 // Pair Remaining Coords into Bounds
                 if (yMatches.Count % 2 != 0)
