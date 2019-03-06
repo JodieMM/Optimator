@@ -33,8 +33,8 @@ namespace Animator
         public string PieceDetails { get; set; }                   // Wind resistance and more
 
         // Stored Values
-        private readonly double[] middle;
-        private List<double[]> outlineShape = new List<double[]>();
+        public double[] middle;
+        private double[] minMax;
 
         // Sets
         public Piece AttachedTo { get; set; } = null;
@@ -72,13 +72,9 @@ namespace Animator
             {
                 string[] rgbValues = colours[index].Split(Constants.Comma);
                 if (index == 0)
-                {
                     OutlineColour = Color.FromArgb(int.Parse(rgbValues[0]), int.Parse(rgbValues[1]), int.Parse(rgbValues[2]), int.Parse(rgbValues[3]));
-                }
                 else
-                {
                     FillColour[index - 1] = Color.FromArgb(int.Parse(rgbValues[0]), int.Parse(rgbValues[1]), int.Parse(rgbValues[2]), int.Parse(rgbValues[3]));
-                }
             }
 
             // Outline Width
@@ -88,7 +84,6 @@ namespace Animator
             PieceDetails = angleData[3];
 
             // Spots
-            List<double[]> currentPoints = new List<double[]>();
             for (int index = 1; index < data.Count; index++)
             {
                 string[] spotData = data[index].Split(Constants.Semi);
@@ -96,12 +91,8 @@ namespace Animator
 
                 Data.Add(new Spot(double.Parse(coords[0]), double.Parse(coords[1]), double.Parse(coords[2]),
                     double.Parse(coords[3]), spotData[1], spotData[2]));
-                currentPoints.Add(Data[Data.Count - 1].GetCoordCombination(0));
             }
-
-            // Calculations
-            middle = Utilities.FindMid(currentPoints);
-            outlineShape = LinesCoords();
+            RunCalculations();
         }
 
         /// <summary>
@@ -190,17 +181,6 @@ namespace Animator
             return newData;
         }
 
-        /// <summary>
-        /// Gets the outline shape, calculating it if necessary.
-        /// </summary>
-        /// <returns>The outline shape as a list of double[ x, (int)y ]</returns>
-        public List<double[]> GetOutlineShape()
-        {
-            if (outlineShape.Count == 0)
-                outlineShape = LinesCoords();
-            return outlineShape;
-        }
-
         #endregion
 
 
@@ -266,8 +246,6 @@ namespace Animator
 
 
 
-
-
         // ----- PART FUNCTIONS -----
 
         /// <summary>
@@ -301,9 +279,10 @@ namespace Animator
                 Visuals.DrawPiece(this, g, outline);
         }
 
-        
+
 
         // ----- SHAPE FUNCTIONS -----
+        #region Shape Functions
 
         /// <summary>
         /// Finds the points to print based on the rotation, turn, spin and size of the piece
@@ -311,38 +290,27 @@ namespace Animator
         /// <returns></returns>
         public List<double[]> CurrentPoints()
         {
-            var outline = GetOutlineShape();
+            var points = new List<double[]>();
 
+            // Get Points
+            foreach (var spot in Data)
+                spot.CalculateCurrentX(GetAngles()[0], middle);
+            // TODO: Add back in CalculateXMatches();
+            foreach (var spot in Data)
+                // TODO: Add back points.Add(spot.CurrentCoord(GetAngles()[1], middle));
+                points.Add(new double[] { spot.CurrentX, spot.Y });
 
+            // Recentre
+            for (int index = 0; index < points.Count; index++)
+            {
+                points[index][0] = GetCoords()[0] + (points[index][0] - middle[0]);
+                points[index][1] = GetCoords()[1] + (points[index][1] - middle[1]);
+            }
 
-            // TODO: Update to use new functions and return correct values
-            return outline;
+            // Spin and Size Adjustment
+            points = SpinMeRound(points);
 
-
-            // Put in X matches
-            // Move X direction
-            // Put in Y matches (for all)
-            // Move Y direction (returning final coords)
-
-
-
-
-            //// Get Current Spot Coords
-            //var currentPoints = new List<double[]>();
-            //foreach (Spot spot in Data)
-            //    currentPoints.Add(spot.GetCurrentCoords(GetAngles()[0], GetAngles()[1], middle));
-
-            //// Recentre
-            //for (int index = 0; index < currentPoints.Count; index++)
-            //{
-            //    currentPoints[index][0] = GetCoords()[0] + (currentPoints[index][0] - middle[0]);
-            //    currentPoints[index][1] = GetCoords()[1] + (currentPoints[index][1] - middle[1]);
-            //}
-
-            //// Spin and Size Adjustment
-            //currentPoints = SpinMeRound(currentPoints);
-
-            //return currentPoints;
+            return points;
         }
 
         /// <summary>
@@ -350,7 +318,7 @@ namespace Animator
         /// </summary>
         /// <param name="pointsArray">The points to be spun</param>
         /// <returns></returns>
-        public List<double[]> SpinMeRound(List<double[]> pointsArray)
+        private List<double[]> SpinMeRound(List<double[]> pointsArray)
         {
             // Spin Adjustment
             for (int index = 0; index < pointsArray.Count; index++)
@@ -405,6 +373,182 @@ namespace Animator
         }
 
         /// <summary>
+        /// Calculates where the spots with the same Y coordinate as drawnlevel 0
+        /// spots would go and adds them to Data.
+        /// </summary>
+        private void CalculateYMatches()
+        {
+            CleanseData(true);
+
+            for (int index = 0; index < Data.Count; index++)
+            {
+                var spot = Data[index];
+
+                // Only search for match if needed
+                if (spot.DrawnLevel == 0 && spot.MatchY == null && spot.GetCoordCombination()[0] != minMax[1]
+                    && spot.GetCoordCombination()[0] != minMax[0])
+                {
+                    // If spot has existing match
+                    var symmIndex = FindExistingSymmetricalCoord(index, 0);
+                    if (symmIndex != -1)
+                    {
+                        Data[symmIndex].MatchY = spot;
+                        spot.MatchY = Data[symmIndex];
+                    }
+                    // If spot has no existing match
+                    else
+                    {
+                        int insertIndex = FindSymmetricalCoordHome(index, 0);
+                        double[] original = FindSymmetricalOppositeCoord(Data[insertIndex].GetCoordCombination(),
+                            Data[Utilities.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(), 
+                            spot.GetCoordCombination(0)[0], 0, Data[insertIndex].Connector);
+
+                        double rotated = FindSymmetricalOppositeCoord(Data[insertIndex].GetCoordCombination(1),
+                            Data[Utilities.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(1), 
+                            original[1], 1, Data[insertIndex].Connector)[0];
+
+                        double turned = FindSymmetricalOppositeCoord(Data[insertIndex].GetCoordCombination(2),
+                            Data[Utilities.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(2), 
+                            original[0], 0, Data[insertIndex].Connector)[1];
+
+                        Spot newSpot = new Spot(original[0], original[1], rotated, turned, Data[insertIndex].Connector, Data[insertIndex].Solid, 1)
+                        {
+                            MatchY = spot
+                        };
+                        spot.MatchY = newSpot;
+                        Data.Insert(insertIndex, newSpot);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Calculates where the spots with the same Y coordinate as current
+        /// spots would go and adds them to Data.
+        /// </summary>
+        private void CalculateXMatches()
+        {
+            CleanseData();
+
+            for (int index = 0; index < Data.Count; index++)
+            {
+                var spot = Data[index];
+
+                // Only search for match if needed
+                if (spot.DrawnLevel < 2 && spot.MatchY == null && spot.GetCoordCombination()[0] != minMax[3]
+                    && spot.GetCoordCombination()[0] != minMax[1])
+                {
+                    // If spot has existing match
+                    var symmIndex = FindExistingSymmetricalCoord(index, 1);
+                    if (symmIndex != -1)
+                    {
+                        Data[symmIndex].MatchY = spot;
+                        spot.MatchY = Data[symmIndex];
+                    }
+                    // If spot has no existing match
+                    else
+                    {
+                        int insertIndex = FindSymmetricalCoordHome(index, 1);
+                        double[] original = FindSymmetricalOppositeCoord(Data[insertIndex].GetCoordCombination(),
+                            Data[Utilities.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(),
+                            spot.GetCoordCombination(0)[0], 0, Data[insertIndex].Connector);
+
+                        double rotated = FindSymmetricalOppositeCoord(Data[insertIndex].GetCoordCombination(1),
+                            Data[Utilities.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(1),
+                            original[1], 1, Data[insertIndex].Connector)[0];
+
+                        double turned = FindSymmetricalOppositeCoord(Data[insertIndex].GetCoordCombination(2),
+                            Data[Utilities.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(2),
+                            original[0], 0, Data[insertIndex].Connector)[1];
+
+                        Spot newSpot = new Spot(original[0], original[1], rotated, turned, Data[insertIndex].Connector, Data[insertIndex].Solid, 2)
+                        {
+                            MatchX = spot
+                        };
+                        spot.MatchX = newSpot;
+                        Data.Insert(insertIndex, newSpot);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Finds the index of the coordinate that has the same x or y value
+        /// as the selected coordinate.
+        /// </summary>
+        /// <param name="matchIndex">The index of the selected coordinate</param>
+        /// <param name="xy">Whether searching for a match in x (0) or y (1)</param>
+        /// <returns>The symmetrical point's index or -1 if none exists</returns>
+        private int FindExistingSymmetricalCoord(int matchIndex, int xy)
+        {
+            for (int index = 0; index < Data.Count; index++)
+                if (index != matchIndex && Data[index].GetCoordCombination()[xy] == Data[matchIndex].GetCoordCombination()[xy])
+                    return index;
+
+            return -1;
+        }
+
+        /// <summary>
+        /// Finds where a matching point would go if it existed.
+        /// </summary>
+        /// <param name="matchIndex">The index of the selected coordinate</param>
+        /// <param name="xy">Whether searching for a match in x (0) or y (1)</param>
+        /// <returns>The index where the matching point would go or -1 in error</returns>
+        public int FindSymmetricalCoordHome(int matchIndex, int xy)
+        {
+            double goal = Data[matchIndex].GetCoordCombination()[xy];
+            bool bigger = false;
+            int searchIndex = -1;
+
+            // Find whether we're searching above or below the goal
+            for (int index = 0; index < Data.Count && searchIndex == -1; index++)
+            {
+                if (Data[index].GetCoordCombination()[xy] != goal)
+                {
+                    bigger = (Data[index].GetCoordCombination()[xy] > goal);
+                    searchIndex = (index + 1) % Data.Count;
+                }
+            }
+
+            // Find index position
+            for (int index = 0; index < Data.Count; index++)
+            {
+                if (Data[searchIndex].GetCoordCombination()[xy] == goal)
+                    bigger = !bigger;
+                else if (Data[searchIndex].GetCoordCombination()[xy] > goal != bigger)
+                    return searchIndex;
+
+                searchIndex = (searchIndex + 1) % Data.Count;
+            }
+            return -1;       // Error
+        }
+
+        /// <summary>
+        /// Finds the coordinate that would be across from the selected coordinate.
+        /// </summary>
+        /// <param name="from">Coord before pending</param>
+        /// <param name="to">Coord after pending</param>
+        /// <param name="value">Selected value to match</param>
+        /// <param name="xy">Whether the x (0) or y (1) should be matched</param>
+        /// <param name="line">The join between the lines</param>
+        /// <returns></returns>
+        public double[] FindSymmetricalOppositeCoord(double[] from, double[] to, double value, int xy, string line)
+        {
+            double gradient = -1;
+            if (line == Constants.connectorOptions[0] || line == Constants.connectorOptions[1])
+            {
+                gradient = (from[1] - to[1]) / (from[0] - to[0]);
+            }
+            // else if (line == Constants.connectorOptions[2])      
+            //CURVE
+
+            if (xy == 0)
+                return new double[] { value, from[1] + (value - from[0]) * gradient };  // y = x * gradient
+            else
+                return new double[] { from[0] + (value - from[1]) / gradient, value };  // x = y / gradient
+        }
+
+        /// <summary>
         /// Finds all of the coordinates between two points.
         /// Uses a Y-across system.
         /// </summary>
@@ -412,9 +556,9 @@ namespace Animator
         /// <param name="to">The end point</param>
         /// <param name="join">How the two points are connected</param>
         /// <returns>A list of double[ x, (int)y ] with the point coords</returns>
-        public List<double[]> LineCoords(double[] from, double[] to, string join)
+        private List<double[]> LineCoords(double[] from, double[] to, string join)
         {
-            var line = new List<double[]> { from };
+            var line = new List<double[]> { new double[] { from[0], from[1] } };
             var fromUpper = from[1] >= to[1];
             double[] lower = fromUpper ? to : from;
             double[] upper = fromUpper ? from : to;
@@ -454,12 +598,12 @@ namespace Animator
         /// Uses a Y-across system.
         /// </summary>
         /// <returns>A list of double [ x, (int)y ] with the shape outline</returns>
-        public List<double[]> LinesCoords()
+        private List<double[]> LinesCoords()
         {
             var linesCoords = new List<double[]>();
             for (int index = 0; index < Data.Count; index++)
-                linesCoords.AddRange(LineCoords(Data[index].GetCoordCombination(0),
-                    Data[Utilities.Modulo(index + 1, Data.Count)].GetCoordCombination(0), Data[index].Connector));
+                linesCoords.AddRange(LineCoords(Data[index].GetCoordCombination(),
+                    Data[Utilities.Modulo(index + 1, Data.Count)].GetCoordCombination(), Data[index].Connector));
             return linesCoords;
         }
 
@@ -467,7 +611,7 @@ namespace Animator
         /// Finds the ranges where the piece has space.
         /// </summary>
         /// <returns>double[ y, x min, x max]</returns>
-        public List<double[]> LineBounds(List<double[]> outlineShape)
+        private List<double[]> LineBounds(List<double[]> outlineShape)
         {
             // Turn coords into bound ranges
             var minMax = Utilities.FindMinMax(outlineShape);
@@ -517,9 +661,41 @@ namespace Animator
             return ranges;
         }
 
+        #endregion
+
 
 
         // ----- OTHER FUNCTIONS -----
+
+        /// <summary>
+        /// Calculates generics like the shape's drawn mid and
+        /// the min/max points.
+        /// </summary>
+        public void RunCalculations()
+        {
+            var convertedData = Utilities.ConvertSpotsToCoords(Data);
+            middle = Utilities.FindMid(convertedData);
+            minMax = Utilities.FindMinMax(convertedData);
+            CalculateYMatches();
+        }
+
+        /// <summary>
+        /// Remove coords from Data.
+        /// </summary>
+        /// <param name="xMatch">If the drawn level 1 spots should be removed too</param>
+        public void CleanseData(bool xMatch = false)
+        {
+            for (int index = 0; index < Data.Count; index++)
+            {
+                var eraseCheck = xMatch ? Data[index].DrawnLevel > 0 : Data[index].DrawnLevel == 2;
+                if (eraseCheck)
+                {
+                    Data[index].MatchY.MatchY = null;
+                    Data.RemoveAt(index);
+                    index = index == 0 ? 0 : index--;
+                }
+            }
+        }
 
         /// <summary>
         /// Finds how much the join has changed from its original join position.
@@ -527,7 +703,7 @@ namespace Animator
         /// <returns>double[] { X change, Y change }</returns>
         private double[] PointChange()
         {
-            var spotCoords = Join.GetCurrentCoords(GetCoords()[0], GetCoords()[1], middle);
+            var spotCoords = Join.CurrentJoinCoords(GetCoords()[0], GetCoords()[1], middle);
             var spotCoordsList = new List<double[]> { spotCoords };
             spotCoords = SpinMeRound(spotCoordsList)[0];
             return new double[] { spotCoords[0] - Join.X, spotCoords[1] - Join.Y };            

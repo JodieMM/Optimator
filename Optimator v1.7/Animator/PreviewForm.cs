@@ -78,16 +78,9 @@ namespace Animator
         /// </summary>
         private void DisplayDrawings()
         {
-            // TODO: Return to normal!
             DrawPanel.Refresh();
             g = DrawPanel.CreateGraphics();
-            //WIP.Draw(g);
-
-
-            // Testing
-            var ranges = WIP.ToPiece().CurrentPoints();
-            foreach (var range in ranges)
-                g.DrawLine(new Pen(Color.Red), (float)range[1], (float)range[0], (float)range[2], (float)range[0]);
+            WIP.Draw(g);
         }
     }
 }

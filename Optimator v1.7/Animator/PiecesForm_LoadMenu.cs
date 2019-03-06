@@ -26,11 +26,11 @@ namespace Animator
         /// Constructor for the Load Menu.
         /// </summary>
         /// <param name="from">PiecesForm that spawned the request</param>
-        public PiecesForm_LoadMenu(PiecesForm fromBase)
+        public PiecesForm_LoadMenu(PiecesForm fromBase, Piece wip)
         {
             InitializeComponent();
             from = fromBase;
-            WIP = fromBase.WIP;
+            WIP = wip;
         }
 
 
