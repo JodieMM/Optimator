@@ -44,8 +44,8 @@ namespace Animator
         public static Color select = Color.Red;
 
         // Piece Defaults
-        public static Color defaultFill = Color.FromArgb(255, 204, 204, 255);
-        public static Color defaultOutline = Color.FromArgb(255, 204, 240, 255);
+        public static Color defaultFill = Color.FromArgb(255, 204, 240, 255);
+        public static Color defaultOutline = Color.FromArgb(255, 204, 204, 255);
         public static decimal defaultOutlineWidth = 2;
         public static string defaultPieceDetails = "wr100";
         public static string defaultAngleOptions = "150;150;0;0;0;100";

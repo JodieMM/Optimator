@@ -185,7 +185,7 @@ namespace Animator
 
             // Only check saving if something to save
             if (saveCondition)
-                result = MessageBox.Show("Do you want to exit without saving? Your work will be lost.", "Exit Confirmation", MessageBoxButtons.YesNo);
+                result = DialogResult.Yes; // TODO: Add back MessageBox.Show("Do you want to exit without saving? Your work will be lost.", "Exit Confirmation", MessageBoxButtons.YesNo);
 
             return result == DialogResult.Yes;
         }
@@ -205,9 +205,10 @@ namespace Animator
         {
             // Searches pieces either from the top or the bottom of the list
             int index;
-            int increment = (fromTop) ? -1 : 1;
-            for (index = (fromTop) ? piecesList.Count - 1 : 0; (fromTop) ? index >= 0 : index < piecesList.Count; index += increment)
+            int increment = fromTop ? -1 : 1;
+            for (index = fromTop ? piecesList.Count - 1 : 0; fromTop ? index >= 0 : index < piecesList.Count; index += increment)
             {
+                //var outline = piecesList[index].LineBounds();
                 List<int[]> contents = FindPieceSpace(FindPieceLines(piecesList[index]));
 
                 foreach (int[] dot in contents)

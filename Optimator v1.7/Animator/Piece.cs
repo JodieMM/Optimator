@@ -293,12 +293,12 @@ namespace Animator
             var points = new List<double[]>();
 
             // Get Points
+            CalculateMatches();
             foreach (var spot in Data)
-                spot.CalculateCurrentX(GetAngles()[0], middle);
-            // TODO: Add back in CalculateXMatches();
+                spot.CurrentX = spot.CalculateCurrentValue(GetAngles()[0], middle);
+            //CalculateMatches(0);          // TODO: Add in and get turn working
             foreach (var spot in Data)
-                // TODO: Add back points.Add(spot.CurrentCoord(GetAngles()[1], middle));
-                points.Add(new double[] { spot.CurrentX, spot.Y });
+                points.Add(new double[] { spot.CurrentX, spot.CalculateCurrentValue(GetAngles()[1], middle, 0) });
 
             // Recentre
             for (int index = 0; index < points.Count; index++)
@@ -380,10 +380,13 @@ namespace Animator
         private void CalculateMatches(int xy = 1)
         {
             // Setup
+            CleanseData(xy == 0 ? false : true);
             if (Data.Count < 3)
                 return;
-            CleanseData(true);
             var drawn = xy == 0 ? 2 : 1;
+            var coordCombo = xy == 0 ? 3 : 0;
+            var coordRot = xy == 0 ? 3 : 1;
+            var increase = xy == 0 ? 2 : 0;
 
             for (int index = 0; index < Data.Count; index++)
             {
@@ -392,8 +395,8 @@ namespace Animator
                 var validDrawn = xy == 0 ? spot.DrawnLevel < 2 : spot.DrawnLevel == 0;
 
                 // Only search for match if needed
-                if (validDrawn && spot.GetMatch(xy) == null && spot.GetCoordCombination()[xy] != minMax[1 + 2*xy]
-                    && spot.GetCoordCombination()[xy] != minMax[2*xy])
+                if (validDrawn && spot.GetMatch(xy) == null && spot.GetCoordCombination(coordCombo)[xy] != minMax[3 - increase]
+                    && spot.GetCoordCombination(coordCombo)[xy] != minMax[2 - increase])
                 {
                     // If spot has existing match
                     var symmIndex = FindExistingSymmetricalCoord(index, xy);
@@ -406,77 +409,29 @@ namespace Animator
                     else
                     {
                         int insertIndex = FindSymmetricalCoordHome(index, xy);
-                        double[] original = FindSymmetricalOppositeCoord(Data[insertIndex].GetCoordCombination(),
-                            Data[Utilities.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(), 
+                        double[] original = FindSymmetricalOppositeCoord(Data[insertIndex].GetCoordCombination(coordCombo),
+                            Data[Utilities.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(coordCombo), 
                             spot.GetCoordCombination(0)[xy], xy, Data[insertIndex].Connector);
 
-                        double rotated = FindSymmetricalOppositeCoord(Data[insertIndex].GetCoordCombination(1),
-                            Data[Utilities.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(1), 
+                        double rotated = FindSymmetricalOppositeCoord(Data[insertIndex].GetCoordCombination(coordRot),
+                            Data[Utilities.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(coordRot), 
                             original[1], 1, Data[insertIndex].Connector)[0];
 
-                        double turned = FindSymmetricalOppositeCoord(Data[insertIndex].GetCoordCombination(2),
-                            Data[Utilities.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(2), 
+                        double turned = FindSymmetricalOppositeCoord(Data[insertIndex].GetCoordCombination(2 + increase),
+                            Data[Utilities.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(2 + increase), 
                             original[0], 0, Data[insertIndex].Connector)[1];
 
                         Spot newSpot = new Spot(original[0], original[1], rotated, turned, Data[insertIndex].Connector, Data[insertIndex].Solid, drawn);
                         newSpot.SetMatch(xy, spot);
                         spot.SetMatch(xy, newSpot);
+                        if (drawn == 2)
+                            newSpot.CurrentX = newSpot.X;
                         Data.Insert(insertIndex, newSpot);
                     }
                 }
             }
         }
-
-        /// <summary>
-        /// Calculates where the spots with the same Y coordinate as current
-        /// spots would go and adds them to Data.
-        /// </summary>
-        private void CalculateXMatches()
-        {
-            CleanseData();
-
-            for (int index = 0; index < Data.Count; index++)
-            {
-                var spot = Data[index];
-
-                // Only search for match if needed
-                if (spot.DrawnLevel < 2 && spot.MatchY == null && spot.GetCoordCombination()[0] != minMax[3]
-                    && spot.GetCoordCombination()[0] != minMax[1])
-                {
-                    // If spot has existing match
-                    var symmIndex = FindExistingSymmetricalCoord(index, 1);
-                    if (symmIndex != -1)
-                    {
-                        Data[symmIndex].MatchY = spot;
-                        spot.MatchY = Data[symmIndex];
-                    }
-                    // If spot has no existing match
-                    else
-                    {
-                        int insertIndex = FindSymmetricalCoordHome(index, 1);
-                        double[] original = FindSymmetricalOppositeCoord(Data[insertIndex].GetCoordCombination(),
-                            Data[Utilities.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(),
-                            spot.GetCoordCombination(0)[0], 0, Data[insertIndex].Connector);
-
-                        double rotated = FindSymmetricalOppositeCoord(Data[insertIndex].GetCoordCombination(1),
-                            Data[Utilities.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(1),
-                            original[1], 1, Data[insertIndex].Connector)[0];
-
-                        double turned = FindSymmetricalOppositeCoord(Data[insertIndex].GetCoordCombination(2),
-                            Data[Utilities.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(2),
-                            original[0], 0, Data[insertIndex].Connector)[1];
-
-                        Spot newSpot = new Spot(original[0], original[1], rotated, turned, Data[insertIndex].Connector, Data[insertIndex].Solid, 2)
-                        {
-                            MatchX = spot
-                        };
-                        spot.MatchX = newSpot;
-                        Data.Insert(insertIndex, newSpot);
-                    }
-                }
-            }
-        }
-
+                
         /// <summary>
         /// Finds the index of the coordinate that has the same x or y value
         /// as the selected coordinate.
@@ -616,7 +571,7 @@ namespace Animator
         /// Finds the ranges where the piece has space.
         /// </summary>
         /// <returns>double[ y, x min, x max]</returns>
-        private List<double[]> LineBounds(List<double[]> outlineShape)
+        public List<double[]> LineBounds(List<double[]> outlineShape)
         {
             // Turn coords into bound ranges
             var minMax = Utilities.FindMinMax(outlineShape);
@@ -681,7 +636,6 @@ namespace Animator
             var convertedData = Utilities.ConvertSpotsToCoords(Data);
             middle = Utilities.FindMid(convertedData);
             minMax = Utilities.FindMinMax(convertedData);
-            CalculateMatches();
         }
 
         /// <summary>
@@ -695,7 +649,10 @@ namespace Animator
                 var eraseCheck = xMatch ? Data[index].DrawnLevel > 0 : Data[index].DrawnLevel == 2;
                 if (eraseCheck)
                 {
-                    Data[index].MatchY.MatchY = null;
+                    if (Data[index].MatchX != null)
+                        Data[index].MatchX.MatchX = null;
+                    if (xMatch && Data[index].MatchY != null)
+                        Data[index].MatchY.MatchY = null;
                     Data.RemoveAt(index);
                     index = index == 0 ? 0 : index--;
                 }

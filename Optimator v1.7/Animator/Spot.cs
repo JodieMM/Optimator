@@ -24,7 +24,7 @@ namespace Animator
         public Spot MatchY { get; set; } = null;
         public int DrawnLevel { get; set; }
         #endregion
-        
+
 
         /// <summary>
         /// Constructor for a spot.
@@ -73,7 +73,7 @@ namespace Animator
             else
                 return MatchY;
         }
-        
+
 
 
         // ----- SET FUNCTIONS -----
@@ -138,7 +138,7 @@ namespace Animator
         /// Converts the coordinates to doubles to allow
         /// easier input into arrays/searches.
         /// </summary>
-        /// <param name="angle">Original [0], rotated [1], turned [2]</param>
+        /// <param name="angle">Original [0], rotated [1], turned [2], current [3], current down [4]</param>
         /// <returns>Coordinates of the piece as a double</returns>
         public double[] GetCoordCombination(int angle = 0)
         {
@@ -149,7 +149,9 @@ namespace Animator
                 case 2:
                     return new double[] { X, YDown };
                 case 3:
-                    return new double[] { XRight, YDown };
+                    return new double[] { CurrentX, Y };
+                case 4:
+                    return new double[] { CurrentX, YDown };
                 default:
                     return new double[] { X, Y };
             }
@@ -209,79 +211,46 @@ namespace Animator
         /// <summary>
         /// Finds the current X value of the spot based on the piece's rotation.
         /// </summary>
-        /// <param name="r">The rotation of the piece</param>
+        /// <param name="angle">The rotation or turn of the piece</param>
         /// <param name="mid">The middle of the piece</param>
-        public void CalculateCurrentX(double r, double[] mid)
-        {
-            // TODO: Convert section into reusable function
-            double lower;
-            double upper;
-            int bottomAngle;
-
-            if (r < 90)
-            {
-                lower = X;
-                upper = XRight;
-                bottomAngle = 0;
-            }
-            else if (r < 180)
-            {
-                lower = XRight;
-                upper = MatchY == null ? Utilities.FlipPoint(mid[0], X) : Utilities.FlipPoint(mid[0], MatchY.X);
-                bottomAngle = 90;
-            }
-            else if (r < 270)
-            {
-                lower = MatchY == null ? Utilities.FlipPoint(mid[0], X) : Utilities.FlipPoint(mid[0], MatchY.X);
-                upper = MatchY == null ? Utilities.FlipPoint(mid[0], XRight) : Utilities.FlipPoint(mid[0], MatchY.XRight);
-                bottomAngle = 180;
-            }
-            else
-            {
-                lower = MatchY == null ? Utilities.FlipPoint(mid[0], XRight) : Utilities.FlipPoint(mid[0], MatchY.XRight);
-                upper = X;
-                bottomAngle = 270;
-            }
-            CurrentX = lower + (upper - lower) * ((r - bottomAngle) / 90.0);
-        }
-
-        /// <summary>
-        /// Gets the spot's current position based on the piece's angles.
-        /// </summary>
-        /// <param name="t">The turn of the piece</param>
-        /// <param name="mid">The middle of the piece</param>
-        /// <returns></returns>
-        public double[] CurrentCoord(double t, double[] mid)
+        /// <param name="xy">Finding current x (0) or y (1)</param>
+        /// <returns>The current value</returns>
+        public double CalculateCurrentValue(double angle, double[] mid, int xy = 1)
         {
             double lower;
             double upper;
             int bottomAngle;
 
-            if (t < 90)
+            var original = xy == 0 ? Y : X;
+            var angled = xy == 0 ? YDown : XRight;
+            var matchOrig = xy == 0 ? MatchX == null ? original : MatchX.Y : MatchY == null ? original :  MatchY.X;
+            var matchAng = xy == 0 ? MatchX == null ? angled : MatchX.YDown : MatchY == null ? angled : MatchY.XRight;
+
+            if (angle < 90)
             {
-                lower = Y;
-                upper = YDown;
+                lower = original;
+                upper = angled;
                 bottomAngle = 0;
             }
-            else if (t < 180)
+            else if (angle < 180)
             {
-                lower = YDown;
-                upper = Utilities.FlipPoint(mid[0], MatchX.Y);
+                lower = angled;
+                upper = Utilities.FlipPoint(mid[xy], matchOrig);
                 bottomAngle = 90;
             }
-            else if (t < 270)
+            else if (angle < 270)
             {
-                lower = Utilities.FlipPoint(mid[0], MatchX.Y);
-                upper = Utilities.FlipPoint(mid[0], MatchX.YDown);
+                lower = Utilities.FlipPoint(mid[xy], matchOrig);
+                upper = Utilities.FlipPoint(mid[xy], matchAng);
                 bottomAngle = 180;
             }
             else
             {
-                lower = Utilities.FlipPoint(mid[0], MatchX.YDown);
-                upper = Y;
+                lower = Utilities.FlipPoint(mid[xy], matchAng);
+                upper = original;
                 bottomAngle = 270;
             }
-            return new double[] { CurrentX, lower + (upper - lower) * ((t - bottomAngle) / 90.0) };
+            return lower + (upper - lower) * ((angle - bottomAngle) / 90.0);
         }
     }
 }
