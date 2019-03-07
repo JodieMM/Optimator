@@ -60,6 +60,19 @@ namespace Animator
             return X + Constants.ColonS + Y + Constants.ColonS + XRight + Constants.ColonS + YDown + Constants.SemiS +
                 Connector + Constants.SemiS + Solid;
         }
+
+        /// <summary>
+        /// Gets either the MatchX or MatchY.
+        /// </summary>
+        /// <param name="xy"></param>
+        /// <returns></returns>
+        public Spot GetMatch(int xy)
+        {
+            if (xy == 0)
+                return MatchX;
+            else
+                return MatchY;
+        }
         
 
 
@@ -87,6 +100,19 @@ namespace Animator
                 else
                     YDown = value;
             }
+        }
+
+        /// <summary>
+        /// Sets either the MatchX or MatchY to assigned value.
+        /// </summary>
+        /// <param name="xy">MatchX (0) or MatchY(1)</param>
+        /// <param name="match">Spot to assign</param>
+        public void SetMatch(int xy, Spot match)
+        {
+            if (xy == 0)
+                MatchX = match;
+            else
+                MatchY = match;
         }
 
 

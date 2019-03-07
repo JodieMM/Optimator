@@ -376,32 +376,39 @@ namespace Animator
         /// Calculates where the spots with the same Y coordinate as drawnlevel 0
         /// spots would go and adds them to Data.
         /// </summary>
-        private void CalculateYMatches()
+        /// <param name="xy">Whether searching for an X match (0) or Y match (1)</param>
+        private void CalculateMatches(int xy = 1)
         {
+            // Setup
+            if (Data.Count < 3)
+                return;
             CleanseData(true);
+            var drawn = xy == 0 ? 2 : 1;
 
             for (int index = 0; index < Data.Count; index++)
             {
+                // Setup
                 var spot = Data[index];
+                var validDrawn = xy == 0 ? spot.DrawnLevel < 2 : spot.DrawnLevel == 0;
 
                 // Only search for match if needed
-                if (spot.DrawnLevel == 0 && spot.MatchY == null && spot.GetCoordCombination()[0] != minMax[1]
-                    && spot.GetCoordCombination()[0] != minMax[0])
+                if (validDrawn && spot.GetMatch(xy) == null && spot.GetCoordCombination()[xy] != minMax[1 + 2*xy]
+                    && spot.GetCoordCombination()[xy] != minMax[2*xy])
                 {
                     // If spot has existing match
-                    var symmIndex = FindExistingSymmetricalCoord(index, 0);
+                    var symmIndex = FindExistingSymmetricalCoord(index, xy);
                     if (symmIndex != -1)
                     {
-                        Data[symmIndex].MatchY = spot;
-                        spot.MatchY = Data[symmIndex];
+                        Data[symmIndex].SetMatch(xy, spot);
+                        spot.SetMatch(xy, Data[symmIndex]);
                     }
                     // If spot has no existing match
                     else
                     {
-                        int insertIndex = FindSymmetricalCoordHome(index, 0);
+                        int insertIndex = FindSymmetricalCoordHome(index, xy);
                         double[] original = FindSymmetricalOppositeCoord(Data[insertIndex].GetCoordCombination(),
                             Data[Utilities.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(), 
-                            spot.GetCoordCombination(0)[0], 0, Data[insertIndex].Connector);
+                            spot.GetCoordCombination(0)[xy], xy, Data[insertIndex].Connector);
 
                         double rotated = FindSymmetricalOppositeCoord(Data[insertIndex].GetCoordCombination(1),
                             Data[Utilities.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(1), 
@@ -411,11 +418,9 @@ namespace Animator
                             Data[Utilities.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(2), 
                             original[0], 0, Data[insertIndex].Connector)[1];
 
-                        Spot newSpot = new Spot(original[0], original[1], rotated, turned, Data[insertIndex].Connector, Data[insertIndex].Solid, 1)
-                        {
-                            MatchY = spot
-                        };
-                        spot.MatchY = newSpot;
+                        Spot newSpot = new Spot(original[0], original[1], rotated, turned, Data[insertIndex].Connector, Data[insertIndex].Solid, drawn);
+                        newSpot.SetMatch(xy, spot);
+                        spot.SetMatch(xy, newSpot);
                         Data.Insert(insertIndex, newSpot);
                     }
                 }
@@ -676,7 +681,7 @@ namespace Animator
             var convertedData = Utilities.ConvertSpotsToCoords(Data);
             middle = Utilities.FindMid(convertedData);
             minMax = Utilities.FindMinMax(convertedData);
-            CalculateYMatches();
+            CalculateMatches();
         }
 
         /// <summary>
