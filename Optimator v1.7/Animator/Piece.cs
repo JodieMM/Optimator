@@ -296,7 +296,7 @@ namespace Animator
             CalculateMatches();
             foreach (var spot in Data)
                 spot.CurrentX = spot.CalculateCurrentValue(GetAngles()[0], middle);
-            //CalculateMatches(0);          // TODO: Add in and get turn working
+            CalculateMatches(0);          // TODO: Add in and get turn working
             foreach (var spot in Data)
                 points.Add(new double[] { spot.CurrentX, spot.CalculateCurrentValue(GetAngles()[1], middle, 0) });
 
@@ -395,8 +395,8 @@ namespace Animator
                 var validDrawn = xy == 0 ? spot.DrawnLevel < 2 : spot.DrawnLevel == 0;
 
                 // Only search for match if needed
-                if (validDrawn && spot.GetMatch(xy) == null && spot.GetCoordCombination(coordCombo)[xy] != minMax[3 - increase]
-                    && spot.GetCoordCombination(coordCombo)[xy] != minMax[2 - increase])
+                if (validDrawn && spot.GetMatch(xy) == null && spot.GetCoordCombination()[xy] != minMax[3 - increase]
+                    && spot.GetCoordCombination()[xy] != minMax[2 - increase])
                 {
                     // If spot has existing match
                     var symmIndex = FindExistingSymmetricalCoord(index, xy);
@@ -633,7 +633,7 @@ namespace Animator
         /// </summary>
         public void RunCalculations()
         {
-            var convertedData = Utilities.ConvertSpotsToCoords(Data);
+            var convertedData = Utilities.ConvertSpotsToCoords(Data, 3);
             middle = Utilities.FindMid(convertedData);
             minMax = Utilities.FindMinMax(convertedData);
         }
@@ -654,7 +654,7 @@ namespace Animator
                     if (xMatch && Data[index].MatchY != null)
                         Data[index].MatchY.MatchY = null;
                     Data.RemoveAt(index);
-                    index = index == 0 ? 0 : index--;
+                    index--;
                 }
             }
         }

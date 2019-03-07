@@ -81,6 +81,16 @@ namespace Animator
             DrawPanel.Refresh();
             g = DrawPanel.CreateGraphics();
             WIP.Draw(g);
+
+            // TODO: Remove
+            foreach (Spot spot in WIP.ToPiece().Data)
+            {
+                if (spot.DrawnLevel >= 0)
+                {
+                    Visuals.DrawCross(spot.CurrentX, spot.CalculateCurrentValue(WIP.ToPiece().GetAngles()[1], 
+                        new double[] { 150, 150 }, 0), Color.Black, g);
+                }
+            }
         }
     }
 }

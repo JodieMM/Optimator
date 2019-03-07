@@ -257,7 +257,7 @@ namespace Animator
         /// <returns>A list of int[] with the outline coordinates</returns>
         public static List<double[]> FindPieceLines(Piece piece)
         {
-            List<double[]> coords = piece.CurrentPoints();
+            //List<double[]> coords = piece.CurrentPoints();
             List<double[]> lines = new List<double[]>();
 
             //// If lines exist for this piece
