@@ -296,7 +296,7 @@ namespace Animator
             CalculateMatches();
             foreach (var spot in Data)
                 spot.CurrentX = spot.CalculateCurrentValue(GetAngles()[0], middle);
-            CalculateMatches(0);          // TODO: Add in and get turn working
+            CalculateMatches(0);
             foreach (var spot in Data)
                 points.Add(new double[] { spot.CurrentX, spot.CalculateCurrentValue(GetAngles()[1], middle, 0) });
 
@@ -408,7 +408,7 @@ namespace Animator
                     // If spot has no existing match
                     else
                     {
-                        int insertIndex = FindSymmetricalCoordHome(index, xy);
+                        int insertIndex = FindSymmetricalCoordHome(index, xy, coordCombo);
                         double[] original = FindSymmetricalOppositeCoord(Data[insertIndex].GetCoordCombination(coordCombo),
                             Data[Utilities.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(coordCombo), 
                             spot.GetCoordCombination(0)[xy], xy, Data[insertIndex].Connector);
@@ -454,18 +454,18 @@ namespace Animator
         /// <param name="matchIndex">The index of the selected coordinate</param>
         /// <param name="xy">Whether searching for a match in x (0) or y (1)</param>
         /// <returns>The index where the matching point would go or -1 in error</returns>
-        public int FindSymmetricalCoordHome(int matchIndex, int xy)
+        public int FindSymmetricalCoordHome(int matchIndex, int xy, int angle)
         {
-            double goal = Data[matchIndex].GetCoordCombination()[xy];
+            double goal = Data[matchIndex].GetCoordCombination(angle)[xy];
             bool bigger = false;
             int searchIndex = -1;
 
             // Find whether we're searching above or below the goal
             for (int index = 0; index < Data.Count && searchIndex == -1; index++)
             {
-                if (Data[index].GetCoordCombination()[xy] != goal)
+                if (Data[index].GetCoordCombination(angle)[xy] != goal)
                 {
-                    bigger = (Data[index].GetCoordCombination()[xy] > goal);
+                    bigger = (Data[index].GetCoordCombination(angle)[xy] > goal);
                     searchIndex = (index + 1) % Data.Count;
                 }
             }
@@ -473,9 +473,9 @@ namespace Animator
             // Find index position
             for (int index = 0; index < Data.Count; index++)
             {
-                if (Data[searchIndex].GetCoordCombination()[xy] == goal)
+                if (Data[searchIndex].GetCoordCombination(angle)[xy] == goal)
                     bigger = !bigger;
-                else if (Data[searchIndex].GetCoordCombination()[xy] > goal != bigger)
+                else if (Data[searchIndex].GetCoordCombination(angle)[xy] > goal != bigger)
                     return searchIndex;
 
                 searchIndex = (searchIndex + 1) % Data.Count;

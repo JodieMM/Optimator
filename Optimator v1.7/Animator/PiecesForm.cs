@@ -347,7 +347,8 @@ namespace Animator
         /// <param name="e"></param>
         private void ExitBtn_Click(object sender, EventArgs e)
         {
-            if (Utilities.ExitBtn_Click(WIP.Data.Count > 0)) { Close(); }
+            if (Utilities.ExitBtn_Click(WIP.Data.Count > 0))
+                Close();
         }
 
         /// <summary>
