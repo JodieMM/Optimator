@@ -560,7 +560,7 @@ namespace Animator
         {
             foreach (Spot spot in WIP.Data)
             {
-                if (spot.DrawnLevel >= 0)       // TODO: Back to ==
+                if (spot.DrawnLevel == 0)
                 {
                     Color color = (ShowFixedBtn.BackColor == pressed) ? (spot.Solid == Constants.solidOptions[0]) ? Color.SaddleBrown : Color.PeachPuff
                         : (selectedSpot == spot) ? Constants.select : Color.Black;

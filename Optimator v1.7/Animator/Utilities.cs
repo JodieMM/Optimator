@@ -208,14 +208,10 @@ namespace Animator
             int increment = fromTop ? -1 : 1;
             for (index = fromTop ? piecesList.Count - 1 : 0; fromTop ? index >= 0 : index < piecesList.Count; index += increment)
             {
-                //var outline = piecesList[index].LineBounds();
-                List<int[]> contents = FindPieceSpace(FindPieceLines(piecesList[index]));
-
-                foreach (int[] dot in contents)
-                {
-                    if (dot[0] == x && dot[1] == y)
+                var outline = piecesList[index].LineBounds();
+                foreach (var range in outline)
+                    if (y == range[0] && x >= range[1] && x <= range[2])
                         return index;
-                }
             }
             return -1;
         }
@@ -242,113 +238,6 @@ namespace Animator
                 }
             }
             return -1;
-        }
-
-
-
-        // ----- SHAPE SURFACE FUNCTIONS -----
-        #region Shape Surface Functions
-
-        /// <summary>
-        /// Finds the coordinates along the outline of the shape.
-        /// </summary>
-        /// <param name="coords">Coordinates of the shape</param>
-        /// <param name="lineArray">Lines that connect points</param>
-        /// <returns>A list of int[] with the outline coordinates</returns>
-        public static List<double[]> FindPieceLines(Piece piece)
-        {
-            //List<double[]> coords = piece.CurrentPoints();
-            List<double[]> lines = new List<double[]>();
-
-            //// If lines exist for this piece
-            //if (coords.Count > 2)
-            //{
-            //    for (int index = 0; index < coords.Count; index++)
-            //    {
-            //        if (index == coords.Count - 1)
-            //            lines.AddRange(FindLineCoords(new double[] { coords[index][0], coords[index][1] },
-            //                new double[] { coords[0][0], coords[0][1] }, piece.Data[index].Connector));
-            //        else
-            //            lines.AddRange(FindLineCoords(new double[] { coords[index][0], coords[index][1] },
-            //                new double[] { coords[index + 1][0], coords[index + 1][1] }, piece.Data[index].Connector));
-            //    }
-            //}
-            //// Single or no point
-            //else
-            //    lines.AddRange(coords);
-
-            return lines;
-        }
-
-        /// <summary>
-        /// Finds all of the coordinates that the shape covers.
-        /// Includes both outlines and fill.
-        /// </summary>
-        /// <param name="outline">The coordinates around the outline of the shape</param>
-        /// <returns>List of covered coordinates</returns>
-        public static List<int[]> FindPieceSpace(List<double[]> outline)
-        {
-            List<int[]> pieceSpace = new List<int[]>();
-            if (outline.Count > 2)
-            {
-                // Sort pieceSpace by Y, then by X
-                for (int spot = 0; spot < outline.Count - 1; spot++)
-                {
-                    for (int position = 0; position < outline.Count - spot - 1; position++)
-                    {
-                        if (outline[position][1] > outline[position + 1][1]
-                            || (outline[position][1] == outline[position + 1][1] && outline[position][0] > outline[position + 1][0]))
-                        {
-                            double[] holding = outline[position];
-                            outline[position] = outline[position + 1];
-                            outline[position + 1] = holding;
-                        }
-                    }
-                }
-
-                double[] minMax = FindMinMax(outline);
-                int y = (int)minMax[2];
-                int index = 0;
-                while (y < minMax[3])
-                {
-                    // Find all points in that row (should be a multiple of 2)
-                    List<double[]> row = new List<double[]>();
-                    while (outline[index][1] == y)
-                    {
-                        row.Add(outline[index]);
-                        index++;
-                    }
-
-                    // Add coords between point pairs to pieceSpace
-                    for (int column = 0; column + 1 < row.Count; column += 2)
-                    {
-                        for (int point = (int)row[column][0]; point < row[column + 1][0]; point++)
-                        {
-                            pieceSpace.Add(new int[] { point, y });
-                        }
-                    }
-                    y++;
-                }
-            }
-            else
-            {
-                // TEMPORARY FIX FOR STRAIGHT LINES (NO FILL)
-                foreach (double[] point in outline)
-                {
-                    pieceSpace.Add(new int[] { (int)point[0], (int)point[1] });
-                    pieceSpace.Add(new int[] { (int)point[0]+1, (int)point[1] });
-                    pieceSpace.Add(new int[] { (int)point[0]-1, (int)point[1] });
-                    pieceSpace.Add(new int[] { (int)point[0], (int)point[1]+1 });
-                    pieceSpace.Add(new int[] { (int)point[0], (int)point[1]-1 });
-                    pieceSpace.Add(new int[] { (int)point[0]+1, (int)point[1]+1 });
-                    pieceSpace.Add(new int[] { (int)point[0]-1, (int)point[1]-1 });
-                    pieceSpace.Add(new int[] { (int)point[0] + 1, (int)point[1] - 1 });
-                    pieceSpace.Add(new int[] { (int)point[0] - 1, (int)point[1] + 1 });
-                }
-            }
-            return pieceSpace;
-        }
-
-        #endregion
+        }       
     }
 }

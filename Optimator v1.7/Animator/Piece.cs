@@ -574,9 +574,10 @@ namespace Animator
         /// Finds the ranges where the piece has space.
         /// </summary>
         /// <returns>double[ y, x min, x max]</returns>
-        public List<double[]> LineBounds(List<double[]> outlineShape)
+        public List<double[]> LineBounds()
         {
             // Turn coords into bound ranges
+            var outlineShape = CurrentPoints();
             var minMax = Utilities.FindMinMax(outlineShape);
             var ranges = new List<double[]>();
             for (int index = (int)minMax[2]; index <= (int)minMax[3]; index++)
