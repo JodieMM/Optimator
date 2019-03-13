@@ -11,6 +11,7 @@ namespace Animator
     public abstract class Part
     {
         public abstract string Name { get; set; }
+        public abstract string Version { get; }
 
 
         /// <summary>

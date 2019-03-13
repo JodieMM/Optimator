@@ -13,18 +13,24 @@ namespace Animator
     {
         // Folders
         public const string PiecesFolder = "Pieces";
-        public static string SetsFolder => "Sets";
-        public static string ScenesFolder => "Scenes";
-        public static string VideosFolder => "Videos";
+        public const string SetsFolder = "Sets";
+        public const string ScenesFolder = "Scenes";
+        public const string VideosFolder = "Videos";
 
         // Name Validation
         public const string WIPName = "Z WIP";
         public static Regex PermittedName = new Regex(@"^[A-Za-z0-9]+$");
 
+        // Types
+        public const string Piece = "Piece";
+        public const string Set = "Set";
+        public const string Scene = "Scene";
+
         // Characters
         public static char[] Comma = new char[] { ',' };
         public static char[] Colon = new char[] { ':' };
         public static char[] Semi = new char[] { ';' };
+        public static char[] Stop = new char[] { '.' };
         public const string CommaS = ",";
         public const string ColonS = ":";
         public const string SemiS = ";";
@@ -61,6 +67,6 @@ namespace Animator
         public static object[] possibleChanges = new object[] { "X", "Y", "Rotation", "Turn", "Spin", "Size", "Order", "Removed" };
 
         // Version
-        public const string Version = "Version 1.0.0";
+        public const string Version = "1.0.0";
     }
 }

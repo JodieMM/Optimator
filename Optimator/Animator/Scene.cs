@@ -13,6 +13,7 @@ namespace Animator
     public class Scene
     {
         #region Scene Variables
+        public string Version { get; }
         public List<Part> PartsList { get; } = new List<Part>();
         public List<Piece> PiecesList { get; } = new List<Piece>();
         public List<Change> Changes { get; } = new List<Change>();
@@ -31,9 +32,11 @@ namespace Animator
             {
                 // Read File
                 List<string> data = Utilities.ReadFile(Utilities.GetDirectory(Constants.ScenesFolder, fileName, Constants.Txt));
+                Version = data[0].Split(Constants.Semi)[1];
+                Utilities.CheckValidVersion(Version);
 
                 // Time Length
-                TimeLength = decimal.Parse(data[0]);
+                TimeLength = decimal.Parse(data[1]);
 
                 // Parts
                 int partEndIndex = data.IndexOf("Originals");
@@ -42,7 +45,7 @@ namespace Animator
                     MessageBox.Show("Invalid Scene File", "Invalid File", MessageBoxButtons.OK);
                     return;
                 }
-                for (int index = 1; index < partEndIndex; index++)
+                for (int index = 2; index < partEndIndex; index++)
                 {
                     if (data[index].StartsWith("p"))
                         PartsList.Add(new Piece(data[index].Remove(0, 2)));
@@ -98,7 +101,11 @@ namespace Animator
         /// <returns></returns>
         public List<string> GetData()
         {
-            List<string> data = new List<string> { TimeLength.ToString() };
+            List<string> data = new List<string>
+            {
+                Constants.Scene + Constants.Semi + Constants.Version,
+                TimeLength.ToString()
+            };
 
             // Save Parts
             foreach (Part part in PartsList)

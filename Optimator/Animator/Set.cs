@@ -12,6 +12,7 @@ namespace Animator
     {
         #region Set Variables
         public override string Name { get; set; }
+        public override string Version { get; }
         public List<Piece> PiecesList { get; set; } = new List<Piece>();
         public Piece BasePiece { get; set; }
         #endregion
@@ -25,9 +26,11 @@ namespace Animator
         {
             Name = inName;
             List<string> data = Utilities.ReadFile(Utilities.GetDirectory(Constants.SetsFolder, Name, Constants.Txt));
+            Version = data[0].Split(Constants.Semi)[1];
+            Utilities.CheckValidVersion(Version);
 
             // Add all pieces to the list
-            for (int index = 0; index < data.Count; index++)
+            for (int index = 1; index < data.Count; index++)
             {
                 string[] dataSections = data[index].Split(Constants.Semi);
                 Piece WIP = new Piece(dataSections[0])
@@ -38,7 +41,7 @@ namespace Animator
             }
 
             // Add piece details
-            for (int index = 0; index < data.Count; index++)
+            for (int index = 1; index < data.Count; index++)
             {
                 string[] dataSections = data[index].Split(Constants.Semi);
                 string[] pieceData = dataSections[1].Split(Constants.Colon);
@@ -64,6 +67,7 @@ namespace Animator
         public Set()
         {
             Name = Constants.WIPName;
+            Version = Constants.Version;
         }
 
 
@@ -75,12 +79,15 @@ namespace Animator
         /// </summary>
         public override List<string> GetData()
         {
-            List<string> newData = new List<string>();
+            // Type and Version
+            List<string> newData = new List<string>
+            {
+                Constants.Set + Constants.Semi + Constants.Version
+            };
 
             // Reset Set to Save
             BasePiece.R = 0; BasePiece.T = 0; BasePiece.S = 0;
             PiecesList = SortOrder();
-            int baseIndex = PiecesList.IndexOf(BasePiece);
 
             // Save Each Piece
             for (int index = 0; index < PiecesList.Count; index++)

@@ -67,11 +67,26 @@ namespace Animator
         }
 
         /// <summary>
+        /// Checks that the version provided is file compatible with the current version.
+        /// </summary>
+        /// <param name="version">The version of the file</param>
+        /// <returns>True if the versions are compatible</returns>
+        public static bool CheckValidVersion(string version)
+        {
+            string[] thisVer = version.Split(Constants.Stop);
+            string[] currVer = Constants.Version.Split(Constants.Stop);
+            if (thisVer[0] == currVer[0] && thisVer[1] == currVer[1])
+                return true;
+            MessageBox.Show("The file version is not compatible.");
+            return false;
+        }
+
+        /// <summary>
         /// Checks that the name given for the file is valid for use.
         /// </summary>
         /// <param name="name">The name of the file</param>
         /// <param name="folder">The folder the file belongs in</param>
-        /// <returns></returns>
+        /// <returns>True if the name is valid</returns>
         public static bool CheckValidNewName(string name, string folder)
         {
             // Check Name is Valid for Saving

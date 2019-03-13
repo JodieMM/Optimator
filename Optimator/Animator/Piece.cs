@@ -15,6 +15,7 @@ namespace Animator
     {
         #region Piece Variables
         public override string Name { get; set; }
+        public override string Version { get; }
         public List<Spot> Data { get; set; } = new List<Spot>();
 
         // Coords and Angles
@@ -59,8 +60,12 @@ namespace Animator
             Name = inName;
             List<string> data = Utilities.ReadFile(Utilities.GetDirectory(Constants.PiecesFolder, Name, Constants.Txt));
 
+            // Get Version
+            Version = data[0].Split(Constants.Semi)[1];
+            Utilities.CheckValidVersion(Version);
+
             // Get Points and Colours from File
-            string[] angleData = data[0].Split(Constants.Semi);
+            string[] angleData = data[1].Split(Constants.Semi);
 
             // Colour Type
             ColourType = angleData[0];
@@ -84,7 +89,7 @@ namespace Animator
             PieceDetails = angleData[3];
 
             // Spots
-            for (int index = 1; index < data.Count; index++)
+            for (int index = 2; index < data.Count; index++)
             {
                 string[] spotData = data[index].Split(Constants.Semi);
                 string[] coords = spotData[0].Split(Constants.Colon);
@@ -102,6 +107,7 @@ namespace Animator
         public Piece()
         {
             Name = Constants.WIPName;
+            Version = Constants.Version;
             ColourType = Constants.fillOptions[0];
             FillColour = new Color[] { Constants.defaultFill };
             OutlineColour = Constants.defaultOutline;
@@ -166,9 +172,13 @@ namespace Animator
         /// </summary>
         public override List<string> GetData()
         {
-            List<string> newData = new List<string>();
+            // Type and Version
+            List<string> newData = new List<string>
+            {
+                Constants.Piece + Constants.Semi + Version
+            };
 
-            // Update first line of data            [0] colour type     [1] colour array        [2] outline width       [3] pieceDetails
+            // Update line of data            [0] colour type     [1] colour array        [2] outline width       [3] pieceDetails
             string pieceInfo = ColourType + ";" + OutlineColour.A + "," + OutlineColour.R + "," + OutlineColour.G + "," + OutlineColour.B + ":";
             foreach (Color col in FillColour)
                 pieceInfo += col.A + "," + col.R + "," + col.G + "," + col.B + ":";

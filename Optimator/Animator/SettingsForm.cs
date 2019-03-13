@@ -17,7 +17,7 @@ namespace Animator
             InitializeComponent();
 
             // Display Current Settings
-            VersionLbl.Text = Constants.Version;
+            VersionLbl.Text = "Version " + Constants.Version;
         }
 
 

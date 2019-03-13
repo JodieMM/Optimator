@@ -48,7 +48,7 @@
             this.QuitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.QuitBtn.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.QuitBtn.ForeColor = System.Drawing.Color.Black;
-            this.QuitBtn.Location = new System.Drawing.Point(457, 461);
+            this.QuitBtn.Location = new System.Drawing.Point(346, 503);
             this.QuitBtn.Margin = new System.Windows.Forms.Padding(2);
             this.QuitBtn.Name = "QuitBtn";
             this.QuitBtn.Size = new System.Drawing.Size(150, 80);
@@ -63,7 +63,7 @@
             this.SaveBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SaveBtn.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SaveBtn.ForeColor = System.Drawing.Color.Black;
-            this.SaveBtn.Location = new System.Drawing.Point(346, 298);
+            this.SaveBtn.Location = new System.Drawing.Point(346, 380);
             this.SaveBtn.Margin = new System.Windows.Forms.Padding(2);
             this.SaveBtn.Name = "SaveBtn";
             this.SaveBtn.Size = new System.Drawing.Size(150, 80);
