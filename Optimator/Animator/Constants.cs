@@ -12,30 +12,31 @@ namespace Animator
     public static class Constants
     {
         // Folders
-        public static string PiecesFolder => "Pieces";
+        public const string PiecesFolder = "Pieces";
         public static string SetsFolder => "Sets";
         public static string ScenesFolder => "Scenes";
         public static string VideosFolder => "Videos";
 
         // Name Validation
-        public static string WIPName => "Z WIP";
+        public const string WIPName = "Z WIP";
         public static Regex PermittedName = new Regex(@"^[A-Za-z0-9]+$");
 
         // Characters
         public static char[] Comma = new char[] { ',' };
         public static char[] Colon = new char[] { ':' };
         public static char[] Semi = new char[] { ';' };
-        public static string CommaS = ",";
-        public static string ColonS = ":";
-        public static string SemiS = ";";
+        public const string CommaS = ",";
+        public const string ColonS = ":";
+        public const string SemiS = ";";
 
         // UI Precision
         public static int[] Ranges = new int[] { 0, 3, 5, 7, 9 };
-        public static int ClickPrecision = 5;
+        public const int ClickPrecision = 5;
 
         // File Extensions
-        public static string Txt => ".txt";
-        public static string Png => ".png";
+        public const string Txt = ".txt";
+        public const string Png = ".png";
+        public const string Optr = ".optr";
 
         // Colours
         public static Color shadowShade = Color.DarkGray;
@@ -46,9 +47,9 @@ namespace Animator
         // Piece Defaults
         public static Color defaultFill = Color.FromArgb(255, 204, 240, 255);
         public static Color defaultOutline = Color.FromArgb(255, 204, 204, 255);
-        public static decimal defaultOutlineWidth = 2;
-        public static string defaultPieceDetails = "wr100";
-        public static string defaultAngleOptions = "150;150;0;0;0;100";
+        public const decimal defaultOutlineWidth = 2;
+        public const string defaultPieceDetails = "wr100";
+        public const string defaultAngleOptions = "150;150;0;0;0;100";
 
         // Piece Options
         public static string[] connectorOptions = { "line", "none" };
@@ -58,5 +59,8 @@ namespace Animator
         
         // Scene Options
         public static object[] possibleChanges = new object[] { "X", "Y", "Rotation", "Turn", "Spin", "Size", "Order", "Removed" };
+
+        // Version
+        public const string Version = "Version 1.0.0";
     }
 }

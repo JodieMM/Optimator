@@ -16,21 +16,12 @@ namespace Animator
         public MenuForm()
         {
             InitializeComponent();
+            Settings.InitialSettings();
         }
 
 
 
         // ----- MENU BUTTONS -----
-
-        /// <summary>
-        /// Closes the application entirely.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void QuitBtn_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
 
         /// <summary>
         /// Shows the form for creating a piece.
@@ -41,17 +32,6 @@ namespace Animator
         {
             PiecesForm pieceform = new PiecesForm();
             pieceform.Show();
-        }
-
-        /// <summary>
-        /// Shows the form for animating a scene.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void AnimateBtn_Click(object sender, EventArgs e)
-        {
-            ScenesForm sceneform = new ScenesForm();
-            sceneform.Show();
         }
 
         /// <summary>
@@ -66,6 +46,17 @@ namespace Animator
         }
 
         /// <summary>
+        /// Shows the form for animating a scene.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void AnimateBtn_Click(object sender, EventArgs e)
+        {
+            ScenesForm sceneform = new ScenesForm();
+            sceneform.Show();
+        }
+
+        /// <summary>
         /// Shows the form for compiling a video.
         /// </summary>
         /// <param name="sender"></param>
@@ -75,5 +66,26 @@ namespace Animator
             CompileVideo vidForm = new CompileVideo();
             vidForm.Show();
         }
+
+        /// <summary>
+        /// Shows the form for changing the settings.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SettingsBtn_Click(object sender, EventArgs e)
+        {
+            SettingsForm settingsForm = new SettingsForm();
+            settingsForm.Show();
+        }
+
+        /// <summary>
+        /// Closes the application entirely.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void QuitBtn_Click(object sender, EventArgs e)
+        {
+            Close();
+        }    
     }
 }
