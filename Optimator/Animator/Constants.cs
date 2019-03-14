@@ -12,7 +12,7 @@ namespace Animator
     public static class Constants
     {
         // Setup
-        public const string Version = "1.0.0";
+        public const string Version = "1.1.0";
         public const string Settings = "Settings.txt";
         public const string DefaultSettings = "DefaultSettings.txt";
 
@@ -28,9 +28,8 @@ namespace Animator
         public const string Scene = "Scene";
 
         // File Extensions
-        public const string Txt = ".txt";
-        public const string Png = ".png";
         public const string Optr = ".optr";
+        public const string Png = ".png";
 
         // Characters
         public static char[] Comma = new char[] { ',' };

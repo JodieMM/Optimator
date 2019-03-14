@@ -98,7 +98,7 @@ namespace Animator
             {
                 try
                 {
-                    Utilities.SaveData(Utilities.GetDirectory(Constants.SetsFolder, NameTb.Text, Constants.Txt), WIP.GetData());
+                    Utilities.SaveData(Utilities.GetDirectory(Constants.SetsFolder, NameTb.Text, Constants.Optr), WIP.GetData());
                     Close();
                 }
                 catch (FileNotFoundException)

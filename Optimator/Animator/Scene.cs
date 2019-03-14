@@ -31,7 +31,7 @@ namespace Animator
             try
             {
                 // Read File
-                List<string> data = Utilities.ReadFile(Utilities.GetDirectory(Constants.ScenesFolder, fileName, Constants.Txt));
+                List<string> data = Utilities.ReadFile(Utilities.GetDirectory(Constants.ScenesFolder, fileName, Constants.Optr));
                 Version = data[0].Split(Constants.Semi)[1];
                 Utilities.CheckValidVersion(Version);
 

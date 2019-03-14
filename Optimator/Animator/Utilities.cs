@@ -72,13 +72,15 @@ namespace Animator
         /// </summary>
         /// <param name="version">The version of the file</param>
         /// <returns>True if the versions are compatible</returns>
-        public static bool CheckValidVersion(string version)
+        public static bool CheckValidVersion(string version, bool message = true)
         {
             string[] thisVer = version.Split(Constants.Stop);
             string[] currVer = Constants.Version.Split(Constants.Stop);
             if (thisVer[0] == currVer[0] && thisVer[1] == currVer[1])
                 return true;
-            MessageBox.Show("The file version is not compatible.");
+
+            if (message)
+                MessageBox.Show("The file version is not compatible.");
             return false;
         }
 
@@ -99,7 +101,7 @@ namespace Animator
             }
 
             // Check name not already in use, or that overriding is okay
-            if (File.Exists(GetDirectory(folder, name, Constants.Txt)))
+            if (File.Exists(GetDirectory(folder, name, Constants.Optr)))
             {
                 DialogResult result = MessageBox.Show("This name is already in use. Do you want to override the existing file?", "Override Confirmation", MessageBoxButtons.YesNo);
                 if (result == DialogResult.No) { return false; }

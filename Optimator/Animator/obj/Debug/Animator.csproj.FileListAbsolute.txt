@@ -123,7 +123,6 @@ C:\Users\jodie\Documents\0 Documents\Projects\Programming\Optimator\Optimator v1
 C:\Users\jodie\Documents\0 Documents\Projects\Programming\Optimator\Optimator\Animator\bin\Debug\Animator.exe.config
 C:\Users\jodie\Documents\0 Documents\Projects\Programming\Optimator\Optimator\Animator\bin\Debug\Animator.exe
 C:\Users\jodie\Documents\0 Documents\Projects\Programming\Optimator\Optimator\Animator\bin\Debug\Animator.pdb
-C:\Users\jodie\Documents\0 Documents\Projects\Programming\Optimator\Optimator\Animator\obj\Debug\Animator.csprojAssemblyReference.cache
 C:\Users\jodie\Documents\0 Documents\Projects\Programming\Optimator\Optimator\Animator\obj\Debug\Animator.CompileVideo.resources
 C:\Users\jodie\Documents\0 Documents\Projects\Programming\Optimator\Optimator\Animator\obj\Debug\Animator.LoadingForm.resources
 C:\Users\jodie\Documents\0 Documents\Projects\Programming\Optimator\Optimator\Animator\obj\Debug\Animator.MenuForm.resources

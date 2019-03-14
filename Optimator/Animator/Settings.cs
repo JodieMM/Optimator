@@ -25,18 +25,29 @@ namespace Animator
         /// <param name="file">The file to load the settings from</param>
         public static void InitialSettings(string file = Constants.Settings)
         {
+            // Read settings data and check valid
             var data = Utilities.ReadFile(file);
-            if (data.Count < 2)
-                data = Utilities.ReadFile(Constants.DefaultSettings);
-
-            Version = data[0];
-            if (!Utilities.CheckValidVersion(Version))
+            if (data.Count < 1)
             {
-                // TODO: Add extra rows from initial to settings if required
+                ResetSettings();
+                return;
+            } 
+
+            // Check version and update if required
+            Version = data[0];
+            if (!Utilities.CheckValidVersion(Version, false) && file == Constants.Settings)
+            {
+                var defaultData = Utilities.ReadFile(Constants.DefaultSettings);
+                defaultData.RemoveRange(0, data.Count);
+                data.AddRange(defaultData);
             }
 
             // Set Settings
-            BackgroundColour = Utilities.ColourFromString(data[1]);           
+            BackgroundColour = Utilities.ColourFromString(data[1]);
+
+            // Save Changes if Updated
+            if (!Utilities.CheckValidVersion(Version, false) && file == Constants.Settings)
+                UpdateSettings();
         }
 
         /// <summary>

@@ -58,7 +58,7 @@ namespace Animator
         {
             // Get Piece Data
             Name = inName;
-            List<string> data = Utilities.ReadFile(Utilities.GetDirectory(Constants.PiecesFolder, Name, Constants.Txt));
+            List<string> data = Utilities.ReadFile(Utilities.GetDirectory(Constants.PiecesFolder, Name, Constants.Optr));
 
             // Get Version
             Version = data[0].Split(Constants.Semi)[1];
@@ -175,13 +175,13 @@ namespace Animator
             // Type and Version
             List<string> newData = new List<string>
             {
-                Constants.Piece + Constants.Semi + Version
+                Constants.Piece + Constants.SemiS + Version
             };
 
             // Update line of data            [0] colour type     [1] colour array        [2] outline width       [3] pieceDetails
-            string pieceInfo = ColourType + Constants.SemiS + Utilities.ColorToString(OutlineColour) + Constants.Colon;
+            string pieceInfo = ColourType + Constants.SemiS + Utilities.ColorToString(OutlineColour) + Constants.ColonS;
             foreach (Color col in FillColour)
-                pieceInfo += Utilities.ColorToString(col) + Constants.Colon;
+                pieceInfo += Utilities.ColorToString(col) + Constants.ColonS;
             pieceInfo = pieceInfo.Remove(pieceInfo.Length - 1, 1) + Constants.SemiS + OutlineWidth + Constants.SemiS + PieceDetails;
             newData.Add(pieceInfo);
 
