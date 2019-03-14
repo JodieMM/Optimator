@@ -41,6 +41,8 @@
             this.ExitBtn = new System.Windows.Forms.Button();
             this.NameTb = new System.Windows.Forms.TextBox();
             this.SettingsTab = new System.Windows.Forms.TabPage();
+            this.TimeIntervalLbl = new System.Windows.Forms.Label();
+            this.TimeIncrementUpDown = new System.Windows.Forms.NumericUpDown();
             this.PreviewCb = new System.Windows.Forms.CheckBox();
             this.FpsLbl = new System.Windows.Forms.Label();
             this.FpsUpDown = new System.Windows.Forms.NumericUpDown();
@@ -53,20 +55,18 @@
             this.CurrentTimeUpDown = new System.Windows.Forms.NumericUpDown();
             this.ForwardBtn = new System.Windows.Forms.Button();
             this.BackBtn = new System.Windows.Forms.Button();
-            this.TimeIntervalLbl = new System.Windows.Forms.Label();
-            this.TimeIncrementUpDown = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.DrawPanel)).BeginInit();
             this.OptionsMenu.SuspendLayout();
             this.ScenesTab.SuspendLayout();
             this.VideoTab.SuspendLayout();
             this.SettingsTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TimeIncrementUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.FpsUpDown)).BeginInit();
             this.DisplayPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Future2PreviewBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.FuturePreviewBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PastPreviewBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CurrentTimeUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.TimeIncrementUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // SaveBtn
@@ -117,7 +117,7 @@
             this.SceneTb.Location = new System.Drawing.Point(10, 10);
             this.SceneTb.Margin = new System.Windows.Forms.Padding(2);
             this.SceneTb.Name = "SceneTb";
-            this.SceneTb.Size = new System.Drawing.Size(182, 30);
+            this.SceneTb.Size = new System.Drawing.Size(182, 53);
             this.SceneTb.TabIndex = 0;
             this.SceneTb.Text = "Scene Name";
             // 
@@ -154,10 +154,10 @@
             this.ScenesTab.Controls.Add(this.PlayBtn);
             this.ScenesTab.Controls.Add(this.SceneTb);
             this.ScenesTab.Controls.Add(this.SubmitScene);
-            this.ScenesTab.Location = new System.Drawing.Point(4, 27);
+            this.ScenesTab.Location = new System.Drawing.Point(8, 50);
             this.ScenesTab.Name = "ScenesTab";
             this.ScenesTab.Padding = new System.Windows.Forms.Padding(3);
-            this.ScenesTab.Size = new System.Drawing.Size(202, 669);
+            this.ScenesTab.Size = new System.Drawing.Size(194, 642);
             this.ScenesTab.TabIndex = 0;
             this.ScenesTab.Text = "Scenes";
             // 
@@ -167,10 +167,10 @@
             this.VideoTab.Controls.Add(this.SaveBtn);
             this.VideoTab.Controls.Add(this.ExitBtn);
             this.VideoTab.Controls.Add(this.NameTb);
-            this.VideoTab.Location = new System.Drawing.Point(4, 27);
+            this.VideoTab.Location = new System.Drawing.Point(8, 50);
             this.VideoTab.Name = "VideoTab";
             this.VideoTab.Padding = new System.Windows.Forms.Padding(3);
-            this.VideoTab.Size = new System.Drawing.Size(202, 669);
+            this.VideoTab.Size = new System.Drawing.Size(194, 642);
             this.VideoTab.TabIndex = 1;
             this.VideoTab.Text = "Video";
             // 
@@ -196,7 +196,7 @@
             this.NameTb.Location = new System.Drawing.Point(10, 10);
             this.NameTb.Margin = new System.Windows.Forms.Padding(6);
             this.NameTb.Name = "NameTb";
-            this.NameTb.Size = new System.Drawing.Size(182, 30);
+            this.NameTb.Size = new System.Drawing.Size(182, 53);
             this.NameTb.TabIndex = 25;
             this.NameTb.Text = "Video Name";
             // 
@@ -208,11 +208,41 @@
             this.SettingsTab.Controls.Add(this.PreviewCb);
             this.SettingsTab.Controls.Add(this.FpsLbl);
             this.SettingsTab.Controls.Add(this.FpsUpDown);
-            this.SettingsTab.Location = new System.Drawing.Point(4, 27);
+            this.SettingsTab.Location = new System.Drawing.Point(8, 50);
             this.SettingsTab.Name = "SettingsTab";
-            this.SettingsTab.Size = new System.Drawing.Size(202, 669);
+            this.SettingsTab.Size = new System.Drawing.Size(194, 642);
             this.SettingsTab.TabIndex = 2;
             this.SettingsTab.Text = "Settings";
+            // 
+            // TimeIntervalLbl
+            // 
+            this.TimeIntervalLbl.AutoSize = true;
+            this.TimeIntervalLbl.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TimeIntervalLbl.Location = new System.Drawing.Point(13, 154);
+            this.TimeIntervalLbl.Name = "TimeIntervalLbl";
+            this.TimeIntervalLbl.Size = new System.Drawing.Size(274, 39);
+            this.TimeIntervalLbl.TabIndex = 39;
+            this.TimeIntervalLbl.Text = "Preview Time Gap";
+            // 
+            // TimeIncrementUpDown
+            // 
+            this.TimeIncrementUpDown.DecimalPlaces = 1;
+            this.TimeIncrementUpDown.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TimeIncrementUpDown.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            65536});
+            this.TimeIncrementUpDown.Location = new System.Drawing.Point(17, 176);
+            this.TimeIncrementUpDown.Name = "TimeIncrementUpDown";
+            this.TimeIncrementUpDown.Size = new System.Drawing.Size(153, 46);
+            this.TimeIncrementUpDown.TabIndex = 38;
+            this.TimeIncrementUpDown.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            65536});
+            this.TimeIncrementUpDown.ValueChanged += new System.EventHandler(this.TimeIncrementUpDown_ValueChanged);
             // 
             // PreviewCb
             // 
@@ -220,7 +250,7 @@
             this.PreviewCb.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.PreviewCb.Location = new System.Drawing.Point(17, 105);
             this.PreviewCb.Name = "PreviewCb";
-            this.PreviewCb.Size = new System.Drawing.Size(127, 23);
+            this.PreviewCb.Size = new System.Drawing.Size(247, 43);
             this.PreviewCb.TabIndex = 37;
             this.PreviewCb.Text = "Show Preview";
             this.PreviewCb.UseVisualStyleBackColor = true;
@@ -234,7 +264,7 @@
             this.FpsLbl.Location = new System.Drawing.Point(13, 11);
             this.FpsLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.FpsLbl.Name = "FpsLbl";
-            this.FpsLbl.Size = new System.Drawing.Size(144, 19);
+            this.FpsLbl.Size = new System.Drawing.Size(291, 39);
             this.FpsLbl.TabIndex = 36;
             this.FpsLbl.Text = "Frames Per Second";
             // 
@@ -254,7 +284,7 @@
             0,
             0});
             this.FpsUpDown.Name = "FpsUpDown";
-            this.FpsUpDown.Size = new System.Drawing.Size(162, 27);
+            this.FpsUpDown.Size = new System.Drawing.Size(162, 46);
             this.FpsUpDown.TabIndex = 30;
             this.FpsUpDown.Value = new decimal(new int[] {
             60,
@@ -285,7 +315,7 @@
             this.UpArrowImg.Font = new System.Drawing.Font("Tahoma", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.UpArrowImg.Location = new System.Drawing.Point(298, 48);
             this.UpArrowImg.Name = "UpArrowImg";
-            this.UpArrowImg.Size = new System.Drawing.Size(35, 33);
+            this.UpArrowImg.Size = new System.Drawing.Size(67, 65);
             this.UpArrowImg.TabIndex = 40;
             this.UpArrowImg.Text = "^";
             // 
@@ -326,7 +356,7 @@
             this.CurrentTimeLbl.Location = new System.Drawing.Point(11, 16);
             this.CurrentTimeLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.CurrentTimeLbl.Name = "CurrentTimeLbl";
-            this.CurrentTimeLbl.Size = new System.Drawing.Size(103, 19);
+            this.CurrentTimeLbl.Size = new System.Drawing.Size(204, 39);
             this.CurrentTimeLbl.TabIndex = 37;
             this.CurrentTimeLbl.Text = "Current Time";
             // 
@@ -342,7 +372,7 @@
             this.CurrentTimeUpDown.Location = new System.Drawing.Point(127, 13);
             this.CurrentTimeUpDown.Margin = new System.Windows.Forms.Padding(2);
             this.CurrentTimeUpDown.Name = "CurrentTimeUpDown";
-            this.CurrentTimeUpDown.Size = new System.Drawing.Size(125, 27);
+            this.CurrentTimeUpDown.Size = new System.Drawing.Size(125, 46);
             this.CurrentTimeUpDown.TabIndex = 37;
             // 
             // ForwardBtn
@@ -371,36 +401,6 @@
             this.BackBtn.Text = "Back";
             this.BackBtn.UseVisualStyleBackColor = false;
             // 
-            // TimeIntervalLbl
-            // 
-            this.TimeIntervalLbl.AutoSize = true;
-            this.TimeIntervalLbl.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TimeIntervalLbl.Location = new System.Drawing.Point(13, 154);
-            this.TimeIntervalLbl.Name = "TimeIntervalLbl";
-            this.TimeIntervalLbl.Size = new System.Drawing.Size(138, 19);
-            this.TimeIntervalLbl.TabIndex = 39;
-            this.TimeIntervalLbl.Text = "Preview Time Gap";
-            // 
-            // TimeIncrementUpDown
-            // 
-            this.TimeIncrementUpDown.DecimalPlaces = 1;
-            this.TimeIncrementUpDown.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TimeIncrementUpDown.Increment = new decimal(new int[] {
-            5,
-            0,
-            0,
-            65536});
-            this.TimeIncrementUpDown.Location = new System.Drawing.Point(17, 176);
-            this.TimeIncrementUpDown.Name = "TimeIncrementUpDown";
-            this.TimeIncrementUpDown.Size = new System.Drawing.Size(153, 27);
-            this.TimeIncrementUpDown.TabIndex = 38;
-            this.TimeIncrementUpDown.Value = new decimal(new int[] {
-            5,
-            0,
-            0,
-            65536});
-            this.TimeIncrementUpDown.ValueChanged += new System.EventHandler(this.TimeIncrementUpDown_ValueChanged);
-            // 
             // CompileVideo
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -424,6 +424,7 @@
             this.VideoTab.PerformLayout();
             this.SettingsTab.ResumeLayout(false);
             this.SettingsTab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TimeIncrementUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.FpsUpDown)).EndInit();
             this.DisplayPanel.ResumeLayout(false);
             this.DisplayPanel.PerformLayout();
@@ -431,7 +432,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.FuturePreviewBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PastPreviewBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.CurrentTimeUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.TimeIncrementUpDown)).EndInit();
             this.ResumeLayout(false);
 
         }
