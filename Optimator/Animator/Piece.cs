@@ -58,24 +58,24 @@ namespace Animator
         {
             // Get Piece Data
             Name = inName;
-            List<string> data = Utilities.ReadFile(Utilities.GetDirectory(Consts.PiecesFolder, Name, Consts.Optr));
+            var data = Utilities.ReadFile(Utilities.GetDirectory(Consts.PiecesFolder, Name, Consts.Optr));
 
             // Get Version
             Version = data[0].Split(Consts.Semi)[1];
             Utilities.CheckValidVersion(Version);
 
             // Get Points and Colours from File
-            string[] angleData = data[1].Split(Consts.Semi);
+            var angleData = data[1].Split(Consts.Semi);
 
             // Colour Type
             ColourType = angleData[0];
 
             // Colours (Outline and Fill)
-            string[] colours = angleData[1].Split(Consts.Colon);
+            var colours = angleData[1].Split(Consts.Colon);
             FillColour = new Color[colours.Length - 1];
             for (int index = 0; index < colours.Length; index++)
             {
-                string[] rgbValues = colours[index].Split(Consts.Comma);
+                var rgbValues = colours[index].Split(Consts.Comma);
                 if (index == 0)
                     OutlineColour = Color.FromArgb(int.Parse(rgbValues[0]), int.Parse(rgbValues[1]), int.Parse(rgbValues[2]), int.Parse(rgbValues[3]));
                 else
@@ -91,8 +91,8 @@ namespace Animator
             // Spots
             for (int index = 2; index < data.Count; index++)
             {
-                string[] spotData = data[index].Split(Consts.Semi);
-                string[] coords = spotData[0].Split(Consts.Colon);
+                var spotData = data[index].Split(Consts.Semi);
+                var coords = spotData[0].Split(Consts.Colon);
 
                 Data.Add(new Spot(double.Parse(coords[0]), double.Parse(coords[1]), double.Parse(coords[2]),
                     double.Parse(coords[3]), spotData[1], spotData[2]));
@@ -145,7 +145,7 @@ namespace Animator
         /// <returns>double[] { Rotation, Turn, Spin }</returns>
         public double[] GetAngles()
         {
-            double[] angles = new double[3];
+            var angles = new double[3];
 
             // Original Angles
             angles[0] = R; // + S * Math.Sin(Utilities.ToRad(T));
@@ -173,21 +173,22 @@ namespace Animator
         public override List<string> GetData()
         {
             // Type and Version
-            List<string> newData = new List<string>
+            var newData = new List<string>
             {
                 Consts.Piece + Consts.SemiS + Version
             };
 
             // Update line of data            [0] colour type     [1] colour array        [2] outline width       [3] pieceDetails
             string pieceInfo = ColourType + Consts.SemiS + Utilities.ColorToString(OutlineColour) + Consts.ColonS;
-            foreach (Color col in FillColour)
+            foreach (var col in FillColour)
                 pieceInfo += Utilities.ColorToString(col) + Consts.ColonS;
             pieceInfo = pieceInfo.Remove(pieceInfo.Length - 1, 1) + Consts.SemiS + OutlineWidth + Consts.SemiS + PieceDetails;
             newData.Add(pieceInfo);
 
-            // Add DataRows
-            foreach (Spot spot in Data)
-                newData.Add(spot.ToString());
+            // Add Spots
+            foreach (var spot in Data)
+                if (spot.DrawnLevel == 0)
+                    newData.Add(spot.ToString());
             return newData;
         }
 
@@ -433,7 +434,7 @@ namespace Animator
                                 Data[Utilities.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(2 + increase),
                                 original[0], 0, Data[insertIndex].Connector)[1];
 
-                            Spot newSpot = new Spot(original[0], original[1], rotated, turned, Data[insertIndex].Connector, Data[insertIndex].Solid, drawn);
+                            var newSpot = new Spot(original[0], original[1], rotated, turned, Data[insertIndex].Connector, Data[insertIndex].Solid, drawn);
                             newSpot.SetMatch(xy, spot);
                             spot.SetMatch(xy, newSpot);
                             if (drawn == 2)
@@ -469,7 +470,7 @@ namespace Animator
         public int FindSymmetricalCoordHome(int matchIndex, int xy, int angle)
         {
             double goal = Data[matchIndex].GetCoordCombination(angle)[xy];
-            bool bigger = false;
+            var bigger = false;
             int searchIndex = -1;
 
             // Find whether we're searching above or below the goal
