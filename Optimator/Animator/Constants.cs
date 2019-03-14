@@ -11,20 +11,26 @@ namespace Animator
     /// </summary>
     public static class Constants
     {
-        // Folders
+        // Setup
+        public const string Version = "1.0.0";
+        public const string Settings = "Settings.txt";
+        public const string DefaultSettings = "DefaultSettings.txt";
+
+        // TODO: Remove Folders 
         public const string PiecesFolder = "Pieces";
         public const string SetsFolder = "Sets";
         public const string ScenesFolder = "Scenes";
         public const string VideosFolder = "Videos";
 
-        // Name Validation
-        public const string WIPName = "Z WIP";
-        public static Regex PermittedName = new Regex(@"^[A-Za-z0-9]+$");
-
         // Types
         public const string Piece = "Piece";
         public const string Set = "Set";
         public const string Scene = "Scene";
+
+        // File Extensions
+        public const string Txt = ".txt";
+        public const string Png = ".png";
+        public const string Optr = ".optr";
 
         // Characters
         public static char[] Comma = new char[] { ',' };
@@ -39,17 +45,6 @@ namespace Animator
         public static int[] Ranges = new int[] { 0, 3, 5, 7, 9 };
         public const int ClickPrecision = 5;
 
-        // File Extensions
-        public const string Txt = ".txt";
-        public const string Png = ".png";
-        public const string Optr = ".optr";
-
-        // Colours
-        public static Color shadowShade = Color.DarkGray;
-        public static Color invisible = Color.FromArgb(0, 0, 0, 0);
-        public static Color highlight = Color.ForestGreen;
-        public static Color select = Color.Red;
-
         // Piece Defaults
         public static Color defaultFill = Color.FromArgb(255, 204, 240, 255);
         public static Color defaultOutline = Color.FromArgb(255, 204, 204, 255);
@@ -62,11 +57,14 @@ namespace Animator
         public static object[] connectorOptionsReadable = new object[] { "Line", "Blank" };
         public static string[] fillOptions = { "fill", "gradient" };
         public static string[] solidOptions = { "s", "f" };
-        
+
+        // Colours
+        public static Color shadowShade = Color.DarkGray;
+        public static Color invisible = Color.FromArgb(0, 0, 0, 0);
+        public static Color highlight = Color.ForestGreen;
+        public static Color select = Color.Red;
+
         // Scene Options
         public static object[] possibleChanges = new object[] { "X", "Y", "Rotation", "Turn", "Spin", "Size", "Order", "Removed" };
-
-        // Version
-        public const string Version = "1.0.0";
     }
 }

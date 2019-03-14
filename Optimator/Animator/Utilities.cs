@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using System.IO;
+using System.Drawing;
 
 namespace Animator
 {
@@ -57,7 +58,7 @@ namespace Animator
         /// </summary>
         /// <param name="folder">The folder the item is in</param>
         /// <param name="name">The item name</param>
-        /// <param name="fileType">The file's type, e.g. txt, png</param>
+        /// <param name="fileType">The file's type, e.g. optr, txt, png</param>
         /// <returns></returns>
         public static string GetDirectory(string folder, string name, string fileType = "", string subfolder = "")
         {
@@ -90,7 +91,8 @@ namespace Animator
         public static bool CheckValidNewName(string name, string folder)
         {
             // Check Name is Valid for Saving
-            if (!Constants.PermittedName.IsMatch(name))
+            System.Text.RegularExpressions.Regex PermittedName = new System.Text.RegularExpressions.Regex(@"^[A-Za-z0-9]+$");
+            if (!PermittedName.IsMatch(name))
             {
                 MessageBox.Show("Please choose a valid name for your file. Name can only include letters and numbers.", "Name Invalid", MessageBoxButtons.OK);
                 return false;
@@ -181,6 +183,29 @@ namespace Animator
                 toReturn.Add(spot.GetCoordCombination(angle));
 
             return toReturn;
+        }
+
+        /// <summary>
+        /// Converts a colour into its ARGB values.
+        /// </summary>
+        /// <param name="color">The colour to convert</param>
+        /// <returns>A string array of ARGB values</returns>
+        public static string ColorToString(Color color)
+        {
+            return color.A + Constants.CommaS + color.R + Constants.CommaS +
+                color.G + Constants.CommaS + color.B;
+        }
+
+        /// <summary>
+        /// Converts a string of ARGB value into a colour.
+        /// </summary>
+        /// <param name="color">A string of comma-seperated argb values</param>
+        /// <returns>A colour with the given ARGB value</returns>
+        public static Color ColourFromString(string color)
+        {
+            string[] argb = color.Split(Constants.Comma);
+            return Color.FromArgb(int.Parse(argb[0]), int.Parse(argb[1]), 
+                int.Parse(argb[2]), int.Parse(argb[3]));
         }
 
         #endregion

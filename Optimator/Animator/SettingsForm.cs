@@ -15,14 +15,36 @@ namespace Animator
         public SettingsForm()
         {
             InitializeComponent();
-
-            // Display Current Settings
             VersionLbl.Text = "Version " + Constants.Version;
+            DisplaySettings();
         }
 
 
 
+        // ----- DISPLAY -----
+        
+        /// <summary>
+        /// Displays the current settings to the screen.
+        /// </summary>
+        private void DisplaySettings()
+        {
+            BackColourBox.BackColor = Settings.BackgroundColour;
+        }
+
+
+            
         // ----- BUTTONS -----
+
+        /// <summary>
+        /// Resets the settings to the default values.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ResetBtn_Click(object sender, System.EventArgs e)
+        {
+            Settings.ResetSettings();
+            DisplaySettings();
+        }
 
         /// <summary>
         /// Saves the changes made to settings.
@@ -31,8 +53,6 @@ namespace Animator
         /// <param name="e"></param>
         private void SaveBtn_Click(object sender, System.EventArgs e)
         {
-            // TODO: for each option in the form, update the settings class
-
             Settings.UpdateSettings();
         }
 
@@ -43,7 +63,31 @@ namespace Animator
         /// <param name="e"></param>
         private void QuitBtn_Click(object sender, System.EventArgs e)
         {
+            Settings.InitialSettings();
             Close();
+        }
+
+
+
+        // ----- SETTING CHANGES -----
+
+        /// <summary>
+        /// Changes the back colour of the drawing panels.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BackColourBox_Click(object sender, System.EventArgs e)
+        {
+            ColorDialog MyDialog = new ColorDialog
+            {
+                Color = BackColourBox.BackColor,
+                FullOpen = true
+            };
+            if (MyDialog.ShowDialog() == DialogResult.OK)
+            {
+                BackColourBox.BackColor = MyDialog.Color;
+                Settings.BackgroundColour = MyDialog.Color;
+            }
         }
     }
 }

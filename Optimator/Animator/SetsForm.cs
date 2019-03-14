@@ -48,6 +48,9 @@ namespace Animator
             DrawDown.MouseDown += new MouseEventHandler(DrawBase_MouseDown);
             DrawDown.MouseMove += new MouseEventHandler(DrawBase_MouseMove);
             DrawDown.MouseUp += new MouseEventHandler(DrawBase_MouseUp);
+            DrawBase.BackColor = Settings.BackgroundColour;
+            DrawRight.BackColor = Settings.BackgroundColour;
+            DrawDown.BackColor = Settings.BackgroundColour;
         }
 
 
@@ -254,32 +257,6 @@ namespace Animator
                 selected.SM = SizeBar.Value;
 
             DisplayDrawings();
-        }
-
-
-
-        // ----- SETTINGS TAB -----
-
-        /// <summary>
-        /// Changes the back colour of the drawing panels.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void BackColourBox_Click(object sender, EventArgs e)
-        {
-            ColorDialog MyDialog = new ColorDialog
-            {
-                Color = BackColourBox.BackColor,
-                FullOpen = true
-            };
-            if (MyDialog.ShowDialog() == DialogResult.OK)
-            {
-                DrawBase.BackColor = MyDialog.Color;
-                DrawRight.BackColor = MyDialog.Color;
-                DrawDown.BackColor = MyDialog.Color;
-                BackColourBox.BackColor = MyDialog.Color;
-                DisplayDrawings();
-            }
         }
 
 

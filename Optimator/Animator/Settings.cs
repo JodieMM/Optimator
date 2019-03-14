@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Animator
 {
@@ -15,6 +12,7 @@ namespace Animator
     public static class Settings
     {
         #region Settings Variables
+        public static string Version;
         public static Color BackgroundColour;
         #endregion
 
@@ -24,9 +22,21 @@ namespace Animator
         /// <summary>
         /// Loads the settings that have been saved to the program.
         /// </summary>
-        public static void InitialSettings()
+        /// <param name="file">The file to load the settings from</param>
+        public static void InitialSettings(string file = Constants.Settings)
         {
+            var data = Utilities.ReadFile(file);
+            if (data.Count < 2)
+                data = Utilities.ReadFile(Constants.DefaultSettings);
 
+            Version = data[0];
+            if (!Utilities.CheckValidVersion(Version))
+            {
+                // TODO: Add extra rows from initial to settings if required
+            }
+
+            // Set Settings
+            BackgroundColour = Utilities.ColourFromString(data[1]);           
         }
 
         /// <summary>
@@ -34,7 +44,12 @@ namespace Animator
         /// </summary>
         public static void UpdateSettings()
         {
-
+            var data = new List<string>
+            {
+                Version,
+                Utilities.ColorToString(BackgroundColour)
+            };
+            Utilities.SaveData(Constants.Settings, data);
         }
 
         /// <summary>
@@ -42,7 +57,12 @@ namespace Animator
         /// </summary>
         public static void ResetSettings()
         {
-
+            var result = MessageBox.Show("This will erase all custom settings. Continue?", "Setting Reset Confirmation", MessageBoxButtons.OKCancel);
+            if (result == DialogResult.OK)
+            {
+                InitialSettings(Constants.DefaultSettings);
+                UpdateSettings();
+            }
         }
     }
 }

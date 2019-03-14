@@ -61,9 +61,6 @@
             this.DeleteSketchBtn = new System.Windows.Forms.Button();
             this.SketchesLbl = new System.Windows.Forms.Label();
             this.SketchLb = new System.Windows.Forms.CheckedListBox();
-            this.SettingsTab = new System.Windows.Forms.TabPage();
-            this.BackColourBox = new System.Windows.Forms.PictureBox();
-            this.BackColourLbl = new System.Windows.Forms.Label();
             this.DrawDown = new System.Windows.Forms.PictureBox();
             this.DrawRight = new System.Windows.Forms.PictureBox();
             this.PointBtn = new System.Windows.Forms.Button();
@@ -86,8 +83,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.RotationBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.YUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.XUpDown)).BeginInit();
-            this.SettingsTab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.BackColourBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawRight)).BeginInit();
             this.SuspendLayout();
@@ -106,7 +101,6 @@
             // 
             this.OptionsMenu.Controls.Add(this.ShapeTab);
             this.OptionsMenu.Controls.Add(this.SketchesTab);
-            this.OptionsMenu.Controls.Add(this.SettingsTab);
             this.OptionsMenu.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.OptionsMenu.Location = new System.Drawing.Point(700, 0);
             this.OptionsMenu.Margin = new System.Windows.Forms.Padding(6);
@@ -517,41 +511,6 @@
             this.SketchLb.Size = new System.Drawing.Size(363, 127);
             this.SketchLb.TabIndex = 14;
             // 
-            // SettingsTab
-            // 
-            this.SettingsTab.BackColor = System.Drawing.Color.Azure;
-            this.SettingsTab.Controls.Add(this.BackColourBox);
-            this.SettingsTab.Controls.Add(this.BackColourLbl);
-            this.SettingsTab.Location = new System.Drawing.Point(8, 50);
-            this.SettingsTab.Margin = new System.Windows.Forms.Padding(6);
-            this.SettingsTab.Name = "SettingsTab";
-            this.SettingsTab.Padding = new System.Windows.Forms.Padding(6);
-            this.SettingsTab.Size = new System.Drawing.Size(384, 642);
-            this.SettingsTab.TabIndex = 1;
-            this.SettingsTab.Text = "Settings";
-            // 
-            // BackColourBox
-            // 
-            this.BackColourBox.BackColor = System.Drawing.Color.White;
-            this.BackColourBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.BackColourBox.Location = new System.Drawing.Point(136, 18);
-            this.BackColourBox.Name = "BackColourBox";
-            this.BackColourBox.Size = new System.Drawing.Size(239, 30);
-            this.BackColourBox.TabIndex = 115;
-            this.BackColourBox.TabStop = false;
-            this.BackColourBox.Click += new System.EventHandler(this.BackColourBox_Click);
-            // 
-            // BackColourLbl
-            // 
-            this.BackColourLbl.AutoSize = true;
-            this.BackColourLbl.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BackColourLbl.Location = new System.Drawing.Point(18, 23);
-            this.BackColourLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.BackColourLbl.Name = "BackColourLbl";
-            this.BackColourLbl.Size = new System.Drawing.Size(184, 39);
-            this.BackColourLbl.TabIndex = 114;
-            this.BackColourLbl.Text = "Back Colour";
-            // 
             // DrawDown
             // 
             this.DrawDown.BackColor = System.Drawing.Color.White;
@@ -709,9 +668,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.RotationBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.YUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.XUpDown)).EndInit();
-            this.SettingsTab.ResumeLayout(false);
-            this.SettingsTab.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.BackColourBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawRight)).EndInit();
             this.ResumeLayout(false);
@@ -723,7 +679,6 @@
         private System.Windows.Forms.PictureBox DrawBase;
         private System.Windows.Forms.TabControl OptionsMenu;
         private System.Windows.Forms.TabPage ShapeTab;
-        private System.Windows.Forms.TabPage SettingsTab;
         private System.Windows.Forms.PictureBox DrawDown;
         private System.Windows.Forms.PictureBox DrawRight;
         private System.Windows.Forms.TextBox NameTb;
@@ -746,8 +701,6 @@
         private System.Windows.Forms.Label OutlineWLbl;
         private System.Windows.Forms.NumericUpDown OutlineWidthBox;
         private System.Windows.Forms.Button ShowFixedBtn;
-        private System.Windows.Forms.PictureBox BackColourBox;
-        private System.Windows.Forms.Label BackColourLbl;
         private System.Windows.Forms.Button EmptyBtn;
         private System.Windows.Forms.CheckedListBox SketchLb;
         private System.Windows.Forms.Label SketchesLbl;

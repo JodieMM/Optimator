@@ -66,7 +66,7 @@ namespace Animator
         /// </summary>
         public Set()
         {
-            Name = Constants.WIPName;
+            Name = "";
             Version = Constants.Version;
         }
 

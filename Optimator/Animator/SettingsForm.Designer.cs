@@ -31,6 +31,10 @@
             this.VersionLbl = new System.Windows.Forms.Label();
             this.QuitBtn = new System.Windows.Forms.Button();
             this.SaveBtn = new System.Windows.Forms.Button();
+            this.BackColourBox = new System.Windows.Forms.PictureBox();
+            this.BackColourLbl = new System.Windows.Forms.Label();
+            this.ResetBtn = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.BackColourBox)).BeginInit();
             this.SuspendLayout();
             // 
             // VersionLbl
@@ -72,11 +76,51 @@
             this.SaveBtn.UseVisualStyleBackColor = false;
             this.SaveBtn.Click += new System.EventHandler(this.SaveBtn_Click);
             // 
+            // BackColourBox
+            // 
+            this.BackColourBox.BackColor = System.Drawing.Color.White;
+            this.BackColourBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.BackColourBox.Location = new System.Drawing.Point(410, 208);
+            this.BackColourBox.Name = "BackColourBox";
+            this.BackColourBox.Size = new System.Drawing.Size(239, 30);
+            this.BackColourBox.TabIndex = 117;
+            this.BackColourBox.TabStop = false;
+            this.BackColourBox.Click += new System.EventHandler(this.BackColourBox_Click);
+            // 
+            // BackColourLbl
+            // 
+            this.BackColourLbl.AutoSize = true;
+            this.BackColourLbl.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BackColourLbl.Location = new System.Drawing.Point(206, 199);
+            this.BackColourLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.BackColourLbl.Name = "BackColourLbl";
+            this.BackColourLbl.Size = new System.Drawing.Size(184, 39);
+            this.BackColourLbl.TabIndex = 116;
+            this.BackColourLbl.Text = "Back Colour";
+            // 
+            // ResetBtn
+            // 
+            this.ResetBtn.BackColor = System.Drawing.Color.Aquamarine;
+            this.ResetBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ResetBtn.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ResetBtn.ForeColor = System.Drawing.Color.Black;
+            this.ResetBtn.Location = new System.Drawing.Point(583, 308);
+            this.ResetBtn.Margin = new System.Windows.Forms.Padding(2);
+            this.ResetBtn.Name = "ResetBtn";
+            this.ResetBtn.Size = new System.Drawing.Size(150, 80);
+            this.ResetBtn.TabIndex = 118;
+            this.ResetBtn.Text = "Reset to Defaults";
+            this.ResetBtn.UseVisualStyleBackColor = false;
+            this.ResetBtn.Click += new System.EventHandler(this.ResetBtn_Click);
+            // 
             // SettingsForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.MintCream;
             this.ClientSize = new System.Drawing.Size(842, 676);
+            this.Controls.Add(this.ResetBtn);
+            this.Controls.Add(this.BackColourBox);
+            this.Controls.Add(this.BackColourLbl);
             this.Controls.Add(this.SaveBtn);
             this.Controls.Add(this.QuitBtn);
             this.Controls.Add(this.VersionLbl);
@@ -85,6 +129,7 @@
             this.Name = "SettingsForm";
             this.ShowIcon = false;
             this.Text = "Settings";
+            ((System.ComponentModel.ISupportInitialize)(this.BackColourBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -95,5 +140,8 @@
         private System.Windows.Forms.Label VersionLbl;
         private System.Windows.Forms.Button QuitBtn;
         private System.Windows.Forms.Button SaveBtn;
+        private System.Windows.Forms.PictureBox BackColourBox;
+        private System.Windows.Forms.Label BackColourLbl;
+        private System.Windows.Forms.Button ResetBtn;
     }
 }

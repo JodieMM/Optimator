@@ -106,7 +106,7 @@ namespace Animator
         /// </summary>
         public Piece()
         {
-            Name = Constants.WIPName;
+            Name = "";
             Version = Constants.Version;
             ColourType = Constants.fillOptions[0];
             FillColour = new Color[] { Constants.defaultFill };
@@ -179,10 +179,10 @@ namespace Animator
             };
 
             // Update line of data            [0] colour type     [1] colour array        [2] outline width       [3] pieceDetails
-            string pieceInfo = ColourType + ";" + OutlineColour.A + "," + OutlineColour.R + "," + OutlineColour.G + "," + OutlineColour.B + ":";
+            string pieceInfo = ColourType + Constants.SemiS + Utilities.ColorToString(OutlineColour) + Constants.Colon;
             foreach (Color col in FillColour)
-                pieceInfo += col.A + "," + col.R + "," + col.G + "," + col.B + ":";
-            pieceInfo = pieceInfo.Remove(pieceInfo.Length - 1, 1) + ";" + OutlineWidth + ";" + PieceDetails;
+                pieceInfo += Utilities.ColorToString(col) + Constants.Colon;
+            pieceInfo = pieceInfo.Remove(pieceInfo.Length - 1, 1) + Constants.SemiS + OutlineWidth + Constants.SemiS + PieceDetails;
             newData.Add(pieceInfo);
 
             // Add DataRows

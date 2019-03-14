@@ -56,8 +56,6 @@
             this.RotationBar = new System.Windows.Forms.TrackBar();
             this.SettingsPage = new System.Windows.Forms.TabPage();
             this.SelectFromTopCb = new System.Windows.Forms.CheckBox();
-            this.BackColourBox = new System.Windows.Forms.PictureBox();
-            this.BackColourLbl = new System.Windows.Forms.Label();
             this.DrawRight = new System.Windows.Forms.PictureBox();
             this.DrawDown = new System.Windows.Forms.PictureBox();
             this.DrawBase = new System.Windows.Forms.PictureBox();
@@ -72,7 +70,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.TurnBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.RotationBar)).BeginInit();
             this.SettingsPage.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.BackColourBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawRight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawBase)).BeginInit();
@@ -413,8 +410,6 @@
             // 
             this.SettingsPage.BackColor = System.Drawing.Color.Honeydew;
             this.SettingsPage.Controls.Add(this.SelectFromTopCb);
-            this.SettingsPage.Controls.Add(this.BackColourBox);
-            this.SettingsPage.Controls.Add(this.BackColourLbl);
             this.SettingsPage.Location = new System.Drawing.Point(8, 50);
             this.SettingsPage.Name = "SettingsPage";
             this.SettingsPage.Padding = new System.Windows.Forms.Padding(3);
@@ -428,35 +423,13 @@
             this.SelectFromTopCb.Checked = true;
             this.SelectFromTopCb.CheckState = System.Windows.Forms.CheckState.Checked;
             this.SelectFromTopCb.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SelectFromTopCb.Location = new System.Drawing.Point(18, 81);
+            this.SelectFromTopCb.Location = new System.Drawing.Point(18, 17);
             this.SelectFromTopCb.Margin = new System.Windows.Forms.Padding(2);
             this.SelectFromTopCb.Name = "SelectFromTopCb";
             this.SelectFromTopCb.Size = new System.Drawing.Size(358, 43);
             this.SelectFromTopCb.TabIndex = 118;
             this.SelectFromTopCb.Text = "Select Piece from Top";
             this.SelectFromTopCb.UseVisualStyleBackColor = true;
-            // 
-            // BackColourBox
-            // 
-            this.BackColourBox.BackColor = System.Drawing.Color.White;
-            this.BackColourBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.BackColourBox.Location = new System.Drawing.Point(132, 16);
-            this.BackColourBox.Name = "BackColourBox";
-            this.BackColourBox.Size = new System.Drawing.Size(239, 30);
-            this.BackColourBox.TabIndex = 117;
-            this.BackColourBox.TabStop = false;
-            this.BackColourBox.Click += new System.EventHandler(this.BackColourBox_Click);
-            // 
-            // BackColourLbl
-            // 
-            this.BackColourLbl.AutoSize = true;
-            this.BackColourLbl.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BackColourLbl.Location = new System.Drawing.Point(14, 21);
-            this.BackColourLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.BackColourLbl.Name = "BackColourLbl";
-            this.BackColourLbl.Size = new System.Drawing.Size(184, 39);
-            this.BackColourLbl.TabIndex = 116;
-            this.BackColourLbl.Text = "Back Colour";
             // 
             // DrawRight
             // 
@@ -546,7 +519,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.RotationBar)).EndInit();
             this.SettingsPage.ResumeLayout(false);
             this.SettingsPage.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.BackColourBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawRight)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawBase)).EndInit();
@@ -572,8 +544,6 @@
         private System.Windows.Forms.TrackBar TurnBar;
         private System.Windows.Forms.Label RotationLbl;
         private System.Windows.Forms.TrackBar RotationBar;
-        private System.Windows.Forms.PictureBox BackColourBox;
-        private System.Windows.Forms.Label BackColourLbl;
         private System.Windows.Forms.CheckBox SelectFromTopCb;
         private System.Windows.Forms.PictureBox DrawRight;
         private System.Windows.Forms.PictureBox DrawDown;
