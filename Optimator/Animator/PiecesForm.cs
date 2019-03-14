@@ -68,8 +68,8 @@ namespace Animator
 
 
 
-        // ----- DRAWING BOARDS -----
-        #region Drawing Boards I/O
+        // ----- I/O -----
+        #region I/O
 
         /// <summary>
         /// Places or selects a point on the main board
@@ -378,6 +378,23 @@ namespace Animator
             {
                 MessageBox.Show("No data entered for point", "Missing Data", MessageBoxButtons.OK);
             }
+        }
+
+        /// <summary>
+        /// Erases the changes to angled, making it the same as base.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void EraseAngleBtn_Click(object sender, EventArgs e)
+        {
+            var angle = sender == EraseRightBtn ? new object[] { 0, 1, "rotated" } : new object[] { 1, 2, "turned" };
+            var result = MessageBox.Show("Are you sure you want to set " + angle[2].ToString() + " to the base position?", "Confirm Erase", MessageBoxButtons.OKCancel);
+            if (result == DialogResult.OK)
+            {
+                foreach (var spot in WIP.Data)
+                    spot.SetCoords((int)angle[1], (int)angle[0], spot.GetCoordCombination()[(int)angle[0]]);
+                DisplayDrawings();
+            }  
         }
 
 
