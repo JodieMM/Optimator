@@ -64,6 +64,17 @@ namespace Animator
             OutlineWidthBox.Value = Consts.defaultOutlineWidth;
 
             WIP = new Piece();
+            //TODO: Remove
+            TEMP();
+        }
+
+        private void TEMP()
+        {
+            DrawBase_MouseDown(DrawBase, new MouseEventArgs(MouseButtons.Left, 1, 160, 150, 0));
+            DrawBase_MouseDown(DrawBase, new MouseEventArgs(MouseButtons.Left, 1, 160, 160, 0));
+            DrawBase_MouseDown(DrawBase, new MouseEventArgs(MouseButtons.Left, 1, 170, 170, 0));
+            DrawBase_MouseDown(DrawBase, new MouseEventArgs(MouseButtons.Left, 1, 181, 151, 0));
+            DisplayDrawings();
         }
 
 

@@ -61,6 +61,8 @@
             this.DrawBase = new System.Windows.Forms.PictureBox();
             this.ExitBtn = new System.Windows.Forms.Button();
             this.PreviewBtn = new System.Windows.Forms.Button();
+            this.EraseDownBtn = new System.Windows.Forms.Button();
+            this.EraseRightBtn = new System.Windows.Forms.Button();
             this.OptionsMenu.SuspendLayout();
             this.SetPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FlipsUpDown)).BeginInit();
@@ -489,11 +491,41 @@
             this.PreviewBtn.UseVisualStyleBackColor = false;
             this.PreviewBtn.Click += new System.EventHandler(this.PreviewBtn_Click);
             // 
+            // EraseDownBtn
+            // 
+            this.EraseDownBtn.BackColor = Consts.invisible;
+            this.EraseDownBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.EraseDownBtn.Font = new System.Drawing.Font("Tahoma", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.EraseDownBtn.Location = new System.Drawing.Point(285, 360);
+            this.EraseDownBtn.Margin = new System.Windows.Forms.Padding(6);
+            this.EraseDownBtn.Name = "EraseDownBtn";
+            this.EraseDownBtn.Size = new System.Drawing.Size(45, 45);
+            this.EraseDownBtn.TabIndex = 97;
+            this.EraseDownBtn.Text = "Clear";
+            this.EraseDownBtn.UseVisualStyleBackColor = false;
+            this.EraseDownBtn.Click += new System.EventHandler(this.EraseAngleBtn_Click);
+            // 
+            // EraseRightBtn
+            // 
+            this.EraseRightBtn.BackColor = Consts.invisible;
+            this.EraseRightBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.EraseRightBtn.Font = new System.Drawing.Font("Tahoma", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.EraseRightBtn.Location = new System.Drawing.Point(615, 30);
+            this.EraseRightBtn.Margin = new System.Windows.Forms.Padding(6);
+            this.EraseRightBtn.Name = "EraseRightBtn";
+            this.EraseRightBtn.Size = new System.Drawing.Size(45, 45);
+            this.EraseRightBtn.TabIndex = 96;
+            this.EraseRightBtn.Text = "Clear";
+            this.EraseRightBtn.UseVisualStyleBackColor = false;
+            this.EraseRightBtn.Click += new System.EventHandler(this.EraseAngleBtn_Click);
+            // 
             // SetsForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.PaleGreen;
             this.ClientSize = new System.Drawing.Size(1100, 700);
+            this.Controls.Add(this.EraseDownBtn);
+            this.Controls.Add(this.EraseRightBtn);
             this.Controls.Add(this.PreviewBtn);
             this.Controls.Add(this.ExitBtn);
             this.Controls.Add(this.DrawRight);
@@ -560,5 +592,7 @@
         private System.Windows.Forms.NumericUpDown FlipsUpDown;
         private System.Windows.Forms.CheckBox FlipsCb;
         private System.Windows.Forms.Button MoveJoinBtn;
+        private System.Windows.Forms.Button EraseDownBtn;
+        private System.Windows.Forms.Button EraseRightBtn;
     }
 }

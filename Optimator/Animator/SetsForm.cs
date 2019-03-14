@@ -375,6 +375,16 @@ namespace Animator
         }
 
         /// <summary>
+        /// Erases the changes made to one of the angles and returns it to base.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void EraseAngleBtn_Click(object sender, EventArgs e)
+        {
+            // TODO: Return join X/Y to base X/Y &Joins
+        }
+
+        /// <summary>
         /// Runs when a key is pressed.
         /// If delete is pressed and a piece is selected, it will be deleted.
         /// </summary>

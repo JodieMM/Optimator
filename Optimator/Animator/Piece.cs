@@ -406,8 +406,7 @@ namespace Animator
                 var validDrawn = xy == 0 ? spot.DrawnLevel < 2 : spot.DrawnLevel == 0;
 
                 // Only search for match if needed
-                if (validDrawn && spot.GetMatch(xy) == null && spot.GetCoordCombination()[xy] != minMax[3 - increase]
-                    && spot.GetCoordCombination()[xy] != minMax[2 - increase])
+                if (validDrawn && spot.GetMatch(xy) == null)
                 {
                     // If spot has existing match
                     var symmIndex = FindExistingSymmetricalCoord(index, xy);
@@ -419,27 +418,32 @@ namespace Animator
                     // If spot has no existing match
                     else
                     {
-                        int insertIndex = FindSymmetricalCoordHome(index, xy, coordCombo);
-                        if (insertIndex != -1)
+                        // Only search for match if needed (not max)
+                        if (spot.GetCoordCombination()[xy] != minMax[3 - increase] && spot.GetCoordCombination()[xy] != minMax[2 - increase])
                         {
-                            double[] original = FindSymmetricalOppositeCoord(Data[insertIndex].GetCoordCombination(coordCombo),
-                                Data[Utilities.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(coordCombo),
-                                spot.GetCoordCombination(coordCombo)[xy], xy, Data[insertIndex].Connector);
+                            int insertIndex = FindSymmetricalCoordHome(index, xy, coordCombo);
+                            if (insertIndex != -1)
+                            {
+                                double[] original = FindSymmetricalOppositeCoord(Data[insertIndex].GetCoordCombination(coordCombo),
+                                    Data[Utilities.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(coordCombo),
+                                    spot.GetCoordCombination(coordCombo)[xy], xy, Data[insertIndex].Connector);
 
-                            double rotated = FindSymmetricalOppositeCoord(Data[insertIndex].GetCoordCombination(coordRot),
-                                Data[Utilities.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(coordRot),
-                                original[1], 1, Data[insertIndex].Connector)[0];
+                                double rotated = FindSymmetricalOppositeCoord(Data[insertIndex].GetCoordCombination(coordRot),
+                                    Data[Utilities.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(coordRot),
+                                    original[1], 1, Data[insertIndex].Connector)[0];
 
-                            double turned = FindSymmetricalOppositeCoord(Data[insertIndex].GetCoordCombination(2 + increase),
-                                Data[Utilities.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(2 + increase),
-                                original[0], 0, Data[insertIndex].Connector)[1];
+                                double turned = FindSymmetricalOppositeCoord(Data[insertIndex].GetCoordCombination(2 + increase),
+                                    Data[Utilities.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(2 + increase),
+                                    original[0], 0, Data[insertIndex].Connector)[1];
 
-                            var newSpot = new Spot(original[0], original[1], rotated, turned, Data[insertIndex].Connector, Data[insertIndex].Solid, drawn);
-                            newSpot.SetMatch(xy, spot);
-                            spot.SetMatch(xy, newSpot);
-                            if (drawn == 2)
-                                newSpot.CurrentX = newSpot.X;
-                            Data.Insert(insertIndex, newSpot);
+                                var newSpot = new Spot(original[0], original[1], rotated, turned, Data[insertIndex].Connector, Data[insertIndex].Solid, drawn);
+                                newSpot.SetMatch(xy, spot);
+                                spot.SetMatch(xy, newSpot);
+                                if (drawn == 2)
+                                    newSpot.CurrentX = newSpot.X;
+                                Data.Insert(insertIndex, newSpot);
+                                index--;
+                            }
                         }
                     }
                 }
@@ -510,15 +514,22 @@ namespace Animator
             double gradient = -1;
             if (line == Consts.connectorOptions[0] || line == Consts.connectorOptions[1])
             {
+                if (from[0] == to[0])
+                    if (xy == 0)
+                        return new double[] { value, to[1] };
+                    else
+                        return new double[] { from[0], value };
+                
                 gradient = (from[1] - to[1]) / (from[0] - to[0]);
+                if (xy == 0)
+                    return new double[] { value, from[1] + (value - from[0]) * gradient };  // y = x * gradient
+                else
+                    return new double[] { from[0] + (value - from[1]) / gradient, value };  // x = y / gradient
             }
             // else if (line == Constants.connectorOptions[2])      
             //CURVE
 
-            if (xy == 0)
-                return new double[] { value, from[1] + (value - from[0]) * gradient };  // y = x * gradient
-            else
-                return new double[] { from[0] + (value - from[1]) / gradient, value };  // x = y / gradient
+            return new double[] { -1 }; // Error
         }
 
         /// <summary>
