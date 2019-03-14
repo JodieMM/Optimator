@@ -459,10 +459,39 @@ namespace Animator
         /// <returns>The symmetrical point's index or -1 if none exists</returns>
         private int FindExistingSymmetricalCoord(int matchIndex, int xy)
         {
+            // Find Matches
+            var matches = new List<int>();
             for (int index = 0; index < Data.Count; index++)
                 if (index != matchIndex && Data[index].GetCoordCombination()[xy] == Data[matchIndex].GetCoordCombination()[xy])
-                    return index;
-            return -1;
+                    matches.Add(index);
+
+            // Decide which match is best
+            if (matches.Count == 0)
+                return -1;
+            else if (matches.Count == 1)
+                return matches[0];
+            else
+            {
+                var yx = xy == 0 ? 1 : 0;
+                var min = 0;
+                var max = 0;
+                for (int index = 1; index < matches.Count; index++)
+                {
+                    if (Data[matches[index]].GetCoordCombination()[yx] < Data[matches[min]].GetCoordCombination()[yx])
+                    {
+                        min = index;
+                    }
+                    else if (Data[matches[index]].GetCoordCombination()[yx] > Data[matches[max]].GetCoordCombination()[yx])
+                    {
+                        max = index;
+                    }
+                }
+                if (Data[matchIndex].GetCoordCombination()[yx] <= Data[matches[min]].GetCoordCombination()[yx])
+                    return max;
+                else if (Data[matchIndex].GetCoordCombination()[yx] >= Data[matches[max]].GetCoordCombination()[yx])
+                    return min;
+                return matches[0];
+            }
         }
 
         /// <summary>
