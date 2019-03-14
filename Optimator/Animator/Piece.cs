@@ -58,24 +58,24 @@ namespace Animator
         {
             // Get Piece Data
             Name = inName;
-            List<string> data = Utilities.ReadFile(Utilities.GetDirectory(Constants.PiecesFolder, Name, Constants.Optr));
+            List<string> data = Utilities.ReadFile(Utilities.GetDirectory(Consts.PiecesFolder, Name, Consts.Optr));
 
             // Get Version
-            Version = data[0].Split(Constants.Semi)[1];
+            Version = data[0].Split(Consts.Semi)[1];
             Utilities.CheckValidVersion(Version);
 
             // Get Points and Colours from File
-            string[] angleData = data[1].Split(Constants.Semi);
+            string[] angleData = data[1].Split(Consts.Semi);
 
             // Colour Type
             ColourType = angleData[0];
 
             // Colours (Outline and Fill)
-            string[] colours = angleData[1].Split(Constants.Colon);
+            string[] colours = angleData[1].Split(Consts.Colon);
             FillColour = new Color[colours.Length - 1];
             for (int index = 0; index < colours.Length; index++)
             {
-                string[] rgbValues = colours[index].Split(Constants.Comma);
+                string[] rgbValues = colours[index].Split(Consts.Comma);
                 if (index == 0)
                     OutlineColour = Color.FromArgb(int.Parse(rgbValues[0]), int.Parse(rgbValues[1]), int.Parse(rgbValues[2]), int.Parse(rgbValues[3]));
                 else
@@ -91,8 +91,8 @@ namespace Animator
             // Spots
             for (int index = 2; index < data.Count; index++)
             {
-                string[] spotData = data[index].Split(Constants.Semi);
-                string[] coords = spotData[0].Split(Constants.Colon);
+                string[] spotData = data[index].Split(Consts.Semi);
+                string[] coords = spotData[0].Split(Consts.Colon);
 
                 Data.Add(new Spot(double.Parse(coords[0]), double.Parse(coords[1]), double.Parse(coords[2]),
                     double.Parse(coords[3]), spotData[1], spotData[2]));
@@ -107,12 +107,12 @@ namespace Animator
         public Piece()
         {
             Name = "";
-            Version = Constants.Version;
-            ColourType = Constants.fillOptions[0];
-            FillColour = new Color[] { Constants.defaultFill };
-            OutlineColour = Constants.defaultOutline;
-            OutlineWidth = Constants.defaultOutlineWidth;
-            PieceDetails = Constants.defaultPieceDetails;
+            Version = Consts.Version;
+            ColourType = Consts.fillOptions[0];
+            FillColour = new Color[] { Consts.defaultFill };
+            OutlineColour = Consts.defaultOutline;
+            OutlineWidth = Consts.defaultOutlineWidth;
+            PieceDetails = Consts.defaultPieceDetails;
         }
 
 
@@ -175,14 +175,14 @@ namespace Animator
             // Type and Version
             List<string> newData = new List<string>
             {
-                Constants.Piece + Constants.SemiS + Version
+                Consts.Piece + Consts.SemiS + Version
             };
 
             // Update line of data            [0] colour type     [1] colour array        [2] outline width       [3] pieceDetails
-            string pieceInfo = ColourType + Constants.SemiS + Utilities.ColorToString(OutlineColour) + Constants.ColonS;
+            string pieceInfo = ColourType + Consts.SemiS + Utilities.ColorToString(OutlineColour) + Consts.ColonS;
             foreach (Color col in FillColour)
-                pieceInfo += Utilities.ColorToString(col) + Constants.ColonS;
-            pieceInfo = pieceInfo.Remove(pieceInfo.Length - 1, 1) + Constants.SemiS + OutlineWidth + Constants.SemiS + PieceDetails;
+                pieceInfo += Utilities.ColorToString(col) + Consts.ColonS;
+            pieceInfo = pieceInfo.Remove(pieceInfo.Length - 1, 1) + Consts.SemiS + OutlineWidth + Consts.SemiS + PieceDetails;
             newData.Add(pieceInfo);
 
             // Add DataRows
@@ -508,7 +508,7 @@ namespace Animator
         public double[] FindSymmetricalOppositeCoord(double[] from, double[] to, double value, int xy, string line)
         {
             double gradient = -1;
-            if (line == Constants.connectorOptions[0] || line == Constants.connectorOptions[1])
+            if (line == Consts.connectorOptions[0] || line == Consts.connectorOptions[1])
             {
                 gradient = (from[1] - to[1]) / (from[0] - to[0]);
             }
@@ -537,7 +537,7 @@ namespace Animator
             double[] upper = fromUpper ? from : to;
 
             // Solid Line
-            if (join == Constants.connectorOptions[0] || join == Constants.connectorOptions[1])
+            if (join == Consts.connectorOptions[0] || join == Consts.connectorOptions[1])
             {
                 var section = new List<double[]>();
 
@@ -560,7 +560,7 @@ namespace Animator
                 line.AddRange(section);
             }
             // Curve
-            else if (join == Constants.connectorOptions[2])
+            else if (join == Consts.connectorOptions[2])
             {
             }
             return line;

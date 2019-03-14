@@ -59,9 +59,9 @@ namespace Animator
 
             SketchLb.ItemCheck += new ItemCheckEventHandler(SketchLbSelectChange);
 
-            FillBox.BackColor = Constants.defaultFill;
-            OutlineBox.BackColor = Constants.defaultOutline;
-            OutlineWidthBox.Value = Constants.defaultOutlineWidth;
+            FillBox.BackColor = Consts.defaultFill;
+            OutlineBox.BackColor = Consts.defaultOutline;
+            OutlineWidthBox.Value = Consts.defaultOutlineWidth;
 
             WIP = new Piece();
         }
@@ -135,16 +135,16 @@ namespace Animator
             }
 
             if (!movingFar)
-                movingFar = Math.Abs(selectedSpot.X - e.X) > Constants.ClickPrecision
-                    || Math.Abs(selectedSpot.Y - e.Y) > Constants.ClickPrecision;
+                movingFar = Math.Abs(selectedSpot.X - e.X) > Consts.ClickPrecision
+                    || Math.Abs(selectedSpot.Y - e.Y) > Consts.ClickPrecision;
 
             if (movingFar)
             {
                 DisplayDrawings();
                 Spot shadow = new Spot(e.X, e.Y);
-                shadow.Draw(0, Constants.shadowShade, original);
-                shadow.Draw(1, Constants.shadowShade, rotated);
-                shadow.Draw(2, Constants.shadowShade, turned);
+                shadow.Draw(0, Consts.shadowShade, original);
+                shadow.Draw(1, Consts.shadowShade, rotated);
+                shadow.Draw(2, Consts.shadowShade, turned);
             }
         }
 
@@ -196,13 +196,13 @@ namespace Animator
             }
 
             if (!movingFar)
-                movingFar = Math.Abs(selectedSpot.XRight - e.X) > Constants.ClickPrecision;
+                movingFar = Math.Abs(selectedSpot.XRight - e.X) > Consts.ClickPrecision;
 
             if (movingFar)
             {
                 DisplayDrawings();
                 Spot shadow = new Spot(e.X, selectedSpot.Y);
-                shadow.Draw(1, Constants.shadowShade, rotated);
+                shadow.Draw(1, Consts.shadowShade, rotated);
             }
         }
 
@@ -254,13 +254,13 @@ namespace Animator
             }
 
             if (!movingFar)
-                movingFar = Math.Abs(selectedSpot.YDown - e.Y) > Constants.ClickPrecision;
+                movingFar = Math.Abs(selectedSpot.YDown - e.Y) > Consts.ClickPrecision;
 
             if (movingFar)
             {
                 DisplayDrawings();
                 Spot shadow = new Spot(selectedSpot.X, e.Y);
-                shadow.Draw(2, Constants.shadowShade, turned);
+                shadow.Draw(2, Consts.shadowShade, turned);
             }
         }
 
@@ -289,8 +289,8 @@ namespace Animator
                     // Delete Piece
                     else
                     {
-                        DialogResult result = MessageBox.Show("Would you like to restart the piece?", "Restart Confirmation", MessageBoxButtons.YesNo);
-                        if (result == DialogResult.Yes)
+                        var result = MessageBox.Show("Would you like to restart the piece?", "Restart Confirmation", MessageBoxButtons.OKCancel);
+                        if (result == DialogResult.OK)
                         {
                             WIP.Data.Clear();
                             Deselect();
@@ -362,12 +362,12 @@ namespace Animator
         /// <param name="e"></param>
         private void CompleteBtn_Click(object sender, EventArgs e)
         {
-            if (!Utilities.CheckValidNewName(NameTb.Text, Constants.PiecesFolder)) { return; }
+            if (!Utilities.CheckValidNewName(NameTb.Text, Consts.PiecesFolder)) { return; }
 
             // Save Piece and Close Form
             try
             {                
-                Utilities.SaveData(Utilities.GetDirectory(Constants.PiecesFolder, NameTb.Text, Constants.Optr), WIP.GetData());
+                Utilities.SaveData(Utilities.GetDirectory(Consts.PiecesFolder, NameTb.Text, Consts.Optr), WIP.GetData());
                 Close();
             }
             catch (FileNotFoundException)
@@ -445,7 +445,7 @@ namespace Animator
         {
             if (selectedSpot != null)
             {
-                selectedSpot.Connector = Constants.connectorOptions[ConnectorOptions.SelectedIndex];
+                selectedSpot.Connector = Consts.connectorOptions[ConnectorOptions.SelectedIndex];
                 DisplayDrawings();
             }
         }
@@ -460,7 +460,7 @@ namespace Animator
         {
             if (selectedSpot != null)
             {
-                selectedSpot.Solid = (FixedCb.Checked) ? Constants.solidOptions[0] : Constants.solidOptions[1];
+                selectedSpot.Solid = (FixedCb.Checked) ? Consts.solidOptions[0] : Consts.solidOptions[1];
                 DisplayDrawings();
             }
         }
@@ -540,8 +540,8 @@ namespace Animator
             {
                 if (spot.DrawnLevel == 0)
                 {
-                    Color color = (ShowFixedBtn.BackColor == pressed) ? (spot.Solid == Constants.solidOptions[0]) ? Color.SaddleBrown : Color.PeachPuff
-                        : (selectedSpot == spot) ? Constants.select : Color.Black;
+                    Color color = (ShowFixedBtn.BackColor == pressed) ? (spot.Solid == Consts.solidOptions[0]) ? Color.SaddleBrown : Color.PeachPuff
+                        : (selectedSpot == spot) ? Consts.select : Color.Black;
                     spot.Draw(angle, color, board);
                 }
             }
@@ -611,10 +611,10 @@ namespace Animator
             Deselect();
             selectedSpot = select;
             ConnectorOptions.Enabled = true;
-            ConnectorOptions.SelectedIndex = Array.IndexOf(Constants.connectorOptions, selectedSpot.Connector);
+            ConnectorOptions.SelectedIndex = Array.IndexOf(Consts.connectorOptions, selectedSpot.Connector);
             ShowFixedBtn.Enabled = true;
             FixedCb.Enabled = true;
-            FixedCb.Checked = selectedSpot.Solid == Constants.solidOptions[0];
+            FixedCb.Checked = selectedSpot.Solid == Consts.solidOptions[0];
         }
 
         /// <summary>

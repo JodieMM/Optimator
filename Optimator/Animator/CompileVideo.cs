@@ -67,13 +67,7 @@ namespace Animator
         /// <param name="e"></param>
         private void ExitBtn_Click(object sender, EventArgs e)
         {
-            DialogResult result = DialogResult.Yes;
-
-            // Only check if there is something to save
-            if (videoScenes.Count > 0)
-                result = MessageBox.Show("Do you wish to exit without saving?", "Exit Confirmation", MessageBoxButtons.YesNo);
-
-            if (result == DialogResult.Yes)
+            if (Utilities.ExitBtn_Click(videoScenes.Count > 0))
                 Close();
         }
 
@@ -84,7 +78,8 @@ namespace Animator
         /// <param name="e"></param>
         private void SaveBtn_Click(object sender, EventArgs e)
         {
-            if (!Utilities.CheckValidNewName(NameTb.Text, Constants.VideosFolder)) { return; }
+            if (!Utilities.CheckValidNewName(NameTb.Text, Consts.VideosFolder))
+                return;
             try
             {
                 LoadingForm loading = new LoadingForm();
@@ -92,7 +87,7 @@ namespace Animator
                 Application.DoEvents();
 
                 // Prepare Save Location
-                Directory.CreateDirectory(Utilities.GetDirectory(Constants.VideosFolder, NameTb.Text));
+                Directory.CreateDirectory(Utilities.GetDirectory(Consts.VideosFolder, NameTb.Text));
 
                 // Save Images
                 int numFrames = 0;
@@ -102,7 +97,7 @@ namespace Animator
                     for (workingTime = 0; workingTime <= videoScenes[sceneIndex].TimeLength; workingTime += timeIncrement)
                     {
                         Bitmap bitmap = DrawOnBitmap();
-                        bitmap.Save(Utilities.GetDirectory(Constants.VideosFolder, numFrames.ToString(), Constants.Png, NameTb.Text), System.Drawing.Imaging.ImageFormat.Png);
+                        bitmap.Save(Utilities.GetDirectory(Consts.VideosFolder, numFrames.ToString(), Consts.Png, NameTb.Text), System.Drawing.Imaging.ImageFormat.Png);
                         numFrames++;
                     }
                 }

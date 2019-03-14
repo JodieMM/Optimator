@@ -25,14 +25,14 @@ namespace Animator
         public Set(string inName)
         {
             Name = inName;
-            List<string> data = Utilities.ReadFile(Utilities.GetDirectory(Constants.SetsFolder, Name, Constants.Optr));
-            Version = data[0].Split(Constants.Semi)[1];
+            List<string> data = Utilities.ReadFile(Utilities.GetDirectory(Consts.SetsFolder, Name, Consts.Optr));
+            Version = data[0].Split(Consts.Semi)[1];
             Utilities.CheckValidVersion(Version);
 
             // Add all pieces to the list
             for (int index = 1; index < data.Count; index++)
             {
-                string[] dataSections = data[index].Split(Constants.Semi);
+                string[] dataSections = data[index].Split(Consts.Semi);
                 Piece WIP = new Piece(dataSections[0])
                 {
                     PieceOf = this
@@ -43,8 +43,8 @@ namespace Animator
             // Add piece details
             for (int index = 1; index < data.Count; index++)
             {
-                string[] dataSections = data[index].Split(Constants.Semi);
-                string[] pieceData = dataSections[1].Split(Constants.Colon);
+                string[] dataSections = data[index].Split(Consts.Semi);
+                string[] pieceData = dataSections[1].Split(Consts.Colon);
                 Piece WIP = PiecesList[index];
                 WIP.SetValues(double.Parse(pieceData[0]), double.Parse(pieceData[1]), double.Parse(pieceData[2]),
                         double.Parse(pieceData[3]), double.Parse(pieceData[4]), double.Parse(pieceData[5]));
@@ -54,7 +54,7 @@ namespace Animator
                     BasePiece = WIP;
                 else
                 {
-                    string[] spotCoords = dataSections[3].Split(Constants.Colon);
+                    string[] spotCoords = dataSections[3].Split(Consts.Colon);
                     WIP.AttachToPiece(PiecesList[int.Parse(dataSections[2])], new Spot(double.Parse(spotCoords[0]), double.Parse(spotCoords[1]),
                         double.Parse(spotCoords[2]), double.Parse(spotCoords[3])), double.Parse(dataSections[4]), int.Parse(dataSections[5]));
                 }
@@ -67,7 +67,7 @@ namespace Animator
         public Set()
         {
             Name = "";
-            Version = Constants.Version;
+            Version = Consts.Version;
         }
 
 
@@ -82,7 +82,7 @@ namespace Animator
             // Type and Version
             List<string> newData = new List<string>
             {
-                Constants.Set + Constants.Semi + Constants.Version
+                Consts.Set + Consts.Semi + Consts.Version
             };
 
             // Reset Set to Save
@@ -93,12 +93,12 @@ namespace Animator
             for (int index = 0; index < PiecesList.Count; index++)
             {
                 Piece piece = PiecesList[index];
-                string pieceDetails = piece.Name + Constants.SemiS + piece.X + Constants.ColonS + piece.Y + Constants.ColonS +
-                        piece.R + Constants.ColonS + piece.T + Constants.ColonS + piece.S + Constants.ColonS + piece.SM;
+                string pieceDetails = piece.Name + Consts.SemiS + piece.X + Consts.ColonS + piece.Y + Consts.ColonS +
+                        piece.R + Consts.ColonS + piece.T + Consts.ColonS + piece.S + Consts.ColonS + piece.SM;
                 if (piece != BasePiece)
-                    pieceDetails += Constants.SemiS + PiecesList.IndexOf(piece.AttachedTo) + Constants.SemiS + piece.Join.X + Constants.ColonS +
-                        piece.Join.Y + Constants.ColonS + piece.Join.XRight + Constants.ColonS + piece.Join.YDown + Constants.SemiS +
-                        piece.AngleFlip + Constants.SemiS + piece.IndexSwitch;
+                    pieceDetails += Consts.SemiS + PiecesList.IndexOf(piece.AttachedTo) + Consts.SemiS + piece.Join.X + Consts.ColonS +
+                        piece.Join.Y + Consts.ColonS + piece.Join.XRight + Consts.ColonS + piece.Join.YDown + Consts.SemiS +
+                        piece.AngleFlip + Consts.SemiS + piece.IndexSwitch;
                 newData.Add(pieceDetails);
             }
             return newData;

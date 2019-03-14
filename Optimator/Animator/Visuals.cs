@@ -65,7 +65,7 @@ namespace Animator
             // Draw Outline
             for (int pointIndex = 0; pointIndex < numCoords && numCoords > 1 && piece.OutlineWidth > 0; pointIndex++)
             {
-                if (spots[pointIndex].Connector != Constants.connectorOptions[1])
+                if (spots[pointIndex].Connector != Consts.connectorOptions[1])
                 {
                     Point start; Point end;
                     // Draw Line Between Final Point and First Point
@@ -82,7 +82,7 @@ namespace Animator
                     }
 
                     // Connected by Line
-                    if (spots[pointIndex].Connector == Constants.connectorOptions[0])
+                    if (spots[pointIndex].Connector == Consts.connectorOptions[0])
                     {
                         g.DrawLine(pen, start, end);
                     }

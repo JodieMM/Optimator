@@ -31,8 +31,8 @@ namespace Animator
             try
             {
                 // Read File
-                List<string> data = Utilities.ReadFile(Utilities.GetDirectory(Constants.ScenesFolder, fileName, Constants.Optr));
-                Version = data[0].Split(Constants.Semi)[1];
+                List<string> data = Utilities.ReadFile(Utilities.GetDirectory(Consts.ScenesFolder, fileName, Consts.Optr));
+                Version = data[0].Split(Consts.Semi)[1];
                 Utilities.CheckValidVersion(Version);
 
                 // Time Length
@@ -60,7 +60,7 @@ namespace Animator
                 {
                     int workingIndex = index - partEndIndex - 1;
                     Piece piece = PiecesList[workingIndex];
-                    string[] originals = data[index].Split(Constants.Semi);
+                    string[] originals = data[index].Split(Consts.Semi);
                     piece.SetValues(double.Parse(originals[0]), double.Parse(originals[1]), double.Parse(originals[2]),
                                 double.Parse(originals[3]), double.Parse(originals[4]), double.Parse(originals[5]));
                     piece.Originally = new Originals(piece);
@@ -69,7 +69,7 @@ namespace Animator
                 // Read frame changes
                 for (int index = lastPieceIndex + 1; index < data.Count; index++)
                 {
-                    string[] changes = data[index].Split(Constants.Semi);
+                    string[] changes = data[index].Split(Consts.Semi);
                     Changes.Add(new Change(int.Parse(changes[0]), changes[1], PiecesList[int.Parse(changes[2])], double.Parse(changes[3]), decimal.Parse(changes[4]), this));
                 }                                               
             }
@@ -103,7 +103,7 @@ namespace Animator
         {
             List<string> data = new List<string>
             {
-                Constants.Scene + Constants.Semi + Constants.Version,
+                Consts.Scene + Consts.Semi + Consts.Version,
                 TimeLength.ToString()
             };
 
@@ -114,7 +114,7 @@ namespace Animator
             // Save Original States
             data.Add("Originals");
             foreach (Piece piece in PiecesList)
-                data.Add(piece.Originally != null ? piece.Originally.GetSaveData() : Constants.defaultAngleOptions);
+                data.Add(piece.Originally != null ? piece.Originally.GetSaveData() : Consts.defaultAngleOptions);
 
             // Save Animation Changes
             foreach (Change change in Changes)

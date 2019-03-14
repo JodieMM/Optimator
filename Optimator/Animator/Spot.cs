@@ -42,8 +42,8 @@ namespace Animator
             Y = y;
             XRight = xr ?? x;
             YDown = yd ?? y;
-            Connector = connect ?? Constants.connectorOptions[0];
-            Solid = solid ?? Constants.solidOptions[0];
+            Connector = connect ?? Consts.connectorOptions[0];
+            Solid = solid ?? Consts.solidOptions[0];
             DrawnLevel = drawn;
         }
 
@@ -57,8 +57,8 @@ namespace Animator
         /// <returns>Spot data</returns>
         public override string ToString()
         {
-            return X + Constants.ColonS + Y + Constants.ColonS + XRight + Constants.ColonS + YDown + Constants.SemiS +
-                Connector + Constants.SemiS + Solid;
+            return X + Consts.ColonS + Y + Consts.ColonS + XRight + Consts.ColonS + YDown + Consts.SemiS +
+                Connector + Consts.SemiS + Solid;
         }
 
         /// <summary>

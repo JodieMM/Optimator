@@ -83,8 +83,8 @@
         /// <returns>Change in string form</returns>
         public override string ToString()
         {
-            return StartTime + ";" + Action + ";" + host.PartsList.IndexOf(AffectedPiece) 
-                + ";" + HowMuch + ";" + HowLong;
+            return StartTime + Consts.ColonS + Action + Consts.ColonS + host.PartsList.IndexOf(AffectedPiece) 
+                + Consts.ColonS + HowMuch + Consts.ColonS + HowLong;
         }
     }
 }

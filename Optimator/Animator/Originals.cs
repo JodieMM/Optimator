@@ -50,7 +50,7 @@ namespace Animator
         /// <returns>Semicolon-seperated attribute string</returns>
         public string GetSaveData()
         {
-            return X + ";" + Y + ";" + R + ";" + T + ";" + S + ";" + SM;
+            return X + Consts.ColonS + Y + Consts.ColonS + R + Consts.ColonS + T + Consts.ColonS + S + Consts.ColonS + SM;
         }
     }
 }

@@ -220,10 +220,10 @@ namespace Animator
         /// <param name="e"></param>
         private void FinishSceneBtn_Click(object sender, EventArgs e)
         {
-            if (!Utilities.CheckValidNewName(NameTb.Text, Constants.ScenesFolder)) { return; }            
+            if (!Utilities.CheckValidNewName(NameTb.Text, Consts.ScenesFolder)) { return; }            
             try
             {
-                Utilities.SaveData(Utilities.GetDirectory(Constants.ScenesFolder, SceneTb.Text, Constants.Optr), WIP.GetData());
+                Utilities.SaveData(Utilities.GetDirectory(Consts.ScenesFolder, SceneTb.Text, Consts.Optr), WIP.GetData());
                 Close();
             }
             catch (FileNotFoundException)
@@ -407,12 +407,13 @@ namespace Animator
                         // If piece is involved in set
                         if (selected.ToPiece().PieceOf != null)
                         {
-                            DialogResult result = MessageBox.Show("This will delete the entire set. Do you wish to continue?",
-                                "Overwrite Confirmation", MessageBoxButtons.YesNo);
-                            if (result == DialogResult.No) { return; }
+                            var result = MessageBox.Show("This will delete the entire set. Do you wish to continue?",
+                                "Overwrite Confirmation", MessageBoxButtons.OKCancel);
+                            if (result == DialogResult.Cancel)
+                                return;
 
-                            Set deleting = selected.ToPiece().PieceOf;
-                            foreach (Piece piece in deleting.PiecesList)
+                            var deleting = selected.ToPiece().PieceOf;
+                            foreach (var piece in deleting.PiecesList)
                                 WIP.PartsList.Remove(piece);
                         }
                         // Piece is lone
@@ -423,7 +424,7 @@ namespace Animator
                         }
 
                         // Update changes to remove those made redundant by deleting a piece/set
-                        foreach (Change change in WIP.Changes)
+                        foreach (var change in WIP.Changes)
                         {
                             if (!WIP.PartsList.Contains(change.AffectedPiece))
                                 WIP.Changes.Remove(change);

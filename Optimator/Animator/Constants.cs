@@ -1,5 +1,4 @@
 ﻿using System.Drawing;
-using System.Text.RegularExpressions;
 
 namespace Animator
 {
@@ -9,7 +8,7 @@ namespace Animator
     /// 
     /// Author Jodie Muller
     /// </summary>
-    public static class Constants
+    public static class Consts
     {
         // Setup
         public const string Version = "1.1.0";

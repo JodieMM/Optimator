@@ -74,8 +74,8 @@ namespace Animator
         /// <returns>True if the versions are compatible</returns>
         public static bool CheckValidVersion(string version, bool message = true)
         {
-            string[] thisVer = version.Split(Constants.Stop);
-            string[] currVer = Constants.Version.Split(Constants.Stop);
+            string[] thisVer = version.Split(Consts.Stop);
+            string[] currVer = Consts.Version.Split(Consts.Stop);
             if (thisVer[0] == currVer[0] && thisVer[1] == currVer[1])
                 return true;
 
@@ -101,10 +101,10 @@ namespace Animator
             }
 
             // Check name not already in use, or that overriding is okay
-            if (File.Exists(GetDirectory(folder, name, Constants.Optr)))
+            if (File.Exists(GetDirectory(folder, name, Consts.Optr)))
             {
-                DialogResult result = MessageBox.Show("This name is already in use. Do you want to override the existing file?", "Override Confirmation", MessageBoxButtons.YesNo);
-                if (result == DialogResult.No) { return false; }
+                var result = MessageBox.Show("This name is already in use. Do you want to override the existing file?", "Override Confirmation", MessageBoxButtons.OKCancel);
+                if (result == DialogResult.Cancel) { return false; }
             }
             return true;
         }
@@ -194,8 +194,8 @@ namespace Animator
         /// <returns>A string array of ARGB values</returns>
         public static string ColorToString(Color color)
         {
-            return color.A + Constants.CommaS + color.R + Constants.CommaS +
-                color.G + Constants.CommaS + color.B;
+            return color.A + Consts.CommaS + color.R + Consts.CommaS +
+                color.G + Consts.CommaS + color.B;
         }
 
         /// <summary>
@@ -205,7 +205,7 @@ namespace Animator
         /// <returns>A colour with the given ARGB value</returns>
         public static Color ColourFromString(string color)
         {
-            string[] argb = color.Split(Constants.Comma);
+            string[] argb = color.Split(Consts.Comma);
             return Color.FromArgb(int.Parse(argb[0]), int.Parse(argb[1]), 
                 int.Parse(argb[2]), int.Parse(argb[3]));
         }
@@ -223,13 +223,13 @@ namespace Animator
         /// <returns>True if the form should be closed</returns>
         public static bool ExitBtn_Click(bool saveCondition)
         {
-            DialogResult result = DialogResult.Yes;
+            var result = DialogResult.OK;
 
             // Only check saving if something to save
             if (saveCondition)
-                result = DialogResult.Yes; // TODO: Add back MessageBox.Show("Do you want to exit without saving? Your work will be lost.", "Exit Confirmation", MessageBoxButtons.YesNo);
+                result = DialogResult.OK; // TODO: Add back MessageBox.Show("Do you want to exit without saving? Your work will be lost.", "Exit Confirmation", MessageBoxButtons.OKCancel);
 
-            return result == DialogResult.Yes;
+            return result == DialogResult.OK;
         }
 
 
@@ -268,7 +268,7 @@ namespace Animator
         /// <returns>Index of list that is closest</returns>
         public static int FindClosestIndex(List<Spot> toSearch, int angle, int x, int y)
         {
-            foreach (int range in Constants.Ranges)
+            foreach (int range in Consts.Ranges)
             {
                 for (int index = 0; index < toSearch.Count(); index++)
                 {

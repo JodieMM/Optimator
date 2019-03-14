@@ -23,7 +23,7 @@ namespace Animator
         /// Loads the settings that have been saved to the program.
         /// </summary>
         /// <param name="file">The file to load the settings from</param>
-        public static void InitialSettings(string file = Constants.Settings)
+        public static void InitialSettings(string file = Consts.Settings)
         {
             // Read settings data and check valid
             var data = Utilities.ReadFile(file);
@@ -35,9 +35,9 @@ namespace Animator
 
             // Check version and update if required
             Version = data[0];
-            if (!Utilities.CheckValidVersion(Version, false) && file == Constants.Settings)
+            if (!Utilities.CheckValidVersion(Version, false) && file == Consts.Settings)
             {
-                var defaultData = Utilities.ReadFile(Constants.DefaultSettings);
+                var defaultData = Utilities.ReadFile(Consts.DefaultSettings);
                 defaultData.RemoveRange(0, data.Count);
                 data.AddRange(defaultData);
             }
@@ -46,7 +46,7 @@ namespace Animator
             BackgroundColour = Utilities.ColourFromString(data[1]);
 
             // Save Changes if Updated
-            if (!Utilities.CheckValidVersion(Version, false) && file == Constants.Settings)
+            if (!Utilities.CheckValidVersion(Version, false) && file == Consts.Settings)
                 UpdateSettings();
         }
 
@@ -60,7 +60,7 @@ namespace Animator
                 Version,
                 Utilities.ColorToString(BackgroundColour)
             };
-            Utilities.SaveData(Constants.Settings, data);
+            Utilities.SaveData(Consts.Settings, data);
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace Animator
             var result = MessageBox.Show("This will erase all custom settings. Continue?", "Setting Reset Confirmation", MessageBoxButtons.OKCancel);
             if (result == DialogResult.OK)
             {
-                InitialSettings(Constants.DefaultSettings);
+                InitialSettings(Consts.DefaultSettings);
                 UpdateSettings();
             }
         }

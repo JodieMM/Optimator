@@ -15,7 +15,7 @@ namespace Animator
         public SettingsForm()
         {
             InitializeComponent();
-            VersionLbl.Text = "Version " + Constants.Version;
+            VersionLbl.Text = "Version " + Consts.Version;
             DisplaySettings();
         }
 

@@ -90,7 +90,7 @@ namespace Animator
         {
             if (WIP.PiecesList.Count < 1)
                 Close();
-            else if (!Utilities.CheckValidNewName(NameTb.Text, Constants.SetsFolder))
+            else if (!Utilities.CheckValidNewName(NameTb.Text, Consts.SetsFolder))
                 return;
             else if (!CheckSingularBasePiece())
                 MessageBox.Show("Please connect all pieces but one or remove unconnected pieces.", "Multiple Sets", MessageBoxButtons.OK);
@@ -98,7 +98,7 @@ namespace Animator
             {
                 try
                 {
-                    Utilities.SaveData(Utilities.GetDirectory(Constants.SetsFolder, NameTb.Text, Constants.Optr), WIP.GetData());
+                    Utilities.SaveData(Utilities.GetDirectory(Consts.SetsFolder, NameTb.Text, Consts.Optr), WIP.GetData());
                     Close();
                 }
                 catch (FileNotFoundException)
@@ -273,8 +273,8 @@ namespace Animator
         private void DrawBase_MouseDown(object sender, MouseEventArgs e)
         {
             // Move the Piece's Join            
-            if (MoveJoinBtn.BackColor == pressed && Math.Abs(e.X - selected.Join.X) > Constants.ClickPrecision && 
-                Math.Abs(e.Y - selected.Join.Y) > Constants.ClickPrecision)
+            if (MoveJoinBtn.BackColor == pressed && Math.Abs(e.X - selected.Join.X) > Consts.ClickPrecision && 
+                Math.Abs(e.Y - selected.Join.Y) > Consts.ClickPrecision)
             {
                 // TODO: (Move Join) &Joins
                 //selected.Join = NEW JOIN
@@ -326,8 +326,8 @@ namespace Animator
             else
             {
                 if (!movingFar)
-                    movingFar = Math.Abs(selected.X - e.X) > Constants.ClickPrecision
-                        || Math.Abs(selected.Y - e.Y) > Constants.ClickPrecision;
+                    movingFar = Math.Abs(selected.X - e.X) > Consts.ClickPrecision
+                        || Math.Abs(selected.Y - e.Y) > Consts.ClickPrecision;
 
                 // TODO: (Shadows) Fix!
                 //if (movingFar)
@@ -436,15 +436,15 @@ namespace Animator
             foreach (Piece piece in WIP.PiecesList)
             {
                 if (selected != null && piece == selected)
-                    piece.Draw(board, Constants.select);
+                    piece.Draw(board, Consts.select);
                 else if (selected != null && piece == selected.AttachedTo)
-                    piece.Draw(board, Constants.highlight);
+                    piece.Draw(board, Consts.highlight);
                 else
                     piece.Draw(board);              
             }
             if (MoveJoinBtn.BackColor == pressed)
                 Visuals.DrawCross(selected.Join.X + selected.GetCoords()[0],
-                    selected.Join.Y + selected.GetCoords()[1], Constants.highlight, board);
+                    selected.Join.Y + selected.GetCoords()[1], Consts.highlight, board);
         }
 
         /// <summary>
