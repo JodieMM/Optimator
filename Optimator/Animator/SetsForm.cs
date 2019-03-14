@@ -321,26 +321,28 @@ namespace Animator
             // Invalid Mouse Position
             if (e.X < 0 || e.Y < 0 || e.X > DrawBase.Size.Width || e.Y > DrawBase.Size.Height)
                 StopMoving();
-
             // Move Point
             else
             {
                 if (!movingFar)
                     movingFar = Math.Abs(selected.X - e.X) > Consts.ClickPrecision
-                        || Math.Abs(selected.Y - e.Y) > Consts.ClickPrecision;
-
-                // TODO: (Shadows) Fix!
-                //if (movingFar)
-                //{
-                //    Piece shadow = new Piece();
-                //    shadow.Data.Add(selected.Data[selected.FindRow()]);
-                //    shadow.FillColour = new Color[] { Constants.shadowShade };
-                //    shadow.OutlineColour = Constants.invisible;
-                //    shadow.X = e.X; shadow.Y = e.Y;
-                //    shadow.Draw(original);
-                //}
+                        || Math.Abs(selected.Y - e.Y) > Consts.ClickPrecision;                
             }
             DisplayDrawings();
+
+            // Shadows
+            if (movingFar)
+            {
+                for (int index = 0; index < selected.Data.Count; index++)
+                {
+                    var xChange = e.X - (float)selected.middle[0];
+                    var yChange = e.Y - (float)selected.middle[1];
+                    original.DrawLine(new Pen(Consts.shadowShade), (float)selected.Data[index].GetCoordCombination()[0] + xChange, 
+                        (float)selected.Data[index].GetCoordCombination()[1] + yChange, 
+                        (float)selected.Data[Utilities.Modulo(index + 1, selected.Data.Count)].GetCoordCombination()[0] + xChange, 
+                        (float)selected.Data[Utilities.Modulo(index + 1, selected.Data.Count)].GetCoordCombination()[1] + yChange);
+                }
+            }
         }
 
         /// <summary>
@@ -404,7 +406,7 @@ namespace Animator
         // ----- OTHER FUNCTIONS -----
 
         /// <summary>
-        /// Displays all of the current piecesvto the screen.
+        /// Displays all of the current pieces to the screen.
         /// </summary>
         private void DisplayDrawings()
         {
@@ -435,7 +437,9 @@ namespace Animator
         {
             foreach (Piece piece in WIP.PiecesList)
             {
-                if (selected != null && piece == selected)
+                if (selected != null && piece == selected && movingFar)
+                    piece.Draw(board, Consts.shadowShade);
+                else if (selected != null && piece == selected)
                     piece.Draw(board, Consts.select);
                 else if (selected != null && piece == selected.AttachedTo)
                     piece.Draw(board, Consts.highlight);
