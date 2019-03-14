@@ -457,7 +457,6 @@ namespace Animator
             for (int index = 0; index < Data.Count; index++)
                 if (index != matchIndex && Data[index].GetCoordCombination()[xy] == Data[matchIndex].GetCoordCombination()[xy])
                     return index;
-
             return -1;
         }
 
@@ -574,9 +573,10 @@ namespace Animator
         private List<double[]> LinesCoords()
         {
             var linesCoords = new List<double[]>();
-            for (int index = 0; index < Data.Count; index++)
-                linesCoords.AddRange(LineCoords(Data[index].GetCoordCombination(),
-                    Data[Utilities.Modulo(index + 1, Data.Count)].GetCoordCombination(), Data[index].Connector));
+            var data = CurrentPoints();
+            for (int index = 0; index < data.Count; index++)
+                linesCoords.AddRange(LineCoords(data[index], 
+                    data[Utilities.Modulo(index + 1, data.Count)], Data[index].Connector));
             return linesCoords;
         }
 
@@ -587,7 +587,7 @@ namespace Animator
         public List<double[]> LineBounds()
         {
             // Turn coords into bound ranges
-            var outlineShape = CurrentPoints();
+            var outlineShape = LinesCoords();
             var minMax = Utilities.FindMinMax(outlineShape);
             var ranges = new List<double[]>();
             for (int index = (int)minMax[2]; index <= (int)minMax[3]; index++)
@@ -603,9 +603,6 @@ namespace Animator
                         yMatches.Add(outlineShape[coordIndex]);
 
                 // Pair Remaining Coords into Bounds
-                if (yMatches.Count % 2 != 0)
-                    throw new Exception("A range item is missing a matching bound.");
-
                 while (yMatches.Count > 1)
                 {
                     double min1 = 999999;
@@ -647,7 +644,7 @@ namespace Animator
         /// </summary>
         public void RunCalculations()
         {
-            var convertedData = Utilities.ConvertSpotsToCoords(Data, 3);
+            var convertedData = Utilities.ConvertSpotsToCoords(Data, 0);
             middle = Utilities.FindMid(convertedData);
             minMax = Utilities.FindMinMax(convertedData);
         }

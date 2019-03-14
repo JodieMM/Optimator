@@ -137,3 +137,4 @@ C:\Users\jodie\Documents\0 Documents\Projects\Programming\Optimator\Optimator\An
 C:\Users\jodie\Documents\0 Documents\Projects\Programming\Optimator\Optimator\Animator\obj\Debug\Animator.csproj.CoreCompileInputs.cache
 C:\Users\jodie\Documents\0 Documents\Projects\Programming\Optimator\Optimator\Animator\obj\Debug\Animator.exe
 C:\Users\jodie\Documents\0 Documents\Projects\Programming\Optimator\Optimator\Animator\obj\Debug\Animator.pdb
+C:\Users\jodie\Documents\0 Documents\Projects\Programming\Optimator\Optimator\Animator\obj\Debug\Animator.csprojAssemblyReference.cache
