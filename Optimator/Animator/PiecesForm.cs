@@ -28,8 +28,7 @@ namespace Animator
         private Color unpressed = Color.LightCyan;
         private Color pressed = Color.FromArgb(255, 153, 255, 255);
         #endregion
-
-
+        
 
         /// <summary>
         /// Constructor creates a PiecesForm page
@@ -310,6 +309,7 @@ namespace Animator
 
 
         // ----- OPTION BUTTONS -----
+        #region Option Buttons
 
         /// <summary>
         /// Changes between placing points and selecting them.
@@ -329,8 +329,11 @@ namespace Animator
         /// <param name="e"></param>
         private void PreviewBtn_Click(object sender, EventArgs e)
         {
-            PreviewForm previewForm = new PreviewForm(WIP);
-            previewForm.Show();
+            if (CheckPiecesValid())
+            {
+                var previewForm = new PreviewForm(WIP);
+                previewForm.Show();
+            }
         }
 
         /// <summary>
@@ -362,7 +365,8 @@ namespace Animator
         /// <param name="e"></param>
         private void CompleteBtn_Click(object sender, EventArgs e)
         {
-            if (!Utilities.CheckValidNewName(NameTb.Text, Consts.PiecesFolder)) { return; }
+            if (!Utilities.CheckValidNewName(NameTb.Text, Consts.PiecesFolder) || !CheckPiecesValid())
+                return;
 
             // Save Piece and Close Form
             try
@@ -396,6 +400,8 @@ namespace Animator
                 DisplayDrawings();
             }  
         }
+
+        #endregion
 
 
 
@@ -656,6 +662,82 @@ namespace Animator
             movingFar = false;
         }
 
+        /// <summary>
+        /// Checks whether the pieces drawn can be calculated correctly.
+        /// </summary>
+        /// <returns>True if piece is valid</returns>
+        private bool CheckPiecesValid()
+        {
+            var o = WIP.Data;
+            if (o.Count < 2) { return true; }
+
+            // Check X
+            bool bigger = (o[0].X < o[1].X);
+            int switchCount = 0;
+            for (int index = 0; index < o.Count - 1; index++)
+            {
+                if (o[index].X < o[index + 1].X != bigger)
+                {
+                    bigger = !bigger;
+                    switchCount++;
+                }
+            }
+            if (switchCount > 2)
+            {
+                MessageBox.Show("Invalid base shape. Ensure shape does not fold back on itself.", "Invalid base shape", MessageBoxButtons.OK);
+                return false;
+            }
+            // Check Y
+            bigger = (o[0].Y < o[1].Y);
+            switchCount = 0;
+            for (int index = 0; index < o.Count - 1; index++)
+            {
+                if (o[index].Y < o[index + 1].Y != bigger)
+                {
+                    bigger = !bigger;
+                    switchCount++;
+                }
+            }
+            if (switchCount > 2)
+            {
+                MessageBox.Show("Invalid base shape. Ensure shape does not fold back on itself.", "Invalid base shape", MessageBoxButtons.OK);
+                return false;
+            }
+            // Check XRight
+            bigger = (o[0].XRight < o[1].XRight);
+            switchCount = 0;
+            for (int index = 0; index < o.Count - 1; index++)
+            {
+                if (o[index].XRight < o[index + 1].XRight != bigger)
+                {
+                    bigger = !bigger;
+                    switchCount++;
+                }
+            }
+            if (switchCount > 2)
+            {
+                MessageBox.Show("Invalid rotated shape. Ensure shape does not fold back on itself.", "Invalid rotated shape", MessageBoxButtons.OK);
+                return false;
+            }
+            // Check YDown
+            bigger = (o[0].YDown < o[1].YDown);
+            switchCount = 0;
+            for (int index = 0; index < o.Count - 1; index++)
+            {
+                if (o[index].YDown < o[index + 1].YDown != bigger)
+                {
+                    bigger = !bigger;
+                    switchCount++;
+                }
+            }
+            if (switchCount > 2)
+            {
+                MessageBox.Show("Invalid turned shape. Ensure shape does not fold back on itself.", "Invalid turned shape", MessageBoxButtons.OK);
+                return false;
+            }
+            return true;
+        }
+
 
 
         // ----- LOAD MENU FUNCTIONS -----
@@ -706,172 +788,5 @@ namespace Animator
                 DisplayDrawings();
             });
         }
-
-
-
-
-        //// ----- DATA FUNCTIONS -----
-
-        ///// <summary>
-        ///// Applies the 3-board segment across the entire piece.
-        ///// </summary>
-        //private void ApplySegmentFully()
-        //{
-        //    Utilities.CoordsOnAllSides(WIP.Data);
-        //    List<Spot> spotCopy = DataRow.CopySpots();
-        //    bool[] tt = { true, true };
-        //    bool[] tf = { true, false };
-        //    bool[] ft = { false, true };
-        //    bool[] ff = { false, false };
-
-        //    List<DataRow> newRows = new List<DataRow> {
-        //        ConvertVariablesToData(0, 90, 0, 90, spotCopy, 0, new List<bool[]> { ff, ff, ff }),
-        //        ConvertVariablesToData(90, 180, 0, 90, spotCopy, 1, new List<bool[]> { ff, tf, ff }),
-        //        ConvertVariablesToData(180, 270, 0, 90, spotCopy, 0, new List<bool[]> { tf, tf, tf }),
-        //        ConvertVariablesToData(270, 360, 0, 90, spotCopy, 1, new List<bool[]> { tf, ff, tf }),
-
-        //        ConvertVariablesToData(0, 90, 90, 180, spotCopy, 2, new List<bool[]> { ff, ff, ft }),
-        //        ConvertVariablesToData(90, 180, 90, 180, spotCopy, 3, new List<bool[]> { ff, tf, ft }),
-        //        ConvertVariablesToData(180, 270, 90, 180, spotCopy, 2, new List<bool[]> { tf, tf, tt }),
-        //        ConvertVariablesToData(270, 360, 90, 180, spotCopy, 3, new List<bool[]> { tf, ff, tt }),
-
-        //        ConvertVariablesToData(0, 90, 180, 270, spotCopy, 0, new List<bool[]> { ft, ft, ft }),
-        //        ConvertVariablesToData(90, 180, 180, 270, spotCopy, 1, new List<bool[]> { ft, tt, ft }),
-        //        ConvertVariablesToData(180, 270, 180, 270, spotCopy, 0, new List<bool[]> { tt, tt, tt }),
-        //        ConvertVariablesToData(270, 360, 180, 270, spotCopy, 1, new List<bool[]> { tt, ft, tt }),
-
-        //        ConvertVariablesToData(0, 90, 270, 360, spotCopy, 2, new List<bool[]> { ft, ft, ff }),
-        //        ConvertVariablesToData(90, 180, 270, 360, spotCopy, 3, new List<bool[]> { ft, tt, ff }),
-        //        ConvertVariablesToData(180, 270, 270, 360, spotCopy, 2, new List<bool[]> { tt, tt, tf }),
-        //        ConvertVariablesToData(270, 360, 270, 360, spotCopy, 3, new List<bool[]> { tt, ft, tf })
-        //    };
-        //    WIP.Data = newRows;
-        //}
-
-        ///// <summary>
-        ///// Converts relevant variables for a piece's angle into a data line and saves to piece data.
-        ///// </summary>
-        ///// <param name="rFrom">Rotation start</param>
-        ///// <param name="rTo">Rotation end</param>
-        ///// <param name="tFrom">Turn start</param>
-        ///// <param name="tTo">Turn end</param>
-        ///// <param name="spotsList">Original spots to convert</param>
-        ///// <param name="origAngle">Angle at rFrom tFrom, (0) o (1) r (2) t (3) b</param>
-        ///// <returns>The provided data in a DataRow</returns>
-        //private DataRow ConvertVariablesToData(double rFrom, double rTo, double tFrom, double tTo, List<Spot> spts, int origAngle, List<bool[]> flips)
-        //{
-        //    DataRow newRow = new DataRow(rFrom, rTo, tFrom, tTo);
-        //    double[] middle = Utilities.FindMid(Utilities.ConvertSpotsToCoords(WIP.Data, origAngle));
-
-        //    // Find spots for DataRow
-        //    List<double[]> original = Utilities.FlipCoords(spts, origAngle, flips[0], middle);
-        //    int rotAngle; int turnAngle;
-        //    switch (origAngle)
-        //    {
-        //        case 1:
-        //            rotAngle = 0;
-        //            turnAngle = 3;
-        //            break;
-        //        case 2:
-        //            rotAngle = 3;
-        //            turnAngle = 0;
-        //            break;
-        //        case 3:
-        //            rotAngle = 2;
-        //            turnAngle = 1;
-        //            break;
-        //        default:
-        //            rotAngle = 1;
-        //            turnAngle = 2;
-        //            break;
-        //    }
-        //    List<double[]> rotated = Utilities.FlipCoords(spts, rotAngle, flips[1], middle);
-        //    List<double[]> turned = Utilities.FlipCoords(spts, turnAngle, flips[2], middle);
-        //    for (int index = 0; index < spts.Count; index++)
-        //    {
-        //        double x = original[index][0];
-        //        double y = original[index][1];
-        //        double xr = rotated[index][0];
-        //        double yd = turned[index][1];
-        //        newRow.Spots.Add(new Spot(x, xr, y, yd, spts[index].Connector, spts[index].Solid, spts[index].DrawnLevel));
-        //    }
-        //    return newRow;
-        //}
-
-        ///// <summary>
-        ///// Checks whether the pieces drawn can be calculated correctly.
-        ///// </summary>
-        ///// <param name="o">Base piece coordinates</param>
-        ///// <returns>Whether piece is valid</returns>
-        //private bool CheckPiecesValid(List<Spot> o)     //TODO: Remove need for this function
-        //{
-        //    if (o.Count < 2) { return true; }
-
-        //    // Check X
-        //    bool bigger = (o[0].X < o[1].X);
-        //    int switchCount = 0;
-        //    for (int index = 0; index < o.Count - 1; index++)
-        //    {
-        //        if (o[index].X < o[index + 1].X != bigger)
-        //        {
-        //            bigger = !bigger;
-        //            switchCount++;
-        //        }
-        //    }
-        //    if (switchCount > 2)
-        //    {
-        //        MessageBox.Show("Invalid base shape. Ensure shape does not fold back on itself.", "Invalid base shape", MessageBoxButtons.OK);
-        //        return false;
-        //    }
-        //    // Check Y
-        //    bigger = (o[0].Y < o[1].Y);
-        //    switchCount = 0;
-        //    for (int index = 0; index < o.Count - 1; index++)
-        //    {
-        //        if (o[index].Y < o[index + 1].Y != bigger)
-        //        {
-        //            bigger = !bigger;
-        //            switchCount++;
-        //        }
-        //    }
-        //    if (switchCount > 2)
-        //    {
-        //        MessageBox.Show("Invalid base shape. Ensure shape does not fold back on itself.", "Invalid base shape", MessageBoxButtons.OK);
-        //        return false;
-        //    }
-        //    // Check XRight
-        //    bigger = (o[0].XRight < o[1].XRight);
-        //    switchCount = 0;
-        //    for (int index = 0; index < o.Count - 1; index++)
-        //    {
-        //        if (o[index].XRight < o[index + 1].XRight != bigger)
-        //        {
-        //            bigger = !bigger;
-        //            switchCount++;
-        //        }
-        //    }
-        //    if (switchCount > 2)
-        //    {
-        //        MessageBox.Show("Invalid rotated shape. Ensure shape does not fold back on itself.", "Invalid rotated shape", MessageBoxButtons.OK);
-        //        return false;
-        //    }
-        //    // Check YDown
-        //    bigger = (o[0].YDown < o[1].YDown);
-        //    switchCount = 0;
-        //    for (int index = 0; index < o.Count - 1; index++)
-        //    {
-        //        if (o[index].YDown < o[index + 1].YDown != bigger)
-        //        {
-        //            bigger = !bigger;
-        //            switchCount++;
-        //        }
-        //    }
-        //    if (switchCount > 2)
-        //    {
-        //        MessageBox.Show("Invalid turned shape. Ensure shape does not fold back on itself.", "Invalid turned shape", MessageBoxButtons.OK);
-        //        return false;
-        //    }
-        //    return true;
-        //}
     }
 }
