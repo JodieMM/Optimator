@@ -31,9 +31,9 @@ namespace Animator
             try
             {
                 // Read File
-                List<string> data = Utilities.ReadFile(Utilities.GetDirectory(Consts.ScenesFolder, fileName, Consts.Optr));
+                List<string> data = Utils.ReadFile(Utils.GetDirectory(Consts.ScenesFolder, fileName, Consts.Optr));
                 Version = data[0].Split(Consts.Semi)[1];
-                Utilities.CheckValidVersion(Version);
+                Utils.CheckValidVersion(Version);
 
                 // Time Length
                 TimeLength = decimal.Parse(data[1]);

@@ -9,11 +9,11 @@ using System.Text.RegularExpressions;
 namespace Animator
 {
     /// <summary>
-    /// Holds functions common to multiple classes and/or forms.
+    /// Holds utility functions common to multiple classes and/or forms.
     /// 
     /// Author Jodie Muller
     /// </summary>
-    public class Utilities
+    public class Utils
     {
         // ----- FILE I/O -----
         #region File I/O
@@ -89,6 +89,22 @@ namespace Animator
         }
 
         /// <summary>
+        /// Creates a new folder at a user's selected location.
+        /// </summary>
+        /// <param name="baseFolder">Whether the initial four sub-folders should be added</param>
+        /// <returns>Path for new folder</returns>
+        public static string CreateFolder(bool baseFolder = false)
+        {
+            // TODO: Complete create folder function
+            return "";
+            // Create folder
+            //if (baseFolder)
+            //{
+            //    // Create folder for each type (piece, set, scene, video)
+            //}
+        }
+
+        /// <summary>
         /// Reads information from a file and returns it.
         /// </summary>
         /// <param name="directory">The file to read from</param>
@@ -96,7 +112,7 @@ namespace Animator
         public static List<string> ReadFile(string directory)
         {
             var data = new List<string>();
-            StreamReader file = new StreamReader(directory);
+            var file = new StreamReader(directory);
             string line;
             while ((line = file.ReadLine()) != null)
                 data.Add(line);
@@ -123,7 +139,7 @@ namespace Animator
         /// </summary>
         /// <param name="folder">The folder the item is in</param>
         /// <param name="name">The item name</param>
-        /// <param name="fileType">The file's type, e.g. optr, txt, png</param>
+        /// <param name="fileType">The file's type, e.g. optr</param>
         /// <returns></returns>
         public static string GetDirectory(string folder, string name, string fileType = "", string subfolder = "")
         {

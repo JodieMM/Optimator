@@ -58,11 +58,11 @@ namespace Animator
         {
             // Get Piece Data
             Name = inName;
-            var data = Utilities.ReadFile(Utilities.GetDirectory(Consts.PiecesFolder, Name, Consts.Optr));
+            var data = Utils.ReadFile(Utils.GetDirectory(Consts.PiecesFolder, Name, Consts.Optr));
 
             // Get Version
             Version = data[0].Split(Consts.Semi)[1];
-            Utilities.CheckValidVersion(Version);
+            Utils.CheckValidVersion(Version);
 
             // Get Points and Colours from File
             var angleData = data[1].Split(Consts.Semi);
@@ -179,9 +179,9 @@ namespace Animator
             };
 
             // Update line of data            [0] colour type     [1] colour array        [2] outline width       [3] pieceDetails
-            string pieceInfo = ColourType + Consts.SemiS + Utilities.ColorToString(OutlineColour) + Consts.ColonS;
+            string pieceInfo = ColourType + Consts.SemiS + Utils.ColorToString(OutlineColour) + Consts.ColonS;
             foreach (var col in FillColour)
-                pieceInfo += Utilities.ColorToString(col) + Consts.ColonS;
+                pieceInfo += Utils.ColorToString(col) + Consts.ColonS;
             pieceInfo = pieceInfo.Remove(pieceInfo.Length - 1, 1) + Consts.SemiS + OutlineWidth + Consts.SemiS + PieceDetails;
             newData.Add(pieceInfo);
 
@@ -425,15 +425,15 @@ namespace Animator
                             if (insertIndex != -1)
                             {
                                 double[] original = FindSymmetricalOppositeCoord(Data[insertIndex].GetCoordCombination(coordCombo),
-                                    Data[Utilities.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(coordCombo),
+                                    Data[Utils.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(coordCombo),
                                     spot.GetCoordCombination(coordCombo)[xy], xy, Data[insertIndex].Connector);
 
                                 double rotated = FindSymmetricalOppositeCoord(Data[insertIndex].GetCoordCombination(coordRot),
-                                    Data[Utilities.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(coordRot),
+                                    Data[Utils.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(coordRot),
                                     original[1], 1, Data[insertIndex].Connector)[0];
 
                                 double turned = FindSymmetricalOppositeCoord(Data[insertIndex].GetCoordCombination(2 + increase),
-                                    Data[Utilities.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(2 + increase),
+                                    Data[Utils.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(2 + increase),
                                     original[0], 0, Data[insertIndex].Connector)[1];
 
                                 var newSpot = new Spot(original[0], original[1], rotated, turned, Data[insertIndex].Connector, Data[insertIndex].Solid, drawn);
@@ -617,7 +617,7 @@ namespace Animator
             var data = CurrentPoints();
             for (int index = 0; index < data.Count; index++)
                 linesCoords.AddRange(LineCoords(data[index], 
-                    data[Utilities.Modulo(index + 1, data.Count)], Data[index].Connector));
+                    data[Utils.Modulo(index + 1, data.Count)], Data[index].Connector));
             return linesCoords;
         }
 
@@ -629,7 +629,7 @@ namespace Animator
         {
             // Turn coords into bound ranges
             var outlineShape = LinesCoords();
-            var minMax = Utilities.FindMinMax(outlineShape);
+            var minMax = Utils.FindMinMax(outlineShape);
             var ranges = new List<double[]>();
             for (int index = (int)minMax[2]; index <= (int)minMax[3]; index++)
             {
@@ -637,10 +637,10 @@ namespace Animator
                 var yMatches = new List<double[]>();
                 for (int coordIndex = 0; coordIndex < outlineShape.Count; coordIndex++)
                     if (outlineShape[coordIndex][1] == index &&
-                        !((outlineShape[Utilities.Modulo(coordIndex + 1, outlineShape.Count)][1] > outlineShape[coordIndex][1] &&
-                            outlineShape[Utilities.Modulo(coordIndex - 1, outlineShape.Count)][1] > outlineShape[coordIndex][1]) ||
-                            (outlineShape[Utilities.Modulo(coordIndex + 1, outlineShape.Count)][1] < outlineShape[coordIndex][1] &&
-                            outlineShape[Utilities.Modulo(coordIndex - 1, outlineShape.Count)][1] < outlineShape[coordIndex][1])))
+                        !((outlineShape[Utils.Modulo(coordIndex + 1, outlineShape.Count)][1] > outlineShape[coordIndex][1] &&
+                            outlineShape[Utils.Modulo(coordIndex - 1, outlineShape.Count)][1] > outlineShape[coordIndex][1]) ||
+                            (outlineShape[Utils.Modulo(coordIndex + 1, outlineShape.Count)][1] < outlineShape[coordIndex][1] &&
+                            outlineShape[Utils.Modulo(coordIndex - 1, outlineShape.Count)][1] < outlineShape[coordIndex][1])))
                         yMatches.Add(outlineShape[coordIndex]);
 
                 // Pair Remaining Coords into Bounds
@@ -685,9 +685,9 @@ namespace Animator
         /// </summary>
         public void RunCalculations()
         {
-            var convertedData = Utilities.ConvertSpotsToCoords(Data, 0);
-            middle = Utilities.FindMid(convertedData);
-            minMax = Utilities.FindMinMax(convertedData);
+            var convertedData = Utils.ConvertSpotsToCoords(Data, 0);
+            middle = Utils.FindMid(convertedData);
+            minMax = Utils.FindMinMax(convertedData);
         }
 
         /// <summary>

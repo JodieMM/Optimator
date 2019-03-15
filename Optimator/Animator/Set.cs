@@ -25,9 +25,9 @@ namespace Animator
         public Set(string inName)
         {
             Name = inName;
-            List<string> data = Utilities.ReadFile(Utilities.GetDirectory(Consts.SetsFolder, Name, Consts.Optr));
+            List<string> data = Utils.ReadFile(Utils.GetDirectory(Consts.SetsFolder, Name, Consts.Optr));
             Version = data[0].Split(Consts.Semi)[1];
-            Utilities.CheckValidVersion(Version);
+            Utils.CheckValidVersion(Version);
 
             // Add all pieces to the list
             for (int index = 1; index < data.Count; index++)

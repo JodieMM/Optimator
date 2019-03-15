@@ -67,7 +67,7 @@ namespace Animator
         /// <param name="e"></param>
         private void ExitBtn_Click(object sender, EventArgs e)
         {
-            if (Utilities.ExitBtn_Click(videoScenes.Count > 0))
+            if (Utils.ExitBtn_Click(videoScenes.Count > 0))
                 Close();
         }
 
@@ -78,7 +78,7 @@ namespace Animator
         /// <param name="e"></param>
         private void SaveBtn_Click(object sender, EventArgs e)
         {
-            if (!Utilities.CheckValidNewName(NameTb.Text, Consts.VideosFolder))
+            if (!Utils.CheckValidNewName(NameTb.Text, Consts.VideosFolder))
                 return;
             try
             {
@@ -87,7 +87,7 @@ namespace Animator
                 Application.DoEvents();
 
                 // Prepare Save Location
-                Directory.CreateDirectory(Utilities.GetDirectory(Consts.VideosFolder, NameTb.Text));
+                Directory.CreateDirectory(Utils.GetDirectory(Consts.VideosFolder, NameTb.Text));
 
                 // Save Images
                 int numFrames = 0;
@@ -97,7 +97,7 @@ namespace Animator
                     for (workingTime = 0; workingTime <= videoScenes[sceneIndex].TimeLength; workingTime += timeIncrement)
                     {
                         Bitmap bitmap = DrawOnBitmap();
-                        bitmap.Save(Utilities.GetDirectory(Consts.VideosFolder, numFrames.ToString(), Consts.Png, NameTb.Text), System.Drawing.Imaging.ImageFormat.Png);
+                        bitmap.Save(Utils.GetDirectory(Consts.VideosFolder, numFrames.ToString(), Consts.Png, NameTb.Text), System.Drawing.Imaging.ImageFormat.Png);
                         numFrames++;
                     }
                 }

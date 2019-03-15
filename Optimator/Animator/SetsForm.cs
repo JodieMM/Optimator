@@ -78,7 +78,7 @@ namespace Animator
         /// <param name="e"></param>
         private void ExitBtn_Click(object sender, EventArgs e)
         {
-            if (Utilities.ExitBtn_Click(WIP.PiecesList.Count > 1)) { Close(); }
+            if (Utils.ExitBtn_Click(WIP.PiecesList.Count > 1)) { Close(); }
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace Animator
         {
             if (WIP.PiecesList.Count < 1)
                 Close();
-            else if (!Utilities.CheckValidNewName(NameTb.Text, Consts.SetsFolder))
+            else if (!Utils.CheckValidNewName(NameTb.Text, Consts.SetsFolder))
                 return;
             else if (!CheckSingularBasePiece())
                 MessageBox.Show("Please connect all pieces but one or remove unconnected pieces.", "Multiple Sets", MessageBoxButtons.OK);
@@ -98,7 +98,7 @@ namespace Animator
             {
                 try
                 {
-                    Utilities.SaveFile(Utilities.GetDirectory(Consts.SetsFolder, NameTb.Text, Consts.Optr), WIP.GetData());
+                    Utils.SaveFile(Utils.GetDirectory(Consts.SetsFolder, NameTb.Text, Consts.Optr), WIP.GetData());
                     Close();
                 }
                 catch (FileNotFoundException)
@@ -282,7 +282,7 @@ namespace Animator
             else
             {
                 // Check if Piece Selected
-                int selectedIndex = Utilities.FindClickedSelection(WIP.PiecesList, e.X, e.Y, SelectFromTopCb.Checked);
+                int selectedIndex = Utils.FindClickedSelection(WIP.PiecesList, e.X, e.Y, SelectFromTopCb.Checked);
                 if (selectedIndex != -1)
                 {
                     // Set a new base for the selected piece and adjust coords and join
@@ -339,8 +339,8 @@ namespace Animator
                     var yChange = e.Y - (float)selected.middle[1];
                     original.DrawLine(new Pen(Consts.shadowShade), (float)selected.Data[index].GetCoordCombination()[0] + xChange, 
                         (float)selected.Data[index].GetCoordCombination()[1] + yChange, 
-                        (float)selected.Data[Utilities.Modulo(index + 1, selected.Data.Count)].GetCoordCombination()[0] + xChange, 
-                        (float)selected.Data[Utilities.Modulo(index + 1, selected.Data.Count)].GetCoordCombination()[1] + yChange);
+                        (float)selected.Data[Utils.Modulo(index + 1, selected.Data.Count)].GetCoordCombination()[0] + xChange, 
+                        (float)selected.Data[Utils.Modulo(index + 1, selected.Data.Count)].GetCoordCombination()[1] + yChange);
                 }
             }
         }

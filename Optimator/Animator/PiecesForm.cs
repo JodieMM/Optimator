@@ -90,7 +90,7 @@ namespace Animator
             // Select Spot
             else
             {
-                int closestIndex = Utilities.FindClosestIndex(WIP.Data, 0, e.X, e.Y);
+                int closestIndex = Utils.FindClosestIndex(WIP.Data, 0, e.X, e.Y);
                 if (closestIndex != -1)
                 {
                     SelectSpot(WIP.Data[closestIndex]);
@@ -155,7 +155,7 @@ namespace Animator
         private void DrawRight_MouseDown(object sender, MouseEventArgs e)
         {
             // Select Spot
-            int closestIndex = Utilities.FindClosestIndex(WIP.Data, 1, e.X, e.Y);
+            int closestIndex = Utils.FindClosestIndex(WIP.Data, 1, e.X, e.Y);
             if (closestIndex != -1)
             {
                 SelectSpot(WIP.Data[closestIndex]);
@@ -213,7 +213,7 @@ namespace Animator
         private void DrawDown_MouseDown(object sender, MouseEventArgs e)
         {
             // Select Spot
-            int closestIndex = Utilities.FindClosestIndex(WIP.Data, 2, e.X, e.Y);
+            int closestIndex = Utils.FindClosestIndex(WIP.Data, 2, e.X, e.Y);
             if (closestIndex != -1)
             {
                 SelectSpot(WIP.Data[closestIndex]);
@@ -283,7 +283,7 @@ namespace Animator
                         if (WIP.Data.Count == 0)
                             Deselect();
                         else
-                            SelectSpot(WIP.Data[Utilities.Modulo(selectedIndex - 1, WIP.Data.Count)]);
+                            SelectSpot(WIP.Data[Utils.Modulo(selectedIndex - 1, WIP.Data.Count)]);
                     }
                     // Delete Piece
                     else
@@ -354,7 +354,7 @@ namespace Animator
         /// <param name="e"></param>
         private void ExitBtn_Click(object sender, EventArgs e)
         {
-            if (Utilities.ExitBtn_Click(WIP.Data.Count > 0))
+            if (Utils.ExitBtn_Click(WIP.Data.Count > 0))
                 Close();
         }
 
@@ -365,13 +365,13 @@ namespace Animator
         /// <param name="e"></param>
         private void CompleteBtn_Click(object sender, EventArgs e)
         {
-            if (!Utilities.CheckValidNewName(NameTb.Text, Consts.PiecesFolder) || !CheckPiecesValid())
+            if (!Utils.CheckValidNewName(NameTb.Text, Consts.PiecesFolder) || !CheckPiecesValid())
                 return;
 
             // Save Piece and Close Form
             try
             {                
-                Utilities.SaveFile(Utilities.GetDirectory(Consts.PiecesFolder, NameTb.Text, Consts.Optr), WIP.GetData());
+                Utils.SaveFile(Utils.GetDirectory(Consts.PiecesFolder, NameTb.Text, Consts.Optr), WIP.GetData());
                 Close();
             }
             catch (FileNotFoundException)

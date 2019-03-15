@@ -17,6 +17,7 @@ namespace Animator
             InitializeComponent();
             VersionLbl.Text = "Version " + Consts.Version;
             DisplaySettings();
+            // TODO: Redesign screen (Settings)
         }
 
 
@@ -29,6 +30,7 @@ namespace Animator
         private void DisplaySettings()
         {
             BackColourBox.BackColor = Settings.BackgroundColour;
+            WorkingDirValueLbl.Text = Settings.WorkingDirectory;
         }
 
 
@@ -87,6 +89,21 @@ namespace Animator
             {
                 BackColourBox.BackColor = MyDialog.Color;
                 Settings.BackgroundColour = MyDialog.Color;
+            }
+        }
+
+        /// <summary>
+        /// Changes the current working directory.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void NewWorkingDirectoryBtn_Click(object sender, System.EventArgs e)
+        {
+            var path = Utils.CreateFolder(true);
+            if (path != "")
+            {
+                Settings.WorkingDirectory = path;
+                WorkingDirValueLbl.Text = path;
             }
         }
     }

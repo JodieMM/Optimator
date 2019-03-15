@@ -188,18 +188,18 @@ namespace Animator
                 else if (angle[index] < 180)
                 {
                     lower = angled[index];
-                    upper = Utilities.FlipPoint(mid[index], initial[index]);
+                    upper = Utils.FlipPoint(mid[index], initial[index]);
                     bottomAngle = 90;
                 }
                 else if (angle[index] < 270)
                 {
-                    lower = Utilities.FlipPoint(mid[index], initial[index]);
-                    upper = Utilities.FlipPoint(mid[index], angled[index]);
+                    lower = Utils.FlipPoint(mid[index], initial[index]);
+                    upper = Utils.FlipPoint(mid[index], angled[index]);
                     bottomAngle = 180;
                 }
                 else
                 {
-                    lower = Utilities.FlipPoint(mid[index], angled[index]);
+                    lower = Utils.FlipPoint(mid[index], angled[index]);
                     upper = initial[index];
                     bottomAngle = 270;
                 }
@@ -235,18 +235,18 @@ namespace Animator
             else if (angle < 180)
             {
                 lower = angled;
-                upper = Utilities.FlipPoint(mid[xy], matchOrig);
+                upper = Utils.FlipPoint(mid[xy], matchOrig);
                 bottomAngle = 90;
             }
             else if (angle < 270)
             {
-                lower = Utilities.FlipPoint(mid[xy], matchOrig);
-                upper = Utilities.FlipPoint(mid[xy], matchAng);
+                lower = Utils.FlipPoint(mid[xy], matchOrig);
+                upper = Utils.FlipPoint(mid[xy], matchAng);
                 bottomAngle = 180;
             }
             else
             {
-                lower = Utilities.FlipPoint(mid[xy], matchAng);
+                lower = Utils.FlipPoint(mid[xy], matchAng);
                 upper = original;
                 bottomAngle = 270;
             }

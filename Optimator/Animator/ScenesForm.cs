@@ -220,10 +220,10 @@ namespace Animator
         /// <param name="e"></param>
         private void FinishSceneBtn_Click(object sender, EventArgs e)
         {
-            if (!Utilities.CheckValidNewName(NameTb.Text, Consts.ScenesFolder)) { return; }            
+            if (!Utils.CheckValidNewName(NameTb.Text, Consts.ScenesFolder)) { return; }            
             try
             {
-                Utilities.SaveFile(Utilities.GetDirectory(Consts.ScenesFolder, SceneTb.Text, Consts.Optr), WIP.GetData());
+                Utils.SaveFile(Utils.GetDirectory(Consts.ScenesFolder, SceneTb.Text, Consts.Optr), WIP.GetData());
                 Close();
             }
             catch (FileNotFoundException)
@@ -239,7 +239,7 @@ namespace Animator
         /// <param name="e"></param>
         private void ExitBtn_Click(object sender, EventArgs e)
         {
-            if (Utilities.ExitBtn_Click(WIP.PartsList.Count > 0)) { Close(); }
+            if (Utils.ExitBtn_Click(WIP.PartsList.Count > 0)) { Close(); }
         }
 
 
@@ -340,7 +340,7 @@ namespace Animator
         private void DrawPanel_MouseDown(object sender, MouseEventArgs e)
         {
             // Choose and Update Selected Piece (If Any)
-            int selectedIndex = Utilities.FindClickedSelection(WIP.PiecesList, e.X, e.Y, SelectFromTopCb.Checked);
+            int selectedIndex = Utils.FindClickedSelection(WIP.PiecesList, e.X, e.Y, SelectFromTopCb.Checked);
             if (selectedIndex == -1)
                 Deselect();
 

@@ -12,8 +12,10 @@ namespace Animator
     public static class Settings
     {
         #region Settings Variables
+        // When adding new settings, update Initial Settings and Update Settings
         public static string Version;
         public static Color BackgroundColour;
+        public static string WorkingDirectory;
         #endregion
 
         
@@ -26,7 +28,7 @@ namespace Animator
         public static void InitialSettings(string file = Consts.Settings)
         {
             // Read settings data and check valid
-            var data = Utilities.ReadFile(file);
+            var data = Utils.ReadFile(file);
             if (data.Count < 1 && file != Consts.DefaultSettings)
             {
                 ResetSettings(false);
@@ -35,18 +37,19 @@ namespace Animator
 
             // Check version and update if required
             Version = data[0];
-            if (!Utilities.CheckValidVersion(Version, false) && file == Consts.Settings)
+            if (!Utils.CheckValidVersion(Version, false) && file == Consts.Settings)
             {
-                var defaultData = Utilities.ReadFile(Consts.DefaultSettings);
+                var defaultData = Utils.ReadFile(Consts.DefaultSettings);
                 defaultData.RemoveRange(0, data.Count);
                 data.AddRange(defaultData);
             }
 
             // Set Settings
-            BackgroundColour = Utilities.ColourFromString(data[1]);
+            BackgroundColour = Utils.ColourFromString(data[1]);
+            WorkingDirectory = data[2];
 
             // Save Changes if Updated
-            if (!Utilities.CheckValidVersion(Version, false) && file == Consts.Settings)
+            if (!Utils.CheckValidVersion(Version, false) && file == Consts.Settings)
                 UpdateSettings();
         }
 
@@ -58,9 +61,10 @@ namespace Animator
             var data = new List<string>
             {
                 Version,
-                Utilities.ColorToString(BackgroundColour)
+                Utils.ColorToString(BackgroundColour),
+                WorkingDirectory
             };
-            Utilities.SaveFile(Consts.Settings, data);
+            Utils.SaveFile(Consts.Settings, data);
         }
 
         /// <summary>
