@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -12,7 +13,6 @@ namespace Animator
     public static class Settings
     {
         #region Settings Variables
-        // When adding new settings, update Initial Settings and Update Settings
         public static string Version;
         public static Color BackgroundColour;
         public static string WorkingDirectory;
@@ -46,7 +46,7 @@ namespace Animator
 
             // Set Settings
             BackgroundColour = Utils.ColourFromString(data[1]);
-            WorkingDirectory = data[2];
+            WorkingDirectory = data[2] == "Blank" ? Environment.CurrentDirectory : data[2];
 
             // Save Changes if Updated
             if (!Utils.CheckValidVersion(Version, false) && file == Consts.Settings)

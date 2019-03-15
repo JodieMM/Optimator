@@ -87,7 +87,8 @@ namespace Animator
                 Application.DoEvents();
 
                 // Prepare Save Location
-                Directory.CreateDirectory(Utils.GetDirectory(Consts.VideosFolder, NameTb.Text));
+                var directory = Utils.GetDirectory(Consts.VideosFolder, NameTb.Text);
+                Directory.CreateDirectory(directory);
 
                 // Save Images
                 int numFrames = 0;
@@ -97,7 +98,7 @@ namespace Animator
                     for (workingTime = 0; workingTime <= videoScenes[sceneIndex].TimeLength; workingTime += timeIncrement)
                     {
                         Bitmap bitmap = DrawOnBitmap();
-                        bitmap.Save(Utils.GetDirectory(Consts.VideosFolder, numFrames.ToString(), Consts.Png, NameTb.Text), System.Drawing.Imaging.ImageFormat.Png);
+                        bitmap.Save(Utils.GetDirectory(directory, numFrames.ToString(), Consts.Png), System.Drawing.Imaging.ImageFormat.Png);
                         numFrames++;
                     }
                 }

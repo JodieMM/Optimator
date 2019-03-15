@@ -101,10 +101,7 @@ namespace Animator
         {
             var path = Utils.CreateFolder(true);
             if (path != "")
-            {
-                Settings.WorkingDirectory = path;
                 WorkingDirValueLbl.Text = path;
-            }
         }
     }
 }

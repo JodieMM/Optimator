@@ -96,12 +96,20 @@ namespace Animator
         public static string CreateFolder(bool baseFolder = false)
         {
             // TODO: Complete create folder function
-            return "";
-            // Create folder
-            //if (baseFolder)
-            //{
-            //    // Create folder for each type (piece, set, scene, video)
-            //}
+            var path = "";
+            // Get user selection of path
+            // var SaveDialog =
+            // if (SaveDialog OK)
+            // path = SaveDialog.FilePath
+            if (baseFolder && path != "")
+            {
+                Settings.WorkingDirectory = path;
+                Directory.CreateDirectory(Path.Combine(Settings.WorkingDirectory, Consts.PiecesFolder));
+                Directory.CreateDirectory(Path.Combine(Settings.WorkingDirectory, Consts.SetsFolder));
+                Directory.CreateDirectory(Path.Combine(Settings.WorkingDirectory, Consts.ScenesFolder));
+                Directory.CreateDirectory(Path.Combine(Settings.WorkingDirectory, Consts.VideosFolder));
+            }
+            return path;
         }
 
         /// <summary>
@@ -141,17 +149,16 @@ namespace Animator
         /// <param name="name">The item name</param>
         /// <param name="fileType">The file's type, e.g. optr</param>
         /// <returns></returns>
-        public static string GetDirectory(string folder, string name, string fileType = "", string subfolder = "")
+        public static string GetDirectory(string folder, string name, string fileType = "")
         {
-            string fileFolder = Path.Combine(Environment.CurrentDirectory, folder);
-            if (subfolder != "") { fileFolder = Path.Combine(fileFolder, subfolder); }
-            return Path.Combine(fileFolder, name + fileType);
+            return Path.Combine(Settings.WorkingDirectory, folder, name + fileType);
         }
 
         /// <summary>
         /// Checks that the version provided is file compatible with the current version.
         /// </summary>
         /// <param name="version">The version of the file</param>
+        /// <param name="message">Whether an error message should be shown on fail</param>
         /// <returns>True if the versions are compatible</returns>
         public static bool CheckValidVersion(string version, bool message = true)
         {
