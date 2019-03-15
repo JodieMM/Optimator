@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.IO;
 using System.Drawing;
+using System.Text.RegularExpressions;
 
 namespace Animator
 {
@@ -18,36 +19,100 @@ namespace Animator
         #region File I/O
 
         /// <summary>
-        /// Reads information from a text file and returns it
+        /// Reads information from a user-selected file and returns it.
+        /// </summary>
+        /// <param name="types">The acceptable file types</param>
+        /// <returns>Contents of file</returns>
+        public static List<string> ReadData(string[] types)
+        {
+            var data = new List<string>();
+            var openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    var file = new StreamReader(openFileDialog.FileName);
+                    string line;
+                    while ((line = file.ReadLine()) != null)
+                        data.Add(line);
+                    file.Close();
+                }
+                catch (System.Security.SecurityException ex)
+                {
+                    MessageBox.Show($"Security error.\n\nError message: {ex.Message}\n\n" +
+                    $"Details:\n\n{ex.StackTrace}");
+                }
+            }
+
+            // Check correct file type
+            if (!types.Contains(data[0].Split(Consts.Semi)[0]))
+            {
+                if (types.Length == 1)
+                    MessageBox.Show("File is of the wrong type. Please select a " 
+                        + types[0] + " file");
+                else
+                    MessageBox.Show("File is of the wrong type. Please select a " 
+                        + types[0] + " or " + types[1] + " file");
+                return null;
+            }
+            return data;
+        }
+
+        /// <summary>
+        /// Saves provided data to a user selected location.
+        /// </summary>
+        /// <param name="data">The data to save</param>
+        public static void SaveData(List<string> data)
+        {
+            var saveFileDialog = new SaveFileDialog
+            {
+                Filter = "optr files (*.optr)|*.optr|All files (*.*)|*.*",
+                FilterIndex = 0
+            };
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                if (!CheckValidNewName(Path.GetFileNameWithoutExtension(saveFileDialog.FileName)))
+                {
+                    SaveData(data);
+                    return;
+                }
+
+                var file = new StreamWriter(saveFileDialog.OpenFile());
+                if (file != null)
+                {
+                    foreach (var line in data)
+                        file.WriteLine(line);
+                    file.Close();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Reads information from a file and returns it.
         /// </summary>
         /// <param name="directory">The file to read from</param>
         /// <returns>A list of strings containing the data</returns>
         public static List<string> ReadFile(string directory)
         {
-            // Open File
-            string filePath = directory;
-            StreamReader file = new StreamReader(@filePath);
-
-            // Read Data
-            List<string> data = new List<string>();
+            var data = new List<string>();
+            StreamReader file = new StreamReader(directory);
             string line;
             while ((line = file.ReadLine()) != null)
                 data.Add(line);
-
             file.Close();
 
-            // Return String
             return data;
         }
 
         /// <summary>
-        /// Saves data to a provided location
+        /// Saves a file to a provided location.
         /// </summary>
         /// <param name="directory">The file to save to</param>
         /// <param name="data">The data to save</param>
-        public static void SaveData(string directory, List<string> data)
+        public static void SaveFile(string directory, List<string> data)
         {
-            StreamWriter file = new StreamWriter(@directory);
+            var file = new StreamWriter(@directory);
             for (int index = 0; index < data.Count; index++)
                 file.WriteLine(data[index]);
             file.Close();
@@ -90,10 +155,9 @@ namespace Animator
         /// <param name="name">The name of the file</param>
         /// <param name="folder">The folder the file belongs in</param>
         /// <returns>True if the name is valid</returns>
-        public static bool CheckValidNewName(string name, string folder)
+        public static bool CheckValidNewName(string name, string folder = "")
         {
-            // Check Name is Valid for Saving
-            System.Text.RegularExpressions.Regex PermittedName = new System.Text.RegularExpressions.Regex(@"^[A-Za-z0-9]+$");
+            Regex PermittedName = new Regex(@"^[A-Za-z0-9]+$");
             if (!PermittedName.IsMatch(name))
             {
                 MessageBox.Show("Please choose a valid name for your file. Name can only include letters and numbers.", "Name Invalid", MessageBoxButtons.OK);
@@ -101,7 +165,7 @@ namespace Animator
             }
 
             // Check name not already in use, or that overriding is okay
-            if (File.Exists(GetDirectory(folder, name, Consts.Optr)))
+            if (folder != "" && File.Exists(GetDirectory(folder, name, Consts.Optr)))
             {
                 var result = MessageBox.Show("This name is already in use. Do you want to override the existing file?", "Override Confirmation", MessageBoxButtons.OKCancel);
                 if (result == DialogResult.Cancel) { return false; }

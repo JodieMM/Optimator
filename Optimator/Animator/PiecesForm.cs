@@ -371,7 +371,7 @@ namespace Animator
             // Save Piece and Close Form
             try
             {                
-                Utilities.SaveData(Utilities.GetDirectory(Consts.PiecesFolder, NameTb.Text, Consts.Optr), WIP.GetData());
+                Utilities.SaveFile(Utilities.GetDirectory(Consts.PiecesFolder, NameTb.Text, Consts.Optr), WIP.GetData());
                 Close();
             }
             catch (FileNotFoundException)

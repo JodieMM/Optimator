@@ -27,9 +27,9 @@ namespace Animator
         {
             // Read settings data and check valid
             var data = Utilities.ReadFile(file);
-            if (data.Count < 1)
+            if (data.Count < 1 && file != Consts.DefaultSettings)
             {
-                ResetSettings();
+                ResetSettings(false);
                 return;
             } 
 
@@ -60,15 +60,16 @@ namespace Animator
                 Version,
                 Utilities.ColorToString(BackgroundColour)
             };
-            Utilities.SaveData(Consts.Settings, data);
+            Utilities.SaveFile(Consts.Settings, data);
         }
 
         /// <summary>
         /// Returns the settings to their original values.
         /// </summary>
-        public static void ResetSettings()
+        public static void ResetSettings(bool msg = true)
         {
-            var result = MessageBox.Show("This will erase all custom settings. Continue?", "Setting Reset Confirmation", MessageBoxButtons.OKCancel);
+            var result = msg ? MessageBox.Show("This will erase all custom settings. Continue?", "Setting Reset Confirmation", MessageBoxButtons.OKCancel)
+                : DialogResult.OK;
             if (result == DialogResult.OK)
             {
                 InitialSettings(Consts.DefaultSettings);

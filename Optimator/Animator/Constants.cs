@@ -11,11 +11,11 @@ namespace Animator
     public static class Consts
     {
         // Setup
-        public const string Version = "1.1.0";
+        public const string Version = "1.0.0";
         public const string Settings = "Settings.txt";
         public const string DefaultSettings = "DefaultSettings.txt";
 
-        // TODO: Remove Folders 
+        // Folders 
         public const string PiecesFolder = "Pieces";
         public const string SetsFolder = "Sets";
         public const string ScenesFolder = "Scenes";

@@ -223,7 +223,7 @@ namespace Animator
             if (!Utilities.CheckValidNewName(NameTb.Text, Consts.ScenesFolder)) { return; }            
             try
             {
-                Utilities.SaveData(Utilities.GetDirectory(Consts.ScenesFolder, SceneTb.Text, Consts.Optr), WIP.GetData());
+                Utilities.SaveFile(Utilities.GetDirectory(Consts.ScenesFolder, SceneTb.Text, Consts.Optr), WIP.GetData());
                 Close();
             }
             catch (FileNotFoundException)
