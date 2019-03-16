@@ -63,6 +63,7 @@ namespace Animator
             OutlineWidthBox.Value = Consts.defaultOutlineWidth;
 
             WIP = new Piece();
+            Utils.CheckValidFolder();
         }
 
 

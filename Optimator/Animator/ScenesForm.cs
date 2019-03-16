@@ -38,6 +38,7 @@ namespace Animator
             DrawPanel.MouseDown += new MouseEventHandler(DrawPanel_MouseDown);
 
             g = DrawPanel.CreateGraphics();
+            Utils.CheckValidFolder();
         }
 
 

@@ -31,6 +31,7 @@ namespace Animator
         public CompileVideo()
         {
             InitializeComponent();
+            Utils.CheckValidFolder();
         }
 
 

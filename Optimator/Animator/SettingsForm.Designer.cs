@@ -47,7 +47,7 @@
             this.VersionLbl.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.VersionLbl.Location = new System.Drawing.Point(32, 83);
             this.VersionLbl.Name = "VersionLbl";
-            this.VersionLbl.Size = new System.Drawing.Size(159, 51);
+            this.VersionLbl.Size = new System.Drawing.Size(81, 25);
             this.VersionLbl.TabIndex = 0;
             this.VersionLbl.Text = "Version";
             // 
@@ -99,7 +99,7 @@
             this.BackColourLbl.Location = new System.Drawing.Point(33, 159);
             this.BackColourLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.BackColourLbl.Name = "BackColourLbl";
-            this.BackColourLbl.Size = new System.Drawing.Size(405, 39);
+            this.BackColourLbl.Size = new System.Drawing.Size(203, 19);
             this.BackColourLbl.TabIndex = 116;
             this.BackColourLbl.Text = "Drawing Board Back Colour";
             // 
@@ -124,25 +124,25 @@
             this.SettingsLbl.Font = new System.Drawing.Font("Tahoma", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SettingsLbl.Location = new System.Drawing.Point(30, 30);
             this.SettingsLbl.Name = "SettingsLbl";
-            this.SettingsLbl.Size = new System.Drawing.Size(299, 77);
+            this.SettingsLbl.Size = new System.Drawing.Size(148, 39);
             this.SettingsLbl.TabIndex = 119;
             this.SettingsLbl.Text = "Settings";
             // 
             // WorkingDirLbl
             // 
             this.WorkingDirLbl.AutoSize = true;
-            this.WorkingDirLbl.Location = new System.Drawing.Point(43, 227);
+            this.WorkingDirLbl.Location = new System.Drawing.Point(33, 218);
             this.WorkingDirLbl.Name = "WorkingDirLbl";
-            this.WorkingDirLbl.Size = new System.Drawing.Size(273, 39);
+            this.WorkingDirLbl.Size = new System.Drawing.Size(137, 19);
             this.WorkingDirLbl.TabIndex = 120;
             this.WorkingDirLbl.Text = "Working Directory";
             // 
             // WorkingDirValueLbl
             // 
             this.WorkingDirValueLbl.AutoSize = true;
-            this.WorkingDirValueLbl.Location = new System.Drawing.Point(50, 290);
+            this.WorkingDirValueLbl.Location = new System.Drawing.Point(33, 252);
             this.WorkingDirValueLbl.Name = "WorkingDirValueLbl";
-            this.WorkingDirValueLbl.Size = new System.Drawing.Size(263, 39);
+            this.WorkingDirValueLbl.Size = new System.Drawing.Size(131, 19);
             this.WorkingDirValueLbl.TabIndex = 121;
             this.WorkingDirValueLbl.Text = "Current Directory";
             // 
@@ -150,12 +150,12 @@
             // 
             this.NewWorkingDirectoryBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.NewWorkingDirectoryBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.NewWorkingDirectoryBtn.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.NewWorkingDirectoryBtn.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.NewWorkingDirectoryBtn.ForeColor = System.Drawing.Color.Black;
-            this.NewWorkingDirectoryBtn.Location = new System.Drawing.Point(358, 290);
+            this.NewWorkingDirectoryBtn.Location = new System.Drawing.Point(209, 212);
             this.NewWorkingDirectoryBtn.Margin = new System.Windows.Forms.Padding(2);
             this.NewWorkingDirectoryBtn.Name = "NewWorkingDirectoryBtn";
-            this.NewWorkingDirectoryBtn.Size = new System.Drawing.Size(170, 50);
+            this.NewWorkingDirectoryBtn.Size = new System.Drawing.Size(89, 30);
             this.NewWorkingDirectoryBtn.TabIndex = 122;
             this.NewWorkingDirectoryBtn.Text = "Find New";
             this.NewWorkingDirectoryBtn.UseVisualStyleBackColor = false;

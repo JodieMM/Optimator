@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 
 namespace Animator
@@ -46,7 +47,7 @@ namespace Animator
 
             // Set Settings
             BackgroundColour = Utils.ColourFromString(data[1]);
-            WorkingDirectory = data[2] == "Blank" ? Environment.CurrentDirectory : data[2];
+            WorkingDirectory = data[2];
 
             // Save Changes if Updated
             if (!Utils.CheckValidVersion(Version, false) && file == Consts.Settings)

@@ -17,7 +17,6 @@ namespace Animator
             InitializeComponent();
             VersionLbl.Text = "Version " + Consts.Version;
             DisplaySettings();
-            // TODO: Redesign screen (Settings)
         }
 
 
@@ -99,7 +98,7 @@ namespace Animator
         /// <param name="e"></param>
         private void NewWorkingDirectoryBtn_Click(object sender, System.EventArgs e)
         {
-            var path = Utils.CreateFolder(true);
+            var path = Utils.SelectFolder(true);
             if (path != "")
                 WorkingDirValueLbl.Text = path;
         }

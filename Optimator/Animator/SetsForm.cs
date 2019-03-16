@@ -51,6 +51,8 @@ namespace Animator
             DrawBase.BackColor = Settings.BackgroundColour;
             DrawRight.BackColor = Settings.BackgroundColour;
             DrawDown.BackColor = Settings.BackgroundColour;
+
+            Utils.CheckValidFolder();
         }
 
 

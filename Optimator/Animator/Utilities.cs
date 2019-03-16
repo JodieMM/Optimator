@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using System.IO;
@@ -87,31 +86,7 @@ namespace Animator
                 }
             }
         }
-
-        /// <summary>
-        /// Creates a new folder at a user's selected location.
-        /// </summary>
-        /// <param name="baseFolder">Whether the initial four sub-folders should be added</param>
-        /// <returns>Path for new folder</returns>
-        public static string CreateFolder(bool baseFolder = false)
-        {
-            // TODO: Complete create folder function
-            var path = "";
-            // Get user selection of path
-            // var SaveDialog =
-            // if (SaveDialog OK)
-            // path = SaveDialog.FilePath
-            if (baseFolder && path != "")
-            {
-                Settings.WorkingDirectory = path;
-                Directory.CreateDirectory(Path.Combine(Settings.WorkingDirectory, Consts.PiecesFolder));
-                Directory.CreateDirectory(Path.Combine(Settings.WorkingDirectory, Consts.SetsFolder));
-                Directory.CreateDirectory(Path.Combine(Settings.WorkingDirectory, Consts.ScenesFolder));
-                Directory.CreateDirectory(Path.Combine(Settings.WorkingDirectory, Consts.VideosFolder));
-            }
-            return path;
-        }
-
+                
         /// <summary>
         /// Reads information from a file and returns it.
         /// </summary>
@@ -152,6 +127,47 @@ namespace Animator
         public static string GetDirectory(string folder, string name, string fileType = "")
         {
             return Path.Combine(Settings.WorkingDirectory, folder, name + fileType);
+        }
+
+        /// <summary>
+        /// Selects a folder at a user's selected location.
+        /// </summary>
+        /// <param name="baseFolder">Whether the initial four sub-folders should be added</param>
+        /// <returns>Path for new folder</returns>
+        public static string SelectFolder(bool baseFolder = false)
+        {
+            var path = "";
+            var openFileDialog = new FolderBrowserDialog();
+            var result = openFileDialog.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                path = openFileDialog.SelectedPath;
+            }
+
+            // Create sub-folders if this is the base directory
+            if (baseFolder && path != "")
+            {
+                Settings.WorkingDirectory = path;
+                Settings.UpdateSettings();
+                Directory.CreateDirectory(Path.Combine(Settings.WorkingDirectory, Consts.PiecesFolder));
+                Directory.CreateDirectory(Path.Combine(Settings.WorkingDirectory, Consts.SetsFolder));
+                Directory.CreateDirectory(Path.Combine(Settings.WorkingDirectory, Consts.ScenesFolder));
+                Directory.CreateDirectory(Path.Combine(Settings.WorkingDirectory, Consts.VideosFolder));
+            }
+            return path;
+        }
+
+        /// <summary>
+        /// Checks that a working directory has been set, and creates
+        /// one if necessary.
+        /// </summary>
+        public static void CheckValidFolder()
+        {
+            if (Settings.WorkingDirectory == "Blank" || !Directory.Exists(Settings.WorkingDirectory))
+            {
+                MessageBox.Show("Select a directory to work from.", "Directory Selection");
+                while (SelectFolder(true) == "");
+            }
         }
 
         /// <summary>
