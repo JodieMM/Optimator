@@ -133,8 +133,8 @@ namespace Animator
         /// <returns>double[] { X, Y }</returns>
         public double[] GetCoords()
         {
-            return AttachedTo != null ? new double[] { X + AttachedTo.GetCoords()[0] , //+ PointChange()[0]
-                Y + AttachedTo.GetCoords()[1]  } : new double[] { X, Y }; // + PointChange()[1]
+            return AttachedTo != null ? new double[] { X + AttachedTo.GetCoords()[0] + Join.CurrentDifference()[0],
+                Y + AttachedTo.GetCoords()[1] + Join.CurrentDifference()[0] } : new double[] { X, Y };
         }
 
         /// <summary>

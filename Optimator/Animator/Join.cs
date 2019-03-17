@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Animator
 {
@@ -16,10 +12,12 @@ namespace Animator
     {
         #region Join Variables
         private readonly Piece joining;
+
         public double X { get; set; }
         public double Y { get; set; }
         public double XRight { get; set; }
         public double YDown { get; set; }
+
         public double FlipAngle { get; set; }
         public int IndexSwitch { get; set; }
         #endregion
@@ -61,6 +59,11 @@ namespace Animator
 
         // ----- FUNCTIONS -----
 
+        /// <summary>
+        /// Converts the join's data into a string
+        /// for saving.
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return X + Consts.ColonS + Y + Consts.ColonS + XRight + Consts.ColonS + YDown +
@@ -68,17 +71,113 @@ namespace Animator
         }
 
         /// <summary>
-        /// Finds how much the join has changed from its original join position.
+        /// Finds the difference between the original join location and
+        /// where it is now based on piece changes.
         /// </summary>
-        /// <returns>double[] { X change, Y change }</returns>
-        private double[] PointChange()
+        /// <returns>Difference as [ x, y ]</returns>
+        public double[] CurrentDifference()
         {
-            //if (Join == null)
-            return new double[] { 0, 0 };
-            //var spotCoords = Join.CurrentJoinCoords(GetAngles()[0], GetAngles()[1], middle);
-            //var spotCoordsList = new List<double[]> { spotCoords };
-            //spotCoords = SpinMeRound(spotCoordsList)[0];
-            //return new double[] { spotCoords[0] - Join.X, spotCoords[1] - Join.Y };
+            var currentCoords = new double[2];
+            double lower;
+            double upper;
+            int bottomAngle;
+
+            var angle = joining.GetAngles();
+            var initial = new double[] { X, Y };
+            var angled = new double[] { XRight, YDown };
+
+            // For X and Y
+            for (int index = 0; index < 2; index++)
+            {
+                if (angle[index] < 90)
+                {
+                    lower = initial[index];
+                    upper = angled[index];
+                    bottomAngle = 0;
+                }
+                else if (angle[index] < 180)
+                {
+                    lower = angled[index];
+                    upper = Utils.FlipPoint(0, initial[index]);
+                    bottomAngle = 90;
+                }
+                else if (angle[index] < 270)
+                {
+                    lower = Utils.FlipPoint(0, initial[index]);
+                    upper = Utils.FlipPoint(0, angled[index]);
+                    bottomAngle = 180;
+                }
+                else
+                {
+                    lower = Utils.FlipPoint(0, angled[index]);
+                    upper = initial[index];
+                    bottomAngle = 270;
+                }
+                currentCoords[index] = lower + (upper - lower) * ((angle[index] - bottomAngle) / 90.0);
+            }
+            currentCoords = SpinMeRound(currentCoords);
+            return new double[] { joining.X - currentCoords[0], joining.Y - currentCoords[1] };
+        }
+
+        // Takes a join's current position and the piece's current position to calculate the original join data
+        public void ReverseDifference()
+        {
+
+        }
+
+        /// <summary>
+        /// Spins the coords provided and modifies their size.
+        /// </summary>
+        /// <param name="join">The points to be spun</param>
+        /// <returns></returns>
+        private double[] SpinMeRound(double[] join)
+        {
+            if (!(join[0] == 0 && join[1] == 0))
+            {
+                double hypotenuse = Math.Sqrt(Math.Pow(0 - join[0], 2) + Math.Pow(0 - join[1], 2)) * joining.GetSizeMod();
+                // Find Angle
+                double pointAngle;
+                if (join[0] == 0 && join[1] < 0)
+                {
+                    pointAngle = 0;
+                }
+                else if (join[0] == 0 && join[1] > 0)
+                {
+                    pointAngle = 180;
+                }
+                else if (join[0] > 0 && join[1] == 0)
+                {
+                    pointAngle = 90;
+                }
+                else if (join[0] < 0 && join[1] == 0)
+                {
+                    pointAngle = 270;
+                }
+                //  Second || First
+                //  Third  || Fourth
+                else if (join[0] > 0 && join[1] < 0) // First Quadrant
+                {
+                    pointAngle = (180 / Math.PI) * Math.Atan(Math.Abs((0 - join[0]) / (0 - join[1])));
+                }
+                else if (join[0] > 0 && join[1] > 0) // Fourth Quadrant
+                {
+                    pointAngle = 90 + (180 / Math.PI) * Math.Atan(Math.Abs((0 - join[1]) / (0 - join[0])));
+                }
+                else if (join[0] < 0 && join[1] < 0) // Second Quadrant
+                {
+                    pointAngle = 270 + (180 / Math.PI) * Math.Atan(Math.Abs((0 - join[1]) / (0 - join[0])));
+                }
+                else  // Third Quadrant
+                {
+                    pointAngle = 180 + (180 / Math.PI) * Math.Atan(Math.Abs((0 - join[0]) / (0 - join[1])));
+                }
+                double findAngle = ((pointAngle + joining.GetAngles()[2]) % 360) * Math.PI / 180;
+
+                // Find Points
+                join[0] = Convert.ToInt32((0 + hypotenuse * Math.Sin(findAngle)));
+                join[1] = Convert.ToInt32((0 - hypotenuse * Math.Cos(findAngle)));
+            }
+            return join;
         }
     }
 }
