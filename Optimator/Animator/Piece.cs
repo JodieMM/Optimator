@@ -230,6 +230,7 @@ namespace Animator
         /// <param name="indexSwitch">The index position the piece takes when flipped</param>
         public void AttachToPiece(Piece attach, Join join = null)
         {
+            Deattach();
             X -= attach.GetCoords()[0];
             Y -= attach.GetCoords()[1];
             AttachedTo = attach;

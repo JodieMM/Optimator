@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 
 namespace Animator
 {
@@ -57,7 +58,7 @@ namespace Animator
 
 
 
-        // ----- FUNCTIONS -----
+        // ----- GENERAL FUNCTIONS -----
 
         /// <summary>
         /// Converts the join's data into a string
@@ -69,6 +70,23 @@ namespace Animator
             return X + Consts.ColonS + Y + Consts.ColonS + XRight + Consts.ColonS + YDown +
                 Consts.SemiS + FlipAngle + Consts.SemiS + IndexSwitch;
         }
+
+        /// <summary>
+        /// Draws a + at the given spot.
+        /// </summary>
+        /// <param name="angle">Whether the spot is drawn at original (0), rotated (1), turned(2) angle</param>
+        /// <param name="colour">Colour of the +</param>
+        /// <param name="board">The graphics board to be drawn on</param>
+        public void Draw(int angle, Color colour, Graphics board)
+        {
+            var x = angle == 1 ? XRight : X;
+            var y = angle == 2 ? YDown : Y;
+            Visuals.DrawCross(joining.GetCoords()[0] + x, joining.GetCoords()[1] + y, colour, board);
+        }
+
+
+
+        // ----- COORDINATE FUNCTIONS -----
 
         /// <summary>
         /// Finds the difference between the original join location and
@@ -116,19 +134,19 @@ namespace Animator
                 currentCoords[index] = lower + (upper - lower) * ((angle[index] - bottomAngle) / 90.0);
             }
             currentCoords = SpinMeRound(currentCoords);
-            return new double[] { joining.X - currentCoords[0], joining.Y - currentCoords[1] };
+            return new double[] { X - currentCoords[0], Y - currentCoords[1] };
         }
 
         // Takes a join's current position and the piece's current position to calculate the original join data
         public void ReverseDifference()
         {
-
+            // TODO: &Join
         }
 
         /// <summary>
         /// Spins the coords provided and modifies their size.
         /// </summary>
-        /// <param name="join">The points to be spun</param>
+        /// <param name="join">The point to be spun</param>
         /// <returns></returns>
         private double[] SpinMeRound(double[] join)
         {

@@ -53,6 +53,9 @@ namespace Animator
             DrawDown.BackColor = Settings.BackgroundColour;
 
             Utils.CheckValidFolder();
+            // TODO: Shadow recentre
+            // TODO: Hide piece options for base (X, Y, R, T, S, keep SM)
+            // TODO: Sets preview doesn't change piece locations (X/Y)
         }
 
 

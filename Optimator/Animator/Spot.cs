@@ -158,57 +158,6 @@ namespace Animator
         }
 
         /// <summary>
-        /// Gets the current coordinates of the spot based on
-        /// the current angles.
-        /// Does not include spin adjustment.
-        /// </summary>
-        /// <param name="r">Current rotation</param>
-        /// <param name="t">Current turn</param>
-        /// <param name="mid">The middle of the piece the spot belongs to</param>
-        public double[] CurrentJoinCoords(double r, double t, double[] mid)
-        {
-            var currentCoords = new double[2];
-            double lower;
-            double upper;
-            int bottomAngle;
-
-            var angle = new double[] { r, t };
-            var initial = new double[] { X, Y };
-            var angled = new double[] { XRight, YDown };
-
-            // For X and Y
-            for (int index = 0; index < 2; index++)
-            {
-                if (angle[index] < 90)
-                {
-                    lower = initial[index];
-                    upper = angled[index];
-                    bottomAngle = 0;
-                }
-                else if (angle[index] < 180)
-                {
-                    lower = angled[index];
-                    upper = Utils.FlipPoint(mid[index], initial[index]);
-                    bottomAngle = 90;
-                }
-                else if (angle[index] < 270)
-                {
-                    lower = Utils.FlipPoint(mid[index], initial[index]);
-                    upper = Utils.FlipPoint(mid[index], angled[index]);
-                    bottomAngle = 180;
-                }
-                else
-                {
-                    lower = Utils.FlipPoint(mid[index], angled[index]);
-                    upper = initial[index];
-                    bottomAngle = 270;
-                }
-                currentCoords[index] = lower + (upper - lower) * ((angle[index] - bottomAngle) / 90.0);
-            }
-            return currentCoords;
-        }
-
-        /// <summary>
         /// Finds the current X value of the spot based on the piece's rotation.
         /// </summary>
         /// <param name="angle">The rotation or turn of the piece</param>
