@@ -330,7 +330,7 @@ namespace Animator
 
             // Only check saving if something to save
             if (saveCondition)
-                result = DialogResult.OK; // TODO: Add back MessageBox.Show("Do you want to exit without saving? Your work will be lost.", "Exit Confirmation", MessageBoxButtons.OKCancel);
+                result = DialogResult.OK; // HIDDEN: Add back MessageBox.Show("Do you want to exit without saving? Your work will be lost.", "Exit Confirmation", MessageBoxButtons.OKCancel);
 
             return result == DialogResult.OK;
         }

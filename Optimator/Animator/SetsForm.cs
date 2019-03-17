@@ -216,7 +216,7 @@ namespace Animator
             if (selected != null)
             {
                 FlipsUpDown.Enabled = FlipsCb.Checked;
-                selected.AngleFlip = (FlipsCb.Checked) ? (double)FlipsUpDown.Value : -1;
+                selected.Join.FlipAngle = (FlipsCb.Checked) ? (double)FlipsUpDown.Value : -1;
             }
         }
 
@@ -229,7 +229,7 @@ namespace Animator
         {
             if (selected != null)
             {
-                selected.AngleFlip = (double)FlipsUpDown.Value;
+                selected.Join.FlipAngle = (double)FlipsUpDown.Value;
             }
         }
 
@@ -275,8 +275,8 @@ namespace Animator
         private void DrawBase_MouseDown(object sender, MouseEventArgs e)
         {
             // Move the Piece's Join            
-            if (MoveJoinBtn.BackColor == pressed && Math.Abs(e.X - selected.Join.X) > Consts.ClickPrecision && 
-                Math.Abs(e.Y - selected.Join.Y) > Consts.ClickPrecision)
+            if (MoveJoinBtn.BackColor == pressed && Math.Abs(e.X - selected.Join.X) <= Consts.ClickPrecision && 
+                Math.Abs(e.Y - selected.Join.Y) <= Consts.ClickPrecision)
             {
                 // TODO: (Move Join) &Joins
                 //selected.Join = NEW JOIN
@@ -321,7 +321,7 @@ namespace Animator
             if (moving != movingCheck) { return; }
 
             // Invalid Mouse Position
-            if (e.X < 0 || e.Y < 0 || e.X > DrawBase.Size.Width || e.Y > DrawBase.Size.Height)
+            if (e.X < 0 || e.Y < 0 || e.X > DrawBase.Size.Width || e.Y > DrawBase.Size.Height || selected is null)
                 StopMoving();
             // Move Point
             else
@@ -383,7 +383,15 @@ namespace Animator
         /// <param name="e"></param>
         private void EraseAngleBtn_Click(object sender, EventArgs e)
         {
-            // TODO: Return join X/Y to base X/Y &Joins
+            var angle = sender == EraseRightBtn ? "rotated" : "turned";
+            var result = MessageBox.Show("Are you sure you wish to erase all changes to the set's " + angle + " state?",
+                "Erase Changes", MessageBoxButtons.OKCancel);
+            foreach (var piece in WIP.PiecesList)
+                if (piece.Join != null)
+                    if (angle == "rotated")
+                        piece.Join.XRight = piece.Join.X;
+                    else
+                        piece.Join.YDown = piece.Join.Y;
         }
 
         /// <summary>

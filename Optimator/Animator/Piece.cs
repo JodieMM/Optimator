@@ -38,11 +38,9 @@ namespace Animator
         private double[] minMax;
 
         // Sets
-        public Piece AttachedTo { get; set; } = null;
-        public Spot Join { get; set; } = null;
         public Set PieceOf { get; set; } = null;
-        public double AngleFlip { get; set; } = -1;
-        public int IndexSwitch { get; set; } = 0;
+        public Piece AttachedTo { get; set; } = null;
+        public Join Join { get; set; } = null;
 
         //Scenes
         public Originals Originally { get; set; } = null;
@@ -135,8 +133,8 @@ namespace Animator
         /// <returns>double[] { X, Y }</returns>
         public double[] GetCoords()
         {
-            return AttachedTo != null ? new double[] { X + AttachedTo.GetCoords()[0] + PointChange()[0],
-                Y + AttachedTo.GetCoords()[1] + PointChange()[1] } : new double[] { X, Y };
+            return AttachedTo != null ? new double[] { X + AttachedTo.GetCoords()[0] , //+ PointChange()[0]
+                Y + AttachedTo.GetCoords()[1]  } : new double[] { X, Y }; // + PointChange()[1]
         }
 
         /// <summary>
@@ -230,14 +228,14 @@ namespace Animator
         /// <param name="join">The point where the piece attaches to its base</param>
         /// <param name="angleFlip">The angle when front is changed</param>
         /// <param name="indexSwitch">The index position the piece takes when flipped</param>
-        public void AttachToPiece(Piece attach, Spot join = null, double angleFlip = -1, int indexSwitch = 0)
+        public void AttachToPiece(Piece attach, Join join = null)
         {
+            X -= attach.GetCoords()[0];
+            Y -= attach.GetCoords()[1];
             AttachedTo = attach;
             if (join == null)
-                join = new Spot(GetCoords()[0], GetCoords()[1]);
+                join = new Join(this);
             Join = join;
-            AngleFlip = angleFlip;
-            IndexSwitch = indexSwitch;
         }
 
         /// <summary>
@@ -247,10 +245,11 @@ namespace Animator
         {
             X = GetCoords()[0];
             Y = GetCoords()[1];
+            R = GetAngles()[0];
+            T = GetAngles()[1];
+            S = GetAngles()[2];
             AttachedTo = null;
             Join = null;
-            AngleFlip = -1;
-            IndexSwitch = 0;
         }
 
         #endregion
@@ -331,7 +330,8 @@ namespace Animator
         /// <returns></returns>
         private List<double[]> SpinMeRound(List<double[]> pointsArray)
         {
-            // Spin Adjustment
+            var hostX = (AttachedTo is null) ? X : X + AttachedTo.GetCoords()[0];
+            var hostY = (AttachedTo is null) ? Y : Y + AttachedTo.GetCoords()[1];
             for (int index = 0; index < pointsArray.Count; index++)
             {
                 if (!(pointsArray[index][0] == GetCoords()[0] && pointsArray[index][1] == GetCoords()[1]))
@@ -709,18 +709,6 @@ namespace Animator
                     index--;
                 }
             }
-        }
-
-        /// <summary>
-        /// Finds how much the join has changed from its original join position.
-        /// </summary>
-        /// <returns>double[] { X change, Y change }</returns>
-        private double[] PointChange()
-        {
-            var spotCoords = Join.CurrentJoinCoords(GetCoords()[0], GetCoords()[1], middle);
-            var spotCoordsList = new List<double[]> { spotCoords };
-            spotCoords = SpinMeRound(spotCoordsList)[0];
-            return new double[] { spotCoords[0] - Join.X, spotCoords[1] - Join.Y };            
         }
 
         /// <summary>

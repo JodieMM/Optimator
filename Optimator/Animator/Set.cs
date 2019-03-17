@@ -55,8 +55,8 @@ namespace Animator
                 else
                 {
                     string[] spotCoords = dataSections[3].Split(Consts.Colon);
-                    WIP.AttachToPiece(PiecesList[int.Parse(dataSections[2])], new Spot(double.Parse(spotCoords[0]), double.Parse(spotCoords[1]),
-                        double.Parse(spotCoords[2]), double.Parse(spotCoords[3])), double.Parse(dataSections[4]), int.Parse(dataSections[5]));
+                    WIP.AttachToPiece(PiecesList[int.Parse(dataSections[2])], new Join(WIP, double.Parse(spotCoords[0]), double.Parse(spotCoords[1]),
+                        double.Parse(spotCoords[2]), double.Parse(spotCoords[3]), double.Parse(dataSections[4]), int.Parse(dataSections[5])));
                 }
             }
         }
@@ -96,9 +96,7 @@ namespace Animator
                 string pieceDetails = piece.Name + Consts.SemiS + piece.X + Consts.ColonS + piece.Y + Consts.ColonS +
                         piece.R + Consts.ColonS + piece.T + Consts.ColonS + piece.S + Consts.ColonS + piece.SM;
                 if (piece != BasePiece)
-                    pieceDetails += Consts.SemiS + PiecesList.IndexOf(piece.AttachedTo) + Consts.SemiS + piece.Join.X + Consts.ColonS +
-                        piece.Join.Y + Consts.ColonS + piece.Join.XRight + Consts.ColonS + piece.Join.YDown + Consts.SemiS +
-                        piece.AngleFlip + Consts.SemiS + piece.IndexSwitch;
+                    pieceDetails += Consts.SemiS + PiecesList.IndexOf(piece.AttachedTo) + Consts.SemiS + piece.Join.ToString();
                 newData.Add(pieceDetails);
             }
             return newData;
@@ -139,7 +137,7 @@ namespace Animator
         /// <returns>Ordered list of pieces</returns>
         private List<Piece> SortOrder()
         {
-            // TODO: (SortOrder) Fix, including incorporating flip index
+            // Waiting Task: SortOrder: Fix, including incorporating flip index
             List<Piece> order = new List<Piece>();
             List<Piece> putInFront = new List<Piece>();
             int baseIndex = PiecesList.IndexOf(BasePiece);
@@ -151,7 +149,7 @@ namespace Animator
                 // Behind Base
                 if (index < baseIndex)
                 {
-                    if (working.GetAngles()[0] > working.AngleFlip && working.GetAngles()[0] < working.AngleFlip + 180)
+                    if (working.GetAngles()[0] > working.Join.FlipAngle && working.GetAngles()[0] < working.Join.FlipAngle + 180)
                         putInFront.Add(working);
                     else
                         order.Add(working);
@@ -159,7 +157,7 @@ namespace Animator
                 // In Front of Base
                 else if (index > baseIndex)
                 {
-                    if (working.GetAngles()[0] > working.AngleFlip && working.GetAngles()[0] < working.AngleFlip + 180)
+                    if (working.GetAngles()[0] > working.Join.FlipAngle && working.GetAngles()[0] < working.Join.FlipAngle + 180)
                         order.Add(working);
                     else
                         putInFront.Add(working);
