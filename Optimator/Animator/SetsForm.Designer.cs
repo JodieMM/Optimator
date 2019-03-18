@@ -187,7 +187,7 @@
             this.MoveJoinBtn.TabIndex = 128;
             this.MoveJoinBtn.Text = "Move Join";
             this.MoveJoinBtn.UseVisualStyleBackColor = false;
-            this.MoveJoinBtn.Click += new System.EventHandler(this.SetSelectionMod_Click);
+            this.MoveJoinBtn.Click += new System.EventHandler(this.MoveJoinBtn_Click);
             // 
             // OrderLbl
             // 
@@ -269,7 +269,7 @@
             this.SelectBaseBtn.TabIndex = 122;
             this.SelectBaseBtn.Text = "Select Base";
             this.SelectBaseBtn.UseVisualStyleBackColor = false;
-            this.SelectBaseBtn.Click += new System.EventHandler(this.SetSelectionMod_Click);
+            this.SelectBaseBtn.Click += new System.EventHandler(this.SelectBaseBtn_Click);
             // 
             // JoinsLbl
             // 

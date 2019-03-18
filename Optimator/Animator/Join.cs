@@ -19,6 +19,7 @@ namespace Animator
         public double XRight { get; set; }
         public double YDown { get; set; }
 
+
         public double FlipAngle { get; set; }
         public int IndexSwitch { get; set; }
         #endregion
@@ -116,18 +117,18 @@ namespace Animator
                 else if (angle[index] < 180)
                 {
                     lower = angled[index];
-                    upper = Utils.FlipPoint(0, initial[index]);
+                    upper = -initial[index];
                     bottomAngle = 90;
                 }
                 else if (angle[index] < 270)
                 {
-                    lower = Utils.FlipPoint(0, initial[index]);
-                    upper = Utils.FlipPoint(0, angled[index]);
+                    lower = -initial[index];
+                    upper = -angled[index];
                     bottomAngle = 180;
                 }
                 else
                 {
-                    lower = Utils.FlipPoint(0, angled[index]);
+                    lower = -angled[index];
                     upper = initial[index];
                     bottomAngle = 270;
                 }
@@ -137,22 +138,105 @@ namespace Animator
             return new double[] { X - currentCoords[0], Y - currentCoords[1] };
         }
 
-        // Takes a join's current position and the piece's current position to calculate the original join data
-        public void ReverseDifference()
+        /// <summary>
+        /// Places a join in regards to the piece's position.
+        /// </summary>
+        /// <param name="angle">Original (0) rotated (1) turned (2)</param>
+        /// <param name="join">The clicked location for the join</param>
+        public void ReverseDifference(int angle, double[] join)
         {
-            // TODO: &Join
+            // Reverse Spin and Size Mod
+            join = SpinMeRound(join, true);
+
+            // Reverse Rotation and Turn
+            int upper;
+            int bottomAngle;
+            for (int index = 0; index < 2; index++)
+            {
+                var angled = joining.GetAngles()[index];
+                if (angle == 0)
+                {
+                    if (angled < 90)
+                    {
+                        upper = 1;
+                        bottomAngle = 0;
+                    }
+                    else if (angled < 180)
+                    {
+                        upper = -1;
+                        bottomAngle = 90;
+                    }
+                    else if (angled < 270)
+                    {
+                        upper = 1;
+                        bottomAngle = 180;
+                    }
+                    else
+                    {
+                        upper = -1;
+                        bottomAngle = 270;
+                    }
+                    if (upper == -1)
+                        join[index] = join[index] / (1 - 2 * ((angled - bottomAngle) / 90.0));
+                }
+                else
+                {
+                    if (angle == 1 && index == 0 || angle == 2 && index == 1)
+                    {
+                        var known = index == 0 ? X : Y;
+                        if (angled < 90)
+                        {
+                            bottomAngle = 0;
+                            join[index] = (join[index] - known + known * ((angled - bottomAngle) / 90.0))/ ((angled - bottomAngle) / 90.0);
+                        }
+                        else if (angled < 180)
+                        {
+                            bottomAngle = 90;
+                            join[index] = (join[index] + known * ((angled - bottomAngle) / 90.0)) / (1 - ((angled - bottomAngle) / 90.0));
+                        }
+                        else if (angled < 270)
+                        {
+                            bottomAngle = 180;
+                            join[index] = -(join[index] + known - known * ((angled - bottomAngle) / 90.0)) / ((angled - bottomAngle) / 90.0);
+                        }
+                        else
+                        {
+                            bottomAngle = 270;
+                            join[index] = (join[index] - known * ((angled - bottomAngle) / 90.0)) / (1 - ((angled - bottomAngle) / 90.0));
+                        }
+                    }
+                }
+            }            
+
+            // Find X/Y in relation to piece
+            join[0] -= joining.middle[0];
+            join[1] -= joining.middle[1];
+
+            // Assign To Value
+            if (angle == 0)
+            {
+                X = join[0];
+                Y = join[1];
+            }
+            if (angle != 2)
+                XRight = join[0];
+            if (angle != 1)
+                YDown = join[1];
         }
 
         /// <summary>
         /// Spins the coords provided and modifies their size.
         /// </summary>
         /// <param name="join">The point to be spun</param>
-        /// <returns></returns>
-        private double[] SpinMeRound(double[] join)
+        /// <returns>The spun coordinates of the join</returns>
+        private double[] SpinMeRound(double[] join, bool reverse = false)
         {
+            var sizeMod = reverse ? 2.0 - joining.GetSizeMod() : joining.GetSizeMod();
+            var spin = reverse ? (360 - joining.GetAngles()[2]) % 360: joining.GetAngles()[2];
+
             if (!(join[0] == 0 && join[1] == 0))
             {
-                double hypotenuse = Math.Sqrt(Math.Pow(0 - join[0], 2) + Math.Pow(0 - join[1], 2)) * joining.GetSizeMod();
+                double hypotenuse = Math.Sqrt(Math.Pow(0 - join[0], 2) + Math.Pow(0 - join[1], 2)) * sizeMod;
                 // Find Angle
                 double pointAngle;
                 if (join[0] == 0 && join[1] < 0)
@@ -175,25 +259,25 @@ namespace Animator
                 //  Third  || Fourth
                 else if (join[0] > 0 && join[1] < 0) // First Quadrant
                 {
-                    pointAngle = (180 / Math.PI) * Math.Atan(Math.Abs((0 - join[0]) / (0 - join[1])));
+                    pointAngle = 180 / Math.PI * Math.Atan(Math.Abs((0 - join[0]) / (0 - join[1])));
                 }
                 else if (join[0] > 0 && join[1] > 0) // Fourth Quadrant
                 {
-                    pointAngle = 90 + (180 / Math.PI) * Math.Atan(Math.Abs((0 - join[1]) / (0 - join[0])));
+                    pointAngle = 90 + 180 / Math.PI * Math.Atan(Math.Abs((0 - join[1]) / (0 - join[0])));
                 }
                 else if (join[0] < 0 && join[1] < 0) // Second Quadrant
                 {
-                    pointAngle = 270 + (180 / Math.PI) * Math.Atan(Math.Abs((0 - join[1]) / (0 - join[0])));
+                    pointAngle = 270 + 180 / Math.PI * Math.Atan(Math.Abs((0 - join[1]) / (0 - join[0])));
                 }
                 else  // Third Quadrant
                 {
-                    pointAngle = 180 + (180 / Math.PI) * Math.Atan(Math.Abs((0 - join[0]) / (0 - join[1])));
+                    pointAngle = 180 + 180 / Math.PI * Math.Atan(Math.Abs((0 - join[0]) / (0 - join[1])));
                 }
-                double findAngle = ((pointAngle + joining.GetAngles()[2]) % 360) * Math.PI / 180;
+                double findAngle = (pointAngle + spin) * Math.PI / 180 % 360;
 
                 // Find Points
-                join[0] = Convert.ToInt32((0 + hypotenuse * Math.Sin(findAngle)));
-                join[1] = Convert.ToInt32((0 - hypotenuse * Math.Cos(findAngle)));
+                join[0] = Convert.ToInt32(hypotenuse * Math.Sin(findAngle));
+                join[1] = Convert.ToInt32(-hypotenuse * Math.Cos(findAngle));
             }
             return join;
         }

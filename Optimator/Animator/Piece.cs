@@ -237,6 +237,8 @@ namespace Animator
             if (join == null)
                 join = new Join(this);
             Join = join;
+            if (this == PieceOf.BasePiece)
+                PieceOf.BasePiece = null;
         }
 
         /// <summary>
@@ -376,11 +378,11 @@ namespace Animator
                     {
                         pointAngle = 180 + (180 / Math.PI) * Math.Atan(Math.Abs((GetCoords()[0] - pointsArray[index][0]) / (GetCoords()[1] - pointsArray[index][1])));
                     }
-                    double findAngle = ((pointAngle + GetAngles()[2]) % 360) * Math.PI / 180;
+                    double findAngle = (pointAngle + GetAngles()[2]) * Math.PI / 180 % 360;
 
                     // Find Points
-                    pointsArray[index][0] = Convert.ToInt32((GetCoords()[0] + hypotenuse * Math.Sin(findAngle)));
-                    pointsArray[index][1] = Convert.ToInt32((GetCoords()[1] - hypotenuse * Math.Cos(findAngle)));
+                    pointsArray[index][0] = Convert.ToInt32(GetCoords()[0] + hypotenuse * Math.Sin(findAngle));
+                    pointsArray[index][1] = Convert.ToInt32(GetCoords()[1] - hypotenuse * Math.Cos(findAngle));
                 }
             }
             return pointsArray;

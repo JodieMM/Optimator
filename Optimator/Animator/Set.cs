@@ -137,7 +137,6 @@ namespace Animator
         /// <returns>Ordered list of pieces</returns>
         private List<Piece> SortOrder()
         {
-            // Waiting Task: SortOrder: Fix, including incorporating flip index
             List<Piece> order = new List<Piece>();
             List<Piece> putInFront = new List<Piece>();
             int baseIndex = PiecesList.IndexOf(BasePiece);
