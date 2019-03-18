@@ -282,12 +282,14 @@ namespace Animator
         /// Draws the piece to the provided graphics.
         /// </summary>
         /// <param name="g">Provided graphics</param>
-        public override void Draw(Graphics g, Color? outline = null)
+        public override void Draw(Graphics g, Color[] colours = null)
         {
-            if (outline == null)
+            if (colours == null)
                 Visuals.DrawPiece(this, g);
+            else if (colours.Length == 1)
+                Visuals.DrawPiece(this, g, colours[0]);
             else
-                Visuals.DrawPiece(this, g, outline);
+                Visuals.DrawPiece(this, g, colours[0], colours[1]);
         }
 
 

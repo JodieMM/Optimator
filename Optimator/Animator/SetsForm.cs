@@ -53,9 +53,7 @@ namespace Animator
             DrawDown.BackColor = Settings.BackgroundColour;
 
             Utils.CheckValidFolder();
-            // TODO: Shadow recentre
-            // TODO: Hide piece options for base (X, Y, R, T, S, keep SM)
-            // TODO: Sets preview doesn't change piece locations (X/Y)
+            // TODO: Hide piece options for base (X, Y, R, T, S, SM)
         }
 
 
@@ -338,14 +336,18 @@ namespace Animator
             // Shadows
             if (movingFar)
             {
+                var xChange = e.X - originalMoving[0];
+                var yChange = e.Y - originalMoving[1];
                 for (int index = 0; index < selected.Data.Count; index++)
                 {
-                    var xChange = e.X - (float)selected.middle[0];
-                    var yChange = e.Y - (float)selected.middle[1];
-                    original.DrawLine(new Pen(Consts.shadowShade), (float)selected.Data[index].GetCoordCombination()[0] + xChange, 
-                        (float)selected.Data[index].GetCoordCombination()[1] + yChange, 
-                        (float)selected.Data[Utils.Modulo(index + 1, selected.Data.Count)].GetCoordCombination()[0] + xChange, 
-                        (float)selected.Data[Utils.Modulo(index + 1, selected.Data.Count)].GetCoordCombination()[1] + yChange);
+                    var X = selected.X; var Y = selected.Y;
+                    selected.X += xChange; selected.Y += yChange;
+                    selected.Draw(original, new Color[] { Consts.shadowShade, Consts.shadowShade });
+                    selected.X = X; selected.Y = Y;
+                    //original.DrawLine(new Pen(Consts.shadowShade), (float)selected.Data[index].GetCoordCombination()[0] + xChange, 
+                    //    (float)selected.Data[index].GetCoordCombination()[1] + yChange, 
+                    //    (float)selected.Data[Utils.Modulo(index + 1, selected.Data.Count)].GetCoordCombination()[0] + xChange, 
+                    //    (float)selected.Data[Utils.Modulo(index + 1, selected.Data.Count)].GetCoordCombination()[1] + yChange);
                 }
             }
         }
@@ -443,11 +445,11 @@ namespace Animator
 
             // Draw To Boards
             WIP.ToPiece().R = 0; WIP.ToPiece().T = 0;
-            DrawToBoard(original);
+            DrawToBoard(original, 0);
             WIP.ToPiece().R = 89.9999; WIP.ToPiece().T = 0;
-            DrawToBoard(rotated);
+            DrawToBoard(rotated, 1);
             WIP.ToPiece().R = 0; WIP.ToPiece().T = 89.9999;
-            DrawToBoard(turned);
+            DrawToBoard(turned, 2);
             WIP.ToPiece().T = 0;
         }
 
@@ -456,22 +458,22 @@ namespace Animator
         /// select colours.
         /// </summary>
         /// <param name="board">The graphics to be display the piece on</param>
-        private void DrawToBoard(Graphics board)
+        /// <param name="angle">Original (0) rotated (1) turned (2)</param>
+        private void DrawToBoard(Graphics board, int angle)
         {
             foreach (Piece piece in WIP.PiecesList)
             {
                 if (selected != null && piece == selected && movingFar)
-                    piece.Draw(board, Consts.shadowShade);
+                    piece.Draw(board, new Color[] { Consts.shadowShade });
                 else if (selected != null && piece == selected)
-                    piece.Draw(board, Consts.select);
+                    piece.Draw(board, new Color[] { Consts.select });
                 else if (selected != null && piece == selected.AttachedTo)
-                    piece.Draw(board, Consts.highlight);
+                    piece.Draw(board, new Color[] { Consts.highlight });
                 else
                     piece.Draw(board);              
             }
             if (MoveJoinBtn.BackColor == pressed)
-                Visuals.DrawCross(selected.Join.X + selected.GetCoords()[0],
-                    selected.Join.Y + selected.GetCoords()[1], Consts.highlight, board);
+                selected.Join.Draw(angle, Consts.select, board);
         }
 
         /// <summary>

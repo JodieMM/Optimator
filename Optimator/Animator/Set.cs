@@ -124,7 +124,7 @@ namespace Animator
         /// Draws the set to the provided graphics.
         /// </summary>
         /// <param name="g">Provided graphics</param>
-        public override void Draw(Graphics g, Color? outline)
+        public override void Draw(Graphics g, Color[] colours = null)
         {
             List<Piece> orderedPieces = SortOrder();
             foreach (Piece piece in orderedPieces)

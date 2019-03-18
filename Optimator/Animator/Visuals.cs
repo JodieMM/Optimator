@@ -32,7 +32,7 @@ namespace Animator
         /// </summary>
         /// <param name="piece">The piece to be drawn</param>
         /// <param name="g">The graphics to draw to</param>
-        public static void DrawPiece(Piece piece, Graphics g, Color? outlineColour = null)
+        public static void DrawPiece(Piece piece, Graphics g, Color? outlineColour = null, Color? fillColour = null)
         {
             List<double[]> currentPoints = piece.CurrentPoints();
             if (currentPoints.Count < 1)
@@ -42,7 +42,7 @@ namespace Animator
             if (outlineColour is null)
                 outlineColour = piece.OutlineColour;
             Pen pen = new Pen((Color)outlineColour, (float)piece.OutlineWidth);
-            SolidBrush fill = new SolidBrush(piece.FillColour[0]);
+            SolidBrush fill = new SolidBrush(fillColour ?? piece.FillColour[0]);
             List<Spot> spots = piece.Data;
             int numCoords = currentPoints.Count;
 

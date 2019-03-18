@@ -27,7 +27,6 @@ namespace Animator
         {
             InitializeComponent();
             WIP = part;
-            WIP.ToPiece().SetCoordsAsMid(DrawPanel);
         }
 
         /// <summary>
@@ -80,17 +79,20 @@ namespace Animator
         {
             DrawPanel.Refresh();
             g = DrawPanel.CreateGraphics();
+            var X = WIP.ToPiece().X; var Y = WIP.ToPiece().Y;
+            WIP.ToPiece().SetCoordsAsMid(DrawPanel);
             WIP.Draw(g);
+            WIP.ToPiece().X = X; WIP.ToPiece().Y = Y;
 
-            // Used in testing rot/turn mixing
-            foreach (Spot spot in WIP.ToPiece().Data)
-            {
-                if (spot.DrawnLevel >= 0)
-                {
-                    Visuals.DrawCross(spot.CurrentX, spot.CalculateCurrentValue(WIP.ToPiece().GetAngles()[1],
-                        new double[] { 150, 150 }, 0), Color.Black, g);
-                }
-            }
+            //// HIDDEN: Used in testing rot/turn mixing
+            //foreach (Spot spot in WIP.ToPiece().Data)
+            //{
+            //    if (spot.DrawnLevel >= 0)
+            //    {
+            //        Visuals.DrawCross(spot.CurrentX, spot.CalculateCurrentValue(WIP.ToPiece().GetAngles()[1],
+            //            new double[] { 150, 150 }, 0), Color.Black, g);
+            //    }
+            //}
         }
     }
 }
