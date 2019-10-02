@@ -13,8 +13,12 @@ namespace Animator
         #region Set Variables
         public override string Name { get; set; }
         public override string Version { get; }
+        public override State State { get; set; }
+
         public List<Piece> PiecesList { get; set; } = new List<Piece>();
         public Piece BasePiece { get; set; }
+        public List<Join> Joins { get; set; } = new List<Join>();
+        public Dictionary<int, List<int>> JoinsIndex { get; set; } = new Dictionary<int, List<int>>();
         #endregion
 
 
@@ -25,38 +29,52 @@ namespace Animator
         public Set(string inName)
         {
             Name = inName;
-            List<string> data = Utils.ReadFile(Utils.GetDirectory(Consts.SetsFolder, Name, Consts.Optr));
+            var data = Utils.ReadFile(Utils.GetDirectory(Consts.SetsFolder, Name, Consts.Optr));
             Version = data[0].Split(Consts.Semi)[1];
             Utils.CheckValidVersion(Version);
+            State = new State();
 
-            // Add all pieces to the list
-            for (int index = 1; index < data.Count; index++)
+            // Pieces List
+            int index = 1;
+            while (data[index] != "Joins")
             {
-                string[] dataSections = data[index].Split(Consts.Semi);
+                var dataSections = data[index].Split(Consts.Semi);
+                var stateData = Utils.ConvertStringArrayToDoubles(dataSections[1].Split(Consts.Colon));
                 Piece WIP = new Piece(dataSections[0])
                 {
-                    PieceOf = this
+                    State = new State(stateData[0], stateData[1], stateData[2], stateData[3], stateData[4], stateData[5])
                 };
                 PiecesList.Add(WIP);
+
+                // Check if Base Piece
+                if (dataSections.Length == 3 && dataSections[2] == "base")
+                {
+                    BasePiece = WIP;
+                }
             }
 
-            // Add piece details
-            for (int index = 1; index < data.Count; index++)
+            // Joins
+            for (int i = index++; i < data.Count; i++)
             {
-                string[] dataSections = data[index].Split(Consts.Semi);
-                string[] pieceData = dataSections[1].Split(Consts.Colon);
-                Piece WIP = PiecesList[index];
-                WIP.SetValues(double.Parse(pieceData[0]), double.Parse(pieceData[1]), double.Parse(pieceData[2]),
-                        double.Parse(pieceData[3]), double.Parse(pieceData[4]), double.Parse(pieceData[5]));
+                var dataSections = data[i].Split(Consts.Semi);
+                var indexA = int.Parse(dataSections[0]);
+                var indexB = int.Parse(dataSections[1]);
+                var coordsA = Utils.ConvertStringArrayToDoubles(dataSections[2].Split(Consts.Colon));
+                var coordsB = Utils.ConvertStringArrayToDoubles(dataSections[3].Split(Consts.Colon));
 
-                // Set base piece or attach piece to base
-                if (dataSections.Length == 2)
-                    BasePiece = WIP;
+                Join WIP = new Join(PiecesList[indexA], PiecesList[indexB], 
+                    coordsA[0], coordsA[1], coordsA[2], coordsA[3], coordsB[0], coordsB[1], coordsB[2], coordsB[3], 
+                    int.Parse(dataSections[4]), int.Parse(dataSections[5]));
+                Joins.Add(WIP);
+
+                // Add To Dictionary
+                if (JoinsIndex.ContainsKey(indexB))
+                {
+                    JoinsIndex[indexB].Add(Joins.Count - 1);
+                }
                 else
                 {
-                    string[] spotCoords = dataSections[3].Split(Consts.Colon);
-                    WIP.AttachToPiece(PiecesList[int.Parse(dataSections[2])], new Join(WIP, double.Parse(spotCoords[0]), double.Parse(spotCoords[1]),
-                        double.Parse(spotCoords[2]), double.Parse(spotCoords[3]), double.Parse(dataSections[4]), int.Parse(dataSections[5])));
+                    JoinsIndex.Add(indexB, new List<int>(Joins.Count - 1));
                 }
             }
         }
@@ -68,6 +86,7 @@ namespace Animator
         {
             Name = "";
             Version = Consts.Version;
+            State = new State();
         }
 
 
@@ -80,25 +99,37 @@ namespace Animator
         public override List<string> GetData()
         {
             // Type and Version
-            List<string> newData = new List<string>
+            var newData = new List<string>
             {
                 Consts.Set + Consts.Semi + Consts.Version
             };
 
             // Reset Set to Save
-            BasePiece.R = 0; BasePiece.T = 0; BasePiece.S = 0;
+            BasePiece.State = new State();
             PiecesList = SortOrder();
 
             // Save Each Piece
             for (int index = 0; index < PiecesList.Count; index++)
             {
                 Piece piece = PiecesList[index];
-                string pieceDetails = piece.Name + Consts.SemiS + piece.X + Consts.ColonS + piece.Y + Consts.ColonS +
-                        piece.R + Consts.ColonS + piece.T + Consts.ColonS + piece.S + Consts.ColonS + piece.SM;
-                if (piece != BasePiece)
-                    pieceDetails += Consts.SemiS + PiecesList.IndexOf(piece.AttachedTo) + Consts.SemiS + piece.Join.ToString();
+                string pieceDetails = piece.Name + Consts.SemiS + piece.State.GetData();
+
+                // Base Piece
+                if (piece == BasePiece)
+                {
+                    pieceDetails += Consts.SemiS + "base";
+                }
                 newData.Add(pieceDetails);
             }
+
+            // Save Each Join
+            newData.Add("Joins");
+            for (int index = 0; index < Joins.Count; index++)
+            {
+                Join join = Joins[index];
+                newData.Add(PiecesList.IndexOf(join.A) + Consts.SemiS + PiecesList.IndexOf(join.B) + Consts.SemiS + join.ToString());
+            }
+
             return newData;
         }
 
@@ -109,15 +140,6 @@ namespace Animator
         public override Piece ToPiece()
         {
             return BasePiece;
-        }
-
-        /// <summary>
-        /// Returns itself to accommodate pieces as parts.
-        /// </summary>
-        /// <returns>Itself</returns>
-        public override Set ToSet()
-        {
-            return this;
         }
 
         /// <summary>
@@ -148,7 +170,7 @@ namespace Animator
                 // Behind Base
                 if (index < baseIndex)
                 {
-                    if (working.GetAngles()[0] > working.Join.FlipAngle && working.GetAngles()[0] < working.Join.FlipAngle + 180)
+                    if (working.State.GetAngles()[0] > working.Join.FlipAngle && working.State.GetAngles()[0] < working.Join.FlipAngle + 180)
                         putInFront.Add(working);
                     else
                         order.Add(working);
@@ -167,6 +189,26 @@ namespace Animator
                 order.AddRange(putInFront);
             }
             return order;
+        }
+
+        /// <summary>
+        /// Recursive function to find order of attached pieces to a base
+        /// </summary>
+        /// <param name="baseIndex">Index of the piece being tested as a base</param>
+        /// <returns>List of pieces surrounding the base in order</returns>
+        private List<Piece> SortOrderFromBasePiece(int baseIndex)
+        {
+            var setSection = new List<Piece>
+            {
+                PiecesList[baseIndex]
+            };
+
+            // Check if current piece is a base
+            if (JoinsIndex.ContainsKey(baseIndex))
+            {
+                var attachedPieces = JoinsIndex[baseIndex];
+            }
+            return setSection;
         }
     }
 }

@@ -12,16 +12,23 @@ namespace Animator
     public class Join
     {
         #region Join Variables
-        private readonly Piece joining;
+        public Piece A { get; } // Attaching Piece
+        public Piece B { get; } // Base Piece
 
-        public double X { get; set; }
-        public double Y { get; set; }
-        public double XRight { get; set; }
-        public double YDown { get; set; }
+        // Join Positions (Set at A rts = 0, B rts = 0 respectively)
+        public double AX { get; set; } = 0;
+        public double AY { get; set; } = 0;
+        public double AXRight { get; set; } = 0;
+        public double AYDown { get; set; } = 0;
 
+        public double BX { get; set; } = 0;
+        public double BY { get; set; } = 0;
+        public double BXRight { get; set; } = 0;
+        public double BYDown { get; set; } = 0;
 
-        public double FlipAngle { get; set; }
-        public int IndexSwitch { get; set; }
+        // Depth Variables
+        public double FlipAngle { get; set; } = -1;
+        public int IndexSwitch { get; set; } = 0;
         #endregion
 
 
@@ -29,30 +36,39 @@ namespace Animator
         /// Constructor for creating a new join.
         /// </summary>
         /// <param name="piece">The piece being joined</param>
-        public Join(Piece piece)
+        public Join(Piece a, Piece b)
         {
-            joining = piece;
-            X = XRight = Y = YDown = IndexSwitch = 0;
-            FlipAngle = -1;
+            A = a;
+            B = b;
         }
 
         /// <summary>
         /// Constructor for loading a join.
         /// </summary>
-        /// <param name="piece">The piece being joined</param>
-        /// <param name="x">The initial x of the join</param>
-        /// <param name="y">The initial y of the join</param>
-        /// <param name="xr">The rotated x of the join</param>
-        /// <param name="yd">The turned y of the join</param>
+        /// <param name="a">The attaching piece</param>
+        /// <param name="ax">A's X coord</param>
+        /// <param name="ay">A's Y coord</param>
+        /// <param name="axr">A's XRight coord</param>
+        /// <param name="ayd">A's YDown coord</param>
+        /// <param name="b">The base piece</param>
+        /// <param name="bx">B's X coord</param>
+        /// <param name="by">B's Y coord</param>
+        /// <param name="bxr">B's XRight coord</param>
+        /// <param name="byd">V's YDown coord</param>
         /// <param name="flipAngle">When the piece flips, -1 if it doesn't</param>
         /// <param name="indexSwitch">What index the piece flips to, 0 if it doesn't flip</param>
-        public Join(Piece piece, double x, double y, double xr, double yd, double flipAngle, int indexSwitch)
+        public Join(Piece a, Piece b, double ax, double ay, double axr, double ayd, double bx, double by, double bxr, double byd, double flipAngle, int indexSwitch)
         {
-            joining = piece;
-            X = x;
-            Y = y;
-            XRight = xr;
-            YDown = yd;
+            A = a;
+            AX = ax;
+            AY = ay;
+            AXRight = axr;
+            AYDown = ayd;
+            B = b;
+            BX = bx;
+            BY = by;
+            BXRight = bxr;
+            BYDown = byd;
             FlipAngle = flipAngle;
             IndexSwitch = indexSwitch;
         }
@@ -68,8 +84,9 @@ namespace Animator
         /// <returns></returns>
         public override string ToString()
         {
-            return X + Consts.ColonS + Y + Consts.ColonS + XRight + Consts.ColonS + YDown +
-                Consts.SemiS + FlipAngle + Consts.SemiS + IndexSwitch;
+            return AX + Consts.ColonS + AY + Consts.ColonS + AXRight + Consts.ColonS + AYDown + Consts.Semi +
+                BX + Consts.ColonS + BY + Consts.ColonS + BXRight + Consts.ColonS + BYDown + Consts.Semi +
+                FlipAngle + Consts.SemiS + IndexSwitch;
         }
 
         /// <summary>
@@ -80,9 +97,9 @@ namespace Animator
         /// <param name="board">The graphics board to be drawn on</param>
         public void Draw(int angle, Color colour, Graphics board)
         {
-            var x = angle == 1 ? XRight : X;
-            var y = angle == 2 ? YDown : Y;
-            Visuals.DrawCross(joining.GetCoords()[0] + x, joining.GetCoords()[1] + y, colour, board);
+            var x = angle == 1 ? BXRight : BX;
+            var y = angle == 2 ? BYDown : BY;
+            Visuals.DrawCross(B.State.GetCoords()[0] + x, B.State.GetCoords()[1] + y, colour, board);
         }
 
 

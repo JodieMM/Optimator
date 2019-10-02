@@ -263,6 +263,22 @@ namespace Animator
         }
 
         /// <summary>
+        /// Converts an array of strings into an array of doubles.
+        /// Used when loading from text files.
+        /// </summary>
+        /// <param name="strArray">The array of strings to be converted</param>
+        /// <returns>A double array of the values in the input</returns>
+        public static double[] ConvertStringArrayToDoubles(string[] strArray)
+        {
+            double[] dblArray = new double[strArray.Length];
+            for (int index = 0; index < strArray.Length; index++)
+            {
+                dblArray[index] = double.Parse(strArray[index]);
+            }
+            return dblArray;
+        }
+
+        /// <summary>
         /// Flips a point around a center. 
         /// Works for either x or y flips.
         /// </summary>

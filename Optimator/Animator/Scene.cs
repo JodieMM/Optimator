@@ -17,7 +17,7 @@ namespace Animator
         public List<Part> PartsList { get; } = new List<Part>();
         public List<Piece> PiecesList { get; } = new List<Piece>();
         public List<Change> Changes { get; } = new List<Change>();
-        public decimal TimeLength { get; set; }
+        public decimal TimeLength { get; set; } = 0;
         #endregion
 
 
@@ -48,9 +48,13 @@ namespace Animator
                 for (int index = 2; index < partEndIndex; index++)
                 {
                     if (data[index].StartsWith("p"))
+                    {
                         PartsList.Add(new Piece(data[index].Remove(0, 2)));
+                    }
                     else
+                    {
                         PartsList.Add(new Set(data[index].Remove(0, 2)));
+                    }
                 }
                 UpdatePiecesList();
 
@@ -60,9 +64,8 @@ namespace Animator
                 {
                     int workingIndex = index - partEndIndex - 1;
                     Piece piece = PiecesList[workingIndex];
-                    string[] originals = data[index].Split(Consts.Semi);
-                    piece.SetValues(double.Parse(originals[0]), double.Parse(originals[1]), double.Parse(originals[2]),
-                                double.Parse(originals[3]), double.Parse(originals[4]), double.Parse(originals[5]));
+                    var originals = Utils.ConvertStringArrayToDoubles(data[index].Split(Consts.Semi));
+                    piece.State.SetValues(originals[0], originals[1], originals[2], originals[3], originals[4], originals[5]);
                     piece.Originally = new Originals(piece);
                 }
 
@@ -88,7 +91,7 @@ namespace Animator
         /// </summary>
         public Scene()
         {
-            TimeLength = 0;
+            Version = Consts.Version;
         }
 
 
@@ -109,16 +112,22 @@ namespace Animator
 
             // Save Parts
             foreach (Part part in PartsList)
+            {
                 data.Add((part is Piece ? "p:" : "s:") + part.Name);
+            }
 
             // Save Original States
             data.Add("Originals");
             foreach (Piece piece in PiecesList)
+            {
                 data.Add(piece.Originally != null ? piece.Originally.GetSaveData() : Consts.defaultAngleOptions);
+            }
 
             // Save Animation Changes
             foreach (Change change in Changes)
+            {
                 data.Add(change.ToString());
+            }
 
             return data;
         }
@@ -131,9 +140,13 @@ namespace Animator
         public void RunScene(decimal time)
         {
             foreach (Piece piece in PiecesList)
+            {
                 piece.TakeOriginalState();
+            }
             foreach (Change change in Changes)
+            {
                 change.Run(time);
+            }
         }
 
         /// <summary>
@@ -145,9 +158,13 @@ namespace Animator
             for (int index = 0; index < PartsList.Count; index++)
             {
                 if (PartsList[index] is Piece)
+                {
                     PiecesList.Add(PartsList[index].ToPiece());
-                else
-                    PiecesList.AddRange(PartsList[index].ToSet().PiecesList);
+                }
+                else if (PartsList[index] is Set)
+                {
+                    PiecesList.AddRange((PartsList[index] as Set).PiecesList);
+                }
             }
         }
     }

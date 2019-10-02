@@ -17,14 +17,7 @@ namespace Animator
         public override string Name { get; set; }
         public override string Version { get; }
         public List<Spot> Data { get; set; } = new List<Spot>();
-
-        // Coords and Angles
-        public double X { get; set; } = 0;
-        public double Y { get; set; } = 0;
-        public double R { get; set; } = 0;
-        public double T { get; set; } = 0;
-        public double S { get; set; } = 0;
-        public double SM { get; set; } = 100;
+        public override State State { get; set; }
 
         // Colours and Details
         public string ColourType { get; set; }                     // Solid/Gradient colour and direction
@@ -37,13 +30,8 @@ namespace Animator
         public double[] middle;
         private double[] minMax;
 
-        // Sets
-        public Set PieceOf { get; set; } = null;
-        public Piece AttachedTo { get; set; } = null;
-        public Join Join { get; set; } = null;
-
         //Scenes
-        public Originals Originally { get; set; } = null;
+        public Originals Originally { get; set; } = null;   // TODO: Remove need/ put in scenes
         #endregion
 
 
@@ -90,10 +78,9 @@ namespace Animator
             for (int index = 2; index < data.Count; index++)
             {
                 var spotData = data[index].Split(Consts.Semi);
-                var coords = spotData[0].Split(Consts.Colon);
+                var coords = Utils.ConvertStringArrayToDoubles(spotData[0].Split(Consts.Colon));
 
-                Data.Add(new Spot(double.Parse(coords[0]), double.Parse(coords[1]), double.Parse(coords[2]),
-                    double.Parse(coords[3]), spotData[1], spotData[2]));
+                Data.Add(new Spot(coords[0], coords[1], coords[2], coords[3], spotData[1], spotData[2]));
             }
             RunCalculations();
         }
@@ -116,54 +103,6 @@ namespace Animator
 
 
         // ----- GET FUNCTIONS -----
-        #region Get Functions
-       
-        /// <summary>
-        /// Gets the size modifier with considerations as a decimal
-        /// </summary>
-        /// <returns>Size Modifier</returns>
-        public double GetSizeMod()
-        {
-            return AttachedTo != null ? (SM / 100.0) * (AttachedTo.GetSizeMod()) : SM / 100;
-        }
-
-        /// <summary>
-        /// Gets the X and Y values of the piece with considerations
-        /// </summary>
-        /// <returns>double[] { X, Y }</returns>
-        public double[] GetCoords()
-        {
-            return AttachedTo != null ? new double[] { X + AttachedTo.GetCoords()[0] + Join.CurrentDifference()[0],
-                Y + AttachedTo.GetCoords()[1] + Join.CurrentDifference()[0] } : new double[] { X, Y };
-        }
-
-        /// <summary>
-        /// Gets the rotation, turn and spin of the piece with considerations
-        /// </summary>
-        /// <returns>double[] { Rotation, Turn, Spin }</returns>
-        public double[] GetAngles()
-        {
-            var angles = new double[3];
-
-            // Original Angles
-            angles[0] = R; // + S * Math.Sin(Utilities.ToRad(T));
-            angles[1] = T; //+ S * Math.Sin(Utilities.ToRad(R));
-            angles[2] = S; //* Math.Cos(Utilities.ToRad(R)); // + S * Math.Cos(Utilities.ToRad(T));
-
-            // Build Off Attached
-            if (AttachedTo != null)
-            {
-                angles[0] += AttachedTo.GetAngles()[0];
-                angles[1] += AttachedTo.GetAngles()[1];
-                angles[2] += AttachedTo.GetAngles()[2];
-            }
-
-            // Modulus of 360 degrees
-            angles[0] = angles[0] % 360;
-            angles[1] = angles[1] % 360;
-            angles[2] = angles[2] % 360;
-            return angles;
-        }
 
         /// <summary>
         /// Gets piece's current details in a string format.
@@ -190,26 +129,9 @@ namespace Animator
             return newData;
         }
 
-        #endregion
-
 
 
         // ----- SET FUNCTIONS -----
-        #region Set Functions
-
-        /// <summary>
-        /// Sets all of the position/angle/size parameters at once.
-        /// </summary>
-        /// <param name="x">New X Coord</param>
-        /// <param name="y">New Y Coord</param>
-        /// <param name="r">New Rotation</param>
-        /// <param name="t">New Turn</param>
-        /// <param name="s">New Spin</param>
-        /// <param name="sm">New Size Modifier</param>
-        public void SetValues(double x, double y, double r, double t, double s, double sm)
-        {
-            X = x; Y = y; R = r; T = t; S = s; SM = sm;
-        }
 
         /// <summary>
         /// Sets the centre of the point to the board it's being displayed on.
@@ -217,45 +139,9 @@ namespace Animator
         /// <param name="pictureBox">The board the piece is to be drawn on</param>
         public void SetCoordsAsMid(PictureBox pictureBox)
         {
-            X = pictureBox.Width / 2.0;
-            Y = pictureBox.Height / 2.0;
+            State.X = pictureBox.Width / 2.0;
+            State.Y = pictureBox.Height / 2.0;
         }
-
-        /// <summary>
-        /// Attaches this piece to another, forming or continuing a set.
-        /// </summary>
-        /// <param name="attach">The piece being attached to</param>
-        /// <param name="join">The point where the piece attaches to its base</param>
-        /// <param name="angleFlip">The angle when front is changed</param>
-        /// <param name="indexSwitch">The index position the piece takes when flipped</param>
-        public void AttachToPiece(Piece attach, Join join = null)
-        {
-            Deattach();
-            X -= attach.GetCoords()[0];
-            Y -= attach.GetCoords()[1];
-            AttachedTo = attach;
-            if (join == null)
-                join = new Join(this);
-            Join = join;
-            if (this == PieceOf.BasePiece)
-                PieceOf.BasePiece = null;
-        }
-
-        /// <summary>
-        /// Detaches the piece from its current base.
-        /// </summary>
-        public void Deattach()
-        {
-            X = GetCoords()[0];
-            Y = GetCoords()[1];
-            R = GetAngles()[0];
-            T = GetAngles()[1];
-            S = GetAngles()[2];
-            AttachedTo = null;
-            Join = null;
-        }
-
-        #endregion
 
 
 
@@ -269,15 +155,6 @@ namespace Animator
         public override Piece ToPiece()
         {
             return this;
-        }
-
-        /// <summary>
-        /// Returns the set a piece may belong to.
-        /// </summary>
-        /// <returns>Set it is part of</returns>
-        public override Set ToSet()
-        {
-            return PieceOf;
         }
 
         /// <summary>
@@ -310,16 +187,16 @@ namespace Animator
             // Get Points
             CalculateMatches();
             foreach (var spot in Data)
-                spot.CurrentX = spot.CalculateCurrentValue(GetAngles()[0], middle);
+                spot.CurrentX = spot.CalculateCurrentValue(State.GetAngles()[0], middle);
             CalculateMatches(0);
             foreach (var spot in Data)
-                points.Add(new double[] { spot.CurrentX, spot.CalculateCurrentValue(GetAngles()[1], middle, 0) });
+                points.Add(new double[] { spot.CurrentX, spot.CalculateCurrentValue(State.GetAngles()[1], middle, 0) });
 
             // Recentre
             for (int index = 0; index < points.Count; index++)
             {
-                points[index][0] = GetCoords()[0] + (points[index][0] - middle[0]);
-                points[index][1] = GetCoords()[1] + (points[index][1] - middle[1]);
+                points[index][0] = State.GetCoords()[0] + (points[index][0] - middle[0]);
+                points[index][1] = State.GetCoords()[1] + (points[index][1] - middle[1]);
             }
 
             // Spin and Size Adjustment
@@ -335,54 +212,52 @@ namespace Animator
         /// <returns></returns>
         private List<double[]> SpinMeRound(List<double[]> pointsArray)
         {
-            var hostX = (AttachedTo is null) ? X : X + AttachedTo.GetCoords()[0];
-            var hostY = (AttachedTo is null) ? Y : Y + AttachedTo.GetCoords()[1];
             for (int index = 0; index < pointsArray.Count; index++)
             {
-                if (!(pointsArray[index][0] == GetCoords()[0] && pointsArray[index][1] == GetCoords()[1]))
+                if (!(pointsArray[index][0] == State.GetCoords()[0] && pointsArray[index][1] == State.GetCoords()[1]))
                 {
-                    double hypotenuse = Math.Sqrt(Math.Pow(GetCoords()[0] - pointsArray[index][0], 2) + Math.Pow(GetCoords()[1] - pointsArray[index][1], 2)) * GetSizeMod();
+                    double hypotenuse = Math.Sqrt(Math.Pow(State.GetCoords()[0] - pointsArray[index][0], 2) + Math.Pow(State.GetCoords()[1] - pointsArray[index][1], 2)) * State.GetSizeMod();
                     // Find Angle
                     double pointAngle;
-                    if (pointsArray[index][0] == GetCoords()[0] && pointsArray[index][1] < GetCoords()[1])
+                    if (pointsArray[index][0] == State.GetCoords()[0] && pointsArray[index][1] < State.GetCoords()[1])
                     {
                         pointAngle = 0;
                     }
-                    else if (pointsArray[index][0] == GetCoords()[0] && pointsArray[index][1] > GetCoords()[1])
+                    else if (pointsArray[index][0] == State.GetCoords()[0] && pointsArray[index][1] > State.GetCoords()[1])
                     {
                         pointAngle = 180;
                     }
-                    else if (pointsArray[index][0] > GetCoords()[0] && pointsArray[index][1] == GetCoords()[1])
+                    else if (pointsArray[index][0] > State.GetCoords()[0] && pointsArray[index][1] == State.GetCoords()[1])
                     {
                         pointAngle = 90;
                     }
-                    else if (pointsArray[index][0] < GetCoords()[0] && pointsArray[index][1] == GetCoords()[1])
+                    else if (pointsArray[index][0] < State.GetCoords()[0] && pointsArray[index][1] == State.GetCoords()[1])
                     {
                         pointAngle = 270;
                     }
                     //  Second || First
                     //  Third  || Fourth
-                    else if (pointsArray[index][0] > GetCoords()[0] && pointsArray[index][1] < GetCoords()[1]) // First Quadrant
+                    else if (pointsArray[index][0] > State.GetCoords()[0] && pointsArray[index][1] < State.GetCoords()[1]) // First Quadrant
                     {
-                        pointAngle = (180 / Math.PI) * Math.Atan(Math.Abs((GetCoords()[0] - pointsArray[index][0]) / (GetCoords()[1] - pointsArray[index][1])));
+                        pointAngle = (180 / Math.PI) * Math.Atan(Math.Abs((State.GetCoords()[0] - pointsArray[index][0]) / (State.GetCoords()[1] - pointsArray[index][1])));
                     }
-                    else if (pointsArray[index][0] > GetCoords()[0] && pointsArray[index][1] > GetCoords()[1]) // Fourth Quadrant
+                    else if (pointsArray[index][0] > State.GetCoords()[0] && pointsArray[index][1] > State.GetCoords()[1]) // Fourth Quadrant
                     {
-                        pointAngle = 90 + (180 / Math.PI) * Math.Atan(Math.Abs((GetCoords()[1] - pointsArray[index][1]) / (GetCoords()[0] - pointsArray[index][0])));
+                        pointAngle = 90 + (180 / Math.PI) * Math.Atan(Math.Abs((State.GetCoords()[1] - pointsArray[index][1]) / (State.GetCoords()[0] - pointsArray[index][0])));
                     }
-                    else if (pointsArray[index][0] < GetCoords()[0] && pointsArray[index][1] < GetCoords()[1]) // Second Quadrant
+                    else if (pointsArray[index][0] < State.GetCoords()[0] && pointsArray[index][1] < State.GetCoords()[1]) // Second Quadrant
                     {
-                        pointAngle = 270 + (180 / Math.PI) * Math.Atan(Math.Abs((GetCoords()[1] - pointsArray[index][1]) / (GetCoords()[0] - pointsArray[index][0])));
+                        pointAngle = 270 + (180 / Math.PI) * Math.Atan(Math.Abs((State.GetCoords()[1] - pointsArray[index][1]) / (State.GetCoords()[0] - pointsArray[index][0])));
                     }
                     else  // Third Quadrant
                     {
-                        pointAngle = 180 + (180 / Math.PI) * Math.Atan(Math.Abs((GetCoords()[0] - pointsArray[index][0]) / (GetCoords()[1] - pointsArray[index][1])));
+                        pointAngle = 180 + (180 / Math.PI) * Math.Atan(Math.Abs((State.GetCoords()[0] - pointsArray[index][0]) / (State.GetCoords()[1] - pointsArray[index][1])));
                     }
-                    double findAngle = (pointAngle + GetAngles()[2]) * Math.PI / 180 % 360;
+                    double findAngle = (pointAngle + State.GetAngles()[2]) * Math.PI / 180 % 360;
 
                     // Find Points
-                    pointsArray[index][0] = Convert.ToInt32(GetCoords()[0] + hypotenuse * Math.Sin(findAngle));
-                    pointsArray[index][1] = Convert.ToInt32(GetCoords()[1] - hypotenuse * Math.Cos(findAngle));
+                    pointsArray[index][0] = Convert.ToInt32(State.GetCoords()[0] + hypotenuse * Math.Sin(findAngle));
+                    pointsArray[index][1] = Convert.ToInt32(State.GetCoords()[1] - hypotenuse * Math.Cos(findAngle));
                 }
             }
             return pointsArray;
@@ -724,8 +599,8 @@ namespace Animator
         {
             if (Originally != null)
             {
-                X = Originally.X; Y = Originally.Y; R = Originally.R;
-                T = Originally.T; S = Originally.S; SM = Originally.SM;
+                State.X = Originally.X; State.Y = Originally.Y; State.R = Originally.R;
+                State.T = Originally.T; State.S = Originally.S; State.SM = Originally.SM;
             }
         }
     }

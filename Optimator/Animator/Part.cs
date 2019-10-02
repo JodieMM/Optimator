@@ -12,6 +12,7 @@ namespace Animator
     {
         public abstract string Name { get; set; }
         public abstract string Version { get; }
+        public abstract State State { get; set; }
 
 
         /// <summary>
@@ -38,18 +39,10 @@ namespace Animator
         public abstract Piece ToPiece();
 
         /// <summary>
-        /// Converts a part to a set.
-        /// For pieces, it returns the set it is apart of
-        /// or null if that is null.
-        /// For sets, it returns itself.
-        /// </summary>
-        /// <returns>A set representation of the part</returns>
-        public abstract Set ToSet();
-
-        /// <summary>
         /// Draws the part to the supplied graphics.
         /// </summary>
         /// <param name="g">Supplied graphics</param>
         public abstract void Draw(Graphics g, Color[] colours = null);
+        // TODO: Allow for a state to be sent with a draw request?
     }
 }
