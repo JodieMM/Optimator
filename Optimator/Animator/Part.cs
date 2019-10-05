@@ -43,6 +43,5 @@ namespace Animator
         /// </summary>
         /// <param name="g">Supplied graphics</param>
         public abstract void Draw(Graphics g, Color[] colours = null);
-        // TODO: Allow for a state to be sent with a draw request?
     }
 }

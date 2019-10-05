@@ -62,7 +62,7 @@ namespace Animator
                 var coordsA = Utils.ConvertStringArrayToDoubles(dataSections[2].Split(Consts.Colon));
                 var coordsB = Utils.ConvertStringArrayToDoubles(dataSections[3].Split(Consts.Colon));
 
-                Join WIP = new Join(PiecesList[indexA], PiecesList[indexB], 
+                Join WIP = new Join(PiecesList[indexA], PiecesList[indexB], this,
                     coordsA[0], coordsA[1], coordsA[2], coordsA[3], coordsB[0], coordsB[1], coordsB[2], coordsB[3], 
                     int.Parse(dataSections[4]), int.Parse(dataSections[5]));
                 Joins.Add(WIP);
@@ -146,11 +146,14 @@ namespace Animator
         /// Draws the set to the provided graphics.
         /// </summary>
         /// <param name="g">Provided graphics</param>
+        /// <param name="colours">Fill and outline variations</param>
         public override void Draw(Graphics g, Color[] colours = null)
         {
             List<Piece> orderedPieces = SortOrder();
             foreach (Piece piece in orderedPieces)
                 piece.Draw(g);
+            // TODO: Incorporate join changes to state
+            // TODO: Calculate angles etc. from base outwards
         }
 
         /// <summary>
@@ -159,40 +162,11 @@ namespace Animator
         /// <returns>Ordered list of pieces</returns>
         private List<Piece> SortOrder()
         {
-            List<Piece> order = new List<Piece>();
-            List<Piece> putInFront = new List<Piece>();
-            int baseIndex = PiecesList.IndexOf(BasePiece);
-
-            for (int index = 0; index < PiecesList.Count; index++)
-            {
-                Piece working = PiecesList[index];
-
-                // Behind Base
-                if (index < baseIndex)
-                {
-                    if (working.State.GetAngles()[0] > working.Join.FlipAngle && working.State.GetAngles()[0] < working.Join.FlipAngle + 180)
-                        putInFront.Add(working);
-                    else
-                        order.Add(working);
-                }
-                // In Front of Base
-                else if (index > baseIndex)
-                {
-                    if (working.GetAngles()[0] > working.Join.FlipAngle && working.GetAngles()[0] < working.Join.FlipAngle + 180)
-                        order.Add(working);
-                    else
-                        putInFront.Add(working);
-                }
-                // Is Base
-                else
-                    order.Add(BasePiece);
-                order.AddRange(putInFront);
-            }
-            return order;
+            return SortOrderFromBasePiece(PiecesList.IndexOf(BasePiece));
         }
 
         /// <summary>
-        /// Recursive function to find order of attached pieces to a base
+        /// Recursive function to find order of attached pieces to a base.
         /// </summary>
         /// <param name="baseIndex">Index of the piece being tested as a base</param>
         /// <returns>List of pieces surrounding the base in order</returns>
@@ -207,6 +181,22 @@ namespace Animator
             if (JoinsIndex.ContainsKey(baseIndex))
             {
                 var attachedPieces = JoinsIndex[baseIndex];
+                foreach(var attachedJoinIndex in attachedPieces)
+                {
+                    var attachedJoin = Joins[attachedJoinIndex];
+                    var tempPieceList = SortOrderFromBasePiece(PiecesList.IndexOf(attachedJoin.A));
+
+                    // Determine if attachment should be added to the front or back of base
+                    if (attachedJoin.AttachedInFront())
+                    {
+                        setSection.AddRange(tempPieceList);
+                    }
+                    else
+                    {
+                        tempPieceList.AddRange(setSection);
+                        setSection = tempPieceList;
+                    }
+                }
             }
             return setSection;
         }

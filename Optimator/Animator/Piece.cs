@@ -29,9 +29,6 @@ namespace Animator
         // Stored Values
         public double[] middle;
         private double[] minMax;
-
-        //Scenes
-        public Originals Originally { get; set; } = null;   // TODO: Remove need/ put in scenes
         #endregion
 
 
@@ -109,6 +106,7 @@ namespace Animator
         /// </summary>
         public override List<string> GetData()
         {
+            // TODO: Save so 0,0 is centre
             // Type and Version
             var newData = new List<string>
             {
@@ -161,14 +159,21 @@ namespace Animator
         /// Draws the piece to the provided graphics.
         /// </summary>
         /// <param name="g">Provided graphics</param>
+        /// <param name="colours">Fill and outline variations</param>
         public override void Draw(Graphics g, Color[] colours = null)
         {
             if (colours == null)
-                Visuals.DrawPiece(this, g);
+            {
+                Visuals.DrawPiece(this, g, State);
+            }
             else if (colours.Length == 1)
-                Visuals.DrawPiece(this, g, colours[0]);
+            {
+                Visuals.DrawPiece(this, g, State, colours[0]);
+            }
             else
-                Visuals.DrawPiece(this, g, colours[0], colours[1]);
+            {
+                Visuals.DrawPiece(this, g, State, colours[0], colours[1]);
+            }
         }
 
 
@@ -216,7 +221,7 @@ namespace Animator
             {
                 if (!(pointsArray[index][0] == State.GetCoords()[0] && pointsArray[index][1] == State.GetCoords()[1]))
                 {
-                    double hypotenuse = Math.Sqrt(Math.Pow(State.GetCoords()[0] - pointsArray[index][0], 2) + Math.Pow(State.GetCoords()[1] - pointsArray[index][1], 2)) * State.GetSizeMod();
+                    double hypotenuse = Math.Sqrt(Math.Pow(State.GetCoords()[0] - pointsArray[index][0], 2) + Math.Pow(State.GetCoords()[1] - pointsArray[index][1], 2)) * State.SM;
                     // Find Angle
                     double pointAngle;
                     if (pointsArray[index][0] == State.GetCoords()[0] && pointsArray[index][1] < State.GetCoords()[1])
@@ -588,19 +593,6 @@ namespace Animator
                     Data.RemoveAt(index);
                     index--;
                 }
-            }
-        }
-
-        /// <summary>
-        /// Reverts the piece back to its original state before animation 
-        /// operations were applied.
-        /// </summary>
-        public void TakeOriginalState()
-        {
-            if (Originally != null)
-            {
-                State.X = Originally.X; State.Y = Originally.Y; State.R = Originally.R;
-                State.T = Originally.T; State.S = Originally.S; State.SM = Originally.SM;
             }
         }
     }

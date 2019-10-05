@@ -48,7 +48,6 @@ namespace Animator
         public static Color defaultOutline = Color.FromArgb(255, 204, 204, 255);
         public const decimal defaultOutlineWidth = 2;
         public const string defaultPieceDetails = "wr100";
-        public const string defaultAngleOptions = "150;150;0;0;0;100";
 
         // Piece Options
         public static string[] connectorOptions = { "line", "none" };

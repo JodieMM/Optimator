@@ -133,16 +133,13 @@ namespace Animator
                 {
                     justAdded = new Piece(AddTb.Text);
                     WIP.PiecesList.Add(justAdded.ToPiece());
-                    justAdded.ToPiece().SetCoordsAsMid(DrawBase);
-                    justAdded.ToPiece().PieceOf = WIP;
+                    justAdded.ToPiece().SetCoordsAsMid(DrawBase); // CLEANING: Remove?
                 }
                 else
                 {
                     justAdded = new Set(AddTb.Text);
-                    WIP.PiecesList.AddRange(justAdded.ToSet().PiecesList);
-                    justAdded.ToPiece().SetCoordsAsMid(DrawBase);
-                    foreach (Piece piece in justAdded.ToSet().PiecesList)
-                        piece.PieceOf = WIP;
+                    WIP.PiecesList.AddRange((justAdded as Set).PiecesList);
+                    justAdded.ToPiece().SetCoordsAsMid(DrawBase); // CLEANING: Remove?
                 }
                 SelectPiece(justAdded.ToPiece());
 
@@ -193,11 +190,13 @@ namespace Animator
 
             if (MoveJoinBtn.BackColor == unpressed)
             {
-                SelectBaseBtn.BackColor = unpressed;                
+                SelectBaseBtn.BackColor = unpressed;
                 MoveJoinBtn.BackColor = pressed;
             }
             else
+            {
                 MoveJoinBtn.BackColor = unpressed;
+            }
             DisplayDrawings();
         }
 

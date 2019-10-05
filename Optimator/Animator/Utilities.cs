@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Drawing;
 using System.Text.RegularExpressions;
+using System;
 
 namespace Animator
 {
@@ -279,6 +280,149 @@ namespace Animator
         }
 
         /// <summary>
+        /// Converts a colour into its ARGB values.
+        /// </summary>
+        /// <param name="color">The colour to convert</param>
+        /// <returns>A string array of ARGB values</returns>
+        public static string ColorToString(Color color)
+        {
+            return color.A + Consts.CommaS + color.R + Consts.CommaS +
+                color.G + Consts.CommaS + color.B;
+        }
+
+        /// <summary>
+        /// Converts a string of ARGB value into a colour.
+        /// </summary>
+        /// <param name="color">A string of comma-seperated argb values</param>
+        /// <returns>A colour with the given ARGB value</returns>
+        public static Color ColourFromString(string color)
+        {
+            string[] argb = color.Split(Consts.Comma);
+            return Color.FromArgb(int.Parse(argb[0]), int.Parse(argb[1]), 
+                int.Parse(argb[2]), int.Parse(argb[3]));
+        }
+
+        /// <summary>
+        /// Copies the details from a state into a separate entity.
+        /// </summary>
+        /// <param name="state">The state to clone</param>
+        /// <param name="colours">Whether colours should be added to the state</param>
+        /// <returns>A separate State</returns>
+        public static State CloneState(State state, bool colours = false)
+        {
+            return colours? new State(state.X, state.Y, state.R, state.T, state.S, state.SM, state.FC, state.OC) 
+                : new State(state.X, state.Y, state.R, state.T, state.S, state.SM);
+            // CLEANING: Only leave one option?
+        }
+
+        #endregion
+
+
+
+
+        // ----- COORDINATE FUNCTIONS -----
+
+        /// <summary>
+        /// Finds the mid-way point between an original and rotated
+        /// or turned point based on the current R or S state.
+        /// </summary>
+        /// <param name="angle">The relevant R or S state value</param>
+        /// <param name="initial">The original X or Y value</param>
+        /// <param name="angled">The rotated/turned x/y value</param>
+        /// <returns></returns>
+        public static double RotOrTurnCalculation(double angle, double initial, double angled)
+        {
+            double lower;
+            double upper;
+            double bottomAngle;
+
+            if (angle < 90)
+            {
+                lower = initial;
+                upper = angled;
+                bottomAngle = 0;
+            }
+            else if (angle < 180)
+            {
+                lower = angled;
+                upper = -initial;
+                bottomAngle = 90;
+            }
+            else if (angle < 270)
+            {
+                lower = -initial;
+                upper = -angled;
+                bottomAngle = 180;
+            }
+            else
+            {
+                lower = -angled;
+                upper = initial;
+                bottomAngle = 270;
+            }
+
+            return lower + (upper - lower) * ((angle - bottomAngle) / 90.0);
+        }
+
+        /// <summary>
+        /// Spins and resizes a coordinate based on the provided 
+        /// spin and sizemod state.
+        /// </summary>
+        /// <param name="spinAngle">The spin state</param>
+        /// <param name="sizeMod">The size modifier state</param>
+        /// <param name="coord">The x and y coord of the spun point</param>
+        /// <returns></returns>
+        public static double[] SpinAndSizeCoord(double spinAngle, double sizeMod, double[] coord)
+        {
+            double hypotenuse = Math.Sqrt(Math.Pow(coord[0], 2) + Math.Pow(coord[1], 2)) * sizeMod;
+
+            // Find Angle
+            double pointAngle;
+            if (coord[0] == 0 && coord[1] < 0)
+            {
+                pointAngle = 0;
+            }
+            else if (coord[0] == 0 && coord[1] > 0)
+            {
+                pointAngle = 180;
+            }
+            else if (coord[0] > 0 && coord[1] == 0)
+            {
+                pointAngle = 90;
+            }
+            else if (coord[0] < 0 && coord[1] == 0)
+            {
+                pointAngle = 270;
+            }
+            //  Second || First
+            //  Third  || Fourth
+            else if (coord[0] > 0 && coord[1] < 0) // First Quadrant
+            {
+                pointAngle = 180 / Math.PI * Math.Atan(Math.Abs((0 - coord[0]) / (0 - coord[1])));
+            }
+            else if (coord[0] > 0 && coord[1] > 0) // Fourth Quadrant
+            {
+                pointAngle = 90 + 180 / Math.PI * Math.Atan(Math.Abs((0 - coord[1]) / (0 - coord[0])));
+            }
+            else if (coord[0] < 0 && coord[1] < 0) // Second Quadrant
+            {
+                pointAngle = 270 + 180 / Math.PI * Math.Atan(Math.Abs((0 - coord[1]) / (0 - coord[0])));
+            }
+            else  // Third Quadrant
+            {
+                pointAngle = 180 + 180 / Math.PI * Math.Atan(Math.Abs((0 - coord[0]) / (0 - coord[1])));
+            }
+            double findAngle = (pointAngle + spinAngle) * Math.PI / 180 % 360;
+
+            // Find Points
+            return new double[] 
+            {
+                Convert.ToInt32(0 + hypotenuse * Math.Sin(findAngle)),
+                coord[1] = Convert.ToInt32(0 - hypotenuse * Math.Cos(findAngle))
+            };
+        }
+
+        /// <summary>
         /// Flips a point around a center. 
         /// Works for either x or y flips.
         /// </summary>
@@ -305,31 +449,6 @@ namespace Animator
 
             return toReturn;
         }
-
-        /// <summary>
-        /// Converts a colour into its ARGB values.
-        /// </summary>
-        /// <param name="color">The colour to convert</param>
-        /// <returns>A string array of ARGB values</returns>
-        public static string ColorToString(Color color)
-        {
-            return color.A + Consts.CommaS + color.R + Consts.CommaS +
-                color.G + Consts.CommaS + color.B;
-        }
-
-        /// <summary>
-        /// Converts a string of ARGB value into a colour.
-        /// </summary>
-        /// <param name="color">A string of comma-seperated argb values</param>
-        /// <returns>A colour with the given ARGB value</returns>
-        public static Color ColourFromString(string color)
-        {
-            string[] argb = color.Split(Consts.Comma);
-            return Color.FromArgb(int.Parse(argb[0]), int.Parse(argb[1]), 
-                int.Parse(argb[2]), int.Parse(argb[3]));
-        }
-
-        #endregion
 
 
 

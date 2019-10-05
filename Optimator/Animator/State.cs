@@ -1,4 +1,6 @@
-﻿namespace Animator
+﻿using System.Drawing;
+
+namespace Animator
 {
     /// <summary>
     /// A class to maintain the current position, angle and size of a part.
@@ -13,7 +15,10 @@
         public double R { get; set; } = 0;
         public double T { get; set; } = 0;
         public double S { get; set; } = 0;
-        public double SM { get; set; } = 100;
+        public double SM { get; set; } = 1;
+
+        public Color[] FC { get; set; }
+        public Color OC { get; set; }
         #endregion
 
 
@@ -25,9 +30,8 @@
 
         }
 
-
         /// <summary>
-        /// Constructor for loading State.
+        /// Constructor for loading state.
         /// </summary>
         /// <param name="x">X coord</param>
         /// <param name="y">Y coord</param>
@@ -45,6 +49,29 @@
             SM = sm;
         }
 
+        /// <summary>
+        /// Constructor for loading state with colors.
+        /// </summary>
+        /// <param name="x">X coord</param>
+        /// <param name="y">Y coord</param>
+        /// <param name="r">Rotation angle</param>
+        /// <param name="t">Turn angle</param>
+        /// <param name="s">Spin angle</param>
+        /// <param name="sm">Size modifier</param>
+        /// <param name="fc">Fill colour array</param>
+        /// <param name="oc">Outline colour</param>
+        public State(double x, double y, double r, double t, double s, double sm, Color[] fc, Color oc)
+        {
+            X = x;
+            Y = y;
+            R = r;
+            T = t;
+            S = s;
+            SM = sm;
+            FC = fc;
+            OC = oc;
+        }
+
 
 
         // ----- GET FUNCTIONS -----
@@ -59,7 +86,7 @@
         }
 
         /// <summary>
-        /// Gets the X and Y values of the piece
+        /// Gets the X and Y values of the piece.
         /// </summary>
         /// <returns>double[] { X, Y }</returns>
         public double[] GetCoords()
@@ -70,7 +97,7 @@
         }
 
         /// <summary>
-        /// Gets the rotation, turn and spin of the piece
+        /// Gets the rotation, turn and spin of the piece.
         /// </summary>
         /// <returns>double[] { Rotation, Turn, Spin }</returns>
         public double[] GetAngles()
@@ -94,16 +121,6 @@
             //angles[0] = angles[0] % 360;
             //angles[1] = angles[1] % 360;
             //angles[2] = angles[2] % 360;
-        }
-
-        /// <summary>
-        /// Converts the size mod into a decimal rather than a percentage.
-        /// </summary>
-        /// <returns>Size as decimal</returns>
-        public double GetSizeMod()
-        {
-            return SM / 100.0;
-            // NOTE: (State.SM / 100.0) * (AttachedTo.GetSizeMod())
         }
 
 

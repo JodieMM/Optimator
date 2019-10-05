@@ -14,6 +14,7 @@ namespace Animator
         #region Join Variables
         public Piece A { get; } // Attaching Piece
         public Piece B { get; } // Base Piece
+        public Set Set { get; } // Set Belonging To
 
         // Join Positions (Set at A rts = 0, B rts = 0 respectively)
         public double AX { get; set; } = 0;
@@ -36,10 +37,11 @@ namespace Animator
         /// Constructor for creating a new join.
         /// </summary>
         /// <param name="piece">The piece being joined</param>
-        public Join(Piece a, Piece b)
+        public Join(Piece a, Piece b, Set set)
         {
             A = a;
             B = b;
+            Set = set;
         }
 
         /// <summary>
@@ -57,14 +59,15 @@ namespace Animator
         /// <param name="byd">V's YDown coord</param>
         /// <param name="flipAngle">When the piece flips, -1 if it doesn't</param>
         /// <param name="indexSwitch">What index the piece flips to, 0 if it doesn't flip</param>
-        public Join(Piece a, Piece b, double ax, double ay, double axr, double ayd, double bx, double by, double bxr, double byd, double flipAngle, int indexSwitch)
+        public Join(Piece a, Piece b, Set set, double ax, double ay, double axr, double ayd, double bx, double by, double bxr, double byd, double flipAngle, int indexSwitch)
         {
             A = a;
+            B = b;
+            Set = set;
             AX = ax;
             AY = ay;
             AXRight = axr;
             AYDown = ayd;
-            B = b;
             BX = bx;
             BY = by;
             BXRight = bxr;
@@ -102,201 +105,37 @@ namespace Animator
             Visuals.DrawCross(B.State.GetCoords()[0] + x, B.State.GetCoords()[1] + y, colour, board);
         }
 
-
-
-        // ----- COORDINATE FUNCTIONS -----
-
         /// <summary>
-        /// Finds the difference between the original join location and
-        /// where it is now based on piece changes.
+        /// Determines if the attached piece should be in front
+        /// of the base piece.
         /// </summary>
-        /// <returns>Difference as [ x, y ]</returns>
-        public double[] CurrentDifference()
+        /// <returns>True if the attached piece is in front</returns>
+        public bool AttachedInFront()
         {
-            var currentCoords = new double[2];
-            double lower;
-            double upper;
-            int bottomAngle;
-
-            var angle = joining.GetAngles();
-            var initial = new double[] { X, Y };
-            var angled = new double[] { XRight, YDown };
-
-            // For X and Y
-            for (int index = 0; index < 2; index++)
-            {
-                if (angle[index] < 90)
-                {
-                    lower = initial[index];
-                    upper = angled[index];
-                    bottomAngle = 0;
-                }
-                else if (angle[index] < 180)
-                {
-                    lower = angled[index];
-                    upper = -initial[index];
-                    bottomAngle = 90;
-                }
-                else if (angle[index] < 270)
-                {
-                    lower = -initial[index];
-                    upper = -angled[index];
-                    bottomAngle = 180;
-                }
-                else
-                {
-                    lower = -angled[index];
-                    upper = initial[index];
-                    bottomAngle = 270;
-                }
-                currentCoords[index] = lower + (upper - lower) * ((angle[index] - bottomAngle) / 90.0);
-            }
-            currentCoords = SpinMeRound(currentCoords);
-            return new double[] { X - currentCoords[0], Y - currentCoords[1] };
+            // TODO: Implement function
+            return true;
         }
 
         /// <summary>
-        /// Places a join in regards to the piece's position.
+        /// Finds the current state for the attached piece.
         /// </summary>
-        /// <param name="angle">Original (0) rotated (1) turned (2)</param>
-        /// <param name="join">The clicked location for the join</param>
-        public void ReverseDifference(int angle, double[] join)
+        /// <returns>State representing xyrtssm</returns>
+        public State CurrentStateOfAttached()
         {
-            // Reverse Spin and Size Mod
-            join = SpinMeRound(join, true);
+            double attachedR = B.State.R + A.State.R + Set.State.R;
+            double attachedT = B.State.T + A.State.T + Set.State.T;
+            double attachedS = B.State.S + A.State.S + Set.State.S;
+            double attachedSM = B.State.SM * A.State.SM * Set.State.SM;
 
-            // Reverse Rotation and Turn
-            int upper;
-            int bottomAngle;
-            for (int index = 0; index < 2; index++)
-            {
-                var angled = joining.GetAngles()[index];
-                if (angle == 0)
-                {
-                    if (angled < 90)
-                    {
-                        upper = 1;
-                        bottomAngle = 0;
-                    }
-                    else if (angled < 180)
-                    {
-                        upper = -1;
-                        bottomAngle = 90;
-                    }
-                    else if (angled < 270)
-                    {
-                        upper = 1;
-                        bottomAngle = 180;
-                    }
-                    else
-                    {
-                        upper = -1;
-                        bottomAngle = 270;
-                    }
-                    if (upper == -1)
-                        join[index] = join[index] / (1 - 2 * ((angled - bottomAngle) / 90.0));
-                }
-                else
-                {
-                    if (angle == 1 && index == 0 || angle == 2 && index == 1)
-                    {
-                        var known = index == 0 ? X : Y;
-                        if (angled < 90)
-                        {
-                            bottomAngle = 0;
-                            join[index] = (join[index] - known + known * ((angled - bottomAngle) / 90.0))/ ((angled - bottomAngle) / 90.0);
-                        }
-                        else if (angled < 180)
-                        {
-                            bottomAngle = 90;
-                            join[index] = (join[index] + known * ((angled - bottomAngle) / 90.0)) / (1 - ((angled - bottomAngle) / 90.0));
-                        }
-                        else if (angled < 270)
-                        {
-                            bottomAngle = 180;
-                            join[index] = -(join[index] + known - known * ((angled - bottomAngle) / 90.0)) / ((angled - bottomAngle) / 90.0);
-                        }
-                        else
-                        {
-                            bottomAngle = 270;
-                            join[index] = (join[index] - known * ((angled - bottomAngle) / 90.0)) / (1 - ((angled - bottomAngle) / 90.0));
-                        }
-                    }
-                }
-            }            
+            double[] attachedJoinB = Utils.SpinAndSizeCoord(B.State.S, B.State.SM,
+                new double[] { Utils.RotOrTurnCalculation(B.State.R, BX, BXRight), Utils.RotOrTurnCalculation(B.State.T, BY, BYDown) });
+            double[] attachedJoinA = Utils.SpinAndSizeCoord(attachedS, attachedSM,
+                new double[] { Utils.RotOrTurnCalculation(attachedR, AX, AXRight), Utils.RotOrTurnCalculation(attachedT, AY, AYDown) });
 
-            // Find X/Y in relation to piece
-            join[0] -= joining.middle[0];
-            join[1] -= joining.middle[1];
+            double attachedX = B.State.X + A.State.X + attachedJoinB[0] + attachedJoinA[0] + Set.State.X;
+            double attachedY = B.State.Y + A.State.Y + attachedJoinB[1] + attachedJoinA[1] + Set.State.Y;
 
-            // Assign To Value
-            if (angle == 0)
-            {
-                X = join[0];
-                Y = join[1];
-            }
-            if (angle != 2)
-                XRight = join[0];
-            if (angle != 1)
-                YDown = join[1];
-        }
-
-        /// <summary>
-        /// Spins the coords provided and modifies their size.
-        /// </summary>
-        /// <param name="join">The point to be spun</param>
-        /// <returns>The spun coordinates of the join</returns>
-        private double[] SpinMeRound(double[] join, bool reverse = false)
-        {
-            var sizeMod = reverse ? 2.0 - joining.GetSizeMod() : joining.GetSizeMod();
-            var spin = reverse ? (360 - joining.GetAngles()[2]) % 360: joining.GetAngles()[2];
-
-            if (!(join[0] == 0 && join[1] == 0))
-            {
-                double hypotenuse = Math.Sqrt(Math.Pow(0 - join[0], 2) + Math.Pow(0 - join[1], 2)) * sizeMod;
-                // Find Angle
-                double pointAngle;
-                if (join[0] == 0 && join[1] < 0)
-                {
-                    pointAngle = 0;
-                }
-                else if (join[0] == 0 && join[1] > 0)
-                {
-                    pointAngle = 180;
-                }
-                else if (join[0] > 0 && join[1] == 0)
-                {
-                    pointAngle = 90;
-                }
-                else if (join[0] < 0 && join[1] == 0)
-                {
-                    pointAngle = 270;
-                }
-                //  Second || First
-                //  Third  || Fourth
-                else if (join[0] > 0 && join[1] < 0) // First Quadrant
-                {
-                    pointAngle = 180 / Math.PI * Math.Atan(Math.Abs((0 - join[0]) / (0 - join[1])));
-                }
-                else if (join[0] > 0 && join[1] > 0) // Fourth Quadrant
-                {
-                    pointAngle = 90 + 180 / Math.PI * Math.Atan(Math.Abs((0 - join[1]) / (0 - join[0])));
-                }
-                else if (join[0] < 0 && join[1] < 0) // Second Quadrant
-                {
-                    pointAngle = 270 + 180 / Math.PI * Math.Atan(Math.Abs((0 - join[1]) / (0 - join[0])));
-                }
-                else  // Third Quadrant
-                {
-                    pointAngle = 180 + 180 / Math.PI * Math.Atan(Math.Abs((0 - join[0]) / (0 - join[1])));
-                }
-                double findAngle = (pointAngle + spin) * Math.PI / 180 % 360;
-
-                // Find Points
-                join[0] = Convert.ToInt32(hypotenuse * Math.Sin(findAngle));
-                join[1] = Convert.ToInt32(-hypotenuse * Math.Cos(findAngle));
-            }
-            return join;
+            return new State(attachedX, attachedY, attachedR, attachedT, attachedS, attachedSM);
         }
     }
 }

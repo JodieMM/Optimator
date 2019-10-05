@@ -14,10 +14,12 @@ namespace Animator
     {
         #region Scene Variables
         public string Version { get; }
+        public decimal TimeLength { get; set; } = 0;
+
         public List<Part> PartsList { get; } = new List<Part>();
         public List<Piece> PiecesList { get; } = new List<Piece>();
         public List<Change> Changes { get; } = new List<Change>();
-        public decimal TimeLength { get; set; } = 0;
+        public Dictionary<Part, State> Originals { get; } = new Dictionary<Part, State>();
         #endregion
 
 
@@ -66,7 +68,7 @@ namespace Animator
                     Piece piece = PiecesList[workingIndex];
                     var originals = Utils.ConvertStringArrayToDoubles(data[index].Split(Consts.Semi));
                     piece.State.SetValues(originals[0], originals[1], originals[2], originals[3], originals[4], originals[5]);
-                    piece.Originally = new Originals(piece);
+                    Originals.Add(piece, Utils.CloneState(piece.State, true));
                 }
 
                 // Read frame changes
@@ -120,7 +122,7 @@ namespace Animator
             data.Add("Originals");
             foreach (Piece piece in PiecesList)
             {
-                data.Add(piece.Originally != null ? piece.Originally.GetSaveData() : Consts.defaultAngleOptions);
+                data.Add(Originals.ContainsKey(piece) ? Originals[piece].GetData() : new State().GetData());
             }
 
             // Save Animation Changes
@@ -141,7 +143,10 @@ namespace Animator
         {
             foreach (Piece piece in PiecesList)
             {
-                piece.TakeOriginalState();
+                if (Originals.ContainsKey(piece))
+                {
+                    piece.State = Originals[piece];
+                }
             }
             foreach (Change change in Changes)
             {

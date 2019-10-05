@@ -32,8 +32,9 @@ namespace Animator
         /// </summary>
         /// <param name="piece">The piece to be drawn</param>
         /// <param name="g">The graphics to draw to</param>
-        public static void DrawPiece(Piece piece, Graphics g, Color? outlineColour = null, Color? fillColour = null)
+        public static void DrawPiece(Piece piece, Graphics g, State state, Color? outlineColour = null, Color? fillColour = null)
         {
+            // TODO: Use state rather than current piece coords
             List<double[]> currentPoints = piece.CurrentPoints();
             if (currentPoints.Count < 1)
                 return;
@@ -101,8 +102,9 @@ namespace Animator
         /// <param name="partsList">Parts to be drawn</param>
         /// <param name="g">Graphics to draw</param>
         /// <param name="drawPanel">If the panel is being reset it is assigned</param>
-        public static void DrawParts(List<Part> partsList, Graphics g, PictureBox drawPanel = null)
+        public static void DrawParts(List<Part> partsList, Graphics g, PictureBox drawPanel = null, float scale = 1)
         {
+            g.ScaleTransform(scale, scale);
             if (drawPanel != null)
             {
                 drawPanel.Refresh();
@@ -111,21 +113,6 @@ namespace Animator
 
             foreach (Part part in partsList)
                 part.Draw(g);
-        }
-
-        /// <summary>
-        /// Draws all pieces in a list, including setting
-        /// the graphics and clearing the draw panel.
-        /// Also sets a scale on the image.
-        /// </summary>
-        /// <param name="partsList">Pieces to be drawn</param>
-        /// <param name="g">Graphics to draw</param>
-        /// <param name="drawPanel">Panel to be drawn on</param>
-        /// <param name="scale">Size modifier to entire image</param>
-        public static void DrawPartsScaled(List<Part> partsList, Graphics g, PictureBox drawPanel, float scale)
-        {
-            g.ScaleTransform(scale, scale);
-            DrawParts(partsList, g, drawPanel);
         }
     }
 }
