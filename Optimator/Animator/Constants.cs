@@ -60,6 +60,7 @@ namespace Animator
         public static Color invisible = Color.FromArgb(0, 0, 0, 0);
         public static Color highlight = Color.ForestGreen;
         public static Color select = Color.Red;
+        public static Color lowlight = Color.CadetBlue;
 
         // Scene Options
         public static object[] possibleChanges = new object[] { "X", "Y", "Rotation", "Turn", "Spin", "Size", "Order", "Removed" };

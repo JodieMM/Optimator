@@ -150,7 +150,7 @@ namespace Animator
                     WIP.PiecesList.AddRange((justAdded as Set).PiecesList);
                     justAdded.ToPiece().State.SetCoordsBasedOnBoard(DrawBase);
                 }
-                SelectPiece(justAdded.ToPiece());
+                DeselectPiece();
 
                 // If first piece, set as base
                 if (WIP.PiecesList.Count == 1)
@@ -248,10 +248,10 @@ namespace Animator
         /// <param name="e"></param>
         private void FlipsCb_CheckedChanged(object sender, EventArgs e)
         {
-            if (selected != null)
+            if (selected != null && WIP.JoinsIndex.ContainsKey(selected))
             {
                 FlipsUpDown.Enabled = FlipsCb.Checked;
-                WIP.JoinsIndex[selected].FlipAngle = (FlipsCb.Checked) ? (double)FlipsUpDown.Value : -1;
+                WIP.JoinsIndex[selected].FlipAngle = FlipsCb.Checked ? (double)FlipsUpDown.Value : -1;
             }
         }
 
@@ -262,7 +262,7 @@ namespace Animator
         /// <param name="e"></param>
         private void FlipsUpDown_ValueChanged(object sender, EventArgs e)
         {
-            if (selected != null)
+            if (selected != null && WIP.JoinsIndex.ContainsKey(selected))
             {
                 WIP.JoinsIndex[selected].FlipAngle = (double)FlipsUpDown.Value;
             }
@@ -480,6 +480,7 @@ namespace Animator
                     join.Value.BYDown = join.Value.BY;
                 }
             }
+            DisplayDrawings();
         }
 
         /// <summary>
@@ -498,7 +499,7 @@ namespace Animator
                     {
                         return;
                     }
-                    WIP.PiecesList.Remove(selected);
+                    RemovePiece(selected);
                     selected = null;
                     DisplayDrawings();
                     break;
@@ -548,21 +549,29 @@ namespace Animator
         {
             foreach (Piece piece in WIP.PiecesList)
             {
+                // Moving
                 if (selected != null && piece == selected && movingFar)
                 {
                     piece.Draw(board, piece.State, new ColourState(piece.ColourState, Consts.shadowShade));
                 }
+                // Selected
                 else if (selected != null && piece == selected)
                 {
                     piece.Draw(board, piece.State, new ColourState(piece.ColourState, Consts.select));
                 }
+                // Attached to Selected
                 else if (selected != null && WIP.JoinedPieces[selected].Contains(piece))
                 {
                     piece.Draw(board, piece.State, new ColourState(piece.ColourState, Consts.highlight));
                 }
+                // Base of Selected
+                else if (selected != null && WIP.JoinsIndex.ContainsKey(selected) && WIP.JoinsIndex[selected].B == piece)
+                {
+                    piece.Draw(board, piece.State, new ColourState(piece.ColourState, Consts.lowlight));
+                }
                 else
                 {
-                    piece.Draw(board, piece.State);
+                    piece.Draw(board);
                 }
             }
 
@@ -577,9 +586,9 @@ namespace Animator
         }
 
         /// <summary>
-        /// Selects a piece and updates its outline.
+        /// Selects a piece.
         /// </summary>
-        /// <param name="piece"></param>
+        /// <param name="piece">The piece to select</param>
         private void SelectPiece(Piece piece)
         {
             DeselectPiece();
@@ -600,7 +609,7 @@ namespace Animator
         }
 
         /// <summary>
-        /// Deselects a piece and returns its outline to original.
+        /// Deselects a piece.
         /// </summary>
         private void DeselectPiece()
         {
@@ -636,6 +645,7 @@ namespace Animator
                     }
                     else
                     {
+                        WIP.BasePiece = null;
                         return false;
                     }
                 }
@@ -656,6 +666,24 @@ namespace Animator
         {
             WIP.JoinsIndex.Add(a, new Join(a, b, WIP));
             WIP.AddToJoinedPieces(a, b);
+        }
+
+        /// <summary>
+        /// Removes all mentions of a piece from the set.
+        /// </summary>
+        /// <param name="piece">The piece to remove</param>
+        public void RemovePiece(Piece piece)
+        {
+            if (WIP.JoinedPieces.ContainsKey(piece))
+            {
+                WIP.JoinedPieces.Remove(piece);
+            }
+            if (WIP.JoinsIndex.ContainsKey(piece))
+            {
+                Piece joinedTo = WIP.JoinsIndex[piece].B;
+                WIP.JoinedPieces[joinedTo].Remove(piece);
+            }
+            WIP.PiecesList.Remove(piece);
         }
     }
 }
