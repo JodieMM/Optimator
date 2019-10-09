@@ -100,7 +100,9 @@ namespace Animator
         {
             var path = Utils.SelectFolder(true);
             if (path != "")
+            {
                 WorkingDirValueLbl.Text = path;
+            }
         }
     }
 }

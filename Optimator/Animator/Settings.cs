@@ -51,7 +51,9 @@ namespace Animator
 
             // Save Changes if Updated
             if (!Utils.CheckValidVersion(Version, false) && file == Consts.Settings)
+            {
                 UpdateSettings();
+            }
         }
 
         /// <summary>

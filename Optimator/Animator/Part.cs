@@ -15,6 +15,7 @@ namespace Animator
         public abstract State State { get; set; }
 
 
+
         /// <summary>
         /// Gets part's current details in a string format.
         /// Used to save the part.
@@ -42,6 +43,8 @@ namespace Animator
         /// Draws the part to the supplied graphics.
         /// </summary>
         /// <param name="g">Supplied graphics</param>
-        public abstract void Draw(Graphics g, Color[] colours = null);
+        /// <param name="state">Parts position</param>
+        /// <param name="colours">Parts colours</param>
+        public abstract void Draw(Graphics g, State state = null, ColourState colours = null);
     }
 }

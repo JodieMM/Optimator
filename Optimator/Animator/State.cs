@@ -1,4 +1,4 @@
-﻿using System.Drawing;
+﻿using System.Windows.Forms;
 
 namespace Animator
 {
@@ -16,9 +16,6 @@ namespace Animator
         public double T { get; set; } = 0;
         public double S { get; set; } = 0;
         public double SM { get; set; } = 1;
-
-        public Color[] FC { get; set; }
-        public Color OC { get; set; }
         #endregion
 
 
@@ -50,26 +47,27 @@ namespace Animator
         }
 
         /// <summary>
-        /// Constructor for loading state with colors.
+        /// Constructor for state with modified r or t.
         /// </summary>
-        /// <param name="x">X coord</param>
-        /// <param name="y">Y coord</param>
-        /// <param name="r">Rotation angle</param>
-        /// <param name="t">Turn angle</param>
-        /// <param name="s">Spin angle</param>
-        /// <param name="sm">Size modifier</param>
-        /// <param name="fc">Fill colour array</param>
-        /// <param name="oc">Outline colour</param>
-        public State(double x, double y, double r, double t, double s, double sm, Color[] fc, Color oc)
+        /// <param name="basis">Original state</param>
+        /// <param name="angle">1 for rotated, 2 for turn</param>
+        /// <param name="degree">New r or t value</param>
+        public State(State basis, int angle, double degree)
         {
-            X = x;
-            Y = y;
-            R = r;
-            T = t;
-            S = s;
-            SM = sm;
-            FC = fc;
-            OC = oc;
+            X = basis.X;
+            Y = basis.Y;
+            S = basis.S;
+            SM = basis.SM;
+            if (angle == 1)
+            {
+                R = degree % 360;
+                T = basis.T;
+            }
+            else if (angle == 2)
+            {
+                T = degree % 360;
+                R = basis.R;
+            }
         }
 
 
@@ -144,6 +142,17 @@ namespace Animator
             T = t;
             S = s;
             SM = sm;
+        }
+
+        /// <summary>
+        /// Sets the middle of the piece to the centre of its
+        /// display window.
+        /// </summary>
+        /// <param name="board">The board to centre on</param>
+        public void SetCoordsBasedOnBoard(PictureBox board)
+        {
+            X = board.Width / 2.0;
+            Y = board.Height / 2.0;
         }
     }
 }

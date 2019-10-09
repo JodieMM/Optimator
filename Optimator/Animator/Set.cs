@@ -17,8 +17,11 @@ namespace Animator
 
         public List<Piece> PiecesList { get; set; } = new List<Piece>();
         public Piece BasePiece { get; set; }
-        public List<Join> Joins { get; set; } = new List<Join>();
-        public Dictionary<int, List<int>> JoinsIndex { get; set; } = new Dictionary<int, List<int>>();
+
+        // Base Piece --> Attached Pieces
+        public Dictionary<Piece, List<Piece>> JoinedPieces { get; set; } = new Dictionary<Piece, List<Piece>>();  
+        // Attached Piece --> Join
+        public Dictionary<Piece, Join> JoinsIndex { get; set; } = new Dictionary<Piece, Join>();
         #endregion
 
 
@@ -57,25 +60,18 @@ namespace Animator
             for (int i = index++; i < data.Count; i++)
             {
                 var dataSections = data[i].Split(Consts.Semi);
-                var indexA = int.Parse(dataSections[0]);
-                var indexB = int.Parse(dataSections[1]);
+                var pieceA = PiecesList[int.Parse(dataSections[0])];
+                var pieceB = PiecesList[int.Parse(dataSections[1])];
                 var coordsA = Utils.ConvertStringArrayToDoubles(dataSections[2].Split(Consts.Colon));
                 var coordsB = Utils.ConvertStringArrayToDoubles(dataSections[3].Split(Consts.Colon));
 
-                Join WIP = new Join(PiecesList[indexA], PiecesList[indexB], this,
+                Join WIP = new Join(pieceA, pieceB, this,
                     coordsA[0], coordsA[1], coordsA[2], coordsA[3], coordsB[0], coordsB[1], coordsB[2], coordsB[3], 
                     int.Parse(dataSections[4]), int.Parse(dataSections[5]));
-                Joins.Add(WIP);
 
-                // Add To Dictionary
-                if (JoinsIndex.ContainsKey(indexB))
-                {
-                    JoinsIndex[indexB].Add(Joins.Count - 1);
-                }
-                else
-                {
-                    JoinsIndex.Add(indexB, new List<int>(Joins.Count - 1));
-                }
+                // Add To Dictionaries
+                JoinsIndex.Add(pieceA, WIP);
+                AddToJoinedPieces(pieceA, pieceB);
             }
         }
 
@@ -124,12 +120,10 @@ namespace Animator
 
             // Save Each Join
             newData.Add("Joins");
-            for (int index = 0; index < Joins.Count; index++)
+            foreach (Join join in JoinsIndex.Values)
             {
-                Join join = Joins[index];
                 newData.Add(PiecesList.IndexOf(join.A) + Consts.SemiS + PiecesList.IndexOf(join.B) + Consts.SemiS + join.ToString());
             }
-
             return newData;
         }
 
@@ -145,13 +139,17 @@ namespace Animator
         /// <summary>
         /// Draws the set to the provided graphics.
         /// </summary>
-        /// <param name="g">Provided graphics</param>
-        /// <param name="colours">Fill and outline variations</param>
-        public override void Draw(Graphics g, Color[] colours = null)
+        /// <param name="g">Supplied graphics</param>
+        /// <param name="state">Sets position</param>
+        /// <param name="colours">Sets colours</param>
+        public override void Draw(Graphics g, State state = null, ColourState colours = null)
         {
+            state = state ?? State;
             List<Piece> orderedPieces = SortOrder();
             foreach (Piece piece in orderedPieces)
-                piece.Draw(g);
+            {
+                piece.Draw(g, state, colours);
+            }
             // TODO: Incorporate join changes to state
             // TODO: Calculate angles etc. from base outwards
         }
@@ -162,7 +160,7 @@ namespace Animator
         /// <returns>Ordered list of pieces</returns>
         private List<Piece> SortOrder()
         {
-            return SortOrderFromBasePiece(PiecesList.IndexOf(BasePiece));
+            return SortOrderFromBasePiece(BasePiece);
         }
 
         /// <summary>
@@ -170,21 +168,18 @@ namespace Animator
         /// </summary>
         /// <param name="baseIndex">Index of the piece being tested as a base</param>
         /// <returns>List of pieces surrounding the base in order</returns>
-        private List<Piece> SortOrderFromBasePiece(int baseIndex)
+        private List<Piece> SortOrderFromBasePiece(Piece baseIndex)
         {
-            var setSection = new List<Piece>
-            {
-                PiecesList[baseIndex]
-            };
+            var setSection = new List<Piece> { baseIndex };
 
             // Check if current piece is a base
-            if (JoinsIndex.ContainsKey(baseIndex))
+            if (JoinedPieces.ContainsKey(baseIndex))
             {
-                var attachedPieces = JoinsIndex[baseIndex];
-                foreach(var attachedJoinIndex in attachedPieces)
+                var attachedPieces = JoinedPieces[baseIndex];
+                foreach(var attachedPiece in attachedPieces)
                 {
-                    var attachedJoin = Joins[attachedJoinIndex];
-                    var tempPieceList = SortOrderFromBasePiece(PiecesList.IndexOf(attachedJoin.A));
+                    var attachedJoin = JoinsIndex[attachedPiece];
+                    var tempPieceList = SortOrderFromBasePiece(attachedPiece);
 
                     // Determine if attachment should be added to the front or back of base
                     if (attachedJoin.AttachedInFront())
@@ -199,6 +194,24 @@ namespace Animator
                 }
             }
             return setSection;
+        }
+
+        /// <summary>
+        /// Adds an item to the JoinedPieces dictionary
+        /// based on whether it is a key already.
+        /// </summary>
+        /// <param name="a">Attaching piece</param>
+        /// <param name="b">Base piece</param>
+        public void AddToJoinedPieces(Piece a, Piece b)
+        {
+            if (JoinedPieces.ContainsKey(b))
+            {
+                JoinedPieces[b].Add(a);
+            }
+            else
+            {
+                JoinedPieces.Add(b, new List<Piece> { a });
+            }
         }
     }
 }

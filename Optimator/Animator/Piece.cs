@@ -17,17 +17,15 @@ namespace Animator
         public override string Name { get; set; }
         public override string Version { get; }
         public List<Spot> Data { get; set; } = new List<Spot>();
-        public override State State { get; set; }
 
-        // Colours and Details
-        public string ColourType { get; set; }                     // Solid/Gradient colour and direction
-        public Color[] FillColour { get; set; }                    // Multiple colours for gradients
-        public Color OutlineColour { get; set; }
+        // Piece Details
+        public override State State { get; set; }
+        public ColourState ColourState { get; set; }
         public decimal OutlineWidth { get; set; }
         public string PieceDetails { get; set; }                   // Wind resistance and more
 
         // Stored Values
-        public double[] middle;
+        public double[] middle; //CLEANING: Needed? Helpful?
         private double[] minMax;
         #endregion
 
@@ -49,27 +47,29 @@ namespace Animator
 
             // Get Points and Colours from File
             var angleData = data[1].Split(Consts.Semi);
+            var outlineARGB = angleData[1].Split(Consts.Comma);
 
-            // Colour Type
-            ColourType = angleData[0];
+            // Colour State
+            ColourState = new ColourState
+            {
+                ColourType = angleData[0],
+                OutlineColour = Color.FromArgb(int.Parse(outlineARGB[0]), int.Parse(outlineARGB[1]), int.Parse(outlineARGB[2]), int.Parse(outlineARGB[3]))
+            };
 
-            // Colours (Outline and Fill)
-            var colours = angleData[1].Split(Consts.Colon);
-            FillColour = new Color[colours.Length - 1];
+            // Fill Colour Array
+            var colours = angleData[2].Split(Consts.Colon);
+            ColourState.FillColour = new Color[colours.Length];
             for (int index = 0; index < colours.Length; index++)
             {
-                var rgbValues = colours[index].Split(Consts.Comma);
-                if (index == 0)
-                    OutlineColour = Color.FromArgb(int.Parse(rgbValues[0]), int.Parse(rgbValues[1]), int.Parse(rgbValues[2]), int.Parse(rgbValues[3]));
-                else
-                    FillColour[index - 1] = Color.FromArgb(int.Parse(rgbValues[0]), int.Parse(rgbValues[1]), int.Parse(rgbValues[2]), int.Parse(rgbValues[3]));
+                var argbValues = colours[index].Split(Consts.Comma);
+                ColourState.FillColour[index - 1] = Color.FromArgb(int.Parse(argbValues[0]), int.Parse(argbValues[1]), int.Parse(argbValues[2]), int.Parse(argbValues[3]));
             }
 
             // Outline Width
-            OutlineWidth = int.Parse(angleData[2]);
+            OutlineWidth = int.Parse(angleData[3]);
 
             // Piece Details
-            PieceDetails = angleData[3];
+            PieceDetails = angleData[4];
 
             // Spots
             for (int index = 2; index < data.Count; index++)
@@ -90,60 +90,38 @@ namespace Animator
         {
             Name = "";
             Version = Consts.Version;
-            ColourType = Consts.fillOptions[0];
-            FillColour = new Color[] { Consts.defaultFill };
-            OutlineColour = Consts.defaultOutline;
+            ColourState = new ColourState();
             OutlineWidth = Consts.defaultOutlineWidth;
             PieceDetails = Consts.defaultPieceDetails;
         }
 
 
 
-        // ----- GET FUNCTIONS -----
+        // ----- PART FUNCTIONS -----
 
         /// <summary>
         /// Gets piece's current details in a string format.
         /// </summary>
         public override List<string> GetData()
         {
-            // TODO: Save so 0,0 is centre
             // Type and Version
             var newData = new List<string>
             {
-                Consts.Piece + Consts.SemiS + Version
+                Consts.Piece + Consts.SemiS + Version,
+                ColourState.GetData() + Consts.SemiS + OutlineWidth + Consts.SemiS + PieceDetails
             };
 
-            // Update line of data            [0] colour type     [1] colour array        [2] outline width       [3] pieceDetails
-            string pieceInfo = ColourType + Consts.SemiS + Utils.ColorToString(OutlineColour) + Consts.ColonS;
-            foreach (var col in FillColour)
-                pieceInfo += Utils.ColorToString(col) + Consts.ColonS;
-            pieceInfo = pieceInfo.Remove(pieceInfo.Length - 1, 1) + Consts.SemiS + OutlineWidth + Consts.SemiS + PieceDetails;
-            newData.Add(pieceInfo);
-
             // Add Spots
+            // TODO: Save so 0,0 is centre
             foreach (var spot in Data)
+            {
                 if (spot.DrawnLevel == 0)
+                {
                     newData.Add(spot.ToString());
+                }
+            }
             return newData;
         }
-
-
-
-        // ----- SET FUNCTIONS -----
-
-        /// <summary>
-        /// Sets the centre of the point to the board it's being displayed on.
-        /// </summary>
-        /// <param name="pictureBox">The board the piece is to be drawn on</param>
-        public void SetCoordsAsMid(PictureBox pictureBox)
-        {
-            State.X = pictureBox.Width / 2.0;
-            State.Y = pictureBox.Height / 2.0;
-        }
-
-
-
-        // ----- PART FUNCTIONS -----
 
         /// <summary>
         /// Converts into itself to accommodate sets
@@ -158,21 +136,19 @@ namespace Animator
         /// <summary>
         /// Draws the piece to the provided graphics.
         /// </summary>
-        /// <param name="g">Provided graphics</param>
-        /// <param name="colours">Fill and outline variations</param>
-        public override void Draw(Graphics g, Color[] colours = null)
+        /// <param name="g">Supplied graphics</param>
+        /// <param name="state">Pieces position</param>
+        /// <param name="colours">Pieces colours</param>
+        public override void Draw(Graphics g, State state = null, ColourState colours = null)
         {
+            state = state ?? State;
             if (colours == null)
             {
-                Visuals.DrawPiece(this, g, State);
-            }
-            else if (colours.Length == 1)
-            {
-                Visuals.DrawPiece(this, g, State, colours[0]);
+                Visuals.DrawPiece(this, g, state);
             }
             else
             {
-                Visuals.DrawPiece(this, g, State, colours[0], colours[1]);
+                Visuals.DrawPiece(this, g, state, colours);
             }
         }
 
@@ -192,10 +168,14 @@ namespace Animator
             // Get Points
             CalculateMatches();
             foreach (var spot in Data)
+            {
                 spot.CurrentX = spot.CalculateCurrentValue(State.GetAngles()[0], middle);
+            }
             CalculateMatches(0);
             foreach (var spot in Data)
+            {
                 points.Add(new double[] { spot.CurrentX, spot.CalculateCurrentValue(State.GetAngles()[1], middle, 0) });
+            }
 
             // Recentre
             for (int index = 0; index < points.Count; index++)
@@ -278,7 +258,9 @@ namespace Animator
             // Setup
             CleanseData(xy == 0 ? false : true);
             if (Data.Count < 3)
+            {
                 return;
+            }
             var drawn = xy == 0 ? 2 : 1;
             var coordCombo = xy == 0 ? 3 : 0;
             var coordRot = xy == 0 ? 3 : 1;
@@ -325,7 +307,9 @@ namespace Animator
                                 newSpot.SetMatch(xy, spot);
                                 spot.SetMatch(xy, newSpot);
                                 if (drawn == 2)
+                                {
                                     newSpot.CurrentX = newSpot.X;
+                                }
                                 Data.Insert(insertIndex, newSpot);
                                 index--;
                             }
@@ -347,14 +331,22 @@ namespace Animator
             // Find Matches
             var matches = new List<int>();
             for (int index = 0; index < Data.Count; index++)
+            {
                 if (index != matchIndex && Data[index].GetCoordCombination()[xy] == Data[matchIndex].GetCoordCombination()[xy])
+                {
                     matches.Add(index);
+                }
+            }
 
             // Decide which match is best
             if (matches.Count == 0)
+            {
                 return -1;
+            }
             else if (matches.Count == 1)
+            {
                 return matches[0];
+            }
             else
             {
                 var yx = xy == 0 ? 1 : 0;
@@ -372,9 +364,13 @@ namespace Animator
                     }
                 }
                 if (Data[matchIndex].GetCoordCombination()[yx] <= Data[matches[min]].GetCoordCombination()[yx])
+                {
                     return max;
+                }
                 else if (Data[matchIndex].GetCoordCombination()[yx] >= Data[matches[max]].GetCoordCombination()[yx])
+                {
                     return min;
+                }
                 return matches[0];
             }
         }
@@ -405,9 +401,13 @@ namespace Animator
             for (int index = 0; index < Data.Count; index++)
             {
                 if (Data[searchIndex].GetCoordCombination(angle)[xy] == goal)
+                {
                     bigger = !bigger;
+                }
                 else if (Data[searchIndex].GetCoordCombination(angle)[xy] > goal != bigger)
+                {
                     return searchIndex;
+                }
 
                 searchIndex = (searchIndex + 1) % Data.Count;
             }
@@ -429,16 +429,26 @@ namespace Animator
             if (line == Consts.connectorOptions[0] || line == Consts.connectorOptions[1])
             {
                 if (from[0] == to[0])
+                {
                     if (xy == 0)
+                    {
                         return new double[] { value, to[1] };
+                    }
                     else
+                    {
                         return new double[] { from[0], value };
-                
+                    }
+                }
+
                 gradient = (from[1] - to[1]) / (from[0] - to[0]);
                 if (xy == 0)
+                {
                     return new double[] { value, from[1] + (value - from[0]) * gradient };  // y = x * gradient
+                }
                 else
+                {
                     return new double[] { from[0] + (value - from[1]) / gradient, value };  // x = y / gradient
+                }
             }
             // else if (line == Constants.connectorOptions[2])      
             //CURVE
@@ -468,20 +478,28 @@ namespace Animator
 
                 // If straight vertical line
                 if (from[0] - to[0] == 0)
+                {
                     for (int index = (int)lower[1] + 1; index < upper[1]; index++)
+                    {
                         section.Add(new double[] { from[0], index });
+                    }
+                }
 
                 // If diagonal line
                 else if (from[1] - to[1] != 0)
                 {
                     var gradient = (lower[1] - upper[1]) / (lower[0] - upper[0]);
                     for (int index = (int)lower[1] + 1; index < upper[1]; index++)
+                    {
                         section.Add(new double[] { lower[0] + ((index - lower[1]) / gradient), index });
+                    }
                 }
 
                 // Add section to line, reversing if calculated as to --> from
                 if (fromUpper)
+                {
                     section.Reverse();
+                }
                 line.AddRange(section);
             }
             // Curve
@@ -501,8 +519,10 @@ namespace Animator
             var linesCoords = new List<double[]>();
             var data = CurrentPoints();
             for (int index = 0; index < data.Count; index++)
-                linesCoords.AddRange(LineCoords(data[index], 
+            {
+                linesCoords.AddRange(LineCoords(data[index],
                     data[Utils.Modulo(index + 1, data.Count)], Data[index].Connector));
+            }
             return linesCoords;
         }
 
@@ -526,7 +546,9 @@ namespace Animator
                             outlineShape[Utils.Modulo(coordIndex - 1, outlineShape.Count)][1] > outlineShape[coordIndex][1]) ||
                             (outlineShape[Utils.Modulo(coordIndex + 1, outlineShape.Count)][1] < outlineShape[coordIndex][1] &&
                             outlineShape[Utils.Modulo(coordIndex - 1, outlineShape.Count)][1] < outlineShape[coordIndex][1])))
+                    {
                         yMatches.Add(outlineShape[coordIndex]);
+                    }
 
                 // Pair Remaining Coords into Bounds
                 while (yMatches.Count > 1)
@@ -587,9 +609,13 @@ namespace Animator
                 if (eraseCheck)
                 {
                     if (Data[index].MatchX != null)
+                    {
                         Data[index].MatchX.MatchX = null;
+                    }
                     if (xMatch && Data[index].MatchY != null)
+                    {
                         Data[index].MatchY.MatchY = null;
+                    }
                     Data.RemoveAt(index);
                     index--;
                 }

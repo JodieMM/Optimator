@@ -18,6 +18,7 @@ namespace Animator
         #region Scenes Form Variables
         private Scene WIP = new Scene();
         private Part selected = null;
+        private Piece subSelected = null;   //TODO: Use
         private Graphics g;
 
         private decimal timeIncrement = (decimal)0.5;
@@ -59,15 +60,19 @@ namespace Animator
                 if (sender == AddPieceBtn)
                 {
                     loaded = new Piece(NameTb.Text);
-                    loaded.ToPiece().SetCoordsAsMid(DrawPanel);
-                    WIP.Originals.Add(loaded as Piece, Utils.CloneState(loaded.State, true));
+                    loaded.ToPiece().State.SetCoordsBasedOnBoard(DrawPanel);
+                    WIP.Originals.Add(loaded, Utils.CloneState(loaded.State));
+                    WIP.OriginalColours.Add(loaded, Utils.CloneColourState((loaded as Piece).ColourState));
                 }
                 else
                 {
                     loaded = new Set(NameTb.Text);
-                    loaded.ToPiece().SetCoordsAsMid(DrawPanel);
+                    loaded.ToPiece().State.SetCoordsBasedOnBoard(DrawPanel);
                     foreach (Piece piece in (loaded as Set).PiecesList)
-                        WIP.Originals.Add(piece as Piece, Utils.CloneState(piece.State, true));
+                    {
+                        WIP.Originals.Add(piece, Utils.CloneState(piece.State));
+                        WIP.OriginalColours.Add(piece, Utils.CloneColourState(piece.ColourState));
+                    }
                 }
                 WIP.PartsList.Add(loaded);
                 SelectPart(loaded);
@@ -91,9 +96,15 @@ namespace Animator
         /// <param name="e"></param>
         private void UpBtn_Click(object sender, EventArgs e)
         {
-            if (selected == null) { return; }
+            if (selected == null)
+            {
+                return;
+            }
             int selectedIndex = WIP.PartsList.IndexOf(selected);
-            if (selectedIndex == -1 || selectedIndex == WIP.PartsList.Count - 1) { return; }
+            if (selectedIndex == -1 || selectedIndex == WIP.PartsList.Count - 1)
+            {
+                return;
+            }
 
             // Update PartsList
             WIP.PartsList[selectedIndex] = WIP.PartsList[selectedIndex + 1];
@@ -109,9 +120,15 @@ namespace Animator
         /// <param name="e"></param>
         private void DownBtn_Click(object sender, EventArgs e)
         {
-            if (selected == null) { return; }
+            if (selected == null)
+            {
+                return;
+            }
             int selectedIndex = WIP.PartsList.IndexOf(selected);
-            if (selectedIndex == -1 || selectedIndex == 0) { return; }
+            if (selectedIndex == -1 || selectedIndex == 0)
+            {
+                return;
+            }
 
             // Update PartsList
             WIP.PartsList[selectedIndex] = WIP.PartsList[selectedIndex - 1];
@@ -127,7 +144,10 @@ namespace Animator
         /// <param name="e"></param>
         private void UpdateSelectedPiece(object sender, EventArgs e)
         {
-            if (selected == null) { return; }
+            if (selected == null)
+            {
+                return;
+            }
             if (sender == RotationBar)
             {
                 WIP.Originals[selected].R = RotationBar.Value;
@@ -152,7 +172,10 @@ namespace Animator
             {
                 WIP.Originals[selected].SM = SizeBar.Value;
             }
-            if (sender == ActiveControl) { DisplayDrawings(); }
+            if (sender == ActiveControl)
+            {
+                DisplayDrawings();
+            }
         }
 
         #endregion
@@ -168,7 +191,10 @@ namespace Animator
         /// <param name="e"></param>
         private void AddAnimationBtn_Click(object sender, EventArgs e)
         {
-            if (selected == null || ChangeTypeCb.SelectedIndex == -1 || AnimationAmountTb.Value == 0) { return; }
+            if (selected == null || ChangeTypeCb.SelectedIndex == -1 || AnimationAmountTb.Value == 0)
+            {
+                return;
+            }
 
             // Adds new change to scene
             WIP.Changes.Add(new Change(CurrentTimeUpDown.Value, ChangeTypeCb.Text, selected.ToPiece(), (double)AnimationAmountTb.Value, SecondsUpDown.Value, WIP));
@@ -200,14 +226,19 @@ namespace Animator
             }
             else
             {
-                if (selected == null || ChangeTypeCb.SelectedIndex == -1 || AnimationAmountTb.Value == 0) { return; }
+                if (selected == null || ChangeTypeCb.SelectedIndex == -1 || AnimationAmountTb.Value == 0)
+                {
+                    return;
+                }
                 PreviewBtn.BackColor = pressed;
                 WIP.RunScene(CurrentTimeUpDown.Value + SecondsUpDown.Value);
                 Change tempChange = new Change(CurrentTimeUpDown.Value, ChangeTypeCb.Text, selected.ToPiece(), (double)AnimationAmountTb.Value, SecondsUpDown.Value, WIP);
                 tempChange.Run(CurrentTimeUpDown.Value + SecondsUpDown.Value);
             }
             if (PreviewBtn == ActiveControl)
+            {
                 Visuals.DrawParts(WIP.PartsList, g, DrawPanel);
+            }
         }
 
 
@@ -221,7 +252,10 @@ namespace Animator
         /// <param name="e"></param>
         private void FinishSceneBtn_Click(object sender, EventArgs e)
         {
-            if (!Utils.CheckValidNewName(NameTb.Text, Consts.ScenesFolder)) { return; }            
+            if (!Utils.CheckValidNewName(NameTb.Text, Consts.ScenesFolder))
+            {
+                return;
+            }            
             try
             {
                 Utils.SaveFile(Utils.GetDirectory(Consts.ScenesFolder, SceneTb.Text, Consts.Optr), WIP.GetData());
@@ -240,7 +274,10 @@ namespace Animator
         /// <param name="e"></param>
         private void ExitBtn_Click(object sender, EventArgs e)
         {
-            if (Utils.ExitBtn_Click(WIP.PartsList.Count > 0)) { Close(); }
+            if (Utils.ExitBtn_Click(WIP.PartsList.Count > 0))
+            {
+                Close();
+            }
         }
 
 
@@ -279,7 +316,9 @@ namespace Animator
         private void CurrentTimeUpDown_ValueChanged(object sender, EventArgs e)
         {
             if (CurrentTimeUpDown.Value > WIP.TimeLength)
+            {
                 UpdateVideoLength(CurrentTimeUpDown.Value);
+            }
 
             DisplayDrawings();
         }
@@ -296,9 +335,13 @@ namespace Animator
             int s = (int)Math.Floor(WIP.TimeLength - (hr * 3600 + min * 60));
             VidLengthLbl.Text = "Video Length: ";
             if (hr > 0)
+            {
                 VidLengthLbl.Text += hr + "hrs ";
+            }
             if (min > 0)
+            {
                 VidLengthLbl.Text += min + "mins ";
+            }
             VidLengthLbl.Text += s + "s";
         }
 
@@ -311,7 +354,9 @@ namespace Animator
         {
             CurrentTimeUpDown.Value += timeIncrement;
             if (WIP.TimeLength < CurrentTimeUpDown.Value)
+            {
                 WIP.TimeLength = CurrentTimeUpDown.Value;
+            }
 
             DisplayDrawings();
         }
@@ -323,7 +368,10 @@ namespace Animator
         /// <param name="e"></param>
         private void BackBtn_Click(object sender, EventArgs e)
         {
-            if (CurrentTimeUpDown.Value < timeIncrement) { return; }
+            if (CurrentTimeUpDown.Value < timeIncrement)
+            {
+                return;
+            }
             CurrentTimeUpDown.Value -= timeIncrement;
             DisplayDrawings();
         }
@@ -343,10 +391,13 @@ namespace Animator
             // Choose and Update Selected Piece (If Any)
             int selectedIndex = Utils.FindClickedSelection(WIP.PiecesList, e.X, e.Y, SelectFromTopCb.Checked);
             if (selectedIndex == -1)
+            {
                 Deselect();
-
+            }
             else
+            {
                 SelectPart(WIP.PiecesList[selectedIndex]);
+            }
 
             DisplayDrawings();
         }
@@ -360,7 +411,7 @@ namespace Animator
         {
             Deselect();
             selected = select;
-            selected.ToPiece().OutlineColour = (selected is Piece) ? Color.Red : Color.Purple;
+            selected.ToPiece().ColourState.OutlineColour = (selected is Piece) ? Color.Red : Color.Purple;
             RotationBar.Value = (int)WIP.Originals[selected].R;
             TurnBar.Value = (int)WIP.Originals[selected].T;
             SpinBar.Value = (int)WIP.Originals[selected].S;
@@ -377,7 +428,7 @@ namespace Animator
         {
             if (selected != null)
             {
-                selected.ToPiece().OutlineColour = WIP.Originals[selected].OC;
+                selected.ToPiece().ColourState.OutlineColour = WIP.OriginalColours[selected.ToPiece()].OutlineColour;
                 selected = null;
             }
         }
@@ -394,7 +445,10 @@ namespace Animator
             {
                 // Delete Selected Shape
                 case Keys.Delete:
-                    if (selected == null) { return; }
+                    if (selected == null)
+                    {
+                        return;
+                    }
 
                     // If Listbox is highlighted, delete change/animation
                     if (ActiveControl == AnimationLb && AnimationLb.SelectedIndex != -1)
@@ -402,22 +456,27 @@ namespace Animator
                         RemoveChangeIndex(AnimationLb.SelectedIndex);
                         AnimationLb.Items.RemoveAt(AnimationLb.SelectedIndex);
                     }
-                    // Delete selected piece
+                    // Delete selected
                     else
                     {
-                        // If piece is involved in set
-                        if (selected.ToPiece().PieceOf != null)
+                        if (selected is Set)
                         {
-                            var result = MessageBox.Show("This will delete the entire set. Do you wish to continue?",
-                                "Overwrite Confirmation", MessageBoxButtons.OKCancel);
-                            if (result == DialogResult.Cancel)
-                                return;
+                            if (subSelected != null)
+                            {
+                                var result = MessageBox.Show("This will delete the entire set. Do you wish to continue?",
+                                    "Overwrite Confirmation", MessageBoxButtons.OKCancel);
+                                if (result == DialogResult.Cancel)
+                                {
+                                    return;
+                                }
+                            }
 
-                            var deleting = selected.ToPiece().PieceOf;
-                            foreach (var piece in deleting.PiecesList)
-                                WIP.PartsList.Remove(piece);
+                            foreach (var piece in (selected as Set).PiecesList)
+                            {
+                                WIP.PiecesList.Remove(piece);
+                            }
+                            WIP.PartsList.Remove(selected);
                         }
-                        // Piece is lone
                         else
                         {
                             WIP.PartsList.Remove(selected);
@@ -427,10 +486,13 @@ namespace Animator
                         // Update changes to remove those made redundant by deleting a piece/set
                         foreach (var change in WIP.Changes)
                         {
-                            if (!WIP.PartsList.Contains(change.AffectedPiece))
+                            if (!WIP.PiecesList.Contains(change.AffectedPiece))
+                            {
                                 WIP.Changes.Remove(change);
+                            }
                         }
                         selected = null;
+                        subSelected = null;
                     }
                     DisplayDrawings();
                     break;
@@ -458,12 +520,14 @@ namespace Animator
 
             // Past Preview
             if (CurrentTimeUpDown.Value < timeIncrement && PreviewCb.Checked)
+            {
                 PastPreviewBox.BackColor = Color.PaleGoldenrod;
+            }
             else
             {
                 PastPreviewBox.BackColor = Color.White;
                 WIP.RunScene(CurrentTimeUpDown.Value - timeIncrement);
-                Visuals.DrawParts(WIP.PartsList, g, PastPreviewBox, 3/11.0F);
+                Visuals.DrawParts(WIP.PartsList, g, PastPreviewBox, 3 / 11.0F);
             }
 
             // Draw Panel (Current)
@@ -490,12 +554,18 @@ namespace Animator
                     change.HowMuch.ToString() + " :" + change.StartTime.ToString();
 
                 if (CurrentTimeUpDown.Value >= change.StartTime && CurrentTimeUpDown.Value <= change.StartTime + change.HowLong)
+                {
                     AnimationLb.Items.Add(summary);
+                }
                 else
+                {
                     back.Add(summary);
+                }
             }
             foreach (string summary in back)
+            {
                 AnimationLb.Items.Add(summary);
+            }
 
             loading.Close();
         }

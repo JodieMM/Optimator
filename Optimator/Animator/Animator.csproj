@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Change.cs" />
+    <Compile Include="ColourState.cs" />
     <Compile Include="CompileVideo.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -67,7 +68,6 @@
     <Compile Include="Menu.Designer.cs">
       <DependentUpon>Menu.cs</DependentUpon>
     </Compile>
-    <Compile Include="Originals.cs" />
     <Compile Include="Part.cs" />
     <Compile Include="Piece.cs" />
     <Compile Include="PiecesForm.cs">
@@ -164,6 +164,8 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

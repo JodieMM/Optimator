@@ -69,7 +69,9 @@ namespace Animator
         private void ExitBtn_Click(object sender, EventArgs e)
         {
             if (Utils.ExitBtn_Click(videoScenes.Count > 0))
+            {
                 Close();
+            }
         }
 
         /// <summary>
@@ -80,7 +82,9 @@ namespace Animator
         private void SaveBtn_Click(object sender, EventArgs e)
         {
             if (!Utils.CheckValidNewName(NameTb.Text, Consts.VideosFolder))
+            {
                 return;
+            }
             try
             {
                 LoadingForm loading = new LoadingForm();
@@ -156,11 +160,13 @@ namespace Animator
                 DrawPanel.Refresh();
                 g = DrawPanel.CreateGraphics();
             }
-            baseScene.RunScene(workingTime);      
+            baseScene.RunScene(workingTime);
 
             // Draw Parts
-            foreach(Part part in baseScene.PartsList)
+            foreach (Part part in baseScene.PartsList)
+            {
                 part.Draw(g);
+            }
         }
 
         /// <summary>
@@ -173,7 +179,9 @@ namespace Animator
             Bitmap bitmap = new Bitmap(DrawPanel.Width, DrawPanel.Height);
             g = Graphics.FromImage(bitmap);
             using (SolidBrush brush = new SolidBrush(backgroundColor))
+            {
                 g.FillRectangle(brush, 0, 0, bitmap.Width, bitmap.Height);
+            }
 
             DrawFrame(videoScenes[sceneIndex], g);
             return bitmap;

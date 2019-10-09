@@ -80,7 +80,10 @@ namespace Animator
         /// <param name="e"></param>
         private void ExitBtn_Click(object sender, EventArgs e)
         {
-            if (Utils.ExitBtn_Click(WIP.PiecesList.Count > 1)) { Close(); }
+            if (Utils.ExitBtn_Click(WIP.PiecesList.Count > 1))
+            {
+                Close();
+            }
         }
 
         /// <summary>
@@ -91,11 +94,17 @@ namespace Animator
         private void CompleteBtn_Click(object sender, EventArgs e)
         {
             if (WIP.PiecesList.Count < 1)
+            {
                 Close();
+            }
             else if (!Utils.CheckValidNewName(NameTb.Text, Consts.SetsFolder))
+            {
                 return;
+            }
             else if (!CheckSingularBasePiece())
+            {
                 MessageBox.Show("Please connect all pieces but one or remove unconnected pieces.", "Multiple Sets", MessageBoxButtons.OK);
+            }
             else
             {
                 try
@@ -133,19 +142,21 @@ namespace Animator
                 {
                     justAdded = new Piece(AddTb.Text);
                     WIP.PiecesList.Add(justAdded.ToPiece());
-                    justAdded.ToPiece().SetCoordsAsMid(DrawBase); // CLEANING: Remove?
+                    justAdded.ToPiece().State.SetCoordsBasedOnBoard(DrawBase);
                 }
                 else
                 {
                     justAdded = new Set(AddTb.Text);
                     WIP.PiecesList.AddRange((justAdded as Set).PiecesList);
-                    justAdded.ToPiece().SetCoordsAsMid(DrawBase); // CLEANING: Remove?
+                    justAdded.ToPiece().State.SetCoordsBasedOnBoard(DrawBase);
                 }
                 SelectPiece(justAdded.ToPiece());
 
                 // If first piece, set as base
                 if (WIP.PiecesList.Count == 1)
+                {
                     WIP.BasePiece = selected;
+                }
 
                 DisplayDrawings();
             }
@@ -167,7 +178,9 @@ namespace Animator
         private void SelectBaseBtn_Click(object sender, EventArgs e)
         {
             if (selected == null)
+            {
                 return;
+            }
 
             if (SelectBaseBtn.BackColor == unpressed)
             {
@@ -175,7 +188,9 @@ namespace Animator
                 SelectBaseBtn.BackColor = pressed;
             }
             else
+            {
                 SelectBaseBtn.BackColor = unpressed;
+            }
         }
 
         /// <summary>
@@ -185,8 +200,10 @@ namespace Animator
         /// <param name="e"></param>
         private void MoveJoinBtn_Click(object sender, EventArgs e)
         {
-            if (selected == null || selected.AttachedTo == null)
+            if (selected == null)
+            {
                 return;
+            }
 
             if (MoveJoinBtn.BackColor == unpressed)
             {
@@ -208,7 +225,9 @@ namespace Animator
         private void UpOrDownBtn_Click(object sender, EventArgs e)
         {
             if (selected == null)
+            {
                 return;
+            }
 
             int selectedIndex = WIP.PiecesList.IndexOf(selected);
             bool condition = sender == UpBtn ? selectedIndex != -1 && selectedIndex < WIP.PiecesList.Count - 1 : selectedIndex > 0;
@@ -232,7 +251,7 @@ namespace Animator
             if (selected != null)
             {
                 FlipsUpDown.Enabled = FlipsCb.Checked;
-                selected.Join.FlipAngle = (FlipsCb.Checked) ? (double)FlipsUpDown.Value : -1;
+                WIP.JoinsIndex[selected].FlipAngle = (FlipsCb.Checked) ? (double)FlipsUpDown.Value : -1;
             }
         }
 
@@ -245,7 +264,7 @@ namespace Animator
         {
             if (selected != null)
             {
-                selected.Join.FlipAngle = (double)FlipsUpDown.Value;
+                WIP.JoinsIndex[selected].FlipAngle = (double)FlipsUpDown.Value;
             }
         }
 
@@ -263,16 +282,27 @@ namespace Animator
         /// <param name="e"></param>
         private void UpdateSelectedPiece(object sender, EventArgs e)
         {
-            if (selected == null) { return; }
+            if (selected == null)
+            {
+                return;
+            }
 
             if (sender == RotationBar)
-                selected.R = RotationBar.Value;
+            {
+                selected.State.R = RotationBar.Value;
+            }
             else if (sender == TurnBar)
-                selected.T = TurnBar.Value;
+            {
+                selected.State.T = TurnBar.Value;
+            }
             else if (sender == SpinBar)
-                selected.S = SpinBar.Value;
+            {
+                selected.State.S = SpinBar.Value;
+            }
             else if (sender == SizeBar)
-                selected.SM = SizeBar.Value;
+            {
+                selected.State.SM = SizeBar.Value;
+            }
 
             DisplayDrawings();
         }
@@ -291,8 +321,8 @@ namespace Animator
         private void DrawBase_MouseDown(object sender, MouseEventArgs e)
         {
             // Move the Piece's Join            
-            if (MoveJoinBtn.BackColor == pressed && Math.Abs(e.X - selected.GetCoords()[0] - selected.Join.X) 
-                <= Consts.ClickPrecision && Math.Abs(e.Y - selected.GetCoords()[1] - selected.Join.Y) <= Consts.ClickPrecision)
+            if (MoveJoinBtn.BackColor == pressed && Math.Abs(e.X - selected.State.GetCoords()[0] - WIP.JoinsIndex[selected].X) 
+                <= Consts.ClickPrecision && Math.Abs(e.Y - selected.State.GetCoords()[1] - WIP.JoinsIndex[selected].Y) <= Consts.ClickPrecision)
             {
                 originalMoving = new int[] { e.X, e.Y };
                 moving = 1;
@@ -304,12 +334,16 @@ namespace Animator
                 if (selectedIndex != -1)
                 {
                     // Set a new base for the selected piece and adjust coords and join
-                    if (SelectBaseBtn.BackColor == pressed && selected != WIP.PiecesList[selectedIndex])
-                        selected.AttachToPiece(WIP.PiecesList[selectedIndex]);
+                    if (SelectBaseBtn.BackColor == pressed && WIP.PiecesList.IndexOf(selected) != selectedIndex)
+                    {
+                        JoinPieces(selected, WIP.PiecesList[selectedIndex]);
+                    }
 
                     // Select self as base
                     else if (SelectBaseBtn.BackColor == pressed)
+                    {
                         selected.Deattach();
+                    }
 
                     // Select a new piece
                     else
@@ -334,17 +368,23 @@ namespace Animator
         private void DrawBase_MouseMove(object sender, MouseEventArgs e)
         {
             if (moving != 1)
+            {
                 return;
+            }
 
             // Invalid Mouse Position
             if (e.X < 0 || e.Y < 0 || e.X > DrawBase.Size.Width || e.Y > DrawBase.Size.Height || selected is null)
+            {
                 StopMoving();
+            }
             // Move Point
             else
             {
                 if (!movingFar)
-                    movingFar = Math.Abs(selected.X - e.X) > Consts.ClickPrecision
-                        || Math.Abs(selected.Y - e.Y) > Consts.ClickPrecision;                
+                {
+                    movingFar = Math.Abs(selected.State.X - e.X) > Consts.ClickPrecision
+                        || Math.Abs(selected.State.Y - e.Y) > Consts.ClickPrecision;
+                }
             }
             DisplayDrawings();
 
@@ -353,20 +393,26 @@ namespace Animator
             {
                 var xChange = e.X - originalMoving[0];
                 var yChange = e.Y - originalMoving[1];
-                
+
                 // Move Join
                 if (MoveJoinBtn.BackColor == pressed)
-                    Visuals.DrawCross(selected.GetCoords()[0] + selected.Join.X + xChange,
-                        selected.GetCoords()[1] + selected.Join.Y + yChange, Consts.shadowShade, original);
+                {
+                    //WIP.JoinsIndex[selected].Draw(0, Consts.shadowShade, original);
+                    Visuals.DrawCross(selected.State.GetCoords()[0] + selected.Join.X + xChange,
+                        selected.State.GetCoords()[1] + selected.Join.Y + yChange, Consts.shadowShade, original);
+                }
                 // Move Piece
                 else
+                {
                     for (int index = 0; index < selected.Data.Count; index++)
                     {
-                        var X = selected.X; var Y = selected.Y;
-                        selected.X += xChange; selected.Y += yChange;
-                        selected.Draw(original, new Color[] { Consts.shadowShade, Consts.shadowShade });
-                        selected.X = X; selected.Y = Y;
+                        State modState = Utils.CloneState(selected.State);
+                        modState.X += xChange;
+                        modState.Y += yChange;
+                        selected.Draw(original, modState, new ColourState(selected.ColourState, 
+                            Consts.shadowShade, new Color[] { Consts.shadowShade }));
                     }
+                }
             }
         }
 
@@ -379,7 +425,9 @@ namespace Animator
         private void DrawBase_MouseUp(object sender, MouseEventArgs e)
         {
             if (moving != 1)
+            {
                 return;
+            }
             if (movingFar)
             {
                 var x = e.X - originalMoving[0];
@@ -391,8 +439,8 @@ namespace Animator
                 }
                 else
                 {
-                    selected.X += x;
-                    selected.Y += y;
+                    selected.State.X += x;
+                    selected.State.Y += y;
                 }
             }
             StopMoving();
@@ -418,12 +466,20 @@ namespace Animator
             var angle = sender == EraseRightBtn ? "rotated" : "turned";
             var result = MessageBox.Show("Are you sure you wish to erase all changes to the set's " + angle + " state?",
                 "Erase Changes", MessageBoxButtons.OKCancel);
-            foreach (var piece in WIP.PiecesList)
-                if (piece.Join != null)
-                    if (angle == "rotated")
-                        piece.Join.XRight = piece.Join.X;
-                    else
-                        piece.Join.YDown = piece.Join.Y;
+
+            foreach (var join in WIP.JoinsIndex)
+            {
+                if (angle == "rotated")
+                {
+                    join.Value.AXRight = join.Value.AX;
+                    join.Value.BXRight = join.Value.BX;
+                }
+                else
+                {
+                    join.Value.AYDown = join.Value.AY;
+                    join.Value.BYDown = join.Value.BY;
+                }
+            }
         }
 
         /// <summary>
@@ -439,7 +495,9 @@ namespace Animator
                 // Delete Selected Piece
                 case Keys.Delete:
                     if (selected == null)
+                    {
                         return;
+                    }
                     WIP.PiecesList.Remove(selected);
                     selected = null;
                     DisplayDrawings();
@@ -471,13 +529,13 @@ namespace Animator
             turned = DrawDown.CreateGraphics();
 
             // Draw To Boards
-            WIP.ToPiece().R = 0; WIP.ToPiece().T = 0;
+            WIP.ToPiece().State.R = 0; WIP.ToPiece().State.T = 0;
             DrawToBoard(original, 0);
-            WIP.ToPiece().R = 89.9999; WIP.ToPiece().T = 0;
+            WIP.ToPiece().State.R = 89.9999; WIP.ToPiece().State.T = 0;
             DrawToBoard(rotated, 1);
-            WIP.ToPiece().R = 0; WIP.ToPiece().T = 89.9999;
+            WIP.ToPiece().State.R = 0; WIP.ToPiece().State.T = 89.9999;
             DrawToBoard(turned, 2);
-            WIP.ToPiece().T = 0;
+            WIP.ToPiece().State.T = 0;
         }
 
         /// <summary>
@@ -491,16 +549,31 @@ namespace Animator
             foreach (Piece piece in WIP.PiecesList)
             {
                 if (selected != null && piece == selected && movingFar)
-                    piece.Draw(board, new Color[] { Consts.shadowShade });
+                {
+                    piece.Draw(board, piece.State, new ColourState(piece.ColourState, Consts.shadowShade));
+                }
                 else if (selected != null && piece == selected)
-                    piece.Draw(board, new Color[] { Consts.select });
-                else if (selected != null && piece == selected.AttachedTo)
-                    piece.Draw(board, new Color[] { Consts.highlight });
+                {
+                    piece.Draw(board, piece.State, new ColourState(piece.ColourState, Consts.select));
+                }
+                else if (selected != null && WIP.JoinedPieces[selected].Contains(piece))
+                {
+                    piece.Draw(board, piece.State, new ColourState(piece.ColourState, Consts.highlight));
+                }
                 else
-                    piece.Draw(board);              
+                {
+                    piece.Draw(board, piece.State);
+                }
             }
+
+            // Draw Join if Moving
             if (MoveJoinBtn.BackColor == pressed)
-                selected.Join.Draw(angle, Consts.select, board);
+            {
+                if (WIP.JoinsIndex.ContainsKey(selected))
+                {
+                    WIP.JoinsIndex[selected].Draw(angle, Consts.select, board);
+                }
+            }
         }
 
         /// <summary>
@@ -519,10 +592,10 @@ namespace Animator
                 SpinBar.Enabled = true;
                 SizeBar.Enabled = true;
                 MoveJoinBtn.Enabled = true;                
-                RotationBar.Value = (int)selected.R;
-                TurnBar.Value = (int)selected.T;
-                SpinBar.Value = (int)selected.S;
-                SizeBar.Value = (int)selected.SM;
+                RotationBar.Value = (int)selected.State.R;
+                TurnBar.Value = (int)selected.State.T;
+                SpinBar.Value = (int)selected.State.S;
+                SizeBar.Value = (int)selected.State.SM;
             }
         }
 
@@ -553,17 +626,36 @@ namespace Animator
         private bool CheckSingularBasePiece()
         {
             WIP.BasePiece = null;
-            foreach(Piece piece in WIP.PiecesList)
+            foreach (Piece piece in WIP.PiecesList)
             {
-                if (piece.AttachedTo == null)
+                if (WIP.JoinedPieces.ContainsKey(piece) && !WIP.JoinsIndex.ContainsKey(piece))
                 {
                     if (WIP.BasePiece == null)
+                    {
                         WIP.BasePiece = piece;
+                    }
                     else
+                    {
                         return false;
+                    }
+                }
+                else if(!WIP.JoinedPieces.ContainsKey(piece) && !WIP.JoinsIndex.ContainsKey(piece))
+                {
+                    return false;
                 }
             }
             return WIP.BasePiece == null ? false: true;
+        }
+
+        /// <summary>
+        /// Creates a join between two pieces.
+        /// </summary>
+        /// <param name="a">The attaching piece</param>
+        /// <param name="b">The base piece</param>
+        private void JoinPieces(Piece a, Piece b)
+        {
+            WIP.JoinsIndex.Add(a, new Join(a, b, WIP));
+            WIP.AddToJoinedPieces(a, b);
         }
     }
 }

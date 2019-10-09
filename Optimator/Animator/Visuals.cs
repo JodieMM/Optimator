@@ -32,18 +32,23 @@ namespace Animator
         /// </summary>
         /// <param name="piece">The piece to be drawn</param>
         /// <param name="g">The graphics to draw to</param>
-        public static void DrawPiece(Piece piece, Graphics g, State state, Color? outlineColour = null, Color? fillColour = null)
+        public static void DrawPiece(Piece piece, Graphics g, State state, ColourState colourState =  null)
         {
             // TODO: Use state rather than current piece coords
             List<double[]> currentPoints = piece.CurrentPoints();
             if (currentPoints.Count < 1)
+            {
                 return;
+            }
 
-            // Prepare for drawing
-            if (outlineColour is null)
-                outlineColour = piece.OutlineColour;
-            Pen pen = new Pen((Color)outlineColour, (float)piece.OutlineWidth);
-            SolidBrush fill = new SolidBrush(fillColour ?? piece.FillColour[0]);
+            // Prepare for Drawing
+            if (colourState == null)
+            {
+                colourState = piece.ColourState;
+            }
+            Pen pen = new Pen(colourState.OutlineColour, (float)piece.OutlineWidth);
+            // GRADIENT
+            SolidBrush fill = new SolidBrush(colourState.FillColour[0]);
             List<Spot> spots = piece.Data;
             int numCoords = currentPoints.Count;
 
@@ -53,13 +58,17 @@ namespace Animator
             {
                 // Draw Line Between Final Point and First Point
                 if (pointIndex == numCoords - 1)
+                {
                     path.AddLine(new Point(Convert.ToInt32(currentPoints[numCoords - 1][0]), Convert.ToInt32(currentPoints[numCoords - 1][1])),
                         new Point(Convert.ToInt32(currentPoints[0][0]), Convert.ToInt32(currentPoints[0][1])));
+                }
 
                 // Draw Remaining Lines
                 else
+                {
                     path.AddLine(new Point(Convert.ToInt32(currentPoints[pointIndex][0]), Convert.ToInt32(currentPoints[pointIndex][1])),
                             new Point(Convert.ToInt32(currentPoints[pointIndex + 1][0]), Convert.ToInt32(currentPoints[pointIndex + 1][1])));
+                }
             }
             g.FillPath(fill, path);
 
@@ -112,7 +121,9 @@ namespace Animator
             }
 
             foreach (Part part in partsList)
-                part.Draw(g);
+            {
+                part.Draw(g, part.State);
+            }
         }
     }
 }

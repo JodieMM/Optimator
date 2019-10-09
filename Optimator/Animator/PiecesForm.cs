@@ -82,9 +82,13 @@ namespace Animator
             if (PointBtn.BackColor == unpressed)
             {
                 if (selectedSpot != null && WIP.Data.IndexOf(selectedSpot) != WIP.Data.Count - 1)
+                {
                     WIP.Data.Insert(WIP.Data.IndexOf(selectedSpot) + 1, new Spot(e.X, e.Y));
+                }
                 else
+                {
                     WIP.Data.Add(new Spot(e.X, e.Y));
+                }
 
                 SelectSpot(WIP.Data[WIP.Data.Count - 1]);
             }
@@ -98,7 +102,9 @@ namespace Animator
                     moving = 1;
                 }
                 else
+                {
                     Deselect();
+                }
             }
             DisplayDrawings();
         }
@@ -135,8 +141,10 @@ namespace Animator
             }
 
             if (!movingFar)
+            {
                 movingFar = Math.Abs(selectedSpot.X - e.X) > Consts.ClickPrecision
                     || Math.Abs(selectedSpot.Y - e.Y) > Consts.ClickPrecision;
+            }
 
             if (movingFar)
             {
@@ -163,7 +171,9 @@ namespace Animator
                 moving = 2;
             }
             else
+            {
                 Deselect();
+            }
 
             DisplayDrawings();
         }
@@ -176,7 +186,9 @@ namespace Animator
         private void DrawRight_MouseUp(object sender, MouseEventArgs e)
         {
             if (movingFar && selectedSpot != null && moving == 2)
+            {
                 selectedSpot.XRight = e.X;
+            }
 
             StopMoving();
             DisplayDrawings();
@@ -196,7 +208,9 @@ namespace Animator
             }
 
             if (!movingFar)
+            {
                 movingFar = Math.Abs(selectedSpot.XRight - e.X) > Consts.ClickPrecision;
+            }
 
             if (movingFar)
             {
@@ -221,7 +235,9 @@ namespace Animator
                 moving = 3;
             }
             else
+            {
                 Deselect();
+            }
 
             DisplayDrawings();
         }
@@ -234,7 +250,9 @@ namespace Animator
         private void DrawDown_MouseUp(object sender, MouseEventArgs e)
         {
             if (movingFar && selectedSpot != null && moving == 3)
+            {
                 selectedSpot.YDown = e.Y;
+            }
 
             StopMoving();
             DisplayDrawings();
@@ -254,7 +272,9 @@ namespace Animator
             }
 
             if (!movingFar)
+            {
                 movingFar = Math.Abs(selectedSpot.YDown - e.Y) > Consts.ClickPrecision;
+            }
 
             if (movingFar)
             {
@@ -282,9 +302,13 @@ namespace Animator
                         int selectedIndex = WIP.Data.IndexOf(selectedSpot);
                         WIP.Data.Remove(selectedSpot);
                         if (WIP.Data.Count == 0)
+                        {
                             Deselect();
+                        }
                         else
+                        {
                             SelectSpot(WIP.Data[Utils.Modulo(selectedIndex - 1, WIP.Data.Count)]);
+                        }
                     }
                     // Delete Piece
                     else
@@ -356,7 +380,9 @@ namespace Animator
         private void ExitBtn_Click(object sender, EventArgs e)
         {
             if (Utils.ExitBtn_Click(WIP.Data.Count > 0))
+            {
                 Close();
+            }
         }
 
         /// <summary>
@@ -367,7 +393,9 @@ namespace Animator
         private void CompleteBtn_Click(object sender, EventArgs e)
         {
             if (!Utils.CheckValidNewName(NameTb.Text, Consts.PiecesFolder) || !CheckPiecesValid())
+            {
                 return;
+            }
 
             // Save Piece and Close Form
             try
@@ -397,7 +425,9 @@ namespace Animator
             if (result == DialogResult.OK)
             {
                 foreach (var spot in WIP.Data)
+                {
                     spot.SetCoords((int)angle[1], (int)angle[0], spot.GetCoordCombination()[(int)angle[0]]);
+                }
                 DisplayDrawings();
             }  
         }
@@ -424,7 +454,7 @@ namespace Animator
             if (MyDialog.ShowDialog() == DialogResult.OK)
             {
                 FillBox.BackColor = MyDialog.Color;
-                WIP.FillColour = new Color[] { MyDialog.Color };
+                WIP.ColourState.FillColour = new Color[] { MyDialog.Color };
                 DisplayDrawings();
             }
         }
@@ -444,7 +474,7 @@ namespace Animator
             if (MyDialog.ShowDialog() == DialogResult.OK)
             {
                 OutlineBox.BackColor = MyDialog.Color;
-                WIP.OutlineColour = MyDialog.Color;
+                WIP.ColourState.OutlineColour = MyDialog.Color;
                 DisplayDrawings();
             }
         }
@@ -515,7 +545,10 @@ namespace Animator
         /// <param name="e"></param>
         private void SketchUpdate(object sender, EventArgs e)
         {
-            if (SketchLb.SelectedIndex == -1) { return; }
+            if (SketchLb.SelectedIndex == -1)
+            {
+                return;
+            }
             if (sender == DeleteSketchBtn)
             {
                 Sketches.RemoveAt(SketchLb.SelectedIndex);
@@ -523,27 +556,27 @@ namespace Animator
             }
             else if (sender == RotationBar)
             {
-                Sketches[SketchLb.SelectedIndex].ToPiece().R = RotationBar.Value;
+                Sketches[SketchLb.SelectedIndex].ToPiece().State.R = RotationBar.Value;
             }
             else if (sender == TurnBar)
             {
-                Sketches[SketchLb.SelectedIndex].ToPiece().T = TurnBar.Value;
+                Sketches[SketchLb.SelectedIndex].ToPiece().State.T = TurnBar.Value;
             }
             else if (sender == SpinBar)
             {
-                Sketches[SketchLb.SelectedIndex].ToPiece().S = SpinBar.Value;
+                Sketches[SketchLb.SelectedIndex].ToPiece().State.S = SpinBar.Value;
             }
             else if (sender == SizeBar)
             {
-                Sketches[SketchLb.SelectedIndex].ToPiece().SM = SizeBar.Value;
+                Sketches[SketchLb.SelectedIndex].ToPiece().State.SM = SizeBar.Value;
             }
             else if (sender == XUpDown)
             {
-                Sketches[SketchLb.SelectedIndex].ToPiece().X = (double)XUpDown.Value;
+                Sketches[SketchLb.SelectedIndex].ToPiece().State.X = (double)XUpDown.Value;
             }
             else if (sender == YUpDown)
             {
-                Sketches[SketchLb.SelectedIndex].ToPiece().Y = (double)YUpDown.Value;
+                Sketches[SketchLb.SelectedIndex].ToPiece().State.Y = (double)YUpDown.Value;
             }
             DisplayDrawings();
         }
@@ -584,8 +617,8 @@ namespace Animator
             rotated = DrawRight.CreateGraphics();
             turned = DrawDown.CreateGraphics();
             WIP.RunCalculations();
-            WIP.X = WIP.middle[0];
-            WIP.Y = WIP.middle[1];
+            WIP.State.X = WIP.middle[0];
+            WIP.State.Y = WIP.middle[1];
 
             // Draw Sketches
             for (int index = 0; index < Sketches.Count; index++)
@@ -594,31 +627,23 @@ namespace Animator
                 {
                     Part sketch = Sketches[index];
                     sketch.Draw(original);
-                    sketch.ToPiece().R += 90 % 360;
-                    sketch.Draw(rotated);
-                    sketch.ToPiece().R -= 90 % 360;
-                    sketch.ToPiece().T += 90 % 360;
-                    sketch.Draw(turned);
-                    sketch.ToPiece().T -= 90 % 360;
+                    sketch.Draw(rotated, new State(sketch.State, 1, sketch.State.R + 90));
+                    sketch.Draw(turned, new State(sketch.State, 2, sketch.State.T + 90));
                 }
             }
 
             // Draw Base Board
-            WIP.Draw(original);
+            WIP.Draw(original, WIP.State);
             DrawPoints(original, 0);
 
             // Draw Rotated Board
-            WIP.R = 90;
-            WIP.T = 0;
-            WIP.Draw(rotated);
+            WIP.Draw(rotated, new State(WIP.State, 1, 90));
             DrawPoints(rotated, 1);
 
             // Draw Turned Board
-            WIP.R = 0;
-            WIP.T = 90;
-            WIP.Draw(turned);
+            WIP.Draw(turned, new State(WIP.State, 2, 90));
             DrawPoints(turned, 2);
-            WIP.T = 0;
+            WIP.State.T = 0;
         }
 
 
@@ -749,8 +774,8 @@ namespace Animator
         /// </summary>
         public void UpdateAttributes()
         {
-            FillBox.BackColor = WIP.FillColour[0];
-            OutlineBox.BackColor = WIP.OutlineColour;
+            FillBox.BackColor = WIP.ColourState.FillColour[0];
+            OutlineBox.BackColor = WIP.ColourState.OutlineColour;
             OutlineWidthBox.Value = WIP.OutlineWidth;
         }
 

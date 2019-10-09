@@ -34,7 +34,9 @@ namespace Animator
                     var file = new StreamReader(openFileDialog.FileName);
                     string line;
                     while ((line = file.ReadLine()) != null)
+                    {
                         data.Add(line);
+                    }
                     file.Close();
                 }
                 catch (System.Security.SecurityException ex)
@@ -48,11 +50,15 @@ namespace Animator
             if (!types.Contains(data[0].Split(Consts.Semi)[0]))
             {
                 if (types.Length == 1)
-                    MessageBox.Show("File is of the wrong type. Please select a " 
+                {
+                    MessageBox.Show("File is of the wrong type. Please select a "
                         + types[0] + " file");
+                }
                 else
-                    MessageBox.Show("File is of the wrong type. Please select a " 
+                {
+                    MessageBox.Show("File is of the wrong type. Please select a "
                         + types[0] + " or " + types[1] + " file");
+                }
                 return null;
             }
             return data;
@@ -82,7 +88,9 @@ namespace Animator
                 if (file != null)
                 {
                     foreach (var line in data)
+                    {
                         file.WriteLine(line);
+                    }
                     file.Close();
                 }
             }
@@ -99,7 +107,9 @@ namespace Animator
             var file = new StreamReader(directory);
             string line;
             while ((line = file.ReadLine()) != null)
+            {
                 data.Add(line);
+            }
             file.Close();
 
             return data;
@@ -114,7 +124,9 @@ namespace Animator
         {
             var file = new StreamWriter(@directory);
             for (int index = 0; index < data.Count; index++)
+            {
                 file.WriteLine(data[index]);
+            }
             file.Close();
         }
 
@@ -182,10 +194,14 @@ namespace Animator
             string[] thisVer = version.Split(Consts.Stop);
             string[] currVer = Consts.Version.Split(Consts.Stop);
             if (thisVer[0] == currVer[0] && thisVer[1] == currVer[1])
+            {
                 return true;
+            }
 
             if (message)
+            {
                 MessageBox.Show("The file version is not compatible.");
+            }
             return false;
         }
 
@@ -208,7 +224,10 @@ namespace Animator
             if (folder != "" && File.Exists(GetDirectory(folder, name, Consts.Optr)))
             {
                 var result = MessageBox.Show("This name is already in use. Do you want to override the existing file?", "Override Confirmation", MessageBoxButtons.OKCancel);
-                if (result == DialogResult.Cancel) { return false; }
+                if (result == DialogResult.Cancel)
+                {
+                    return false;
+                }
             }
             return true;
         }
@@ -306,13 +325,20 @@ namespace Animator
         /// Copies the details from a state into a separate entity.
         /// </summary>
         /// <param name="state">The state to clone</param>
-        /// <param name="colours">Whether colours should be added to the state</param>
         /// <returns>A separate State</returns>
-        public static State CloneState(State state, bool colours = false)
+        public static State CloneState(State state)
         {
-            return colours? new State(state.X, state.Y, state.R, state.T, state.S, state.SM, state.FC, state.OC) 
-                : new State(state.X, state.Y, state.R, state.T, state.S, state.SM);
-            // CLEANING: Only leave one option?
+            return new State(state.X, state.Y, state.R, state.T, state.S, state.SM);
+        }
+
+        /// <summary>
+        /// Copies the details from a colour state into a separate entity.
+        /// </summary>
+        /// <param name="state">The colour state to clone</param>
+        /// <returns>A separate ColourState</returns>
+        public static ColourState CloneColourState(ColourState state)
+        {
+            return new ColourState(state.ColourType, state.FillColour, state.OutlineColour);
         }
 
         #endregion
@@ -445,7 +471,9 @@ namespace Animator
         {
             List<double[]> toReturn = new List<double[]>();
             foreach (Spot spot in spots)
+            {
                 toReturn.Add(spot.GetCoordCombination(angle));
+            }
 
             return toReturn;
         }
@@ -465,7 +493,9 @@ namespace Animator
 
             // Only check saving if something to save
             if (saveCondition)
+            {
                 result = DialogResult.OK; // HIDDEN: Add back MessageBox.Show("Do you want to exit without saving? Your work will be lost.", "Exit Confirmation", MessageBoxButtons.OKCancel);
+            }
 
             return result == DialogResult.OK;
         }
@@ -490,8 +520,12 @@ namespace Animator
             {
                 var outline = piecesList[index].LineBounds();
                 foreach (var range in outline)
+                {
                     if (y == range[0] && x >= range[1] && x <= range[2])
+                    { 
                         return index;
+                    }
+                }
             }
             return -1;
         }

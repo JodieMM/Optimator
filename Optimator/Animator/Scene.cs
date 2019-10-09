@@ -20,6 +20,7 @@ namespace Animator
         public List<Piece> PiecesList { get; } = new List<Piece>();
         public List<Change> Changes { get; } = new List<Change>();
         public Dictionary<Part, State> Originals { get; } = new Dictionary<Part, State>();
+        public Dictionary<Part, ColourState> OriginalColours { get; } = new Dictionary<Part, ColourState>(); // TODO: Read/write to
         #endregion
 
 
@@ -68,7 +69,8 @@ namespace Animator
                     Piece piece = PiecesList[workingIndex];
                     var originals = Utils.ConvertStringArrayToDoubles(data[index].Split(Consts.Semi));
                     piece.State.SetValues(originals[0], originals[1], originals[2], originals[3], originals[4], originals[5]);
-                    Originals.Add(piece, Utils.CloneState(piece.State, true));
+                    Originals.Add(piece, Utils.CloneState(piece.State));
+                    OriginalColours.Add(piece, Utils.CloneColourState(piece.ColourState));
                 }
 
                 // Read frame changes

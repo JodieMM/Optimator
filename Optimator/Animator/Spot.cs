@@ -68,10 +68,7 @@ namespace Animator
         /// <returns></returns>
         public Spot GetMatch(int xy)
         {
-            if (xy == 0)
-                return MatchX;
-            else
-                return MatchY;
+            return xy == 0 ? MatchX : MatchY;
         }
 
 
@@ -89,16 +86,24 @@ namespace Animator
             if (xy == 0)
             {
                 if (angle == 0 || angle == 2)
+                {
                     X = value;
+                }
                 else
+                {
                     XRight = value;
+                }
             }
             else
             {
                 if (angle == 0 || angle == 1)
+                {
                     Y = value;
+                }
                 else
+                {
                     YDown = value;
+                }
             }
         }
 
@@ -110,9 +115,13 @@ namespace Animator
         public void SetMatch(int xy, Spot match)
         {
             if (xy == 0)
+            {
                 MatchX = match;
+            }
             else
+            {
                 MatchY = match;
+            }
         }
 
 

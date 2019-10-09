@@ -18,8 +18,6 @@
         #endregion
 
 
-        // ----- CONSTRUCTORS -----
-
         /// <summary>
         /// Generates a Changes instance
         /// </summary>
@@ -48,7 +46,10 @@
         /// <param name="time">Current time of the scene</param>
         public void Run(decimal time)
         {
-            if (time <= StartTime) { return; }
+            if (time <= StartTime)
+            {
+                return;
+            }
 
             // Full increment if time passed, partial if in progress
             double increment = ((time - StartTime) >= HowLong) ? HowMuch : (double)((time - StartTime) / HowLong) * HowMuch;
@@ -57,22 +58,22 @@
             switch (Action)
             {
                 case "X":
-                    AffectedPiece.X += increment;
+                    AffectedPiece.State.X += increment;
                     break;
                 case "Y":
-                    AffectedPiece.Y += increment;
+                    AffectedPiece.State.Y += increment;
                     break;
                 case "Rotation":
-                    AffectedPiece.R = (AffectedPiece.R + increment) % 360;
+                    AffectedPiece.State.R = (AffectedPiece.State.R + increment) % 360;
                     break;
                 case "Turn":
-                    AffectedPiece.T = (AffectedPiece.T + increment) % 360;
+                    AffectedPiece.State.T = (AffectedPiece.State.T + increment) % 360;
                     break;
                 case "Spin":
-                    AffectedPiece.S = (AffectedPiece.S + increment) % 360;
+                    AffectedPiece.State.S = (AffectedPiece.State.S + increment) % 360;
                     break;
                 case "Size":
-                    AffectedPiece.SM += increment;
+                    AffectedPiece.State.SM += increment;
                     break;
             }
         }

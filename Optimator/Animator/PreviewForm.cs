@@ -65,9 +65,13 @@ namespace Animator
         private void Track_Scroll(object sender, EventArgs e)
         {
             if (sender == RotationTrack)
-                WIP.ToPiece().R = RotationTrack.Value;
+            {
+                WIP.ToPiece().State.R = RotationTrack.Value;
+            }
             else if (sender == TurnTrack)
-                WIP.ToPiece().T = TurnTrack.Value;
+            {
+                WIP.ToPiece().State.T = TurnTrack.Value;
+            }
 
             DisplayDrawings();
         }
@@ -79,10 +83,9 @@ namespace Animator
         {
             DrawPanel.Refresh();
             g = DrawPanel.CreateGraphics();
-            var X = WIP.ToPiece().X; var Y = WIP.ToPiece().Y;
-            WIP.ToPiece().SetCoordsAsMid(DrawPanel);
+            var tempState = Utils.CloneState(WIP.ToPiece().State);
+            tempState.SetCoordsBasedOnBoard(DrawPanel);
             WIP.Draw(g);
-            WIP.ToPiece().X = X; WIP.ToPiece().Y = Y;
 
             //// HIDDEN: Used in testing rot/turn mixing
             //foreach (Spot spot in WIP.ToPiece().Data)
