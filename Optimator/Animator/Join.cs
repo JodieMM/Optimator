@@ -16,7 +16,7 @@ namespace Animator
         public Piece B { get; } // Base Piece
         public Set Set { get; } // Set Belonging To
 
-        // Join Positions (Set at A rts = 0, B rts = 0 respectively)
+        // Join Positions (Set at A rts = 0, B rts = 0 respectively; B --> Join, Join --> A)
         public double AX { get; set; } = 0;
         public double AY { get; set; } = 0;
         public double AXRight { get; set; } = 0;
@@ -112,7 +112,7 @@ namespace Animator
         /// <returns>True if the attached piece is in front</returns>
         public bool AttachedInFront()
         {
-            // TODO: Implement function
+            // TODO: Implement function (X & Y First?)
             return true;
         }
 

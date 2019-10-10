@@ -112,7 +112,6 @@ namespace Animator
             };
 
             // Add Spots
-            // TODO: Save so 0,0 is centre
             foreach (var spot in Data)
             {
                 if (spot.DrawnLevel == 0)
@@ -161,7 +160,7 @@ namespace Animator
         /// Finds the points to print based on the rotation, turn, spin and size of the piece
         /// </summary>
         /// <returns></returns>
-        public List<double[]> CurrentPoints()
+        public List<double[]> GetPoints(State state)
         {
             var points = new List<double[]>();
 
@@ -169,23 +168,23 @@ namespace Animator
             CalculateMatches();
             foreach (var spot in Data)
             {
-                spot.CurrentX = spot.CalculateCurrentValue(State.GetAngles()[0], middle);
+                spot.CurrentX = spot.CalculateCurrentValue(state.GetAngles()[0], middle);
             }
             CalculateMatches(0);
             foreach (var spot in Data)
             {
-                points.Add(new double[] { spot.CurrentX, spot.CalculateCurrentValue(State.GetAngles()[1], middle, 0) });
+                points.Add(new double[] { spot.CurrentX, spot.CalculateCurrentValue(state.GetAngles()[1], middle, 0) });
             }
 
             // Recentre
             for (int index = 0; index < points.Count; index++)
             {
-                points[index][0] = State.GetCoords()[0] + (points[index][0] - middle[0]);
-                points[index][1] = State.GetCoords()[1] + (points[index][1] - middle[1]);
+                points[index][0] = state.GetCoords()[0] + (points[index][0] - middle[0]);
+                points[index][1] = state.GetCoords()[1] + (points[index][1] - middle[1]);
             }
 
             // Spin and Size Adjustment
-            points = SpinMeRound(points);
+            points = SpinMeRound(points, state);
 
             return points;
         }
@@ -195,54 +194,54 @@ namespace Animator
         /// </summary>
         /// <param name="pointsArray">The points to be spun</param>
         /// <returns></returns>
-        private List<double[]> SpinMeRound(List<double[]> pointsArray)
+        private List<double[]> SpinMeRound(List<double[]> pointsArray, State state)
         {
             for (int index = 0; index < pointsArray.Count; index++)
             {
-                if (!(pointsArray[index][0] == State.GetCoords()[0] && pointsArray[index][1] == State.GetCoords()[1]))
+                if (!(pointsArray[index][0] == state.GetCoords()[0] && pointsArray[index][1] == state.GetCoords()[1]))
                 {
-                    double hypotenuse = Math.Sqrt(Math.Pow(State.GetCoords()[0] - pointsArray[index][0], 2) + Math.Pow(State.GetCoords()[1] - pointsArray[index][1], 2)) * State.SM;
+                    double hypotenuse = Math.Sqrt(Math.Pow(state.GetCoords()[0] - pointsArray[index][0], 2) + Math.Pow(state.GetCoords()[1] - pointsArray[index][1], 2)) * state.SM;
                     // Find Angle
                     double pointAngle;
-                    if (pointsArray[index][0] == State.GetCoords()[0] && pointsArray[index][1] < State.GetCoords()[1])
+                    if (pointsArray[index][0] == state.GetCoords()[0] && pointsArray[index][1] < state.GetCoords()[1])
                     {
                         pointAngle = 0;
                     }
-                    else if (pointsArray[index][0] == State.GetCoords()[0] && pointsArray[index][1] > State.GetCoords()[1])
+                    else if (pointsArray[index][0] == state.GetCoords()[0] && pointsArray[index][1] > state.GetCoords()[1])
                     {
                         pointAngle = 180;
                     }
-                    else if (pointsArray[index][0] > State.GetCoords()[0] && pointsArray[index][1] == State.GetCoords()[1])
+                    else if (pointsArray[index][0] > state.GetCoords()[0] && pointsArray[index][1] == state.GetCoords()[1])
                     {
                         pointAngle = 90;
                     }
-                    else if (pointsArray[index][0] < State.GetCoords()[0] && pointsArray[index][1] == State.GetCoords()[1])
+                    else if (pointsArray[index][0] < state.GetCoords()[0] && pointsArray[index][1] == state.GetCoords()[1])
                     {
                         pointAngle = 270;
                     }
                     //  Second || First
                     //  Third  || Fourth
-                    else if (pointsArray[index][0] > State.GetCoords()[0] && pointsArray[index][1] < State.GetCoords()[1]) // First Quadrant
+                    else if (pointsArray[index][0] > state.GetCoords()[0] && pointsArray[index][1] < state.GetCoords()[1]) // First Quadrant
                     {
-                        pointAngle = (180 / Math.PI) * Math.Atan(Math.Abs((State.GetCoords()[0] - pointsArray[index][0]) / (State.GetCoords()[1] - pointsArray[index][1])));
+                        pointAngle = (180 / Math.PI) * Math.Atan(Math.Abs((state.GetCoords()[0] - pointsArray[index][0]) / (state.GetCoords()[1] - pointsArray[index][1])));
                     }
-                    else if (pointsArray[index][0] > State.GetCoords()[0] && pointsArray[index][1] > State.GetCoords()[1]) // Fourth Quadrant
+                    else if (pointsArray[index][0] > state.GetCoords()[0] && pointsArray[index][1] > state.GetCoords()[1]) // Fourth Quadrant
                     {
-                        pointAngle = 90 + (180 / Math.PI) * Math.Atan(Math.Abs((State.GetCoords()[1] - pointsArray[index][1]) / (State.GetCoords()[0] - pointsArray[index][0])));
+                        pointAngle = 90 + (180 / Math.PI) * Math.Atan(Math.Abs((state.GetCoords()[1] - pointsArray[index][1]) / (state.GetCoords()[0] - pointsArray[index][0])));
                     }
-                    else if (pointsArray[index][0] < State.GetCoords()[0] && pointsArray[index][1] < State.GetCoords()[1]) // Second Quadrant
+                    else if (pointsArray[index][0] < state.GetCoords()[0] && pointsArray[index][1] < state.GetCoords()[1]) // Second Quadrant
                     {
-                        pointAngle = 270 + (180 / Math.PI) * Math.Atan(Math.Abs((State.GetCoords()[1] - pointsArray[index][1]) / (State.GetCoords()[0] - pointsArray[index][0])));
+                        pointAngle = 270 + (180 / Math.PI) * Math.Atan(Math.Abs((state.GetCoords()[1] - pointsArray[index][1]) / (state.GetCoords()[0] - pointsArray[index][0])));
                     }
                     else  // Third Quadrant
                     {
-                        pointAngle = 180 + (180 / Math.PI) * Math.Atan(Math.Abs((State.GetCoords()[0] - pointsArray[index][0]) / (State.GetCoords()[1] - pointsArray[index][1])));
+                        pointAngle = 180 + (180 / Math.PI) * Math.Atan(Math.Abs((state.GetCoords()[0] - pointsArray[index][0]) / (state.GetCoords()[1] - pointsArray[index][1])));
                     }
-                    double findAngle = (pointAngle + State.GetAngles()[2]) * Math.PI / 180 % 360;
+                    double findAngle = (pointAngle + state.GetAngles()[2]) * Math.PI / 180 % 360;
 
                     // Find Points
-                    pointsArray[index][0] = Convert.ToInt32(State.GetCoords()[0] + hypotenuse * Math.Sin(findAngle));
-                    pointsArray[index][1] = Convert.ToInt32(State.GetCoords()[1] - hypotenuse * Math.Cos(findAngle));
+                    pointsArray[index][0] = Convert.ToInt32(state.GetCoords()[0] + hypotenuse * Math.Sin(findAngle));
+                    pointsArray[index][1] = Convert.ToInt32(state.GetCoords()[1] - hypotenuse * Math.Cos(findAngle));
                 }
             }
             return pointsArray;
@@ -517,7 +516,7 @@ namespace Animator
         private List<double[]> LinesCoords()
         {
             var linesCoords = new List<double[]>();
-            var data = CurrentPoints();
+            var data = GetPoints(State);
             for (int index = 0; index < data.Count; index++)
             {
                 linesCoords.AddRange(LineCoords(data[index],

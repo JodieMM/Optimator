@@ -34,8 +34,7 @@ namespace Animator
         /// <param name="g">The graphics to draw to</param>
         public static void DrawPiece(Piece piece, Graphics g, State state, ColourState colourState =  null)
         {
-            // TODO: Use state rather than current piece coords
-            List<double[]> currentPoints = piece.CurrentPoints();
+            List<double[]> currentPoints = piece.GetPoints(state);
             if (currentPoints.Count < 1)
             {
                 return;

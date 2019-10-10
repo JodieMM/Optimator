@@ -20,8 +20,8 @@ namespace Animator
         private Graphics rotated;
         private Graphics turned;
 
-        private int moving = 0;             // 0 = not, 1 = X & Y, 2 = X, 3 = Y
-        private bool movingFar = false;     // Whether the piece is being selected or moved
+        private int moving = -1;                // -1 = not, 0 = X & Y, 1 = X, 2 = Y
+        private bool movingFar = false;         // Whether the piece is being selected or moved
         private int[] originalMoving;
 
         private Color unpressed = Color.FromArgb(192, 255, 192);
@@ -321,11 +321,11 @@ namespace Animator
         private void DrawBase_MouseDown(object sender, MouseEventArgs e)
         {
             // Move the Piece's Join            
-            if (MoveJoinBtn.BackColor == pressed && Math.Abs(e.X - selected.State.GetCoords()[0] - WIP.JoinsIndex[selected].X) 
-                <= Consts.ClickPrecision && Math.Abs(e.Y - selected.State.GetCoords()[1] - WIP.JoinsIndex[selected].Y) <= Consts.ClickPrecision)
+            if (MoveJoinBtn.BackColor == pressed && Math.Abs(e.X - selected.State.GetCoords()[0] - WIP.JoinsIndex[selected].AX) 
+                <= Consts.ClickPrecision && Math.Abs(e.Y - selected.State.GetCoords()[1] - WIP.JoinsIndex[selected].AY) <= Consts.ClickPrecision)
             {
                 originalMoving = new int[] { e.X, e.Y };
-                moving = 1;
+                moving = 0;
             }
             else
             {
@@ -338,24 +338,20 @@ namespace Animator
                     {
                         JoinPieces(selected, WIP.PiecesList[selectedIndex]);
                     }
-
-                    // Select self as base
-                    else if (SelectBaseBtn.BackColor == pressed)
-                    {
-                        selected.Deattach();
-                    }
-
                     // Select a new piece
                     else
                     {
                         DeselectPiece();
                         SelectPiece(WIP.PiecesList[selectedIndex]);
                         originalMoving = new int[] { e.X, e.Y };
-                        moving = 1;
+                        moving = 0;
                     }
                 }
-                else
+                // If clicked nothing
+                else if (SelectBaseBtn.BackColor != pressed)
+                {
                     DeselectPiece();
+                }
             }
             DisplayDrawings();
         }
@@ -367,24 +363,20 @@ namespace Animator
         /// <param name="e"></param>
         private void DrawBase_MouseMove(object sender, MouseEventArgs e)
         {
-            if (moving != 1)
+            if (moving != 0)
             {
                 return;
             }
-
             // Invalid Mouse Position
-            if (e.X < 0 || e.Y < 0 || e.X > DrawBase.Size.Width || e.Y > DrawBase.Size.Height || selected is null)
+            if (selected is null || e.X < 0 || e.Y < 0 || e.X > DrawBase.Size.Width || e.Y > DrawBase.Size.Height)
             {
                 StopMoving();
             }
             // Move Point
-            else
+            else if (!movingFar)
             {
-                if (!movingFar)
-                {
-                    movingFar = Math.Abs(selected.State.X - e.X) > Consts.ClickPrecision
-                        || Math.Abs(selected.State.Y - e.Y) > Consts.ClickPrecision;
-                }
+                movingFar = Math.Abs(selected.State.X - e.X) > Consts.ClickPrecision
+                    || Math.Abs(selected.State.Y - e.Y) > Consts.ClickPrecision;
             }
             DisplayDrawings();
 
@@ -397,9 +389,8 @@ namespace Animator
                 // Move Join
                 if (MoveJoinBtn.BackColor == pressed)
                 {
-                    //WIP.JoinsIndex[selected].Draw(0, Consts.shadowShade, original);
-                    Visuals.DrawCross(selected.State.GetCoords()[0] + selected.Join.X + xChange,
-                        selected.State.GetCoords()[1] + selected.Join.Y + yChange, Consts.shadowShade, original);
+                    Visuals.DrawCross(selected.State.GetCoords()[0] - WIP.JoinsIndex[selected].AX + xChange,
+                        selected.State.GetCoords()[1] - WIP.JoinsIndex[selected].AY + yChange, Consts.shadowShade, original);
                 }
                 // Move Piece
                 else
@@ -424,7 +415,7 @@ namespace Animator
         /// <param name="e"></param>
         private void DrawBase_MouseUp(object sender, MouseEventArgs e)
         {
-            if (moving != 1)
+            if (moving != 0 || selected is null)
             {
                 return;
             }
@@ -432,11 +423,20 @@ namespace Animator
             {
                 var x = e.X - originalMoving[0];
                 var y = e.Y - originalMoving[1];
+
+                // Move Join
                 if (MoveJoinBtn.BackColor == pressed)
                 {
-                    selected.Join.X += x;
-                    selected.Join.Y += y;
+                    Join modifying = WIP.JoinsIndex[selected];
+                    double[] newJoinPosition = new double[2] { selected.State.GetCoords()[0] - WIP.JoinsIndex[selected].AX + x,
+                    selected.State.GetCoords()[1] - WIP.JoinsIndex[selected].AY + y};
+
+                    modifying.AX = modifying.AXRight = selected.State.GetCoords()[0] - newJoinPosition[0];
+                    modifying.AY = modifying.AYDown = selected.State.GetCoords()[1] - newJoinPosition[1];
+                    modifying.BX = modifying.BXRight = newJoinPosition[0] - modifying.B.State.GetCoords()[0];
+                    modifying.BY = modifying.BYDown = newJoinPosition[1] - modifying.B.State.GetCoords()[1];
                 }
+                // Move Piece
                 else
                 {
                     selected.State.X += x;
@@ -452,7 +452,7 @@ namespace Animator
         /// </summary>
         private void StopMoving()
         {
-            moving = 0;
+            moving = -1;
             movingFar = false;
         }
 

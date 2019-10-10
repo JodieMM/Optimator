@@ -18,7 +18,7 @@ namespace Animator
         #region Scenes Form Variables
         private Scene WIP = new Scene();
         private Part selected = null;
-        private Piece subSelected = null;   //TODO: Use
+        private Piece subSelected = null;
         private Graphics g;
 
         private decimal timeIncrement = (decimal)0.5;
@@ -68,6 +68,7 @@ namespace Animator
                 {
                     loaded = new Set(NameTb.Text);
                     loaded.ToPiece().State.SetCoordsBasedOnBoard(DrawPanel);
+                    WIP.Originals.Add(loaded, Utils.CloneState(loaded.State));
                     foreach (Piece piece in (loaded as Set).PiecesList)
                     {
                         WIP.Originals.Add(piece, Utils.CloneState(piece.State));
@@ -148,29 +149,30 @@ namespace Animator
             {
                 return;
             }
+            Part modifying = subSelected ?? selected;
             if (sender == RotationBar)
             {
-                WIP.Originals[selected].R = RotationBar.Value;
+                WIP.Originals[modifying].R = RotationBar.Value;
             }
             else if (sender == TurnBar)
             {
-                WIP.Originals[selected].T = TurnBar.Value;
+                WIP.Originals[modifying].T = TurnBar.Value;
             }
             else if (sender == SpinBar)
             {
-                WIP.Originals[selected].S = SpinBar.Value;
+                WIP.Originals[modifying].S = SpinBar.Value;
             }
             else if (sender == XUpDown)
             {
-                WIP.Originals[selected].X = (int)XUpDown.Value;
+                WIP.Originals[modifying].X = (int)XUpDown.Value;
             }
             else if (sender == YUpDown)
             {
-                WIP.Originals[selected].Y = (int)YUpDown.Value;
+                WIP.Originals[modifying].Y = (int)YUpDown.Value;
             }
             else if (sender == SizeBar)
             {
-                WIP.Originals[selected].SM = SizeBar.Value;
+                WIP.Originals[modifying].SM = SizeBar.Value;
             }
             if (sender == ActiveControl)
             {
@@ -394,6 +396,10 @@ namespace Animator
             {
                 Deselect();
             }
+            else if (selected != null && selected is Set && (selected as Set).PiecesList.Contains(WIP.PiecesList[selectedIndex]))
+            {
+                SelectPart(WIP.PiecesList[selectedIndex], true);
+            }
             else
             {
                 SelectPart(WIP.PiecesList[selectedIndex]);
@@ -407,17 +413,24 @@ namespace Animator
         /// deselecting the old selected if necessary.
         /// </summary>
         /// <param name="select"></param>
-        private void SelectPart(Part select)
+        private void SelectPart(Part select, bool subSelect = false)
         {
-            Deselect();
-            selected = select;
-            selected.ToPiece().ColourState.OutlineColour = (selected is Piece) ? Color.Red : Color.Purple;
-            RotationBar.Value = (int)WIP.Originals[selected].R;
-            TurnBar.Value = (int)WIP.Originals[selected].T;
-            SpinBar.Value = (int)WIP.Originals[selected].S;
-            XUpDown.Value = (decimal)WIP.Originals[selected].X;
-            YUpDown.Value = (decimal)WIP.Originals[selected].Y;
-            SizeBar.Value = (int)WIP.Originals[selected].SM;
+            if (!subSelect)
+            {
+                Deselect();
+                selected = select;
+            }
+            else
+            {
+                subSelected = select as Piece;
+            }
+            select.ToPiece().ColourState.OutlineColour = (select is Piece) ? Color.Red : Color.Purple;
+            RotationBar.Value = (int)WIP.Originals[select].R;
+            TurnBar.Value = (int)WIP.Originals[select].T;
+            SpinBar.Value = (int)WIP.Originals[select].S;
+            XUpDown.Value = (decimal)WIP.Originals[select].X;
+            YUpDown.Value = (decimal)WIP.Originals[select].Y;
+            SizeBar.Value = (int)WIP.Originals[select].SM;
         }
 
         /// <summary>
@@ -428,6 +441,11 @@ namespace Animator
         {
             if (selected != null)
             {
+                if (subSelected != null)
+                {
+                    subSelected.ColourState.OutlineColour = WIP.OriginalColours[selected.ToPiece()].OutlineColour;
+                    subSelected = null;
+                }
                 selected.ToPiece().ColourState.OutlineColour = WIP.OriginalColours[selected.ToPiece()].OutlineColour;
                 selected = null;
             }
@@ -461,14 +479,11 @@ namespace Animator
                     {
                         if (selected is Set)
                         {
-                            if (subSelected != null)
+                            var result = MessageBox.Show("This will delete the entire set. Do you wish to continue?",
+                                "Overwrite Confirmation", MessageBoxButtons.OKCancel);
+                            if (result == DialogResult.Cancel)
                             {
-                                var result = MessageBox.Show("This will delete the entire set. Do you wish to continue?",
-                                    "Overwrite Confirmation", MessageBoxButtons.OKCancel);
-                                if (result == DialogResult.Cancel)
-                                {
-                                    return;
-                                }
+                                return;
                             }
 
                             foreach (var piece in (selected as Set).PiecesList)
@@ -491,8 +506,7 @@ namespace Animator
                                 WIP.Changes.Remove(change);
                             }
                         }
-                        selected = null;
-                        subSelected = null;
+                        Deselect();
                     }
                     DisplayDrawings();
                     break;
@@ -519,7 +533,7 @@ namespace Animator
             Application.DoEvents();
 
             // Past Preview
-            if (CurrentTimeUpDown.Value < timeIncrement && PreviewCb.Checked)
+            if (PreviewCb.Checked && CurrentTimeUpDown.Value < timeIncrement)
             {
                 PastPreviewBox.BackColor = Color.PaleGoldenrod;
             }

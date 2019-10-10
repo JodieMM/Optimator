@@ -399,7 +399,20 @@ namespace Animator
 
             // Save Piece and Close Form
             try
-            {                
+            {
+                // Centre 0,0
+                State defaultState = new State();
+                double[] centre = Utils.FindMid(WIP.GetPoints(defaultState));
+                double[] centreR = Utils.FindMid(WIP.GetPoints(new State(defaultState, 1, 90)));
+                double[] centreT = Utils.FindMid(WIP.GetPoints(new State(defaultState, 2, 90)));
+                foreach (var spot in WIP.Data)
+                {
+                    spot.X -= centre[0];
+                    spot.XRight -= centreR[0];
+                    spot.Y -= centre[1];
+                    spot.YDown -= centreT[1];
+                }
+
                 Utils.SaveFile(Utils.GetDirectory(Consts.PiecesFolder, NameTb.Text, Consts.Optr), WIP.GetData());
                 Close();
             }

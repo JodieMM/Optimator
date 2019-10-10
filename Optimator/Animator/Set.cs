@@ -22,6 +22,8 @@ namespace Animator
         public Dictionary<Piece, List<Piece>> JoinedPieces { get; set; } = new Dictionary<Piece, List<Piece>>();  
         // Attached Piece --> Join
         public Dictionary<Piece, Join> JoinsIndex { get; set; } = new Dictionary<Piece, Join>();
+
+        public Dictionary<Piece, State> PersonalStates { get; set; } = new Dictionary<Piece, State>();  // TODO: Implement
         #endregion
 
 

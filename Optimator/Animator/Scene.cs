@@ -20,7 +20,7 @@ namespace Animator
         public List<Piece> PiecesList { get; } = new List<Piece>();
         public List<Change> Changes { get; } = new List<Change>();
         public Dictionary<Part, State> Originals { get; } = new Dictionary<Part, State>();
-        public Dictionary<Part, ColourState> OriginalColours { get; } = new Dictionary<Part, ColourState>(); // TODO: Read/write to
+        public Dictionary<Part, ColourState> OriginalColours { get; } = new Dictionary<Part, ColourState>();
         #endregion
 
 
