@@ -153,3 +153,6 @@ C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Animator\obj\
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Animator\obj\Debug\Animator.csproj.CoreCompileInputs.cache
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Animator\obj\Debug\Animator.exe
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Animator\obj\Debug\Animator.pdb
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Animator\bin\Debug\Animator.exe.config
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Animator\bin\Debug\Animator.exe
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Animator\bin\Debug\Animator.pdb

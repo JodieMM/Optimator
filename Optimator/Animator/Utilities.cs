@@ -122,12 +122,20 @@ namespace Animator
         /// <param name="data">The data to save</param>
         public static void SaveFile(string directory, List<string> data)
         {
-            var file = new StreamWriter(@directory);
-            for (int index = 0; index < data.Count; index++)
+            try
             {
-                file.WriteLine(data[index]);
+                var file = new StreamWriter(@directory);
+                for (int index = 0; index < data.Count; index++)
+                {
+                    file.WriteLine(data[index]);
+                }
+                file.Close();
             }
-            file.Close();
+            catch (UnauthorizedAccessException)
+            {
+                MessageBox.Show("You do not have access to this directory. Please select another.", "Invalid Directory Selection");
+                SaveFile(directory, data);
+            }
         }
 
         /// <summary>

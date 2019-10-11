@@ -12,7 +12,6 @@ namespace Animator
     {
         public abstract string Name { get; set; }
         public abstract string Version { get; }
-        public abstract State State { get; set; }
 
 
 
@@ -43,8 +42,6 @@ namespace Animator
         /// Draws the part to the supplied graphics.
         /// </summary>
         /// <param name="g">Supplied graphics</param>
-        /// <param name="state">Parts position</param>
-        /// <param name="colours">Parts colours</param>
         public abstract void Draw(Graphics g, State state = null, ColourState colours = null);
     }
 }

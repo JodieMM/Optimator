@@ -100,25 +100,10 @@ namespace Animator
         /// <returns>double[] { Rotation, Turn, Spin }</returns>
         public double[] GetAngles()
         {
-            var angles = new double[3];
-            angles[0] = R;      // + S * Math.Sin(Utilities.ToRad(T));      // Unsure if accurate
-            angles[1] = T;      //+ S * Math.Sin(Utilities.ToRad(R));
-            angles[2] = S;      //* Math.Cos(Utilities.ToRad(R)); // + S * Math.Cos(Utilities.ToRad(T));
-            return angles;
-
-            // NOTE: Attached angles
-            //// Build Off Attached
-            //if (AttachedTo != null)
-            //{
-            //    angles[0] += AttachedTo.GetAngles()[0];
-            //    angles[1] += AttachedTo.GetAngles()[1];
-            //    angles[2] += AttachedTo.GetAngles()[2];
-            //}
-
-            //// Modulus of 360 degrees
-            //angles[0] = angles[0] % 360;
-            //angles[1] = angles[1] % 360;
-            //angles[2] = angles[2] % 360;
+            return new double[3] { R, T, S };
+            //R + S * Math.Sin(Utilities.ToRad(T));      // NOTE: Unsure if accurate
+            //T + S * Math.Sin(Utilities.ToRad(R));
+            //S * Math.Cos(Utilities.ToRad(R)); // + S * Math.Cos(Utilities.ToRad(T));
         }
 
 

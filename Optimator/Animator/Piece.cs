@@ -19,7 +19,7 @@ namespace Animator
         public List<Spot> Data { get; set; } = new List<Spot>();
 
         // Piece Details
-        public override State State { get; set; }
+        public State State { get; set; }
         public ColourState ColourState { get; set; }
         public decimal OutlineWidth { get; set; }
         public string PieceDetails { get; set; }                   // Wind resistance and more
@@ -133,7 +133,8 @@ namespace Animator
         }
 
         /// <summary>
-        /// Draws the piece to the provided graphics.
+        /// Draws the piece to the provided graphics in
+        /// the specified state and colour.
         /// </summary>
         /// <param name="g">Supplied graphics</param>
         /// <param name="state">Pieces position</param>

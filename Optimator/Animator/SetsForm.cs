@@ -289,19 +289,19 @@ namespace Animator
 
             if (sender == RotationBar)
             {
-                selected.State.R = RotationBar.Value;
+                WIP.PersonalStates[selected].R = RotationBar.Value;
             }
             else if (sender == TurnBar)
             {
-                selected.State.T = TurnBar.Value;
+                WIP.PersonalStates[selected].T = TurnBar.Value;
             }
             else if (sender == SpinBar)
             {
-                selected.State.S = SpinBar.Value;
+                WIP.PersonalStates[selected].S = SpinBar.Value;
             }
             else if (sender == SizeBar)
             {
-                selected.State.SM = SizeBar.Value;
+                WIP.PersonalStates[selected].SM = SizeBar.Value;
             }
 
             DisplayDrawings();
@@ -601,10 +601,10 @@ namespace Animator
                 SpinBar.Enabled = true;
                 SizeBar.Enabled = true;
                 MoveJoinBtn.Enabled = true;                
-                RotationBar.Value = (int)selected.State.R;
-                TurnBar.Value = (int)selected.State.T;
-                SpinBar.Value = (int)selected.State.S;
-                SizeBar.Value = (int)selected.State.SM;
+                RotationBar.Value = (int)WIP.PersonalStates[selected].R;
+                TurnBar.Value = (int)WIP.PersonalStates[selected].T;
+                SpinBar.Value = (int)WIP.PersonalStates[selected].S;
+                SizeBar.Value = (int)WIP.PersonalStates[selected].SM;
             }
         }
 

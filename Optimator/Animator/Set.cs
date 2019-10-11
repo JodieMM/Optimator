@@ -13,17 +13,15 @@ namespace Animator
         #region Set Variables
         public override string Name { get; set; }
         public override string Version { get; }
-        public override State State { get; set; }
 
         public List<Piece> PiecesList { get; set; } = new List<Piece>();
         public Piece BasePiece { get; set; }
 
-        // Base Piece --> Attached Pieces
-        public Dictionary<Piece, List<Piece>> JoinedPieces { get; set; } = new Dictionary<Piece, List<Piece>>();  
-        // Attached Piece --> Join
-        public Dictionary<Piece, Join> JoinsIndex { get; set; } = new Dictionary<Piece, Join>();
-
-        public Dictionary<Piece, State> PersonalStates { get; set; } = new Dictionary<Piece, State>();  // TODO: Implement
+        public Dictionary<Piece, List<Piece>> JoinedPieces { get; set; } 
+            = new Dictionary<Piece, List<Piece>>();                         // Base Piece --> Attached Pieces
+        public Dictionary<Piece, Join> JoinsIndex { get; set; } 
+            = new Dictionary<Piece, Join>();                                // Attached Piece --> Join
+        public Dictionary<Piece, State> PersonalStates { get; set; } = new Dictionary<Piece, State>();
         #endregion
 
 
@@ -37,7 +35,6 @@ namespace Animator
             var data = Utils.ReadFile(Utils.GetDirectory(Consts.SetsFolder, Name, Consts.Optr));
             Version = data[0].Split(Consts.Semi)[1];
             Utils.CheckValidVersion(Version);
-            State = new State();
 
             // Pieces List
             int index = 1;
@@ -45,16 +42,15 @@ namespace Animator
             {
                 var dataSections = data[index].Split(Consts.Semi);
                 var stateData = Utils.ConvertStringArrayToDoubles(dataSections[1].Split(Consts.Colon));
-                Piece WIP = new Piece(dataSections[0])
-                {
-                    State = new State(stateData[0], stateData[1], stateData[2], stateData[3], stateData[4], stateData[5])
-                };
+                Piece WIP = new Piece(dataSections[0]);
+                PersonalStates.Add(WIP, new State(stateData[0], stateData[1], stateData[2], stateData[3], stateData[4], stateData[5]));
                 PiecesList.Add(WIP);
 
                 // Check if Base Piece
                 if (dataSections.Length == 3 && dataSections[2] == "base")
                 {
                     BasePiece = WIP;
+                    BasePiece.State = PersonalStates[BasePiece];
                 }
             }
 
@@ -75,6 +71,7 @@ namespace Animator
                 JoinsIndex.Add(pieceA, WIP);
                 AddToJoinedPieces(pieceA, pieceB);
             }
+            CalculateStates();
         }
 
         /// <summary>
@@ -84,7 +81,6 @@ namespace Animator
         {
             Name = "";
             Version = Consts.Version;
-            State = new State();
         }
 
 
@@ -146,14 +142,46 @@ namespace Animator
         /// <param name="colours">Sets colours</param>
         public override void Draw(Graphics g, State state = null, ColourState colours = null)
         {
-            state = state ?? State;
+            if (state != null)
+            {
+                BasePiece.State = state;
+                if (colours != null)
+                {
+                    BasePiece.ColourState = colours;
+                }
+            }
+
             List<Piece> orderedPieces = SortOrder();
             foreach (Piece piece in orderedPieces)
             {
-                piece.Draw(g, state, colours);
+                piece.Draw(g);
             }
-            // TODO: Incorporate join changes to state
-            // TODO: Calculate angles etc. from base outwards
+        }
+
+        /// <summary>
+        /// Figures out the state of each piece based on 
+        /// its personal and base states.
+        /// </summary>
+        private void CalculateStates()
+        {
+            foreach(var attached in JoinedPieces[BasePiece])
+            {
+                CalculateState(attached);
+            }
+        }
+
+        /// <summary>
+        /// Recursive function that finds the state of a piece 
+        /// and then continues to the attached pieces.
+        /// </summary>
+        /// <param name="piece">Piece to find state of</param>
+        private void CalculateState(Piece piece)
+        {
+            piece.State = JoinsIndex[piece].CurrentStateOfAttached(PersonalStates[piece]);
+            foreach(var attached in JoinedPieces[piece])
+            {
+                CalculateState(attached);
+            }
         }
 
         /// <summary>
@@ -162,6 +190,7 @@ namespace Animator
         /// <returns>Ordered list of pieces</returns>
         private List<Piece> SortOrder()
         {
+            CalculateStates();
             return SortOrderFromBasePiece(BasePiece);
         }
 

@@ -120,20 +120,20 @@ namespace Animator
         /// Finds the current state for the attached piece.
         /// </summary>
         /// <returns>State representing xyrtssm</returns>
-        public State CurrentStateOfAttached()
+        public State CurrentStateOfAttached(State personalState)
         {
-            double attachedR = B.State.R + A.State.R + Set.State.R;
-            double attachedT = B.State.T + A.State.T + Set.State.T;
-            double attachedS = B.State.S + A.State.S + Set.State.S;
-            double attachedSM = B.State.SM * A.State.SM * Set.State.SM;
+            double attachedR = B.State.R + personalState.R;
+            double attachedT = B.State.T + personalState.T;
+            double attachedS = B.State.S + personalState.S;
+            double attachedSM = B.State.SM * personalState.SM;
 
             double[] attachedJoinB = Utils.SpinAndSizeCoord(B.State.S, B.State.SM,
                 new double[] { Utils.RotOrTurnCalculation(B.State.R, BX, BXRight), Utils.RotOrTurnCalculation(B.State.T, BY, BYDown) });
             double[] attachedJoinA = Utils.SpinAndSizeCoord(attachedS, attachedSM,
                 new double[] { Utils.RotOrTurnCalculation(attachedR, AX, AXRight), Utils.RotOrTurnCalculation(attachedT, AY, AYDown) });
 
-            double attachedX = B.State.X + A.State.X + attachedJoinB[0] + attachedJoinA[0] + Set.State.X;
-            double attachedY = B.State.Y + A.State.Y + attachedJoinB[1] + attachedJoinA[1] + Set.State.Y;
+            double attachedX = B.State.X + attachedJoinB[0] + attachedJoinA[0] + personalState.X;
+            double attachedY = B.State.Y + attachedJoinB[1] + attachedJoinA[1] + personalState.Y;
 
             return new State(attachedX, attachedY, attachedR, attachedT, attachedS, attachedSM);
         }
