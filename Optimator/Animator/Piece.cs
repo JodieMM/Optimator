@@ -19,8 +19,8 @@ namespace Animator
         public List<Spot> Data { get; set; } = new List<Spot>();
 
         // Piece Details
-        public State State { get; set; }
-        public ColourState ColourState { get; set; }
+        public State State { get; set; } = new State();
+        public ColourState ColourState { get; set; } = new ColourState();
         public decimal OutlineWidth { get; set; }
         public string PieceDetails { get; set; }                   // Wind resistance and more
 
@@ -62,7 +62,7 @@ namespace Animator
             for (int index = 0; index < colours.Length; index++)
             {
                 var argbValues = colours[index].Split(Consts.Comma);
-                ColourState.FillColour[index - 1] = Color.FromArgb(int.Parse(argbValues[0]), int.Parse(argbValues[1]), int.Parse(argbValues[2]), int.Parse(argbValues[3]));
+                ColourState.FillColour[index] = Color.FromArgb(int.Parse(argbValues[0]), int.Parse(argbValues[1]), int.Parse(argbValues[2]), int.Parse(argbValues[3]));
             }
 
             // Outline Width

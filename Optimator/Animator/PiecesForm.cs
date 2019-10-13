@@ -640,8 +640,8 @@ namespace Animator
                 {
                     Part sketch = Sketches[index];
                     sketch.Draw(original);
-                    sketch.Draw(rotated, new State(sketch.State, 1, sketch.State.R + 90));
-                    sketch.Draw(turned, new State(sketch.State, 2, sketch.State.T + 90));
+                    sketch.Draw(rotated, new State(sketch.ToPiece().State, 1, sketch.ToPiece().State.R + 90));
+                    sketch.Draw(turned, new State(sketch.ToPiece().State, 2, sketch.ToPiece().State.T + 90));
                 }
             }
 

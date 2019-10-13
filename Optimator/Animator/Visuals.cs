@@ -121,7 +121,7 @@ namespace Animator
 
             foreach (Part part in partsList)
             {
-                part.Draw(g, part.State);
+                part.Draw(g);
             }
         }
     }

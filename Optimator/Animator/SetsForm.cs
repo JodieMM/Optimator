@@ -143,19 +143,25 @@ namespace Animator
                     justAdded = new Piece(AddTb.Text);
                     WIP.PiecesList.Add(justAdded.ToPiece());
                     justAdded.ToPiece().State.SetCoordsBasedOnBoard(DrawBase);
+                    WIP.PersonalStates.Add(justAdded as Piece, Utils.CloneState(justAdded.ToPiece().State));
                 }
                 else
                 {
                     justAdded = new Set(AddTb.Text);
                     WIP.PiecesList.AddRange((justAdded as Set).PiecesList);
                     justAdded.ToPiece().State.SetCoordsBasedOnBoard(DrawBase);
+                    foreach(var piece in (justAdded as Set).PiecesList)
+                    {
+                        WIP.PersonalStates.Add(piece, Utils.CloneState(piece.State));
+                    }
+                    (justAdded as Set).CalculateStates();
                 }
                 DeselectPiece();
 
                 // If first piece, set as base
                 if (WIP.PiecesList.Count == 1)
                 {
-                    WIP.BasePiece = selected;
+                    WIP.BasePiece = justAdded.ToPiece();
                 }
 
                 DisplayDrawings();
@@ -560,7 +566,7 @@ namespace Animator
                     piece.Draw(board, piece.State, new ColourState(piece.ColourState, Consts.select));
                 }
                 // Attached to Selected
-                else if (selected != null && WIP.JoinedPieces[selected].Contains(piece))
+                else if (selected != null && WIP.JoinedPieces.ContainsKey(selected) && WIP.JoinedPieces[selected].Contains(piece))
                 {
                     piece.Draw(board, piece.State, new ColourState(piece.ColourState, Consts.highlight));
                 }

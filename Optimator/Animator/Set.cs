@@ -21,7 +21,8 @@ namespace Animator
             = new Dictionary<Piece, List<Piece>>();                         // Base Piece --> Attached Pieces
         public Dictionary<Piece, Join> JoinsIndex { get; set; } 
             = new Dictionary<Piece, Join>();                                // Attached Piece --> Join
-        public Dictionary<Piece, State> PersonalStates { get; set; } = new Dictionary<Piece, State>();
+        public Dictionary<Piece, State> PersonalStates { get; set; } 
+            = new Dictionary<Piece, State>();
         #endregion
 
 
@@ -106,7 +107,7 @@ namespace Animator
             for (int index = 0; index < PiecesList.Count; index++)
             {
                 Piece piece = PiecesList[index];
-                string pieceDetails = piece.Name + Consts.SemiS + piece.State.GetData();
+                string pieceDetails = piece.Name + Consts.SemiS + PersonalStates[piece];
 
                 // Base Piece
                 if (piece == BasePiece)
@@ -162,7 +163,7 @@ namespace Animator
         /// Figures out the state of each piece based on 
         /// its personal and base states.
         /// </summary>
-        private void CalculateStates()
+        public void CalculateStates()
         {
             foreach(var attached in JoinedPieces[BasePiece])
             {

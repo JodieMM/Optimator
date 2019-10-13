@@ -61,14 +61,14 @@ namespace Animator
                 {
                     loaded = new Piece(NameTb.Text);
                     loaded.ToPiece().State.SetCoordsBasedOnBoard(DrawPanel);
-                    WIP.Originals.Add(loaded, Utils.CloneState(loaded.State));
+                    WIP.Originals.Add(loaded, Utils.CloneState(loaded.ToPiece().State));
                     WIP.OriginalColours.Add(loaded, Utils.CloneColourState((loaded as Piece).ColourState));
                 }
                 else
                 {
                     loaded = new Set(NameTb.Text);
                     loaded.ToPiece().State.SetCoordsBasedOnBoard(DrawPanel);
-                    WIP.Originals.Add(loaded, Utils.CloneState(loaded.State));
+                    WIP.Originals.Add(loaded, Utils.CloneState(loaded.ToPiece().State));
                     foreach (Piece piece in (loaded as Set).PiecesList)
                     {
                         WIP.Originals.Add(piece, Utils.CloneState(piece.State));
