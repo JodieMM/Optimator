@@ -391,18 +391,18 @@ namespace Animator
         private void DrawPanel_MouseDown(object sender, MouseEventArgs e)
         {
             // Choose and Update Selected Piece (If Any)
-            int selectedIndex = Utils.FindClickedSelection(WIP.PiecesList, e.X, e.Y, SelectFromTopCb.Checked);
-            if (selectedIndex == -1)
+            var newSelected = Utils.FindClickedSelection(WIP.PiecesList, e.X, e.Y, SelectFromTopCb.Checked);
+            if (newSelected is null)
             {
                 Deselect();
             }
-            else if (selected != null && selected is Set && (selected as Set).PiecesList.Contains(WIP.PiecesList[selectedIndex]))
+            else if (selected != null && selected is Set && (selected as Set).PiecesList.Contains(newSelected))
             {
-                SelectPart(WIP.PiecesList[selectedIndex], true);
+                SelectPart(newSelected, true);
             }
             else
             {
-                SelectPart(WIP.PiecesList[selectedIndex]);
+                SelectPart(newSelected);
             }
 
             DisplayDrawings();

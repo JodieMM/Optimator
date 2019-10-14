@@ -98,7 +98,7 @@
             this.NameTb.Location = new System.Drawing.Point(15, 15);
             this.NameTb.Margin = new System.Windows.Forms.Padding(2);
             this.NameTb.Name = "NameTb";
-            this.NameTb.Size = new System.Drawing.Size(300, 58);
+            this.NameTb.Size = new System.Drawing.Size(300, 33);
             this.NameTb.TabIndex = 1;
             this.NameTb.Text = "Set Name";
             // 
@@ -122,7 +122,7 @@
             this.AddTb.Location = new System.Drawing.Point(21, 107);
             this.AddTb.Margin = new System.Windows.Forms.Padding(2);
             this.AddTb.Name = "AddTb";
-            this.AddTb.Size = new System.Drawing.Size(350, 46);
+            this.AddTb.Size = new System.Drawing.Size(350, 27);
             this.AddTb.TabIndex = 69;
             this.AddTb.Text = "Part Name";
             // 
@@ -168,10 +168,10 @@
             this.SetPage.Controls.Add(this.NameTb);
             this.SetPage.Controls.Add(this.AddPieceBtn);
             this.SetPage.Controls.Add(this.AddSetBtn);
-            this.SetPage.Location = new System.Drawing.Point(8, 50);
+            this.SetPage.Location = new System.Drawing.Point(4, 27);
             this.SetPage.Name = "SetPage";
             this.SetPage.Padding = new System.Windows.Forms.Padding(3);
-            this.SetPage.Size = new System.Drawing.Size(384, 642);
+            this.SetPage.Size = new System.Drawing.Size(392, 669);
             this.SetPage.TabIndex = 0;
             this.SetPage.Text = "Set";
             // 
@@ -180,10 +180,10 @@
             this.MoveJoinBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.MoveJoinBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.MoveJoinBtn.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MoveJoinBtn.Location = new System.Drawing.Point(206, 263);
+            this.MoveJoinBtn.Location = new System.Drawing.Point(21, 315);
             this.MoveJoinBtn.Margin = new System.Windows.Forms.Padding(2);
             this.MoveJoinBtn.Name = "MoveJoinBtn";
-            this.MoveJoinBtn.Size = new System.Drawing.Size(165, 40);
+            this.MoveJoinBtn.Size = new System.Drawing.Size(350, 40);
             this.MoveJoinBtn.TabIndex = 128;
             this.MoveJoinBtn.Text = "Move Join";
             this.MoveJoinBtn.UseVisualStyleBackColor = false;
@@ -193,10 +193,10 @@
             // 
             this.OrderLbl.AutoSize = true;
             this.OrderLbl.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.OrderLbl.Location = new System.Drawing.Point(161, 392);
+            this.OrderLbl.Location = new System.Drawing.Point(161, 450);
             this.OrderLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.OrderLbl.Name = "OrderLbl";
-            this.OrderLbl.Size = new System.Drawing.Size(128, 46);
+            this.OrderLbl.Size = new System.Drawing.Size(64, 23);
             this.OrderLbl.TabIndex = 127;
             this.OrderLbl.Text = "Order";
             // 
@@ -205,7 +205,7 @@
             this.UpBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.UpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.UpBtn.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpBtn.Location = new System.Drawing.Point(21, 430);
+            this.UpBtn.Location = new System.Drawing.Point(21, 488);
             this.UpBtn.Margin = new System.Windows.Forms.Padding(2);
             this.UpBtn.Name = "UpBtn";
             this.UpBtn.Size = new System.Drawing.Size(165, 40);
@@ -219,7 +219,7 @@
             this.DownBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.DownBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.DownBtn.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownBtn.Location = new System.Drawing.Point(206, 430);
+            this.DownBtn.Location = new System.Drawing.Point(206, 488);
             this.DownBtn.Margin = new System.Windows.Forms.Padding(2);
             this.DownBtn.Name = "DownBtn";
             this.DownBtn.Size = new System.Drawing.Size(165, 40);
@@ -232,7 +232,7 @@
             // 
             this.FlipsUpDown.Enabled = false;
             this.FlipsUpDown.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FlipsUpDown.Location = new System.Drawing.Point(133, 322);
+            this.FlipsUpDown.Location = new System.Drawing.Point(133, 380);
             this.FlipsUpDown.Margin = new System.Windows.Forms.Padding(2);
             this.FlipsUpDown.Maximum = new decimal(new int[] {
             179,
@@ -240,7 +240,7 @@
             0,
             0});
             this.FlipsUpDown.Name = "FlipsUpDown";
-            this.FlipsUpDown.Size = new System.Drawing.Size(60, 46);
+            this.FlipsUpDown.Size = new System.Drawing.Size(60, 27);
             this.FlipsUpDown.TabIndex = 124;
             this.FlipsUpDown.ValueChanged += new System.EventHandler(this.FlipsUpDown_ValueChanged);
             // 
@@ -248,10 +248,10 @@
             // 
             this.FlipsCb.AutoSize = true;
             this.FlipsCb.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FlipsCb.Location = new System.Drawing.Point(21, 323);
+            this.FlipsCb.Location = new System.Drawing.Point(21, 381);
             this.FlipsCb.Margin = new System.Windows.Forms.Padding(2);
             this.FlipsCb.Name = "FlipsCb";
-            this.FlipsCb.Size = new System.Drawing.Size(127, 43);
+            this.FlipsCb.Size = new System.Drawing.Size(68, 23);
             this.FlipsCb.TabIndex = 123;
             this.FlipsCb.Text = "Flips?";
             this.FlipsCb.UseVisualStyleBackColor = true;
@@ -265,7 +265,7 @@
             this.SelectBaseBtn.Location = new System.Drawing.Point(21, 263);
             this.SelectBaseBtn.Margin = new System.Windows.Forms.Padding(2);
             this.SelectBaseBtn.Name = "SelectBaseBtn";
-            this.SelectBaseBtn.Size = new System.Drawing.Size(165, 40);
+            this.SelectBaseBtn.Size = new System.Drawing.Size(350, 40);
             this.SelectBaseBtn.TabIndex = 122;
             this.SelectBaseBtn.Text = "Select Base";
             this.SelectBaseBtn.UseVisualStyleBackColor = false;
@@ -278,7 +278,7 @@
             this.JoinsLbl.Location = new System.Drawing.Point(166, 227);
             this.JoinsLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.JoinsLbl.Name = "JoinsLbl";
-            this.JoinsLbl.Size = new System.Drawing.Size(117, 46);
+            this.JoinsLbl.Size = new System.Drawing.Size(60, 23);
             this.JoinsLbl.TabIndex = 121;
             this.JoinsLbl.Text = "Joins";
             // 
@@ -289,7 +289,7 @@
             this.AddPartLbl.Location = new System.Drawing.Point(150, 70);
             this.AddPartLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.AddPartLbl.Name = "AddPartLbl";
-            this.AddPartLbl.Size = new System.Drawing.Size(185, 46);
+            this.AddPartLbl.Size = new System.Drawing.Size(92, 23);
             this.AddPartLbl.TabIndex = 120;
             this.AddPartLbl.Text = "Add Part";
             // 
@@ -305,9 +305,9 @@
             this.PiecesTab.Controls.Add(this.TurnBar);
             this.PiecesTab.Controls.Add(this.RotationLbl);
             this.PiecesTab.Controls.Add(this.RotationBar);
-            this.PiecesTab.Location = new System.Drawing.Point(8, 50);
+            this.PiecesTab.Location = new System.Drawing.Point(4, 27);
             this.PiecesTab.Name = "PiecesTab";
-            this.PiecesTab.Size = new System.Drawing.Size(384, 642);
+            this.PiecesTab.Size = new System.Drawing.Size(392, 669);
             this.PiecesTab.TabIndex = 2;
             this.PiecesTab.Text = "Pieces";
             // 
@@ -318,7 +318,7 @@
             this.OriginalPosLbl.Location = new System.Drawing.Point(106, 15);
             this.OriginalPosLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.OriginalPosLbl.Name = "OriginalPosLbl";
-            this.OriginalPosLbl.Size = new System.Drawing.Size(353, 46);
+            this.OriginalPosLbl.Size = new System.Drawing.Size(180, 23);
             this.OriginalPosLbl.TabIndex = 121;
             this.OriginalPosLbl.Text = "Original Positions";
             // 
@@ -329,7 +329,7 @@
             this.SizeLbl.Location = new System.Drawing.Point(15, 295);
             this.SizeLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.SizeLbl.Name = "SizeLbl";
-            this.SizeLbl.Size = new System.Drawing.Size(73, 39);
+            this.SizeLbl.Size = new System.Drawing.Size(37, 19);
             this.SizeLbl.TabIndex = 116;
             this.SizeLbl.Text = "Size";
             // 
@@ -338,7 +338,7 @@
             this.SizeBar.Location = new System.Drawing.Point(21, 322);
             this.SizeBar.Maximum = 1000;
             this.SizeBar.Name = "SizeBar";
-            this.SizeBar.Size = new System.Drawing.Size(350, 90);
+            this.SizeBar.Size = new System.Drawing.Size(350, 45);
             this.SizeBar.SmallChange = 5;
             this.SizeBar.TabIndex = 115;
             this.SizeBar.TickFrequency = 100;
@@ -352,7 +352,7 @@
             this.SpinLbl.Location = new System.Drawing.Point(15, 215);
             this.SpinLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.SpinLbl.Name = "SpinLbl";
-            this.SpinLbl.Size = new System.Drawing.Size(78, 39);
+            this.SpinLbl.Size = new System.Drawing.Size(40, 19);
             this.SpinLbl.TabIndex = 114;
             this.SpinLbl.Text = "Spin";
             // 
@@ -361,7 +361,7 @@
             this.SpinBar.Location = new System.Drawing.Point(21, 242);
             this.SpinBar.Maximum = 359;
             this.SpinBar.Name = "SpinBar";
-            this.SpinBar.Size = new System.Drawing.Size(350, 90);
+            this.SpinBar.Size = new System.Drawing.Size(350, 45);
             this.SpinBar.TabIndex = 113;
             this.SpinBar.TickFrequency = 10;
             this.SpinBar.Scroll += new System.EventHandler(this.UpdateSelectedPiece);
@@ -373,7 +373,7 @@
             this.TurnLbl.Location = new System.Drawing.Point(15, 135);
             this.TurnLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.TurnLbl.Name = "TurnLbl";
-            this.TurnLbl.Size = new System.Drawing.Size(84, 39);
+            this.TurnLbl.Size = new System.Drawing.Size(43, 19);
             this.TurnLbl.TabIndex = 112;
             this.TurnLbl.Text = "Turn";
             // 
@@ -382,7 +382,7 @@
             this.TurnBar.Location = new System.Drawing.Point(21, 162);
             this.TurnBar.Maximum = 359;
             this.TurnBar.Name = "TurnBar";
-            this.TurnBar.Size = new System.Drawing.Size(350, 90);
+            this.TurnBar.Size = new System.Drawing.Size(350, 45);
             this.TurnBar.TabIndex = 111;
             this.TurnBar.TickFrequency = 10;
             this.TurnBar.Scroll += new System.EventHandler(this.UpdateSelectedPiece);
@@ -394,7 +394,7 @@
             this.RotationLbl.Location = new System.Drawing.Point(15, 55);
             this.RotationLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.RotationLbl.Name = "RotationLbl";
-            this.RotationLbl.Size = new System.Drawing.Size(135, 39);
+            this.RotationLbl.Size = new System.Drawing.Size(68, 19);
             this.RotationLbl.TabIndex = 110;
             this.RotationLbl.Text = "Rotation";
             // 
@@ -403,7 +403,7 @@
             this.RotationBar.Location = new System.Drawing.Point(21, 82);
             this.RotationBar.Maximum = 359;
             this.RotationBar.Name = "RotationBar";
-            this.RotationBar.Size = new System.Drawing.Size(350, 90);
+            this.RotationBar.Size = new System.Drawing.Size(350, 45);
             this.RotationBar.TabIndex = 109;
             this.RotationBar.TickFrequency = 10;
             this.RotationBar.Scroll += new System.EventHandler(this.UpdateSelectedPiece);
@@ -412,10 +412,10 @@
             // 
             this.SettingsPage.BackColor = System.Drawing.Color.Honeydew;
             this.SettingsPage.Controls.Add(this.SelectFromTopCb);
-            this.SettingsPage.Location = new System.Drawing.Point(8, 50);
+            this.SettingsPage.Location = new System.Drawing.Point(4, 27);
             this.SettingsPage.Name = "SettingsPage";
             this.SettingsPage.Padding = new System.Windows.Forms.Padding(3);
-            this.SettingsPage.Size = new System.Drawing.Size(384, 642);
+            this.SettingsPage.Size = new System.Drawing.Size(392, 669);
             this.SettingsPage.TabIndex = 1;
             this.SettingsPage.Text = "Settings";
             // 
@@ -428,7 +428,7 @@
             this.SelectFromTopCb.Location = new System.Drawing.Point(18, 17);
             this.SelectFromTopCb.Margin = new System.Windows.Forms.Padding(2);
             this.SelectFromTopCb.Name = "SelectFromTopCb";
-            this.SelectFromTopCb.Size = new System.Drawing.Size(358, 43);
+            this.SelectFromTopCb.Size = new System.Drawing.Size(182, 23);
             this.SelectFromTopCb.TabIndex = 118;
             this.SelectFromTopCb.Text = "Select Piece from Top";
             this.SelectFromTopCb.UseVisualStyleBackColor = true;
@@ -493,7 +493,7 @@
             // 
             // EraseDownBtn
             // 
-            this.EraseDownBtn.BackColor = Consts.invisible;
+            this.EraseDownBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.EraseDownBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.EraseDownBtn.Font = new System.Drawing.Font("Tahoma", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.EraseDownBtn.Location = new System.Drawing.Point(285, 360);
@@ -507,7 +507,7 @@
             // 
             // EraseRightBtn
             // 
-            this.EraseRightBtn.BackColor = Consts.invisible;
+            this.EraseRightBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.EraseRightBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.EraseRightBtn.Font = new System.Drawing.Font("Tahoma", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.EraseRightBtn.Location = new System.Drawing.Point(615, 30);

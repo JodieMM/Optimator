@@ -179,9 +179,12 @@ namespace Animator
         private void CalculateState(Piece piece)
         {
             piece.State = JoinsIndex[piece].CurrentStateOfAttached(PersonalStates[piece]);
-            foreach(var attached in JoinedPieces[piece])
+            if (JoinedPieces.ContainsKey(piece))
             {
-                CalculateState(attached);
+                foreach (var attached in JoinedPieces[piece])
+                {
+                    CalculateState(attached);
+                }
             }
         }
 
@@ -189,7 +192,7 @@ namespace Animator
         /// Finds the correct order to draw pieces so they are layered correctly.
         /// </summary>
         /// <returns>Ordered list of pieces</returns>
-        private List<Piece> SortOrder()
+        public List<Piece> SortOrder()
         {
             CalculateStates();
             return SortOrderFromBasePiece(BasePiece);

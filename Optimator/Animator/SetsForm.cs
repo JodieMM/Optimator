@@ -109,6 +109,7 @@ namespace Animator
             {
                 try
                 {
+                    // TODO: Save PersonalStates
                     Utils.SaveFile(Utils.GetDirectory(Consts.SetsFolder, NameTb.Text, Consts.Optr), WIP.GetData());
                     Close();
                 }
@@ -330,25 +331,40 @@ namespace Animator
             if (MoveJoinBtn.BackColor == pressed && Math.Abs(e.X - selected.State.GetCoords()[0] - WIP.JoinsIndex[selected].AX) 
                 <= Consts.ClickPrecision && Math.Abs(e.Y - selected.State.GetCoords()[1] - WIP.JoinsIndex[selected].AY) <= Consts.ClickPrecision)
             {
+                // TODO: This isn't working
                 originalMoving = new int[] { e.X, e.Y };
                 moving = 0;
             }
             else
             {
                 // Check if Piece Selected
-                int selectedIndex = Utils.FindClickedSelection(WIP.PiecesList, e.X, e.Y, SelectFromTopCb.Checked);
-                if (selectedIndex != -1)
+                var newSelected = Utils.FindClickedSelection(WIP.PiecesList, e.X, e.Y, SelectFromTopCb.Checked);
+                if (newSelected != null)
                 {
                     // Set a new base for the selected piece and adjust coords and join
-                    if (SelectBaseBtn.BackColor == pressed && WIP.PiecesList.IndexOf(selected) != selectedIndex)
+                    if (SelectBaseBtn.BackColor == pressed && selected != newSelected)
                     {
-                        JoinPieces(selected, WIP.PiecesList[selectedIndex]);
+                        // Remove old joinings
+                        if (WIP.JoinsIndex.ContainsKey(selected))
+                        {
+                            var basePiece = WIP.JoinsIndex[selected].B;
+                            WIP.JoinedPieces[basePiece].Remove(selected);
+                            if (WIP.JoinedPieces[basePiece].Count < 1)
+                            {
+                                WIP.JoinedPieces.Remove(basePiece);
+                            }
+                            WIP.JoinsIndex.Remove(selected);
+                        }
+                        WIP.PersonalStates[selected] = selected.State.Subtract(newSelected.State);
+                        JoinPieces(selected, newSelected);
+                        SelectBaseBtn.BackColor = unpressed;
+                        WIP.SortOrder();
                     }
                     // Select a new piece
                     else
                     {
                         DeselectPiece();
-                        SelectPiece(WIP.PiecesList[selectedIndex]);
+                        SelectPiece(newSelected);
                         originalMoving = new int[] { e.X, e.Y };
                         moving = 0;
                     }
@@ -688,6 +704,7 @@ namespace Animator
             {
                 Piece joinedTo = WIP.JoinsIndex[piece].B;
                 WIP.JoinedPieces[joinedTo].Remove(piece);
+                WIP.JoinsIndex.Remove(piece);
             }
             WIP.PiecesList.Remove(piece);
         }

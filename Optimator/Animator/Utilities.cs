@@ -412,7 +412,11 @@ namespace Animator
 
             // Find Angle
             double pointAngle;
-            if (coord[0] == 0 && coord[1] < 0)
+            if (coord[0] == 0 && coord[1] == 0)
+            {
+                return coord;
+            }
+            else if (coord[0] == 0 && coord[1] < 0)
             {
                 pointAngle = 0;
             }
@@ -432,19 +436,19 @@ namespace Animator
             //  Third  || Fourth
             else if (coord[0] > 0 && coord[1] < 0) // First Quadrant
             {
-                pointAngle = 180 / Math.PI * Math.Atan(Math.Abs((0 - coord[0]) / (0 - coord[1])));
+                pointAngle = 180 / Math.PI * Math.Atan(Math.Abs(coord[0] / coord[1]));
             }
             else if (coord[0] > 0 && coord[1] > 0) // Fourth Quadrant
             {
-                pointAngle = 90 + 180 / Math.PI * Math.Atan(Math.Abs((0 - coord[1]) / (0 - coord[0])));
+                pointAngle = 90 + 180 / Math.PI * Math.Atan(Math.Abs(coord[1] / coord[0]));
             }
             else if (coord[0] < 0 && coord[1] < 0) // Second Quadrant
             {
-                pointAngle = 270 + 180 / Math.PI * Math.Atan(Math.Abs((0 - coord[1]) / (0 - coord[0])));
+                pointAngle = 270 + 180 / Math.PI * Math.Atan(Math.Abs(coord[1] / coord[0]));
             }
             else  // Third Quadrant
             {
-                pointAngle = 180 + 180 / Math.PI * Math.Atan(Math.Abs((0 - coord[0]) / (0 - coord[1])));
+                pointAngle = 180 + 180 / Math.PI * Math.Atan(Math.Abs(coord[0] / coord[1]));
             }
             double findAngle = (pointAngle + spinAngle) * Math.PI / 180 % 360;
 
@@ -519,7 +523,7 @@ namespace Animator
         /// <param name="x">The x coordinate of the click</param>
         /// <param name="y">The y coordinate of the click</param>
         /// <returns>The index of the piece clicked, or negative one if none selected</returns>
-        public static int FindClickedSelection(List<Piece> piecesList, int x, int y, bool fromTop = true)
+        public static Piece FindClickedSelection(List<Piece> piecesList, int x, int y, bool fromTop = true)
         {
             // Searches pieces either from the top or the bottom of the list
             int index;
@@ -531,11 +535,11 @@ namespace Animator
                 {
                     if (y == range[0] && x >= range[1] && x <= range[2])
                     { 
-                        return index;
+                        return piecesList[index];
                     }
                 }
             }
-            return -1;
+            return null;
         }
 
         /// <summary>
