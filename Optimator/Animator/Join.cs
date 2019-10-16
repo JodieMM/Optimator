@@ -122,9 +122,9 @@ namespace Animator
         /// <returns>State representing xyrtssm</returns>
         public State CurrentStateOfAttached(State personalState)
         {
-            double attachedR = B.State.R + personalState.R;
-            double attachedT = B.State.T + personalState.T;
-            double attachedS = B.State.S + personalState.S;
+            double attachedR = (B.State.R + personalState.R) % 360;
+            double attachedT = (B.State.T + personalState.T) % 360;
+            double attachedS = (B.State.S + personalState.S) % 360;
             double attachedSM = B.State.SM * personalState.SM;
 
             double[] attachedJoinB = Utils.SpinAndSizeCoord(B.State.S, B.State.SM,

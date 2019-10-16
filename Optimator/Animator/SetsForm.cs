@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
+using System.Collections.Generic;
 
 namespace Animator
 {
@@ -97,19 +98,18 @@ namespace Animator
             {
                 Close();
             }
-            else if (!Utils.CheckValidNewName(NameTb.Text, Consts.SetsFolder))
-            {
-                return;
-            }
             else if (!CheckSingularBasePiece())
             {
                 MessageBox.Show("Please connect all pieces but one or remove unconnected pieces.", "Multiple Sets", MessageBoxButtons.OK);
             }
+            else if (!Utils.CheckValidNewName(NameTb.Text, Consts.SetsFolder))
+            {
+                return;
+            }            
             else
             {
                 try
                 {
-                    // TODO: Save PersonalStates
                     Utils.SaveFile(Utils.GetDirectory(Consts.SetsFolder, NameTb.Text, Consts.Optr), WIP.GetData());
                     Close();
                 }
@@ -308,7 +308,7 @@ namespace Animator
             }
             else if (sender == SizeBar)
             {
-                WIP.PersonalStates[selected].SM = SizeBar.Value;
+                WIP.PersonalStates[selected].SM = SizeBar.Value / 100.0;
             }
 
             DisplayDrawings();
@@ -363,7 +363,6 @@ namespace Animator
                     // Select a new piece
                     else
                     {
-                        DeselectPiece();
                         SelectPiece(newSelected);
                         originalMoving = new int[] { e.X, e.Y };
                         moving = 0;
@@ -461,8 +460,9 @@ namespace Animator
                 // Move Piece
                 else
                 {
-                    selected.State.X += x;
-                    selected.State.Y += y;
+                    WIP.PersonalStates[selected].X += x;
+                    WIP.PersonalStates[selected].Y += y;
+                    WIP.CalculateStates();
                 }
             }
             StopMoving();
@@ -551,58 +551,59 @@ namespace Animator
             rotated = DrawRight.CreateGraphics();
             turned = DrawDown.CreateGraphics();
 
-            // Draw To Boards
-            WIP.ToPiece().State.R = 0; WIP.ToPiece().State.T = 0;
-            DrawToBoard(original, 0);
-            WIP.ToPiece().State.R = 89.9999; WIP.ToPiece().State.T = 0;
-            DrawToBoard(rotated, 1);
-            WIP.ToPiece().State.R = 0; WIP.ToPiece().State.T = 89.9999;
-            DrawToBoard(turned, 2);
-            WIP.ToPiece().State.T = 0;
-        }
+            var boards = new Graphics[3] { original, rotated, turned };
 
-        /// <summary>
-        /// Draws the WIP to the selected board including displaying
-        /// select colours.
-        /// </summary>
-        /// <param name="board">The graphics to be display the piece on</param>
-        /// <param name="angle">Original (0) rotated (1) turned (2)</param>
-        private void DrawToBoard(Graphics board, int angle)
-        {
-            foreach (Piece piece in WIP.PiecesList)
+            // Find Correct States
+            WIP.CalculateStates();
+            foreach (var piece in WIP.PiecesList)
             {
-                // Moving
-                if (selected != null && piece == selected && movingFar)
+                if (!WIP.JoinsIndex.ContainsKey(piece))
                 {
-                    piece.Draw(board, piece.State, new ColourState(piece.ColourState, Consts.shadowShade));
-                }
-                // Selected
-                else if (selected != null && piece == selected)
-                {
-                    piece.Draw(board, piece.State, new ColourState(piece.ColourState, Consts.select));
-                }
-                // Attached to Selected
-                else if (selected != null && WIP.JoinedPieces.ContainsKey(selected) && WIP.JoinedPieces[selected].Contains(piece))
-                {
-                    piece.Draw(board, piece.State, new ColourState(piece.ColourState, Consts.highlight));
-                }
-                // Base of Selected
-                else if (selected != null && WIP.JoinsIndex.ContainsKey(selected) && WIP.JoinsIndex[selected].B == piece)
-                {
-                    piece.Draw(board, piece.State, new ColourState(piece.ColourState, Consts.lowlight));
-                }
-                else
-                {
-                    piece.Draw(board);
+                    piece.State = WIP.PersonalStates[piece];
                 }
             }
 
-            // Draw Join if Moving
-            if (MoveJoinBtn.BackColor == pressed)
+            // For Each Angle
+            for (int index = 0; index < 3; index++)
             {
-                if (WIP.JoinsIndex.ContainsKey(selected))
+                // Draw Pieces
+                foreach (Piece piece in WIP.PiecesList)
                 {
-                    WIP.JoinsIndex[selected].Draw(angle, Consts.select, board);
+                    var pieceState = index > 0 ? new State(piece.State, index, (piece.State.GetAngles()[index - 1] + 89.999) % 360) : piece.State;
+
+                    // Moving
+                    if (selected != null && piece == selected && movingFar)
+                    {
+                        piece.Draw(boards[index], pieceState, new ColourState(piece.ColourState, Consts.shadowShade));
+                    }
+                    // Selected
+                    else if (selected != null && piece == selected)
+                    {
+                        piece.Draw(boards[index], pieceState, new ColourState(piece.ColourState, Consts.select));
+                    }
+                    // Attached to Selected
+                    else if (selected != null && WIP.JoinedPieces.ContainsKey(selected) && WIP.JoinedPieces[selected].Contains(piece))
+                    {
+                        piece.Draw(boards[index], pieceState, new ColourState(piece.ColourState, Consts.highlight));
+                    }
+                    // Base of Selected
+                    else if (selected != null && WIP.JoinsIndex.ContainsKey(selected) && WIP.JoinsIndex[selected].B == piece)
+                    {
+                        piece.Draw(boards[index], pieceState, new ColourState(piece.ColourState, Consts.lowlight));
+                    }
+                    else
+                    {
+                        piece.Draw(boards[index], pieceState);
+                    }
+                }
+
+                // Draw Join if Moving
+                if (MoveJoinBtn.BackColor == pressed)
+                {
+                    if (WIP.JoinsIndex.ContainsKey(selected))
+                    {
+                        WIP.JoinsIndex[selected].Draw(index, Consts.select, boards[index]);
+                    }
                 }
             }
         }
@@ -615,18 +616,15 @@ namespace Animator
         {
             DeselectPiece();
             selected = piece;
-            SelectBaseBtn.Enabled = true;
+            SizeBar.Enabled = true;
+            SizeBar.Value = (int)(WIP.PersonalStates[selected].SM * 100.0);
             if (selected != WIP.BasePiece)
             {
-                RotationBar.Enabled = true;
-                TurnBar.Enabled = true;
-                SpinBar.Enabled = true;
-                SizeBar.Enabled = true;
-                MoveJoinBtn.Enabled = true;                
+                Utils.EnableObjects(new List<Control>() { RotationBar, TurnBar, SpinBar,
+                    SelectBaseBtn, MoveJoinBtn});           
                 RotationBar.Value = (int)WIP.PersonalStates[selected].R;
                 TurnBar.Value = (int)WIP.PersonalStates[selected].T;
-                SpinBar.Value = (int)WIP.PersonalStates[selected].S;
-                SizeBar.Value = (int)WIP.PersonalStates[selected].SM;
+                SpinBar.Value = (int)WIP.PersonalStates[selected].S;                
             }
         }
 
@@ -637,16 +635,12 @@ namespace Animator
         {
             if (selected != null)
             {
-                selected = null;
-                RotationBar.Enabled = false;
-                TurnBar.Enabled = false;
-                SpinBar.Enabled = false;
-                SizeBar.Enabled = false;
-                MoveJoinBtn.BackColor = unpressed;
-                SelectBaseBtn.BackColor = unpressed;
-                MoveJoinBtn.Enabled = false;
-                SelectBaseBtn.Enabled = false;
+                selected = null;                
             }
+            MoveJoinBtn.BackColor = unpressed;
+            SelectBaseBtn.BackColor = unpressed;
+            Utils.EnableObjects(new List<Control>() { RotationBar, TurnBar, SpinBar,
+                    SizeBar, MoveJoinBtn, SelectBaseBtn }, false);
         }
 
         /// <summary>

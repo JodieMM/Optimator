@@ -50,9 +50,10 @@ namespace Animator
         /// Constructor for state with modified r or t.
         /// </summary>
         /// <param name="basis">Original state</param>
-        /// <param name="angle">1 for rotated, 2 for turn</param>
+        /// <param name="angle">1 for rotated, 2 for turn, 3 for both</param>
         /// <param name="degree">New r or t value</param>
-        public State(State basis, int angle, double degree)
+        /// <param name="degree2">Potential t value if angle is 3</param>
+        public State(State basis, int angle, double degree, double degree2 = 0)
         {
             X = basis.X;
             Y = basis.Y;
@@ -67,6 +68,11 @@ namespace Animator
             {
                 T = degree % 360;
                 R = basis.R;
+            }
+            else if (angle == 3)
+            {
+                R = degree % 360;
+                T = degree2 % 360;
             }
         }
 

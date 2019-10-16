@@ -165,9 +165,13 @@ namespace Animator
         /// </summary>
         public void CalculateStates()
         {
-            foreach(var attached in JoinedPieces[BasePiece])
+            BasePiece.State = PersonalStates[BasePiece];
+            if (JoinedPieces.ContainsKey(BasePiece))
             {
-                CalculateState(attached);
+                foreach (var attached in JoinedPieces[BasePiece])
+                {
+                    CalculateState(attached);
+                }
             }
         }
 

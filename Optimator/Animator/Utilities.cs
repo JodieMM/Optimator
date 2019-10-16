@@ -492,7 +492,7 @@ namespace Animator
 
 
 
-        // ----- BUTTON FUNCTIONS -----
+        // ----- FORM CONTROL FUNCTIONS -----
 
         /// <summary>
         /// Checks whether the user wants to exit without saving.
@@ -512,6 +512,18 @@ namespace Animator
             return result == DialogResult.OK;
         }
 
+        /// <summary>
+        /// Enables (or disables) several objects at once.
+        /// </summary>
+        /// <param name="objects">The objects to disable</param>
+        /// <param name="enable">Whether the objects should be enabled or disabled</param>
+        public static void EnableObjects(List<Control> objects, bool enable = true)
+        {
+            foreach (var item in objects)
+            {
+                item.Enabled = enable;
+            }
+        }
 
 
         // ----- CLICK FUNCTIONS -----
