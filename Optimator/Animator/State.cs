@@ -145,19 +145,5 @@ namespace Animator
             X = board.Width / 2.0;
             Y = board.Height / 2.0;
         }
-
-
-
-        // ----- GENERAL FUNCTIONS
-
-        /// <summary>
-        /// Subtracts a state from this one.
-        /// </summary>
-        /// <param name="state2">The state to subtract</param>
-        /// <returns>This state - the supplied state</returns>
-        public State Subtract(State state2)
-        {
-            return new State(X - state2.X, Y - state2.Y, R - state2.R, T - state2.T, S - state2.S, SM / state2.SM);
-        }
     }
 }

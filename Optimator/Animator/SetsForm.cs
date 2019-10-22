@@ -331,7 +331,7 @@ namespace Animator
             if (MoveJoinBtn.BackColor == pressed && Math.Abs(e.X - selected.State.GetCoords()[0] - WIP.JoinsIndex[selected].AX) 
                 <= Consts.ClickPrecision && Math.Abs(e.Y - selected.State.GetCoords()[1] - WIP.JoinsIndex[selected].AY) <= Consts.ClickPrecision)
             {
-                // TODO: This isn't working
+                // TODO: Join Movement isn't working
                 originalMoving = new int[] { e.X, e.Y };
                 moving = 0;
             }
@@ -355,7 +355,6 @@ namespace Animator
                             }
                             WIP.JoinsIndex.Remove(selected);
                         }
-                        WIP.PersonalStates[selected] = selected.State.Subtract(newSelected.State);
                         JoinPieces(selected, newSelected);
                         SelectBaseBtn.BackColor = unpressed;
                         WIP.SortOrder();
@@ -458,8 +457,16 @@ namespace Animator
                     modifying.BY = modifying.BYDown = newJoinPosition[1] - modifying.B.State.GetCoords()[1];
                 }
                 // Move Piece
+                else if (WIP.JoinsIndex.ContainsKey(selected))
+                {
+                    // Piece in Set
+                    WIP.JoinsIndex[selected].AXRight = WIP.JoinsIndex[selected].AX += x;
+                    WIP.JoinsIndex[selected].AYDown = WIP.JoinsIndex[selected].AY += y;
+                    WIP.CalculateStates();
+                }
                 else
                 {
+                    // Piece solo
                     WIP.PersonalStates[selected].X += x;
                     WIP.PersonalStates[selected].Y += y;
                     WIP.CalculateStates();
@@ -598,12 +605,19 @@ namespace Animator
                 }
 
                 // Draw Join if Moving
-                if (MoveJoinBtn.BackColor == pressed)
+                if (MoveJoinBtn.BackColor == pressed && WIP.JoinsIndex.ContainsKey(selected))
                 {
-                    if (WIP.JoinsIndex.ContainsKey(selected))
-                    {
-                        WIP.JoinsIndex[selected].Draw(index, Consts.select, boards[index]);
-                    }
+                    WIP.JoinsIndex[selected].Draw(index, Consts.select, boards[index]);
+                }
+                // HIDDEN: Remove below once joins working, used to display join always
+                if (selected != null && WIP.JoinsIndex.ContainsKey(selected))
+                {
+                    WIP.JoinsIndex[selected].Draw(index, Consts.select, boards[index]);
+                    Visuals.DrawCross(selected.State.X, selected.State.Y, Color.Red, boards[index]);
+                }
+                else if (selected != null && WIP.JoinedPieces.ContainsKey(selected))
+                {
+                    WIP.JoinsIndex[WIP.JoinedPieces[selected][0]].Draw(index, Consts.select, boards[index]);
                 }
             }
         }
@@ -639,8 +653,8 @@ namespace Animator
             }
             MoveJoinBtn.BackColor = unpressed;
             SelectBaseBtn.BackColor = unpressed;
-            Utils.EnableObjects(new List<Control>() { RotationBar, TurnBar, SpinBar,
-                    SizeBar, MoveJoinBtn, SelectBaseBtn }, false);
+            //Utils.EnableObjects(new List<Control>() { RotationBar, TurnBar, SpinBar,
+              //      SizeBar, MoveJoinBtn, SelectBaseBtn }, false); // HIDDEN: Base piece movement
         }
 
         /// <summary>
@@ -682,6 +696,8 @@ namespace Animator
         {
             WIP.JoinsIndex.Add(a, new Join(a, b, WIP));
             WIP.AddToJoinedPieces(a, b);
+            a.State.X = 0;
+            a.State.Y = 0;
         }
 
         /// <summary>

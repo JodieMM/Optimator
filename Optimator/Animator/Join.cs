@@ -42,6 +42,11 @@ namespace Animator
             A = a;
             B = b;
             Set = set;
+            double[] centre = new double[] { (B.State.X + A.State.X) / 2.0, (B.State.Y + A.State.Y) / 2.0 };
+            BX = BXRight = centre[0] - B.State.X;
+            BY = BYDown = centre[1] - B.State.Y;
+            AX = AXRight = A.State.X - centre[0];
+            AY = AYDown = A.State.Y - centre[1];
         }
 
         /// <summary>
