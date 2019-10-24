@@ -191,7 +191,7 @@ namespace Animator
 
             if (SelectBaseBtn.BackColor == unpressed)
             {
-                MoveJoinBtn.BackColor = unpressed;
+                JoinBtn.BackColor = unpressed;
                 SelectBaseBtn.BackColor = pressed;
             }
             else
@@ -205,21 +205,22 @@ namespace Animator
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void MoveJoinBtn_Click(object sender, EventArgs e)
+        private void JoinBtn_Click(object sender, EventArgs e)
         {
+            // TODO: Need to allow join to be moved when attached piece rts = 0 as opposed to base only (as piece can be rts'd in preview state)
             if (selected == null)
             {
                 return;
             }
 
-            if (MoveJoinBtn.BackColor == unpressed)
+            if (JoinBtn.BackColor == unpressed)
             {
                 SelectBaseBtn.BackColor = unpressed;
-                MoveJoinBtn.BackColor = pressed;
+                JoinBtn.BackColor = pressed;
             }
             else
             {
-                MoveJoinBtn.BackColor = unpressed;
+                JoinBtn.BackColor = unpressed;
             }
             DisplayDrawings();
         }
@@ -328,12 +329,14 @@ namespace Animator
         private void DrawBase_MouseDown(object sender, MouseEventArgs e)
         {
             // Move the Piece's Join            
-            if (MoveJoinBtn.BackColor == pressed && Math.Abs(e.X - selected.State.GetCoords()[0] - WIP.JoinsIndex[selected].AX) 
-                <= Consts.ClickPrecision && Math.Abs(e.Y - selected.State.GetCoords()[1] - WIP.JoinsIndex[selected].AY) <= Consts.ClickPrecision)
+            if (JoinBtn.BackColor == pressed)
             {
-                // TODO: Join Movement isn't working
-                originalMoving = new int[] { e.X, e.Y };
-                moving = 0;
+                if (Math.Abs(e.X - (selected.State.GetCoords()[0] - WIP.JoinsIndex[selected].AX))
+                <= Consts.ClickPrecision && Math.Abs(e.Y - (selected.State.GetCoords()[1] - WIP.JoinsIndex[selected].AY)) <= Consts.ClickPrecision)
+                {
+                    originalMoving = new int[] { e.X, e.Y };
+                    moving = 0;
+                }
             }
             else
             {
@@ -407,7 +410,7 @@ namespace Animator
                 var yChange = e.Y - originalMoving[1];
 
                 // Move Join
-                if (MoveJoinBtn.BackColor == pressed)
+                if (JoinBtn.BackColor == pressed)
                 {
                     Visuals.DrawCross(selected.State.GetCoords()[0] - WIP.JoinsIndex[selected].AX + xChange,
                         selected.State.GetCoords()[1] - WIP.JoinsIndex[selected].AY + yChange, Consts.shadowShade, original);
@@ -445,7 +448,7 @@ namespace Animator
                 var y = e.Y - originalMoving[1];
 
                 // Move Join
-                if (MoveJoinBtn.BackColor == pressed)
+                if (JoinBtn.BackColor == pressed)
                 {
                     Join modifying = WIP.JoinsIndex[selected];
                     double[] newJoinPosition = new double[2] { selected.State.GetCoords()[0] - WIP.JoinsIndex[selected].AX + x,
@@ -605,19 +608,9 @@ namespace Animator
                 }
 
                 // Draw Join if Moving
-                if (MoveJoinBtn.BackColor == pressed && WIP.JoinsIndex.ContainsKey(selected))
+                if (JoinBtn.BackColor == pressed && WIP.JoinsIndex.ContainsKey(selected))
                 {
                     WIP.JoinsIndex[selected].Draw(index, Consts.select, boards[index]);
-                }
-                // HIDDEN: Remove below once joins working, used to display join always
-                if (selected != null && WIP.JoinsIndex.ContainsKey(selected))
-                {
-                    WIP.JoinsIndex[selected].Draw(index, Consts.select, boards[index]);
-                    Visuals.DrawCross(selected.State.X, selected.State.Y, Color.Red, boards[index]);
-                }
-                else if (selected != null && WIP.JoinedPieces.ContainsKey(selected))
-                {
-                    WIP.JoinsIndex[WIP.JoinedPieces[selected][0]].Draw(index, Consts.select, boards[index]);
                 }
             }
         }
@@ -635,7 +628,7 @@ namespace Animator
             if (selected != WIP.BasePiece)
             {
                 Utils.EnableObjects(new List<Control>() { RotationBar, TurnBar, SpinBar,
-                    SelectBaseBtn, MoveJoinBtn});           
+                    SelectBaseBtn, JoinBtn});           
                 RotationBar.Value = (int)WIP.PersonalStates[selected].R;
                 TurnBar.Value = (int)WIP.PersonalStates[selected].T;
                 SpinBar.Value = (int)WIP.PersonalStates[selected].S;                
@@ -651,7 +644,7 @@ namespace Animator
             {
                 selected = null;                
             }
-            MoveJoinBtn.BackColor = unpressed;
+            JoinBtn.BackColor = unpressed;
             SelectBaseBtn.BackColor = unpressed;
             //Utils.EnableObjects(new List<Control>() { RotationBar, TurnBar, SpinBar,
               //      SizeBar, MoveJoinBtn, SelectBaseBtn }, false); // HIDDEN: Base piece movement

@@ -96,8 +96,6 @@ namespace Animator
         public double[] GetCoords()
         {
             return new double[] { X, Y };
-            // NOTE: AttachedTo != null ? new double[] { State.X + AttachedTo.GetCoords()[0] + Join.CurrentDifference()[0],
-            // State.Y + AttachedTo.GetCoords()[1] + Join.CurrentDifference()[1] } : 
         }
 
         /// <summary>

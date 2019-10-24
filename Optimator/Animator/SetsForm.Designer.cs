@@ -35,7 +35,7 @@
             this.AddPieceBtn = new System.Windows.Forms.Button();
             this.OptionsMenu = new System.Windows.Forms.TabControl();
             this.SetPage = new System.Windows.Forms.TabPage();
-            this.MoveJoinBtn = new System.Windows.Forms.Button();
+            this.JoinBtn = new System.Windows.Forms.Button();
             this.OrderLbl = new System.Windows.Forms.Label();
             this.UpBtn = new System.Windows.Forms.Button();
             this.DownBtn = new System.Windows.Forms.Button();
@@ -155,7 +155,7 @@
             // SetPage
             // 
             this.SetPage.BackColor = System.Drawing.Color.Honeydew;
-            this.SetPage.Controls.Add(this.MoveJoinBtn);
+            this.SetPage.Controls.Add(this.JoinBtn);
             this.SetPage.Controls.Add(this.OrderLbl);
             this.SetPage.Controls.Add(this.UpBtn);
             this.SetPage.Controls.Add(this.DownBtn);
@@ -175,19 +175,19 @@
             this.SetPage.TabIndex = 0;
             this.SetPage.Text = "Set";
             // 
-            // MoveJoinBtn
+            // JoinBtn
             // 
-            this.MoveJoinBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.MoveJoinBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.MoveJoinBtn.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MoveJoinBtn.Location = new System.Drawing.Point(21, 315);
-            this.MoveJoinBtn.Margin = new System.Windows.Forms.Padding(2);
-            this.MoveJoinBtn.Name = "MoveJoinBtn";
-            this.MoveJoinBtn.Size = new System.Drawing.Size(350, 40);
-            this.MoveJoinBtn.TabIndex = 128;
-            this.MoveJoinBtn.Text = "Move Join";
-            this.MoveJoinBtn.UseVisualStyleBackColor = false;
-            this.MoveJoinBtn.Click += new System.EventHandler(this.MoveJoinBtn_Click);
+            this.JoinBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.JoinBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.JoinBtn.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.JoinBtn.Location = new System.Drawing.Point(21, 315);
+            this.JoinBtn.Margin = new System.Windows.Forms.Padding(2);
+            this.JoinBtn.Name = "JoinBtn";
+            this.JoinBtn.Size = new System.Drawing.Size(350, 40);
+            this.JoinBtn.TabIndex = 128;
+            this.JoinBtn.Text = "Preview Join";
+            this.JoinBtn.UseVisualStyleBackColor = false;
+            this.JoinBtn.Click += new System.EventHandler(this.JoinBtn_Click);
             // 
             // OrderLbl
             // 
@@ -591,7 +591,7 @@
         private System.Windows.Forms.Button DownBtn;
         private System.Windows.Forms.NumericUpDown FlipsUpDown;
         private System.Windows.Forms.CheckBox FlipsCb;
-        private System.Windows.Forms.Button MoveJoinBtn;
+        private System.Windows.Forms.Button JoinBtn;
         private System.Windows.Forms.Button EraseDownBtn;
         private System.Windows.Forms.Button EraseRightBtn;
     }
