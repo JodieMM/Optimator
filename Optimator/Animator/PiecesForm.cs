@@ -24,6 +24,7 @@ namespace Animator
         private Spot selectedSpot = null;
         private int moving = 0;                     // 0 = not, 1 = X & Y, 2 = X, 3 = Y
         private bool movingFar = false;             // Whether a piece is being selected or moved
+        private double[] middle = new double[2] { 0, 0 };
 
         private Color unpressed = Color.LightCyan;
         private Color pressed = Color.FromArgb(255, 153, 255, 255);
@@ -629,9 +630,12 @@ namespace Animator
             original = DrawBase.CreateGraphics();
             rotated = DrawRight.CreateGraphics();
             turned = DrawDown.CreateGraphics();
-            WIP.RunCalculations();
-            WIP.State.X = WIP.middle[0];
-            WIP.State.Y = WIP.middle[1];
+            //WIP.RunCalculations();
+            //WIP.State.X = WIP.middle[0];
+            //WIP.State.Y = WIP.middle[1];
+            middle = Utils.FindMid(Utils.ConvertSpotsToCoords(WIP.Data, 0));    // CLEANING: Run when change occurrs
+            WIP.State.X = middle[0];
+            WIP.State.Y = middle[1];
 
             // Draw Sketches
             for (int index = 0; index < Sketches.Count; index++)

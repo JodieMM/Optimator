@@ -24,9 +24,6 @@ namespace Animator
         public decimal OutlineWidth { get; set; }
         public string PieceDetails { get; set; }                   // Wind resistance and more
 
-        // Stored Values
-        public double[] middle; //CLEANING: Needed? Helpful?
-        private double[] minMax;
         #endregion
 
 
@@ -79,7 +76,6 @@ namespace Animator
 
                 Data.Add(new Spot(coords[0], coords[1], coords[2], coords[3], spotData[1], spotData[2]));
             }
-            RunCalculations();
         }
 
         /// <summary>
@@ -164,25 +160,42 @@ namespace Animator
         public List<double[]> GetPoints(State state)
         {
             var points = new List<double[]>();
+            var minMax = Utils.FindMinMax(Utils.ConvertSpotsToCoords(Data, 0));
 
             // Get Points
-            CalculateMatches();
+            CalculateMatches(minMax);
+            //List<double> CurrentX = new List<double>();
+            //foreach (var spot in Data)
+            //{ // WARNING: CHECK BELOW
+            //    //spot.CurrentX = spot.CalculateCurrentValue(state.GetAngles()[0], Centre());   // CLEANING: Remove this variable, put elsewhere
+            //    CurrentX.Add(spot.CalculateCurrentValue(state.GetAngles()[0], Centre()));
+            //}
+            //CalculateMatches(minMax, 0);
+            ////foreach (var spot in Data)
+            ////{
+            ////    points.Add(new double[] { spot.CurrentX, spot.CalculateCurrentValue(state.GetAngles()[1], Centre(), 0) });
+            ////}
+            //for (int index = 0; index < Data.Count; index++)
+            //{
+            //    points.Add(new double[] { CurrentX[index], Data[index].CalculateCurrentValue(state.GetAngles()[1], Centre(), 0) });
+            //}
+
             foreach (var spot in Data)
             {
-                spot.CurrentX = spot.CalculateCurrentValue(state.GetAngles()[0], middle);   // CLEANING: Remove this variable, put elsewhere
+                spot.CurrentX = spot.CalculateCurrentValue(state.GetAngles()[0], Centre());   // CLEANING: Remove this variable, put elsewhere
             }
-            CalculateMatches(0);
+            CalculateMatches(minMax, 0);
             foreach (var spot in Data)
             {
-                points.Add(new double[] { spot.CurrentX, spot.CalculateCurrentValue(state.GetAngles()[1], middle, 0) });
+                points.Add(new double[] { spot.CurrentX, spot.CalculateCurrentValue(state.GetAngles()[1], Centre(), 0) });
             }
 
-            // Recentre     // TODO: Ensure piece being recentred when designed, remove this
-            for (int index = 0; index < points.Count; index++)
-            {
-                points[index][0] = state.GetCoords()[0] + (points[index][0] - middle[0]);
-                points[index][1] = state.GetCoords()[1] + (points[index][1] - middle[1]);
-            }
+            //// Recentre     // TODO: Ensure piece being recentred when designed, remove this
+            //for (int index = 0; index < points.Count; index++)
+            //{
+            //    points[index][0] = state.GetCoords()[0] + (points[index][0] - middle[0]);
+            //    points[index][1] = state.GetCoords()[1] + (points[index][1] - middle[1]);
+            //}
 
             // Spin and Size Adjustment
             points = SpinMeRound(points, state);
@@ -253,7 +266,7 @@ namespace Animator
         /// spots would go and adds them to Data.
         /// </summary>
         /// <param name="xy">Whether searching for an X match (0) or Y match (1)</param>
-        private void CalculateMatches(int xy = 1)
+        private void CalculateMatches(double[] minMax, int xy = 1)
         {
             // Setup
             CleanseData(xy == 0 ? false : true);
@@ -591,12 +604,12 @@ namespace Animator
         /// Calculates generics like the shape's drawn mid and
         /// the min/max points.
         /// </summary>
-        public void RunCalculations()
-        {
-            var convertedData = Utils.ConvertSpotsToCoords(Data, 0);
-            middle = Utils.FindMid(convertedData);
-            minMax = Utils.FindMinMax(convertedData);
-        }
+        //public void RunCalculations()
+        //{
+        //    var convertedData = Utils.ConvertSpotsToCoords(Data, 0); // CLEANING: Check
+        //    //middle = Utils.FindMid(convertedData); 
+        //    minMax = Utils.FindMinMax(convertedData);
+        //}
 
         /// <summary>
         /// Remove coords from Data.
@@ -621,6 +634,15 @@ namespace Animator
                     index--;
                 }
             }
+        }
+
+        /// <summary>
+        /// Returns the centre of the piece.
+        /// </summary>
+        /// <returns>Double of piece's centre coords</returns>
+        private double[] Centre()
+        {
+            return new double[] { State.X, State.Y };
         }
     }
 }
