@@ -184,20 +184,18 @@ namespace Animator
         /// <param name="e"></param>
         private void SelectBaseBtn_Click(object sender, EventArgs e)
         {
-            if (selected == null)
+            if (selected != null)
             {
-                return;
-            }
-
-            if (SelectBaseBtn.BackColor == unpressed)
-            {
-                JoinBtn.BackColor = unpressed;
-                SelectBaseBtn.BackColor = pressed;
-            }
-            else
-            {
-                SelectBaseBtn.BackColor = unpressed;
-            }
+                if (SelectBaseBtn.BackColor == unpressed)
+                {
+                    JoinBtn.BackColor = unpressed;
+                    SelectBaseBtn.BackColor = pressed;
+                }
+                else
+                {
+                    SelectBaseBtn.BackColor = unpressed;
+                }
+            }            
         }
 
         /// <summary>
@@ -657,6 +655,10 @@ namespace Animator
         /// <returns>True if only one unconnected piece</returns>
         private bool CheckSingularBasePiece()
         {
+            if (WIP.PiecesList.Count == 1)
+            {
+                return true;
+            }
             WIP.BasePiece = null;
             foreach (Piece piece in WIP.PiecesList)
             {
