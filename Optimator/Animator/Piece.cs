@@ -174,6 +174,13 @@ namespace Animator
                 points.Add(new double[] { spot.CurrentX, spot.CalculateCurrentValue(state.GetAngles()[1], Centre(), 0) });
             }
 
+            // Recentre
+            for (int index = 0; index < points.Count; index++)
+            {
+                points[index][0] = state.GetCoords()[0] + (points[index][0] - Centre()[0]);
+                points[index][1] = state.GetCoords()[1] + (points[index][1] - Centre()[1]);
+            }
+
             // Spin and Size Adjustment
             points = SpinMeRound(points, state);
 
@@ -608,7 +615,7 @@ namespace Animator
         /// <returns>Double of piece's centre coords</returns>
         private double[] Centre()
         {
-            return new double[] { State.X, State.Y };
+            return new double[] { 0, 0 };
         }
     }
 }
