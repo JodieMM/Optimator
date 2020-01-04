@@ -42,6 +42,7 @@ namespace Animator
         // UI Precision
         public static int[] Ranges = new int[] { 0, 3, 5, 7, 9 };
         public const int ClickPrecision = 5;
+        public const int CentreBox = 150;
 
         // Piece Defaults
         public static Color defaultFill = Color.FromArgb(255, 204, 240, 255);

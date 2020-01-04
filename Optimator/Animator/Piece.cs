@@ -166,19 +166,19 @@ namespace Animator
             CalculateMatches(minMax);
             foreach (var spot in Data)
             {
-                spot.CurrentX = spot.CalculateCurrentValue(state.GetAngles()[0], Centre());
+                spot.CurrentX = spot.CalculateCurrentValue(state.GetAngles()[0]);
             }
             CalculateMatches(minMax, 0);
             foreach (var spot in Data)
             {
-                points.Add(new double[] { spot.CurrentX, spot.CalculateCurrentValue(state.GetAngles()[1], Centre(), 0) });
+                points.Add(new double[] { spot.CurrentX, spot.CalculateCurrentValue(state.GetAngles()[1], 0) });
             }
 
             // Recentre
             for (int index = 0; index < points.Count; index++)
             {
-                points[index][0] = state.GetCoords()[0] + (points[index][0] - Centre()[0]);
-                points[index][1] = state.GetCoords()[1] + (points[index][1] - Centre()[1]);
+                points[index][0] = state.GetCoords()[0] + points[index][0];
+                points[index][1] = state.GetCoords()[1] + points[index][1];
             }
 
             // Spin and Size Adjustment
@@ -607,15 +607,6 @@ namespace Animator
                     index--;
                 }
             }
-        }
-
-        /// <summary>
-        /// Returns the centre of the piece.
-        /// </summary>
-        /// <returns>Double of piece's centre coords</returns>
-        private double[] Centre()
-        {
-            return new double[] { 0, 0 };
         }
     }
 }

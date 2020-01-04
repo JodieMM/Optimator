@@ -173,7 +173,7 @@ namespace Animator
         /// <param name="mid">The middle of the piece</param>
         /// <param name="xy">Finding current x (0) or y (1)</param>
         /// <returns>The current value</returns>
-        public double CalculateCurrentValue(double angle, double[] mid, int xy = 1)
+        public double CalculateCurrentValue(double angle, int xy = 1)
         {
             double lower;
             double upper;
@@ -193,18 +193,18 @@ namespace Animator
             else if (angle < 180)
             {
                 lower = angled;
-                upper = Utils.FlipPoint(mid[xy], matchOrig);
+                upper = -matchOrig;
                 bottomAngle = 90;
             }
             else if (angle < 270)
             {
-                lower = Utils.FlipPoint(mid[xy], matchOrig);
-                upper = Utils.FlipPoint(mid[xy], matchAng);
+                lower = -matchOrig;
+                upper = -matchAng;
                 bottomAngle = 180;
             }
             else
             {
-                lower = Utils.FlipPoint(mid[xy], matchAng);
+                lower = -matchAng;
                 upper = original;
                 bottomAngle = 270;
             }

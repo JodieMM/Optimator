@@ -487,18 +487,6 @@ namespace Animator
         }
 
         /// <summary>
-        /// Flips a point around a center. 
-        /// Works for either x or y flips.
-        /// </summary>
-        /// <param name="mid">The axis to flip on</param>
-        /// <param name="point">The point to flip</param>
-        /// <returns>The point reflected on the axis</returns>
-        public static double FlipPoint(double mid, double point)
-        {
-            return 2 * mid - point;
-        }
-
-        /// <summary>
         /// Converts the spots into a list of their original
         /// coordinates as double[].
         /// </summary>
