@@ -164,38 +164,15 @@ namespace Animator
 
             // Get Points
             CalculateMatches(minMax);
-            //List<double> CurrentX = new List<double>();
-            //foreach (var spot in Data)
-            //{ // WARNING: CHECK BELOW
-            //    //spot.CurrentX = spot.CalculateCurrentValue(state.GetAngles()[0], Centre());   // CLEANING: Remove this variable, put elsewhere
-            //    CurrentX.Add(spot.CalculateCurrentValue(state.GetAngles()[0], Centre()));
-            //}
-            //CalculateMatches(minMax, 0);
-            ////foreach (var spot in Data)
-            ////{
-            ////    points.Add(new double[] { spot.CurrentX, spot.CalculateCurrentValue(state.GetAngles()[1], Centre(), 0) });
-            ////}
-            //for (int index = 0; index < Data.Count; index++)
-            //{
-            //    points.Add(new double[] { CurrentX[index], Data[index].CalculateCurrentValue(state.GetAngles()[1], Centre(), 0) });
-            //}
-
             foreach (var spot in Data)
             {
-                spot.CurrentX = spot.CalculateCurrentValue(state.GetAngles()[0], Centre());   // CLEANING: Remove this variable, put elsewhere
+                spot.CurrentX = spot.CalculateCurrentValue(state.GetAngles()[0], Centre());
             }
             CalculateMatches(minMax, 0);
             foreach (var spot in Data)
             {
                 points.Add(new double[] { spot.CurrentX, spot.CalculateCurrentValue(state.GetAngles()[1], Centre(), 0) });
             }
-
-            //// Recentre     // TODO: Ensure piece being recentred when designed, remove this
-            //for (int index = 0; index < points.Count; index++)
-            //{
-            //    points[index][0] = state.GetCoords()[0] + (points[index][0] - middle[0]);
-            //    points[index][1] = state.GetCoords()[1] + (points[index][1] - middle[1]);
-            //}
 
             // Spin and Size Adjustment
             points = SpinMeRound(points, state);
@@ -599,17 +576,6 @@ namespace Animator
 
 
         // ----- OTHER FUNCTIONS -----
-
-        /// <summary>
-        /// Calculates generics like the shape's drawn mid and
-        /// the min/max points.
-        /// </summary>
-        //public void RunCalculations()
-        //{
-        //    var convertedData = Utils.ConvertSpotsToCoords(Data, 0); // CLEANING: Check
-        //    //middle = Utils.FindMid(convertedData); 
-        //    minMax = Utils.FindMinMax(convertedData);
-        //}
 
         /// <summary>
         /// Remove coords from Data.
