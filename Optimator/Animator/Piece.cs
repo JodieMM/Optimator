@@ -169,7 +169,7 @@ namespace Animator
             CalculateMatches();
             foreach (var spot in Data)
             {
-                spot.CurrentX = spot.CalculateCurrentValue(state.GetAngles()[0], middle);
+                spot.CurrentX = spot.CalculateCurrentValue(state.GetAngles()[0], middle);   // CLEANING: Remove this variable, put elsewhere
             }
             CalculateMatches(0);
             foreach (var spot in Data)
@@ -177,7 +177,7 @@ namespace Animator
                 points.Add(new double[] { spot.CurrentX, spot.CalculateCurrentValue(state.GetAngles()[1], middle, 0) });
             }
 
-            // Recentre
+            // Recentre     // TODO: Ensure piece being recentred when designed, remove this
             for (int index = 0; index < points.Count; index++)
             {
                 points[index][0] = state.GetCoords()[0] + (points[index][0] - middle[0]);
@@ -288,7 +288,7 @@ namespace Animator
                         // Only search for match if needed (not max)
                         if (spot.GetCoordCombination()[xy] != minMax[3 - increase] && spot.GetCoordCombination()[xy] != minMax[2 - increase])
                         {
-                            int insertIndex = FindSymmetricalCoordHome(index, xy, coordCombo);
+                            var insertIndex = FindSymmetricalCoordHome(index, xy, coordCombo);
                             if (insertIndex != -1)
                             {
                                 double[] original = FindSymmetricalOppositeCoord(Data[insertIndex].GetCoordCombination(coordCombo),
@@ -303,7 +303,8 @@ namespace Animator
                                     Data[Utils.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(2 + increase),
                                     original[0], 0, Data[insertIndex].Connector)[1];
 
-                                var newSpot = new Spot(original[0], original[1], rotated, turned, Data[insertIndex].Connector, Data[insertIndex].Solid, drawn);
+                                var basedIndex = Utils.NextIndex(Data, insertIndex, false);
+                                var newSpot = new Spot(original[0], original[1], rotated, turned, Data[basedIndex].Connector, Data[basedIndex].Solid, drawn);
                                 newSpot.SetMatch(xy, spot);
                                 spot.SetMatch(xy, newSpot);
                                 if (drawn == 2)

@@ -330,6 +330,33 @@ namespace Animator
         }
 
         /// <summary>
+        /// Loops the index to the beginning (or end) of the list.
+        /// </summary>
+        /// <param name="list">The list to index through</param>
+        /// <param name="currIndex">The index to be increased (or decreased)</param>
+        /// <param name="next">True if next desired, false if previous</param>
+        /// <returns>The next (or previous) index</returns>
+        public static int NextIndex<T>(List<T> list, int currIndex, bool next = true)
+        {
+            if (next)
+            {
+                currIndex = (currIndex == list.Count - 1) ? 0 : currIndex + 1;
+            }
+            else
+            {
+                currIndex = (currIndex == 0) ? list.Count - 1 : currIndex - 1;
+            }
+            return currIndex;
+        }
+
+        #endregion
+
+
+
+        // ----- CLONE FUNCTIONS -----
+        #region Clone Functions
+
+        /// <summary>
         /// Copies the details from a state into a separate entity.
         /// </summary>
         /// <param name="state">The state to clone</param>
@@ -350,7 +377,6 @@ namespace Animator
         }
 
         #endregion
-
 
 
 
