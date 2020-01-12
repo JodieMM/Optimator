@@ -343,8 +343,9 @@ namespace Animator
             }
             else
             {
-                // Check if Piece Selected        
-                var newSelected = Utils.FindClickedSelection(WIP.PiecesList, e.X, e.Y, SelectFromTopCb.Checked, sent);
+                // Check if Piece Selected
+                FindCorrectStates(sent);
+                var newSelected = Utils.FindClickedSelection(WIP.PiecesList, e.X, e.Y, SelectFromTopCb.Checked);
                 if (newSelected != null)
                 {
                     // Set a new base for the selected piece and adjust coords and join
@@ -432,11 +433,11 @@ namespace Animator
                         State modState = Utils.CloneState(selected.State);
                         if (sent == 1)
                         {
-                            modState.R = (modState.R + 89.999) % 360;
+                            modState.R = (modState.R + 90) % 360;
                         }
                         else if (sent == 2)
                         {
-                            modState.T = (modState.T + 89.999) % 360;
+                            modState.T = (modState.T + 90) % 360;
                         }
                         modState.X += xChange;
                         modState.Y += yChange;
@@ -631,17 +632,7 @@ namespace Animator
             // For Each Angle
             for (int index = 0; index < 3; index++)
             {
-                // Find Correct States
-                WIP.CalculateStates(index);
-                foreach (var piece in WIP.PiecesList)
-                {
-                    if (!WIP.JoinsIndex.ContainsKey(piece))
-                    {
-                        piece.State = WIP.PersonalStates[piece];
-                        piece.State = index > 0 ? new State(WIP.PersonalStates[piece], index, 
-                            (WIP.PersonalStates[piece].GetAngles()[index - 1] + 89.999) % 360) : piece.State;
-                    }
-                }
+                FindCorrectStates(index);
 
                 // Draw Pieces
                 foreach (Piece piece in WIP.PiecesList)
@@ -780,5 +771,23 @@ namespace Animator
             }
             WIP.PiecesList.Remove(piece);
         }       
+
+        /// <summary>
+        /// Finds the correct state of the set based on the required angle
+        /// </summary>
+        /// <param name="angle">0 original, 1 rotated, 2 turned</param>
+        private void FindCorrectStates(int angle = 0)
+        {
+            WIP.CalculateStates(angle);
+            foreach (var piece in WIP.PiecesList)
+            {
+                if (!WIP.JoinsIndex.ContainsKey(piece))
+                {
+                    piece.State = WIP.PersonalStates[piece];
+                    piece.State = angle > 0 ? new State(WIP.PersonalStates[piece], angle,
+                        (WIP.PersonalStates[piece].GetAngles()[angle - 1] + 90) % 360) : piece.State;
+                }
+            }
+        }
     }
 }
