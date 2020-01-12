@@ -169,16 +169,13 @@ namespace Animator
             // Determine Base Angle
             switch (angle)
             {
-                case 0:
-                    BasePiece.State = PersonalStates[BasePiece];
-                    break;
                 case 1:
-                    BasePiece.State = new State(BasePiece.State, 1, 
-                        (BasePiece.State.GetAngles()[0] + 90) % 360);
+                    BasePiece.State = new State(PersonalStates[BasePiece], 1, 
+                        (PersonalStates[BasePiece].GetAngles()[0] + 90) % 360);
                     break;
                 case 2:
-                    BasePiece.State = new State(BasePiece.State, 2,
-                        (BasePiece.State.GetAngles()[1] + 90) % 360);
+                    BasePiece.State = new State(PersonalStates[BasePiece], 2,
+                        (PersonalStates[BasePiece].GetAngles()[1] + 90) % 360);
                     break;
                 default:
                     BasePiece.State = PersonalStates[BasePiece];

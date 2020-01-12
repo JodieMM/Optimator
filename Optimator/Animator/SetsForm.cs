@@ -783,9 +783,8 @@ namespace Animator
             {
                 if (!WIP.JoinsIndex.ContainsKey(piece))
                 {
-                    piece.State = WIP.PersonalStates[piece];
                     piece.State = angle > 0 ? new State(WIP.PersonalStates[piece], angle,
-                        (WIP.PersonalStates[piece].GetAngles()[angle - 1] + 90) % 360) : piece.State;
+                        (WIP.PersonalStates[piece].GetAngles()[angle - 1] + 90) % 360) : WIP.PersonalStates[piece];
                 }
             }
         }
