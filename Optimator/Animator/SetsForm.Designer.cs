@@ -63,6 +63,7 @@
             this.PreviewBtn = new System.Windows.Forms.Button();
             this.EraseDownBtn = new System.Windows.Forms.Button();
             this.EraseRightBtn = new System.Windows.Forms.Button();
+            this.JoinFlatBtn = new System.Windows.Forms.Button();
             this.OptionsMenu.SuspendLayout();
             this.SetPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FlipsUpDown)).BeginInit();
@@ -185,7 +186,7 @@
             this.JoinBtn.Name = "JoinBtn";
             this.JoinBtn.Size = new System.Drawing.Size(350, 40);
             this.JoinBtn.TabIndex = 128;
-            this.JoinBtn.Text = "Preview Join";
+            this.JoinBtn.Text = "Modify Join";
             this.JoinBtn.UseVisualStyleBackColor = false;
             this.JoinBtn.Click += new System.EventHandler(this.JoinBtn_Click);
             // 
@@ -519,11 +520,27 @@
             this.EraseRightBtn.UseVisualStyleBackColor = false;
             this.EraseRightBtn.Click += new System.EventHandler(this.EraseAngleBtn_Click);
             // 
+            // JoinFlatBtn
+            // 
+            this.JoinFlatBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.JoinFlatBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.JoinFlatBtn.Font = new System.Drawing.Font("Tahoma", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.JoinFlatBtn.Location = new System.Drawing.Point(285, 30);
+            this.JoinFlatBtn.Margin = new System.Windows.Forms.Padding(6);
+            this.JoinFlatBtn.Name = "JoinFlatBtn";
+            this.JoinFlatBtn.Size = new System.Drawing.Size(45, 45);
+            this.JoinFlatBtn.TabIndex = 98;
+            this.JoinFlatBtn.Text = "Flat Join";
+            this.JoinFlatBtn.UseVisualStyleBackColor = false;
+            this.JoinFlatBtn.Visible = false;
+            this.JoinFlatBtn.Click += new System.EventHandler(this.JoinFlatBtn_Click);
+            // 
             // SetsForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.PaleGreen;
             this.ClientSize = new System.Drawing.Size(1100, 700);
+            this.Controls.Add(this.JoinFlatBtn);
             this.Controls.Add(this.EraseDownBtn);
             this.Controls.Add(this.EraseRightBtn);
             this.Controls.Add(this.PreviewBtn);
@@ -594,5 +611,6 @@
         private System.Windows.Forms.Button JoinBtn;
         private System.Windows.Forms.Button EraseDownBtn;
         private System.Windows.Forms.Button EraseRightBtn;
+        private System.Windows.Forms.Button JoinFlatBtn;
     }
 }

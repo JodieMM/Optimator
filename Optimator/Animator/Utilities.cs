@@ -549,14 +549,26 @@ namespace Animator
         /// <param name="x">The x coordinate of the click</param>
         /// <param name="y">The y coordinate of the click</param>
         /// <returns>The index of the piece clicked, or negative one if none selected</returns>
-        public static Piece FindClickedSelection(List<Piece> piecesList, int x, int y, bool fromTop = true)
+        public static Piece FindClickedSelection(List<Piece> piecesList, int x, int y, bool fromTop = true, int angle = 0)
         {
             // Searches pieces either from the top or the bottom of the list
             int index;
             int increment = fromTop ? -1 : 1;
             for (index = fromTop ? piecesList.Count - 1 : 0; fromTop ? index >= 0 : index < piecesList.Count; index += increment)
             {
+                // Get Piece Shape
+                var piece = piecesList[index];
+                if (angle != 0)         // Temporarily change state to reflect angle
+                {
+                    piece.State = new State(piece.State, angle, (piece.State.GetAngles()[angle - 1] + 89.999) % 360);
+                }
                 var outline = piecesList[index].LineBounds();
+                if (angle != 0)         // Return original state
+                {
+                    piece.State = new State(piece.State, angle, (piece.State.GetAngles()[angle - 1] - 89.999) % 360);
+                }
+
+                // Check if Shape Clicked
                 foreach (var range in outline)
                 {
                     if (y == range[0] && x >= range[1] && x <= range[2])

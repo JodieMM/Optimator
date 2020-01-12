@@ -205,22 +205,25 @@ namespace Animator
         /// <param name="e"></param>
         private void JoinBtn_Click(object sender, EventArgs e)
         {
-            // TODO: Need to allow join to be moved when attached piece rts = 0 as opposed to base only (as piece can be rts'd in preview state)
-            if (selected == null)
+            if (selected != null)
             {
-                return;
-            }
-
-            if (JoinBtn.BackColor == unpressed)
-            {
-                SelectBaseBtn.BackColor = unpressed;
-                JoinBtn.BackColor = pressed;
-            }
-            else
-            {
-                JoinBtn.BackColor = unpressed;
-            }
-            DisplayDrawings();
+                if (JoinBtn.BackColor == unpressed)
+                {
+                    SelectBaseBtn.BackColor = unpressed;
+                    JoinBtn.BackColor = pressed;
+                    // TODO BELOW Join Flats, also redo if selected joined is rotated
+                    //if (Join flat could be needed)
+                    //{
+                    //    JoinFlatBtn.Visible = true;
+                    //}
+                }
+                else
+                {
+                    JoinBtn.BackColor = unpressed;
+                    JoinFlatBtn.Visible = false;
+                }
+                DisplayDrawings();
+            }            
         }
 
         /// <summary>
@@ -326,20 +329,22 @@ namespace Animator
         /// <param name="e"></param>
         private void DrawBase_MouseDown(object sender, MouseEventArgs e)
         {
+            var sent = sender == DrawBase ? 0 : sender == DrawRight ? 1 : 2;
+
             // Move the Piece's Join            
             if (JoinBtn.BackColor == pressed)
             {
-                if (Math.Abs(e.X - (selected.State.GetCoords()[0] - WIP.JoinsIndex[selected].AX))
+                if (Math.Abs(e.X - (selected.State.GetCoords()[0] - (sent != 1 ? WIP.JoinsIndex[selected].AX : WIP.JoinsIndex[selected].AXRight)))
                 <= Consts.ClickPrecision && Math.Abs(e.Y - (selected.State.GetCoords()[1] - WIP.JoinsIndex[selected].AY)) <= Consts.ClickPrecision)
                 {
                     originalMoving = new int[] { e.X, e.Y };
-                    moving = 0;
+                    moving = sent;
                 }
             }
             else
             {
-                // Check if Piece Selected
-                var newSelected = Utils.FindClickedSelection(WIP.PiecesList, e.X, e.Y, SelectFromTopCb.Checked);
+                // Check if Piece Selected        
+                var newSelected = Utils.FindClickedSelection(WIP.PiecesList, e.X, e.Y, SelectFromTopCb.Checked, sent);
                 if (newSelected != null)
                 {
                     // Set a new base for the selected piece and adjust coords and join
@@ -365,7 +370,7 @@ namespace Animator
                     {
                         SelectPiece(newSelected);
                         originalMoving = new int[] { e.X, e.Y };
-                        moving = 0;
+                        moving = sent;
                     }
                 }
                 // If clicked nothing
@@ -384,10 +389,12 @@ namespace Animator
         /// <param name="e"></param>
         private void DrawBase_MouseMove(object sender, MouseEventArgs e)
         {
-            if (moving != 0)
+            if (moving == -1)
             {
                 return;
             }
+            var sent = sender == DrawBase ? 0 : sender == DrawRight ? 1 : 2;
+
             // Invalid Mouse Position
             if (selected is null || e.X < 0 || e.Y < 0 || e.X > DrawBase.Size.Width || e.Y > DrawBase.Size.Height)
             {
@@ -404,14 +411,18 @@ namespace Animator
             // Shadows
             if (movingFar)
             {
-                var xChange = e.X - originalMoving[0];
-                var yChange = e.Y - originalMoving[1];
+                var xChange = sent == 2 ? 0 : e.X - originalMoving[0];
+                var yChange = sent == 1 ? 0 : e.Y - originalMoving[1];
+                var board = sent == 0 ? original : sent == 1 ? rotated : turned;
 
                 // Move Join
                 if (JoinBtn.BackColor == pressed)
                 {
-                    Visuals.DrawCross(selected.State.GetCoords()[0] - WIP.JoinsIndex[selected].AX + xChange,
-                        selected.State.GetCoords()[1] - WIP.JoinsIndex[selected].AY + yChange, Consts.shadowShade, original);
+                    Visuals.DrawCross(selected.State.GetCoords()[0] - 
+                        (sent == 1 ? WIP.JoinsIndex[selected].AXRight : WIP.JoinsIndex[selected].AX) + xChange,
+                        selected.State.GetCoords()[1] - 
+                        (sent == 2 ? WIP.JoinsIndex[selected].AYDown : WIP.JoinsIndex[selected].AY) + yChange,
+                        Consts.shadowShade, board);
                 }
                 // Move Piece
                 else
@@ -419,9 +430,17 @@ namespace Animator
                     for (int index = 0; index < selected.Data.Count; index++)
                     {
                         State modState = Utils.CloneState(selected.State);
+                        if (sent == 1)
+                        {
+                            modState.R = (modState.R + 89.999) % 360;
+                        }
+                        else if (sent == 2)
+                        {
+                            modState.T = (modState.T + 89.999) % 360;
+                        }
                         modState.X += xChange;
                         modState.Y += yChange;
-                        selected.Draw(original, modState, new ColourState(selected.ColourState, 
+                        selected.Draw(board, modState, new ColourState(selected.ColourState, 
                             Consts.shadowShade, new Color[] { Consts.shadowShade }));
                     }
                 }
@@ -436,38 +455,67 @@ namespace Animator
         /// <param name="e"></param>
         private void DrawBase_MouseUp(object sender, MouseEventArgs e)
         {
-            if (moving != 0 || selected is null)
+            if (moving == -1 || selected is null)
             {
                 return;
             }
+            var sent = sender == DrawBase ? 0 : sender == DrawRight ? 1 : 2;
+
             if (movingFar)
             {
-                var x = e.X - originalMoving[0];
-                var y = e.Y - originalMoving[1];
+                var x = sent == 2 ? 0 : e.X - originalMoving[0];
+                var y = sent == 1 ? 0 : e.Y - originalMoving[1];
 
                 // Move Join
                 if (JoinBtn.BackColor == pressed)
                 {
+                    // TODO: Consider JoinFlatBtn
                     Join modifying = WIP.JoinsIndex[selected];
-                    double[] newJoinPosition = new double[2] { selected.State.GetCoords()[0] - WIP.JoinsIndex[selected].AX + x,
-                    selected.State.GetCoords()[1] - WIP.JoinsIndex[selected].AY + y};
+                    double[] newJoinPosition = new double[2] { selected.State.GetCoords()[0] - 
+                        (sent == 1 ? WIP.JoinsIndex[selected].AXRight : WIP.JoinsIndex[selected].AX) + x,
+                        selected.State.GetCoords()[1] - 
+                        (sent == 2 ? WIP.JoinsIndex[selected].AYDown : WIP.JoinsIndex[selected].AY) + y};
 
-                    modifying.AX = modifying.AXRight = selected.State.GetCoords()[0] - newJoinPosition[0];
-                    modifying.AY = modifying.AYDown = selected.State.GetCoords()[1] - newJoinPosition[1];
-                    modifying.BX = modifying.BXRight = newJoinPosition[0] - modifying.B.State.GetCoords()[0];
-                    modifying.BY = modifying.BYDown = newJoinPosition[1] - modifying.B.State.GetCoords()[1];
+                    if (sent == 0)
+                    {
+                        modifying.AX = modifying.AXRight = selected.State.GetCoords()[0] - newJoinPosition[0];
+                        modifying.AY = modifying.AYDown = selected.State.GetCoords()[1] - newJoinPosition[1];
+                        modifying.BX = modifying.BXRight = newJoinPosition[0] - modifying.B.State.GetCoords()[0];
+                        modifying.BY = modifying.BYDown = newJoinPosition[1] - modifying.B.State.GetCoords()[1];
+                    }
+                    else if (sent == 1)
+                    {
+                        modifying.AXRight = selected.State.GetCoords()[0] - newJoinPosition[0];
+                        modifying.BXRight = newJoinPosition[0] - modifying.B.State.GetCoords()[0];
+                    }
+                    else if (sent == 2)
+                    {
+                        modifying.AYDown = selected.State.GetCoords()[1] - newJoinPosition[1];
+                        modifying.BYDown = newJoinPosition[1] - modifying.B.State.GetCoords()[1];
+                    }
                 }
                 // Move Piece
                 else if (WIP.JoinsIndex.ContainsKey(selected))
                 {
                     // Piece in Set
-                    WIP.JoinsIndex[selected].AXRight = WIP.JoinsIndex[selected].AX += x;
-                    WIP.JoinsIndex[selected].AYDown = WIP.JoinsIndex[selected].AY += y;
+                    if (sent == 0)
+                    {
+                        WIP.JoinsIndex[selected].AXRight = WIP.JoinsIndex[selected].AX += x;
+                        WIP.JoinsIndex[selected].AYDown = WIP.JoinsIndex[selected].AY += y;
+                    }
+                    else if (sent == 1)
+                    {
+                        WIP.JoinsIndex[selected].AXRight += x;
+                    }
+                    else if (sent == 2)
+                    {
+                        WIP.JoinsIndex[selected].AYDown += y;
+                    }
                     WIP.CalculateStates();
                 }
                 else
                 {
-                    // Piece solo
+                    // Piece Solo
                     WIP.PersonalStates[selected].X += x;
                     WIP.PersonalStates[selected].Y += y;
                     WIP.CalculateStates();
@@ -511,6 +559,25 @@ namespace Animator
                 }
             }
             DisplayDrawings();
+        }
+
+        /// <summary>
+        /// Sets the joined piece to rts 0 to get an accurate join rts.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void JoinFlatBtn_Click(object sender, EventArgs e)
+        {
+            if (JoinFlatBtn.Text == "Flat Join")
+            {
+                // TODO: Flatten Join
+                JoinFlatBtn.Text = "Back";
+            }
+            else
+            {
+                // TODO: Return to normal
+                JoinFlatBtn.Text = "Flat Join";
+            }
         }
 
         /// <summary>
@@ -561,47 +628,47 @@ namespace Animator
 
             var boards = new Graphics[3] { original, rotated, turned };
 
-            // Find Correct States
-            WIP.CalculateStates();
-            foreach (var piece in WIP.PiecesList)
-            {
-                if (!WIP.JoinsIndex.ContainsKey(piece))
-                {
-                    piece.State = WIP.PersonalStates[piece];
-                }
-            }
-
             // For Each Angle
             for (int index = 0; index < 3; index++)
             {
+                // Find Correct States
+                WIP.CalculateStates(index);
+                foreach (var piece in WIP.PiecesList)
+                {
+                    if (!WIP.JoinsIndex.ContainsKey(piece))
+                    {
+                        piece.State = WIP.PersonalStates[piece];
+                        piece.State = index > 0 ? new State(WIP.PersonalStates[piece], index, 
+                            (WIP.PersonalStates[piece].GetAngles()[index - 1] + 89.999) % 360) : piece.State;
+                    }
+                }
+
                 // Draw Pieces
                 foreach (Piece piece in WIP.PiecesList)
                 {
-                    var pieceState = index > 0 ? new State(piece.State, index, (piece.State.GetAngles()[index - 1] + 89.999) % 360) : piece.State;
-
                     // Moving
                     if (selected != null && piece == selected && movingFar)
                     {
-                        piece.Draw(boards[index], pieceState, new ColourState(piece.ColourState, Consts.shadowShade));
+                        piece.Draw(boards[index], piece.State, new ColourState(piece.ColourState, Consts.shadowShade));
                     }
                     // Selected
                     else if (selected != null && piece == selected)
                     {
-                        piece.Draw(boards[index], pieceState, new ColourState(piece.ColourState, Consts.select));
+                        piece.Draw(boards[index], piece.State, new ColourState(piece.ColourState, Consts.select));
                     }
                     // Attached to Selected
                     else if (selected != null && WIP.JoinedPieces.ContainsKey(selected) && WIP.JoinedPieces[selected].Contains(piece))
                     {
-                        piece.Draw(boards[index], pieceState, new ColourState(piece.ColourState, Consts.highlight));
+                        piece.Draw(boards[index], piece.State, new ColourState(piece.ColourState, Consts.highlight));
                     }
                     // Base of Selected
                     else if (selected != null && WIP.JoinsIndex.ContainsKey(selected) && WIP.JoinsIndex[selected].B == piece)
                     {
-                        piece.Draw(boards[index], pieceState, new ColourState(piece.ColourState, Consts.lowlight));
+                        piece.Draw(boards[index], piece.State, new ColourState(piece.ColourState, Consts.lowlight));
                     }
                     else
                     {
-                        piece.Draw(boards[index], pieceState);
+                        piece.Draw(boards[index], piece.State);
                     }
                 }
 
@@ -691,8 +758,8 @@ namespace Animator
         {
             WIP.JoinsIndex.Add(a, new Join(a, b, WIP));
             WIP.AddToJoinedPieces(a, b);
-            a.State.X = 0;
-            a.State.Y = 0;
+            WIP.PersonalStates[a].X = 0;
+            WIP.PersonalStates[a].Y = 0;
         }
 
         /// <summary>
@@ -712,6 +779,6 @@ namespace Animator
                 WIP.JoinsIndex.Remove(piece);
             }
             WIP.PiecesList.Remove(piece);
-        }
+        }       
     }
 }

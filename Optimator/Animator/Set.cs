@@ -18,11 +18,11 @@ namespace Animator
         public Piece BasePiece { get; set; }
 
         public Dictionary<Piece, List<Piece>> JoinedPieces { get; set; } 
-            = new Dictionary<Piece, List<Piece>>();                         // Base Piece --> Attached Pieces
+            = new Dictionary<Piece, List<Piece>>();                       // Base Piece --> Attached Pieces
         public Dictionary<Piece, Join> JoinsIndex { get; set; } 
             = new Dictionary<Piece, Join>();                                // Attached Piece --> Join
-        public Dictionary<Piece, State> PersonalStates { get; set; } 
-            = new Dictionary<Piece, State>();
+        public Dictionary<Piece, State> PersonalStates { get; set; }                // 
+            = new Dictionary<Piece, State>();                           // Piece --> Original State Position
         #endregion
 
 
@@ -163,9 +163,29 @@ namespace Animator
         /// Figures out the state of each piece based on 
         /// its personal and base states.
         /// </summary>
-        public void CalculateStates()
+        /// <param name="angle">The angle to find: 0 original, 1 rotated, 2 turned</param>
+        public void CalculateStates(int angle = 0)
         {
-            BasePiece.State = PersonalStates[BasePiece];
+            // Determine Base Angle
+            switch (angle)
+            {
+                case 0:
+                    BasePiece.State = PersonalStates[BasePiece];
+                    break;
+                case 1:
+                    BasePiece.State = new State(BasePiece.State, 1, 
+                        (BasePiece.State.GetAngles()[0] + 90) % 360);
+                    break;
+                case 2:
+                    BasePiece.State = new State(BasePiece.State, 2,
+                        (BasePiece.State.GetAngles()[1] + 90) % 360);
+                    break;
+                default:
+                    BasePiece.State = PersonalStates[BasePiece];
+                    break;
+            }
+
+            // Calculate Connections
             if (JoinedPieces.ContainsKey(BasePiece))
             {
                 foreach (var attached in JoinedPieces[BasePiece])
