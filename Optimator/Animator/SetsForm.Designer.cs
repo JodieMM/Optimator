@@ -35,11 +35,19 @@
             this.AddPieceBtn = new System.Windows.Forms.Button();
             this.OptionsMenu = new System.Windows.Forms.TabControl();
             this.SetPage = new System.Windows.Forms.TabPage();
+            this.FlipsOptionsPanel = new System.Windows.Forms.Panel();
+            this.TurnFlipLbl = new System.Windows.Forms.Label();
+            this.RotationFlipLbl = new System.Windows.Forms.Label();
+            this.FlipsTurn = new System.Windows.Forms.NumericUpDown();
+            this.FlipsRotation = new System.Windows.Forms.NumericUpDown();
+            this.FlatRbPanel = new System.Windows.Forms.Panel();
+            this.FlatRbAttached = new System.Windows.Forms.RadioButton();
+            this.FlatRbBase = new System.Windows.Forms.RadioButton();
+            this.FlatRbOriginal = new System.Windows.Forms.RadioButton();
             this.JoinBtn = new System.Windows.Forms.Button();
             this.OrderLbl = new System.Windows.Forms.Label();
             this.UpBtn = new System.Windows.Forms.Button();
             this.DownBtn = new System.Windows.Forms.Button();
-            this.FlipsRotation = new System.Windows.Forms.NumericUpDown();
             this.FlipsCb = new System.Windows.Forms.CheckBox();
             this.SelectBaseBtn = new System.Windows.Forms.Button();
             this.JoinsLbl = new System.Windows.Forms.Label();
@@ -63,17 +71,12 @@
             this.PreviewBtn = new System.Windows.Forms.Button();
             this.EraseDownBtn = new System.Windows.Forms.Button();
             this.EraseRightBtn = new System.Windows.Forms.Button();
-            this.FlipsTurn = new System.Windows.Forms.NumericUpDown();
-            this.RotationFlipLbl = new System.Windows.Forms.Label();
-            this.TurnFlipLbl = new System.Windows.Forms.Label();
-            this.FlatRbOriginal = new System.Windows.Forms.RadioButton();
-            this.FlatRbBase = new System.Windows.Forms.RadioButton();
-            this.FlatRbAttached = new System.Windows.Forms.RadioButton();
-            this.FlatRbPanel = new System.Windows.Forms.Panel();
-            this.FlipsOptionsPanel = new System.Windows.Forms.Panel();
             this.OptionsMenu.SuspendLayout();
             this.SetPage.SuspendLayout();
+            this.FlipsOptionsPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.FlipsTurn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.FlipsRotation)).BeginInit();
+            this.FlatRbPanel.SuspendLayout();
             this.PiecesTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SizeBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.SpinBar)).BeginInit();
@@ -83,9 +86,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.DrawRight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawBase)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.FlipsTurn)).BeginInit();
-            this.FlatRbPanel.SuspendLayout();
-            this.FlipsOptionsPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // CompleteBtn
@@ -109,7 +109,7 @@
             this.NameTb.Location = new System.Drawing.Point(15, 15);
             this.NameTb.Margin = new System.Windows.Forms.Padding(2);
             this.NameTb.Name = "NameTb";
-            this.NameTb.Size = new System.Drawing.Size(300, 33);
+            this.NameTb.Size = new System.Drawing.Size(300, 58);
             this.NameTb.TabIndex = 1;
             this.NameTb.Text = "Set Name";
             // 
@@ -133,7 +133,7 @@
             this.AddTb.Location = new System.Drawing.Point(21, 107);
             this.AddTb.Margin = new System.Windows.Forms.Padding(2);
             this.AddTb.Name = "AddTb";
-            this.AddTb.Size = new System.Drawing.Size(350, 27);
+            this.AddTb.Size = new System.Drawing.Size(350, 46);
             this.AddTb.TabIndex = 69;
             this.AddTb.Text = "Part Name";
             // 
@@ -180,12 +180,119 @@
             this.SetPage.Controls.Add(this.NameTb);
             this.SetPage.Controls.Add(this.AddPieceBtn);
             this.SetPage.Controls.Add(this.AddSetBtn);
-            this.SetPage.Location = new System.Drawing.Point(4, 27);
+            this.SetPage.Location = new System.Drawing.Point(8, 50);
             this.SetPage.Name = "SetPage";
             this.SetPage.Padding = new System.Windows.Forms.Padding(3);
-            this.SetPage.Size = new System.Drawing.Size(392, 669);
+            this.SetPage.Size = new System.Drawing.Size(384, 642);
             this.SetPage.TabIndex = 0;
             this.SetPage.Text = "Set";
+            // 
+            // FlipsOptionsPanel
+            // 
+            this.FlipsOptionsPanel.Controls.Add(this.TurnFlipLbl);
+            this.FlipsOptionsPanel.Controls.Add(this.RotationFlipLbl);
+            this.FlipsOptionsPanel.Controls.Add(this.FlipsTurn);
+            this.FlipsOptionsPanel.Controls.Add(this.FlipsRotation);
+            this.FlipsOptionsPanel.Location = new System.Drawing.Point(110, 434);
+            this.FlipsOptionsPanel.Name = "FlipsOptionsPanel";
+            this.FlipsOptionsPanel.Size = new System.Drawing.Size(271, 47);
+            this.FlipsOptionsPanel.TabIndex = 136;
+            this.FlipsOptionsPanel.Visible = false;
+            // 
+            // TurnFlipLbl
+            // 
+            this.TurnFlipLbl.AutoSize = true;
+            this.TurnFlipLbl.Location = new System.Drawing.Point(157, 14);
+            this.TurnFlipLbl.Name = "TurnFlipLbl";
+            this.TurnFlipLbl.Size = new System.Drawing.Size(78, 36);
+            this.TurnFlipLbl.TabIndex = 131;
+            this.TurnFlipLbl.Text = "Turn";
+            // 
+            // RotationFlipLbl
+            // 
+            this.RotationFlipLbl.AutoSize = true;
+            this.RotationFlipLbl.Location = new System.Drawing.Point(9, 14);
+            this.RotationFlipLbl.Name = "RotationFlipLbl";
+            this.RotationFlipLbl.Size = new System.Drawing.Size(126, 36);
+            this.RotationFlipLbl.TabIndex = 130;
+            this.RotationFlipLbl.Text = "Rotation";
+            // 
+            // FlipsTurn
+            // 
+            this.FlipsTurn.Enabled = false;
+            this.FlipsTurn.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FlipsTurn.Location = new System.Drawing.Point(201, 11);
+            this.FlipsTurn.Margin = new System.Windows.Forms.Padding(2);
+            this.FlipsTurn.Maximum = new decimal(new int[] {
+            179,
+            0,
+            0,
+            0});
+            this.FlipsTurn.Name = "FlipsTurn";
+            this.FlipsTurn.Size = new System.Drawing.Size(60, 46);
+            this.FlipsTurn.TabIndex = 129;
+            // 
+            // FlipsRotation
+            // 
+            this.FlipsRotation.Enabled = false;
+            this.FlipsRotation.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FlipsRotation.Location = new System.Drawing.Point(75, 11);
+            this.FlipsRotation.Margin = new System.Windows.Forms.Padding(2);
+            this.FlipsRotation.Maximum = new decimal(new int[] {
+            179,
+            0,
+            0,
+            0});
+            this.FlipsRotation.Name = "FlipsRotation";
+            this.FlipsRotation.Size = new System.Drawing.Size(60, 46);
+            this.FlipsRotation.TabIndex = 124;
+            this.FlipsRotation.ValueChanged += new System.EventHandler(this.FlipsUpDown_ValueChanged);
+            // 
+            // FlatRbPanel
+            // 
+            this.FlatRbPanel.Controls.Add(this.FlatRbAttached);
+            this.FlatRbPanel.Controls.Add(this.FlatRbBase);
+            this.FlatRbPanel.Controls.Add(this.FlatRbOriginal);
+            this.FlatRbPanel.Location = new System.Drawing.Point(9, 371);
+            this.FlatRbPanel.Name = "FlatRbPanel";
+            this.FlatRbPanel.Size = new System.Drawing.Size(373, 47);
+            this.FlatRbPanel.TabIndex = 135;
+            this.FlatRbPanel.Visible = false;
+            // 
+            // FlatRbAttached
+            // 
+            this.FlatRbAttached.AutoSize = true;
+            this.FlatRbAttached.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FlatRbAttached.Location = new System.Drawing.Point(272, 16);
+            this.FlatRbAttached.Name = "FlatRbAttached";
+            this.FlatRbAttached.Size = new System.Drawing.Size(174, 43);
+            this.FlatRbAttached.TabIndex = 134;
+            this.FlatRbAttached.Text = "Attached";
+            this.FlatRbAttached.UseVisualStyleBackColor = true;
+            // 
+            // FlatRbBase
+            // 
+            this.FlatRbBase.AutoSize = true;
+            this.FlatRbBase.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FlatRbBase.Location = new System.Drawing.Point(154, 16);
+            this.FlatRbBase.Name = "FlatRbBase";
+            this.FlatRbBase.Size = new System.Drawing.Size(115, 43);
+            this.FlatRbBase.TabIndex = 133;
+            this.FlatRbBase.Text = "Base";
+            this.FlatRbBase.UseVisualStyleBackColor = true;
+            // 
+            // FlatRbOriginal
+            // 
+            this.FlatRbOriginal.AutoSize = true;
+            this.FlatRbOriginal.Checked = true;
+            this.FlatRbOriginal.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FlatRbOriginal.Location = new System.Drawing.Point(12, 16);
+            this.FlatRbOriginal.Name = "FlatRbOriginal";
+            this.FlatRbOriginal.Size = new System.Drawing.Size(157, 43);
+            this.FlatRbOriginal.TabIndex = 132;
+            this.FlatRbOriginal.TabStop = true;
+            this.FlatRbOriginal.Text = "Original";
+            this.FlatRbOriginal.UseVisualStyleBackColor = true;
             // 
             // JoinBtn
             // 
@@ -208,7 +315,7 @@
             this.OrderLbl.Location = new System.Drawing.Point(161, 501);
             this.OrderLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.OrderLbl.Name = "OrderLbl";
-            this.OrderLbl.Size = new System.Drawing.Size(64, 23);
+            this.OrderLbl.Size = new System.Drawing.Size(128, 46);
             this.OrderLbl.TabIndex = 127;
             this.OrderLbl.Text = "Order";
             // 
@@ -240,22 +347,6 @@
             this.DownBtn.UseVisualStyleBackColor = false;
             this.DownBtn.Click += new System.EventHandler(this.UpOrDownBtn_Click);
             // 
-            // FlipsRotation
-            // 
-            this.FlipsRotation.Enabled = false;
-            this.FlipsRotation.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FlipsRotation.Location = new System.Drawing.Point(75, 11);
-            this.FlipsRotation.Margin = new System.Windows.Forms.Padding(2);
-            this.FlipsRotation.Maximum = new decimal(new int[] {
-            179,
-            0,
-            0,
-            0});
-            this.FlipsRotation.Name = "FlipsRotation";
-            this.FlipsRotation.Size = new System.Drawing.Size(60, 27);
-            this.FlipsRotation.TabIndex = 124;
-            this.FlipsRotation.ValueChanged += new System.EventHandler(this.FlipsUpDown_ValueChanged);
-            // 
             // FlipsCb
             // 
             this.FlipsCb.AutoSize = true;
@@ -263,7 +354,7 @@
             this.FlipsCb.Location = new System.Drawing.Point(21, 446);
             this.FlipsCb.Margin = new System.Windows.Forms.Padding(2);
             this.FlipsCb.Name = "FlipsCb";
-            this.FlipsCb.Size = new System.Drawing.Size(68, 23);
+            this.FlipsCb.Size = new System.Drawing.Size(127, 43);
             this.FlipsCb.TabIndex = 123;
             this.FlipsCb.Text = "Flips?";
             this.FlipsCb.UseVisualStyleBackColor = true;
@@ -290,7 +381,7 @@
             this.JoinsLbl.Location = new System.Drawing.Point(166, 227);
             this.JoinsLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.JoinsLbl.Name = "JoinsLbl";
-            this.JoinsLbl.Size = new System.Drawing.Size(60, 23);
+            this.JoinsLbl.Size = new System.Drawing.Size(117, 46);
             this.JoinsLbl.TabIndex = 121;
             this.JoinsLbl.Text = "Joins";
             // 
@@ -301,7 +392,7 @@
             this.AddPartLbl.Location = new System.Drawing.Point(150, 70);
             this.AddPartLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.AddPartLbl.Name = "AddPartLbl";
-            this.AddPartLbl.Size = new System.Drawing.Size(92, 23);
+            this.AddPartLbl.Size = new System.Drawing.Size(185, 46);
             this.AddPartLbl.TabIndex = 120;
             this.AddPartLbl.Text = "Add Part";
             // 
@@ -317,9 +408,9 @@
             this.PiecesTab.Controls.Add(this.TurnBar);
             this.PiecesTab.Controls.Add(this.RotationLbl);
             this.PiecesTab.Controls.Add(this.RotationBar);
-            this.PiecesTab.Location = new System.Drawing.Point(4, 27);
+            this.PiecesTab.Location = new System.Drawing.Point(8, 50);
             this.PiecesTab.Name = "PiecesTab";
-            this.PiecesTab.Size = new System.Drawing.Size(392, 669);
+            this.PiecesTab.Size = new System.Drawing.Size(384, 642);
             this.PiecesTab.TabIndex = 2;
             this.PiecesTab.Text = "Pieces";
             // 
@@ -330,7 +421,7 @@
             this.OriginalPosLbl.Location = new System.Drawing.Point(106, 15);
             this.OriginalPosLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.OriginalPosLbl.Name = "OriginalPosLbl";
-            this.OriginalPosLbl.Size = new System.Drawing.Size(180, 23);
+            this.OriginalPosLbl.Size = new System.Drawing.Size(353, 46);
             this.OriginalPosLbl.TabIndex = 121;
             this.OriginalPosLbl.Text = "Original Positions";
             // 
@@ -341,7 +432,7 @@
             this.SizeLbl.Location = new System.Drawing.Point(15, 295);
             this.SizeLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.SizeLbl.Name = "SizeLbl";
-            this.SizeLbl.Size = new System.Drawing.Size(37, 19);
+            this.SizeLbl.Size = new System.Drawing.Size(73, 39);
             this.SizeLbl.TabIndex = 116;
             this.SizeLbl.Text = "Size";
             // 
@@ -350,7 +441,7 @@
             this.SizeBar.Location = new System.Drawing.Point(21, 322);
             this.SizeBar.Maximum = 500;
             this.SizeBar.Name = "SizeBar";
-            this.SizeBar.Size = new System.Drawing.Size(350, 45);
+            this.SizeBar.Size = new System.Drawing.Size(350, 90);
             this.SizeBar.SmallChange = 5;
             this.SizeBar.TabIndex = 115;
             this.SizeBar.TickFrequency = 50;
@@ -364,7 +455,7 @@
             this.SpinLbl.Location = new System.Drawing.Point(15, 215);
             this.SpinLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.SpinLbl.Name = "SpinLbl";
-            this.SpinLbl.Size = new System.Drawing.Size(40, 19);
+            this.SpinLbl.Size = new System.Drawing.Size(78, 39);
             this.SpinLbl.TabIndex = 114;
             this.SpinLbl.Text = "Spin";
             // 
@@ -373,7 +464,7 @@
             this.SpinBar.Location = new System.Drawing.Point(21, 242);
             this.SpinBar.Maximum = 359;
             this.SpinBar.Name = "SpinBar";
-            this.SpinBar.Size = new System.Drawing.Size(350, 45);
+            this.SpinBar.Size = new System.Drawing.Size(350, 90);
             this.SpinBar.TabIndex = 113;
             this.SpinBar.TickFrequency = 10;
             this.SpinBar.Scroll += new System.EventHandler(this.UpdateSelectedPiece);
@@ -385,7 +476,7 @@
             this.TurnLbl.Location = new System.Drawing.Point(15, 135);
             this.TurnLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.TurnLbl.Name = "TurnLbl";
-            this.TurnLbl.Size = new System.Drawing.Size(43, 19);
+            this.TurnLbl.Size = new System.Drawing.Size(84, 39);
             this.TurnLbl.TabIndex = 112;
             this.TurnLbl.Text = "Turn";
             // 
@@ -394,7 +485,7 @@
             this.TurnBar.Location = new System.Drawing.Point(21, 162);
             this.TurnBar.Maximum = 359;
             this.TurnBar.Name = "TurnBar";
-            this.TurnBar.Size = new System.Drawing.Size(350, 45);
+            this.TurnBar.Size = new System.Drawing.Size(350, 90);
             this.TurnBar.TabIndex = 111;
             this.TurnBar.TickFrequency = 10;
             this.TurnBar.Scroll += new System.EventHandler(this.UpdateSelectedPiece);
@@ -406,7 +497,7 @@
             this.RotationLbl.Location = new System.Drawing.Point(15, 55);
             this.RotationLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.RotationLbl.Name = "RotationLbl";
-            this.RotationLbl.Size = new System.Drawing.Size(68, 19);
+            this.RotationLbl.Size = new System.Drawing.Size(135, 39);
             this.RotationLbl.TabIndex = 110;
             this.RotationLbl.Text = "Rotation";
             // 
@@ -415,7 +506,7 @@
             this.RotationBar.Location = new System.Drawing.Point(21, 82);
             this.RotationBar.Maximum = 359;
             this.RotationBar.Name = "RotationBar";
-            this.RotationBar.Size = new System.Drawing.Size(350, 45);
+            this.RotationBar.Size = new System.Drawing.Size(350, 90);
             this.RotationBar.TabIndex = 109;
             this.RotationBar.TickFrequency = 10;
             this.RotationBar.Scroll += new System.EventHandler(this.UpdateSelectedPiece);
@@ -424,10 +515,10 @@
             // 
             this.SettingsPage.BackColor = System.Drawing.Color.Honeydew;
             this.SettingsPage.Controls.Add(this.SelectFromTopCb);
-            this.SettingsPage.Location = new System.Drawing.Point(4, 27);
+            this.SettingsPage.Location = new System.Drawing.Point(8, 50);
             this.SettingsPage.Name = "SettingsPage";
             this.SettingsPage.Padding = new System.Windows.Forms.Padding(3);
-            this.SettingsPage.Size = new System.Drawing.Size(392, 669);
+            this.SettingsPage.Size = new System.Drawing.Size(384, 642);
             this.SettingsPage.TabIndex = 1;
             this.SettingsPage.Text = "Settings";
             // 
@@ -440,7 +531,7 @@
             this.SelectFromTopCb.Location = new System.Drawing.Point(18, 17);
             this.SelectFromTopCb.Margin = new System.Windows.Forms.Padding(2);
             this.SelectFromTopCb.Name = "SelectFromTopCb";
-            this.SelectFromTopCb.Size = new System.Drawing.Size(182, 23);
+            this.SelectFromTopCb.Size = new System.Drawing.Size(358, 43);
             this.SelectFromTopCb.TabIndex = 118;
             this.SelectFromTopCb.Text = "Select Piece from Top";
             this.SelectFromTopCb.UseVisualStyleBackColor = true;
@@ -531,95 +622,6 @@
             this.EraseRightBtn.UseVisualStyleBackColor = false;
             this.EraseRightBtn.Click += new System.EventHandler(this.EraseAngleBtn_Click);
             // 
-            // FlipsTurn
-            // 
-            this.FlipsTurn.Enabled = false;
-            this.FlipsTurn.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FlipsTurn.Location = new System.Drawing.Point(201, 11);
-            this.FlipsTurn.Margin = new System.Windows.Forms.Padding(2);
-            this.FlipsTurn.Maximum = new decimal(new int[] {
-            179,
-            0,
-            0,
-            0});
-            this.FlipsTurn.Name = "FlipsTurn";
-            this.FlipsTurn.Size = new System.Drawing.Size(60, 27);
-            this.FlipsTurn.TabIndex = 129;
-            // 
-            // RotationFlipLbl
-            // 
-            this.RotationFlipLbl.AutoSize = true;
-            this.RotationFlipLbl.Location = new System.Drawing.Point(9, 14);
-            this.RotationFlipLbl.Name = "RotationFlipLbl";
-            this.RotationFlipLbl.Size = new System.Drawing.Size(61, 18);
-            this.RotationFlipLbl.TabIndex = 130;
-            this.RotationFlipLbl.Text = "Rotation";
-            // 
-            // TurnFlipLbl
-            // 
-            this.TurnFlipLbl.AutoSize = true;
-            this.TurnFlipLbl.Location = new System.Drawing.Point(157, 14);
-            this.TurnFlipLbl.Name = "TurnFlipLbl";
-            this.TurnFlipLbl.Size = new System.Drawing.Size(39, 18);
-            this.TurnFlipLbl.TabIndex = 131;
-            this.TurnFlipLbl.Text = "Turn";
-            // 
-            // FlatRbOriginal
-            // 
-            this.FlatRbOriginal.AutoSize = true;
-            this.FlatRbOriginal.Checked = true;
-            this.FlatRbOriginal.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FlatRbOriginal.Location = new System.Drawing.Point(12, 16);
-            this.FlatRbOriginal.Name = "FlatRbOriginal";
-            this.FlatRbOriginal.Size = new System.Drawing.Size(83, 23);
-            this.FlatRbOriginal.TabIndex = 132;
-            this.FlatRbOriginal.TabStop = true;
-            this.FlatRbOriginal.Text = "Original";
-            this.FlatRbOriginal.UseVisualStyleBackColor = true;
-            // 
-            // FlatRbBase
-            // 
-            this.FlatRbBase.AutoSize = true;
-            this.FlatRbBase.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FlatRbBase.Location = new System.Drawing.Point(154, 16);
-            this.FlatRbBase.Name = "FlatRbBase";
-            this.FlatRbBase.Size = new System.Drawing.Size(59, 23);
-            this.FlatRbBase.TabIndex = 133;
-            this.FlatRbBase.Text = "Base";
-            this.FlatRbBase.UseVisualStyleBackColor = true;
-            // 
-            // FlatRbAttached
-            // 
-            this.FlatRbAttached.AutoSize = true;
-            this.FlatRbAttached.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FlatRbAttached.Location = new System.Drawing.Point(272, 16);
-            this.FlatRbAttached.Name = "FlatRbAttached";
-            this.FlatRbAttached.Size = new System.Drawing.Size(89, 23);
-            this.FlatRbAttached.TabIndex = 134;
-            this.FlatRbAttached.Text = "Attached";
-            this.FlatRbAttached.UseVisualStyleBackColor = true;
-            // 
-            // FlatRbPanel
-            // 
-            this.FlatRbPanel.Controls.Add(this.FlatRbAttached);
-            this.FlatRbPanel.Controls.Add(this.FlatRbBase);
-            this.FlatRbPanel.Controls.Add(this.FlatRbOriginal);
-            this.FlatRbPanel.Location = new System.Drawing.Point(9, 371);
-            this.FlatRbPanel.Name = "FlatRbPanel";
-            this.FlatRbPanel.Size = new System.Drawing.Size(373, 47);
-            this.FlatRbPanel.TabIndex = 135;
-            // 
-            // FlipsOptionsPanel
-            // 
-            this.FlipsOptionsPanel.Controls.Add(this.TurnFlipLbl);
-            this.FlipsOptionsPanel.Controls.Add(this.RotationFlipLbl);
-            this.FlipsOptionsPanel.Controls.Add(this.FlipsTurn);
-            this.FlipsOptionsPanel.Controls.Add(this.FlipsRotation);
-            this.FlipsOptionsPanel.Location = new System.Drawing.Point(110, 434);
-            this.FlipsOptionsPanel.Name = "FlipsOptionsPanel";
-            this.FlipsOptionsPanel.Size = new System.Drawing.Size(271, 47);
-            this.FlipsOptionsPanel.TabIndex = 136;
-            // 
             // SetsForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -643,7 +645,12 @@
             this.OptionsMenu.ResumeLayout(false);
             this.SetPage.ResumeLayout(false);
             this.SetPage.PerformLayout();
+            this.FlipsOptionsPanel.ResumeLayout(false);
+            this.FlipsOptionsPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.FlipsTurn)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.FlipsRotation)).EndInit();
+            this.FlatRbPanel.ResumeLayout(false);
+            this.FlatRbPanel.PerformLayout();
             this.PiecesTab.ResumeLayout(false);
             this.PiecesTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SizeBar)).EndInit();
@@ -655,11 +662,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.DrawRight)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawBase)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.FlipsTurn)).EndInit();
-            this.FlatRbPanel.ResumeLayout(false);
-            this.FlatRbPanel.PerformLayout();
-            this.FlipsOptionsPanel.ResumeLayout(false);
-            this.FlipsOptionsPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }

@@ -211,16 +211,14 @@ namespace Animator
                 {
                     SelectBaseBtn.BackColor = unpressed;
                     JoinBtn.BackColor = pressed;
-                    // TODO BELOW Join Flats, also redo if selected joined is rotated
-                    //if (Join flat could be needed)
-                    //{
-                    //    JoinFlatBtn.Visible = true;
-                    //}
+                    FlatRbPanel.Visible = true;
+                    FlatRbBase.Enabled = WIP.JoinedPieces.ContainsKey(selected);
+                    FlatRbAttached.Enabled = WIP.JoinsIndex.ContainsKey(selected);
                 }
                 else
                 {
                     JoinBtn.BackColor = unpressed;
-                    JoinFlatBtn.Visible = false;
+                    FlatRbPanel.Visible = false;
                 }
                 DisplayDrawings();
             }            
@@ -259,8 +257,9 @@ namespace Animator
         {
             if (selected != null && WIP.JoinsIndex.ContainsKey(selected))
             {
-                FlipsRotation.Enabled = FlipsCb.Checked;
-                WIP.JoinsIndex[selected].FlipAngle = FlipsCb.Checked ? (double)FlipsRotation.Value : -1;
+                FlipsOptionsPanel.Visible = FlipsCb.Checked;
+                WIP.JoinsIndex[selected].FlipAngle = FlipsCb.Checked ? (double)FlipsRotation.Value : -1;    
+                // TODO: Turn value
             }
         }
 
@@ -560,25 +559,6 @@ namespace Animator
                 }
             }
             DisplayDrawings();
-        }
-
-        /// <summary>
-        /// Sets the joined piece to rts 0 to get an accurate join rts.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void JoinFlatBtn_Click(object sender, EventArgs e)
-        {
-            if (JoinFlatBtn.Text == "Flat Join")
-            {
-                // TODO: Flatten Join
-                JoinFlatBtn.Text = "Back";
-            }
-            else
-            {
-                // TODO: Return to normal
-                JoinFlatBtn.Text = "Flat Join";
-            }
         }
 
         /// <summary>
