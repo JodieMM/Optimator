@@ -260,7 +260,7 @@
             // 
             this.FlipsCb.AutoSize = true;
             this.FlipsCb.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FlipsCb.Location = new System.Drawing.Point(21, 432);
+            this.FlipsCb.Location = new System.Drawing.Point(21, 446);
             this.FlipsCb.Margin = new System.Windows.Forms.Padding(2);
             this.FlipsCb.Name = "FlipsCb";
             this.FlipsCb.Size = new System.Drawing.Size(68, 23);
@@ -604,7 +604,7 @@
             this.FlatRbPanel.Controls.Add(this.FlatRbAttached);
             this.FlatRbPanel.Controls.Add(this.FlatRbBase);
             this.FlatRbPanel.Controls.Add(this.FlatRbOriginal);
-            this.FlatRbPanel.Location = new System.Drawing.Point(9, 364);
+            this.FlatRbPanel.Location = new System.Drawing.Point(9, 371);
             this.FlatRbPanel.Name = "FlatRbPanel";
             this.FlatRbPanel.Size = new System.Drawing.Size(373, 47);
             this.FlatRbPanel.TabIndex = 135;
@@ -615,7 +615,7 @@
             this.FlipsOptionsPanel.Controls.Add(this.RotationFlipLbl);
             this.FlipsOptionsPanel.Controls.Add(this.FlipsTurn);
             this.FlipsOptionsPanel.Controls.Add(this.FlipsRotation);
-            this.FlipsOptionsPanel.Location = new System.Drawing.Point(110, 420);
+            this.FlipsOptionsPanel.Location = new System.Drawing.Point(110, 434);
             this.FlipsOptionsPanel.Name = "FlipsOptionsPanel";
             this.FlipsOptionsPanel.Size = new System.Drawing.Size(271, 47);
             this.FlipsOptionsPanel.TabIndex = 136;
