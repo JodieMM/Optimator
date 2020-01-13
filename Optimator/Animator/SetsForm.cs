@@ -53,6 +53,10 @@ namespace Animator
             DrawRight.BackColor = Settings.BackgroundColour;
             DrawDown.BackColor = Settings.BackgroundColour;
 
+            FlatRbOriginal.CheckedChanged += new EventHandler(JoinRb_Change);
+            FlatRbBase.CheckedChanged += new EventHandler(JoinRb_Change);
+            FlatRbAttached.CheckedChanged += new EventHandler(JoinRb_Change);
+
             Utils.CheckValidFolder();            
         }
 
@@ -222,6 +226,16 @@ namespace Animator
                 }
                 DisplayDrawings();
             }            
+        }
+
+        /// <summary>
+        /// Changes the perspective joins are being modified in.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void JoinRb_Change(object sender, EventArgs e)
+        {
+            // TODO: Flat Joins
         }
 
         /// <summary>
