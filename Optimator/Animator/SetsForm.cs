@@ -259,8 +259,8 @@ namespace Animator
         {
             if (selected != null && WIP.JoinsIndex.ContainsKey(selected))
             {
-                FlipsUpDown.Enabled = FlipsCb.Checked;
-                WIP.JoinsIndex[selected].FlipAngle = FlipsCb.Checked ? (double)FlipsUpDown.Value : -1;
+                FlipsRotation.Enabled = FlipsCb.Checked;
+                WIP.JoinsIndex[selected].FlipAngle = FlipsCb.Checked ? (double)FlipsRotation.Value : -1;
             }
         }
 
@@ -273,7 +273,7 @@ namespace Animator
         {
             if (selected != null && WIP.JoinsIndex.ContainsKey(selected))
             {
-                WIP.JoinsIndex[selected].FlipAngle = (double)FlipsUpDown.Value;
+                WIP.JoinsIndex[selected].FlipAngle = (double)FlipsRotation.Value;
             }
         }
 
