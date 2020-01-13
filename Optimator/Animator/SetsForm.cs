@@ -483,7 +483,7 @@ namespace Animator
                 // Move Join
                 if (JoinBtn.BackColor == pressed)
                 {
-                    // TODO: Consider JoinFlatBtn
+                    // TODO: Consider JoinFlatRb
                     Join modifying = WIP.JoinsIndex[selected];
                     double[] newJoinPosition = new double[2] { selected.State.GetCoords()[0] - 
                         (sent == 1 ? WIP.JoinsIndex[selected].AXRight : WIP.JoinsIndex[selected].AX) + x,
