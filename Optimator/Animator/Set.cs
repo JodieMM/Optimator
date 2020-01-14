@@ -164,21 +164,21 @@ namespace Animator
         /// its personal and base states.
         /// </summary>
         /// <param name="angle">The angle to find: 0 original, 1 rotated, 2 turned</param>
-        public void CalculateStates(int angle = 0)
+        public void CalculateStates(int angle = 0, State curr = null)
         {
+            var state = curr ?? PersonalStates[BasePiece];
+
             // Determine Base Angle
             switch (angle)
             {
                 case 1:
-                    BasePiece.State = new State(PersonalStates[BasePiece], 1, 
-                        (PersonalStates[BasePiece].GetAngles()[0] + 90) % 360);
+                    BasePiece.State = new State(state, 1, (state.GetAngles()[0] + 90) % 360);
                     break;
                 case 2:
-                    BasePiece.State = new State(PersonalStates[BasePiece], 2,
-                        (PersonalStates[BasePiece].GetAngles()[1] + 90) % 360);
+                    BasePiece.State = new State(state, 2, (state.GetAngles()[1] + 90) % 360);
                     break;
                 default:
-                    BasePiece.State = PersonalStates[BasePiece];
+                    BasePiece.State = state;
                     break;
             }
 

@@ -53,10 +53,6 @@ namespace Animator
             DrawRight.BackColor = Settings.BackgroundColour;
             DrawDown.BackColor = Settings.BackgroundColour;
 
-            FlatRbOriginal.CheckedChanged += new EventHandler(JoinRb_Change);
-            FlatRbBase.CheckedChanged += new EventHandler(JoinRb_Change);
-            FlatRbAttached.CheckedChanged += new EventHandler(JoinRb_Change);
-
             Utils.CheckValidFolder();            
         }
 
@@ -215,27 +211,19 @@ namespace Animator
                 {
                     SelectBaseBtn.BackColor = unpressed;
                     JoinBtn.BackColor = pressed;
-                    FlatRbPanel.Visible = true;
-                    FlatRbBase.Enabled = WIP.JoinedPieces.ContainsKey(selected);
-                    FlatRbAttached.Enabled = WIP.JoinsIndex.ContainsKey(selected);
+
+                    // Change base piece angle to ensure selected is rts 0
+                    WIP.CalculateStates();
+                    WIP.BasePiece.State.R = (WIP.BasePiece.State.R - selected.State.R) % 360;
+                    WIP.BasePiece.State.T = (WIP.BasePiece.State.T - selected.State.T) % 360;
+                    WIP.BasePiece.State.S = (WIP.BasePiece.State.S - selected.State.S) % 360;
                 }
                 else
                 {
                     JoinBtn.BackColor = unpressed;
-                    FlatRbPanel.Visible = false;
                 }
                 DisplayDrawings();
             }            
-        }
-
-        /// <summary>
-        /// Changes the perspective joins are being modified in.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void JoinRb_Change(object sender, EventArgs e)
-        {
-            // TODO: Flat Joins
         }
 
         /// <summary>
@@ -772,7 +760,10 @@ namespace Animator
         /// <param name="angle">0 original, 1 rotated, 2 turned</param>
         private void FindCorrectStates(int angle = 0)
         {
-            WIP.CalculateStates(angle);
+            // Take current state if flat join in progress
+            WIP.CalculateStates(angle, JoinBtn.BackColor == pressed ? WIP.BasePiece.State : null);
+
+            // Reangle Unattached Pieces        //TODO: Only moves solo pieces, not joins unattached to base (Remove altogether?)
             foreach (var piece in WIP.PiecesList)
             {
                 if (!WIP.JoinsIndex.ContainsKey(piece))

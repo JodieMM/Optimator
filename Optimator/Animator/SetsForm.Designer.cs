@@ -40,10 +40,6 @@
             this.RotationFlipLbl = new System.Windows.Forms.Label();
             this.FlipsTurn = new System.Windows.Forms.NumericUpDown();
             this.FlipsRotation = new System.Windows.Forms.NumericUpDown();
-            this.FlatRbPanel = new System.Windows.Forms.Panel();
-            this.FlatRbAttached = new System.Windows.Forms.RadioButton();
-            this.FlatRbBase = new System.Windows.Forms.RadioButton();
-            this.FlatRbOriginal = new System.Windows.Forms.RadioButton();
             this.JoinBtn = new System.Windows.Forms.Button();
             this.OrderLbl = new System.Windows.Forms.Label();
             this.UpBtn = new System.Windows.Forms.Button();
@@ -76,7 +72,6 @@
             this.FlipsOptionsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FlipsTurn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.FlipsRotation)).BeginInit();
-            this.FlatRbPanel.SuspendLayout();
             this.PiecesTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SizeBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.SpinBar)).BeginInit();
@@ -167,7 +162,6 @@
             // 
             this.SetPage.BackColor = System.Drawing.Color.Honeydew;
             this.SetPage.Controls.Add(this.FlipsOptionsPanel);
-            this.SetPage.Controls.Add(this.FlatRbPanel);
             this.SetPage.Controls.Add(this.JoinBtn);
             this.SetPage.Controls.Add(this.OrderLbl);
             this.SetPage.Controls.Add(this.UpBtn);
@@ -247,52 +241,6 @@
             this.FlipsRotation.Size = new System.Drawing.Size(60, 46);
             this.FlipsRotation.TabIndex = 124;
             this.FlipsRotation.ValueChanged += new System.EventHandler(this.FlipsUpDown_ValueChanged);
-            // 
-            // FlatRbPanel
-            // 
-            this.FlatRbPanel.Controls.Add(this.FlatRbAttached);
-            this.FlatRbPanel.Controls.Add(this.FlatRbBase);
-            this.FlatRbPanel.Controls.Add(this.FlatRbOriginal);
-            this.FlatRbPanel.Location = new System.Drawing.Point(9, 371);
-            this.FlatRbPanel.Name = "FlatRbPanel";
-            this.FlatRbPanel.Size = new System.Drawing.Size(373, 47);
-            this.FlatRbPanel.TabIndex = 135;
-            this.FlatRbPanel.Visible = false;
-            // 
-            // FlatRbAttached
-            // 
-            this.FlatRbAttached.AutoSize = true;
-            this.FlatRbAttached.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FlatRbAttached.Location = new System.Drawing.Point(272, 16);
-            this.FlatRbAttached.Name = "FlatRbAttached";
-            this.FlatRbAttached.Size = new System.Drawing.Size(174, 43);
-            this.FlatRbAttached.TabIndex = 134;
-            this.FlatRbAttached.Text = "Attached";
-            this.FlatRbAttached.UseVisualStyleBackColor = true;
-            // 
-            // FlatRbBase
-            // 
-            this.FlatRbBase.AutoSize = true;
-            this.FlatRbBase.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FlatRbBase.Location = new System.Drawing.Point(154, 16);
-            this.FlatRbBase.Name = "FlatRbBase";
-            this.FlatRbBase.Size = new System.Drawing.Size(115, 43);
-            this.FlatRbBase.TabIndex = 133;
-            this.FlatRbBase.Text = "Base";
-            this.FlatRbBase.UseVisualStyleBackColor = true;
-            // 
-            // FlatRbOriginal
-            // 
-            this.FlatRbOriginal.AutoSize = true;
-            this.FlatRbOriginal.Checked = true;
-            this.FlatRbOriginal.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FlatRbOriginal.Location = new System.Drawing.Point(12, 16);
-            this.FlatRbOriginal.Name = "FlatRbOriginal";
-            this.FlatRbOriginal.Size = new System.Drawing.Size(157, 43);
-            this.FlatRbOriginal.TabIndex = 132;
-            this.FlatRbOriginal.TabStop = true;
-            this.FlatRbOriginal.Text = "Original";
-            this.FlatRbOriginal.UseVisualStyleBackColor = true;
             // 
             // JoinBtn
             // 
@@ -649,8 +597,6 @@
             this.FlipsOptionsPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FlipsTurn)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.FlipsRotation)).EndInit();
-            this.FlatRbPanel.ResumeLayout(false);
-            this.FlatRbPanel.PerformLayout();
             this.PiecesTab.ResumeLayout(false);
             this.PiecesTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SizeBar)).EndInit();
@@ -706,9 +652,5 @@
         private System.Windows.Forms.Label TurnFlipLbl;
         private System.Windows.Forms.Label RotationFlipLbl;
         private System.Windows.Forms.NumericUpDown FlipsTurn;
-        private System.Windows.Forms.Panel FlatRbPanel;
-        private System.Windows.Forms.RadioButton FlatRbAttached;
-        private System.Windows.Forms.RadioButton FlatRbBase;
-        private System.Windows.Forms.RadioButton FlatRbOriginal;
     }
 }
