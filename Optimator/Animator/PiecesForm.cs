@@ -610,7 +610,7 @@ namespace Animator
             {
                 if (spot.DrawnLevel == 0)
                 {
-                    Color color = (ShowFixedBtn.BackColor == pressed) ? (spot.Solid == Consts.solidOptions[0]) ? Color.SaddleBrown : Color.PeachPuff
+                    Color color = (ShowFixedBtn.BackColor == pressed) ? (spot.Solid == Consts.solidOptions[0]) ? Consts.option1 : Consts.option2
                         : (selectedSpot == spot) ? Consts.select : Color.Black;
                     spot.Draw(angle, color, board);
                 }

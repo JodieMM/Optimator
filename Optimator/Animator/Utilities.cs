@@ -548,6 +548,7 @@ namespace Animator
         /// <param name="piecesList">The list of pieces that could be clicked</param>
         /// <param name="x">The x coordinate of the click</param>
         /// <param name="y">The y coordinate of the click</param>
+        /// <param name="fromTop">Whether search starts from bottom or top of list</param>
         /// <returns>The index of the piece clicked, or negative one if none selected</returns>
         public static Piece FindClickedSelection(List<Piece> piecesList, int x, int y, bool fromTop = true)
         {
@@ -566,6 +567,35 @@ namespace Animator
                     if (y == range[0] && x >= range[1] && x <= range[2])
                     { 
                         return piecesList[index];
+                    }
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Finds the join clicked from the list.
+        /// </summary>
+        /// <param name="joinsList">The list of joins that could be clicked</param>
+        /// <param name="x">The x coordinate of the click</param>
+        /// <param name="y">The y coordinate of the click</param>
+        /// <param name="fromTop">Whether search starts from bottom or top of list</param>
+        /// <returns>The index of the piece clicked, or negative one if none selected</returns>
+        public static Join FindClickedJoin(List<Join> joinsList, int x, int y, bool fromTop = true)
+        {
+            // Searches joins either from the top or the bottom of the list
+            int index;
+            int increment = fromTop ? -1 : 1;
+            foreach (int range in Consts.Ranges)
+            {
+                for (index = fromTop ? joinsList.Count - 1 : 0; fromTop ? index >= 0 :
+                    index < joinsList.Count; index += increment)
+                {
+                    // Check if Join clicked
+                    if (Math.Abs(x - joinsList[index].CurrentCentre()[0]) <= range &&
+                        Math.Abs(y - joinsList[index].CurrentCentre()[1]) <= range)
+                    {
+                        return joinsList[index];
                     }
                 }
             }

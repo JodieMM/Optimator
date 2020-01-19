@@ -41,7 +41,7 @@ namespace Animator
 
         // UI Precision
         public static int[] Ranges = new int[] { 0, 3, 5, 7, 9 };
-        public const int ClickPrecision = 5;
+        public const int ClickPrecision = 5;        // CLEANING: Replace with ranges? ^^
         public const int CentreBox = 150;
 
         // Piece Defaults
@@ -62,6 +62,8 @@ namespace Animator
         public static Color highlight = Color.ForestGreen;
         public static Color select = Color.Red;
         public static Color lowlight = Color.CadetBlue;
+        public static Color option1 = Color.SaddleBrown;
+        public static Color option2 = Color.PeachPuff;
 
         // Scene Options
         public static object[] possibleChanges = new object[] { "X", "Y", "Rotation", "Turn", "Spin", "Size", "Order", "Removed" };

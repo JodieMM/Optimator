@@ -269,5 +269,29 @@ namespace Animator
                 JoinedPieces.Add(b, new List<Piece> { a });
             }
         }
+
+        /// <summary>
+        /// Finds all of the joins connected to a piece, both base and attached.
+        /// </summary>
+        /// <param name="piece">The piece joins connect to</param>
+        /// <returns>The join and isBase dictionary</returns>
+        public Dictionary<Join, bool> FindPieceJoins(Piece piece)
+        {
+            Dictionary<Join, bool> joinsList = new Dictionary<Join, bool>();
+            // Add Base Joins
+            if (JoinedPieces.ContainsKey(piece))
+            {
+                foreach (Piece attached in JoinedPieces[piece])
+                {
+                    joinsList.Add(JoinsIndex[attached], true);
+                }
+            }
+            // Add Attached Joins
+            if (JoinsIndex.ContainsKey(piece))
+            {
+                joinsList.Add(JoinsIndex[piece], false);
+            }
+            return joinsList;
+        }
     }
 }

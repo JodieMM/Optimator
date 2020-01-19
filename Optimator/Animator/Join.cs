@@ -111,6 +111,16 @@ namespace Animator
         }
 
         /// <summary>
+        /// Draws a + at the given spot.
+        /// </summary>
+        /// <param name="colour">Colour of +</param>
+        /// <param name="board">Board to draw to</param>
+        public void Draw(Color colour, Graphics board)
+        {
+            Visuals.DrawCross(CurrentCentre()[0], CurrentCentre()[1], colour, board);
+        }
+
+        /// <summary>
         /// Determines if the attached piece should be in front
         /// of the base piece.
         /// </summary>
@@ -141,6 +151,18 @@ namespace Animator
             double attachedY = B.State.Y + attachedJoinB[1] + attachedJoinA[1] + personalState.Y;
 
             return new State(attachedX, attachedY, attachedR, attachedT, attachedS, attachedSM);
+        }
+
+        /// <summary>
+        /// Uses base's current state to determine join's centre
+        /// </summary>
+        /// <returns>Join's current centre</returns>
+        public double[] CurrentCentre()
+        {
+            double[] bJoin = new double[2] {Utils.RotOrTurnCalculation(B.State.R, BX, BXRight),
+                Utils.RotOrTurnCalculation(B.State.T, BY, BYDown) };
+
+            return new double[2] {B.State.X + bJoin[0], B.State.Y + bJoin[1]};
         }
     }
 }

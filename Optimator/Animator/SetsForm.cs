@@ -16,6 +16,7 @@ namespace Animator
         #region Sets Form Variables
         private Set WIP = new Set();
         private Piece selected = null;
+        private Join selectedJoin = null;
 
         private Graphics original;
         private Graphics rotated;
@@ -335,9 +336,12 @@ namespace Animator
             // Move the Piece's Join            
             if (JoinBtn.BackColor == pressed)
             {
-                if (Math.Abs(e.X - (selected.State.GetCoords()[0] - (sent != 1 ? WIP.JoinsIndex[selected].AX : WIP.JoinsIndex[selected].AXRight)))
-                <= Consts.ClickPrecision && Math.Abs(e.Y - (selected.State.GetCoords()[1] - WIP.JoinsIndex[selected].AY)) <= Consts.ClickPrecision)
+                var clickedJoin = Utils.FindClickedJoin(new List<Join>(WIP.FindPieceJoins(selected).Keys),
+                    e.X, e.Y, SelectFromTopCb.Checked);
+
+                if (clickedJoin != null)
                 {
+                    selectedJoin = clickedJoin;
                     originalMoving = new int[] { e.X, e.Y };
                     moving = sent;
                 }
@@ -473,10 +477,13 @@ namespace Animator
                 {
                     // TODO: Consider JoinFlatRb
                     Join modifying = WIP.JoinsIndex[selected];
-                    double[] newJoinPosition = new double[2] { selected.State.GetCoords()[0] - 
-                        (sent == 1 ? WIP.JoinsIndex[selected].AXRight : WIP.JoinsIndex[selected].AX) + x,
-                        selected.State.GetCoords()[1] - 
-                        (sent == 2 ? WIP.JoinsIndex[selected].AYDown : WIP.JoinsIndex[selected].AY) + y};
+                    // ASSUMES SELECTED IS ATTACHED
+                    var xPosition = selected.State.GetCoords()[0] - (sent == 1 ? modifying.AXRight : modifying.AX) + x;
+                    var yPosition = selected.State.GetCoords()[1] - (sent == 2 ? modifying.AYDown : modifying.AY) + y;
+
+
+
+                    double[] newJoinPosition = new double[2] { xPosition, yPosition};
 
                     if (sent == 0)
                     {
@@ -534,6 +541,7 @@ namespace Animator
         {
             moving = -1;
             movingFar = false;
+            selectedJoin = null;
         }
 
         /// <summary>
@@ -612,9 +620,9 @@ namespace Animator
             var boards = new Graphics[3] { original, rotated, turned };
 
             // For Each Angle
-            for (int index = 0; index < 3; index++)
+            for (int angle = 0; angle < 3; angle++)
             {
-                FindCorrectStates(index);
+                FindCorrectStates(angle);
 
                 // Draw Pieces
                 foreach (Piece piece in WIP.PiecesList)
@@ -622,33 +630,39 @@ namespace Animator
                     // Moving
                     if (selected != null && piece == selected && movingFar)
                     {
-                        piece.Draw(boards[index], piece.State, new ColourState(piece.ColourState, Consts.shadowShade));
+                        piece.Draw(boards[angle], piece.State, new ColourState(piece.ColourState, Consts.shadowShade));
                     }
                     // Selected
                     else if (selected != null && piece == selected)
                     {
-                        piece.Draw(boards[index], piece.State, new ColourState(piece.ColourState, Consts.select));
+                        piece.Draw(boards[angle], piece.State, new ColourState(piece.ColourState, Consts.select));
                     }
                     // Attached to Selected
                     else if (selected != null && WIP.JoinedPieces.ContainsKey(selected) && WIP.JoinedPieces[selected].Contains(piece))
                     {
-                        piece.Draw(boards[index], piece.State, new ColourState(piece.ColourState, Consts.highlight));
+                        piece.Draw(boards[angle], piece.State, new ColourState(piece.ColourState, Consts.highlight));
                     }
                     // Base of Selected
                     else if (selected != null && WIP.JoinsIndex.ContainsKey(selected) && WIP.JoinsIndex[selected].B == piece)
                     {
-                        piece.Draw(boards[index], piece.State, new ColourState(piece.ColourState, Consts.lowlight));
+                        piece.Draw(boards[angle], piece.State, new ColourState(piece.ColourState, Consts.lowlight));
                     }
                     else
                     {
-                        piece.Draw(boards[index], piece.State);
+                        piece.Draw(boards[angle], piece.State);
                     }
                 }
 
-                // Draw Join if Moving
-                if (JoinBtn.BackColor == pressed && WIP.JoinsIndex.ContainsKey(selected))
+                // Draw Joins if JoinBtn Pressed
+                if (JoinBtn.BackColor == pressed)
                 {
-                    WIP.JoinsIndex[selected].Draw(index, Consts.select, boards[index]);
+                    var joinsDraw = WIP.FindPieceJoins(selected);
+                    foreach (KeyValuePair<Join, bool> joinDraw in joinsDraw)
+                    {
+                        joinDraw.Key.Draw(joinDraw.Value ? Consts.option1 : Consts.option2, boards[angle]);
+                    }
+
+                    WIP.JoinsIndex[selected].Draw(angle, Consts.select, boards[angle]);
                 }
             }
         }
