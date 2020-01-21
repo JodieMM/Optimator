@@ -262,7 +262,7 @@ namespace Animator
             {
                 FlipsOptionsPanel.Visible = FlipsCb.Checked;
                 WIP.JoinsIndex[selected].FlipAngle = FlipsCb.Checked ? (double)FlipsRotation.Value : -1;    
-                // TODO: Turn value
+                // SortOrder: Turn value
             }
         }
 
@@ -424,11 +424,8 @@ namespace Animator
                 // Move Join
                 if (JoinBtn.BackColor == pressed)
                 {
-                    Visuals.DrawCross(selected.State.GetCoords()[0] - 
-                        (sent == 1 ? WIP.JoinsIndex[selected].AXRight : WIP.JoinsIndex[selected].AX) + xChange,
-                        selected.State.GetCoords()[1] - 
-                        (sent == 2 ? WIP.JoinsIndex[selected].AYDown : WIP.JoinsIndex[selected].AY) + yChange,
-                        Consts.shadowShade, board);
+                    Visuals.DrawCross(selectedJoin.AngledCentre(sent)[0] + xChange,
+                        selectedJoin.AngledCentre(sent)[1] + yChange, Consts.shadowShade, board);
                 }
                 // Move Piece
                 else
@@ -475,32 +472,50 @@ namespace Animator
                 // Move Join
                 if (JoinBtn.BackColor == pressed)
                 {
-                    // TODO: Consider JoinFlatRb
-                    Join modifying = WIP.JoinsIndex[selected];
-                    // ASSUMES SELECTED IS ATTACHED
-                    var xPosition = selected.State.GetCoords()[0] - (sent == 1 ? modifying.AXRight : modifying.AX) + x;
-                    var yPosition = selected.State.GetCoords()[1] - (sent == 2 ? modifying.AYDown : modifying.AY) + y;
-
-
-
-                    double[] newJoinPosition = new double[2] { xPosition, yPosition};
-
-                    if (sent == 0)
+                    if (selectedJoin != null)
                     {
-                        modifying.AX = modifying.AXRight = selected.State.GetCoords()[0] - newJoinPosition[0];
-                        modifying.AY = modifying.AYDown = selected.State.GetCoords()[1] - newJoinPosition[1];
-                        modifying.BX = modifying.BXRight = newJoinPosition[0] - modifying.B.State.GetCoords()[0];
-                        modifying.BY = modifying.BYDown = newJoinPosition[1] - modifying.B.State.GetCoords()[1];
-                    }
-                    else if (sent == 1)
-                    {
-                        modifying.AXRight = selected.State.GetCoords()[0] - newJoinPosition[0];
-                        modifying.BXRight = newJoinPosition[0] - modifying.B.State.GetCoords()[0];
-                    }
-                    else if (sent == 2)
-                    {
-                        modifying.AYDown = selected.State.GetCoords()[1] - newJoinPosition[1];
-                        modifying.BYDown = newJoinPosition[1] - modifying.B.State.GetCoords()[1];
+                        double[] position = selectedJoin.AngledCentre(sent);
+                        double[] newJoinPosition = new double[2] { position[0] + x, position[1] + y };
+
+                        // Change different angles based on board
+                        if (sent == 0)
+                        {
+                            // Change different angles based on whether selected is the attached or base
+                            if (WIP.JoinsIndex[selected] == selectedJoin)
+                            {
+                                selectedJoin.AX = selectedJoin.AXRight = selected.State.GetCoords()[0] - newJoinPosition[0];
+                                selectedJoin.AY = selectedJoin.AYDown = selected.State.GetCoords()[1] - newJoinPosition[1];
+                            }
+                            else
+                            {
+                                selectedJoin.BX = selectedJoin.BXRight = newJoinPosition[0] - selectedJoin.B.State.GetCoords()[0];
+                                selectedJoin.BY = selectedJoin.BYDown = newJoinPosition[1] - selectedJoin.B.State.GetCoords()[1];
+                            }
+                        }
+                        else if (sent == 1)
+                        {
+                            // Change different angles based on whether selected is the attached or base
+                            if (WIP.JoinsIndex[selected] == selectedJoin)
+                            {
+                                selectedJoin.AXRight = selected.State.GetCoords()[0] - newJoinPosition[0];
+                            }
+                            else
+                            {
+                                selectedJoin.BXRight = newJoinPosition[0] - selectedJoin.B.State.GetCoords()[0];
+                            }
+                        }
+                        else if (sent == 2)
+                        {
+                            // Change different angles based on whether selected is the attached or base
+                            if (WIP.JoinsIndex[selected] == selectedJoin)
+                            {
+                                selectedJoin.AYDown = selected.State.GetCoords()[1] - newJoinPosition[1];
+                            }
+                            else
+                            {
+                                selectedJoin.BYDown = newJoinPosition[1] - selectedJoin.B.State.GetCoords()[1];
+                            }
+                        }
                     }
                 }
                 // Move Piece
@@ -628,7 +643,7 @@ namespace Animator
                 foreach (Piece piece in WIP.PiecesList)
                 {
                     // Moving
-                    if (selected != null && piece == selected && movingFar)
+                    if (selected != null && piece == selected && JoinBtn.BackColor != pressed && movingFar)
                     {
                         piece.Draw(boards[angle], piece.State, new ColourState(piece.ColourState, Consts.shadowShade));
                     }
@@ -659,10 +674,8 @@ namespace Animator
                     var joinsDraw = WIP.FindPieceJoins(selected);
                     foreach (KeyValuePair<Join, bool> joinDraw in joinsDraw)
                     {
-                        joinDraw.Key.Draw(joinDraw.Value ? Consts.option1 : Consts.option2, boards[angle]);
+                        joinDraw.Key.Draw(joinDraw.Key == selectedJoin ? Consts.select : joinDraw.Value ? Consts.option1 : Consts.option2, boards[angle]);
                     }
-
-                    WIP.JoinsIndex[selected].Draw(angle, Consts.select, boards[angle]);
                 }
             }
         }

@@ -127,7 +127,7 @@ namespace Animator
         /// <returns>True if the attached piece is in front</returns>
         public bool AttachedInFront()
         {
-            // TODO: Implement function (X & Y First?)
+            // SortOrder: Implement function (X & Y First?)
             return true;
         }
 
@@ -163,6 +163,16 @@ namespace Animator
                 Utils.RotOrTurnCalculation(B.State.T, BY, BYDown) };
 
             return new double[2] {B.State.X + bJoin[0], B.State.Y + bJoin[1]};
+        }
+
+        /// <summary>
+        /// Finds the centre of the join based on an angle.
+        /// </summary>
+        /// <param name="angle">0 original, 1 rotated, 2 turned</param>
+        /// <returns></returns>
+        public double[] AngledCentre(int angle)
+        {
+            return new double[2] { B.State.X + (angle == 1 ? BXRight : BX), B.State.Y + (angle == 2 ? BYDown : BY) };            
         }
     }
 }

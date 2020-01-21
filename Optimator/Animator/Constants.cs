@@ -63,7 +63,7 @@ namespace Animator
         public static Color select = Color.Red;
         public static Color lowlight = Color.CadetBlue;
         public static Color option1 = Color.SaddleBrown;
-        public static Color option2 = Color.PeachPuff;
+        public static Color option2 = Color.PeachPuff;      //TODO: Change to a more visible colour
 
         // Scene Options
         public static object[] possibleChanges = new object[] { "X", "Y", "Rotation", "Turn", "Spin", "Size", "Order", "Removed" };
