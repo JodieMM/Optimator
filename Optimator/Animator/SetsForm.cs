@@ -336,6 +336,8 @@ namespace Animator
             // Move the Piece's Join            
             if (JoinBtn.BackColor == pressed)
             {
+                State baseState = WIP.BasePiece.State;
+                FindCorrectStates(sent);
                 var clickedJoin = Utils.FindClickedJoin(new List<Join>(WIP.FindPieceJoins(selected).Keys),
                     e.X, e.Y, SelectFromTopCb.Checked);
 
@@ -345,6 +347,7 @@ namespace Animator
                     originalMoving = new int[] { e.X, e.Y };
                     moving = sent;
                 }
+                WIP.BasePiece.State = baseState;
             }
             else
             {
@@ -481,7 +484,7 @@ namespace Animator
                         if (sent == 0)
                         {
                             // Change different angles based on whether selected is the attached or base
-                            if (WIP.JoinsIndex[selected] == selectedJoin)
+                            if (WIP.JoinsIndex.ContainsKey(selected) && WIP.JoinsIndex[selected] == selectedJoin)
                             {
                                 selectedJoin.AX = selectedJoin.AXRight = selected.State.GetCoords()[0] - newJoinPosition[0];
                                 selectedJoin.AY = selectedJoin.AYDown = selected.State.GetCoords()[1] - newJoinPosition[1];
@@ -495,7 +498,7 @@ namespace Animator
                         else if (sent == 1)
                         {
                             // Change different angles based on whether selected is the attached or base
-                            if (WIP.JoinsIndex[selected] == selectedJoin)
+                            if (WIP.JoinsIndex.ContainsKey(selected) && WIP.JoinsIndex[selected] == selectedJoin)
                             {
                                 selectedJoin.AXRight = selected.State.GetCoords()[0] - newJoinPosition[0];
                             }
@@ -507,7 +510,7 @@ namespace Animator
                         else if (sent == 2)
                         {
                             // Change different angles based on whether selected is the attached or base
-                            if (WIP.JoinsIndex[selected] == selectedJoin)
+                            if (WIP.JoinsIndex.ContainsKey(selected) && WIP.JoinsIndex[selected] == selectedJoin)
                             {
                                 selectedJoin.AYDown = selected.State.GetCoords()[1] - newJoinPosition[1];
                             }
@@ -633,6 +636,7 @@ namespace Animator
             turned = DrawDown.CreateGraphics();
 
             var boards = new Graphics[3] { original, rotated, turned };
+            State baseState = WIP.BasePiece.State;
 
             // For Each Angle
             for (int angle = 0; angle < 3; angle++)
@@ -643,7 +647,7 @@ namespace Animator
                 foreach (Piece piece in WIP.PiecesList)
                 {
                     // Moving
-                    if (selected != null && piece == selected && JoinBtn.BackColor != pressed && movingFar)
+                    if (selected != null && piece == selected && movingFar)
                     {
                         piece.Draw(boards[angle], piece.State, new ColourState(piece.ColourState, Consts.shadowShade));
                     }
@@ -676,6 +680,7 @@ namespace Animator
                     {
                         joinDraw.Key.Draw(joinDraw.Key == selectedJoin ? Consts.select : joinDraw.Value ? Consts.option1 : Consts.option2, boards[angle]);
                     }
+                    WIP.BasePiece.State = baseState;
                 }
             }
         }
