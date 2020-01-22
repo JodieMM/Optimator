@@ -8,8 +8,10 @@ namespace OptimatorTests
     {
         private Piece RandomTriangle()
         {
+            // Arrange
             Piece piece = new Piece();
 
+            // Act
             piece.Data.Add(new Spot(10, 10));
             piece.Data.Add(new Spot(10, 10));
             piece.Data.Add(new Spot(10, 10));

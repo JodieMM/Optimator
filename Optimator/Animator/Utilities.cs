@@ -357,7 +357,7 @@ namespace Optimator
         #region Clone Functions
 
         /// <summary>
-        /// Copies the details from a state into a separate entity.
+        /// Copies the details from a state into a separate object.
         /// </summary>
         /// <param name="state">The state to clone</param>
         /// <returns>A separate State</returns>
@@ -367,13 +367,31 @@ namespace Optimator
         }
 
         /// <summary>
-        /// Copies the details from a colour state into a separate entity.
+        /// Copies the details from a colour state into a separate object.
         /// </summary>
         /// <param name="state">The colour state to clone</param>
         /// <returns>A separate ColourState</returns>
         public static ColourState CloneColourState(ColourState state)
         {
             return new ColourState(state.ColourType, state.FillColour, state.OutlineColour);
+        }
+
+        /// <summary>
+        /// Copies the details from a piece into a seperate object.
+        /// </summary>
+        /// <param name="piece">Piece to clone</param>
+        /// <returns>New piece object with same details</returns>
+        public static Piece ClonePiece(Piece piece)
+        {
+            Piece clone = new Piece
+            {
+                Data = piece.Data,
+                State = CloneState(piece.State),
+                ColourState = CloneColourState(piece.ColourState),
+                OutlineWidth = piece.OutlineWidth,
+                PieceDetails = piece.PieceDetails
+            };
+            return clone;
         }
 
         #endregion
@@ -502,6 +520,25 @@ namespace Optimator
             }
 
             return toReturn;
+        }
+
+        /// <summary>
+        /// Changes the centre of a WIP piece to 0,0
+        /// </summary>
+        /// <param name="WIP">The piece being built</param>
+        public static void CentrePieceOnAxis(Piece WIP)
+        {
+            State defaultState = new State();
+            double[] centre = FindMid(WIP.GetPoints(defaultState));
+            double[] centreR = FindMid(WIP.GetPoints(new State(defaultState, 1, 90)));
+            double[] centreT = FindMid(WIP.GetPoints(new State(defaultState, 2, 90)));
+            foreach (var spot in WIP.Data)
+            {
+                spot.X -= centre[0];
+                spot.Y -= centre[1];
+                spot.XRight -= centreR[0];
+                spot.YDown -= centreT[1];
+            }
         }
 
 

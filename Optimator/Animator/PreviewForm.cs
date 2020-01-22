@@ -14,6 +14,7 @@ namespace Optimator
     {
         #region Preview Variables
         private Part WIP;
+        private State Position = new State();
         private Graphics g;
         #endregion
 
@@ -27,6 +28,7 @@ namespace Optimator
         {
             InitializeComponent();
             WIP = part;
+            Position.SetCoordsBasedOnBoard(DrawPanel);
         }
 
         /// <summary>
@@ -66,11 +68,11 @@ namespace Optimator
         {
             if (sender == RotationTrack)
             {
-                WIP.ToPiece().State.R = RotationTrack.Value;
+                Position.R = RotationTrack.Value;
             }
             else if (sender == TurnTrack)
             {
-                WIP.ToPiece().State.T = TurnTrack.Value;
+                Position.T = TurnTrack.Value;
             }
 
             DisplayDrawings();
@@ -83,9 +85,7 @@ namespace Optimator
         {
             DrawPanel.Refresh();
             g = DrawPanel.CreateGraphics();
-            var tempState = Utils.CloneState(WIP.ToPiece().State);
-            tempState.SetCoordsBasedOnBoard(DrawPanel);
-            WIP.Draw(g);
+            WIP.Draw(g, Position);
 
             //// HIDDEN: Used in testing rot/turn mixing
             //foreach (Spot spot in WIP.ToPiece().Data)

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Optimator;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace OptimatorTests
 {
@@ -16,6 +17,8 @@ namespace OptimatorTests
             piece.Data.Add(new Spot(100, 100, 100, 50));
             piece.Data.Add(new Spot(150, 50, 100, 50));
             piece.Data.Add(new Spot(100, 50));
+
+            Utils.CentrePieceOnAxis(piece);
 
             return piece;
         }
@@ -33,7 +36,7 @@ namespace OptimatorTests
             {
                 for (int coord = 0; coord < 2; coord++)
                 {
-                    if (correct[index][coord] != actual[index][coord])
+                    if (Math.Abs(correct[index][coord] - actual[index][coord]) > 1)
                     {
                         return false;
                     }
@@ -48,9 +51,9 @@ namespace OptimatorTests
             State state = new State();
             var correct = new List<double[]>
             {
-                new double[] {100, 100},
-                new double[] {150, 50},
-                new double[] {100, 50}
+                new double[] {-25, 25},
+                new double[] {25, -25},
+                new double[] {-25, -25}
             };
             var triangle = RightAngledTriangleShapeTest().GetPoints(state);
             Assert.IsTrue(CompareLists(correct, triangle));
@@ -62,9 +65,9 @@ namespace OptimatorTests
             State state = new State(new State(), 1, 90);
             var correct = new List<double[]>
             {
-                new double[] {100, 100},
-                new double[] {100, 50},
-                new double[] {100, 50}
+                new double[] {0, 25},
+                new double[] {0, -25},
+                new double[] {0, -25}
             };
             var triangle = RightAngledTriangleShapeTest().GetPoints(state);
             Assert.IsTrue(CompareLists(correct, triangle));
@@ -76,9 +79,9 @@ namespace OptimatorTests
             State state = new State(new State(), 2, 90);
             var correct = new List<double[]>
             {
-                new double[] {100, 50},
-                new double[] {150, 50},
-                new double[] {100, 50}
+                new double[] {-25, 0},
+                new double[] {25, 0},
+                new double[] {-25, 0}
             };
             var triangle = RightAngledTriangleShapeTest().GetPoints(state);
             Assert.IsTrue(CompareLists(correct, triangle));
@@ -90,9 +93,9 @@ namespace OptimatorTests
             State state = new State(new State(), 3, 90, 90);
             var correct = new List<double[]>
             {
-                new double[] {100, 50},
-                new double[] {100, 50},
-                new double[] {100, 50}
+                new double[] {0, 0},
+                new double[] {0, 0},
+                new double[] {0, 0}
             };
             var triangle = RightAngledTriangleShapeTest().GetPoints(state);
             Assert.IsTrue(CompareLists(correct, triangle));
@@ -104,9 +107,9 @@ namespace OptimatorTests
             State state = new State(new State(), 1, 45);
             var correct = new List<double[]>
             {
-                new double[] {100, 100},
-                new double[] {125, 50},
-                new double[] {100, 50}
+                new double[] {-12.5, 25},
+                new double[] { 12.5, -25},
+                new double[] {-12.5, -25}
             };
             var triangle = RightAngledTriangleShapeTest().GetPoints(state);
             Assert.IsTrue(CompareLists(correct, triangle));
@@ -118,9 +121,9 @@ namespace OptimatorTests
             State state = new State(new State(), 2, 45);
             var correct = new List<double[]>
             {
-                new double[] {100, 75},
-                new double[] {150, 50},
-                new double[] {100, 50}
+                new double[] {-25, 12.5},
+                new double[] {25, -12.5},
+                new double[] {-25, -12.5 }
             };
             var triangle = RightAngledTriangleShapeTest().GetPoints(state);
             Assert.IsTrue(CompareLists(correct, triangle));
@@ -132,9 +135,51 @@ namespace OptimatorTests
             State state = new State(new State(), 3, 45, 45);
             var correct = new List<double[]>
             {
-                new double[] {100, 75},
-                new double[] {125, 50},
-                new double[] {100, 50}
+                new double[] {-12.5, 12.5},
+                new double[] { 12.5, -12.5},
+                new double[] {-12.5, -12.5 }
+            };
+            var triangle = RightAngledTriangleShapeTest().GetPoints(state);
+            Assert.IsTrue(CompareLists(correct, triangle));
+        }
+
+        [TestMethod]
+        public void RAT_R180T0()
+        {
+            State state = new State(new State(), 1, 180);
+            var correct = new List<double[]>
+            {
+                new double[] {25, 25},
+                new double[] {25, -25},
+                new double[] {-25, -25}
+            };
+            var triangle = RightAngledTriangleShapeTest().GetPoints(state);
+            Assert.IsTrue(CompareLists(correct, triangle));
+        }
+
+        [TestMethod]
+        public void RAT_R180T90()
+        {
+            State state = new State(new State(), 3, 180, 90);
+            var correct = new List<double[]>
+            {
+                new double[] {25, 0},
+                new double[] {25, 0},
+                new double[] {-25, 0}
+            };
+            var triangle = RightAngledTriangleShapeTest().GetPoints(state);
+            Assert.IsTrue(CompareLists(correct, triangle));
+        }
+
+        [TestMethod]
+        public void RAT_R315T45()
+        {
+            State state = new State(new State(), 3, 315, 45);
+            var correct = new List<double[]>
+            {
+                new double[] {-12.5, 12.5},
+                new double[] {12.5, -12.5},
+                new double[] {-12.5, -12.5}
             };
             var triangle = RightAngledTriangleShapeTest().GetPoints(state);
             Assert.IsTrue(CompareLists(correct, triangle));
