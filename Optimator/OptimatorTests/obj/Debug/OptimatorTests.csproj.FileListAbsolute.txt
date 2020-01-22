@@ -1,0 +1,17 @@
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\OptimatorTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\OptimatorTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\OptimatorTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\OptimatorTests\bin\Debug\OptimatorTests.dll
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\OptimatorTests\bin\Debug\OptimatorTests.pdb
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\OptimatorTests\bin\Debug\Animator.exe
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\OptimatorTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.dll
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\OptimatorTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\OptimatorTests\bin\Debug\Animator.pdb
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\OptimatorTests\bin\Debug\Animator.exe.config
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\OptimatorTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.xml
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\OptimatorTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\OptimatorTests\obj\Debug\OptimatorTests.csprojAssemblyReference.cache
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\OptimatorTests\obj\Debug\OptimatorTests.csproj.CoreCompileInputs.cache
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\OptimatorTests\obj\Debug\OptimatorTests.csproj.CopyComplete
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\OptimatorTests\obj\Debug\OptimatorTests.dll
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\OptimatorTests\obj\Debug\OptimatorTests.pdb

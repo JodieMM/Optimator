@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Animator", "Animator\Animator.csproj", "{B10D37FE-9F1F-4BF2-BB29-73777851A851}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptimatorTests", "OptimatorTests\OptimatorTests.csproj", "{38F5EB92-28E2-4153-926D-859C7D484639}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,8 +17,15 @@ Global
 		{B10D37FE-9F1F-4BF2-BB29-73777851A851}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B10D37FE-9F1F-4BF2-BB29-73777851A851}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B10D37FE-9F1F-4BF2-BB29-73777851A851}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38F5EB92-28E2-4153-926D-859C7D484639}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38F5EB92-28E2-4153-926D-859C7D484639}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38F5EB92-28E2-4153-926D-859C7D484639}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38F5EB92-28E2-4153-926D-859C7D484639}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {98AE33EA-3EA5-43E9-B887-192EDF290C5E}
 	EndGlobalSection
 EndGlobal
