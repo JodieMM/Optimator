@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
-namespace Animator
+namespace Optimator
 {
     /// <summary>
     /// Custom functions for drawing. Replaces use of System.Drawing.Drawing2D

@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using Animator;
+﻿using System.Collections.Generic;
+using Optimator;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace OptimatorTests

@@ -4,7 +4,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Collections.Generic;
 
-namespace Animator
+namespace Optimator
 {
     /// <summary>
     /// The form for building sets.

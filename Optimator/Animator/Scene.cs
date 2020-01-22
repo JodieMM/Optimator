@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace Animator
+namespace Optimator
 {
     /// <summary>
     /// A class to hold information about each scene.

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Animator.Properties
+namespace Optimator.Properties
 {
 
 

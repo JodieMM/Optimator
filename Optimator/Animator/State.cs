@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace Animator
+namespace Optimator
 {
     /// <summary>
     /// A class to maintain the current position, angle and size of a part.

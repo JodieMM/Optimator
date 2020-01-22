@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 
-namespace Animator
+namespace Optimator
 {
     /// <summary>
     /// A class to indicate how two pieces

@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace Animator
+namespace Optimator
 {
     /// <summary>
     /// Constant values used throughout the program.

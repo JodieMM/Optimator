@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 
-namespace Animator
+namespace Optimator
 {
     /// <summary>
     /// A collection of pieces and how they interact with each other.

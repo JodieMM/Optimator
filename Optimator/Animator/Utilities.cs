@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Text.RegularExpressions;
 using System;
 
-namespace Animator
+namespace Optimator
 {
     /// <summary>
     /// Holds utility functions common to multiple classes and/or forms.

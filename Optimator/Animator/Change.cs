@@ -1,4 +1,4 @@
-﻿namespace Animator
+﻿namespace Optimator
 {
     /// <summary>
     /// A class to hold animations changes.

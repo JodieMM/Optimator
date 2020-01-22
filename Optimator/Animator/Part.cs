@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 
-namespace Animator
+namespace Optimator
 {
     /// <summary>
     /// A class to encapsulate individual pieces and their grouped form, sets.

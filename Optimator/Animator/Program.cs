@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace Animator
+namespace Optimator
 {
     static class Program
     {

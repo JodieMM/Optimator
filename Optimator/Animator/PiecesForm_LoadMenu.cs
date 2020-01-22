@@ -3,7 +3,7 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
-namespace Animator
+namespace Optimator
 {
     /// <summary>
     /// A form for viewing the load options.

@@ -49,6 +49,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="RandomTriangleRTTests.cs" />
     <Compile Include="RightAngleTriangleRTTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -56,9 +57,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Animator\Animator.csproj">
+    <ProjectReference Include="..\Animator\Optimator.csproj">
       <Project>{b10d37fe-9f1f-4bf2-bb29-73777851a851}</Project>
-      <Name>Animator</Name>
+      <Name>Optimator</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

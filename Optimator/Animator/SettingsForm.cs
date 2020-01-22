@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace Animator
+namespace Optimator
 {
     /// <summary>
     /// The form for changing the settings.

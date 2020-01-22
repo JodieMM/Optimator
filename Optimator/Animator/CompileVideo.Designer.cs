@@ -1,4 +1,4 @@
-﻿namespace Animator
+﻿namespace Optimator
 {
     partial class CompileVideo
     {

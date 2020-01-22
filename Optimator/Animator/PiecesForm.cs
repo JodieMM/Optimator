@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
 
-namespace Animator
+namespace Optimator
 {
     /// <summary>
     /// The form used to generate and modify pieces and points.

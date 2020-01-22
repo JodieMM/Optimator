@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace Animator
+namespace Optimator
 {
     /// <summary>
     /// A display form to alert the user that the

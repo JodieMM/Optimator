@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace Animator
+namespace Optimator
 {
     /// <summary>
     /// Holds the state of the fill and outline colours.
