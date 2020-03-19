@@ -357,6 +357,22 @@ namespace Optimator
         #region Clone Functions
 
         /// <summary>
+        /// Clones a list into a seperate object.
+        /// </summary>
+        /// <typeparam name="T">Type of list</typeparam>
+        /// <param name="list">List to clone</param>
+        /// <returns>Seperate object with the same contents</returns>
+        public static List<Spot> CloneSpotList(List<Spot> list)
+        {
+            List<Spot> clone = new List<Spot>();
+            foreach (Spot spot in list)
+            {
+                clone.Add(new Spot(spot.X, spot.Y, spot.XRight, spot.YDown, spot.Connector, spot.Solid, spot.DrawnLevel));
+            }
+            return clone;
+        }
+
+        /// <summary>
         /// Copies the details from a state into a separate object.
         /// </summary>
         /// <param name="state">The state to clone</param>
@@ -385,7 +401,7 @@ namespace Optimator
         {
             Piece clone = new Piece
             {
-                Data = piece.Data,
+                Data = CloneSpotList(piece.Data),
                 State = CloneState(piece.State),
                 ColourState = CloneColourState(piece.ColourState),
                 OutlineWidth = piece.OutlineWidth,

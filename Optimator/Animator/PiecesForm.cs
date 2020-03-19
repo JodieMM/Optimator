@@ -64,6 +64,25 @@ namespace Optimator
 
             WIP = new Piece();
             Utils.CheckValidFolder();
+
+            //HIDDEN: Used for visualising testing
+            // Multi-spot squircle
+            WIP.Data.Add(new Spot(143, 55));
+            WIP.Data.Add(new Spot(97, 88));
+            WIP.Data.Add(new Spot(91, 137));
+            WIP.Data.Add(new Spot(128, 175));
+            WIP.Data.Add(new Spot(168, 164));
+            WIP.Data.Add(new Spot(197, 128));
+            WIP.Data.Add(new Spot(196, 71));
+
+            // Multi-spot squircle w/ vertical edge
+            //WIP.Data.Add(new Spot(143, 55));
+            //WIP.Data.Add(new Spot(97, 88));
+            //WIP.Data.Add(new Spot(91, 137));
+            //WIP.Data.Add(new Spot(128, 175));
+            //WIP.Data.Add(new Spot(168, 164));
+            //WIP.Data.Add(new Spot(197, 55));
+            //WIP.Data.Add(new Spot(196, 55));
         }
 
 
@@ -343,6 +362,7 @@ namespace Optimator
         /// <param name="e"></param>
         private void PointBtn_Click(object sender, EventArgs e)
         {
+            DisplayDrawings();            // TEMPORARY
             PointBtn.Text = (PointBtn.Text == "Select") ? "Place" : "Select";
             PointBtn.BackColor = (PointBtn.BackColor == unpressed) ? pressed : unpressed;
         }
@@ -402,20 +422,7 @@ namespace Optimator
             // Save Piece and Close Form
             try
             {
-                //// Centre 0,0
-                //State defaultState = new State();
-                //double[] centre = Utils.FindMid(WIP.GetPoints(defaultState));
-                //double[] centreR = Utils.FindMid(WIP.GetPoints(new State(defaultState, 1, 90)));
-                //double[] centreT = Utils.FindMid(WIP.GetPoints(new State(defaultState, 2, 90)));
-                //foreach (var spot in WIP.Data)
-                //{
-                //    spot.X -= centre[0];
-                //    spot.XRight -= centreR[0];
-                //    spot.Y -= centre[1];
-                //    spot.YDown -= centreT[1];
-                //}
                 Utils.CentrePieceOnAxis(WIP);
-
                 Utils.SaveFile(Utils.GetDirectory(Consts.PiecesFolder, NameTb.Text, Consts.Optr), WIP.GetData());
                 Close();
             }
@@ -617,6 +624,14 @@ namespace Optimator
                         : (selectedSpot == spot) ? Consts.select : Color.Black;
                     spot.Draw(angle, color, board);
                 }
+                else if (spot.DrawnLevel == 1)          // TEMPORARY!! NO ELSE OR ELSE IF
+                {
+                    spot.Draw(angle, Color.Blue, board);
+                }
+                else
+                {
+                    spot.Draw(angle, Color.ForestGreen, board);
+                }
             }
         }
 
@@ -707,71 +722,40 @@ namespace Optimator
         /// <returns>True if piece is valid</returns>
         private bool CheckPiecesValid()
         {
-            var o = WIP.Data;
-            if (o.Count < 2) { return true; }
+            var spots = WIP.Data;
+            if (spots.Count < 2) { return true; }
 
-            // Check X
-            bool bigger = (o[0].X < o[1].X);
+            // Check X, Y, XR and YD for fold backs
+            return CheckShapeDoubleBack(spots, 0, "base") && CheckShapeDoubleBack(spots, 1, "base")
+                && CheckShapeDoubleBack(spots, 2, "rotated") && CheckShapeDoubleBack(spots, 3, "turned");
+        }
+
+        /// <summary>
+        /// Checks that an individual angle does not contain multiple peaks or valleys.
+        /// </summary>
+        /// <param name="spots">The data</param>
+        /// <param name="angle">X, Y, XR or YD</param>
+        /// <param name="name">The angle name for error messages</param>
+        /// <returns>True if only one valley and peak</returns>
+        private bool CheckShapeDoubleBack(List<Spot> spots, int angle, string name)
+        {
+            bool bigger = spots[0].GetCoord(angle) < spots[1].GetCoord(angle);
             int switchCount = 0;
-            for (int index = 0; index < o.Count - 1; index++)
+            for (int index = 0; index < spots.Count - 1; index++)
             {
-                if (o[index].X < o[index + 1].X != bigger)
+                if (spots[index].GetCoord(angle) != spots[Utils.NextIndex(spots, index)].GetCoord(angle))
                 {
-                    bigger = !bigger;
-                    switchCount++;
+                    if (spots[index].GetCoord(angle) < spots[Utils.NextIndex(spots, index)].GetCoord(angle) != bigger)
+                    {
+                        bigger = !bigger;
+                        switchCount++;
+                    }
                 }
             }
             if (switchCount > 2)
             {
-                MessageBox.Show("Invalid base shape. Ensure shape does not fold back on itself.", "Invalid base shape", MessageBoxButtons.OK);
-                return false;
-            }
-            // Check Y
-            bigger = (o[0].Y < o[1].Y);
-            switchCount = 0;
-            for (int index = 0; index < o.Count - 1; index++)
-            {
-                if (o[index].Y < o[index + 1].Y != bigger)
-                {
-                    bigger = !bigger;
-                    switchCount++;
-                }
-            }
-            if (switchCount > 2)
-            {
-                MessageBox.Show("Invalid base shape. Ensure shape does not fold back on itself.", "Invalid base shape", MessageBoxButtons.OK);
-                return false;
-            }
-            // Check XRight
-            bigger = (o[0].XRight < o[1].XRight);
-            switchCount = 0;
-            for (int index = 0; index < o.Count - 1; index++)
-            {
-                if (o[index].XRight < o[index + 1].XRight != bigger)
-                {
-                    bigger = !bigger;
-                    switchCount++;
-                }
-            }
-            if (switchCount > 2)
-            {
-                MessageBox.Show("Invalid rotated shape. Ensure shape does not fold back on itself.", "Invalid rotated shape", MessageBoxButtons.OK);
-                return false;
-            }
-            // Check YDown
-            bigger = (o[0].YDown < o[1].YDown);
-            switchCount = 0;
-            for (int index = 0; index < o.Count - 1; index++)
-            {
-                if (o[index].YDown < o[index + 1].YDown != bigger)
-                {
-                    bigger = !bigger;
-                    switchCount++;
-                }
-            }
-            if (switchCount > 2)
-            {
-                MessageBox.Show("Invalid turned shape. Ensure shape does not fold back on itself.", "Invalid turned shape", MessageBoxButtons.OK);
+                MessageBox.Show("Invalid " + name + " shape. Ensure shape does not fold back on itself.",
+                    "Invalid " + name + " shape", MessageBoxButtons.OK);
                 return false;
             }
             return true;

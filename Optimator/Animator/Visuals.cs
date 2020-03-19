@@ -28,6 +28,22 @@ namespace Optimator
         }
 
         /// <summary>
+        /// Draws a x at the given coordinate
+        /// </summary>
+        /// <param name="xcood">X coordinate of x centre</param>
+        /// <param name="ycood">Y coordinate of x centre</param>
+        /// <param name="colour">Colour of the x</param>
+        /// <param name="board">The graphics board to be drawn on</param>
+        public static void DrawX(double xcood, double ycood, Color colour, Graphics board)
+        {
+            int x = (int)xcood;
+            int y = (int)ycood;
+            Pen pen = new Pen(colour);
+            board.DrawLine(pen, new Point(x - 2, y - 2), new Point(x + 2, y + 2));
+            board.DrawLine(pen, new Point(x + 2, y - 2), new Point(x - 2, y + 2));
+        }
+
+        /// <summary>
         /// Draws a piece with outline and fill
         /// </summary>
         /// <param name="piece">The piece to be drawn</param>

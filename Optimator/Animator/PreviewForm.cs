@@ -88,14 +88,18 @@ namespace Optimator
             WIP.Draw(g, Position);
 
             //// HIDDEN: Used in testing rot/turn mixing
-            //foreach (Spot spot in WIP.ToPiece().Data)
-            //{
-            //    if (spot.DrawnLevel >= 0)
-            //    {
-            //        Visuals.DrawCross(spot.CurrentX, spot.CalculateCurrentValue(WIP.ToPiece().GetAngles()[1],
-            //            new double[] { 150, 150 }, 0), Color.Black, g);
-            //    }
-            //}
+            foreach (Spot spot in WIP.ToPiece().Data)
+            {
+                Color colour = spot.DrawnLevel == 0 ? Color.Black : spot.DrawnLevel == 1 ? Color.Blue : Color.ForestGreen;
+                if (spot.DrawnLevel == 0)
+                {
+                    Visuals.DrawCross(spot.CurrentX + Position.X, spot.CurrentY + Position.Y, colour, g);
+                }
+                else if (spot.DrawnLevel >= 1)
+                {
+                    Visuals.DrawX(spot.CurrentX + Position.X, spot.CurrentY + Position.Y, colour, g);
+                }
+            }
         }
     }
 }

@@ -16,6 +16,7 @@ namespace Optimator
         public double Y { get; set; }
         public double YDown { get; set; }
         public double CurrentX { get; set; }
+        public double CurrentY { get; set; } // TEMPORARY
 
         public string Connector { get; set; }
         public string Solid { get; set; }
@@ -69,6 +70,26 @@ namespace Optimator
         public Spot GetMatch(int xy)
         {
             return xy == 0 ? MatchX : MatchY;
+        }
+
+        /// <summary>
+        /// Get a single coord by integer.
+        /// </summary>
+        /// <param name="angle">0 X, 1 Y, 2 XR, 3 YD</param>
+        /// <returns>The coord value represented by the provided angle</returns>
+        public double GetCoord(int angle)
+        {
+            switch (angle)
+            {
+                case 1:
+                    return Y;
+                case 2:
+                    return XRight;
+                case 3:
+                    return YDown;
+                default:
+                    return X;
+            }
         }
 
 
@@ -181,7 +202,7 @@ namespace Optimator
 
             var original = xy == 0 ? Y : X;
             var angled = xy == 0 ? YDown : XRight;
-            var matchOrig = xy == 0 ? MatchX == null ? original : MatchX.Y : MatchY == null ? original :  MatchY.X;
+            var matchOrig = xy == 0 ? MatchX == null ? original : MatchX.Y : MatchY == null ? original : MatchY.X;
             var matchAng = xy == 0 ? MatchX == null ? angled : MatchX.YDown : MatchY == null ? angled : MatchY.XRight;
 
             if (angle < 90)

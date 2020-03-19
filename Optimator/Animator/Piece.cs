@@ -165,12 +165,14 @@ namespace Optimator
             CalculateMatches(minMax);
             foreach (var spot in Data)
             {
+                //CLEANING: Change so spot variable is unecessary
                 spot.CurrentX = spot.CalculateCurrentValue(state.GetAngles()[0]);
             }
             CalculateMatches(minMax, 0);
             foreach (var spot in Data)
             {
                 points.Add(new double[] { spot.CurrentX, spot.CalculateCurrentValue(state.GetAngles()[1], 0) });
+                spot.CurrentY = spot.CalculateCurrentValue(state.GetAngles()[1], 0);    // TEMPORARY
             }
 
             // Recentre
@@ -281,35 +283,31 @@ namespace Optimator
                     // If spot has no existing match
                     else
                     {
-                        // Only search for match if needed (not max)
-                        if (spot.GetCoordCombination()[xy] != minMax[3 - increase] && spot.GetCoordCombination()[xy] != minMax[2 - increase])
+                        var insertIndex = FindSymmetricalCoordHome(index, xy, coordCombo);
+                        if (insertIndex != -1 && !(xy == 1 && (insertIndex == index || insertIndex == (index + 1) % Data.Count)))
                         {
-                            var insertIndex = FindSymmetricalCoordHome(index, xy, coordCombo);
-                            if (insertIndex != -1)
+                            double[] original = FindSymmetricalOppositeCoord(Data[insertIndex].GetCoordCombination(coordCombo),
+                                Data[Utils.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(coordCombo),
+                                spot.GetCoordCombination(coordCombo)[xy], xy, Data[insertIndex].Connector);
+
+                            double rotated = FindSymmetricalOppositeCoord(Data[insertIndex].GetCoordCombination(coordRot),
+                                Data[Utils.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(coordRot),
+                                original[1], 1, Data[insertIndex].Connector)[0];
+
+                            double turned = FindSymmetricalOppositeCoord(Data[insertIndex].GetCoordCombination(2 + increase),
+                                Data[Utils.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(2 + increase),
+                                original[0], 0, Data[insertIndex].Connector)[1];
+
+                            var basedIndex = Utils.NextIndex(Data, insertIndex, false);
+                            var newSpot = new Spot(original[0], original[1], rotated, turned, Data[basedIndex].Connector, Data[basedIndex].Solid, drawn);
+                            newSpot.SetMatch(xy, spot);
+                            spot.SetMatch(xy, newSpot);
+                            if (drawn == 2)
                             {
-                                double[] original = FindSymmetricalOppositeCoord(Data[insertIndex].GetCoordCombination(coordCombo),
-                                    Data[Utils.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(coordCombo),
-                                    spot.GetCoordCombination(coordCombo)[xy], xy, Data[insertIndex].Connector);
-
-                                double rotated = FindSymmetricalOppositeCoord(Data[insertIndex].GetCoordCombination(coordRot),
-                                    Data[Utils.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(coordRot),
-                                    original[1], 1, Data[insertIndex].Connector)[0];
-
-                                double turned = FindSymmetricalOppositeCoord(Data[insertIndex].GetCoordCombination(2 + increase),
-                                    Data[Utils.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(2 + increase),
-                                    original[0], 0, Data[insertIndex].Connector)[1];
-
-                                var basedIndex = Utils.NextIndex(Data, insertIndex, false);
-                                var newSpot = new Spot(original[0], original[1], rotated, turned, Data[basedIndex].Connector, Data[basedIndex].Solid, drawn);
-                                newSpot.SetMatch(xy, spot);
-                                spot.SetMatch(xy, newSpot);
-                                if (drawn == 2)
-                                {
-                                    newSpot.CurrentX = newSpot.X;
-                                }
-                                Data.Insert(insertIndex, newSpot);
-                                index--;
+                                newSpot.CurrentX = newSpot.X;
                             }
+                            Data.Insert(insertIndex, newSpot);
+                            index--;
                         }
                     }
                 }
@@ -327,6 +325,7 @@ namespace Optimator
         {
             // Find Matches
             var matches = new List<int>();
+            var yx = xy == 0 ? 1 : 0;
             for (int index = 0; index < Data.Count; index++)
             {
                 if (index != matchIndex && Data[index].GetCoordCombination()[xy] == Data[matchIndex].GetCoordCombination()[xy])
@@ -346,7 +345,6 @@ namespace Optimator
             }
             else
             {
-                var yx = xy == 0 ? 1 : 0;
                 var min = 0;
                 var max = 0;
                 for (int index = 1; index < matches.Count; index++)
@@ -408,7 +406,7 @@ namespace Optimator
 
                 searchIndex = (searchIndex + 1) % Data.Count;
             }
-            return -1;       // Error
+            return -1;       // None Found
         }
 
         /// <summary>
@@ -434,6 +432,18 @@ namespace Optimator
                     else
                     {
                         return new double[] { from[0], value };
+                    }
+                }
+                // CHECK
+                else if (from[1] == to[1])
+                {
+                    if (xy == 0)
+                    {
+                        return new double[] { value, from[1] };
+                    }
+                    else
+                    {
+                        return new double[] { to[0], value };
                     }
                 }
 
@@ -591,17 +601,17 @@ namespace Optimator
         {
             for (int index = 0; index < Data.Count; index++)
             {
-                var eraseCheck = xMatch ? Data[index].DrawnLevel > 0 : Data[index].DrawnLevel == 2;
-                if (eraseCheck)
+                Spot spot = Data[index];
+                if (spot.DrawnLevel < (xMatch ? 1 : 2))
                 {
-                    if (Data[index].MatchX != null)
+                    spot.MatchX = null;
+                    if (xMatch)
                     {
-                        Data[index].MatchX.MatchX = null;
+                        spot.MatchY = null;
                     }
-                    if (xMatch && Data[index].MatchY != null)
-                    {
-                        Data[index].MatchY.MatchY = null;
-                    }
+                }
+                else
+                {
                     Data.RemoveAt(index);
                     index--;
                 }
