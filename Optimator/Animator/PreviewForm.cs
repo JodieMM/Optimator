@@ -91,6 +91,14 @@ namespace Optimator
             foreach (Spot spot in WIP.ToPiece().Data)
             {
                 Color colour = spot.DrawnLevel == 0 ? Color.Black : spot.DrawnLevel == 1 ? Color.Blue : Color.ForestGreen;
+                if (WIP.ToPiece().Data.IndexOf(spot) == 6)
+                {
+                    colour = Color.Red;
+                }
+                else if (WIP.ToPiece().Data.IndexOf(spot) == 9)
+                {
+                    colour = Color.Silver;
+                }
                 if (spot.DrawnLevel == 0)
                 {
                     Visuals.DrawCross(spot.CurrentX + Position.X, spot.CurrentY + Position.Y, colour, g);

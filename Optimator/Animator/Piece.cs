@@ -165,7 +165,6 @@ namespace Optimator
             CalculateMatches(minMax);
             foreach (var spot in Data)
             {
-                //CLEANING: Change so spot variable is unecessary
                 spot.CurrentX = spot.CalculateCurrentValue(state.GetAngles()[0]);
             }
             CalculateMatches(minMax, 0);
@@ -283,7 +282,7 @@ namespace Optimator
                     // If spot has no existing match
                     else
                     {
-                        var insertIndex = FindSymmetricalCoordHome(index, xy, coordCombo);
+                        var insertIndex = FindSymmetricalCoordHome(index, xy);
                         if (insertIndex != -1 && !(xy == 1 && (insertIndex == index || insertIndex == (index + 1) % Data.Count)))
                         {
                             double[] original = FindSymmetricalOppositeCoord(Data[insertIndex].GetCoordCombination(coordCombo),
@@ -328,7 +327,7 @@ namespace Optimator
             var yx = xy == 0 ? 1 : 0;
             for (int index = 0; index < Data.Count; index++)
             {
-                if (index != matchIndex && Data[index].GetCoordCombination()[xy] == Data[matchIndex].GetCoordCombination()[xy])
+                if (index != matchIndex && Data[index].GetCoordCombination(3)[xy] == Data[matchIndex].GetCoordCombination(3)[xy])
                 {
                     matches.Add(index);
                 }
@@ -376,18 +375,18 @@ namespace Optimator
         /// <param name="matchIndex">The index of the selected coordinate</param>
         /// <param name="xy">Whether searching for a match in x (0) or y (1)</param>
         /// <returns>The index where the matching point would go or -1 in error</returns>
-        public int FindSymmetricalCoordHome(int matchIndex, int xy, int angle)
+        public int FindSymmetricalCoordHome(int matchIndex, int xy)
         {
-            double goal = Data[matchIndex].GetCoordCombination(angle)[xy];
+            double goal = Data[matchIndex].GetCoordCombination(3)[xy];
             var bigger = false;
             int searchIndex = -1;
 
             // Find whether we're searching above or below the goal
             for (int index = 0; index < Data.Count && searchIndex == -1; index++)
             {
-                if (Data[index].GetCoordCombination(angle)[xy] != goal)
+                if (Data[index].GetCoordCombination(3)[xy] != goal)
                 {
-                    bigger = (Data[index].GetCoordCombination(angle)[xy] > goal);
+                    bigger = (Data[index].GetCoordCombination(3)[xy] > goal);
                     searchIndex = (index + 1) % Data.Count;
                 }
             }
@@ -395,11 +394,11 @@ namespace Optimator
             // Find index position
             for (int index = 0; index < Data.Count; index++)
             {
-                if (Data[searchIndex].GetCoordCombination(angle)[xy] == goal)
+                if (Data[searchIndex].GetCoordCombination(3)[xy] == goal)
                 {
                     bigger = !bigger;
                 }
-                else if (Data[searchIndex].GetCoordCombination(angle)[xy] > goal != bigger)
+                else if (Data[searchIndex].GetCoordCombination(3)[xy] > goal != bigger)
                 {
                     return searchIndex;
                 }
