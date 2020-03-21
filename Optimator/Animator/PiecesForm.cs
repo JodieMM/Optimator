@@ -64,25 +64,6 @@ namespace Optimator
 
             WIP = new Piece();
             Utils.CheckValidFolder();
-
-            //HIDDEN: Used for visualising testing
-            // Multi-spot squircle
-            WIP.Data.Add(new Spot(143, 55));
-            WIP.Data.Add(new Spot(97, 88));
-            WIP.Data.Add(new Spot(91, 137));
-            WIP.Data.Add(new Spot(128, 175));
-            WIP.Data.Add(new Spot(168, 164));
-            WIP.Data.Add(new Spot(197, 128));
-            WIP.Data.Add(new Spot(196, 71));
-
-            // Multi-spot squircle w/ vertical edge
-            //WIP.Data.Add(new Spot(143, 55));
-            //WIP.Data.Add(new Spot(97, 88));
-            //WIP.Data.Add(new Spot(91, 137));
-            //WIP.Data.Add(new Spot(128, 175));
-            //WIP.Data.Add(new Spot(168, 164));
-            //WIP.Data.Add(new Spot(197, 55));
-            //WIP.Data.Add(new Spot(196, 55));
         }
 
 
@@ -362,7 +343,6 @@ namespace Optimator
         /// <param name="e"></param>
         private void PointBtn_Click(object sender, EventArgs e)
         {
-            DisplayDrawings();            // TEMPORARY
             PointBtn.Text = (PointBtn.Text == "Select") ? "Place" : "Select";
             PointBtn.BackColor = (PointBtn.BackColor == unpressed) ? pressed : unpressed;
         }
@@ -623,14 +603,6 @@ namespace Optimator
                     Color color = (ShowFixedBtn.BackColor == pressed) ? (spot.Solid == Consts.solidOptions[0]) ? Consts.option1 : Consts.option2
                         : (selectedSpot == spot) ? Consts.select : Color.Black;
                     spot.Draw(angle, color, board);
-                }
-                else if (spot.DrawnLevel == 1)          // TEMPORARY!! NO ELSE OR ELSE IF
-                {
-                    spot.Draw(angle, Color.Blue, board);
-                }
-                else
-                {
-                    spot.Draw(angle, Color.ForestGreen, board);
                 }
             }
         }

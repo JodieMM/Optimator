@@ -171,7 +171,6 @@ namespace Optimator
             foreach (var spot in Data)
             {
                 points.Add(new double[] { spot.CurrentX, spot.CalculateCurrentValue(state.GetAngles()[1], 0) });
-                spot.CurrentY = spot.CalculateCurrentValue(state.GetAngles()[1], 0);    // TEMPORARY
             }
 
             // Recentre
@@ -261,7 +260,8 @@ namespace Optimator
             var drawn = xy == 0 ? 2 : 1;
             var coordCombo = xy == 0 ? 3 : 0;
             var coordRot = xy == 0 ? 3 : 1;
-            var increase = xy == 0 ? 2 : 0;
+            var coordTurn = xy == 0 ? 4 : 2;
+            //var increase = xy == 0 ? 2 : 0;
 
             for (int index = 0; index < Data.Count; index++)
             {
@@ -293,8 +293,8 @@ namespace Optimator
                                 Data[Utils.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(coordRot),
                                 original[1], 1, Data[insertIndex].Connector)[0];
 
-                            double turned = FindSymmetricalOppositeCoord(Data[insertIndex].GetCoordCombination(2 + increase),
-                                Data[Utils.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(2 + increase),
+                            double turned = FindSymmetricalOppositeCoord(Data[insertIndex].GetCoordCombination(coordTurn),
+                                Data[Utils.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(coordTurn),
                                 original[0], 0, Data[insertIndex].Connector)[1];
 
                             var basedIndex = Utils.NextIndex(Data, insertIndex, false);
@@ -327,9 +327,14 @@ namespace Optimator
             var yx = xy == 0 ? 1 : 0;
             for (int index = 0; index < Data.Count; index++)
             {
+                // Check same, but not the same-same
                 if (index != matchIndex && Data[index].GetCoordCombination(3)[xy] == Data[matchIndex].GetCoordCombination(3)[xy])
                 {
-                    matches.Add(index);
+                    // Check they're not brothers
+                    if (index != (matchIndex - 1) % Data.Count && index != (matchIndex + 1) % Data.Count)
+                    {
+                        matches.Add(index);
+                    }
                 }
             }
 
@@ -348,20 +353,20 @@ namespace Optimator
                 var max = 0;
                 for (int index = 1; index < matches.Count; index++)
                 {
-                    if (Data[matches[index]].GetCoordCombination()[yx] < Data[matches[min]].GetCoordCombination()[yx])
+                    if (Data[matches[index]].GetCoordCombination(3)[yx] < Data[matches[min]].GetCoordCombination(3)[yx])
                     {
                         min = index;
                     }
-                    else if (Data[matches[index]].GetCoordCombination()[yx] > Data[matches[max]].GetCoordCombination()[yx])
+                    else if (Data[matches[index]].GetCoordCombination(3)[yx] > Data[matches[max]].GetCoordCombination(3)[yx])
                     {
                         max = index;
                     }
                 }
-                if (Data[matchIndex].GetCoordCombination()[yx] <= Data[matches[min]].GetCoordCombination()[yx])
+                if (Data[matchIndex].GetCoordCombination(3)[yx] <= Data[matches[min]].GetCoordCombination(3)[yx])
                 {
                     return max;
                 }
-                else if (Data[matchIndex].GetCoordCombination()[yx] >= Data[matches[max]].GetCoordCombination()[yx])
+                else if (Data[matchIndex].GetCoordCombination(3)[yx] >= Data[matches[max]].GetCoordCombination(3)[yx])
                 {
                     return min;
                 }

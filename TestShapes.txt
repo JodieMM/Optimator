@@ -1,0 +1,17 @@
+// Multi-spot squircle
+//WIP.Data.Add(new Spot(143, 55));
+//WIP.Data.Add(new Spot(97, 88));
+//WIP.Data.Add(new Spot(91, 137));
+//WIP.Data.Add(new Spot(128, 175));
+//WIP.Data.Add(new Spot(168, 164));
+//WIP.Data.Add(new Spot(197, 128));
+//WIP.Data.Add(new Spot(196, 71));
+
+// Multi-spot squircle w/ vertical edge
+//WIP.Data.Add(new Spot(143, 55));
+//WIP.Data.Add(new Spot(97, 88));
+//WIP.Data.Add(new Spot(91, 137));
+//WIP.Data.Add(new Spot(128, 175));
+//WIP.Data.Add(new Spot(168, 164));
+//WIP.Data.Add(new Spot(197, 55));
+//WIP.Data.Add(new Spot(196, 55));
