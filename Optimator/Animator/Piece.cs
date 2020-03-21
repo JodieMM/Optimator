@@ -330,10 +330,48 @@ namespace Optimator
                 // Check same, but not the same-same
                 if (index != matchIndex && Data[index].GetCoordCombination(3)[xy] == Data[matchIndex].GetCoordCombination(3)[xy])
                 {
-                    // Check they're not brothers
-                    if (index != (matchIndex - 1) % Data.Count && index != (matchIndex + 1) % Data.Count)
+                    if (Data[index].GetCoordCombination(3)[yx] != Data[matchIndex].GetCoordCombination(3)[yx])
                     {
                         matches.Add(index);
+                    }
+                    // Check not on the same line
+                    else
+                    {
+                        // Check index --> matchIndex
+                        bool bends = true;
+                        bool round = false;
+                        int sibling = index;
+                        while (!round && bends)
+                        {
+                            sibling = (sibling + 1) % Data.Count;
+                            if (sibling == matchIndex)
+                            {
+                                bends = false;
+                            }
+                            else if (Data[index].GetCoordCombination(3)[yx] != Data[sibling].GetCoordCombination(3)[yx])
+                            {
+                                round = true;
+                            }
+                        }
+                        // Check matchIndex --> index
+                        round = false;
+                        sibling = matchIndex;
+                        while (!round && bends)
+                        {
+                            sibling = (sibling + 1) % Data.Count;
+                            if (sibling == index)
+                            {
+                                bends = false;
+                            }
+                            else if (Data[index].GetCoordCombination(3)[yx] != Data[sibling].GetCoordCombination(3)[yx])
+                            {
+                                round = true;
+                            }
+                        }
+                        if (bends)
+                        {
+                            matches.Add(index);
+                        }
                     }
                 }
             }
