@@ -694,6 +694,7 @@ namespace Optimator
         /// <returns>True if piece is valid</returns>
         private bool CheckPiecesValid()
         {
+            WIP.CleanseData(true);
             var spots = WIP.Data;
             if (spots.Count < 2) { return true; }
 
