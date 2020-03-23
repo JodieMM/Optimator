@@ -663,14 +663,16 @@ namespace Optimator
         /// <param name="x">The x coord to be close to</param>
         /// <param name="y">The y coord to be close to</param>
         /// <returns>Index of list that is closest</returns>
-        public static int FindClosestIndex(List<Spot> toSearch, int angle, int x, int y)
+        public static int FindClosestIndex(List<Spot> toSearch, int angle, int x, int y, bool allDrawn = false)
         {
             foreach (int range in Consts.Ranges)
             {
                 for (int index = 0; index < toSearch.Count(); index++)
                 {
-                    if (x >= toSearch[index].GetCoordCombination(angle)[0] - range && x <= toSearch[index].GetCoordCombination(angle)[0] + range
-                        && y >= toSearch[index].GetCoordCombination(angle)[1] - range && y <= toSearch[index].GetCoordCombination(angle)[1] + range)
+                    var spot = toSearch[index];
+                    if ((allDrawn || spot.DrawnLevel == 0) 
+                        && x >= spot.GetCoordCombination(angle)[0] - range && x <= spot.GetCoordCombination(angle)[0] + range
+                        && y >= spot.GetCoordCombination(angle)[1] - range && y <= spot.GetCoordCombination(angle)[1] + range)
                     {
                         return index;
                     }

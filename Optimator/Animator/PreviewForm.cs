@@ -74,6 +74,10 @@ namespace Optimator
             {
                 Position.T = TurnTrack.Value;
             }
+            else if (sender == spinBar) // HIDDEN Temporary Spin Bar
+            {
+                Position.S = spinBar.Value;
+            }
 
             DisplayDrawings();
         }

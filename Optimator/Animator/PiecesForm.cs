@@ -14,7 +14,7 @@ namespace Optimator
     public partial class PiecesForm : Form
     {
         #region PiecesForm Variables
-        private Piece WIP;
+        private Piece WIP = new Piece();
         public List<Part> Sketches { get; set; } = new List<Part>();
 
         private Graphics original;
@@ -61,8 +61,7 @@ namespace Optimator
             FillBox.BackColor = Consts.defaultFill;
             OutlineBox.BackColor = Consts.defaultOutline;
             OutlineWidthBox.Value = Consts.defaultOutlineWidth;
-
-            WIP = new Piece();
+            
             Utils.CheckValidFolder();
         }
 
@@ -168,6 +167,7 @@ namespace Optimator
             if (closestIndex != -1)
             {
                 SelectSpot(WIP.Data[closestIndex]);
+                var ean = WIP.Data[closestIndex] == selectedSpot;
                 moving = 2;
             }
             else
