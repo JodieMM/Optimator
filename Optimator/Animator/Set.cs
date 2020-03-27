@@ -166,7 +166,7 @@ namespace Optimator
         /// <param name="angle">The angle to find: 0 original, 1 rotated, 2 turned</param>
         public void CalculateStates(int angle = 0, State curr = null)
         {
-            var state = curr ?? PersonalStates[BasePiece];
+            var state = curr ?? Utils.CloneState(PersonalStates[BasePiece]);
 
             // Determine Base Angle
             switch (angle)

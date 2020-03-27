@@ -222,6 +222,7 @@ namespace Optimator
                 else
                 {
                     JoinBtn.BackColor = unpressed;
+                    WIP.CalculateStates();
                 }
                 DisplayDrawings();
             }            
@@ -433,17 +434,10 @@ namespace Optimator
                 // Move Piece
                 else
                 {
+                    FindCorrectStates(sent);
                     for (int index = 0; index < selected.Data.Count; index++)
                     {
                         State modState = Utils.CloneState(selected.State);
-                        if (sent == 1)
-                        {
-                            modState.R = (modState.R + 90) % 360;
-                        }
-                        else if (sent == 2)
-                        {
-                            modState.T = (modState.T + 90) % 360;
-                        }
                         modState.X += xChange;
                         modState.Y += yChange;
                         selected.Draw(board, modState, new ColourState(selected.ColourState, 
@@ -795,13 +789,15 @@ namespace Optimator
             // Take current state if flat join in progress
             WIP.CalculateStates(angle, JoinBtn.BackColor == pressed ? WIP.BasePiece.State : null);
 
-            // Reangle Unattached Pieces        //TODO: Only moves solo pieces, not joins unattached to base (Remove altogether?)
-            foreach (var piece in WIP.PiecesList)
+            // Consider unattached pieces
+            if (WIP.JoinsIndex.Count != WIP.PiecesList.Count - 1)
             {
-                if (!WIP.JoinsIndex.ContainsKey(piece))
+                foreach (var piece in WIP.PiecesList)
                 {
-                    piece.State = angle > 0 ? new State(WIP.PersonalStates[piece], angle,
-                        (WIP.PersonalStates[piece].GetAngles()[angle - 1] + 90) % 360) : WIP.PersonalStates[piece];
+                    if (!WIP.JoinsIndex.ContainsKey(piece))
+                    {
+                        piece.State = WIP.PersonalStates[piece];
+                    }
                 }
             }
         }
