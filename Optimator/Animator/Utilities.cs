@@ -639,7 +639,7 @@ namespace Optimator
             // Searches joins either from the top or the bottom of the list
             int index;
             int increment = fromTop ? -1 : 1;
-            foreach (int range in Consts.Ranges)
+            foreach (int range in Consts.ClickPrecisions)
             {
                 for (index = fromTop ? joinsList.Count - 1 : 0; fromTop ? index >= 0 :
                     index < joinsList.Count; index += increment)
@@ -665,7 +665,7 @@ namespace Optimator
         /// <returns>Index of list that is closest</returns>
         public static int FindClosestIndex(List<Spot> toSearch, int angle, int x, int y, bool allDrawn = false)
         {
-            foreach (int range in Consts.Ranges)
+            foreach (int range in Consts.ClickPrecisions)
             {
                 for (int index = 0; index < toSearch.Count(); index++)
                 {

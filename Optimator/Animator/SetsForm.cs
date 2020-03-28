@@ -413,8 +413,8 @@ namespace Optimator
             // Move Point
             else if (!movingFar)
             {
-                movingFar = Math.Abs(selected.State.X - e.X) > Consts.ClickPrecision
-                    || Math.Abs(selected.State.Y - e.Y) > Consts.ClickPrecision;
+                movingFar = Math.Abs(selected.State.X - e.X) > Consts.DragPrecision
+                    || Math.Abs(selected.State.Y - e.Y) > Consts.DragPrecision;
             }
             DisplayDrawings();
 

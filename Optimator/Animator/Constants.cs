@@ -40,8 +40,8 @@ namespace Optimator
         public const string SemiS = ";";
 
         // UI Precision
-        public static int[] Ranges = new int[] { 0, 3, 5, 7, 9 };
-        public const int ClickPrecision = 5;        // CLEANING: Replace with ranges? ^^
+        public static int[] ClickPrecisions = new int[] { 0, 3, 5, 7, 9 };
+        public const int DragPrecision = 5;
         public const int CentreBox = 150;
 
         // Piece Defaults

@@ -141,8 +141,8 @@ namespace Optimator
 
             if (!movingFar)
             {
-                movingFar = Math.Abs(selectedSpot.X - e.X) > Consts.ClickPrecision
-                    || Math.Abs(selectedSpot.Y - e.Y) > Consts.ClickPrecision;
+                movingFar = Math.Abs(selectedSpot.X - e.X) > Consts.DragPrecision
+                    || Math.Abs(selectedSpot.Y - e.Y) > Consts.DragPrecision;
             }
 
             if (movingFar)
@@ -209,7 +209,7 @@ namespace Optimator
 
             if (!movingFar)
             {
-                movingFar = Math.Abs(selectedSpot.XRight - e.X) > Consts.ClickPrecision;
+                movingFar = Math.Abs(selectedSpot.XRight - e.X) > Consts.DragPrecision;
             }
 
             if (movingFar)
@@ -273,7 +273,7 @@ namespace Optimator
 
             if (!movingFar)
             {
-                movingFar = Math.Abs(selectedSpot.YDown - e.Y) > Consts.ClickPrecision;
+                movingFar = Math.Abs(selectedSpot.YDown - e.Y) > Consts.DragPrecision;
             }
 
             if (movingFar)

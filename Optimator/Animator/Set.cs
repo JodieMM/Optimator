@@ -215,7 +215,7 @@ namespace Optimator
         /// <returns>Ordered list of pieces</returns>
         public List<Piece> SortOrder()
         {
-            CalculateStates();
+            CalculateStates(0, BasePiece.State);
             return SortOrderFromBasePiece(BasePiece);
         }
 
