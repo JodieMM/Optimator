@@ -42,11 +42,9 @@ namespace Optimator
             A = a;
             B = b;
             Set = set;
-            double[] centre = new double[] { (B.State.X + A.State.X) / 2.0, (B.State.Y + A.State.Y) / 2.0 };
-            BX = BXRight = centre[0] - B.State.X;
-            BY = BYDown = centre[1] - B.State.Y;
-            AX = AXRight = A.State.X - centre[0];
-            AY = AYDown = A.State.Y - centre[1];
+            BX = BXRight = A.State.X - B.State.X;
+            BY = BYDown = A.State.Y - B.State.Y;
+            AX = AXRight = AY = AYDown = 0;
         }
 
         /// <summary>
@@ -137,9 +135,14 @@ namespace Optimator
         /// <returns>State representing xyrtssm</returns>
         public State CurrentStateOfAttached(State personalState)
         {
+            //double attachedR = Utils.Modulo((B.State.R / Math.Cos(personalState.S)) + personalState.R, 360);       //CHECK
+            //double attachedT = Utils.Modulo((B.State.T / Math.Sin(personalState.S)) + personalState.T, 360);       
+            //TODO: Fix loaned base values
             double attachedR = (B.State.R + personalState.R) % 360;
             double attachedT = (B.State.T + personalState.T) % 360;
             double attachedS = (B.State.S + personalState.S) % 360;
+            //double attachedT = Utils.Modulo((B.State.T + personalState.T) % 90 * Math.Cos(attachedR), 360);
+            //double attachedS = Utils.Modulo((B.State.S + personalState.S) % 90 * Math.Sin(attachedR), 360);
             double attachedSM = B.State.SM * personalState.SM;
 
             double[] attachedJoinB = Utils.SpinAndSizeCoord(B.State.S, B.State.SM,

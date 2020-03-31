@@ -167,20 +167,7 @@ namespace Optimator
         public void CalculateStates(int angle = 0, State curr = null)
         {
             var state = curr ?? Utils.CloneState(PersonalStates[BasePiece]);
-
-            // Determine Base Angle
-            switch (angle)
-            {
-                case 1:
-                    BasePiece.State = new State(state, 1, (state.GetAngles()[0] + 90) % 360);
-                    break;
-                case 2:
-                    BasePiece.State = new State(state, 2, (state.GetAngles()[1] + 90) % 360);
-                    break;
-                default:
-                    BasePiece.State = state;
-                    break;
-            }
+            BasePiece.State = Utils.AdjustStateAngle(angle, state);
 
             // Calculate Connections
             if (JoinedPieces.ContainsKey(BasePiece))

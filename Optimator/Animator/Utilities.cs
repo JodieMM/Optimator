@@ -259,6 +259,17 @@ namespace Optimator
         }
 
         /// <summary>
+        /// Finds the mathematical modulus of a mod b.
+        /// </summary>
+        /// <param name="a">Value to be divided</param>
+        /// <param name="b">Modulus</param>
+        /// <returns>a modulo b</returns>
+        public static double Modulo(double a, double b)
+        {
+            return (a % b + b) % b;
+        }
+
+        /// <summary>
         /// Finds the minimum and maximum x and y coordinates of a point.
         /// </summary>
         /// <param name="coords">Shape points</param>
@@ -347,6 +358,25 @@ namespace Optimator
                 currIndex = (currIndex == 0) ? list.Count - 1 : currIndex - 1;
             }
             return currIndex;
+        }
+
+        /// <summary>
+        /// Adds 90 degrees to either the rotated or turned state, or makes no change.
+        /// </summary>
+        /// <param name="angle">0 original, 1 rotated, 2 turned</param>
+        /// <param name="state">Original state</param>
+        /// <returns></returns>
+        public static State AdjustStateAngle(int angle, State state)
+        {
+            switch (angle)
+            {
+                case 1:
+                    return new State(state, 1, (state.GetAngles()[0] + 90) % 360);
+                case 2:
+                    return new State(state, 2, (state.GetAngles()[1] + 90) % 360);
+                default:
+                    return state;
+            }
         }
 
         #endregion

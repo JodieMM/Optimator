@@ -521,16 +521,16 @@ namespace Optimator
                     // Piece in Set
                     if (sent == 0)
                     {
-                        WIP.JoinsIndex[selected].AXRight = WIP.JoinsIndex[selected].AX += x;
-                        WIP.JoinsIndex[selected].AYDown = WIP.JoinsIndex[selected].AY += y;
+                        WIP.JoinsIndex[selected].BXRight = WIP.JoinsIndex[selected].BX += x;
+                        WIP.JoinsIndex[selected].BYDown = WIP.JoinsIndex[selected].BY += y;
                     }
                     else if (sent == 1)
                     {
-                        WIP.JoinsIndex[selected].AXRight += x;
+                        WIP.JoinsIndex[selected].BXRight += x;
                     }
                     else if (sent == 2)
                     {
-                        WIP.JoinsIndex[selected].AYDown += y;
+                        WIP.JoinsIndex[selected].BYDown += y;
                     }
                     WIP.CalculateStates();
                 }
@@ -796,7 +796,7 @@ namespace Optimator
                 {
                     if (!WIP.JoinsIndex.ContainsKey(piece))
                     {
-                        piece.State = WIP.PersonalStates[piece];
+                        piece.State = Utils.AdjustStateAngle(angle, WIP.PersonalStates[piece]);
                     }
                 }
             }
