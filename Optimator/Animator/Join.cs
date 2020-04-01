@@ -157,15 +157,15 @@ namespace Optimator
         }
 
         /// <summary>
-        /// Uses base's current state to determine join's centre
+        /// Uses attached's current state to determine join's centre
         /// </summary>
         /// <returns>Join's current centre</returns>
         public double[] CurrentCentre()
         {
-            double[] bJoin = new double[2] {Utils.RotOrTurnCalculation(B.State.R, BX, BXRight),
-                Utils.RotOrTurnCalculation(B.State.T, BY, BYDown) };
-
-            return new double[2] {B.State.X + bJoin[0], B.State.Y + bJoin[1]};
+            double[] aJoin = new double[2] {Utils.RotOrTurnCalculation(A.State.R, AX, AXRight),
+                Utils.RotOrTurnCalculation(A.State.T, AY, AYDown)};
+            aJoin = Utils.SpinAndSizeCoord(A.State.S, A.State.SM, aJoin);
+            return new double[2] {A.State.X + aJoin[0], A.State.Y + aJoin[1]};
         }
 
         /// <summary>
