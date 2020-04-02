@@ -165,17 +165,7 @@ namespace Optimator
             double[] aJoin = new double[2] {Utils.RotOrTurnCalculation(A.State.R, AX, AXRight),
                 Utils.RotOrTurnCalculation(A.State.T, AY, AYDown)};
             aJoin = Utils.SpinAndSizeCoord(A.State.S, A.State.SM, aJoin);
-            return new double[2] {A.State.X + aJoin[0], A.State.Y + aJoin[1]};
-        }
-
-        /// <summary>
-        /// Finds the centre of the join based on an angle.
-        /// </summary>
-        /// <param name="angle">0 original, 1 rotated, 2 turned</param>
-        /// <returns></returns>
-        public double[] AngledCentre(int angle)
-        {
-            return new double[2] { B.State.X + (angle == 1 ? BXRight : BX), B.State.Y + (angle == 2 ? BYDown : BY) };            
+            return new double[2] {A.State.X - aJoin[0], A.State.Y - aJoin[1]};
         }
     }
 }

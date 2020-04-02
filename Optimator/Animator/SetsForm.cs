@@ -212,12 +212,7 @@ namespace Optimator
                 {
                     SelectBaseBtn.BackColor = unpressed;
                     JoinBtn.BackColor = pressed;
-
-                    // Change base piece angle to ensure selected is rts 0
-                    WIP.CalculateStates();
-                    WIP.BasePiece.State.R = (WIP.BasePiece.State.R - selected.State.R) % 360;
-                    WIP.BasePiece.State.T = (WIP.BasePiece.State.T - selected.State.T) % 360;
-                    WIP.BasePiece.State.S = (WIP.BasePiece.State.S - selected.State.S) % 360;
+                    SelectedRTS0();
                 }
                 else
                 {
@@ -310,6 +305,10 @@ namespace Optimator
             else if (sender == SpinBar)
             {
                 WIP.PersonalStates[selected].S = SpinBar.Value;
+                if (JoinBtn.BackColor == pressed)
+                {
+                    SelectedRTS0();
+                }
             }
             else if (sender == SizeBar)
             {
@@ -428,8 +427,8 @@ namespace Optimator
                 // Move Join
                 if (JoinBtn.BackColor == pressed)
                 {
-                    Visuals.DrawCross(selectedJoin.AngledCentre(sent)[0] + xChange,
-                        selectedJoin.AngledCentre(sent)[1] + yChange, Consts.shadowShade, board);
+                    Visuals.DrawCross(selectedJoin.CurrentCentre()[0] + xChange, 
+                        selectedJoin.CurrentCentre()[1] + yChange, Consts.shadowShade, board);
                 }
                 // Move Piece
                 else
@@ -471,22 +470,19 @@ namespace Optimator
                 {
                     if (selectedJoin != null)
                     {
-                        double[] position = selectedJoin.AngledCentre(sent);
-                        double[] newJoinPosition = new double[2] { position[0] + x, position[1] + y };
-
                         // Change different angles based on board
                         if (sent == 0)
                         {
                             // Change different angles based on whether selected is the attached or base
                             if (WIP.JoinsIndex.ContainsKey(selected) && WIP.JoinsIndex[selected] == selectedJoin)
                             {
-                                selectedJoin.AX = selectedJoin.AXRight = selected.State.GetCoords()[0] - newJoinPosition[0];
-                                selectedJoin.AY = selectedJoin.AYDown = selected.State.GetCoords()[1] - newJoinPosition[1];
+                                selectedJoin.AXRight = selectedJoin.AX -= x;
+                                selectedJoin.AYDown = selectedJoin.AY -= y;
                             }
                             else
                             {
-                                selectedJoin.BX = selectedJoin.BXRight = newJoinPosition[0] - selectedJoin.B.State.GetCoords()[0];
-                                selectedJoin.BY = selectedJoin.BYDown = newJoinPosition[1] - selectedJoin.B.State.GetCoords()[1];
+                                selectedJoin.BXRight = selectedJoin.BX += x;
+                                selectedJoin.BYDown = selectedJoin.BY += y;
                             }
                         }
                         else if (sent == 1)
@@ -494,11 +490,11 @@ namespace Optimator
                             // Change different angles based on whether selected is the attached or base
                             if (WIP.JoinsIndex.ContainsKey(selected) && WIP.JoinsIndex[selected] == selectedJoin)
                             {
-                                selectedJoin.AXRight = selected.State.GetCoords()[0] - newJoinPosition[0];
+                                selectedJoin.AXRight -= x;
                             }
                             else
                             {
-                                selectedJoin.BXRight = newJoinPosition[0] - selectedJoin.B.State.GetCoords()[0];
+                                selectedJoin.BXRight += x;
                             }
                         }
                         else if (sent == 2)
@@ -506,11 +502,11 @@ namespace Optimator
                             // Change different angles based on whether selected is the attached or base
                             if (WIP.JoinsIndex.ContainsKey(selected) && WIP.JoinsIndex[selected] == selectedJoin)
                             {
-                                selectedJoin.AYDown = selected.State.GetCoords()[1] - newJoinPosition[1];
+                                selectedJoin.AYDown -= y;
                             }
                             else
                             {
-                                selectedJoin.BYDown = newJoinPosition[1] - selectedJoin.B.State.GetCoords()[1];
+                                selectedJoin.BYDown += y;
                             }
                         }
                     }
@@ -800,6 +796,17 @@ namespace Optimator
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Change base piece angle to ensure selected is rts 0
+        /// </summary>
+        private void SelectedRTS0()
+        {
+            WIP.CalculateStates();
+            WIP.BasePiece.State.R = Utils.Modulo(WIP.BasePiece.State.R - selected.State.R, 360);
+            WIP.BasePiece.State.T = Utils.Modulo(WIP.BasePiece.State.T - selected.State.T, 360);
+            WIP.BasePiece.State.S = Utils.Modulo(WIP.BasePiece.State.S - selected.State.S, 360);
         }
     }
 }
