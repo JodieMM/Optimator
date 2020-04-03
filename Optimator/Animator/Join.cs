@@ -135,14 +135,11 @@ namespace Optimator
         /// <returns>State representing xyrtssm</returns>
         public State CurrentStateOfAttached(State personalState)
         {
-            //double attachedR = Utils.Modulo((B.State.R / Math.Cos(personalState.S)) + personalState.R, 360);       //CHECK
-            //double attachedT = Utils.Modulo((B.State.T / Math.Sin(personalState.S)) + personalState.T, 360);       
             //TODO: Fix loaned base values
-            double attachedR = (B.State.R + personalState.R) % 360;
-            double attachedT = (B.State.T + personalState.T) % 360;
-            double attachedS = (B.State.S + personalState.S) % 360;
-            //double attachedT = Utils.Modulo((B.State.T + personalState.T) % 90 * Math.Cos(attachedR), 360);
-            //double attachedS = Utils.Modulo((B.State.S + personalState.S) % 90 * Math.Sin(attachedR), 360);
+            double attachedR = Utils.Modulo(B.State.R + personalState.R, 360);
+            double attachedT = Utils.Modulo(B.State.T + personalState.T, 360);
+            //double attachedS = Utils.Modulo(B.State.S + personalState.S, 360);
+            double attachedS = Utils.Modulo(B.State.S + personalState.S * Math.Cos(Utils.ConvertDegreeToRadian(B.State.R)), 360);
             double attachedSM = B.State.SM * personalState.SM;
 
             double[] attachedJoinB = Utils.SpinAndSizeCoord(B.State.S, B.State.SM,

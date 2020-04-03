@@ -90,6 +90,14 @@ namespace Optimator
             DrawPanel.Refresh();
             g = DrawPanel.CreateGraphics();
             WIP.Draw(g, Position);
+            //HIDDEN EXTRAS BELOW
+            if (WIP is Set)
+            {
+                foreach (Join join in (WIP as Set).JoinsIndex.Values)
+                {
+                    Visuals.DrawCross(join.CurrentCentre()[0], join.CurrentCentre()[1], Color.Red, g);
+                }
+            }
         }
     }
 }

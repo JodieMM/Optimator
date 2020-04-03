@@ -82,10 +82,15 @@ namespace Optimator
         /// <param name="e"></param>
         private void ExitBtn_Click(object sender, EventArgs e)
         {
-            if (Utils.ExitBtn_Click(WIP.PiecesList.Count > 1))
-            {
-                Close();
-            }
+            //if (Utils.ExitBtn_Click(WIP.PiecesList.Count > 1))
+            //{
+            //    Close();
+            //}
+            // HIDDEN ABOVE TEMPORARILY FOR TESTING BELOW
+            AddTb.Text = "branch";
+            AddBtn_Click(AddPieceBtn, e);
+            AddTb.Text = "tri";
+            AddBtn_Click(AddPieceBtn, e);
         }
 
         /// <summary>

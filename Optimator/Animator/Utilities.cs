@@ -301,6 +301,18 @@ namespace Optimator
             return new double[] { minMax[0] + (minMax[1] - minMax[0]) / 2.0, minMax[2] + (minMax[3] - minMax[2]) / 2.0 };
         }
 
+        public static double ConvertDegreeToRadian(double degree, bool reverse = false)
+        {
+            if (!reverse)
+            {
+                return Math.PI / 180.0 * degree;
+            }
+            else
+            {
+                return degree * 180.0 / Math.PI;
+            }
+        }
+
         /// <summary>
         /// Converts an array of strings into an array of doubles.
         /// Used when loading from text files.

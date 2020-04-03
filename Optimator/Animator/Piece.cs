@@ -476,7 +476,6 @@ namespace Optimator
                         return new double[] { from[0], value };
                     }
                 }
-                // CHECK
                 else if (from[1] == to[1])
                 {
                     if (xy == 0)
