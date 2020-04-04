@@ -138,8 +138,8 @@ namespace Optimator
             //TODO: Fix loaned base values
             double attachedR = Utils.Modulo(B.State.R + personalState.R, 360);
             double attachedT = Utils.Modulo(B.State.T + personalState.T, 360);
-            //double attachedS = Utils.Modulo(B.State.S + personalState.S, 360);
-            double attachedS = Utils.Modulo(B.State.S + personalState.S * Math.Cos(Utils.ConvertDegreeToRadian(B.State.R)), 360);
+            double attachedS = Utils.Modulo(B.State.S + personalState.S, 360);
+            //double attachedS = Utils.Modulo(B.State.S + personalState.S * Math.Cos(Utils.ConvertDegreeToRadian(B.State.R)), 360);
             double attachedSM = B.State.SM * personalState.SM;
 
             double[] attachedJoinB = Utils.SpinAndSizeCoord(B.State.S, B.State.SM,
