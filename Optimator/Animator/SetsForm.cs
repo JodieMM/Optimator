@@ -93,9 +93,9 @@ namespace Optimator
             };
             WIP.BasePiece = WIP.PiecesList[0];
             WIP.JoinedPieces.Add(WIP.PiecesList[0], new List<Piece>() { WIP.PiecesList[1] });
-            WIP.JoinsIndex.Add(WIP.PiecesList[1], new Join(WIP.PiecesList[1], WIP.PiecesList[0], WIP, -5, -71, 12, -71, 20, -22, 3, -11, -1, 0));
+            WIP.JoinsIndex.Add(WIP.PiecesList[1], new Join(WIP.PiecesList[1], WIP.PiecesList[0], WIP, -5, -71, 12, -23, 20, -22, 3, -10, -1, 0));
             WIP.PersonalStates.Add(WIP.PiecesList[0], new State(150, 150, 0, 0, 0, 1));
-            WIP.PersonalStates.Add(WIP.PiecesList[1], new State(0, 0, 0, 0, 39, 1));
+            WIP.PersonalStates.Add(WIP.PiecesList[1], new State(0, 0, 90, 0, 90, 1));
             DisplayDrawings();
             //AddTb.Text = "branch";
             //AddBtn_Click(AddPieceBtn, e);
