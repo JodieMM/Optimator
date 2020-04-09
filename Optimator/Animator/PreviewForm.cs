@@ -76,7 +76,7 @@ namespace Optimator
             }
             else if (sender == spinBar) // HIDDEN Temporary Spin Bar
             {
-                (WIP as Set).PersonalStates[(WIP as Set).PiecesList[1]].T = spinBar.Value;
+                (WIP as Set).PersonalStates[(WIP as Set).PiecesList[1]].S = spinBar.Value;
             }
 
             DisplayDrawings();

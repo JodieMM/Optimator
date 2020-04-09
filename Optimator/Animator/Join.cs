@@ -141,157 +141,36 @@ namespace Optimator
             double modR = aState.R + B.State.R;
             double modT = aState.T;
             double modS = aState.S;
-            double modSM = 1;
-
-            // ATTEMPT SM
+            double modSM = B.State.SM;
 
             // Adjust Turn
-            modT += aState.S;
+            //modT += aState.S;
 
-            // Should it be on an angle/spun?
-            if (rChange > 0)
-            {  
-                // Adjust Spin
-                if (aState.S != 0 && aState.S != 180)
-                {                  
-                    if (aState.S < 90)
-                    {
-                        modS = aState.S * Math.Cos(Utils.ConvertDegreeToRadian(rChange));
-
-                        double height = Utils.FindHeight(A.GetPoints(new State(0, 0, modR, modT, aState.S, 1)));
-                        double flatHeight = Utils.FindHeight(A.GetPoints(new State(0, 0, modR, modT, 0, 1)));
-
-                        double newSM = height / flatHeight;
-
-                        //double flatHeight = Utils.FindHeight(A.GetPoints(new State(0, 0, modR, modT, 0, 1)));                    
-                        modSM = (1 - newSM) * Math.Abs(Math.Cos(Utils.ConvertDegreeToRadian(rChange))) + newSM;
-                    }
-                    else if (aState.S < 180)
-                    {
-                        modS = 90 + (aState.S - 90) * Math.Cos(Utils.ConvertDegreeToRadian(rChange));
-                        double height = Utils.FindHeight(A.GetPoints(new State(0, 0, modR, modT, aState.S, 1)));
-                        double flatHeight = Utils.FindHeight(A.GetPoints(new State(0, 0, modR, modT, 0, 1)));
-                        double newSM = height / flatHeight;
-
-                        //double flatHeight = Utils.FindHeight(A.GetPoints(new State(0, 0, modR, modT, 0, 1)));                    
-                        modSM = (1 - newSM) * Math.Abs(Math.Cos(Utils.ConvertDegreeToRadian(rChange))) + newSM;
-                    }
+            // Adjust Spin
+            if (aState.S != 0 && aState.S != 180)
+            {
+                if (aState.S < 90)
+                {
+                    modS = aState.S * Math.Cos(Utils.ConvertDegreeToRadian(rChange));
+                    double height = Utils.FindHeight(A.GetPoints(new State(0, 0, aState.R, modT, aState.S, modSM)));
+                    double flatHeight = Utils.FindHeight(A.GetPoints(new State(0, 0, modR, modT, modS, modSM)));
+                    modSM *= flatHeight > 0 ? height / flatHeight : height > 0 ? 1 : 0;
                 }
-
-
-                // Adjust Turn
-                //if (aState.T != 0 && aState.T != 180)
-                //{
-                //    modS += aState.T * Math.Sin(Utils.ConvertDegreeToRadian(rChange));
-                //    double height = Utils.FindHeight(A.GetPoints(new State(0, 0, modR, modT, 0, 1)));
-                //    double angledHeight = Utils.FindHeight(A.GetPoints(new State(0, 0, modR, modT, modS, 1)));
-                //    modSM = height / angledHeight;
-
-                //    modS += aState.T * Math.Sin(Utils.ConvertDegreeToRadian(rChange));
-                //    if (modS != 90 && modS != 270)
-                //    {
-                //        modSM = 1 / Math.Cos(Utils.ConvertDegreeToRadian(modS));
-                //    }
-                //    if (modT == 90)
-                //    {
-                //        modS = 90;
-                //        modR = 0;
-                //        modT += rChange;
-                //    }
-
-                //    if (aState.T <= 45)
-                //    {
-                //        // TODO ensure modS != 90/270, height != 0
-                //        modS += aState.T * Math.Sin(Utils.ConvertDegreeToRadian(rChange));
-                //        //double height = Utils.FindHeight(A.GetPoints(new State(0, 0, modR, modT, 0, 1)));
-                //        modSM = 1 / Math.Cos(Utils.ConvertDegreeToRadian(modS));
-                //        //double angledHeight = height / Math.Cos(Utils.ConvertDegreeToRadian(modS));
-                //        //modSM = angledHeight / height;
-                //    }
-                //    else if (aState.T <= 90)
-                //    {
-                //        modS += aState.T * Math.Sin(Utils.ConvertDegreeToRadian(rChange));
-                //        double width = Utils.FindHeight(A.GetPoints(new State(0, 0, modR, modT, 0, 1)), true);
-                //        double angledWidth = width / Math.Cos(Utils.ConvertDegreeToRadian(modS));
-                //        modSM = angledWidth / width;
-                //    }
-                //}
-                // Adjust Spin
-                //if (aState.S != 0 && aState.S != 180)
-                //{
-                //    modS += aState.S * Math.Cos(Utils.ConvertDegreeToRadian(rChange));
-                //    double[] heights = Utils.FindMinMax(A.GetPoints(new State(0, 0, modR, modT, 0, 1)));
-                //    double height = heights[3] - heights[2];
-                //    double angledHeight = height / Math.Cos(Utils.ConvertDegreeToRadian(modS));
-                //    modSM = angledHeight / height;
-                //}
-            }
-
-            // END ATTEMPT SM
-            // Convert Spun Values
-            // -- ROTATION
-            //if (personalState.R != 0)
-            //{
-            //    if (personalState.R <= 90)
-            //    {
-            //        modS += personalState.R * Math.Sin(Utils.ConvertDegreeToRadian(tChange));
-            //        modR += Math.Abs(personalState.R * Math.Cos(Utils.ConvertDegreeToRadian(tChange)));
-            //    }
-            //    else if (personalState.R <= 180)
-            //    {
-            //        modS += personalState.R * Math.Sin(Utils.ConvertDegreeToRadian(tChange));
-            //        modR += Math.Abs(personalState.R * Math.Cos(Utils.ConvertDegreeToRadian(tChange)));
-
-            //        //modS += (personalState.T - 90) * -Math.Sin(Utils.ConvertDegreeToRadian(rChange));
-            //        ////modS += rChange < 180 ? 90 : -90;
-            //        //modT += personalState.T * Math.Cos(Utils.ConvertDegreeToRadian(rChange));
-            //    }
-            //    else if (personalState.R == 180)
-            //    {
-
-            //    }
-            //}
-            // -- TURN
-            //if (personalState.T != 0)
-            //{
-            //    if (personalState.T <= 90)
-            //    {
-            //        modS += personalState.T * Math.Sin(Utils.ConvertDegreeToRadian(rChange));
-            //        //modT += Math.Abs(personalState.T * Math.Cos(Utils.ConvertDegreeToRadian(rChange)));
-                    
-
-            //    }
-            //    else if (personalState.T <= 180)
-            //    {
-            //        modS += (personalState.T - 90) * -Math.Sin(Utils.ConvertDegreeToRadian(rChange));
-            //        modT += Math.Abs(personalState.T * Math.Cos(Utils.ConvertDegreeToRadian(rChange)));
-
-            //        //modS += (personalState.T - 90) * -Math.Sin(Utils.ConvertDegreeToRadian(rChange));
-            //        ////modS += rChange < 180 ? 90 : -90;
-            //        //modT += personalState.T * Math.Cos(Utils.ConvertDegreeToRadian(rChange));
-            //    }
-            //    else if (personalState.T == 180)
-            //    {
-
-            //    }
-            //}
-            // -- SPIN
-            //modT += rChange;
-            //modR += -rChange;
-            //modS += personalState.T;
-
-
-
-            //modR = B.State.R;
-            //modT = B.State.T + Math.Abs(personalState.S * Math.Sin(Utils.ConvertDegreeToRadian(rChange)));
-            ////double modT = B.State.T + personalState.S * Math.Sin(Utils.ConvertDegreeToRadian(rChange));
-            //modS = personalState.S * Math.Cos(Utils.ConvertDegreeToRadian(rChange));
-
-            //double attachedR = Utils.Modulo(personalState.R + B.State.R * Math.Cos(Utils.ConvertDegreeToRadian(personalState.S)), 360);
-            //double attachedT = Utils.Modulo(personalState.T + Math.Abs(personalState.S * Math.Sin(Utils.ConvertDegreeToRadian(B.State.R))), 360);
-            //double attachedS = Utils.Modulo(B.State.S + personalState.S * Math.Cos(Utils.ConvertDegreeToRadian(B.State.R)), 360);
-            //double attachedS = Utils.Modulo(B.State.S + personalState.S * Math.Cos(Utils.ConvertDegreeToRadian(B.State.R)), 360);
-            //double attachedS = Utils.Modulo(B.State.S + personalState.S * Math.Cos(Utils.ConvertDegreeToRadian(B.State.R)), 360);
+                else if (aState.S < 270)
+                {
+                    modS = 180 + (180 - aState.S) * -Math.Cos(Utils.ConvertDegreeToRadian(rChange));
+                    double height = Utils.FindHeight(A.GetPoints(new State(0, 0, aState.R, modT, aState.S, modSM)));
+                    double flatHeight = Utils.FindHeight(A.GetPoints(new State(0, 0, modR, modT, modS, modSM)));
+                    modSM *= flatHeight > 0 ? height / flatHeight : height > 0 ? 1 : 0;
+                }
+                else if (aState.S < 360)
+                {
+                    modS = 360 + (360 - aState.S) * -Math.Cos(Utils.ConvertDegreeToRadian(rChange));
+                    double height = Utils.FindHeight(A.GetPoints(new State(0, 0, aState.R, modT, aState.S, modSM)));
+                    double flatHeight = Utils.FindHeight(A.GetPoints(new State(0, 0, modR, modT, modS, modSM)));
+                    modSM *= flatHeight > 0 ? height / flatHeight : height > 0 ? 1 : 0;
+                }
+            }       
 
             double attachedR = Utils.Modulo(modR, 360);
             double attachedT = Utils.Modulo(modT, 360);
@@ -301,7 +180,7 @@ namespace Optimator
             //double attachedT = Utils.Modulo(B.State.T + personalState.T, 360);
             //double attachedS = Utils.Modulo(B.State.S + personalState.S, 360);
 
-            double attachedSM = B.State.SM * aState.SM * modSM;
+            double attachedSM = aState.SM * modSM;
 
             double[] attachedJoinB = Utils.SpinAndSizeCoord(B.State.S, B.State.SM,
                 new double[] { Utils.RotOrTurnCalculation(B.State.R, BX, BXRight), Utils.RotOrTurnCalculation(B.State.T, BY, BYDown) });

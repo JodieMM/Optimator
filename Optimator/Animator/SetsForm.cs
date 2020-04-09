@@ -87,6 +87,7 @@ namespace Optimator
             //    Close();
             //}
             // HIDDEN ABOVE TEMPORARILY FOR TESTING BELOW
+
             WIP = new Set
             {
                 PiecesList = new List<Piece>() { new Piece("branch"), new Piece("tri") }
@@ -97,10 +98,18 @@ namespace Optimator
             WIP.PersonalStates.Add(WIP.PiecesList[0], new State(150, 150, 0, 0, 0, 1));
             WIP.PersonalStates.Add(WIP.PiecesList[1], new State(0, 0, 0, 0, 40, 1));
             DisplayDrawings();
-            //AddTb.Text = "branch";
-            //AddBtn_Click(AddPieceBtn, e);
-            //AddTb.Text = "tri";
-            //AddBtn_Click(AddPieceBtn, e);
+
+            //WIP = new Set
+            //{
+            //    PiecesList = new List<Piece>() { new Piece("branch"), new Piece("line") }
+            //};
+            //WIP.BasePiece = WIP.PiecesList[0];
+            //WIP.JoinedPieces.Add(WIP.PiecesList[0], new List<Piece>() { WIP.PiecesList[1] });
+            //WIP.JoinsIndex.Add(WIP.PiecesList[1], new Join(WIP.PiecesList[1], WIP.PiecesList[0], WIP, 0, -54, 0, -54, 0, -46, 0, -6, -1, 0));
+            //WIP.PersonalStates.Add(WIP.PiecesList[0], new State(150, 150, 0, 0, 0, 1));
+            //WIP.PersonalStates.Add(WIP.PiecesList[1], new State(0, 0, 0, 0, 175, 1));
+            //DisplayDrawings();
+
         }
 
         /// <summary>
