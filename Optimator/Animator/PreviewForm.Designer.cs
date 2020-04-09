@@ -30,15 +30,17 @@
         {
             this.DrawPanel = new System.Windows.Forms.PictureBox();
             this.OptionsMenu = new System.Windows.Forms.Panel();
+            this.spinBar = new System.Windows.Forms.TrackBar();
             this.CloseBtn = new System.Windows.Forms.Button();
             this.RotationTrack = new System.Windows.Forms.TrackBar();
             this.TurnTrack = new System.Windows.Forms.TrackBar();
-            this.spinBar = new System.Windows.Forms.TrackBar();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.DrawPanel)).BeginInit();
             this.OptionsMenu.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.spinBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.RotationTrack)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.TurnTrack)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spinBar)).BeginInit();
             this.SuspendLayout();
             // 
             // DrawPanel
@@ -53,12 +55,28 @@
             // OptionsMenu
             // 
             this.OptionsMenu.BackColor = System.Drawing.Color.GhostWhite;
+            this.OptionsMenu.Controls.Add(this.label2);
+            this.OptionsMenu.Controls.Add(this.label1);
             this.OptionsMenu.Controls.Add(this.spinBar);
             this.OptionsMenu.Controls.Add(this.CloseBtn);
             this.OptionsMenu.Location = new System.Drawing.Point(700, 0);
             this.OptionsMenu.Name = "OptionsMenu";
             this.OptionsMenu.Size = new System.Drawing.Size(200, 700);
             this.OptionsMenu.TabIndex = 1;
+            // 
+            // spinBar
+            // 
+            this.spinBar.BackColor = System.Drawing.Color.White;
+            this.spinBar.Cursor = System.Windows.Forms.Cursors.Default;
+            this.spinBar.Location = new System.Drawing.Point(65, 34);
+            this.spinBar.Maximum = 359;
+            this.spinBar.Name = "spinBar";
+            this.spinBar.Orientation = System.Windows.Forms.Orientation.Vertical;
+            this.spinBar.Size = new System.Drawing.Size(90, 540);
+            this.spinBar.TabIndex = 4;
+            this.spinBar.TickFrequency = 10;
+            this.spinBar.TickStyle = System.Windows.Forms.TickStyle.TopLeft;
+            this.spinBar.Scroll += new System.EventHandler(this.Track_Scroll);
             // 
             // CloseBtn
             // 
@@ -99,19 +117,23 @@
             this.TurnTrack.TickStyle = System.Windows.Forms.TickStyle.TopLeft;
             this.TurnTrack.Scroll += new System.EventHandler(this.Track_Scroll);
             // 
-            // spinBar
+            // label1
             // 
-            this.spinBar.BackColor = System.Drawing.Color.White;
-            this.spinBar.Cursor = System.Windows.Forms.Cursors.Default;
-            this.spinBar.Location = new System.Drawing.Point(65, 34);
-            this.spinBar.Maximum = 359;
-            this.spinBar.Name = "spinBar";
-            this.spinBar.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.spinBar.Size = new System.Drawing.Size(90, 540);
-            this.spinBar.TabIndex = 4;
-            this.spinBar.TickFrequency = 10;
-            this.spinBar.TickStyle = System.Windows.Forms.TickStyle.TopLeft;
-            this.spinBar.Scroll += new System.EventHandler(this.Track_Scroll);
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(15, 25);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(100, 39);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "label1";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(22, 97);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(100, 39);
+            this.label2.TabIndex = 6;
+            this.label2.Text = "label2";
             // 
             // PreviewForm
             // 
@@ -132,9 +154,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.DrawPanel)).EndInit();
             this.OptionsMenu.ResumeLayout(false);
             this.OptionsMenu.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.spinBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.RotationTrack)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.TurnTrack)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spinBar)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -148,5 +170,7 @@
         private System.Windows.Forms.TrackBar RotationTrack;
         private System.Windows.Forms.TrackBar TurnTrack;
         private System.Windows.Forms.TrackBar spinBar;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
     }
 }

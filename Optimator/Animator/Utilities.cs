@@ -301,6 +301,32 @@ namespace Optimator
             return new double[] { minMax[0] + (minMax[1] - minMax[0]) / 2.0, minMax[2] + (minMax[3] - minMax[2]) / 2.0 };
         }
 
+        //CLEANING Remove below function
+        /// <summary>
+        /// Finds the height of the shape.
+        /// </summary>
+        /// <param name="coords">Shape coordinates</param>
+        /// <param name="width">True if width (x) not height (y) to be found</param>
+        /// <returns>Height of shape</returns>
+        public static double FindHeight(List<double[]> coords, bool width = false)
+        {
+            double[] minMax = FindMinMax(coords);
+            if (width)
+            {
+                return minMax[1] - minMax[0];
+            }
+            else
+            {
+                return minMax[3] - minMax[2];
+            }
+        }
+
+        /// <summary>
+        /// Converts an angle in degrees to radians.
+        /// </summary>
+        /// <param name="degree">The degree to convert to radians</param>
+        /// <param name="reverse">True if converting from radians to degrees</param>
+        /// <returns>The degree in radians</returns>
         public static double ConvertDegreeToRadian(double degree, bool reverse = false)
         {
             if (!reverse)

@@ -16,6 +16,7 @@ namespace Optimator
         public double Y { get; set; }
         public double YDown { get; set; }
         public double CurrentX { get; set; }
+        public double CurrentY { get; set; }        //HIDDEN
 
         public string Connector { get; set; }
         public string Solid { get; set; }

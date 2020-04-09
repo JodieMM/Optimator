@@ -76,7 +76,7 @@ namespace Optimator
             }
             else if (sender == spinBar) // HIDDEN Temporary Spin Bar
             {
-                Position.S = spinBar.Value;
+                (WIP as Set).PersonalStates[(WIP as Set).PiecesList[1]].T = spinBar.Value;
             }
 
             DisplayDrawings();
@@ -96,6 +96,20 @@ namespace Optimator
                 foreach (Join join in (WIP as Set).JoinsIndex.Values)
                 {
                     Visuals.DrawCross(join.CurrentCentre()[0], join.CurrentCentre()[1], Color.Red, g);
+                }
+                foreach (Piece piece in (WIP as Set).PiecesList)
+                {
+                    if (piece != (WIP as Set).BasePiece)
+                    {
+                        //foreach (Spot spot in piece.Data)
+                        //{
+                        //    Visuals.DrawCross(spot.CurrentX + piece.State.X, spot.CurrentY + piece.State.Y, Color.Blue, g);
+                        //}
+                        //label1.Text = "" + piece.State.X;
+                        //label2.Text = "" + piece.State.Y;
+                        //piece.Draw(g, new State(340, 253, 0, 40, 0, 1));
+                        //g.DrawLine(new Pen(Color.Aquamarine), -300, (int)piece.State.Y + 127, 300, (int)piece.State.Y + 127);
+                    }
                 }
             }
         }
