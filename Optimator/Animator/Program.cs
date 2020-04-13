@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Animator;
+using System;
 using System.Windows.Forms;
 
 namespace Optimator
@@ -15,8 +16,11 @@ namespace Optimator
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            MenuForm menu = new MenuForm();
-            Application.Run(menu);
+            //MenuForm menu = new MenuForm();
+            //Application.Run(menu);
+            // HIDDEN ABOVE TESTING
+            HomeForm home = new HomeForm();
+            Application.Run(home);
         }
     }
 }

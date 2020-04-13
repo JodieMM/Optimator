@@ -33,8 +33,11 @@
   </PropertyGroup>
   <PropertyGroup />
   <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -44,6 +47,9 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Change.cs" />
@@ -55,6 +61,12 @@
       <DependentUpon>CompileVideo.cs</DependentUpon>
     </Compile>
     <Compile Include="Constants.cs" />
+    <Compile Include="HomeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HomeForm.Designer.cs">
+      <DependentUpon>HomeForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Join.cs" />
     <Compile Include="LoadingForm.cs">
       <SubType>Form</SubType>
@@ -113,10 +125,19 @@
     </Compile>
     <Compile Include="Spot.cs" />
     <Compile Include="State.cs" />
+    <Compile Include="PiecesTab.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PiecesTab.Designer.cs">
+      <DependentUpon>PiecesTab.cs</DependentUpon>
+    </Compile>
     <Compile Include="Utilities.cs" />
     <Compile Include="Visuals.cs" />
     <EmbeddedResource Include="CompileVideo.resx">
       <DependentUpon>CompileVideo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HomeForm.resx">
+      <DependentUpon>HomeForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LoadingForm.resx">
       <DependentUpon>LoadingForm.cs</DependentUpon>
@@ -150,6 +171,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SettingsForm.resx">
       <DependentUpon>SettingsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PiecesTab.resx">
+      <DependentUpon>PiecesTab.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
