@@ -7,7 +7,6 @@ C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Animator\obj\
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Animator\obj\Debug\Optimator.MenuForm.resources
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Animator\obj\Debug\Optimator.PiecesForm.resources
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Animator\obj\Debug\Optimator.PiecesForm_LoadMenu.resources
-C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Animator\obj\Debug\Optimator.PreviewForm.resources
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Animator\obj\Debug\Animator.Properties.Resources.resources
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Animator\obj\Debug\Optimator.ScenesForm.resources
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Animator\obj\Debug\Optimator.SetsForm.resources
@@ -19,3 +18,4 @@ C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Animator\obj\
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Animator\obj\Debug\Animator.HomeForm.resources
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Animator\obj\Debug\Animator.PiecesTab.resources
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Animator\obj\Debug\Animator.Forms.PreviewTab.resources
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Animator\obj\Debug\Animator.Forms.Pieces.SavePanel.resources

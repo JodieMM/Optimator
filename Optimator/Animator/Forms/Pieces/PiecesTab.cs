@@ -1,4 +1,5 @@
 ﻿using Animator.Forms;
+using Animator.Forms.Pieces;
 using Optimator;
 using System.Drawing;
 using System.Windows.Forms;
@@ -6,7 +7,7 @@ using System.Windows.Forms;
 namespace Animator
 {
     /// <summary>
-    /// A tab used to create new pieces.
+    /// A tab used to generate and modify pieces and points.
     /// 
     /// Author Jodie Muller
     /// </summary>
@@ -22,6 +23,7 @@ namespace Animator
         public PiecesTab(HomeForm owner)
         {
             InitializeComponent();
+            //ContextMe
             Owner = owner;
             SelectedInfoLbl.Text = "Click on the top left square to outline the front view of your shape.";
         }
@@ -65,16 +67,42 @@ namespace Animator
         #region ToolStrip
 
         /// <summary>
+        /// Opens the save panel.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SaveBtn_Click(object sender, System.EventArgs e)
+        {
+            SavePanel panel = new SavePanel();
+            Panel.Controls.Clear();
+            Panel.Controls.Add(panel);
+            panel.Dock = DockStyle.Fill;
+        }
+
+        /// <summary>
         /// Opens a preview form for the WIP Piece.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void PreviewBtn_Click(object sender, System.EventArgs e)
         {
-            PreviewTab tab = new PreviewTab(WIP);
+            PreviewTab tab = new PreviewTab(Owner, WIP);
             Owner.AddTabPage("Preview " + WIP.Name, tab);
             tab.Resize();
         }
+
+        /// <summary>
+        /// Closes this tab.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CloseBtn_Click(object sender, System.EventArgs e)
+        {
+            //TODO: Add other code here
+            Owner.RemoveTabPage(this);
+        }
+
+        
 
         #endregion
 

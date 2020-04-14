@@ -12,6 +12,7 @@ namespace Animator.Forms
     /// </summary>
     public partial class PreviewTab : UserControl
     {
+        private HomeForm Owner;
         private Part WIP;
         private State Position = new State();
         private Graphics g;
@@ -20,9 +21,10 @@ namespace Animator.Forms
         /// <summary>
         /// Constructor for the control.
         /// </summary>
-        public PreviewTab(Part part)
+        public PreviewTab(HomeForm owner, Part part)
         {
             InitializeComponent();
+            Owner = owner;
             WIP = part;
             Position.SetCoordsBasedOnBoard(DrawPanel);
         }
@@ -38,7 +40,7 @@ namespace Animator.Forms
         {
             float widthPercent = 0.75F;
             float widthSmallPercent = 0.2F;
-            float heightPercent = 0.95F;
+            float heightPercent = 0.9F;
 
             float trackLong = 0.8F;
             float trackShort = 0.1F;
@@ -50,13 +52,13 @@ namespace Animator.Forms
 
             int smallWidth = (int)(Width * widthSmallPercent);
             int lilWidth = (int)((Width - bigLength - smallWidth) / 4.0);
-            int smallHeight = (int)((Height - bigHeight) / 2.0);
+            int smallHeight = (int)((Height - bigHeight - ToolStrip.Height) / 2.0);
 
             DrawPanel.Size = new Size(bigLength, bigLength);
-            DrawPanel.Location = new Point(lilWidth, smallHeight);
+            DrawPanel.Location = new Point(lilWidth, smallHeight + ToolStrip.Height);
 
             OptionsMenu.Size = new Size(smallWidth, bigLength);
-            OptionsMenu.Location = new Point(bigLength + 3 * lilWidth, smallHeight);
+            OptionsMenu.Location = new Point(bigLength + 3 * lilWidth, smallHeight + ToolStrip.Height);
 
             RotationTrack.Size = new Size((int)(DrawPanel.Width * trackLong), (int)(DrawPanel.Height * trackShort));
             RotationTrack.Location = new Point((int)(DrawPanel.Location.X + (DrawPanel.Width - RotationTrack.Width) / 2.0),
@@ -133,6 +135,16 @@ namespace Animator.Forms
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Closes this form.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CloseBtn_Click(object sender, EventArgs e)
+        {
+            Owner.RemoveTabPage(this);
         }
     }
 }

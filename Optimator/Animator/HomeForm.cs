@@ -51,18 +51,9 @@ namespace Animator
 
         // ----- TOOL STRIP -----
 
-        public void AddTabPage(string name, UserControl tab)
-        {
-            TabPage page = new TabPage(name);
-            tab.Dock = DockStyle.Fill;
-            page.Controls.Add(tab);
-            TabControl.Controls.Add(page);
-            TabControl.SelectedIndex = TabControl.Controls.Count - 1;
-        }
-
         #region Tool Strip Clicks
 
-        // ----- NEW -----
+        // --- NEW ---
 
         /// <summary>
         /// Adds a new PiecesTab.
@@ -76,9 +67,48 @@ namespace Animator
             tab.Resize();
         }
 
+        /// <summary>
+        /// Adds a new SetsTab.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void NewSetTSMI_Click(object sender, EventArgs e)
+        {
+            //TODO Update Tab Type
+            PiecesTab tab = new PiecesTab(this);
+            AddTabPage("New Set", tab);
+            tab.Resize();
+        }
+
+        /// <summary>
+        /// Adds a new ScenesTab.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void NewSceneTSMI_Click(object sender, EventArgs e)
+        {
+            //TODO Update Tab Type
+            PiecesTab tab = new PiecesTab(this);
+            AddTabPage("New Scene", tab);
+            tab.Resize();
+        }
+
+        /// <summary>
+        /// Adds a new VideosTab.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void NewVideoTSMI_Click(object sender, EventArgs e)
+        {
+            //TODO Update Tab Type
+            PiecesTab tab = new PiecesTab(this);
+            AddTabPage("New Video", tab);
+            tab.Resize();
+        }
+                
 
 
-        // ----- OPEN -----
+        // --- OPEN ---
 
         /// <summary>
         /// Opens an existing piece in a new PiecesTab.
@@ -93,6 +123,83 @@ namespace Animator
         }
 
 
+
+        // --- DIRECTORY ---
+
+
+
+        // --- SETTINGS ---
+
+        /// <summary>
+        /// Adds a new SettingsTab or opens an existing one.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SettingsTSMI_Click(object sender, EventArgs e)
+        {
+            //TODO Update Tab Type
+            //bool found = false;
+            //int index = 0;
+            //while (!found && index < TabControl.Controls.Count)
+            //{
+            //    if (TabControl.Controls[index] is SettingsTab)
+            //    {
+            //        TabControl.SelectedIndex = index;
+            //        found = true;
+            //    }
+            //    index++;
+            //}
+            //if (!found)
+            //{
+            //    SettingsTab tab = new SettingsTab();
+            //    AddTabPage("Settings", tab);
+            //    tab.Resize();
+            //}
+        }
+
+
+
+        // --- HELP ---
+
+
+
         #endregion
+
+
+
+        // ----- TAB PAGES -----
+
+        /// <summary>
+        /// Adds a user control to the TabControl as a TabPage.
+        /// </summary>
+        /// <param name="name">Tab label</param>
+        /// <param name="tab">The tab to add</param>
+        public void AddTabPage(string name, UserControl tab)
+        {
+            TabPage page = new TabPage(name);
+            tab.Dock = DockStyle.Fill;
+            page.Controls.Add(tab);
+            TabControl.Controls.Add(page);
+            TabControl.SelectedIndex = TabControl.Controls.Count - 1;
+        }
+
+        /// <summary>
+        /// Removes a TabPage from the TabControl by finding a matching UserControl.
+        /// </summary>
+        /// <param name="tab"></param>
+        public void RemoveTabPage(UserControl tab)
+        {
+            bool found = false;
+            int index = 0;
+            while (!found && index < TabControl.Controls.Count)
+            {
+                if (TabControl.Controls[index].Contains(tab))
+                {
+                    TabControl.Controls.RemoveAt(index);
+                    found = true;
+                }
+                index++;
+            }
+        }
     }
 }

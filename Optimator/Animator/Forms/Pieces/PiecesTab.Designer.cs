@@ -38,8 +38,13 @@
             this.ToolStrip = new System.Windows.Forms.ToolStrip();
             this.SaveBtn = new System.Windows.Forms.ToolStripButton();
             this.MovePointBtn = new System.Windows.Forms.ToolStripButton();
-            this.SelectedInfoLbl = new System.Windows.Forms.Label();
             this.PreviewBtn = new System.Windows.Forms.ToolStripButton();
+            this.SelectedInfoLbl = new System.Windows.Forms.Label();
+            this.CloseBtn = new System.Windows.Forms.ToolStripButton();
+            this.ColoursBtn = new System.Windows.Forms.ToolStripButton();
+            this.FixedBtn = new System.Windows.Forms.ToolStripButton();
+            this.SketchesBtn = new System.Windows.Forms.ToolStripButton();
+            this.EraseBtn = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.DrawRight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawBase)).BeginInit();
@@ -118,9 +123,15 @@
             this.ToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.SaveBtn,
             this.MovePointBtn,
-            this.PreviewBtn});
+            this.PreviewBtn,
+            this.CloseBtn,
+            this.ColoursBtn,
+            this.FixedBtn,
+            this.SketchesBtn,
+            this.EraseBtn});
             this.ToolStrip.Location = new System.Drawing.Point(0, 0);
             this.ToolStrip.Name = "ToolStrip";
+            this.ToolStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             this.ToolStrip.Size = new System.Drawing.Size(1444, 39);
             this.ToolStrip.TabIndex = 22;
             this.ToolStrip.Text = "ToolStrip";
@@ -133,6 +144,7 @@
             this.SaveBtn.Name = "SaveBtn";
             this.SaveBtn.Size = new System.Drawing.Size(36, 36);
             this.SaveBtn.Text = "Save";
+            this.SaveBtn.Click += new System.EventHandler(this.SaveBtn_Click);
             // 
             // MovePointBtn
             // 
@@ -142,6 +154,16 @@
             this.MovePointBtn.Name = "MovePointBtn";
             this.MovePointBtn.Size = new System.Drawing.Size(36, 36);
             this.MovePointBtn.Text = "Move Point";
+            // 
+            // PreviewBtn
+            // 
+            this.PreviewBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.PreviewBtn.Image = ((System.Drawing.Image)(resources.GetObject("PreviewBtn.Image")));
+            this.PreviewBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.PreviewBtn.Name = "PreviewBtn";
+            this.PreviewBtn.Size = new System.Drawing.Size(36, 36);
+            this.PreviewBtn.Text = "Preview";
+            this.PreviewBtn.Click += new System.EventHandler(this.PreviewBtn_Click);
             // 
             // SelectedInfoLbl
             // 
@@ -154,15 +176,53 @@
             this.SelectedInfoLbl.TabIndex = 29;
             this.SelectedInfoLbl.Text = "label1";
             // 
-            // PreviewBtn
+            // CloseBtn
             // 
-            this.PreviewBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.PreviewBtn.Image = ((System.Drawing.Image)(resources.GetObject("PreviewBtn.Image")));
-            this.PreviewBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.PreviewBtn.Name = "PreviewBtn";
-            this.PreviewBtn.Size = new System.Drawing.Size(36, 36);
-            this.PreviewBtn.Text = "Preview";
-            this.PreviewBtn.Click += new System.EventHandler(this.PreviewBtn_Click);
+            this.CloseBtn.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.CloseBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.CloseBtn.Image = ((System.Drawing.Image)(resources.GetObject("CloseBtn.Image")));
+            this.CloseBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.CloseBtn.Name = "CloseBtn";
+            this.CloseBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.CloseBtn.Size = new System.Drawing.Size(36, 36);
+            this.CloseBtn.Text = "Close";
+            this.CloseBtn.Click += new System.EventHandler(this.CloseBtn_Click);
+            // 
+            // ColoursBtn
+            // 
+            this.ColoursBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.ColoursBtn.Image = ((System.Drawing.Image)(resources.GetObject("ColoursBtn.Image")));
+            this.ColoursBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.ColoursBtn.Name = "ColoursBtn";
+            this.ColoursBtn.Size = new System.Drawing.Size(36, 36);
+            this.ColoursBtn.Text = "Colours";
+            // 
+            // FixedBtn
+            // 
+            this.FixedBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.FixedBtn.Image = ((System.Drawing.Image)(resources.GetObject("FixedBtn.Image")));
+            this.FixedBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.FixedBtn.Name = "FixedBtn";
+            this.FixedBtn.Size = new System.Drawing.Size(36, 36);
+            this.FixedBtn.Text = "Fixed Points";
+            // 
+            // SketchesBtn
+            // 
+            this.SketchesBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.SketchesBtn.Image = ((System.Drawing.Image)(resources.GetObject("SketchesBtn.Image")));
+            this.SketchesBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.SketchesBtn.Name = "SketchesBtn";
+            this.SketchesBtn.Size = new System.Drawing.Size(36, 36);
+            this.SketchesBtn.Text = "Sketches";
+            // 
+            // EraseBtn
+            // 
+            this.EraseBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.EraseBtn.Image = ((System.Drawing.Image)(resources.GetObject("EraseBtn.Image")));
+            this.EraseBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.EraseBtn.Name = "EraseBtn";
+            this.EraseBtn.Size = new System.Drawing.Size(36, 36);
+            this.EraseBtn.Text = "Erase";
             // 
             // PiecesTab
             // 
@@ -201,5 +261,10 @@
         private System.Windows.Forms.ToolStripButton MovePointBtn;
         private System.Windows.Forms.Label SelectedInfoLbl;
         private System.Windows.Forms.ToolStripButton PreviewBtn;
+        private System.Windows.Forms.ToolStripButton CloseBtn;
+        private System.Windows.Forms.ToolStripButton ColoursBtn;
+        private System.Windows.Forms.ToolStripButton FixedBtn;
+        private System.Windows.Forms.ToolStripButton SketchesBtn;
+        private System.Windows.Forms.ToolStripButton EraseBtn;
     }
 }

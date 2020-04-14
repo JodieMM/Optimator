@@ -45,7 +45,7 @@
             this.DirTSMI = new System.Windows.Forms.ToolStripMenuItem();
             this.DirChangeTSMI = new System.Windows.Forms.ToolStripMenuItem();
             this.DirBackupTSMI = new System.Windows.Forms.ToolStripMenuItem();
-            this.InfoTSMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.SettingsTSMI = new System.Windows.Forms.ToolStripMenuItem();
             this.HelpTSMI = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuStrip.SuspendLayout();
             this.SuspendLayout();
@@ -53,6 +53,7 @@
             // TabControl
             // 
             this.TabControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.TabControl.HotTrack = true;
             this.TabControl.Location = new System.Drawing.Point(0, 40);
             this.TabControl.Name = "TabControl";
             this.TabControl.SelectedIndex = 0;
@@ -66,7 +67,7 @@
             this.NewTSMI,
             this.OpenTSMI,
             this.DirTSMI,
-            this.InfoTSMI,
+            this.SettingsTSMI,
             this.HelpTSMI});
             this.MenuStrip.Location = new System.Drawing.Point(0, 0);
             this.MenuStrip.Name = "MenuStrip";
@@ -98,18 +99,21 @@
             this.NewSetTSMI.Name = "NewSetTSMI";
             this.NewSetTSMI.Size = new System.Drawing.Size(217, 38);
             this.NewSetTSMI.Text = "Set";
+            this.NewSetTSMI.Click += new System.EventHandler(this.NewSetTSMI_Click);
             // 
             // NewSceneTSMI
             // 
             this.NewSceneTSMI.Name = "NewSceneTSMI";
             this.NewSceneTSMI.Size = new System.Drawing.Size(217, 38);
             this.NewSceneTSMI.Text = "Scene";
+            this.NewSceneTSMI.Click += new System.EventHandler(this.NewSceneTSMI_Click);
             // 
             // NewVideoTSMI
             // 
             this.NewVideoTSMI.Name = "NewVideoTSMI";
             this.NewVideoTSMI.Size = new System.Drawing.Size(217, 38);
             this.NewVideoTSMI.Text = "Video";
+            this.NewVideoTSMI.Click += new System.EventHandler(this.NewVideoTSMI_Click);
             // 
             // spriteSetToolStripMenuItem
             // 
@@ -132,32 +136,32 @@
             // OpenPieceTSMI
             // 
             this.OpenPieceTSMI.Name = "OpenPieceTSMI";
-            this.OpenPieceTSMI.Size = new System.Drawing.Size(324, 38);
+            this.OpenPieceTSMI.Size = new System.Drawing.Size(217, 38);
             this.OpenPieceTSMI.Text = "Piece";
             this.OpenPieceTSMI.Click += new System.EventHandler(this.OpenPieceTSMI_Click);
             // 
             // OpenSetTSMI
             // 
             this.OpenSetTSMI.Name = "OpenSetTSMI";
-            this.OpenSetTSMI.Size = new System.Drawing.Size(324, 38);
+            this.OpenSetTSMI.Size = new System.Drawing.Size(217, 38);
             this.OpenSetTSMI.Text = "Set";
             // 
             // OpenSceneTSMI
             // 
             this.OpenSceneTSMI.Name = "OpenSceneTSMI";
-            this.OpenSceneTSMI.Size = new System.Drawing.Size(324, 38);
+            this.OpenSceneTSMI.Size = new System.Drawing.Size(217, 38);
             this.OpenSceneTSMI.Text = "Scene";
             // 
             // OpenVideoTSMI
             // 
             this.OpenVideoTSMI.Name = "OpenVideoTSMI";
-            this.OpenVideoTSMI.Size = new System.Drawing.Size(324, 38);
+            this.OpenVideoTSMI.Size = new System.Drawing.Size(217, 38);
             this.OpenVideoTSMI.Text = "Video";
             // 
             // spriteSetToolStripMenuItem1
             // 
             this.spriteSetToolStripMenuItem1.Name = "spriteSetToolStripMenuItem1";
-            this.spriteSetToolStripMenuItem1.Size = new System.Drawing.Size(324, 38);
+            this.spriteSetToolStripMenuItem1.Size = new System.Drawing.Size(217, 38);
             this.spriteSetToolStripMenuItem1.Text = "Sprite Set";
             // 
             // DirTSMI
@@ -172,20 +176,21 @@
             // DirChangeTSMI
             // 
             this.DirChangeTSMI.Name = "DirChangeTSMI";
-            this.DirChangeTSMI.Size = new System.Drawing.Size(324, 38);
+            this.DirChangeTSMI.Size = new System.Drawing.Size(196, 38);
             this.DirChangeTSMI.Text = "Change";
             // 
             // DirBackupTSMI
             // 
             this.DirBackupTSMI.Name = "DirBackupTSMI";
-            this.DirBackupTSMI.Size = new System.Drawing.Size(324, 38);
+            this.DirBackupTSMI.Size = new System.Drawing.Size(196, 38);
             this.DirBackupTSMI.Text = "Backup";
             // 
-            // InfoTSMI
+            // SettingsTSMI
             // 
-            this.InfoTSMI.Name = "InfoTSMI";
-            this.InfoTSMI.Size = new System.Drawing.Size(69, 36);
-            this.InfoTSMI.Text = "Info";
+            this.SettingsTSMI.Name = "SettingsTSMI";
+            this.SettingsTSMI.Size = new System.Drawing.Size(113, 36);
+            this.SettingsTSMI.Text = "Settings";
+            this.SettingsTSMI.Click += new System.EventHandler(this.SettingsTSMI_Click);
             // 
             // HelpTSMI
             // 
@@ -232,7 +237,7 @@
         private System.Windows.Forms.ToolStripMenuItem DirTSMI;
         private System.Windows.Forms.ToolStripMenuItem DirChangeTSMI;
         private System.Windows.Forms.ToolStripMenuItem DirBackupTSMI;
-        private System.Windows.Forms.ToolStripMenuItem InfoTSMI;
         private System.Windows.Forms.ToolStripMenuItem HelpTSMI;
+        private System.Windows.Forms.ToolStripMenuItem SettingsTSMI;
     }
 }

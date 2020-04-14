@@ -358,8 +358,9 @@ namespace Optimator
             {
                 Piece clone = Utils.ClonePiece(WIP);
                 Utils.CentrePieceOnAxis(clone);
-                var previewForm = new PreviewForm(clone);
-                previewForm.Show();
+                //var previewForm = new PreviewForm(clone);
+                //previewForm.Show();
+                // TODO Replace Form with Tab
             }
         }
 

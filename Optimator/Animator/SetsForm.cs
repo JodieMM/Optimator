@@ -70,8 +70,9 @@ namespace Optimator
         {
             if (CheckSingularBasePiece())
             {
-                PreviewForm previewForm = new PreviewForm(WIP);
-                previewForm.Show();
+                //PreviewForm previewForm = new PreviewForm(WIP);
+                //previewForm.Show();
+                // TODO Replace Form with Tab
             }
         }
 
