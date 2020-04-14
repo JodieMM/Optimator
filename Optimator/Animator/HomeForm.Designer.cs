@@ -30,18 +30,23 @@
         {
             this.TabControl = new System.Windows.Forms.TabControl();
             this.MenuStrip = new System.Windows.Forms.MenuStrip();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.pieceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.setToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.sceneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.videoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.NewTSMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.NewPieceTSMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.NewSetTSMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.NewSceneTSMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.NewVideoTSMI = new System.Windows.Forms.ToolStripMenuItem();
             this.spriteSetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pieceToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.setToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.sceneToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.videoToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.OpenTSMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.OpenPieceTSMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.OpenSetTSMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.OpenSceneTSMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.OpenVideoTSMI = new System.Windows.Forms.ToolStripMenuItem();
             this.spriteSetToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.DirTSMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.DirChangeTSMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.DirBackupTSMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.InfoTSMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.HelpTSMI = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -51,57 +56,60 @@
             this.TabControl.Location = new System.Drawing.Point(0, 40);
             this.TabControl.Name = "TabControl";
             this.TabControl.SelectedIndex = 0;
-            this.TabControl.Size = new System.Drawing.Size(1774, 1089);
+            this.TabControl.Size = new System.Drawing.Size(1174, 689);
             this.TabControl.TabIndex = 0;
             // 
             // MenuStrip
             // 
             this.MenuStrip.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.MenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1,
-            this.openToolStripMenuItem});
+            this.NewTSMI,
+            this.OpenTSMI,
+            this.DirTSMI,
+            this.InfoTSMI,
+            this.HelpTSMI});
             this.MenuStrip.Location = new System.Drawing.Point(0, 0);
             this.MenuStrip.Name = "MenuStrip";
-            this.MenuStrip.Size = new System.Drawing.Size(1774, 40);
+            this.MenuStrip.Size = new System.Drawing.Size(1174, 40);
             this.MenuStrip.TabIndex = 1;
             this.MenuStrip.Text = "menuStrip1";
             // 
-            // toolStripMenuItem1
+            // NewTSMI
             // 
-            this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.pieceToolStripMenuItem,
-            this.setToolStripMenuItem,
-            this.sceneToolStripMenuItem,
-            this.videoToolStripMenuItem,
+            this.NewTSMI.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.NewPieceTSMI,
+            this.NewSetTSMI,
+            this.NewSceneTSMI,
+            this.NewVideoTSMI,
             this.spriteSetToolStripMenuItem});
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(75, 36);
-            this.toolStripMenuItem1.Text = "New";
+            this.NewTSMI.Name = "NewTSMI";
+            this.NewTSMI.Size = new System.Drawing.Size(75, 36);
+            this.NewTSMI.Text = "New";
             // 
-            // pieceToolStripMenuItem
+            // NewPieceTSMI
             // 
-            this.pieceToolStripMenuItem.Name = "pieceToolStripMenuItem";
-            this.pieceToolStripMenuItem.Size = new System.Drawing.Size(217, 38);
-            this.pieceToolStripMenuItem.Text = "Piece";
-            this.pieceToolStripMenuItem.Click += new System.EventHandler(this.PieceToolStripMenuItem_Click);
+            this.NewPieceTSMI.Name = "NewPieceTSMI";
+            this.NewPieceTSMI.Size = new System.Drawing.Size(217, 38);
+            this.NewPieceTSMI.Text = "Piece";
+            this.NewPieceTSMI.Click += new System.EventHandler(this.NewPieceTSMI_Click);
             // 
-            // setToolStripMenuItem
+            // NewSetTSMI
             // 
-            this.setToolStripMenuItem.Name = "setToolStripMenuItem";
-            this.setToolStripMenuItem.Size = new System.Drawing.Size(217, 38);
-            this.setToolStripMenuItem.Text = "Set";
+            this.NewSetTSMI.Name = "NewSetTSMI";
+            this.NewSetTSMI.Size = new System.Drawing.Size(217, 38);
+            this.NewSetTSMI.Text = "Set";
             // 
-            // sceneToolStripMenuItem
+            // NewSceneTSMI
             // 
-            this.sceneToolStripMenuItem.Name = "sceneToolStripMenuItem";
-            this.sceneToolStripMenuItem.Size = new System.Drawing.Size(217, 38);
-            this.sceneToolStripMenuItem.Text = "Scene";
+            this.NewSceneTSMI.Name = "NewSceneTSMI";
+            this.NewSceneTSMI.Size = new System.Drawing.Size(217, 38);
+            this.NewSceneTSMI.Text = "Scene";
             // 
-            // videoToolStripMenuItem
+            // NewVideoTSMI
             // 
-            this.videoToolStripMenuItem.Name = "videoToolStripMenuItem";
-            this.videoToolStripMenuItem.Size = new System.Drawing.Size(217, 38);
-            this.videoToolStripMenuItem.Text = "Video";
+            this.NewVideoTSMI.Name = "NewVideoTSMI";
+            this.NewVideoTSMI.Size = new System.Drawing.Size(217, 38);
+            this.NewVideoTSMI.Text = "Video";
             // 
             // spriteSetToolStripMenuItem
             // 
@@ -109,55 +117,90 @@
             this.spriteSetToolStripMenuItem.Size = new System.Drawing.Size(217, 38);
             this.spriteSetToolStripMenuItem.Text = "Sprite Set";
             // 
-            // openToolStripMenuItem
+            // OpenTSMI
             // 
-            this.openToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.pieceToolStripMenuItem1,
-            this.setToolStripMenuItem1,
-            this.sceneToolStripMenuItem1,
-            this.videoToolStripMenuItem1,
+            this.OpenTSMI.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.OpenPieceTSMI,
+            this.OpenSetTSMI,
+            this.OpenSceneTSMI,
+            this.OpenVideoTSMI,
             this.spriteSetToolStripMenuItem1});
-            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(86, 36);
-            this.openToolStripMenuItem.Text = "Open";
+            this.OpenTSMI.Name = "OpenTSMI";
+            this.OpenTSMI.Size = new System.Drawing.Size(86, 36);
+            this.OpenTSMI.Text = "Open";
             // 
-            // pieceToolStripMenuItem1
+            // OpenPieceTSMI
             // 
-            this.pieceToolStripMenuItem1.Name = "pieceToolStripMenuItem1";
-            this.pieceToolStripMenuItem1.Size = new System.Drawing.Size(217, 38);
-            this.pieceToolStripMenuItem1.Text = "Piece";
+            this.OpenPieceTSMI.Name = "OpenPieceTSMI";
+            this.OpenPieceTSMI.Size = new System.Drawing.Size(324, 38);
+            this.OpenPieceTSMI.Text = "Piece";
+            this.OpenPieceTSMI.Click += new System.EventHandler(this.OpenPieceTSMI_Click);
             // 
-            // setToolStripMenuItem1
+            // OpenSetTSMI
             // 
-            this.setToolStripMenuItem1.Name = "setToolStripMenuItem1";
-            this.setToolStripMenuItem1.Size = new System.Drawing.Size(217, 38);
-            this.setToolStripMenuItem1.Text = "Set";
+            this.OpenSetTSMI.Name = "OpenSetTSMI";
+            this.OpenSetTSMI.Size = new System.Drawing.Size(324, 38);
+            this.OpenSetTSMI.Text = "Set";
             // 
-            // sceneToolStripMenuItem1
+            // OpenSceneTSMI
             // 
-            this.sceneToolStripMenuItem1.Name = "sceneToolStripMenuItem1";
-            this.sceneToolStripMenuItem1.Size = new System.Drawing.Size(217, 38);
-            this.sceneToolStripMenuItem1.Text = "Scene";
+            this.OpenSceneTSMI.Name = "OpenSceneTSMI";
+            this.OpenSceneTSMI.Size = new System.Drawing.Size(324, 38);
+            this.OpenSceneTSMI.Text = "Scene";
             // 
-            // videoToolStripMenuItem1
+            // OpenVideoTSMI
             // 
-            this.videoToolStripMenuItem1.Name = "videoToolStripMenuItem1";
-            this.videoToolStripMenuItem1.Size = new System.Drawing.Size(217, 38);
-            this.videoToolStripMenuItem1.Text = "Video";
+            this.OpenVideoTSMI.Name = "OpenVideoTSMI";
+            this.OpenVideoTSMI.Size = new System.Drawing.Size(324, 38);
+            this.OpenVideoTSMI.Text = "Video";
             // 
             // spriteSetToolStripMenuItem1
             // 
             this.spriteSetToolStripMenuItem1.Name = "spriteSetToolStripMenuItem1";
-            this.spriteSetToolStripMenuItem1.Size = new System.Drawing.Size(217, 38);
+            this.spriteSetToolStripMenuItem1.Size = new System.Drawing.Size(324, 38);
             this.spriteSetToolStripMenuItem1.Text = "Sprite Set";
+            // 
+            // DirTSMI
+            // 
+            this.DirTSMI.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.DirChangeTSMI,
+            this.DirBackupTSMI});
+            this.DirTSMI.Name = "DirTSMI";
+            this.DirTSMI.Size = new System.Drawing.Size(124, 36);
+            this.DirTSMI.Text = "Directory";
+            // 
+            // DirChangeTSMI
+            // 
+            this.DirChangeTSMI.Name = "DirChangeTSMI";
+            this.DirChangeTSMI.Size = new System.Drawing.Size(324, 38);
+            this.DirChangeTSMI.Text = "Change";
+            // 
+            // DirBackupTSMI
+            // 
+            this.DirBackupTSMI.Name = "DirBackupTSMI";
+            this.DirBackupTSMI.Size = new System.Drawing.Size(324, 38);
+            this.DirBackupTSMI.Text = "Backup";
+            // 
+            // InfoTSMI
+            // 
+            this.InfoTSMI.Name = "InfoTSMI";
+            this.InfoTSMI.Size = new System.Drawing.Size(69, 36);
+            this.InfoTSMI.Text = "Info";
+            // 
+            // HelpTSMI
+            // 
+            this.HelpTSMI.Name = "HelpTSMI";
+            this.HelpTSMI.Size = new System.Drawing.Size(77, 36);
+            this.HelpTSMI.Text = "Help";
             // 
             // HomeForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(1774, 1129);
+            this.ClientSize = new System.Drawing.Size(1174, 729);
             this.Controls.Add(this.TabControl);
             this.Controls.Add(this.MenuStrip);
             this.MainMenuStrip = this.MenuStrip;
+            this.MinimumSize = new System.Drawing.Size(650, 450);
             this.Name = "HomeForm";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -174,17 +217,22 @@
 
         private System.Windows.Forms.TabControl TabControl;
         private System.Windows.Forms.MenuStrip MenuStrip;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem pieceToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem setToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem sceneToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem videoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem NewTSMI;
+        private System.Windows.Forms.ToolStripMenuItem NewPieceTSMI;
+        private System.Windows.Forms.ToolStripMenuItem NewSetTSMI;
+        private System.Windows.Forms.ToolStripMenuItem NewSceneTSMI;
+        private System.Windows.Forms.ToolStripMenuItem NewVideoTSMI;
         private System.Windows.Forms.ToolStripMenuItem spriteSetToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem pieceToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem setToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem sceneToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem videoToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem OpenTSMI;
+        private System.Windows.Forms.ToolStripMenuItem OpenPieceTSMI;
+        private System.Windows.Forms.ToolStripMenuItem OpenSetTSMI;
+        private System.Windows.Forms.ToolStripMenuItem OpenSceneTSMI;
+        private System.Windows.Forms.ToolStripMenuItem OpenVideoTSMI;
         private System.Windows.Forms.ToolStripMenuItem spriteSetToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem DirTSMI;
+        private System.Windows.Forms.ToolStripMenuItem DirChangeTSMI;
+        private System.Windows.Forms.ToolStripMenuItem DirBackupTSMI;
+        private System.Windows.Forms.ToolStripMenuItem InfoTSMI;
+        private System.Windows.Forms.ToolStripMenuItem HelpTSMI;
     }
 }

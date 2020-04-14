@@ -61,6 +61,12 @@
       <DependentUpon>CompileVideo.cs</DependentUpon>
     </Compile>
     <Compile Include="Constants.cs" />
+    <Compile Include="Forms\PreviewTab.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\PreviewTab.Designer.cs">
+      <DependentUpon>PreviewTab.cs</DependentUpon>
+    </Compile>
     <Compile Include="HomeForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -125,16 +131,19 @@
     </Compile>
     <Compile Include="Spot.cs" />
     <Compile Include="State.cs" />
-    <Compile Include="PiecesTab.cs">
+    <Compile Include="Forms\Pieces\PiecesTab.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="PiecesTab.Designer.cs">
+    <Compile Include="Forms\Pieces\PiecesTab.Designer.cs">
       <DependentUpon>PiecesTab.cs</DependentUpon>
     </Compile>
     <Compile Include="Utilities.cs" />
     <Compile Include="Visuals.cs" />
     <EmbeddedResource Include="CompileVideo.resx">
       <DependentUpon>CompileVideo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\PreviewTab.resx">
+      <DependentUpon>PreviewTab.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="HomeForm.resx">
       <DependentUpon>HomeForm.cs</DependentUpon>
@@ -172,7 +181,7 @@
     <EmbeddedResource Include="SettingsForm.resx">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PiecesTab.resx">
+    <EmbeddedResource Include="Forms\Pieces\PiecesTab.resx">
       <DependentUpon>PiecesTab.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">

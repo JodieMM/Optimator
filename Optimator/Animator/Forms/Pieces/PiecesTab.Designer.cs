@@ -38,6 +38,8 @@
             this.ToolStrip = new System.Windows.Forms.ToolStrip();
             this.SaveBtn = new System.Windows.Forms.ToolStripButton();
             this.MovePointBtn = new System.Windows.Forms.ToolStripButton();
+            this.SelectedInfoLbl = new System.Windows.Forms.Label();
+            this.PreviewBtn = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.DrawRight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawBase)).BeginInit();
@@ -104,9 +106,9 @@
             // 
             this.Panel.BackColor = System.Drawing.Color.Azure;
             this.Panel.Dock = System.Windows.Forms.DockStyle.Right;
-            this.Panel.Location = new System.Drawing.Point(1132, 39);
+            this.Panel.Location = new System.Drawing.Point(994, 39);
             this.Panel.Name = "Panel";
-            this.Panel.Size = new System.Drawing.Size(312, 887);
+            this.Panel.Size = new System.Drawing.Size(450, 887);
             this.Panel.TabIndex = 23;
             // 
             // ToolStrip
@@ -115,7 +117,8 @@
             this.ToolStrip.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.ToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.SaveBtn,
-            this.MovePointBtn});
+            this.MovePointBtn,
+            this.PreviewBtn});
             this.ToolStrip.Location = new System.Drawing.Point(0, 0);
             this.ToolStrip.Name = "ToolStrip";
             this.ToolStrip.Size = new System.Drawing.Size(1444, 39);
@@ -140,11 +143,32 @@
             this.MovePointBtn.Size = new System.Drawing.Size(36, 36);
             this.MovePointBtn.Text = "Move Point";
             // 
+            // SelectedInfoLbl
+            // 
+            this.SelectedInfoLbl.AutoEllipsis = true;
+            this.SelectedInfoLbl.BackColor = System.Drawing.Color.Transparent;
+            this.SelectedInfoLbl.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SelectedInfoLbl.Location = new System.Drawing.Point(357, 430);
+            this.SelectedInfoLbl.Name = "SelectedInfoLbl";
+            this.SelectedInfoLbl.Size = new System.Drawing.Size(100, 59);
+            this.SelectedInfoLbl.TabIndex = 29;
+            this.SelectedInfoLbl.Text = "label1";
+            // 
+            // PreviewBtn
+            // 
+            this.PreviewBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.PreviewBtn.Image = ((System.Drawing.Image)(resources.GetObject("PreviewBtn.Image")));
+            this.PreviewBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.PreviewBtn.Name = "PreviewBtn";
+            this.PreviewBtn.Size = new System.Drawing.Size(36, 36);
+            this.PreviewBtn.Text = "Preview";
+            this.PreviewBtn.Click += new System.EventHandler(this.PreviewBtn_Click);
+            // 
             // PiecesTab
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.PaleTurquoise;
+            this.Controls.Add(this.SelectedInfoLbl);
             this.Controls.Add(this.EraseDownBtn);
             this.Controls.Add(this.EraseRightBtn);
             this.Controls.Add(this.DrawRight);
@@ -152,7 +176,7 @@
             this.Controls.Add(this.DrawBase);
             this.Controls.Add(this.Panel);
             this.Controls.Add(this.ToolStrip);
-            this.Text = "PiecesTab";
+            this.Name = "PiecesTab";
             this.Size = new System.Drawing.Size(1444, 926);
             ((System.ComponentModel.ISupportInitialize)(this.DrawRight)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawDown)).EndInit();
@@ -175,5 +199,7 @@
         private System.Windows.Forms.ToolStrip ToolStrip;
         private System.Windows.Forms.ToolStripButton SaveBtn;
         private System.Windows.Forms.ToolStripButton MovePointBtn;
+        private System.Windows.Forms.Label SelectedInfoLbl;
+        private System.Windows.Forms.ToolStripButton PreviewBtn;
     }
 }
