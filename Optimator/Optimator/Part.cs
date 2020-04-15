@@ -14,7 +14,6 @@ namespace Optimator
         public abstract string Version { get; }
 
 
-
         /// <summary>
         /// Gets part's current details in a string format.
         /// Used to save the part.

@@ -5,6 +5,7 @@ using System.IO;
 using System.Drawing;
 using System.Text.RegularExpressions;
 using System;
+using Optimator.Tabs;
 
 namespace Optimator
 {
@@ -301,7 +302,6 @@ namespace Optimator
             return new double[] { minMax[0] + (minMax[1] - minMax[0]) / 2.0, minMax[2] + (minMax[3] - minMax[2]) / 2.0 };
         }
 
-        //CLEANING Remove below function
         /// <summary>
         /// Finds the height of the shape.
         /// </summary>
@@ -657,6 +657,44 @@ namespace Optimator
             foreach (var item in objects)
             {
                 item.Enabled = enable;
+            }
+        }
+
+        /// <summary>
+        /// Creates a new TabPage in the TabControl of the provided home form.
+        /// </summary>
+        /// <param name="tab">The tab page to add</param>
+        /// <param name="owner">The owner of the TabControl</param>
+        public static void NewTabPage(TabPageControl tab, HomeForm owner, string name)
+        {
+            owner.AddTabPage(name, tab);
+            tab.Resize();
+        }
+
+        /// <summary>
+        /// Swaps the current panel contents.
+        /// </summary>
+        /// <param name="panel">New panel contents</param>
+        public static void NewPanelContent(Panel panel, PanelControl contents)
+        {
+            panel.Controls.Clear();
+            panel.Controls.Add(contents);
+            contents.Dock = DockStyle.Fill;
+            contents.Resize();
+        }
+
+        /// <summary>
+        /// Resizes all of the PanelControls of the provided panel.
+        /// </summary>
+        /// <param name="panel">Forms panel</param>
+        public static void ResizePanel(Panel panel)
+        {
+            foreach (UserControl cntl in panel.Controls)
+            {
+                if (cntl is PanelControl)
+                {
+                    (cntl as PanelControl).Resize();
+                }
             }
         }
 

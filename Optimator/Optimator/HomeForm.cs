@@ -1,4 +1,5 @@
 ﻿using Optimator.Forms;
+using Optimator.Tabs;
 using System;
 using System.Windows.Forms;
 
@@ -35,13 +36,9 @@ namespace Optimator
             {
                 foreach (Control cntl in page.Controls)
                 {
-                    if (cntl is PiecesTab)
+                    if (cntl is TabPageControl)
                     {
-                        (cntl as PiecesTab).Resize();
-                    }
-                    else if (cntl is PreviewTab)
-                    {
-                        (cntl as PreviewTab).Resize();
+                        (cntl as TabPageControl).Resize();
                     }
                 }
             }
@@ -137,24 +134,26 @@ namespace Optimator
         /// <param name="e"></param>
         private void SettingsTSMI_Click(object sender, EventArgs e)
         {
-            //TODO Update Tab Type
-            //bool found = false;
-            //int index = 0;
-            //while (!found && index < TabControl.Controls.Count)
-            //{
-            //    if (TabControl.Controls[index] is SettingsTab)
-            //    {
-            //        TabControl.SelectedIndex = index;
-            //        found = true;
-            //    }
-            //    index++;
-            //}
-            //if (!found)
-            //{
-            //    SettingsTab tab = new SettingsTab();
-            //    AddTabPage("Settings", tab);
-            //    tab.Resize();
-            //}
+            bool found = false;
+            int index = 0;
+            while (!found && index < TabControl.TabPages.Count)
+            {
+                foreach (Control cntl in TabControl.TabPages[index].Controls)
+                {
+                    if (cntl is SettingsTab)
+                    {
+                        TabControl.SelectedIndex = index;
+                        found = true;
+                    }
+                }
+                index++;
+            }
+            if (!found)
+            {
+                SettingsTab tab = new SettingsTab(this);
+                AddTabPage("Settings", tab);
+                tab.Resize();
+            }
         }
 
 

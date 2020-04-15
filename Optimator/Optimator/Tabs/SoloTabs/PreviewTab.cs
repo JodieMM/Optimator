@@ -1,4 +1,4 @@
-﻿using Optimator;
+﻿using Optimator.Tabs;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -10,9 +10,9 @@ namespace Optimator.Forms
     /// 
     /// Author Jodie Muller
     /// </summary>
-    public partial class PreviewTab : UserControl
+    public partial class PreviewTab : TabPageControl
     {
-        private HomeForm Owner;
+        public override HomeForm Owner { get; set; }
         private Part WIP;
         private State Position = new State();
         private Graphics g;
@@ -36,7 +36,7 @@ namespace Optimator.Forms
         /// <summary>
         /// Resizes the tab.
         /// </summary>
-        public new void Resize()
+        public override void Resize()
         {
             float widthPercent = 0.75F;
             float widthSmallPercent = 0.2F;
@@ -135,16 +135,6 @@ namespace Optimator.Forms
                     }
                 }
             }
-        }
-
-        /// <summary>
-        /// Closes this form.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void CloseBtn_Click(object sender, EventArgs e)
-        {
-            Owner.RemoveTabPage(this);
-        }
+        }       
     }
 }

@@ -19,13 +19,10 @@ C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Animator\obj\
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Animator\obj\Debug\Optimator.Forms.PreviewTab.resources
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Animator\obj\Debug\Optimator.HomeForm.resources
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Animator\obj\Debug\Optimator.PiecesTab.resources
-C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\bin\Debug\Animator.exe.config
-C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\bin\Debug\Animator.exe
-C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\bin\Debug\Animator.pdb
-C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.csprojAssemblyReference.cache
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.CompileVideo.resources
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.Forms.Pieces.SavePanel.resources
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.Forms.PreviewTab.resources
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.Forms.SettingsTab.resources
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.HomeForm.resources
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.LoadingForm.resources
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.MenuForm.resources
@@ -38,5 +35,10 @@ C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.PiecesTab.resources
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.csproj.GenerateResource.cache
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.csproj.CoreCompileInputs.cache
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\bin\Debug\Animator.exe.config
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\bin\Debug\Animator.exe
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\bin\Debug\Animator.pdb
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Animator.exe
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Animator.pdb
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.csprojAssemblyReference.cache
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.Tabs.Pieces.MovePointPanel.resources

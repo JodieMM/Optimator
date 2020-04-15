@@ -61,17 +61,62 @@
       <DependentUpon>CompileVideo.cs</DependentUpon>
     </Compile>
     <Compile Include="Constants.cs" />
-    <Compile Include="Forms\Pieces\SavePanel.cs">
+    <Compile Include="Tabs\PanelControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\Pieces\SavePanel.Designer.cs">
+    <Compile Include="Tabs\Pieces\ColoursPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Tabs\Pieces\ColoursPanel.Designer.cs">
+      <DependentUpon>ColoursPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tabs\Pieces\ErasePanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Tabs\Pieces\ErasePanel.Designer.cs">
+      <DependentUpon>ErasePanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tabs\Pieces\SketchesPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Tabs\Pieces\SketchesPanel.Designer.cs">
+      <DependentUpon>SketchesPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tabs\Pieces\SolidPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Tabs\Pieces\SolidPanel.Designer.cs">
+      <DependentUpon>SolidPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tabs\Pieces\MovePointPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Tabs\Pieces\MovePointPanel.Designer.cs">
+      <DependentUpon>MovePointPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tabs\Pieces\OutlinePanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Tabs\Pieces\OutlinePanel.Designer.cs">
+      <DependentUpon>OutlinePanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tabs\Pieces\SavePanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Tabs\Pieces\SavePanel.Designer.cs">
       <DependentUpon>SavePanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\PreviewTab.cs">
+    <Compile Include="Tabs\SoloTabs\PreviewTab.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\PreviewTab.Designer.cs">
+    <Compile Include="Tabs\SoloTabs\PreviewTab.Designer.cs">
       <DependentUpon>PreviewTab.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tabs\SoloTabs\SettingsTab.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Tabs\SoloTabs\SettingsTab.Designer.cs">
+      <DependentUpon>SettingsTab.cs</DependentUpon>
     </Compile>
     <Compile Include="HomeForm.cs">
       <SubType>Form</SubType>
@@ -131,22 +176,46 @@
     </Compile>
     <Compile Include="Spot.cs" />
     <Compile Include="State.cs" />
-    <Compile Include="Forms\Pieces\PiecesTab.cs">
+    <Compile Include="Tabs\Pieces\PiecesTab.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\Pieces\PiecesTab.Designer.cs">
+    <Compile Include="Tabs\Pieces\PiecesTab.Designer.cs">
       <DependentUpon>PiecesTab.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tabs\TabPageControl.cs">
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Utilities.cs" />
     <Compile Include="Visuals.cs" />
     <EmbeddedResource Include="CompileVideo.resx">
       <DependentUpon>CompileVideo.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Pieces\SavePanel.resx">
+    <EmbeddedResource Include="Tabs\Pieces\ColoursPanel.resx">
+      <DependentUpon>ColoursPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\Pieces\ErasePanel.resx">
+      <DependentUpon>ErasePanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\Pieces\SketchesPanel.resx">
+      <DependentUpon>SketchesPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\Pieces\SolidPanel.resx">
+      <DependentUpon>SolidPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\Pieces\MovePointPanel.resx">
+      <DependentUpon>MovePointPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\Pieces\OutlinePanel.resx">
+      <DependentUpon>OutlinePanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\Pieces\SavePanel.resx">
       <DependentUpon>SavePanel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\PreviewTab.resx">
+    <EmbeddedResource Include="Tabs\SoloTabs\PreviewTab.resx">
       <DependentUpon>PreviewTab.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\SoloTabs\SettingsTab.resx">
+      <DependentUpon>SettingsTab.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="HomeForm.resx">
       <DependentUpon>HomeForm.cs</DependentUpon>
@@ -181,7 +250,7 @@
     <EmbeddedResource Include="SettingsForm.resx">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Pieces\PiecesTab.resx">
+    <EmbeddedResource Include="Tabs\Pieces\PiecesTab.resx">
       <DependentUpon>PiecesTab.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
