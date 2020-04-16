@@ -674,11 +674,13 @@ namespace Optimator
         /// <summary>
         /// Swaps the current panel contents.
         /// </summary>
-        /// <param name="panel">New panel contents</param>
+        /// <param name="panel">Panel to put contents in</param>
+        /// <param name="contents">New panel contents</param>
         public static void NewPanelContent(Panel panel, PanelControl contents)
         {
             panel.Controls.Clear();
             panel.Controls.Add(contents);
+            panel.Parent.Focus();
             contents.Dock = DockStyle.Fill;
             contents.Resize();
         }

@@ -180,6 +180,7 @@ namespace Optimator
             page.Controls.Add(tab);
             TabControl.Controls.Add(page);
             TabControl.SelectedIndex = TabControl.Controls.Count - 1;
+            TabControl.SelectedTab.Focus();
         }
 
         /// <summary>

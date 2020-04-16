@@ -47,7 +47,23 @@ namespace Animator.Tabs.SoloTabs
         /// </summary>
         public override void Resize()
         {
-            //TODO: Resize!
+            float widthPercent = 0.65F;
+            float widthSmallPercent = 0.3F;
+            float heightPercent = 0.9F;
+
+            int bigWidth = (int)(Width * widthPercent);
+            int bigHeight = (int)((Height - ToolStrip.Height) * heightPercent);
+            int bigLength = bigHeight < bigWidth ? bigHeight : bigWidth;
+
+            int smallWidth = (int)(Width * widthSmallPercent);
+            int lilWidth = (int)((Width - smallWidth - bigLength) / 4.0);
+            int smallHeight = (int)((Height - ToolStrip.Height - bigLength) / 2.0);
+
+            DrawPanel.Size = new Size(bigLength, bigLength);
+            DrawPanel.Location = new Point(lilWidth, smallHeight + ToolStrip.Height);
+
+            TableLayoutPnl.Size = new Size(smallWidth, bigLength);
+            TableLayoutPnl.Location = new Point(bigLength + lilWidth * 3, smallHeight + ToolStrip.Height);
         }
 
 
@@ -149,7 +165,5 @@ namespace Animator.Tabs.SoloTabs
             from.DeselectButtons();
             CloseBtn_Click(sender, e);
         }
-
-
     }
 }

@@ -43,9 +43,13 @@ namespace Optimator
 
             //HIDDEN: KeyPreview = true;
             KeyUp += KeyPress;
+            Enter += FocusOn;
+            VisibleChanged += FocusOn;
 
-            Utils.CheckValidFolder();
+            //HIDDEN TEMP Utils.CheckValidFolder();
         }
+
+        
 
 
 
@@ -77,6 +81,16 @@ namespace Optimator
             Utils.ResizePanel(Panel);
         }
 
+        /// <summary>
+        /// Redraws boards once focus is regained.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void FocusOn(object sender, EventArgs e)
+        {
+            DisplayDrawings();
+        }
+
         #region ToolStrip
 
         // --- UTILITIES ---
@@ -86,7 +100,6 @@ namespace Optimator
         /// </summary>
         private void SelectButton(ToolStripButton btn)
         {
-            bool fixDrawn = FixedBtn.Checked || btn == FixedBtn;
             SaveBtn.Checked = false;
             MovePointBtn.Checked = false;
             ColoursBtn.Checked = false;
@@ -95,12 +108,7 @@ namespace Optimator
             EraseBtn.Checked = false;
             OutlineBtn.Checked = false;
             btn.Checked = true;
-
-            // Redraw fixed points
-            if (fixDrawn)
-            {
-                DisplayDrawings();
-            }
+            DisplayDrawings();
         }
 
         /// <summary>
@@ -124,10 +132,10 @@ namespace Optimator
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void SaveBtn_Click(object sender, System.EventArgs e)
+        private void SaveBtn_Click(object sender, EventArgs e)
         {
-            SelectButton(SaveBtn);
             Utils.NewPanelContent(Panel, new SavePanel(this));
+            SelectButton(SaveBtn);
         }
 
         /// <summary>
@@ -137,8 +145,8 @@ namespace Optimator
         /// <param name="e"></param>
         private void MovePointBtn_Click(object sender, EventArgs e)
         {
-            SelectButton(MovePointBtn);
             Utils.NewPanelContent(Panel, new MovePointPanel(this));
+            SelectButton(MovePointBtn);
         }
 
         /// <summary>
@@ -148,8 +156,8 @@ namespace Optimator
         /// <param name="e"></param>
         private void OutlineBtn_Click(object sender, EventArgs e)
         {
-            SelectButton(OutlineBtn);
             Utils.NewPanelContent(Panel, new OutlinePanel(this));
+            SelectButton(OutlineBtn);
         }
 
         /// <summary>
@@ -159,8 +167,8 @@ namespace Optimator
         /// <param name="e"></param>
         private void ColoursBtn_Click(object sender, EventArgs e)
         {
-            SelectButton(ColoursBtn);
             Utils.NewPanelContent(Panel, new ColoursPanel(this));
+            SelectButton(ColoursBtn);
         }
 
         /// <summary>
@@ -170,8 +178,8 @@ namespace Optimator
         /// <param name="e"></param>
         private void FixedBtn_Click(object sender, EventArgs e)
         {
-            SelectButton(FixedBtn);
             Utils.NewPanelContent(Panel, new SolidPanel(this));
+            SelectButton(FixedBtn);
         }
 
         /// <summary>
@@ -181,8 +189,8 @@ namespace Optimator
         /// <param name="e"></param>
         private void EraseBtn_Click(object sender, EventArgs e)
         {
-            SelectButton(EraseBtn);
             Utils.NewPanelContent(Panel, new ErasePanel(this));
+            SelectButton(EraseBtn);
         }
 
         /// <summary>
@@ -192,8 +200,8 @@ namespace Optimator
         /// <param name="e"></param>
         private void SketchesBtn_Click(object sender, EventArgs e)
         {
-            SelectButton(SketchesBtn);
             Utils.NewPanelContent(Panel, new SketchesPanel(this));
+            SelectButton(SketchesBtn);
         }
 
         /// <summary>
@@ -207,7 +215,8 @@ namespace Optimator
             {
                 Piece clone = Utils.ClonePiece(WIP);
                 Utils.CentrePieceOnAxis(clone);
-                Utils.NewTabPage(new PreviewTab(Owner, clone), "Preview " + WIP.Name);
+                PreviewTab newTab = new PreviewTab(Owner, clone);
+                Utils.NewTabPage(newTab, "Preview " + WIP.Name);
             }            
         }
 

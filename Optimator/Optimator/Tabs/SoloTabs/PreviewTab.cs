@@ -27,6 +27,8 @@ namespace Optimator.Forms
             Owner = owner;
             WIP = part;
             Position.SetCoordsBasedOnBoard(DrawPanel);
+            Enter += FocusOn;
+            VisibleChanged += FocusOn;
         }
 
 
@@ -67,16 +69,21 @@ namespace Optimator.Forms
             TurnTrack.Size = new Size((int)(DrawPanel.Width * trackShort), (int)(DrawPanel.Height * trackLong));
             TurnTrack.Location = new Point((int)(DrawPanel.Location.X + DrawPanel.Width - TurnTrack.Width * 1.25),
                 (int)(DrawPanel.Location.Y + (DrawPanel.Height - TurnTrack.Height) / 2.0));
+
+            //TODO: Get drawings to display from the beginning
+            Focus();
+            DisplayDrawings();
         }
 
         /// <summary>
-        /// Runs when the screen is displayed.
+        /// Redraws boards once focus is regained.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void PiecesPreviewForm_Shown(object sender, EventArgs e)
+        private void FocusOn(object sender, EventArgs e)
         {
             DisplayDrawings();
+            //HIDDEN DrawPanel.BackColor = Color.Red;
         }
 
 
@@ -112,12 +119,14 @@ namespace Optimator.Forms
         /// <summary>
         /// Draws the piece to the screen.
         /// </summary>
-        private void DisplayDrawings()
+        public void DisplayDrawings()
         {
             DrawPanel.Refresh();
             g = DrawPanel.CreateGraphics();
             WIP.Draw(g, Position);
             //HIDDEN EXTRAS BELOW
+            Visuals.DrawCross(300, 300, Color.Red, g);
+
             if (WIP is Set)
             {
                 foreach (Join join in (WIP as Set).JoinsIndex.Values)
