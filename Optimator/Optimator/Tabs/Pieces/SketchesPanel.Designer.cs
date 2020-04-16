@@ -42,6 +42,7 @@
             this.SpinBar = new System.Windows.Forms.TrackBar();
             this.TurnBar = new System.Windows.Forms.TrackBar();
             this.RotationBar = new System.Windows.Forms.TrackBar();
+            this.LoadSketchBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.SizeBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.YUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.XUpDown)).BeginInit();
@@ -224,10 +225,26 @@
             this.RotationBar.TickFrequency = 30;
             this.RotationBar.Scroll += new System.EventHandler(this.SketchUpdate);
             // 
+            // LoadSketchBtn
+            // 
+            this.LoadSketchBtn.BackColor = System.Drawing.Color.LightCyan;
+            this.LoadSketchBtn.Enabled = false;
+            this.LoadSketchBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.LoadSketchBtn.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoadSketchBtn.Location = new System.Drawing.Point(103, 800);
+            this.LoadSketchBtn.Margin = new System.Windows.Forms.Padding(6);
+            this.LoadSketchBtn.Name = "LoadSketchBtn";
+            this.LoadSketchBtn.Size = new System.Drawing.Size(363, 35);
+            this.LoadSketchBtn.TabIndex = 148;
+            this.LoadSketchBtn.Text = "Load Sketch";
+            this.LoadSketchBtn.UseVisualStyleBackColor = false;
+            this.LoadSketchBtn.Click += new System.EventHandler(this.LoadSketchBtn_Click);
+            // 
             // SketchesPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.LoadSketchBtn);
             this.Controls.Add(this.YLbl);
             this.Controls.Add(this.XLbl);
             this.Controls.Add(this.SpinLbl);
@@ -271,5 +288,6 @@
         private System.Windows.Forms.TrackBar SpinBar;
         private System.Windows.Forms.TrackBar TurnBar;
         private System.Windows.Forms.TrackBar RotationBar;
+        private System.Windows.Forms.Button LoadSketchBtn;
     }
 }

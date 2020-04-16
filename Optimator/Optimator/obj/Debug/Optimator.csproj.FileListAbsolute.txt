@@ -40,5 +40,10 @@ C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\bin
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\bin\Debug\Animator.pdb
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Animator.exe
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Animator.pdb
-C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.csprojAssemblyReference.cache
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.Tabs.Pieces.MovePointPanel.resources
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.Tabs.Pieces.ColoursPanel.resources
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.Tabs.Pieces.ErasePanel.resources
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.Tabs.Pieces.SketchesPanel.resources
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.Tabs.Pieces.SolidPanel.resources
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.Tabs.Pieces.OutlinePanel.resources
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Animator.Tabs.SoloTabs.LoadPieceTab.resources

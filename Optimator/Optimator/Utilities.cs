@@ -665,9 +665,9 @@ namespace Optimator
         /// </summary>
         /// <param name="tab">The tab page to add</param>
         /// <param name="owner">The owner of the TabControl</param>
-        public static void NewTabPage(TabPageControl tab, HomeForm owner, string name)
+        public static void NewTabPage(TabPageControl tab, string name)
         {
-            owner.AddTabPage(name, tab);
+            tab.Owner.AddTabPage(name, tab);
             tab.Resize();
         }
 

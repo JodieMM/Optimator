@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Animator.Tabs.SoloTabs;
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
@@ -20,7 +21,6 @@ namespace Optimator.Tabs.Pieces
         {
             InitializeComponent();
             Owner = owner;
-            SketchLb.ItemCheck += new ItemCheckEventHandler(SketchLbSelectChange);
 
             foreach (KeyValuePair<Part, bool> sketch in Owner.Sketches)
             {
@@ -105,6 +105,16 @@ namespace Optimator.Tabs.Pieces
             }
 
             Owner.DisplayDrawings();
+        }
+
+        /// <summary>
+        /// Opens a LoadTab.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void LoadSketchBtn_Click(object sender, EventArgs e)
+        {
+            Utils.NewTabPage(new LoadPieceTab(Owner.Owner, Owner), "Load");
         }
     }
 }

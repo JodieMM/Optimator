@@ -41,6 +41,7 @@ namespace Optimator
             KeyPreview = true;
             KeyUp += KeyPress;
 
+            //CLEANING: Move these
             DrawBase.MouseDown += new MouseEventHandler(DrawBase_MouseDown);
             DrawBase.MouseMove += new MouseEventHandler(DrawBase_MouseMove);
             DrawBase.MouseUp += new MouseEventHandler(DrawBase_MouseUp);

@@ -207,7 +207,7 @@ namespace Optimator
             {
                 Piece clone = Utils.ClonePiece(WIP);
                 Utils.CentrePieceOnAxis(clone);
-                Utils.NewTabPage(new PreviewTab(Owner, clone), Owner, "Preview " + WIP.Name);
+                Utils.NewTabPage(new PreviewTab(Owner, clone), "Preview " + WIP.Name);
             }            
         }
 
@@ -615,54 +615,6 @@ namespace Optimator
                 return false;
             }
             return true;
-        }
-
-
-
-        // ----- TO UPDATE BELOW -----
-
-        /// <summary>
-        /// Updates colours and outline width
-        /// in the display.
-        /// </summary>
-        public void UpdateAttributes()
-        {
-            // See DeselectButtons
-            FillBox.BackColor = WIP.ColourState.FillColour[0];
-            OutlineBox.BackColor = WIP.ColourState.OutlineColour;
-            OutlineWidthBox.Value = WIP.OutlineWidth;
-        }
-
-        /// <summary>
-        /// Takes the shape of the loaded piece and implements it for WIP.
-        /// </summary>
-        /// <param name="spots">Shape coordinates</param>
-        public void LoadPieceOutline(List<Spot> spots)
-        {
-            WIP.Data = spots;
-        }
-               
-        // ----- SKETCH FUNCTIONS -----
-
-        /// <summary>
-        /// Adds a piece to the sketch list and listbox.
-        /// </summary>
-        /// <param name="toLoad">Piece to add to the sketch list</param>
-        public void AddSketch(Part toLoad)
-        {
-            Sketches.Add(toLoad);
-            SketchLb.Items.Add(toLoad, true);
-        }
-
-        /// <summary>
-        /// Load attributes and/or pieces.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void LoadBtn_Click(object sender, EventArgs e)
-        {
-            PiecesForm_LoadMenu loadMenu = new PiecesForm_LoadMenu(this, WIP);
-            loadMenu.Show();
         }
     }
 }
