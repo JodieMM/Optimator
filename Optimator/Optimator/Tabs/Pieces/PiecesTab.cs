@@ -20,7 +20,7 @@ namespace Optimator
         public override HomeForm Owner { get; set; }
 
         public Piece WIP = new Piece();
-        public List<Part> Sketches { get; set; } = new List<Part>();
+        public Dictionary<Part, bool> Sketches { get; set; } = new Dictionary<Part, bool>();
 
         private Graphics original;
         private Graphics rotated;
@@ -39,28 +39,10 @@ namespace Optimator
         public PiecesTab(HomeForm owner)
         {
             InitializeComponent();
-            Owner = owner;
-
-            DrawBase.MouseDown += new MouseEventHandler(DrawBase_MouseDown);
-            DrawBase.MouseUp += new MouseEventHandler(DrawBase_MouseUp);
-            DrawBase.MouseMove += new MouseEventHandler(DrawBase_MouseMove);
-
-            DrawRight.MouseDown += new MouseEventHandler(DrawRight_MouseDown);
-            DrawRight.MouseUp += new MouseEventHandler(DrawRight_MouseUp);
-            DrawRight.MouseMove += new MouseEventHandler(DrawRight_MouseMove);
-
-            DrawDown.MouseDown += new MouseEventHandler(DrawDown_MouseDown);
-            DrawDown.MouseUp += new MouseEventHandler(DrawDown_MouseUp);
-            DrawDown.MouseMove += new MouseEventHandler(DrawDown_MouseMove);
-
-            DrawBase.BackColor = Settings.BackgroundColour;
-            DrawRight.BackColor = Settings.BackgroundColour;
-            DrawDown.BackColor = Settings.BackgroundColour;
+            Owner = owner;           
 
             //HIDDEN: KeyPreview = true;
             KeyUp += KeyPress;
-
-            
 
             Utils.CheckValidFolder();
         }
@@ -119,6 +101,18 @@ namespace Optimator
             {
                 DisplayDrawings();
             }
+        }
+
+        /// <summary>
+        /// Deselects all buttons. Used with LoadTab to ensure all 
+        /// controls display correctly after the load.
+        /// </summary>
+        public void DeselectButtons()
+        {
+            SelectButton(EraseBtn);
+            EraseBtn.Checked = false;
+            Panel.Controls.Clear();
+            DisplayDrawings();
         }
 
 
@@ -188,7 +182,7 @@ namespace Optimator
         private void EraseBtn_Click(object sender, EventArgs e)
         {
             SelectButton(EraseBtn);
-            //Utils.NewPanelContent();
+            Utils.NewPanelContent(Panel, new ErasePanel(this));
         }
 
         /// <summary>
@@ -199,7 +193,7 @@ namespace Optimator
         private void SketchesBtn_Click(object sender, EventArgs e)
         {
             SelectButton(SketchesBtn);
-            //Utils.NewPanelContent();
+            Utils.NewPanelContent(Panel, new SketchesPanel(this));
         }
 
         /// <summary>
@@ -239,15 +233,101 @@ namespace Optimator
         #region I/O
 
         /// <summary>
-        /// Places or selects a point on the main board
+        /// Places or selects a point on a board.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void DrawBase_MouseDown(object sender, MouseEventArgs e)
+        private void DrawBoard_MouseDown(object sender, MouseEventArgs e)
         {
-            // Place Point
-            if (MovePointBtn.Checked == false)
+            int sent = sender == DrawBase ? 0 : sender == DrawRight ? 1 : 2;
+     
+            // Select Spot to Move
+            if (MovePointBtn.Checked)
             {
+                int closestIndex = Utils.FindClosestIndex(WIP.Data, sent, e.X, e.Y);
+                if (closestIndex != -1)
+                {
+                    SelectSpot(WIP.Data[closestIndex]);
+                    moving = 1 + sent;
+                    foreach(Control cntl in Panel.Controls)
+                    {
+                        if (cntl is MovePointPanel)
+                        {
+                            (cntl as MovePointPanel).UpdateLabels(selectedSpot.X, selectedSpot.Y);
+                        }
+                    }
+                }
+                else
+                {
+                    Deselect();
+                }
+            }
+            // Select Spot for Outline Updates
+            else if (OutlineBtn.Checked)
+            {
+                int closestIndex = Utils.FindClosestIndex(WIP.Data, sent, e.X, e.Y);
+                if (closestIndex != -1)
+                {
+                    SelectSpot(WIP.Data[closestIndex]);
+                    foreach (Control cntl in Panel.Controls)
+                    {
+                        if (cntl is OutlinePanel)
+                        {
+                            (cntl as OutlinePanel).UpdateValues(WIP.OutlineWidth, selectedSpot.Connector);                            
+                        }
+                    }
+                }
+                else
+                {
+                    Deselect();
+                }
+            }
+            // Select Spot to Change its Fixed State
+            else if (FixedBtn.Checked)
+            {
+                int closestIndex = Utils.FindClosestIndex(WIP.Data, sent, e.X, e.Y);
+                if (closestIndex != -1)
+                {
+                    SelectSpot(WIP.Data[closestIndex]);
+                    selectedSpot.Solid = selectedSpot.Solid == Consts.solidOptions[0] ? Consts.solidOptions[1] : Consts.solidOptions[0];
+                }
+            }
+            // Select Spot to Erase
+            else if (EraseBtn.Checked)
+            {
+                int closestIndex = Utils.FindClosestIndex(WIP.Data, sent, e.X, e.Y);
+                if (closestIndex != -1)
+                {
+                    SelectSpot(WIP.Data[closestIndex]);
+                    WIP.Data.Remove(selectedSpot);
+                }
+                else if (sent == 0)
+                {
+                    var result = MessageBox.Show("Are you sure you want to restart the piece?", "Confirm Erase", MessageBoxButtons.OKCancel);
+                    if (result == DialogResult.OK)
+                    {
+                        WIP.Data.Clear();
+                    }
+                }
+                else
+                {
+                    var angle = sender == DrawRight ? new object[] { 0, 1, "rotated" } : new object[] { 1, 2, "turned" };
+                    var result = MessageBox.Show("Are you sure you want to set the " + angle[2].ToString() + " view to the base position?",
+                        "Confirm Erase", MessageBoxButtons.OKCancel);
+                    if (result == DialogResult.OK)
+                    {
+                        foreach (var spot in WIP.Data)
+                        {
+                            spot.SetCoords((int)angle[1], (int)angle[0], spot.GetCoordCombination()[(int)angle[0]]);
+                        }
+                    }
+                }
+                Deselect();
+            }
+            // Place Spot
+            else
+            {
+                // TODO: Check this works for Right and Down views
                 if (selectedSpot != null && WIP.Data.IndexOf(selectedSpot) != WIP.Data.Count - 1)
                 {
                     WIP.Data.Insert(WIP.Data.IndexOf(selectedSpot) + 1, new Spot(e.X, e.Y));
@@ -256,22 +336,7 @@ namespace Optimator
                 {
                     WIP.Data.Add(new Spot(e.X, e.Y));
                 }
-
                 SelectSpot(WIP.Data[WIP.Data.Count - 1]);
-            }
-            // Select Spot
-            else
-            {
-                int closestIndex = Utils.FindClosestIndex(WIP.Data, 0, e.X, e.Y);
-                if (closestIndex != -1)
-                {
-                    SelectSpot(WIP.Data[closestIndex]);
-                    moving = 1;
-                }
-                else
-                {
-                    Deselect();
-                }
             }
             DisplayDrawings();
         }
@@ -281,14 +346,25 @@ namespace Optimator
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void DrawBase_MouseUp(object sender, MouseEventArgs e)
+        private void DrawBoard_MouseUp(object sender, MouseEventArgs e)
         {
-            if (selectedSpot != null && movingFar && moving == 1)
+            int sent = sender == DrawBase ? 0 : sender == DrawRight ? 1 : 2;
+
+            if (selectedSpot != null && movingFar && moving == 1 + sent)
             {
-                selectedSpot.X = e.X;
-                selectedSpot.Y = e.Y;
-                selectedSpot.XRight = e.X;
-                selectedSpot.YDown = e.Y;
+                if (sent != 2)
+                {
+                    selectedSpot.XRight = e.X;
+                }
+                if (sent != 1)
+                {
+                    selectedSpot.YDown = e.Y;
+                }
+                if (sent == 0)
+                {
+                    selectedSpot.X = e.X;
+                    selectedSpot.Y = e.Y;
+                }          
             }
             StopMoving();
             DisplayDrawings();
@@ -299,13 +375,15 @@ namespace Optimator
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void DrawBase_MouseMove(object sender, MouseEventArgs e)
-        {
+        private void DrawBoard_MouseMove(object sender, MouseEventArgs e)
+        {         
             if (selectedSpot == null || moving == 0 || e.X > DrawBase.Size.Width || e.Y > DrawBase.Size.Height || e.X < 0 || e.Y < 0)
             {
                 StopMoving();
                 return;
             }
+
+            int sent = sender == DrawBase ? 0 : sender == DrawRight ? 1 : 2;
 
             if (!movingFar)
             {
@@ -316,140 +394,19 @@ namespace Optimator
             if (movingFar)
             {
                 DisplayDrawings();
-                Spot shadow = new Spot(e.X, e.Y);
-                shadow.Draw(0, Consts.shadowShade, original);
-                shadow.Draw(1, Consts.shadowShade, rotated);
-                shadow.Draw(2, Consts.shadowShade, turned);
-            }
-        }
-
-        /// <summary>
-        /// Selects a spot on the rotation board
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void DrawRight_MouseDown(object sender, MouseEventArgs e)
-        {
-            //TODO: Add possibility to add spot as well on Right/Down pictureboxes
-            // Select Spot
-            int closestIndex = Utils.FindClosestIndex(WIP.Data, 1, e.X, e.Y);
-            if (closestIndex != -1)
-            {
-                SelectSpot(WIP.Data[closestIndex]);
-                var ean = WIP.Data[closestIndex] == selectedSpot;
-                moving = 2;
-            }
-            else
-            {
-                Deselect();
-            }
-
-            DisplayDrawings();
-        }
-
-        /// <summary>
-        /// Moves a point if move is in progress.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void DrawRight_MouseUp(object sender, MouseEventArgs e)
-        {
-            if (movingFar && selectedSpot != null && moving == 2)
-            {
-                selectedSpot.XRight = e.X;
-            }
-
-            StopMoving();
-            DisplayDrawings();
-        }
-
-        /// <summary>
-        /// Updates movement as mouse position changes.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void DrawRight_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (selectedSpot == null || moving == 0 || e.X > DrawRight.Size.Width || e.Y > DrawRight.Size.Height || e.X < 0 || e.Y < 0)
-            {
-                StopMoving();
-                return;
-            }
-
-            if (!movingFar)
-            {
-                movingFar = Math.Abs(selectedSpot.XRight - e.X) > Consts.DragPrecision;
-            }
-
-            if (movingFar)
-            {
-                DisplayDrawings();
-                Spot shadow = new Spot(e.X, selectedSpot.Y);
-                shadow.Draw(1, Consts.shadowShade, rotated);
-            }
-        }
-
-        /// <summary>
-        /// Selects a point on the turn board
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void DrawDown_MouseDown(object sender, MouseEventArgs e)
-        {
-            // Select Spot
-            int closestIndex = Utils.FindClosestIndex(WIP.Data, 2, e.X, e.Y);
-            if (closestIndex != -1)
-            {
-                SelectSpot(WIP.Data[closestIndex]);
-                moving = 3;
-            }
-            else
-            {
-                Deselect();
-            }
-
-            DisplayDrawings();
-        }
-
-        /// <summary>
-        /// Moves a point if move is in progress.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void DrawDown_MouseUp(object sender, MouseEventArgs e)
-        {
-            if (movingFar && selectedSpot != null && moving == 3)
-            {
-                selectedSpot.YDown = e.Y;
-            }
-
-            StopMoving();
-            DisplayDrawings();
-        }
-
-        /// <summary>
-        /// Updates movement as mouse position changes.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void DrawDown_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (selectedSpot == null || moving == 0 || e.X > DrawDown.Size.Width || e.Y > DrawDown.Size.Height || e.X < 0 || e.Y < 0)
-            {
-                StopMoving();
-                return;
-            }
-
-            if (!movingFar)
-            {
-                movingFar = Math.Abs(selectedSpot.YDown - e.Y) > Consts.DragPrecision;
-            }
-
-            if (movingFar)
-            {
-                DisplayDrawings();
-                Spot shadow = new Spot(selectedSpot.X, e.Y);
-                shadow.Draw(2, Consts.shadowShade, turned);
+                Spot shadow = new Spot(sent == 2 ? selectedSpot.X : e.X, sent == 1 ? selectedSpot.Y : e.Y);
+                if (sent != 2)
+                {
+                    shadow.Draw(1, Consts.shadowShade, rotated);
+                }
+                if (sent != 1)
+                {
+                    shadow.Draw(2, Consts.shadowShade, turned);
+                }
+                if (sent == 0)
+                {
+                    shadow.Draw(0, Consts.shadowShade, original);
+                }               
             }
         }
 
@@ -537,14 +494,14 @@ namespace Optimator
             turned = DrawDown.CreateGraphics();
 
             // Draw Sketches
-            for (int index = 0; index < Sketches.Count; index++)
+            foreach (KeyValuePair<Part, bool> sketch in Sketches)
             {
-                if (SketchLb.GetItemCheckState(index) == CheckState.Checked)
+                if (sketch.Value)
                 {
-                    Part sketch = Sketches[index];
-                    sketch.Draw(original);
-                    sketch.Draw(rotated, new State(sketch.ToPiece().State, 1, sketch.ToPiece().State.R + 90));
-                    sketch.Draw(turned, new State(sketch.ToPiece().State, 2, sketch.ToPiece().State.T + 90));
+                    Part part = sketch.Key;
+                    part.Draw(original);
+                    part.Draw(rotated, new State(part.ToPiece().State, 1, part.ToPiece().State.R + 90));
+                    part.Draw(turned, new State(part.ToPiece().State, 2, part.ToPiece().State.T + 90));
                 }
             }
 
@@ -575,11 +532,6 @@ namespace Optimator
         {
             Deselect();
             selectedSpot = select;
-            ConnectorOptions.Enabled = true;
-            ConnectorOptions.SelectedIndex = Array.IndexOf(Consts.connectorOptions, selectedSpot.Connector);
-            ShowFixedBtn.Enabled = true;
-            FixedCb.Enabled = true;
-            FixedCb.Checked = selectedSpot.Solid == Consts.solidOptions[0];
         }
 
         /// <summary>
@@ -589,9 +541,17 @@ namespace Optimator
         private void Deselect()
         {
             selectedSpot = null;
-            ConnectorOptions.Enabled = false;
-            ShowFixedBtn.Enabled = false;
-            FixedCb.Enabled = false;
+            foreach (Control cntl in Panel.Controls)
+            {
+                if (cntl is OutlinePanel)
+                {
+                    (cntl as OutlinePanel).Enable(false);
+                }
+                else if (cntl is MovePointPanel)
+                {
+                    (cntl as MovePointPanel).UpdateLabels();
+                }
+            }
         }
 
         /// <summary>
@@ -659,7 +619,7 @@ namespace Optimator
 
 
 
-        // ----- LOAD MENU FUNCTIONS -----
+        // ----- TO UPDATE BELOW -----
 
         /// <summary>
         /// Updates colours and outline width
@@ -667,6 +627,7 @@ namespace Optimator
         /// </summary>
         public void UpdateAttributes()
         {
+            // See DeselectButtons
             FillBox.BackColor = WIP.ColourState.FillColour[0];
             OutlineBox.BackColor = WIP.ColourState.OutlineColour;
             OutlineWidthBox.Value = WIP.OutlineWidth;
@@ -680,9 +641,7 @@ namespace Optimator
         {
             WIP.Data = spots;
         }
-
-
-
+               
         // ----- SKETCH FUNCTIONS -----
 
         /// <summary>
@@ -695,12 +654,6 @@ namespace Optimator
             SketchLb.Items.Add(toLoad, true);
         }
 
-        
-
-
-        // ----- OPTION BUTTONS -----
-        #region Option Buttons
-
         /// <summary>
         /// Load attributes and/or pieces.
         /// </summary>
@@ -711,48 +664,5 @@ namespace Optimator
             PiecesForm_LoadMenu loadMenu = new PiecesForm_LoadMenu(this, WIP);
             loadMenu.Show();
         }
-
-        /// <summary>
-        /// Erases the changes to angled, making it the same as base.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void EraseAngleBtn_Click(object sender, EventArgs e)
-        {
-            var angle = sender == EraseRightBtn ? new object[] { 0, 1, "rotated" } : new object[] { 1, 2, "turned" };
-            var result = MessageBox.Show("Are you sure you want to set " + angle[2].ToString() + " to the base position?", "Confirm Erase", MessageBoxButtons.OKCancel);
-            if (result == DialogResult.OK)
-            {
-                foreach (var spot in WIP.Data)
-                {
-                    spot.SetCoords((int)angle[1], (int)angle[0], spot.GetCoordCombination()[(int)angle[0]]);
-                }
-                DisplayDrawings();
-            }
-        }
-
-        #endregion
-
-
-
-        // ----- SHAPE TAB -----
-        #region Shape Tab
-
-        /// <summary>
-        /// Changes whether the selected point is
-        /// solid or floating.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void FixedCb_CheckedChanged(object sender, EventArgs e)
-        {
-            if (selectedSpot != null)
-            {
-                selectedSpot.Solid = (FixedCb.Checked) ? Consts.solidOptions[0] : Consts.solidOptions[1];
-                DisplayDrawings();
-            }
-        }
-
-        #endregion
     }
 }

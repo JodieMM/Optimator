@@ -30,8 +30,6 @@
         {
             this.XCoordLbl = new System.Windows.Forms.Label();
             this.YCoordLbl = new System.Windows.Forms.Label();
-            this.ConnectorsLbl = new System.Windows.Forms.Label();
-            this.ConnectorOptions = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // XCoordLbl
@@ -54,36 +52,10 @@
             this.YCoordLbl.TabIndex = 1;
             this.YCoordLbl.Text = "label2";
             // 
-            // ConnectorsLbl
-            // 
-            this.ConnectorsLbl.AutoSize = true;
-            this.ConnectorsLbl.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ConnectorsLbl.Location = new System.Drawing.Point(105, 453);
-            this.ConnectorsLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.ConnectorsLbl.Name = "ConnectorsLbl";
-            this.ConnectorsLbl.Size = new System.Drawing.Size(192, 46);
-            this.ConnectorsLbl.TabIndex = 118;
-            this.ConnectorsLbl.Text = "Connector";
-            // 
-            // ConnectorOptions
-            // 
-            this.ConnectorOptions.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.ConnectorOptions.FormattingEnabled = true;
-            this.ConnectorOptions.Items.AddRange(new object[] {
-            "Line",
-            "Blank"});
-            this.ConnectorOptions.Location = new System.Drawing.Point(363, 468);
-            this.ConnectorOptions.Name = "ConnectorOptions";
-            this.ConnectorOptions.Size = new System.Drawing.Size(239, 33);
-            this.ConnectorOptions.TabIndex = 117;
-            this.ConnectorOptions.SelectedIndexChanged += new System.EventHandler(this.ConnectorOptions_SelectedIndexChanged);
-            // 
             // MovePointPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.ConnectorsLbl);
-            this.Controls.Add(this.ConnectorOptions);
             this.Controls.Add(this.YCoordLbl);
             this.Controls.Add(this.XCoordLbl);
             this.Name = "MovePointPanel";
@@ -97,7 +69,5 @@
 
         private System.Windows.Forms.Label XCoordLbl;
         private System.Windows.Forms.Label YCoordLbl;
-        private System.Windows.Forms.Label ConnectorsLbl;
-        private System.Windows.Forms.ComboBox ConnectorOptions;
     }
 }

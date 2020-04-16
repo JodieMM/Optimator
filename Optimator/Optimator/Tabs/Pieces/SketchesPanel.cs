@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace Optimator.Tabs.Pieces
@@ -20,6 +21,12 @@ namespace Optimator.Tabs.Pieces
             InitializeComponent();
             Owner = owner;
             SketchLb.ItemCheck += new ItemCheckEventHandler(SketchLbSelectChange);
+
+            foreach (KeyValuePair<Part, bool> sketch in Owner.Sketches)
+            {
+                SketchLb.Items.Add(sketch.Key);
+                SketchLb.SetItemChecked(SketchLb.Items.Count - 1, sketch.Value);
+            }
         }
 
 
@@ -40,11 +47,18 @@ namespace Optimator.Tabs.Pieces
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void SketchLbSelectChange(object sender, ItemCheckEventArgs e)
+        private void SketchLb_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            BeginInvoke((MethodInvoker)delegate {
+            if (SketchLb.SelectedIndex != -1)
+            {
+                Owner.Sketches[(Part)SketchLb.SelectedItem] = SketchLb.GetItemChecked(SketchLb.SelectedIndex);
                 Owner.DisplayDrawings();
-            });
+                // HIDDEN: See if can be removed
+                //BeginInvoke((MethodInvoker)delegate
+                //{
+                //    Owner.DisplayDrawings();
+                //});
+            }
         }
 
         /// <summary>
@@ -58,35 +72,38 @@ namespace Optimator.Tabs.Pieces
             {
                 return;
             }
+            Part selectedPart = (Part)SketchLb.SelectedItem;
+
             if (sender == DeleteSketchBtn)
             {
-                Owner.Sketches.RemoveAt(SketchLb.SelectedIndex);
+                Owner.Sketches.Remove(selectedPart);
                 SketchLb.Items.RemoveAt(SketchLb.SelectedIndex);
-            }
-            else if (sender == RotationBar)
-            {
-                Owner.Sketches[SketchLb.SelectedIndex].ToPiece().State.R = RotationBar.Value;
-            }
-            else if (sender == TurnBar)
-            {
-                Owner.Sketches[SketchLb.SelectedIndex].ToPiece().State.T = TurnBar.Value;
-            }
-            else if (sender == SpinBar)
-            {
-                Owner.Sketches[SketchLb.SelectedIndex].ToPiece().State.S = SpinBar.Value;
-            }
-            else if (sender == SizeBar)
-            {
-                Owner.Sketches[SketchLb.SelectedIndex].ToPiece().State.SM = SizeBar.Value;
             }
             else if (sender == XUpDown)
             {
-                Owner.Sketches[SketchLb.SelectedIndex].ToPiece().State.X = (double)XUpDown.Value;
+                selectedPart.ToPiece().State.X = (double)XUpDown.Value;
             }
             else if (sender == YUpDown)
             {
-                Owner.Sketches[SketchLb.SelectedIndex].ToPiece().State.Y = (double)YUpDown.Value;
+                selectedPart.ToPiece().State.Y = (double)YUpDown.Value;
             }
+            else if (sender == RotationBar)
+            {
+                selectedPart.ToPiece().State.R = RotationBar.Value;
+            }
+            else if (sender == TurnBar)
+            {
+                selectedPart.ToPiece().State.T = TurnBar.Value;
+            }
+            else if (sender == SpinBar)
+            {
+                selectedPart.ToPiece().State.S = SpinBar.Value;
+            }
+            else if (sender == SizeBar)
+            {
+                selectedPart.ToPiece().State.SM = SizeBar.Value;
+            }
+
             Owner.DisplayDrawings();
         }
     }

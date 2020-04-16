@@ -1,4 +1,6 @@
-﻿namespace Optimator
+﻿using System.Windows.Forms;
+
+namespace Optimator
 {
     partial class PiecesTab
     {
@@ -51,33 +53,42 @@
             // 
             // DrawRight
             // 
-            this.DrawRight.BackColor = System.Drawing.Color.White;
+            this.DrawRight.BackColor = Settings.BackgroundColour;
             this.DrawRight.Location = new System.Drawing.Point(363, 100);
             this.DrawRight.Margin = new System.Windows.Forms.Padding(6);
             this.DrawRight.Name = "DrawRight";
             this.DrawRight.Size = new System.Drawing.Size(300, 300);
             this.DrawRight.TabIndex = 26;
             this.DrawRight.TabStop = false;
+            this.DrawRight.MouseDown += new MouseEventHandler(DrawBoard_MouseDown);
+            this.DrawRight.MouseUp += new MouseEventHandler(DrawBoard_MouseUp);
+            this.DrawRight.MouseMove += new MouseEventHandler(DrawBoard_MouseMove);
             // 
             // DrawDown
             // 
-            this.DrawDown.BackColor = System.Drawing.Color.White;
+            this.DrawDown.BackColor = Settings.BackgroundColour;
             this.DrawDown.Location = new System.Drawing.Point(33, 430);
             this.DrawDown.Margin = new System.Windows.Forms.Padding(6);
             this.DrawDown.Name = "DrawDown";
             this.DrawDown.Size = new System.Drawing.Size(300, 300);
             this.DrawDown.TabIndex = 25;
             this.DrawDown.TabStop = false;
+            this.DrawDown.MouseDown += new MouseEventHandler(DrawBoard_MouseDown);
+            this.DrawDown.MouseUp += new MouseEventHandler(DrawBoard_MouseUp);
+            this.DrawDown.MouseMove += new MouseEventHandler(DrawBoard_MouseMove);
             // 
             // DrawBase
             // 
-            this.DrawBase.BackColor = System.Drawing.Color.White;
+            this.DrawBase.BackColor = Settings.BackgroundColour;
             this.DrawBase.Location = new System.Drawing.Point(33, 100);
             this.DrawBase.Margin = new System.Windows.Forms.Padding(6);
             this.DrawBase.Name = "DrawBase";
             this.DrawBase.Size = new System.Drawing.Size(300, 300);
             this.DrawBase.TabIndex = 24;
             this.DrawBase.TabStop = false;
+            this.DrawBase.MouseDown += new MouseEventHandler(DrawBoard_MouseDown);
+            this.DrawBase.MouseUp += new MouseEventHandler(DrawBoard_MouseUp);
+            this.DrawBase.MouseMove += new MouseEventHandler(DrawBoard_MouseMove);
             // 
             // Panel
             // 

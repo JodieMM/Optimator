@@ -43,6 +43,28 @@ namespace Optimator.Tabs.Pieces
         }
 
         /// <summary>
+        /// Enables or disables the panel's controls.
+        /// </summary>
+        /// <param name="enable">False if disabling</param>
+        public void Enable(bool enable = true)
+        {
+            OutlineWidthBox.Enabled = enable;
+            ConnectorOptions.Enabled = enable;
+        }
+
+        /// <summary>
+        /// Updates the values of the panel's controls.
+        /// </summary>
+        /// <param name="outlineWidth">New outline width</param>
+        /// <param name="connector">New connector option</param>
+        public void UpdateValues(decimal outlineWidth, string connector)
+        {
+            Enable();
+            OutlineWidthBox.Value = outlineWidth;
+            ConnectorOptions.SelectedIndex = Array.IndexOf(Consts.connectorOptions, connector);
+        }
+
+        /// <summary>
         /// Changes the outline width of the piece.
         /// </summary>
         /// <param name="sender"></param>
@@ -51,6 +73,20 @@ namespace Optimator.Tabs.Pieces
         {
             Owner.WIP.OutlineWidth = OutlineWidthBox.Value;
             Owner.DisplayDrawings();
+        }
+
+        /// <summary>
+        /// Changes the join at the selected point.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ConnectorOptions_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (Owner.selectedSpot != null)
+            {
+                Owner.selectedSpot.Connector = Consts.connectorOptions[ConnectorOptions.SelectedIndex];
+                Owner.DisplayDrawings();
+            }
         }
     }
 }

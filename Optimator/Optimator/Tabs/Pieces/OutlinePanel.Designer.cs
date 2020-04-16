@@ -30,6 +30,8 @@
         {
             this.OutlineWLbl = new System.Windows.Forms.Label();
             this.OutlineWidthBox = new System.Windows.Forms.NumericUpDown();
+            this.ConnectorsLbl = new System.Windows.Forms.Label();
+            this.ConnectorOptions = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.OutlineWidthBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -57,10 +59,36 @@
             0});
             this.OutlineWidthBox.ValueChanged += new System.EventHandler(this.OutlineWidthBox_ValueChanged);
             // 
+            // ConnectorsLbl
+            // 
+            this.ConnectorsLbl.AutoSize = true;
+            this.ConnectorsLbl.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ConnectorsLbl.Location = new System.Drawing.Point(112, 336);
+            this.ConnectorsLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.ConnectorsLbl.Name = "ConnectorsLbl";
+            this.ConnectorsLbl.Size = new System.Drawing.Size(192, 46);
+            this.ConnectorsLbl.TabIndex = 125;
+            this.ConnectorsLbl.Text = "Connector";
+            // 
+            // ConnectorOptions
+            // 
+            this.ConnectorOptions.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ConnectorOptions.FormattingEnabled = true;
+            this.ConnectorOptions.Items.AddRange(new object[] {
+            "Line",
+            "Blank"});
+            this.ConnectorOptions.Location = new System.Drawing.Point(370, 351);
+            this.ConnectorOptions.Name = "ConnectorOptions";
+            this.ConnectorOptions.Size = new System.Drawing.Size(239, 33);
+            this.ConnectorOptions.TabIndex = 124;
+            this.ConnectorOptions.SelectedIndexChanged += new System.EventHandler(this.ConnectorOptions_SelectedIndexChanged);
+            // 
             // OutlinePanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.ConnectorsLbl);
+            this.Controls.Add(this.ConnectorOptions);
             this.Controls.Add(this.OutlineWLbl);
             this.Controls.Add(this.OutlineWidthBox);
             this.Name = "OutlinePanel";
@@ -75,5 +103,7 @@
 
         private System.Windows.Forms.Label OutlineWLbl;
         private System.Windows.Forms.NumericUpDown OutlineWidthBox;
+        private System.Windows.Forms.Label ConnectorsLbl;
+        private System.Windows.Forms.ComboBox ConnectorOptions;
     }
 }

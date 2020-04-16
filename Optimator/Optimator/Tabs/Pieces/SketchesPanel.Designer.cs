@@ -176,7 +176,7 @@
             // 
             this.SketchesLbl.AutoSize = true;
             this.SketchesLbl.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SketchesLbl.Location = new System.Drawing.Point(220, 117);
+            this.SketchesLbl.Location = new System.Drawing.Point(220, 65);
             this.SketchesLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.SketchesLbl.Name = "SketchesLbl";
             this.SketchesLbl.Size = new System.Drawing.Size(193, 46);
@@ -192,6 +192,7 @@
             this.SketchLb.Name = "SketchLb";
             this.SketchLb.Size = new System.Drawing.Size(363, 127);
             this.SketchLb.TabIndex = 134;
+            this.SketchLb.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.SketchLb_ItemCheck);
             // 
             // SpinBar
             // 
