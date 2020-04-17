@@ -30,7 +30,6 @@ C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.Tabs.Pieces.MovePointPanel.resources
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.Tabs.Pieces.OutlinePanel.resources
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.Forms.Pieces.SavePanel.resources
-C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Animator.Tabs.SoloTabs.LoadPieceTab.resources
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.Forms.PreviewTab.resources
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.Forms.SettingsTab.resources
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.HomeForm.resources
@@ -48,3 +47,5 @@ C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Animator.exe
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Animator.pdb
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.csprojAssemblyReference.cache
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.Tabs.Sets.SetsTab.resources
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.Tabs.SoloTabs.LoadPieceTab.resources

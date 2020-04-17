@@ -1,4 +1,4 @@
-﻿namespace Animator.Tabs.SoloTabs
+﻿namespace Optimator.Tabs.SoloTabs
 {
     partial class LoadPieceTab
     {

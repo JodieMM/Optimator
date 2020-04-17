@@ -1,5 +1,6 @@
 ﻿using Optimator.Forms;
 using Optimator.Tabs;
+using Optimator.Tabs.Sets;
 using System;
 using System.Windows.Forms;
 
@@ -71,8 +72,7 @@ namespace Optimator
         /// <param name="e"></param>
         private void NewSetTSMI_Click(object sender, EventArgs e)
         {
-            //TODO Update Tab Type
-            PiecesTab tab = new PiecesTab(this);
+            SetsTab tab = new SetsTab(this);
             AddTabPage("New Set", tab);
             tab.Resize();
         }
@@ -114,6 +114,7 @@ namespace Optimator
         /// <param name="e"></param>
         private void OpenPieceTSMI_Click(object sender, EventArgs e)
         {
+            //TODO: Open Tabs
             PiecesTab tab = new PiecesTab(this);    //PieceName = ...
             AddTabPage("New Piece", tab);
             tab.Resize();

@@ -5,7 +5,7 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
-namespace Animator.Tabs.SoloTabs
+namespace Optimator.Tabs.SoloTabs
 {
     /// <summary>
     /// A tab for loading components of a piece or set into the current Part.

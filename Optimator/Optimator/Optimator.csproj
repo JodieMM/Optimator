@@ -106,6 +106,12 @@
     <Compile Include="Tabs\Pieces\SavePanel.Designer.cs">
       <DependentUpon>SavePanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tabs\Sets\SetsTab.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Tabs\Sets\SetsTab.Designer.cs">
+      <DependentUpon>SetsTab.cs</DependentUpon>
+    </Compile>
     <Compile Include="Tabs\SoloTabs\LoadPieceTab.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -216,6 +222,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Tabs\Pieces\SavePanel.resx">
       <DependentUpon>SavePanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\Sets\SetsTab.resx">
+      <DependentUpon>SetsTab.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Tabs\SoloTabs\LoadPieceTab.resx">
       <DependentUpon>LoadPieceTab.cs</DependentUpon>

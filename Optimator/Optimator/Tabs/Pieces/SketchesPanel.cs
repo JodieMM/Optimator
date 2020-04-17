@@ -1,4 +1,4 @@
-﻿using Animator.Tabs.SoloTabs;
+﻿using Optimator.Tabs.SoloTabs;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
