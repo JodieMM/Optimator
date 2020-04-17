@@ -48,11 +48,9 @@ namespace Optimator
 
             //HIDDEN TEMP Utils.CheckValidFolder();
         }
+                
 
         
-
-
-
         // ----- FORM FUNCTIONS -----
 
         /// <summary>
@@ -262,7 +260,7 @@ namespace Optimator
                     {
                         if (cntl is MovePointPanel)
                         {
-                            (cntl as MovePointPanel).UpdateLabels(selectedSpot.X, selectedSpot.Y);
+                            (cntl as MovePointPanel).UpdateLabels(sent, selectedSpot.X, selectedSpot.Y);
                         }
                     }
                 }

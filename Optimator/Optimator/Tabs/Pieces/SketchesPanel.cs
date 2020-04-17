@@ -1,6 +1,7 @@
 ﻿using Animator.Tabs.SoloTabs;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace Optimator.Tabs.Pieces
@@ -38,7 +39,17 @@ namespace Optimator.Tabs.Pieces
         /// </summary>
         public override void Resize()
         {
-            //TODO: Resize
+            float widthPercent = 0.1F;
+            float heightPercent = 0.75F;
+
+            int smallWidth = (int)(Width * widthPercent);
+            int minWidth = (int)(smallWidth / 2.0);
+            int bigHeight = (int)(Height * heightPercent);
+
+            SketchesLbl.Location = new Point(smallWidth, smallWidth);
+
+            TableLayoutPnl.Size = new Size(smallWidth * 9, bigHeight);
+            TableLayoutPnl.Location = new Point(minWidth, smallWidth * 2 + SketchesLbl.Height);
         }
 
         /// <summary>

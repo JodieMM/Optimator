@@ -39,7 +39,18 @@ namespace Optimator.Tabs.Pieces
         /// </summary>
         public override void Resize()
         {
-            //TODO: Resize
+            float widthPercent = 0.1F;
+            float heightPercent = 0.2F;
+
+            int smallWidth = (int)(Width * widthPercent);
+            int bigHeight = (int)(Height * heightPercent);
+
+            OutlineLbl.Location = new Point(smallWidth, smallWidth);
+
+            TableLayoutPnl.Size = new Size(smallWidth * 8, bigHeight);
+            TableLayoutPnl.Location = new Point(smallWidth, smallWidth * 2 + OutlineLbl.Height);
+
+            Enable(Owner.selectedSpot != null);
         }
 
         /// <summary>
@@ -48,7 +59,6 @@ namespace Optimator.Tabs.Pieces
         /// <param name="enable">False if disabling</param>
         public void Enable(bool enable = true)
         {
-            OutlineWidthBox.Enabled = enable;
             ConnectorOptions.Enabled = enable;
         }
 

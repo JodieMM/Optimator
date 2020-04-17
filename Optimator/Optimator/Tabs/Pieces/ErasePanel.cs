@@ -1,4 +1,7 @@
-﻿namespace Optimator.Tabs.Pieces
+﻿using System.Drawing;
+using System.Windows.Forms;
+
+namespace Optimator.Tabs.Pieces
 {
     /// <summary>
     /// A panel to manage the erasure of rotation/turned boards.
@@ -28,7 +31,11 @@
         /// </summary>
         public override void Resize()
         {
-            
+            float widthPercent = 0.1F;
+
+            int smallWidth = (int)(Width * widthPercent);
+
+            EraseLbl.Location = new Point(smallWidth, smallWidth);
         }
     }
 }

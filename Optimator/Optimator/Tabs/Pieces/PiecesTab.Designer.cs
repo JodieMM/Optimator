@@ -53,16 +53,16 @@ namespace Optimator
             // 
             // DrawRight
             // 
-            this.DrawRight.BackColor = System.Drawing.Color.White; //HIDDEN Settings.BackgroundColour;
+            this.DrawRight.BackColor = System.Drawing.Color.White;
             this.DrawRight.Location = new System.Drawing.Point(363, 100);
             this.DrawRight.Margin = new System.Windows.Forms.Padding(6);
             this.DrawRight.Name = "DrawRight";
             this.DrawRight.Size = new System.Drawing.Size(300, 300);
             this.DrawRight.TabIndex = 26;
             this.DrawRight.TabStop = false;
-            this.DrawRight.MouseDown += new MouseEventHandler(DrawBoard_MouseDown);
-            this.DrawRight.MouseUp += new MouseEventHandler(DrawBoard_MouseUp);
-            this.DrawRight.MouseMove += new MouseEventHandler(DrawBoard_MouseMove);
+            this.DrawRight.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DrawBoard_MouseDown);
+            this.DrawRight.MouseMove += new System.Windows.Forms.MouseEventHandler(this.DrawBoard_MouseMove);
+            this.DrawRight.MouseUp += new System.Windows.Forms.MouseEventHandler(this.DrawBoard_MouseUp);
             // 
             // DrawDown
             // 
@@ -73,9 +73,9 @@ namespace Optimator
             this.DrawDown.Size = new System.Drawing.Size(300, 300);
             this.DrawDown.TabIndex = 25;
             this.DrawDown.TabStop = false;
-            this.DrawDown.MouseDown += new MouseEventHandler(DrawBoard_MouseDown);
-            this.DrawDown.MouseUp += new MouseEventHandler(DrawBoard_MouseUp);
-            this.DrawDown.MouseMove += new MouseEventHandler(DrawBoard_MouseMove);
+            this.DrawDown.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DrawBoard_MouseDown);
+            this.DrawDown.MouseMove += new System.Windows.Forms.MouseEventHandler(this.DrawBoard_MouseMove);
+            this.DrawDown.MouseUp += new System.Windows.Forms.MouseEventHandler(this.DrawBoard_MouseUp);
             // 
             // DrawBase
             // 
@@ -86,9 +86,9 @@ namespace Optimator
             this.DrawBase.Size = new System.Drawing.Size(300, 300);
             this.DrawBase.TabIndex = 24;
             this.DrawBase.TabStop = false;
-            this.DrawBase.MouseDown += new MouseEventHandler(DrawBoard_MouseDown);
-            this.DrawBase.MouseUp += new MouseEventHandler(DrawBoard_MouseUp);
-            this.DrawBase.MouseMove += new MouseEventHandler(DrawBoard_MouseMove);
+            this.DrawBase.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DrawBoard_MouseDown);
+            this.DrawBase.MouseMove += new System.Windows.Forms.MouseEventHandler(this.DrawBoard_MouseMove);
+            this.DrawBase.MouseUp += new System.Windows.Forms.MouseEventHandler(this.DrawBoard_MouseUp);
             // 
             // Panel
             // 
@@ -107,11 +107,11 @@ namespace Optimator
             this.SaveBtn,
             this.MovePointBtn,
             this.CloseBtn,
+            this.OutlineBtn,
             this.ColoursBtn,
             this.FixedBtn,
-            this.SketchesBtn,
             this.EraseBtn,
-            this.OutlineBtn,
+            this.SketchesBtn,
             this.PreviewBtn});
             this.ToolStrip.Location = new System.Drawing.Point(0, 0);
             this.ToolStrip.Name = "ToolStrip";

@@ -32,25 +32,31 @@
             this.OutlineWidthBox = new System.Windows.Forms.NumericUpDown();
             this.ConnectorsLbl = new System.Windows.Forms.Label();
             this.ConnectorOptions = new System.Windows.Forms.ComboBox();
+            this.TableLayoutPnl = new System.Windows.Forms.TableLayoutPanel();
+            this.OutlineLbl = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.OutlineWidthBox)).BeginInit();
+            this.TableLayoutPnl.SuspendLayout();
             this.SuspendLayout();
             // 
             // OutlineWLbl
             // 
             this.OutlineWLbl.AutoSize = true;
-            this.OutlineWLbl.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.OutlineWLbl.Location = new System.Drawing.Point(91, 225);
+            this.OutlineWLbl.Font = new System.Drawing.Font("Tahoma", 13.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.OutlineWLbl.Location = new System.Drawing.Point(2, 0);
             this.OutlineWLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.OutlineWLbl.Name = "OutlineWLbl";
-            this.OutlineWLbl.Size = new System.Drawing.Size(250, 46);
+            this.OutlineWLbl.Size = new System.Drawing.Size(147, 90);
             this.OutlineWLbl.TabIndex = 123;
             this.OutlineWLbl.Text = "Outline Width";
             // 
             // OutlineWidthBox
             // 
-            this.OutlineWidthBox.Location = new System.Drawing.Point(371, 240);
+            this.OutlineWidthBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.OutlineWidthBox.Font = new System.Drawing.Font("Tahoma", 13.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.OutlineWidthBox.Location = new System.Drawing.Point(197, 3);
             this.OutlineWidthBox.Name = "OutlineWidthBox";
-            this.OutlineWidthBox.Size = new System.Drawing.Size(239, 31);
+            this.OutlineWidthBox.Size = new System.Drawing.Size(188, 52);
             this.OutlineWidthBox.TabIndex = 122;
             this.OutlineWidthBox.Value = new decimal(new int[] {
             2,
@@ -62,38 +68,68 @@
             // ConnectorsLbl
             // 
             this.ConnectorsLbl.AutoSize = true;
-            this.ConnectorsLbl.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ConnectorsLbl.Location = new System.Drawing.Point(112, 336);
+            this.ConnectorsLbl.Font = new System.Drawing.Font("Tahoma", 13.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ConnectorsLbl.Location = new System.Drawing.Point(2, 112);
             this.ConnectorsLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.ConnectorsLbl.Name = "ConnectorsLbl";
-            this.ConnectorsLbl.Size = new System.Drawing.Size(192, 46);
+            this.ConnectorsLbl.Size = new System.Drawing.Size(185, 45);
             this.ConnectorsLbl.TabIndex = 125;
             this.ConnectorsLbl.Text = "Connector";
             // 
             // ConnectorOptions
             // 
+            this.ConnectorOptions.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.ConnectorOptions.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ConnectorOptions.Font = new System.Drawing.Font("Tahoma", 13.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ConnectorOptions.FormattingEnabled = true;
             this.ConnectorOptions.Items.AddRange(new object[] {
             "Line",
             "Blank"});
-            this.ConnectorOptions.Location = new System.Drawing.Point(370, 351);
+            this.ConnectorOptions.Location = new System.Drawing.Point(197, 115);
             this.ConnectorOptions.Name = "ConnectorOptions";
-            this.ConnectorOptions.Size = new System.Drawing.Size(239, 33);
+            this.ConnectorOptions.Size = new System.Drawing.Size(188, 53);
             this.ConnectorOptions.TabIndex = 124;
             this.ConnectorOptions.SelectedIndexChanged += new System.EventHandler(this.ConnectorOptions_SelectedIndexChanged);
+            // 
+            // TableLayoutPnl
+            // 
+            this.TableLayoutPnl.ColumnCount = 2;
+            this.TableLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.TableLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.TableLayoutPnl.Controls.Add(this.OutlineWLbl, 0, 0);
+            this.TableLayoutPnl.Controls.Add(this.ConnectorOptions, 1, 1);
+            this.TableLayoutPnl.Controls.Add(this.ConnectorsLbl, 0, 1);
+            this.TableLayoutPnl.Controls.Add(this.OutlineWidthBox, 1, 0);
+            this.TableLayoutPnl.Location = new System.Drawing.Point(92, 207);
+            this.TableLayoutPnl.Name = "TableLayoutPnl";
+            this.TableLayoutPnl.RowCount = 2;
+            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.TableLayoutPnl.Size = new System.Drawing.Size(388, 224);
+            this.TableLayoutPnl.TabIndex = 126;
+            // 
+            // OutlineLbl
+            // 
+            this.OutlineLbl.AutoSize = true;
+            this.OutlineLbl.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.OutlineLbl.Location = new System.Drawing.Point(82, 69);
+            this.OutlineLbl.Name = "OutlineLbl";
+            this.OutlineLbl.Size = new System.Drawing.Size(201, 58);
+            this.OutlineLbl.TabIndex = 127;
+            this.OutlineLbl.Text = "Outline";
             // 
             // OutlinePanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.ConnectorsLbl);
-            this.Controls.Add(this.ConnectorOptions);
-            this.Controls.Add(this.OutlineWLbl);
-            this.Controls.Add(this.OutlineWidthBox);
+            this.Controls.Add(this.OutlineLbl);
+            this.Controls.Add(this.TableLayoutPnl);
             this.Name = "OutlinePanel";
             this.Size = new System.Drawing.Size(868, 792);
             ((System.ComponentModel.ISupportInitialize)(this.OutlineWidthBox)).EndInit();
+            this.TableLayoutPnl.ResumeLayout(false);
+            this.TableLayoutPnl.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -105,5 +141,7 @@
         private System.Windows.Forms.NumericUpDown OutlineWidthBox;
         private System.Windows.Forms.Label ConnectorsLbl;
         private System.Windows.Forms.ComboBox ConnectorOptions;
+        private System.Windows.Forms.TableLayoutPanel TableLayoutPnl;
+        private System.Windows.Forms.Label OutlineLbl;
     }
 }

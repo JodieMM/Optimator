@@ -28,18 +28,33 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.SolidLbl = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // FixedPanel
+            // SolidLbl
+            // 
+            this.SolidLbl.AutoSize = true;
+            this.SolidLbl.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SolidLbl.Location = new System.Drawing.Point(107, 123);
+            this.SolidLbl.Name = "SolidLbl";
+            this.SolidLbl.Size = new System.Drawing.Size(155, 58);
+            this.SolidLbl.TabIndex = 0;
+            this.SolidLbl.Text = "Fixed";
+            // 
+            // SolidPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Name = "FixedPanel";
+            this.Controls.Add(this.SolidLbl);
+            this.Name = "SolidPanel";
             this.Size = new System.Drawing.Size(908, 992);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
+
+        private System.Windows.Forms.Label SolidLbl;
     }
 }
