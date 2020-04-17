@@ -1,5 +1,6 @@
 ﻿using Optimator;
 using Optimator.Forms;
+using Optimator.Forms.Sets;
 using Optimator.Tabs;
 using System;
 using System.Collections.Generic;
@@ -49,6 +50,27 @@ namespace Optimator.Tabs.Sets
             //HIDDEN Utils.CheckValidFolder();
         }
 
+
+
+        // ----- GET FUNCTIONS -----
+
+        /// <summary>
+        /// Gets a board to use in a utils sizing function in AddPartPanel.
+        /// </summary>
+        /// <returns>A PictureBox used as a board</returns>
+        public PictureBox GetBoardSizing()
+        {
+            return DrawBase;
+        }
+
+        /// <summary>
+        /// Finds whether the join btn is pressed.
+        /// </summary>
+        /// <returns>True if pressed</returns>
+        public bool GetIfJoinBtnPressed()
+        {
+            return JoinsBtn.Checked && (Baby as JoinsPanel).JoinBtnPressed();
+        }
 
 
         // ----- FORM FUNCTIONS -----
@@ -251,7 +273,7 @@ namespace Optimator.Tabs.Sets
             var sent = sender == DrawBase ? 0 : sender == DrawRight ? 1 : 2;
 
             // Move the Piece's Join            
-            if (JoinsBtn.Checked && (Baby as JoinsPanel).JoinBtnPressed())
+            if (GetIfJoinBtnPressed())
             {
                 State baseState = WIP.BasePiece.State;
                 FindCorrectStates(sent);
@@ -295,7 +317,7 @@ namespace Optimator.Tabs.Sets
                 if (newSelected != null)
                 {
                     // Set a new base for the selected piece and adjust coords and join
-                    if (JoinsBtn.Checked && (Baby as JoinsPanel).SelectBaseBtnPressed() && selected != newSelected)
+                    if (GetIfJoinBtnPressed() && selected != newSelected)
                     {
                         // Remove old joinings
                         if (WIP.JoinsIndex.ContainsKey(selected))
@@ -359,7 +381,7 @@ namespace Optimator.Tabs.Sets
                 var board = sent == 0 ? original : sent == 1 ? rotated : turned;
 
                 // Move Join
-                if (JoinsBtn.Checked && (Baby as JoinsPanel).JoinBtnPressed())
+                if (GetIfJoinBtnPressed())
                 {
                     Visuals.DrawCross(selectedJoin.CurrentCentre()[0] + xChange,
                         selectedJoin.CurrentCentre()[1] + yChange, Consts.shadowShade, board);
@@ -400,7 +422,7 @@ namespace Optimator.Tabs.Sets
                 var y = sent == 1 ? 0 : e.Y - originalMoving[1];
 
                 // Move Join
-                if (JoinsBtn.Checked && (Baby as JoinsPanel).JoinBtnPressed())
+                if (GetIfJoinBtnPressed())
                 {
                     if (selectedJoin != null)
                     {
@@ -570,7 +592,7 @@ namespace Optimator.Tabs.Sets
                 }
 
                 // Draw Joins if JoinBtn Pressed
-                if (JoinsBtn.Checked && (Baby as JoinsPanel).JoinBtnPressed())
+                if (GetIfJoinBtnPressed())
                 {
                     var joinsDraw = WIP.FindPieceJoins(selected);
                     foreach (KeyValuePair<Join, bool> joinDraw in joinsDraw)
@@ -590,31 +612,29 @@ namespace Optimator.Tabs.Sets
         {
             DeselectPiece();
             selected = piece;
-            SizeBar.Enabled = true;
-            SizeBar.Value = (int)(WIP.PersonalStates[selected].SM * 100.0);
-            if (selected != WIP.BasePiece)
+            if (Baby is PositionsPanel)
             {
-                Utils.EnableObjects(new List<Control>() { RotationBar, TurnBar, SpinBar,
-                    SelectBaseBtn, JoinBtn});
-                RotationBar.Value = (int)WIP.PersonalStates[selected].R;
-                TurnBar.Value = (int)WIP.PersonalStates[selected].T;
-                SpinBar.Value = (int)WIP.PersonalStates[selected].S;
+                (Baby as PositionsPanel).EnableScrolls();
             }
         }
 
         /// <summary>
         /// Deselects a piece.
         /// </summary>
-        private void DeselectPiece()
+        public void DeselectPiece()
         {
             if (selected != null)
             {
                 selected = null;
             }
-            JoinBtn.BackColor = unpressed;
-            SelectBaseBtn.BackColor = unpressed;
-            //Utils.EnableObjects(new List<Control>() { RotationBar, TurnBar, SpinBar,
-            //      SizeBar, MoveJoinBtn, SelectBaseBtn }, false); // HIDDEN: Base piece movement
+            if (Baby is JoinsPanel)
+            {
+                (Baby as JoinsPanel).UnselectButtons();
+            }
+            else if (Baby is PositionsPanel)
+            {
+                (Baby as PositionsPanel).EnableScrolls(false);
+            }
         }
 
         /// <summary>
@@ -622,7 +642,7 @@ namespace Optimator.Tabs.Sets
         /// Also sets the base piece of the set.
         /// </summary>
         /// <returns>True if only one unconnected piece</returns>
-        private bool CheckSingularBasePiece()
+        public bool CheckSingularBasePiece()
         {
             if (WIP.PiecesList.Count == 1)
             {
@@ -690,7 +710,7 @@ namespace Optimator.Tabs.Sets
         private void FindCorrectStates(int angle = 0)
         {
             // Take current state if flat join in progress
-            WIP.CalculateStates(angle, JoinsBtn.Checked && (Baby as JoinsPanel).JoinBtnPressed() ? WIP.BasePiece.State : null);
+            WIP.CalculateStates(angle, GetIfJoinBtnPressed() ? WIP.BasePiece.State : null);
 
             // Consider unattached pieces
             if (WIP.JoinsIndex.Count != WIP.PiecesList.Count - 1)
@@ -715,137 +735,5 @@ namespace Optimator.Tabs.Sets
             WIP.BasePiece.State.T = Utils.Modulo(WIP.BasePiece.State.T - selected.State.T, 360);
             WIP.BasePiece.State.S = Utils.Modulo(WIP.BasePiece.State.S - selected.State.S, 360);
         }
-
-
-
-
-
-        // ----- CLEAN BELOW -----
-
-        /// <summary>
-        /// Saves the set and/or closes the form.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void CompleteBtn_Click(object sender, EventArgs e)
-        {
-            if (WIP.PiecesList.Count < 1)
-            {
-                Close();
-            }
-            else if (!CheckSingularBasePiece())
-            {
-                MessageBox.Show("Please connect all pieces but one or remove unconnected pieces.", "Multiple Sets", MessageBoxButtons.OK);
-            }
-            else if (!Utils.CheckValidNewName(NameTb.Text, Consts.SetsFolder))
-            {
-                return;
-            }
-            else
-            {
-                try
-                {
-                    Utils.SaveFile(Utils.GetDirectory(Consts.SetsFolder, NameTb.Text, Consts.Optr), WIP.GetData());
-                    Close();
-                }
-                catch (FileNotFoundException)
-                {
-                    MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
-                }
-                catch (ArgumentOutOfRangeException)
-                {
-                    MessageBox.Show("No data entered for point.", "Missing Data", MessageBoxButtons.OK);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Adds a part to the set.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void AddBtn_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                Part justAdded;
-                if (sender == AddPieceBtn)
-                {
-                    justAdded = new Piece(AddTb.Text);
-                    WIP.PiecesList.Add(justAdded.ToPiece());
-                    justAdded.ToPiece().State.SetCoordsBasedOnBoard(DrawBase);
-                    WIP.PersonalStates.Add(justAdded as Piece, Utils.CloneState(justAdded.ToPiece().State));
-                }
-                else
-                {
-                    justAdded = new Set(AddTb.Text);
-                    WIP.PiecesList.AddRange((justAdded as Set).PiecesList);
-                    justAdded.ToPiece().State.SetCoordsBasedOnBoard(DrawBase);
-                    foreach (var piece in (justAdded as Set).PiecesList)
-                    {
-                        WIP.PersonalStates.Add(piece, Utils.CloneState(piece.State));
-                    }
-                    (justAdded as Set).CalculateStates();
-                }
-                DeselectPiece();
-
-                // If first piece, set as base
-                if (WIP.PiecesList.Count == 1)
-                {
-                    WIP.BasePiece = justAdded.ToPiece();
-                }
-
-                DisplayDrawings();
-            }
-            catch (FileNotFoundException)
-            {
-                MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                MessageBox.Show("Suspected outdated file.", "File Indexing Error", MessageBoxButtons.OK);
-            }
-        }
-
-
-        // ----- PIECES TAB -----
-
-        /// <summary>
-        /// Updates the selected piece based on the UI object
-        /// that was interacted with.
-        /// </summary>
-        /// <param name="sender">Touched UI object</param>
-        /// <param name="e"></param>
-        private void UpdateSelectedPiece(object sender, EventArgs e)
-        {
-            if (selected == null)
-            {
-                return;
-            }
-
-            if (sender == RotationBar)
-            {
-                WIP.PersonalStates[selected].R = RotationBar.Value;
-            }
-            else if (sender == TurnBar)
-            {
-                WIP.PersonalStates[selected].T = TurnBar.Value;
-            }
-            else if (sender == SpinBar)
-            {
-                WIP.PersonalStates[selected].S = SpinBar.Value;
-                if (JoinBtn.BackColor == pressed)
-                {
-                    SelectedRTS0();
-                }
-            }
-            else if (sender == SizeBar)
-            {
-                WIP.PersonalStates[selected].SM = SizeBar.Value / 100.0;
-            }
-
-            DisplayDrawings();
-        }
-
     }
 }

@@ -57,6 +57,13 @@ namespace Optimator.Tabs.Sets
             SelectBaseBtn.BackColor = unpressed;
         }
 
+        /// <summary>
+        /// Unselects both buttons.
+        /// </summary>
+        public void UnselectButtons()
+        {
+            SelectBaseBtn.BackColor = JoinBtn.BackColor = unpressed;
+        }
 
 
         // ----- FORM FUNCTIONS -----
