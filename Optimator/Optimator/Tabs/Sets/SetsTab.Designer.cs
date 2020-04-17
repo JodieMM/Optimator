@@ -42,6 +42,7 @@
             this.DrawRight = new System.Windows.Forms.PictureBox();
             this.DrawDown = new System.Windows.Forms.PictureBox();
             this.DrawBase = new System.Windows.Forms.PictureBox();
+            this.EraseBtn = new System.Windows.Forms.ToolStripButton();
             this.ToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DrawRight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawDown)).BeginInit();
@@ -59,6 +60,7 @@
             this.JoinsBtn,
             this.PositionsBtn,
             this.OrderBtn,
+            this.EraseBtn,
             this.SettingsBtn,
             this.PreviewBtn});
             this.ToolStrip.Location = new System.Drawing.Point(0, 0);
@@ -167,6 +169,9 @@
             this.DrawRight.Size = new System.Drawing.Size(300, 300);
             this.DrawRight.TabIndex = 96;
             this.DrawRight.TabStop = false;
+            this.DrawRight.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DrawBoard_MouseDown);
+            this.DrawRight.MouseMove += new System.Windows.Forms.MouseEventHandler(this.DrawBoard_MouseMove);
+            this.DrawRight.MouseUp += new System.Windows.Forms.MouseEventHandler(this.DrawBoard_MouseUp);
             // 
             // DrawDown
             // 
@@ -177,6 +182,9 @@
             this.DrawDown.Size = new System.Drawing.Size(300, 300);
             this.DrawDown.TabIndex = 95;
             this.DrawDown.TabStop = false;
+            this.DrawDown.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DrawBoard_MouseDown);
+            this.DrawDown.MouseMove += new System.Windows.Forms.MouseEventHandler(this.DrawBoard_MouseMove);
+            this.DrawDown.MouseUp += new System.Windows.Forms.MouseEventHandler(this.DrawBoard_MouseUp);
             // 
             // DrawBase
             // 
@@ -187,6 +195,19 @@
             this.DrawBase.Size = new System.Drawing.Size(300, 300);
             this.DrawBase.TabIndex = 94;
             this.DrawBase.TabStop = false;
+            this.DrawBase.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DrawBoard_MouseDown);
+            this.DrawBase.MouseMove += new System.Windows.Forms.MouseEventHandler(this.DrawBoard_MouseMove);
+            this.DrawBase.MouseUp += new System.Windows.Forms.MouseEventHandler(this.DrawBoard_MouseUp);
+            // 
+            // EraseBtn
+            // 
+            this.EraseBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.EraseBtn.Image = ((System.Drawing.Image)(resources.GetObject("EraseBtn.Image")));
+            this.EraseBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.EraseBtn.Name = "EraseBtn";
+            this.EraseBtn.Size = new System.Drawing.Size(36, 36);
+            this.EraseBtn.Text = "Erase";
+            this.EraseBtn.Click += new System.EventHandler(this.EraseBtn_Click);
             // 
             // SetsTab
             // 
@@ -225,5 +246,6 @@
         private System.Windows.Forms.PictureBox DrawRight;
         private System.Windows.Forms.PictureBox DrawDown;
         private System.Windows.Forms.PictureBox DrawBase;
+        private System.Windows.Forms.ToolStripButton EraseBtn;
     }
 }

@@ -661,6 +661,19 @@ namespace Optimator
         }
 
         /// <summary>
+        /// Makes visible (or invisible) several objects at once.
+        /// </summary>
+        /// <param name="objects">The objects to change visability</param>
+        /// <param name="enable">Whether the objects should be visible or invisible</param>
+        public static void VisibleObjects(List<Control> objects, bool visible = true)
+        {
+            foreach (var item in objects)
+            {
+                item.Visible = visible;
+            }
+        }
+
+        /// <summary>
         /// Creates a new TabPage in the TabControl of the provided home form.
         /// </summary>
         /// <param name="tab">The tab page to add</param>

@@ -106,6 +106,30 @@
     <Compile Include="Tabs\Pieces\SavePanel.Designer.cs">
       <DependentUpon>SavePanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tabs\Sets\SettingsPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Tabs\Sets\SettingsPanel.Designer.cs">
+      <DependentUpon>SettingsPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tabs\Sets\OrderPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Tabs\Sets\OrderPanel.Designer.cs">
+      <DependentUpon>OrderPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tabs\Sets\ErasePanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Tabs\Sets\ErasePanel.Designer.cs">
+      <DependentUpon>ErasePanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tabs\Sets\JoinsPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Tabs\Sets\JoinsPanel.Designer.cs">
+      <DependentUpon>JoinsPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Tabs\Sets\SetsTab.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -222,6 +246,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Tabs\Pieces\SavePanel.resx">
       <DependentUpon>SavePanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\Sets\SettingsPanel.resx">
+      <DependentUpon>SettingsPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\Sets\OrderPanel.resx">
+      <DependentUpon>OrderPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\Sets\ErasePanel.resx">
+      <DependentUpon>ErasePanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\Sets\JoinsPanel.resx">
+      <DependentUpon>JoinsPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Tabs\Sets\SetsTab.resx">
       <DependentUpon>SetsTab.cs</DependentUpon>
