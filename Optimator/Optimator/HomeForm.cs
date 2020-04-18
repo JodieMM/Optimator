@@ -1,5 +1,6 @@
 ﻿using Optimator.Forms;
 using Optimator.Tabs;
+using Optimator.Tabs.Scenes;
 using Optimator.Tabs.Sets;
 using System;
 using System.Windows.Forms;
@@ -84,8 +85,7 @@ namespace Optimator
         /// <param name="e"></param>
         private void NewSceneTSMI_Click(object sender, EventArgs e)
         {
-            //TODO Update Tab Type
-            PiecesTab tab = new PiecesTab(this);
+            ScenesTab tab = new ScenesTab(this);
             AddTabPage("New Scene", tab);
             tab.Resize();
         }

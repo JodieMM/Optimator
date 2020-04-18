@@ -140,6 +140,8 @@ namespace Optimator
         /// <param name="board">The board to centre on</param>
         public void SetCoordsBasedOnBoard(PictureBox board)
         {
+            // CLEANING: Check validity/necessity of this function now 0,0 considered centre
+            // CLEANING: If this is removed, modify SetsTab GetFormSizing
             X = board.Width / 2.0;
             Y = board.Height / 2.0;
         }

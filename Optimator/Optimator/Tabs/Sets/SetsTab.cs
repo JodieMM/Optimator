@@ -108,6 +108,7 @@ namespace Optimator.Tabs.Sets
         /// </summary>
         private void SelectButton(ToolStripButton btn)
         {
+            bool check = btn.Checked;
             SaveBtn.Checked = false;
             AddPartBtn.Checked = false;
             JoinsBtn.Checked = false;
@@ -115,7 +116,7 @@ namespace Optimator.Tabs.Sets
             OrderBtn.Checked = false;
             EraseBtn.Checked = false;
             SettingsBtn.Checked = false;
-            btn.Checked = true;
+            btn.Checked = !check;
             DisplayDrawings();
         }
 

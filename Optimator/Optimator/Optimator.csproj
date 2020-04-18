@@ -106,6 +106,42 @@
     <Compile Include="Tabs\Pieces\SavePanel.Designer.cs">
       <DependentUpon>SavePanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tabs\Scenes\AddPartPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Tabs\Scenes\AddPartPanel.Designer.cs">
+      <DependentUpon>AddPartPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tabs\Scenes\PositionsPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Tabs\Scenes\PositionsPanel.Designer.cs">
+      <DependentUpon>PositionsPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tabs\Scenes\SavePanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Tabs\Scenes\SavePanel.Designer.cs">
+      <DependentUpon>SavePanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tabs\Scenes\ScenesTab.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Tabs\Scenes\ScenesTab.Designer.cs">
+      <DependentUpon>ScenesTab.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tabs\Scenes\MovePanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Tabs\Scenes\MovePanel.Designer.cs">
+      <DependentUpon>MovePanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tabs\Scenes\SettingsPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Tabs\Scenes\SettingsPanel.Designer.cs">
+      <DependentUpon>SettingsPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Tabs\Sets\AddPartPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -264,6 +300,24 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Tabs\Pieces\SavePanel.resx">
       <DependentUpon>SavePanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\Scenes\AddPartPanel.resx">
+      <DependentUpon>AddPartPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\Scenes\PositionsPanel.resx">
+      <DependentUpon>PositionsPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\Scenes\SavePanel.resx">
+      <DependentUpon>SavePanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\Scenes\ScenesTab.resx">
+      <DependentUpon>ScenesTab.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\Scenes\MovePanel.resx">
+      <DependentUpon>MovePanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\Scenes\SettingsPanel.resx">
+      <DependentUpon>SettingsPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Tabs\Sets\AddPartPanel.resx">
       <DependentUpon>AddPartPanel.cs</DependentUpon>

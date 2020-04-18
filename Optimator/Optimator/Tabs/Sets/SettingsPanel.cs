@@ -4,7 +4,7 @@ using System.Windows.Forms;
 namespace Optimator.Tabs.Sets
 {
     /// <summary>
-    /// A panel to manage the erasure of rotation/turned boards.
+    /// A panel to manage the sets tab settings.
     /// 
     /// Author Jodie Muller
     /// </summary>

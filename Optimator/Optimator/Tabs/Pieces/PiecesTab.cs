@@ -98,6 +98,7 @@ namespace Optimator
         /// </summary>
         private void SelectButton(ToolStripButton btn)
         {
+            bool check = btn.Checked;
             SaveBtn.Checked = false;
             MovePointBtn.Checked = false;
             ColoursBtn.Checked = false;
@@ -105,7 +106,7 @@ namespace Optimator
             SketchesBtn.Checked = false;
             EraseBtn.Checked = false;
             OutlineBtn.Checked = false;
-            btn.Checked = true;
+            btn.Checked = !check;
             DisplayDrawings();
         }
 
