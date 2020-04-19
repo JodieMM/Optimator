@@ -54,12 +54,6 @@
   <ItemGroup>
     <Compile Include="Change.cs" />
     <Compile Include="ColourState.cs" />
-    <Compile Include="CompileVideo.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="CompileVideo.Designer.cs">
-      <DependentUpon>CompileVideo.cs</DependentUpon>
-    </Compile>
     <Compile Include="Constants.cs" />
     <Compile Include="Tabs\Compile\AddScenePanel.cs">
       <SubType>UserControl</SubType>
@@ -245,42 +239,12 @@
     <Compile Include="LoadingForm.Designer.cs">
       <DependentUpon>LoadingForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Menu.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Menu.Designer.cs">
-      <DependentUpon>Menu.cs</DependentUpon>
-    </Compile>
     <Compile Include="Part.cs" />
     <Compile Include="Piece.cs" />
-    <Compile Include="PiecesForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PiecesForm.Designer.cs">
-      <DependentUpon>PiecesForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PiecesForm_LoadMenu.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PiecesForm_LoadMenu.Designer.cs">
-      <DependentUpon>PiecesForm_LoadMenu.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scene.cs" />
-    <Compile Include="ScenesForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ScenesForm.Designer.cs">
-      <DependentUpon>ScenesForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Set.cs" />
-    <Compile Include="SetsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SetsForm.Designer.cs">
-      <DependentUpon>SetsForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Settings.cs" />
     <Compile Include="SettingsForm.cs">
       <SubType>Form</SubType>
@@ -301,9 +265,6 @@
     </Compile>
     <Compile Include="Utilities.cs" />
     <Compile Include="Visuals.cs" />
-    <EmbeddedResource Include="CompileVideo.resx">
-      <DependentUpon>CompileVideo.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Tabs\Compile\AddScenePanel.resx">
       <DependentUpon>AddScenePanel.cs</DependentUpon>
     </EmbeddedResource>
@@ -394,15 +355,6 @@
     <EmbeddedResource Include="LoadingForm.resx">
       <DependentUpon>LoadingForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Menu.resx">
-      <DependentUpon>Menu.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PiecesForm.resx">
-      <DependentUpon>PiecesForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PiecesForm_LoadMenu.resx">
-      <DependentUpon>PiecesForm_LoadMenu.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -412,12 +364,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="ScenesForm.resx">
-      <DependentUpon>ScenesForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SetsForm.resx">
-      <DependentUpon>SetsForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="SettingsForm.resx">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </EmbeddedResource>

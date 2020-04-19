@@ -1,5 +1,7 @@
 ﻿using Optimator.Tabs;
 using System;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace Optimator.Forms
 {
@@ -17,6 +19,8 @@ namespace Optimator.Forms
         {
             InitializeComponent();
             Owner = owner;
+            VersionLbl.Text = "Version " + Consts.Version;
+            DisplaySettings();
         }
 
 
@@ -28,35 +32,104 @@ namespace Optimator.Forms
         /// </summary>
         public override void Resize()
         {
-            //float widthPercent = 0.75F;
-            //float widthSmallPercent = 0.2F;
-            //float heightPercent = 0.9F;
+            float smallWidthPercent = 0.02F;
+            float heightPercent = 0.4F;
 
-            //float trackLong = 0.8F;
-            //float trackShort = 0.1F;
+            int smallWidth = (int)(Width * smallWidthPercent);
+            int bigHeight = (int)(Height * heightPercent);
 
-            //int bigWidth = (int)(Width * widthPercent);
-            //int bigHeight = (int)(Height * heightPercent);
-            //int bigLength = bigHeight < bigWidth ? bigHeight : bigWidth;
+            SettingsLbl.Location = new Point(smallWidth, smallWidth + ToolStrip.Height);
+            VersionLbl.Location = new Point(smallWidth, smallWidth * 2 + SettingsLbl.Height + ToolStrip.Height);
+
+            TableLayoutPnl.Location = new Point(smallWidth, smallWidth * 3 + SettingsLbl.Height 
+                + VersionLbl.Height + ToolStrip.Height);
+            TableLayoutPnl.Size = new Size(Width - 2 * smallWidth, bigHeight);
+        }
 
 
-            //int smallWidth = (int)(Width * widthSmallPercent);
-            //int lilWidth = (int)((Width - bigLength - smallWidth) / 4.0);
-            //int smallHeight = (int)((Height - bigHeight - ToolStrip.Height) / 2.0);
 
-            //DrawPanel.Size = new Size(bigLength, bigLength);
-            //DrawPanel.Location = new Point(lilWidth, smallHeight + ToolStrip.Height);
+        // ----- DISPLAY -----
 
-            //OptionsMenu.Size = new Size(smallWidth, bigLength);
-            //OptionsMenu.Location = new Point(bigLength + 3 * lilWidth, smallHeight + ToolStrip.Height);
+        /// <summary>
+        /// Displays the current settings to the screen.
+        /// </summary>
+        private void DisplaySettings()
+        {
+            BackColourBox.BackColor = Settings.BackgroundColour;
+            WorkingDirValueLbl.Text = "Current Directory: " + Settings.WorkingDirectory;
+        }
 
-            //RotationTrack.Size = new Size((int)(DrawPanel.Width * trackLong), (int)(DrawPanel.Height * trackShort));
-            //RotationTrack.Location = new Point((int)(DrawPanel.Location.X + (DrawPanel.Width - RotationTrack.Width) / 2.0),
-            //    (int)(DrawPanel.Location.Y + DrawPanel.Height - RotationTrack.Height * 1.25));
 
-            //TurnTrack.Size = new Size((int)(DrawPanel.Width * trackShort), (int)(DrawPanel.Height * trackLong));
-            //TurnTrack.Location = new Point((int)(DrawPanel.Location.X + DrawPanel.Width - TurnTrack.Width * 1.25),
-            //    (int)(DrawPanel.Location.Y + (DrawPanel.Height - TurnTrack.Height) / 2.0));
+
+        // ----- BUTTONS -----
+
+        /// <summary>
+        /// Resets the settings to the default values.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ResetBtn_Click(object sender, EventArgs e)
+        {
+            Settings.ResetSettings();
+            DisplaySettings();
+        }
+
+        /// <summary>
+        /// Saves the changes made to settings.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SaveBtn_Click(object sender, EventArgs e)
+        {
+            Settings.UpdateSettings();
+        }
+
+        /// <summary>
+        /// Closes the form. Any unsaved changes will be lost.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private new void CloseBtn_Click(object sender, EventArgs e)
+        {
+            Settings.InitialSettings();
+            Owner.RemoveTabPage(this);
+        }
+
+
+
+        // ----- SETTING CHANGES -----
+
+        /// <summary>
+        /// Changes the back colour of the drawing panels.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BackColourBox_Click(object sender, System.EventArgs e)
+        {
+            ColorDialog MyDialog = new ColorDialog
+            {
+                Color = BackColourBox.BackColor,
+                FullOpen = true
+            };
+            if (MyDialog.ShowDialog() == DialogResult.OK)
+            {
+                BackColourBox.BackColor = MyDialog.Color;
+                Settings.BackgroundColour = MyDialog.Color;
+            }
+        }
+
+        /// <summary>
+        /// Changes the current working directory.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void NewWorkingDirectoryBtn_Click(object sender, System.EventArgs e)
+        {
+            var path = Utils.SelectFolder(true);
+            if (path != "")
+            {
+                WorkingDirValueLbl.Text = "Current Directory: " + path;
+            }
         }
     }
 }
