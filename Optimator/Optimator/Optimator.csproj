@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{B10D37FE-9F1F-4BF2-BB29-73777851A851}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Animator</RootNamespace>
-    <AssemblyName>Animator</AssemblyName>
+    <RootNamespace>Optimator</RootNamespace>
+    <AssemblyName>Optimator</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -366,6 +366,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="Tabs\Pieces\PiecesTab.resx">
       <DependentUpon>PiecesTab.cs</DependentUpon>
@@ -385,6 +386,9 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TrayIcon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -19,9 +19,6 @@ C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Animator\obj\
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Animator\obj\Debug\Optimator.Forms.PreviewTab.resources
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Animator\obj\Debug\Optimator.HomeForm.resources
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Animator\obj\Debug\Optimator.PiecesTab.resources
-C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\bin\Debug\Animator.exe.config
-C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\bin\Debug\Animator.exe
-C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\bin\Debug\Animator.pdb
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.Tabs.Pieces.ColoursPanel.resources
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.Tabs.Pieces.ErasePanel.resources
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.Tabs.Pieces.SketchesPanel.resources
@@ -32,12 +29,9 @@ C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.Forms.PreviewTab.resources
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.Forms.SettingsTab.resources
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.HomeForm.resources
-C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Animator.Properties.Resources.resources
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.PiecesTab.resources
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.csproj.GenerateResource.cache
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.csproj.CoreCompileInputs.cache
-C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Animator.exe
-C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Animator.pdb
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.Tabs.Sets.SetsTab.resources
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.Tabs.SoloTabs.LoadPieceTab.resources
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.Tabs.Scenes.ScenesTab.resources
@@ -60,3 +54,9 @@ C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.Tabs.SoloTabs.LoadingMessage.resources
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.csprojAssemblyReference.cache
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.Tabs.SoloTabs.OpenDialog.resources
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\bin\Debug\Optimator.exe.config
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\bin\Debug\Optimator.exe
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\bin\Debug\Optimator.pdb
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.Properties.Resources.resources
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.exe
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.pdb
