@@ -45,9 +45,7 @@ namespace Optimator.Tabs.Sets
             InitializeComponent();
             Owner = owner;
 
-            //HIDDEN KeyUp += KeyPress;
-
-            //HIDDEN Utils.CheckValidFolder();
+            KeyUp += KeyPress;
         }
 
 
@@ -127,9 +125,12 @@ namespace Optimator.Tabs.Sets
         /// <param name="e"></param>
         private void SaveBtn_Click(object sender, EventArgs e)
         {
-            Baby = new SavePanel(this);
-            Utils.NewPanelContent(Panel, Baby);
-            SelectButton(EraseBtn);
+            if (!SaveBtn.Checked)
+            {
+                Baby = new SavePanel(this);
+                Utils.NewPanelContent(Panel, Baby);
+            }
+            SelectButton(SaveBtn);
         }
 
         /// <summary>
@@ -139,9 +140,12 @@ namespace Optimator.Tabs.Sets
         /// <param name="e"></param>
         private void AddPartBtn_Click(object sender, EventArgs e)
         {
-            Baby = new AddPartPanel(this);
-            Utils.NewPanelContent(Panel, Baby);
-            SelectButton(EraseBtn);
+            if (!AddPartBtn.Checked)
+            {
+                Baby = new AddPartPanel(this);
+                Utils.NewPanelContent(Panel, Baby);
+            }
+            SelectButton(AddPartBtn);
 
         }
 
@@ -152,9 +156,12 @@ namespace Optimator.Tabs.Sets
         /// <param name="e"></param>
         private void JoinsBtn_Click(object sender, EventArgs e)
         {
-            Baby = new JoinsPanel(this);
-            Utils.NewPanelContent(Panel, Baby);
-            SelectButton(EraseBtn);
+            if (!JoinsBtn.Checked)
+            {
+                Baby = new JoinsPanel(this);
+                Utils.NewPanelContent(Panel, Baby);
+            }
+            SelectButton(JoinsBtn);
         }
 
         /// <summary>
@@ -164,9 +171,12 @@ namespace Optimator.Tabs.Sets
         /// <param name="e"></param>
         private void PositionsBtn_Click(object sender, EventArgs e)
         {
-            Baby = new PositionsPanel(this);
-            Utils.NewPanelContent(Panel, Baby);
-            SelectButton(EraseBtn);
+            if (!PositionsBtn.Checked)
+            {
+                Baby = new PositionsPanel(this);
+                Utils.NewPanelContent(Panel, Baby);
+            }
+            SelectButton(PositionsBtn);
         }
 
         /// <summary>
@@ -176,9 +186,12 @@ namespace Optimator.Tabs.Sets
         /// <param name="e"></param>
         private void OrderBtn_Click(object sender, EventArgs e)
         {
-            Baby = new OrderPanel(this);
-            Utils.NewPanelContent(Panel, Baby);
-            SelectButton(EraseBtn);
+            if (!OrderBtn.Checked)
+            {
+                Baby = new OrderPanel(this);
+                Utils.NewPanelContent(Panel, Baby);
+            }
+            SelectButton(OrderBtn);
         }
 
         /// <summary>
@@ -188,8 +201,11 @@ namespace Optimator.Tabs.Sets
         /// <param name="e"></param>
         private void EraseBtn_Click(object sender, EventArgs e)
         {
-            Baby = new ErasePanel(this);
-            Utils.NewPanelContent(Panel, Baby);
+            if (!EraseBtn.Checked)
+            {
+                Baby = new ErasePanel(this);
+                Utils.NewPanelContent(Panel, Baby);
+            }
             SelectButton(EraseBtn);
         }
 
@@ -200,8 +216,11 @@ namespace Optimator.Tabs.Sets
         /// <param name="e"></param>
         private void SettingsBtn_Click(object sender, EventArgs e)
         {
-            Baby = new SettingsPanel(this);
-            Utils.NewPanelContent(Panel, Baby);
+            if (!SettingsBtn.Checked)
+            {
+                Baby = new SettingsPanel(this);
+                Utils.NewPanelContent(Panel, Baby);
+            }
             SelectButton(EraseBtn);
         }
 

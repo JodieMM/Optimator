@@ -45,8 +45,6 @@ namespace Optimator
             KeyUp += KeyPress;
             Enter += FocusOn;
             VisibleChanged += FocusOn;
-
-            //HIDDEN TEMP Utils.CheckValidFolder();
         }
                 
 
@@ -133,7 +131,10 @@ namespace Optimator
         /// <param name="e"></param>
         private void SaveBtn_Click(object sender, EventArgs e)
         {
-            Utils.NewPanelContent(Panel, new SavePanel(this));
+            if (!SaveBtn.Checked)
+            {
+                Utils.NewPanelContent(Panel, new SavePanel(this));
+            }
             SelectButton(SaveBtn);
         }
 
@@ -144,7 +145,10 @@ namespace Optimator
         /// <param name="e"></param>
         private void MovePointBtn_Click(object sender, EventArgs e)
         {
-            Utils.NewPanelContent(Panel, new MovePointPanel(this));
+            if (!MovePointBtn.Checked)
+            {
+                Utils.NewPanelContent(Panel, new MovePointPanel(this));
+            }
             SelectButton(MovePointBtn);
         }
 
@@ -155,7 +159,10 @@ namespace Optimator
         /// <param name="e"></param>
         private void OutlineBtn_Click(object sender, EventArgs e)
         {
-            Utils.NewPanelContent(Panel, new OutlinePanel(this));
+            if (!OutlineBtn.Checked)
+            {
+                Utils.NewPanelContent(Panel, new OutlinePanel(this));
+            }
             SelectButton(OutlineBtn);
         }
 
@@ -166,7 +173,10 @@ namespace Optimator
         /// <param name="e"></param>
         private void ColoursBtn_Click(object sender, EventArgs e)
         {
-            Utils.NewPanelContent(Panel, new ColoursPanel(this));
+            if (!ColoursBtn.Checked)
+            {
+                Utils.NewPanelContent(Panel, new ColoursPanel(this));
+            }
             SelectButton(ColoursBtn);
         }
 
@@ -177,7 +187,10 @@ namespace Optimator
         /// <param name="e"></param>
         private void FixedBtn_Click(object sender, EventArgs e)
         {
-            Utils.NewPanelContent(Panel, new SolidPanel(this));
+            if (!FixedBtn.Checked)
+            {
+                Utils.NewPanelContent(Panel, new SolidPanel(this));
+            }
             SelectButton(FixedBtn);
         }
 
@@ -188,7 +201,10 @@ namespace Optimator
         /// <param name="e"></param>
         private void EraseBtn_Click(object sender, EventArgs e)
         {
-            Utils.NewPanelContent(Panel, new ErasePanel(this));
+            if (!EraseBtn.Checked)
+            {
+                Utils.NewPanelContent(Panel, new ErasePanel(this));
+            }
             SelectButton(EraseBtn);
         }
 
@@ -199,7 +215,10 @@ namespace Optimator
         /// <param name="e"></param>
         private void SketchesBtn_Click(object sender, EventArgs e)
         {
-            Utils.NewPanelContent(Panel, new SketchesPanel(this));
+            if (!SketchesBtn.Checked)
+            {
+                Utils.NewPanelContent(Panel, new SketchesPanel(this));
+            }
             SelectButton(SketchesBtn);
         }
 

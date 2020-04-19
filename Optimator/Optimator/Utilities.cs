@@ -183,13 +183,18 @@ namespace Optimator
         /// Checks that a working directory has been set, and creates
         /// one if necessary.
         /// </summary>
-        public static void CheckValidFolder()
+        /// <returns>True if successful</returns>
+        public static bool CheckValidFolder()
         {
             if (Settings.WorkingDirectory == "Blank" || !Directory.Exists(Settings.WorkingDirectory))
             {
                 MessageBox.Show("Select a directory to work from.", "Directory Selection");
-                while (SelectFolder(true) == "");
+                if (SelectFolder(true) == "")
+                {
+                    return false;
+                }
             }
+            return true;
         }
 
         /// <summary>

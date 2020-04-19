@@ -36,7 +36,6 @@ namespace Optimator.Tabs.Compile
         {
             InitializeComponent();
             Owner = owner;
-            //HIDDEN Utils.CheckValidFolder();
         }
 
 
@@ -119,7 +118,10 @@ namespace Optimator.Tabs.Compile
         /// <param name="e"></param>
         private void SaveBtn_Click(object sender, EventArgs e)
         {
-            Utils.NewPanelContent(Panel, new SavePanel(this));
+            if (!SaveBtn.Checked)
+            {
+                Utils.NewPanelContent(Panel, new SavePanel(this));
+            }
             SelectButton(SaveBtn);
         }
 
@@ -130,7 +132,10 @@ namespace Optimator.Tabs.Compile
         /// <param name="e"></param>
         private void AddSceneBtn_Click(object sender, EventArgs e)
         {
-            Utils.NewPanelContent(Panel, new AddScenePanel(this));
+            if (!AddSceneBtn.Checked)
+            {
+                Utils.NewPanelContent(Panel, new AddScenePanel(this));
+            }
             SelectButton(AddSceneBtn);
         }
 
@@ -141,7 +146,10 @@ namespace Optimator.Tabs.Compile
         /// <param name="e"></param>
         private void SettingsBtn_Click(object sender, EventArgs e)
         {
-            Utils.NewPanelContent(Panel, new SettingsPanel(this));
+            if (!SettingsBtn.Checked)
+            {
+                Utils.NewPanelContent(Panel, new SettingsPanel(this));
+            }
             SelectButton(SettingsBtn);
         }
 

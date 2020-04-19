@@ -176,12 +176,15 @@ namespace Optimator
         /// <param name="tab">The tab to add</param>
         public void AddTabPage(string name, UserControl tab)
         {
-            TabPage page = new TabPage(name);
-            tab.Dock = DockStyle.Fill;
-            page.Controls.Add(tab);
-            TabControl.Controls.Add(page);
-            TabControl.SelectedIndex = TabControl.Controls.Count - 1;
-            TabControl.SelectedTab.Focus();
+            if (Utils.CheckValidFolder())
+            {
+                TabPage page = new TabPage(name);
+                tab.Dock = DockStyle.Fill;
+                page.Controls.Add(tab);
+                TabControl.Controls.Add(page);
+                TabControl.SelectedIndex = TabControl.Controls.Count - 1;
+                TabControl.SelectedTab.Focus();
+            }
         }
 
         /// <summary>

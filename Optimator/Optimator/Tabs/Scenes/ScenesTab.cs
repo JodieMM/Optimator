@@ -37,8 +37,7 @@ namespace Optimator.Tabs.Scenes
             //HIDDEN KeyPreview = true;
             KeyUp += KeyPress;            
 
-            g = DrawPanel.CreateGraphics();
-            //HIDDEN  Also make less annoying Utils.CheckValidFolder();
+            g = DrawPanel.CreateGraphics();            
         }
 
 
@@ -142,7 +141,10 @@ namespace Optimator.Tabs.Scenes
         /// <param name="e"></param>
         private void SaveBtn_Click(object sender, EventArgs e)
         {
-            Utils.NewPanelContent(Panel, new SavePanel(this));
+            if (!SaveBtn.Checked)
+            {
+                Utils.NewPanelContent(Panel, new SavePanel(this));
+            }
             SelectButton(SaveBtn);
         }
 
@@ -153,7 +155,10 @@ namespace Optimator.Tabs.Scenes
         /// <param name="e"></param>
         private void AddPartBtn_Click(object sender, EventArgs e)
         {
-            Utils.NewPanelContent(Panel, new AddPartPanel(this));
+            if (!AddPartBtn.Checked)
+            {
+                Utils.NewPanelContent(Panel, new AddPartPanel(this));
+            }
             SelectButton(AddPartBtn);
         }
 
@@ -164,8 +169,11 @@ namespace Optimator.Tabs.Scenes
         /// <param name="e"></param>
         private void PositionsBtn_Click(object sender, EventArgs e)
         {
-            Baby = new PositionsPanel(this);
-            Utils.NewPanelContent(Panel, Baby);
+            if (!PositionsBtn.Checked)
+            {
+                Baby = new PositionsPanel(this);
+                Utils.NewPanelContent(Panel, Baby);
+            }
             SelectButton(PositionsBtn);
         }
 
@@ -176,8 +184,11 @@ namespace Optimator.Tabs.Scenes
         /// <param name="e"></param>
         private void MoveBtn_Click(object sender, EventArgs e)
         {
-            Baby = new MovePanel(this);
-            Utils.NewPanelContent(Panel, Baby);
+            if (!MoveBtn.Checked)
+            {
+                Baby = new MovePanel(this);
+                Utils.NewPanelContent(Panel, Baby);
+            }
             SelectButton(MoveBtn);
         }
 
@@ -188,7 +199,10 @@ namespace Optimator.Tabs.Scenes
         /// <param name="e"></param>
         private void SettingsBtn_Click(object sender, EventArgs e)
         {
-            Utils.NewPanelContent(Panel, new SettingsPanel(this));
+            if (!SettingsBtn.Checked)
+            {
+                Utils.NewPanelContent(Panel, new SettingsPanel(this));
+            }
             SelectButton(SettingsBtn);
         }
 
