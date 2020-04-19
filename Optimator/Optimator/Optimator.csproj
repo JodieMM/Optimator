@@ -67,6 +67,12 @@
     <Compile Include="Tabs\Compile\CompileTab.Designer.cs">
       <DependentUpon>CompileTab.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tabs\SoloTabs\LoadingMessage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Tabs\SoloTabs\LoadingMessage.Designer.cs">
+      <DependentUpon>LoadingMessage.cs</DependentUpon>
+    </Compile>
     <Compile Include="Tabs\Compile\SavePanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -246,12 +252,6 @@
     <Compile Include="Scene.cs" />
     <Compile Include="Set.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="SettingsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SettingsForm.Designer.cs">
-      <DependentUpon>SettingsForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Spot.cs" />
     <Compile Include="State.cs" />
     <Compile Include="Tabs\Pieces\PiecesTab.cs">
@@ -270,6 +270,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Tabs\Compile\CompileTab.resx">
       <DependentUpon>CompileTab.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\SoloTabs\LoadingMessage.resx">
+      <DependentUpon>LoadingMessage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Tabs\Compile\SavePanel.resx">
       <DependentUpon>SavePanel.cs</DependentUpon>
@@ -364,9 +367,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="SettingsForm.resx">
-      <DependentUpon>SettingsForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Tabs\Pieces\PiecesTab.resx">
       <DependentUpon>PiecesTab.cs</DependentUpon>
     </EmbeddedResource>

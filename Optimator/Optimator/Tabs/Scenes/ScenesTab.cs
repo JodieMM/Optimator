@@ -1,4 +1,5 @@
 ﻿using Optimator.Forms.Scenes;
+using Optimator.Tabs.SoloTabs;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -419,10 +420,9 @@ namespace Optimator.Tabs.Scenes
         /// </summary>
         public void DisplayDrawings()
         {
-            //TODO: Switch loadingform with loading control within tab
-            LoadingForm loading = new LoadingForm();
-            loading.Show();
-            Application.DoEvents();
+            LoadingMessage.Visible = true;
+            LoadingMessage.Location = new Point((int)((Width - LoadingMessage.Width) / 2.0),
+                (int)((Height - LoadingMessage.Height) / 2.0));
 
             // Past Preview
             if (DisplayPanel.Visible && CurrentTimeUpDown.Value < TimeIncrement)
@@ -455,8 +455,8 @@ namespace Optimator.Tabs.Scenes
                 (Baby as MovePanel).UpdateListbox();
             }
 
-            loading.Close();
-        }       
+            LoadingMessage.Visible = false;
+        }
 
         /// <summary>
         /// Updates the code and visuals for the video length.

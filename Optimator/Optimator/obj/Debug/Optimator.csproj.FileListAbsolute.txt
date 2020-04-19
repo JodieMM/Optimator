@@ -34,7 +34,6 @@ C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.HomeForm.resources
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.LoadingForm.resources
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Animator.Properties.Resources.resources
-C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.SettingsForm.resources
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.PiecesTab.resources
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.csproj.GenerateResource.cache
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.csproj.CoreCompileInputs.cache
@@ -60,3 +59,4 @@ C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.Forms.Scenes.SavePanel.resources
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.Tabs.Scenes.MovePanel.resources
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.Tabs.Scenes.SettingsPanel.resources
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.Tabs.SoloTabs.LoadingMessage.resources
