@@ -60,6 +60,20 @@ namespace Optimator.Tabs.Compile
             DisplayPanel.Visible = visible;
         }
 
+        /// <summary>
+        /// Shows the loading message.
+        /// </summary>
+        /// <param name="show">False if hiding the message</param>
+        public void ShowLoadingMessage(bool show = true)
+        {
+            LoadingMessage.Visible = show;
+            if (show)
+            {
+                LoadingMessage.Location = new Point((int)((Width - LoadingMessage.Width) / 2.0),
+                (int)((Height - LoadingMessage.Height) / 2.0));
+            }
+        }
+
 
 
         // ----- FORM FUNCTIONS -----

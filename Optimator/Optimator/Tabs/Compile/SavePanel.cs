@@ -58,9 +58,7 @@ namespace Optimator.Forms.Compile
             }
             try
             {
-                LoadingForm loading = new LoadingForm();
-                loading.Show();
-                Application.DoEvents();
+                Owner.ShowLoadingMessage();
 
                 // Prepare Save Location
                 var directory = Utils.GetDirectory(Consts.VideosFolder, NameTb.Text);
@@ -78,7 +76,7 @@ namespace Optimator.Forms.Compile
                         numFrames++;
                     }
                 }
-                loading.Close();
+                Owner.ShowLoadingMessage(false);
                 Owner.CloseBtn_Click(sender, e);
             }
             catch (FileNotFoundException)
