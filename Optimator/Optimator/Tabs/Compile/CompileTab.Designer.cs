@@ -1,8 +1,8 @@
 ﻿using System.Windows.Forms;
 
-namespace Optimator.Tabs.Scenes
+namespace Optimator.Tabs.Compile
 {
-    partial class ScenesTab
+    partial class CompileTab
     {
         /// <summary> 
         /// Required designer variable.
@@ -30,19 +30,17 @@ namespace Optimator.Tabs.Scenes
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScenesTab));
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CompileTab));
             this.Panel = new System.Windows.Forms.Panel();
             this.ToolStrip = new System.Windows.Forms.ToolStrip();
             this.SaveBtn = new System.Windows.Forms.ToolStripButton();
-            this.AddPartBtn = new System.Windows.Forms.ToolStripButton();
+            this.AddSceneBtn = new System.Windows.Forms.ToolStripButton();
             this.CloseBtn = new System.Windows.Forms.ToolStripButton();
-            this.PositionsBtn = new System.Windows.Forms.ToolStripButton();
-            this.MoveBtn = new System.Windows.Forms.ToolStripButton();
             this.SettingsBtn = new System.Windows.Forms.ToolStripButton();
             this.VidLengthLbl = new System.Windows.Forms.Label();
-            this.UpArrowImg = new System.Windows.Forms.Label();
-            this.Future2PreviewBox = new System.Windows.Forms.PictureBox();
             this.FuturePreviewBox = new System.Windows.Forms.PictureBox();
+            this.Past2PreviewBox = new System.Windows.Forms.PictureBox();
             this.PastPreviewBox = new System.Windows.Forms.PictureBox();
             this.CurrentTimeLbl = new System.Windows.Forms.Label();
             this.CurrentTimeUpDown = new System.Windows.Forms.NumericUpDown();
@@ -51,10 +49,12 @@ namespace Optimator.Tabs.Scenes
             this.DrawPanel = new System.Windows.Forms.PictureBox();
             this.DisplayPanel = new System.Windows.Forms.TableLayoutPanel();
             this.DPDisplayTableLayoutPnl = new System.Windows.Forms.TableLayoutPanel();
+            this.UpArrowImg = new System.Windows.Forms.Label();
             this.DPControlsTableLayoutPnl = new System.Windows.Forms.TableLayoutPanel();
+            this.AnimationTimer = new System.Windows.Forms.Timer(this.components);
             this.ToolStrip.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Future2PreviewBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.FuturePreviewBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Past2PreviewBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PastPreviewBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CurrentTimeUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawPanel)).BeginInit();
@@ -65,7 +65,7 @@ namespace Optimator.Tabs.Scenes
             // 
             // Panel
             // 
-            this.Panel.BackColor = System.Drawing.Color.LemonChiffon;
+            this.Panel.BackColor = System.Drawing.Color.MistyRose;
             this.Panel.Dock = System.Windows.Forms.DockStyle.Right;
             this.Panel.Location = new System.Drawing.Point(1784, 39);
             this.Panel.Margin = new System.Windows.Forms.Padding(6);
@@ -79,10 +79,8 @@ namespace Optimator.Tabs.Scenes
             this.ToolStrip.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.ToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.SaveBtn,
-            this.AddPartBtn,
+            this.AddSceneBtn,
             this.CloseBtn,
-            this.PositionsBtn,
-            this.MoveBtn,
             this.SettingsBtn});
             this.ToolStrip.Location = new System.Drawing.Point(0, 0);
             this.ToolStrip.Name = "ToolStrip";
@@ -102,15 +100,15 @@ namespace Optimator.Tabs.Scenes
             this.SaveBtn.Text = "Save";
             this.SaveBtn.Click += new System.EventHandler(this.SaveBtn_Click);
             // 
-            // AddPartBtn
+            // AddSceneBtn
             // 
-            this.AddPartBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.AddPartBtn.Image = ((System.Drawing.Image)(resources.GetObject("AddPartBtn.Image")));
-            this.AddPartBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.AddPartBtn.Name = "AddPartBtn";
-            this.AddPartBtn.Size = new System.Drawing.Size(36, 36);
-            this.AddPartBtn.Text = "Add Part";
-            this.AddPartBtn.Click += new System.EventHandler(this.AddPartBtn_Click);
+            this.AddSceneBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.AddSceneBtn.Image = ((System.Drawing.Image)(resources.GetObject("AddSceneBtn.Image")));
+            this.AddSceneBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.AddSceneBtn.Name = "AddSceneBtn";
+            this.AddSceneBtn.Size = new System.Drawing.Size(36, 36);
+            this.AddSceneBtn.Text = "Add Scene";
+            this.AddSceneBtn.Click += new System.EventHandler(this.AddSceneBtn_Click);
             // 
             // CloseBtn
             // 
@@ -123,26 +121,6 @@ namespace Optimator.Tabs.Scenes
             this.CloseBtn.Size = new System.Drawing.Size(36, 36);
             this.CloseBtn.Text = "Close";
             this.CloseBtn.Click += new System.EventHandler(this.CloseBtn_Click);
-            // 
-            // PositionsBtn
-            // 
-            this.PositionsBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.PositionsBtn.Image = ((System.Drawing.Image)(resources.GetObject("PositionsBtn.Image")));
-            this.PositionsBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.PositionsBtn.Name = "PositionsBtn";
-            this.PositionsBtn.Size = new System.Drawing.Size(36, 36);
-            this.PositionsBtn.Text = "Original Positions";
-            this.PositionsBtn.Click += new System.EventHandler(this.PositionsBtn_Click);
-            // 
-            // MoveBtn
-            // 
-            this.MoveBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.MoveBtn.Image = ((System.Drawing.Image)(resources.GetObject("MoveBtn.Image")));
-            this.MoveBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.MoveBtn.Name = "MoveBtn";
-            this.MoveBtn.Size = new System.Drawing.Size(36, 36);
-            this.MoveBtn.Text = "Movements";
-            this.MoveBtn.Click += new System.EventHandler(this.MoveBtn_Click);
             // 
             // SettingsBtn
             // 
@@ -165,39 +143,27 @@ namespace Optimator.Tabs.Scenes
             this.VidLengthLbl.TabIndex = 41;
             this.VidLengthLbl.Text = "Video Length: 0s";
             // 
-            // UpArrowImg
-            // 
-            this.UpArrowImg.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.UpArrowImg.AutoSize = true;
-            this.UpArrowImg.Font = new System.Drawing.Font("Tahoma", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpArrowImg.Location = new System.Drawing.Point(631, 93);
-            this.UpArrowImg.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
-            this.UpArrowImg.Name = "UpArrowImg";
-            this.UpArrowImg.Size = new System.Drawing.Size(67, 65);
-            this.UpArrowImg.TabIndex = 40;
-            this.UpArrowImg.Text = "^";
-            // 
-            // Future2PreviewBox
-            // 
-            this.Future2PreviewBox.BackColor = System.Drawing.Color.White;
-            this.Future2PreviewBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Future2PreviewBox.Location = new System.Drawing.Point(1333, 4);
-            this.Future2PreviewBox.Margin = new System.Windows.Forms.Padding(4);
-            this.Future2PreviewBox.Name = "Future2PreviewBox";
-            this.Future2PreviewBox.Size = new System.Drawing.Size(435, 243);
-            this.Future2PreviewBox.TabIndex = 39;
-            this.Future2PreviewBox.TabStop = false;
-            // 
             // FuturePreviewBox
             // 
             this.FuturePreviewBox.BackColor = System.Drawing.Color.White;
             this.FuturePreviewBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.FuturePreviewBox.Location = new System.Drawing.Point(890, 4);
+            this.FuturePreviewBox.Location = new System.Drawing.Point(1333, 4);
             this.FuturePreviewBox.Margin = new System.Windows.Forms.Padding(4);
             this.FuturePreviewBox.Name = "FuturePreviewBox";
             this.FuturePreviewBox.Size = new System.Drawing.Size(435, 243);
-            this.FuturePreviewBox.TabIndex = 38;
+            this.FuturePreviewBox.TabIndex = 39;
             this.FuturePreviewBox.TabStop = false;
+            // 
+            // Past2PreviewBox
+            // 
+            this.Past2PreviewBox.BackColor = System.Drawing.Color.White;
+            this.Past2PreviewBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Past2PreviewBox.Location = new System.Drawing.Point(447, 4);
+            this.Past2PreviewBox.Margin = new System.Windows.Forms.Padding(4);
+            this.Past2PreviewBox.Name = "Past2PreviewBox";
+            this.Past2PreviewBox.Size = new System.Drawing.Size(435, 243);
+            this.Past2PreviewBox.TabIndex = 38;
+            this.Past2PreviewBox.TabStop = false;
             // 
             // PastPreviewBox
             // 
@@ -223,9 +189,8 @@ namespace Optimator.Tabs.Scenes
             // 
             // CurrentTimeUpDown
             // 
-            this.CurrentTimeUpDown.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.CurrentTimeUpDown.DecimalPlaces = 3;
+            this.CurrentTimeUpDown.Dock = System.Windows.Forms.DockStyle.Fill;
             this.CurrentTimeUpDown.Font = new System.Drawing.Font("Tahoma", 14F);
             this.CurrentTimeUpDown.Increment = new decimal(new int[] {
             5,
@@ -237,11 +202,10 @@ namespace Optimator.Tabs.Scenes
             this.CurrentTimeUpDown.Name = "CurrentTimeUpDown";
             this.CurrentTimeUpDown.Size = new System.Drawing.Size(346, 53);
             this.CurrentTimeUpDown.TabIndex = 37;
-            this.CurrentTimeUpDown.ValueChanged += new System.EventHandler(this.CurrentTimeUpDown_ValueChanged);
             // 
             // ForwardBtn
             // 
-            this.ForwardBtn.BackColor = System.Drawing.Color.Khaki;
+            this.ForwardBtn.BackColor = System.Drawing.Color.LightCoral;
             this.ForwardBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ForwardBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ForwardBtn.Font = new System.Drawing.Font("Tahoma", 14F);
@@ -252,11 +216,10 @@ namespace Optimator.Tabs.Scenes
             this.ForwardBtn.TabIndex = 19;
             this.ForwardBtn.Text = "Forward";
             this.ForwardBtn.UseVisualStyleBackColor = false;
-            this.ForwardBtn.Click += new System.EventHandler(this.ForwardBtn_Click);
             // 
             // BackBtn
             // 
-            this.BackBtn.BackColor = System.Drawing.Color.Khaki;
+            this.BackBtn.BackColor = System.Drawing.Color.LightCoral;
             this.BackBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BackBtn.Font = new System.Drawing.Font("Tahoma", 14F);
@@ -267,7 +230,6 @@ namespace Optimator.Tabs.Scenes
             this.BackBtn.TabIndex = 23;
             this.BackBtn.Text = "Back";
             this.BackBtn.UseVisualStyleBackColor = false;
-            this.BackBtn.Click += new System.EventHandler(this.BackBtn_Click);
             // 
             // DrawPanel
             // 
@@ -278,11 +240,10 @@ namespace Optimator.Tabs.Scenes
             this.DrawPanel.Size = new System.Drawing.Size(1062, 540);
             this.DrawPanel.TabIndex = 31;
             this.DrawPanel.TabStop = false;
-            this.DrawPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DrawPanel_MouseDown);
             // 
             // DisplayPanel
             // 
-            this.DisplayPanel.BackColor = System.Drawing.Color.PaleGoldenrod;
+            this.DisplayPanel.BackColor = System.Drawing.Color.MistyRose;
             this.DisplayPanel.ColumnCount = 1;
             this.DisplayPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.DisplayPanel.Controls.Add(this.DPDisplayTableLayoutPnl, 0, 1);
@@ -304,10 +265,10 @@ namespace Optimator.Tabs.Scenes
             this.DPDisplayTableLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.DPDisplayTableLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.DPDisplayTableLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.DPDisplayTableLayoutPnl.Controls.Add(this.Future2PreviewBox, 3, 0);
-            this.DPDisplayTableLayoutPnl.Controls.Add(this.UpArrowImg, 1, 0);
-            this.DPDisplayTableLayoutPnl.Controls.Add(this.FuturePreviewBox, 2, 0);
+            this.DPDisplayTableLayoutPnl.Controls.Add(this.UpArrowImg, 2, 0);
+            this.DPDisplayTableLayoutPnl.Controls.Add(this.FuturePreviewBox, 3, 0);
             this.DPDisplayTableLayoutPnl.Controls.Add(this.PastPreviewBox, 0, 0);
+            this.DPDisplayTableLayoutPnl.Controls.Add(this.Past2PreviewBox, 1, 0);
             this.DPDisplayTableLayoutPnl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.DPDisplayTableLayoutPnl.Location = new System.Drawing.Point(6, 93);
             this.DPDisplayTableLayoutPnl.Margin = new System.Windows.Forms.Padding(6);
@@ -316,6 +277,18 @@ namespace Optimator.Tabs.Scenes
             this.DPDisplayTableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.DPDisplayTableLayoutPnl.Size = new System.Drawing.Size(1772, 251);
             this.DPDisplayTableLayoutPnl.TabIndex = 43;
+            // 
+            // UpArrowImg
+            // 
+            this.UpArrowImg.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.UpArrowImg.AutoSize = true;
+            this.UpArrowImg.Font = new System.Drawing.Font("Tahoma", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpArrowImg.Location = new System.Drawing.Point(1074, 93);
+            this.UpArrowImg.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.UpArrowImg.Name = "UpArrowImg";
+            this.UpArrowImg.Size = new System.Drawing.Size(67, 65);
+            this.UpArrowImg.TabIndex = 43;
+            this.UpArrowImg.Text = "^";
             // 
             // DPControlsTableLayoutPnl
             // 
@@ -339,22 +312,26 @@ namespace Optimator.Tabs.Scenes
             this.DPControlsTableLayoutPnl.Size = new System.Drawing.Size(1772, 75);
             this.DPControlsTableLayoutPnl.TabIndex = 43;
             // 
-            // ScenesTab
+            // AnimationTimer
+            // 
+            this.AnimationTimer.Tick += new System.EventHandler(this.AnimationTimer_Tick);
+            // 
+            // CompileTab
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.Khaki;
+            this.BackColor = System.Drawing.Color.LightCoral;
             this.Controls.Add(this.DisplayPanel);
             this.Controls.Add(this.DrawPanel);
             this.Controls.Add(this.Panel);
             this.Controls.Add(this.ToolStrip);
             this.Margin = new System.Windows.Forms.Padding(4);
-            this.Name = "ScenesTab";
+            this.Name = "CompileTab";
             this.Size = new System.Drawing.Size(2226, 1131);
             this.ToolStrip.ResumeLayout(false);
             this.ToolStrip.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Future2PreviewBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.FuturePreviewBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Past2PreviewBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PastPreviewBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.CurrentTimeUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawPanel)).EndInit();
@@ -373,15 +350,12 @@ namespace Optimator.Tabs.Scenes
         private System.Windows.Forms.Panel Panel;
         private System.Windows.Forms.ToolStrip ToolStrip;
         private System.Windows.Forms.ToolStripButton SaveBtn;
-        private System.Windows.Forms.ToolStripButton AddPartBtn;
+        private System.Windows.Forms.ToolStripButton AddSceneBtn;
         private System.Windows.Forms.ToolStripButton CloseBtn;
-        private System.Windows.Forms.ToolStripButton PositionsBtn;
-        private System.Windows.Forms.ToolStripButton MoveBtn;
         private System.Windows.Forms.ToolStripButton SettingsBtn;
         private System.Windows.Forms.Label VidLengthLbl;
-        private System.Windows.Forms.Label UpArrowImg;
-        private System.Windows.Forms.PictureBox Future2PreviewBox;
         private System.Windows.Forms.PictureBox FuturePreviewBox;
+        private System.Windows.Forms.PictureBox Past2PreviewBox;
         private System.Windows.Forms.PictureBox PastPreviewBox;
         private System.Windows.Forms.Label CurrentTimeLbl;
         private System.Windows.Forms.NumericUpDown CurrentTimeUpDown;
@@ -391,5 +365,7 @@ namespace Optimator.Tabs.Scenes
         private System.Windows.Forms.TableLayoutPanel DisplayPanel;
         private System.Windows.Forms.TableLayoutPanel DPControlsTableLayoutPnl;
         private System.Windows.Forms.TableLayoutPanel DPDisplayTableLayoutPnl;
+        private Label UpArrowImg;
+        private Timer AnimationTimer;
     }
 }

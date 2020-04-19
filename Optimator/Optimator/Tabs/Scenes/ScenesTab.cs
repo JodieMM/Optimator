@@ -38,7 +38,7 @@ namespace Optimator.Tabs.Scenes
             KeyUp += KeyPress;            
 
             g = DrawPanel.CreateGraphics();
-            Utils.CheckValidFolder();
+            //HIDDEN  Also make less annoying Utils.CheckValidFolder();
         }
 
 
@@ -100,6 +100,10 @@ namespace Optimator.Tabs.Scenes
 
             Panel.Width = Width - bigWidth;
             DisplayPanel.Height = Height - bigHeight - ToolStrip.Height;
+
+            int panelWidth = (int)(UpArrowImg.Parent.Width / 4.0);
+            UpArrowImg.Location = new Point((int)(panelWidth + (panelWidth - UpArrowImg.Width / 2.0)),
+                (int)((UpArrowImg.Parent.Height - UpArrowImg.Height) / 2.0));
 
             if (Width < 1140)
             {

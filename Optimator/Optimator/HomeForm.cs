@@ -1,5 +1,6 @@
 ﻿using Optimator.Forms;
 using Optimator.Tabs;
+using Optimator.Tabs.Compile;
 using Optimator.Tabs.Scenes;
 using Optimator.Tabs.Sets;
 using System;
@@ -97,8 +98,7 @@ namespace Optimator
         /// <param name="e"></param>
         private void NewVideoTSMI_Click(object sender, EventArgs e)
         {
-            //TODO Update Tab Type
-            PiecesTab tab = new PiecesTab(this);
+            CompileTab tab = new CompileTab(this);
             AddTabPage("New Video", tab);
             tab.Resize();
         }

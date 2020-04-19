@@ -61,6 +61,30 @@
       <DependentUpon>CompileVideo.cs</DependentUpon>
     </Compile>
     <Compile Include="Constants.cs" />
+    <Compile Include="Tabs\Compile\AddScenePanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Tabs\Compile\AddScenePanel.Designer.cs">
+      <DependentUpon>AddScenePanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tabs\Compile\CompileTab.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Tabs\Compile\CompileTab.Designer.cs">
+      <DependentUpon>CompileTab.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tabs\Compile\SavePanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Tabs\Compile\SavePanel.Designer.cs">
+      <DependentUpon>SavePanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tabs\Compile\SettingsPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Tabs\Compile\SettingsPanel.Designer.cs">
+      <DependentUpon>SettingsPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Tabs\PanelControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -279,6 +303,18 @@
     <Compile Include="Visuals.cs" />
     <EmbeddedResource Include="CompileVideo.resx">
       <DependentUpon>CompileVideo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\Compile\AddScenePanel.resx">
+      <DependentUpon>AddScenePanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\Compile\CompileTab.resx">
+      <DependentUpon>CompileTab.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\Compile\SavePanel.resx">
+      <DependentUpon>SavePanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\Compile\SettingsPanel.resx">
+      <DependentUpon>SettingsPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Tabs\Pieces\ColoursPanel.resx">
       <DependentUpon>ColoursPanel.cs</DependentUpon>

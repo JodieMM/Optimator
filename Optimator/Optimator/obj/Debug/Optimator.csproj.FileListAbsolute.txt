@@ -57,3 +57,12 @@ C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.Tabs.Sets.OrderPanel.resources
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.Tabs.Sets.ErasePanel.resources
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.Tabs.Sets.JoinsPanel.resources
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.Forms.Compile.AddScenePanel.resources
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.Tabs.Compile.CompileTab.resources
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.Forms.Compile.SavePanel.resources
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.Tabs.Compile.SettingsPanel.resources
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.Forms.Scenes.AddPartPanel.resources
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.Tabs.Scenes.PositionsPanel.resources
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.Forms.Scenes.SavePanel.resources
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.Tabs.Scenes.MovePanel.resources
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.Tabs.Scenes.SettingsPanel.resources
