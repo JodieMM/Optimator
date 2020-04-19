@@ -3,6 +3,7 @@ using Optimator.Tabs;
 using Optimator.Tabs.Compile;
 using Optimator.Tabs.Scenes;
 using Optimator.Tabs.Sets;
+using Optimator.Tabs.SoloTabs;
 using System;
 using System.Windows.Forms;
 
@@ -115,10 +116,33 @@ namespace Optimator
         /// <param name="e"></param>
         private void OpenPieceTSMI_Click(object sender, EventArgs e)
         {
-            //TODO: Open Tabs
-            PiecesTab tab = new PiecesTab(this);    //PieceName = ...
-            AddTabPage("New Piece", tab);
-            tab.Resize();
+            OpenDialog open = new OpenDialog(this, "Piece", new PiecesTab(this));
+            AddTabPage("Add Piece", open);
+            open.Resize();
+        }
+
+        /// <summary>
+        /// Opens an existing set in a new SetsTab.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OpenSetTSMI_Click(object sender, EventArgs e)
+        {
+            OpenDialog open = new OpenDialog(this, "Set", new SetsTab(this));
+            AddTabPage("Add Set", open);
+            open.Resize();
+        }
+
+        /// <summary>
+        /// Opens an existing scene in a new ScenesTab.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OpenSceneTSMI_Click(object sender, EventArgs e)
+        {
+            OpenDialog open = new OpenDialog(this, "Scene", new ScenesTab(this));
+            AddTabPage("Add Scene", open);
+            open.Resize();
         }
 
 
@@ -157,8 +181,8 @@ namespace Optimator
                 tab.Resize();
             }
         }
-
-
+               
+        
 
         // --- HELP ---
 

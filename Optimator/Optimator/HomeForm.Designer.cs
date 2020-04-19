@@ -54,10 +54,10 @@
             // 
             this.TabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.TabControl.HotTrack = true;
-            this.TabControl.Location = new System.Drawing.Point(0, 40);
+            this.TabControl.Location = new System.Drawing.Point(0, 42);
             this.TabControl.Name = "TabControl";
             this.TabControl.SelectedIndex = 0;
-            this.TabControl.Size = new System.Drawing.Size(1174, 689);
+            this.TabControl.Size = new System.Drawing.Size(1174, 687);
             this.TabControl.TabIndex = 0;
             // 
             // MenuStrip
@@ -71,7 +71,7 @@
             this.HelpTSMI});
             this.MenuStrip.Location = new System.Drawing.Point(0, 0);
             this.MenuStrip.Name = "MenuStrip";
-            this.MenuStrip.Size = new System.Drawing.Size(1174, 40);
+            this.MenuStrip.Size = new System.Drawing.Size(1174, 42);
             this.MenuStrip.TabIndex = 1;
             this.MenuStrip.Text = "menuStrip1";
             // 
@@ -84,7 +84,7 @@
             this.NewVideoTSMI,
             this.spriteSetToolStripMenuItem});
             this.NewTSMI.Name = "NewTSMI";
-            this.NewTSMI.Size = new System.Drawing.Size(75, 36);
+            this.NewTSMI.Size = new System.Drawing.Size(75, 38);
             this.NewTSMI.Text = "New";
             // 
             // NewPieceTSMI
@@ -130,38 +130,40 @@
             this.OpenVideoTSMI,
             this.spriteSetToolStripMenuItem1});
             this.OpenTSMI.Name = "OpenTSMI";
-            this.OpenTSMI.Size = new System.Drawing.Size(86, 36);
+            this.OpenTSMI.Size = new System.Drawing.Size(86, 38);
             this.OpenTSMI.Text = "Open";
             // 
             // OpenPieceTSMI
             // 
             this.OpenPieceTSMI.Name = "OpenPieceTSMI";
-            this.OpenPieceTSMI.Size = new System.Drawing.Size(217, 38);
+            this.OpenPieceTSMI.Size = new System.Drawing.Size(324, 38);
             this.OpenPieceTSMI.Text = "Piece";
             this.OpenPieceTSMI.Click += new System.EventHandler(this.OpenPieceTSMI_Click);
             // 
             // OpenSetTSMI
             // 
             this.OpenSetTSMI.Name = "OpenSetTSMI";
-            this.OpenSetTSMI.Size = new System.Drawing.Size(217, 38);
+            this.OpenSetTSMI.Size = new System.Drawing.Size(324, 38);
             this.OpenSetTSMI.Text = "Set";
+            this.OpenSetTSMI.Click += new System.EventHandler(this.OpenSetTSMI_Click);
             // 
             // OpenSceneTSMI
             // 
             this.OpenSceneTSMI.Name = "OpenSceneTSMI";
-            this.OpenSceneTSMI.Size = new System.Drawing.Size(217, 38);
+            this.OpenSceneTSMI.Size = new System.Drawing.Size(324, 38);
             this.OpenSceneTSMI.Text = "Scene";
+            this.OpenSceneTSMI.Click += new System.EventHandler(this.OpenSceneTSMI_Click);
             // 
             // OpenVideoTSMI
             // 
             this.OpenVideoTSMI.Name = "OpenVideoTSMI";
-            this.OpenVideoTSMI.Size = new System.Drawing.Size(217, 38);
+            this.OpenVideoTSMI.Size = new System.Drawing.Size(324, 38);
             this.OpenVideoTSMI.Text = "Video";
             // 
             // spriteSetToolStripMenuItem1
             // 
             this.spriteSetToolStripMenuItem1.Name = "spriteSetToolStripMenuItem1";
-            this.spriteSetToolStripMenuItem1.Size = new System.Drawing.Size(217, 38);
+            this.spriteSetToolStripMenuItem1.Size = new System.Drawing.Size(324, 38);
             this.spriteSetToolStripMenuItem1.Text = "Sprite Set";
             // 
             // DirTSMI
@@ -170,7 +172,7 @@
             this.DirChangeTSMI,
             this.DirBackupTSMI});
             this.DirTSMI.Name = "DirTSMI";
-            this.DirTSMI.Size = new System.Drawing.Size(124, 36);
+            this.DirTSMI.Size = new System.Drawing.Size(124, 38);
             this.DirTSMI.Text = "Directory";
             // 
             // DirChangeTSMI
@@ -188,14 +190,14 @@
             // SettingsTSMI
             // 
             this.SettingsTSMI.Name = "SettingsTSMI";
-            this.SettingsTSMI.Size = new System.Drawing.Size(113, 36);
+            this.SettingsTSMI.Size = new System.Drawing.Size(113, 38);
             this.SettingsTSMI.Text = "Settings";
             this.SettingsTSMI.Click += new System.EventHandler(this.SettingsTSMI_Click);
             // 
             // HelpTSMI
             // 
             this.HelpTSMI.Name = "HelpTSMI";
-            this.HelpTSMI.Size = new System.Drawing.Size(77, 36);
+            this.HelpTSMI.Size = new System.Drawing.Size(77, 38);
             this.HelpTSMI.Text = "Help";
             // 
             // HomeForm

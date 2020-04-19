@@ -3,8 +3,16 @@ using System.Windows.Forms;
 
 namespace Optimator.Tabs.SoloTabs
 {
+    /// <summary>
+    /// A user control to alert the user the program is loading.
+    /// 
+    /// Author Jodie Muller
+    /// </summary>
     public partial class LoadingMessage : UserControl
     {
+        /// <summary>
+        /// Constructor for the UserControl
+        /// </summary>
         public LoadingMessage()
         {
             InitializeComponent();
