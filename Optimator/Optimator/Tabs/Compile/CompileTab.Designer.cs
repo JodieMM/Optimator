@@ -99,7 +99,7 @@ namespace Optimator.Tabs.Compile
             this.SaveBtn.Name = "SaveBtn";
             this.SaveBtn.Size = new System.Drawing.Size(36, 36);
             this.SaveBtn.Text = "Save";
-            this.SaveBtn.Click += new System.EventHandler(this.SaveBtn_Click);
+            this.SaveBtn.Click += new System.EventHandler(this.BtnWithPanel_Click);
             // 
             // AddSceneBtn
             // 
@@ -109,7 +109,7 @@ namespace Optimator.Tabs.Compile
             this.AddSceneBtn.Name = "AddSceneBtn";
             this.AddSceneBtn.Size = new System.Drawing.Size(36, 36);
             this.AddSceneBtn.Text = "Add Scene";
-            this.AddSceneBtn.Click += new System.EventHandler(this.AddSceneBtn_Click);
+            this.AddSceneBtn.Click += new System.EventHandler(this.BtnWithPanel_Click);
             // 
             // CloseBtn
             // 
@@ -131,7 +131,7 @@ namespace Optimator.Tabs.Compile
             this.SettingsBtn.Name = "SettingsBtn";
             this.SettingsBtn.Size = new System.Drawing.Size(36, 36);
             this.SettingsBtn.Text = "Settings";
-            this.SettingsBtn.Click += new System.EventHandler(this.SettingsBtn_Click);
+            this.SettingsBtn.Click += new System.EventHandler(this.BtnWithPanel_Click);
             // 
             // VidLengthLbl
             // 

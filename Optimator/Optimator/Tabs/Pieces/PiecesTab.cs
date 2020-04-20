@@ -96,7 +96,6 @@ namespace Optimator
         /// </summary>
         private void SelectButton(ToolStripButton btn)
         {
-            bool check = btn.Checked;
             SaveBtn.Checked = false;
             MovePointBtn.Checked = false;
             ColoursBtn.Checked = false;
@@ -104,7 +103,7 @@ namespace Optimator
             SketchesBtn.Checked = false;
             EraseBtn.Checked = false;
             OutlineBtn.Checked = false;
-            btn.Checked = !check;
+            btn.Checked = true;
             DisplayDrawings();
         }
 
@@ -120,106 +119,51 @@ namespace Optimator
             DisplayDrawings();
         }
 
-
-
-        // --- BUTTON CLICKS ---
-
         /// <summary>
-        /// Opens the save panel.
+        /// Opens or closes panel based on tool strip button press.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void SaveBtn_Click(object sender, EventArgs e)
+        private void BtnWithPanel_Click(object sender, EventArgs e)
         {
-            if (!SaveBtn.Checked)
+            if (!(sender as ToolStripButton).Checked)
             {
-                Utils.NewPanelContent(Panel, new SavePanel(this));
+                PanelControl panel = new SavePanel(this);
+                if (sender == SaveBtn)
+                {
+                    panel = new SavePanel(this);
+                }
+                else if (sender == MovePointBtn)
+                {
+                    panel = new MovePointPanel(this);
+                }
+                else if (sender == OutlineBtn)
+                {
+                    panel = new OutlinePanel(this);
+                }
+                else if (sender == ColoursBtn)
+                {
+                    panel = new ColoursPanel(this);
+                }
+                else if (sender == FixedBtn)
+                {
+                    panel = new SolidPanel(this);
+                }
+                else if (sender == EraseBtn)
+                {
+                    panel = new ErasePanel(this);
+                }
+                else if (sender == SketchesBtn)
+                {
+                    panel = new SketchesPanel(this);
+                }
+                Utils.NewPanelContent(Panel, panel);
+                SelectButton(sender as ToolStripButton);
             }
-            SelectButton(SaveBtn);
-        }
-
-        /// <summary>
-        /// Opens the move point panel.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void MovePointBtn_Click(object sender, EventArgs e)
-        {
-            if (!MovePointBtn.Checked)
+            else
             {
-                Utils.NewPanelContent(Panel, new MovePointPanel(this));
+                DeselectButtons();
             }
-            SelectButton(MovePointBtn);
-        }
-
-        /// <summary>
-        /// Opens the outline panel.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OutlineBtn_Click(object sender, EventArgs e)
-        {
-            if (!OutlineBtn.Checked)
-            {
-                Utils.NewPanelContent(Panel, new OutlinePanel(this));
-            }
-            SelectButton(OutlineBtn);
-        }
-
-        /// <summary>
-        /// Opens the colours panel.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ColoursBtn_Click(object sender, EventArgs e)
-        {
-            if (!ColoursBtn.Checked)
-            {
-                Utils.NewPanelContent(Panel, new ColoursPanel(this));
-            }
-            SelectButton(ColoursBtn);
-        }
-
-        /// <summary>
-        /// Opens the fixed panel.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void FixedBtn_Click(object sender, EventArgs e)
-        {
-            if (!FixedBtn.Checked)
-            {
-                Utils.NewPanelContent(Panel, new SolidPanel(this));
-            }
-            SelectButton(FixedBtn);
-        }
-
-        /// <summary>
-        /// Opens the erase panel.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void EraseBtn_Click(object sender, EventArgs e)
-        {
-            if (!EraseBtn.Checked)
-            {
-                Utils.NewPanelContent(Panel, new ErasePanel(this));
-            }
-            SelectButton(EraseBtn);
-        }
-
-        /// <summary>
-        /// Opens the sketches panel.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void SketchesBtn_Click(object sender, EventArgs e)
-        {
-            if (!SketchesBtn.Checked)
-            {
-                Utils.NewPanelContent(Panel, new SketchesPanel(this));
-            }
-            SelectButton(SketchesBtn);
         }
 
         /// <summary>

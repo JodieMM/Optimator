@@ -128,7 +128,7 @@ namespace Optimator
             this.SaveBtn.Name = "SaveBtn";
             this.SaveBtn.Size = new System.Drawing.Size(36, 36);
             this.SaveBtn.Text = "Save";
-            this.SaveBtn.Click += new System.EventHandler(this.SaveBtn_Click);
+            this.SaveBtn.Click += new System.EventHandler(this.BtnWithPanel_Click);
             // 
             // MovePointBtn
             // 
@@ -138,7 +138,7 @@ namespace Optimator
             this.MovePointBtn.Name = "MovePointBtn";
             this.MovePointBtn.Size = new System.Drawing.Size(36, 36);
             this.MovePointBtn.Text = "Move Point";
-            this.MovePointBtn.Click += new System.EventHandler(this.MovePointBtn_Click);
+            this.MovePointBtn.Click += new System.EventHandler(this.BtnWithPanel_Click);
             // 
             // CloseBtn
             // 
@@ -160,7 +160,7 @@ namespace Optimator
             this.ColoursBtn.Name = "ColoursBtn";
             this.ColoursBtn.Size = new System.Drawing.Size(36, 36);
             this.ColoursBtn.Text = "Colours";
-            this.ColoursBtn.Click += new System.EventHandler(this.ColoursBtn_Click);
+            this.ColoursBtn.Click += new System.EventHandler(this.BtnWithPanel_Click);
             // 
             // FixedBtn
             // 
@@ -170,7 +170,7 @@ namespace Optimator
             this.FixedBtn.Name = "FixedBtn";
             this.FixedBtn.Size = new System.Drawing.Size(36, 36);
             this.FixedBtn.Text = "Fixed Points";
-            this.FixedBtn.Click += new System.EventHandler(this.FixedBtn_Click);
+            this.FixedBtn.Click += new System.EventHandler(this.BtnWithPanel_Click);
             // 
             // SketchesBtn
             // 
@@ -180,7 +180,7 @@ namespace Optimator
             this.SketchesBtn.Name = "SketchesBtn";
             this.SketchesBtn.Size = new System.Drawing.Size(36, 36);
             this.SketchesBtn.Text = "Sketches";
-            this.SketchesBtn.Click += new System.EventHandler(this.SketchesBtn_Click);
+            this.SketchesBtn.Click += new System.EventHandler(this.BtnWithPanel_Click);
             // 
             // EraseBtn
             // 
@@ -190,7 +190,7 @@ namespace Optimator
             this.EraseBtn.Name = "EraseBtn";
             this.EraseBtn.Size = new System.Drawing.Size(36, 36);
             this.EraseBtn.Text = "Erase";
-            this.EraseBtn.Click += new System.EventHandler(this.EraseBtn_Click);
+            this.EraseBtn.Click += new System.EventHandler(this.BtnWithPanel_Click);
             // 
             // OutlineBtn
             // 
@@ -200,7 +200,7 @@ namespace Optimator
             this.OutlineBtn.Name = "OutlineBtn";
             this.OutlineBtn.Size = new System.Drawing.Size(36, 36);
             this.OutlineBtn.Text = "Outline";
-            this.OutlineBtn.Click += new System.EventHandler(this.OutlineBtn_Click);
+            this.OutlineBtn.Click += new System.EventHandler(this.BtnWithPanel_Click);
             // 
             // PreviewBtn
             // 

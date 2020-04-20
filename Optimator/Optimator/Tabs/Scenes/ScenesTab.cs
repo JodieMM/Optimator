@@ -136,75 +136,52 @@ namespace Optimator.Tabs.Scenes
         }
 
         /// <summary>
-        /// Opens the Save panel.
+        /// Unchecks all buttons and clears panel.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void SaveBtn_Click(object sender, EventArgs e)
+        private void DeselectButtons()
         {
-            if (!SaveBtn.Checked)
-            {
-                Utils.NewPanelContent(Panel, new SavePanel(this));
-            }
             SelectButton(SaveBtn);
+            SaveBtn.Checked = false;
+            Panel.Controls.Clear();
         }
 
         /// <summary>
-        /// Opens the Add Part panel.
+        /// Opens or closes panel based on tool strip button press.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void AddPartBtn_Click(object sender, EventArgs e)
+        private void BtnWithPanel_Click(object sender, EventArgs e)
         {
-            if (!AddPartBtn.Checked)
+            if (!(sender as ToolStripButton).Checked)
             {
-                Utils.NewPanelContent(Panel, new AddPartPanel(this));
-            }
-            SelectButton(AddPartBtn);
-        }
-
-        /// <summary>
-        /// Opens the Original Positions panel.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void PositionsBtn_Click(object sender, EventArgs e)
-        {
-            if (!PositionsBtn.Checked)
-            {
-                Baby = new PositionsPanel(this);
+                // Set Baby
+                if (sender == SaveBtn)
+                {
+                    Baby = new SavePanel(this);
+                }
+                else if (sender == AddPartBtn)
+                {
+                    Baby = new AddPartPanel(this);
+                }
+                else if (sender == PositionsBtn)
+                {
+                    Baby = new PositionsPanel(this);
+                }
+                else if (sender == MoveBtn)
+                {
+                    Baby = new MovePanel(this);
+                }
+                else if (sender == SettingsBtn)
+                {
+                    Baby = new SettingsPanel(this);
+                }
                 Utils.NewPanelContent(Panel, Baby);
+                SelectButton(sender as ToolStripButton);
             }
-            SelectButton(PositionsBtn);
-        }
-
-        /// <summary>
-        /// Opens the Movements panel.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void MoveBtn_Click(object sender, EventArgs e)
-        {
-            if (!MoveBtn.Checked)
+            else
             {
-                Baby = new MovePanel(this);
-                Utils.NewPanelContent(Panel, Baby);
+                DeselectButtons();
             }
-            SelectButton(MoveBtn);
-        }
-
-        /// <summary>
-        /// Opens the Settings panel.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void SettingsBtn_Click(object sender, EventArgs e)
-        {
-            if (!SettingsBtn.Checked)
-            {
-                Utils.NewPanelContent(Panel, new SettingsPanel(this));
-            }
-            SelectButton(SettingsBtn);
         }
 
         /// <summary>

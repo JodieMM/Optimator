@@ -126,45 +126,45 @@ namespace Optimator.Tabs.Compile
         }
 
         /// <summary>
-        /// Opens the Save panel.
+        /// Deselects all buttons. Used with LoadTab to ensure all 
+        /// controls display correctly after the load.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void SaveBtn_Click(object sender, EventArgs e)
+        public void DeselectButtons()
         {
-            if (!SaveBtn.Checked)
-            {
-                Utils.NewPanelContent(Panel, new SavePanel(this));
-            }
             SelectButton(SaveBtn);
+            SaveBtn.Checked = false;
+            Panel.Controls.Clear();
         }
 
         /// <summary>
-        /// Opens the Add Scene panel.
+        /// Opens or closes panel based on tool strip button press.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void AddSceneBtn_Click(object sender, EventArgs e)
+        private void BtnWithPanel_Click(object sender, EventArgs e)
         {
-            if (!AddSceneBtn.Checked)
+            if (!(sender as ToolStripButton).Checked)
             {
-                Utils.NewPanelContent(Panel, new AddScenePanel(this));
+                PanelControl panel = new SavePanel(this);
+                if (sender == SaveBtn)
+                {
+                    panel = new SavePanel(this);
+                }
+                else if (sender == SettingsBtn)
+                {
+                    panel = new SettingsPanel(this);
+                }
+                else if (sender == AddSceneBtn)
+                {
+                    panel = new AddScenePanel(this);
+                }
+                Utils.NewPanelContent(Panel, panel);
+                SelectButton(sender as ToolStripButton);
             }
-            SelectButton(AddSceneBtn);
-        }
-
-        /// <summary>
-        /// Opens the Settings panel.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void SettingsBtn_Click(object sender, EventArgs e)
-        {
-            if (!SettingsBtn.Checked)
+            else
             {
-                Utils.NewPanelContent(Panel, new SettingsPanel(this));
+                DeselectButtons();
             }
-            SelectButton(SettingsBtn);
         }
 
         /// <summary>

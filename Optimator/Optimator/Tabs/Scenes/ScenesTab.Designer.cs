@@ -101,7 +101,7 @@ namespace Optimator.Tabs.Scenes
             this.SaveBtn.Name = "SaveBtn";
             this.SaveBtn.Size = new System.Drawing.Size(36, 36);
             this.SaveBtn.Text = "Save";
-            this.SaveBtn.Click += new System.EventHandler(this.SaveBtn_Click);
+            this.SaveBtn.Click += new System.EventHandler(this.BtnWithPanel_Click);
             // 
             // AddPartBtn
             // 
@@ -111,7 +111,7 @@ namespace Optimator.Tabs.Scenes
             this.AddPartBtn.Name = "AddPartBtn";
             this.AddPartBtn.Size = new System.Drawing.Size(36, 36);
             this.AddPartBtn.Text = "Add Part";
-            this.AddPartBtn.Click += new System.EventHandler(this.AddPartBtn_Click);
+            this.AddPartBtn.Click += new System.EventHandler(this.BtnWithPanel_Click);
             // 
             // CloseBtn
             // 
@@ -133,7 +133,7 @@ namespace Optimator.Tabs.Scenes
             this.PositionsBtn.Name = "PositionsBtn";
             this.PositionsBtn.Size = new System.Drawing.Size(36, 36);
             this.PositionsBtn.Text = "Original Positions";
-            this.PositionsBtn.Click += new System.EventHandler(this.PositionsBtn_Click);
+            this.PositionsBtn.Click += new System.EventHandler(this.BtnWithPanel_Click);
             // 
             // MoveBtn
             // 
@@ -143,7 +143,7 @@ namespace Optimator.Tabs.Scenes
             this.MoveBtn.Name = "MoveBtn";
             this.MoveBtn.Size = new System.Drawing.Size(36, 36);
             this.MoveBtn.Text = "Movements";
-            this.MoveBtn.Click += new System.EventHandler(this.MoveBtn_Click);
+            this.MoveBtn.Click += new System.EventHandler(this.BtnWithPanel_Click);
             // 
             // SettingsBtn
             // 
@@ -153,7 +153,7 @@ namespace Optimator.Tabs.Scenes
             this.SettingsBtn.Name = "SettingsBtn";
             this.SettingsBtn.Size = new System.Drawing.Size(36, 36);
             this.SettingsBtn.Text = "Settings";
-            this.SettingsBtn.Click += new System.EventHandler(this.SettingsBtn_Click);
+            this.SettingsBtn.Click += new System.EventHandler(this.BtnWithPanel_Click);
             // 
             // VidLengthLbl
             // 

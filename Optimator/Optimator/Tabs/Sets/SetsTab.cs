@@ -106,7 +106,6 @@ namespace Optimator.Tabs.Sets
         /// </summary>
         private void SelectButton(ToolStripButton btn)
         {
-            bool check = btn.Checked;
             SaveBtn.Checked = false;
             AddPartBtn.Checked = false;
             JoinsBtn.Checked = false;
@@ -114,114 +113,65 @@ namespace Optimator.Tabs.Sets
             OrderBtn.Checked = false;
             EraseBtn.Checked = false;
             SettingsBtn.Checked = false;
-            btn.Checked = !check;
+            btn.Checked = true;
             DisplayDrawings();
         }
 
         /// <summary>
-        /// Opens the Save panel.
+        /// Unchecks all buttons and clears panel.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void SaveBtn_Click(object sender, EventArgs e)
+        private void DeselectButtons()
         {
-            if (!SaveBtn.Checked)
-            {
-                Baby = new SavePanel(this);
-                Utils.NewPanelContent(Panel, Baby);
-            }
             SelectButton(SaveBtn);
+            SaveBtn.Checked = false;
+            Panel.Controls.Clear();
         }
 
         /// <summary>
-        /// Opens the Add Part panel.
+        /// Opens or closes panel based on tool strip button press.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void AddPartBtn_Click(object sender, EventArgs e)
+        private void BtnWithPanel_Click(object sender, EventArgs e)
         {
-            if (!AddPartBtn.Checked)
+            if (!(sender as ToolStripButton).Checked)
             {
-                Baby = new AddPartPanel(this);
+                // Set Baby
+                if (sender == SaveBtn)
+                {
+                    Baby = new SavePanel(this);
+                }
+                else if (sender == AddPartBtn)
+                {
+                    Baby = new AddPartPanel(this);
+                }
+                else if (sender == JoinsBtn)
+                {
+                    Baby = new JoinsPanel(this);
+                }
+                else if (sender == PositionsBtn)
+                {
+                    Baby = new PositionsPanel(this);
+                }
+                else if (sender == OrderBtn)
+                {
+                    Baby = new OrderPanel(this);
+                }
+                else if (sender == EraseBtn)
+                {
+                    Baby = new ErasePanel(this);
+                }
+                else if (sender == SettingsBtn)
+                {
+                    Baby = new SettingsPanel(this);
+                }
                 Utils.NewPanelContent(Panel, Baby);
+                SelectButton(sender as ToolStripButton);
             }
-            SelectButton(AddPartBtn);
-
-        }
-
-        /// <summary>
-        /// Opens the Joins panel.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void JoinsBtn_Click(object sender, EventArgs e)
-        {
-            if (!JoinsBtn.Checked)
+            else
             {
-                Baby = new JoinsPanel(this);
-                Utils.NewPanelContent(Panel, Baby);
+                DeselectButtons();
             }
-            SelectButton(JoinsBtn);
-        }
-
-        /// <summary>
-        /// Opens the Positions panel.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void PositionsBtn_Click(object sender, EventArgs e)
-        {
-            if (!PositionsBtn.Checked)
-            {
-                Baby = new PositionsPanel(this);
-                Utils.NewPanelContent(Panel, Baby);
-            }
-            SelectButton(PositionsBtn);
-        }
-
-        /// <summary>
-        /// Opens the Order panel.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OrderBtn_Click(object sender, EventArgs e)
-        {
-            if (!OrderBtn.Checked)
-            {
-                Baby = new OrderPanel(this);
-                Utils.NewPanelContent(Panel, Baby);
-            }
-            SelectButton(OrderBtn);
-        }
-
-        /// <summary>
-        /// Opens the Erase panel.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void EraseBtn_Click(object sender, EventArgs e)
-        {
-            if (!EraseBtn.Checked)
-            {
-                Baby = new ErasePanel(this);
-                Utils.NewPanelContent(Panel, Baby);
-            }
-            SelectButton(EraseBtn);
-        }
-
-        /// <summary>
-        /// Opens the Settings panel.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void SettingsBtn_Click(object sender, EventArgs e)
-        {
-            if (!SettingsBtn.Checked)
-            {
-                Baby = new SettingsPanel(this);
-                Utils.NewPanelContent(Panel, Baby);
-            }
-            SelectButton(EraseBtn);
         }
 
         /// <summary>

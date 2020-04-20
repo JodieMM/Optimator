@@ -78,7 +78,7 @@
             this.SaveBtn.Name = "SaveBtn";
             this.SaveBtn.Size = new System.Drawing.Size(36, 36);
             this.SaveBtn.Text = "Save";
-            this.SaveBtn.Click += new System.EventHandler(this.SaveBtn_Click);
+            this.SaveBtn.Click += new System.EventHandler(this.BtnWithPanel_Click);
             // 
             // AddPartBtn
             // 
@@ -88,7 +88,7 @@
             this.AddPartBtn.Name = "AddPartBtn";
             this.AddPartBtn.Size = new System.Drawing.Size(36, 36);
             this.AddPartBtn.Text = "Add Part";
-            this.AddPartBtn.Click += new System.EventHandler(this.AddPartBtn_Click);
+            this.AddPartBtn.Click += new System.EventHandler(this.BtnWithPanel_Click);
             // 
             // CloseBtn
             // 
@@ -109,7 +109,7 @@
             this.JoinsBtn.Name = "JoinsBtn";
             this.JoinsBtn.Size = new System.Drawing.Size(36, 36);
             this.JoinsBtn.Text = "Joins";
-            this.JoinsBtn.Click += new System.EventHandler(this.JoinsBtn_Click);
+            this.JoinsBtn.Click += new System.EventHandler(this.BtnWithPanel_Click);
             // 
             // PositionsBtn
             // 
@@ -119,7 +119,7 @@
             this.PositionsBtn.Name = "PositionsBtn";
             this.PositionsBtn.Size = new System.Drawing.Size(36, 36);
             this.PositionsBtn.Text = "Positions";
-            this.PositionsBtn.Click += new System.EventHandler(this.PositionsBtn_Click);
+            this.PositionsBtn.Click += new System.EventHandler(this.BtnWithPanel_Click);
             // 
             // OrderBtn
             // 
@@ -129,7 +129,7 @@
             this.OrderBtn.Name = "OrderBtn";
             this.OrderBtn.Size = new System.Drawing.Size(36, 36);
             this.OrderBtn.Text = "Order";
-            this.OrderBtn.Click += new System.EventHandler(this.OrderBtn_Click);
+            this.OrderBtn.Click += new System.EventHandler(this.BtnWithPanel_Click);
             // 
             // SettingsBtn
             // 
@@ -139,7 +139,7 @@
             this.SettingsBtn.Name = "SettingsBtn";
             this.SettingsBtn.Size = new System.Drawing.Size(36, 36);
             this.SettingsBtn.Text = "Settings";
-            this.SettingsBtn.Click += new System.EventHandler(this.SettingsBtn_Click);
+            this.SettingsBtn.Click += new System.EventHandler(this.BtnWithPanel_Click);
             // 
             // PreviewBtn
             // 
@@ -207,7 +207,7 @@
             this.EraseBtn.Name = "EraseBtn";
             this.EraseBtn.Size = new System.Drawing.Size(36, 36);
             this.EraseBtn.Text = "Erase";
-            this.EraseBtn.Click += new System.EventHandler(this.EraseBtn_Click);
+            this.EraseBtn.Click += new System.EventHandler(this.BtnWithPanel_Click);
             // 
             // SetsTab
             // 
