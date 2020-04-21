@@ -65,5 +65,15 @@ namespace Optimator.Forms.Scenes
                 MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
             }
         }
+
+        /// <summary>
+        /// Updates the tab name based on the name of the new video.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void NameTb_TextChanged(object sender, EventArgs e)
+        {
+            Owner.Parent.Text = NameTb.Text;
+        }
     }
 }

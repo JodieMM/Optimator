@@ -36,19 +36,20 @@
             // NameTb
             // 
             this.NameTb.BackColor = System.Drawing.Color.White;
-            this.NameTb.Font = Consts.contentFont;
+            this.NameTb.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.NameTb.Location = new System.Drawing.Point(42, 142);
             this.NameTb.Margin = new System.Windows.Forms.Padding(12);
             this.NameTb.Name = "NameTb";
             this.NameTb.Size = new System.Drawing.Size(596, 64);
             this.NameTb.TabIndex = 6;
             this.NameTb.Text = "Video Name";
+            this.NameTb.TextChanged += new System.EventHandler(this.NameTb_TextChanged);
             // 
             // CompleteBtn
             // 
             this.CompleteBtn.BackColor = System.Drawing.Color.LightCoral;
             this.CompleteBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CompleteBtn.Font = Consts.contentFont;
+            this.CompleteBtn.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.CompleteBtn.Location = new System.Drawing.Point(42, 512);
             this.CompleteBtn.Margin = new System.Windows.Forms.Padding(12);
             this.CompleteBtn.Name = "CompleteBtn";
@@ -61,10 +62,10 @@
             // SaveLbl
             // 
             this.SaveLbl.AutoSize = true;
-            this.SaveLbl.Font = Consts.headingLblFont;
+            this.SaveLbl.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
             this.SaveLbl.Location = new System.Drawing.Point(32, 56);
             this.SaveLbl.Name = "SaveLbl";
-            this.SaveLbl.Size = new System.Drawing.Size(305, 71);
+            this.SaveLbl.Size = new System.Drawing.Size(307, 72);
             this.SaveLbl.TabIndex = 11;
             this.SaveLbl.Text = "Save Video";
             // 

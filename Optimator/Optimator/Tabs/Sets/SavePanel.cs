@@ -80,5 +80,15 @@ namespace Optimator.Forms.Sets
                 }
             }
         }
+
+        /// <summary>
+        /// Updates the tab name based on the name of the new video.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void NameTb_TextChanged(object sender, EventArgs e)
+        {
+            Owner.Parent.Text = NameTb.Text;
+        }
     }
 }

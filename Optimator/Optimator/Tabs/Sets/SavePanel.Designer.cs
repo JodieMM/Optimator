@@ -43,6 +43,7 @@
             this.NameTb.Size = new System.Drawing.Size(596, 64);
             this.NameTb.TabIndex = 6;
             this.NameTb.Text = "Piece Name";
+            this.NameTb.TextChanged += new System.EventHandler(this.NameTb_TextChanged);
             // 
             // CompleteBtn
             // 

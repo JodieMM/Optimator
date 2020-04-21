@@ -71,5 +71,15 @@ namespace Optimator.Forms.Pieces
                 MessageBox.Show("No data entered for point", "Missing Data", MessageBoxButtons.OK);
             }
         }
+
+        /// <summary>
+        /// Updates the tab name based on the name of the new piece.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void NameTb_TextChanged(object sender, EventArgs e)
+        {
+            Owner.Parent.Text = NameTb.Text;
+        }
     }
 }
