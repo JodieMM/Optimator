@@ -35,8 +35,9 @@ namespace Optimator.Forms.Sets
             int bigWidth = (int)(Width * widthPercent);
             int lilWidth = (int)((Width - bigWidth) / 2.0);
 
+            SaveLbl.Location = new Point(lilWidth, lilWidth);
             NameTb.Width = bigWidth;
-            NameTb.Location = new Point(lilWidth, lilWidth);
+            NameTb.Location = new Point(lilWidth, lilWidth * 3 + SaveLbl.Height);
 
             CompleteBtn.Size = new Size(bigWidth, (int)(Height * heightPercent));
             CompleteBtn.Location = new Point(lilWidth, Height - lilWidth - CompleteBtn.Height);

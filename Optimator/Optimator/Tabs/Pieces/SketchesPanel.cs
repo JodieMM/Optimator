@@ -39,17 +39,17 @@ namespace Optimator.Tabs.Pieces
         /// </summary>
         public override void Resize()
         {
-            float widthPercent = 0.1F;
-            float heightPercent = 0.75F;
+            float widthPercent = 0.05F;
+            int widthMultiplier = Height < 650 ? 16 : 18;
+            float heightPercent = 0.8F;
 
             int smallWidth = (int)(Width * widthPercent);
-            int minWidth = (int)(smallWidth / 2.0);
             int bigHeight = (int)(Height * heightPercent);
 
             SketchesLbl.Location = new Point(smallWidth, smallWidth);
 
-            TableLayoutPnl.Size = new Size(smallWidth * 9, bigHeight);
-            TableLayoutPnl.Location = new Point(minWidth, smallWidth * 2 + SketchesLbl.Height);
+            TableLayoutPnl.Size = new Size(smallWidth * widthMultiplier, bigHeight);
+            TableLayoutPnl.Location = new Point((int)((Width - TableLayoutPnl.Width) / 2.0), smallWidth * 2 + SketchesLbl.Height);
         }
 
         /// <summary>

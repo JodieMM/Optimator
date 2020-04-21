@@ -152,7 +152,7 @@
             // JoinsLbl
             // 
             this.JoinsLbl.AutoSize = true;
-            this.JoinsLbl.Font = Consts.contentFont;
+            this.JoinsLbl.Font = Consts.headingLblFont;
             this.JoinsLbl.Location = new System.Drawing.Point(82, 39);
             this.JoinsLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.JoinsLbl.Name = "JoinsLbl";

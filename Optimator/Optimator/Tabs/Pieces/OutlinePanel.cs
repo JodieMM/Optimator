@@ -39,7 +39,7 @@ namespace Optimator.Tabs.Pieces
         /// </summary>
         public override void Resize()
         {
-            float widthPercent = 0.1F;
+            float widthPercent = 0.05F;
             float heightPercent = 0.2F;
 
             int smallWidth = (int)(Width * widthPercent);
@@ -47,8 +47,8 @@ namespace Optimator.Tabs.Pieces
 
             OutlineLbl.Location = new Point(smallWidth, smallWidth);
 
-            TableLayoutPnl.Size = new Size(smallWidth * 8, bigHeight);
-            TableLayoutPnl.Location = new Point(smallWidth, smallWidth * 2 + OutlineLbl.Height);
+            TableLayoutPnl.Size = new Size(smallWidth * 16, bigHeight);
+            TableLayoutPnl.Location = new Point(smallWidth, smallWidth * 3 + OutlineLbl.Height);
 
             Enable(Owner.selectedSpot != null);
         }

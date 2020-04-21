@@ -31,9 +31,9 @@ namespace Optimator.Tabs.Sets
         /// </summary>
         public override void Resize()
         {
-            float widthPercent = 0.1F;
+            float widthPercent = 0.05F;
             float bigWidthPercent = 0.8F;
-            float heightPercent = 0.4F;
+            float heightPercent = 0.2F;
 
             int smallWidth = (int)(Width * widthPercent);
             int bigWidth = (int)(Width * bigWidthPercent);
@@ -42,7 +42,7 @@ namespace Optimator.Tabs.Sets
             OrderLbl.Location = new Point(smallWidth, smallWidth);
 
             TableLayoutPnl.Size = new Size(bigWidth, bigHeight);
-            TableLayoutPnl.Location = new Point((int)((Width - bigWidth) / 2.0), 2 * smallWidth + OrderLbl.Height);
+            TableLayoutPnl.Location = new Point((int)((Width - bigWidth) / 2.0), 3 * smallWidth + OrderLbl.Height);
         }
 
         /// <summary>

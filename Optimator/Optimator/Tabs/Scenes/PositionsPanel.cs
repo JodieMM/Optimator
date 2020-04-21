@@ -34,8 +34,8 @@ namespace Optimator.Tabs.Scenes
         /// </summary>
         public override void Resize()
         {
-            float bigWidthPercent = 0.8F;
-            float widthPercent = 0.1F;
+            float bigWidthPercent = 0.9F;
+            float widthPercent = 0.05F;
             float bigHeightPercent = 0.75F;
 
             int smallWidth = (int)(Width * widthPercent);
@@ -43,8 +43,9 @@ namespace Optimator.Tabs.Scenes
             int bigHeight = (int)(Height * bigHeightPercent);
 
             PositionsLbl.Location = new Point(smallWidth, smallWidth);
-            TableLayoutPnl.Location = new Point(smallWidth, smallWidth * 2 + PositionsLbl.Height);
+            TableLayoutPnl.Location = new Point(smallWidth, smallWidth * 3 + PositionsLbl.Height);
             TableLayoutPnl.Size = new Size(bigWidth, bigHeight);
+            UpBtn.Height = DownBtn.Height = (int)(Height < 600 ? bigHeight / 7.0 : bigHeight / 10.0);
         }
 
         /// <summary>

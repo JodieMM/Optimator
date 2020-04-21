@@ -142,7 +142,7 @@ namespace Optimator.Tabs.Scenes
             this.MoveBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.MoveBtn.Name = "MoveBtn";
             this.MoveBtn.Size = new System.Drawing.Size(36, 36);
-            this.MoveBtn.Text = "Movements";
+            this.MoveBtn.Text = "Animations";
             this.MoveBtn.Click += new System.EventHandler(this.BtnWithPanel_Click);
             // 
             // SettingsBtn

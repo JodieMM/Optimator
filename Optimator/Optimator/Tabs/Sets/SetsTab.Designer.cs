@@ -100,6 +100,7 @@
             this.CloseBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.CloseBtn.Size = new System.Drawing.Size(36, 36);
             this.CloseBtn.Text = "Close";
+            this.CloseBtn.Click += new System.EventHandler(this.CloseBtn_Click);
             // 
             // JoinsBtn
             // 

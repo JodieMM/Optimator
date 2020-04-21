@@ -43,7 +43,7 @@ namespace Optimator.Tabs.Compile
             int bigHeight = (int)(Height * bigHeightPercent);
 
             SettingsLbl.Location = new Point(smallWidth, smallWidth);
-            TableLayoutPnl.Location = new Point(smallWidth, smallWidth * 2 + SettingsLbl.Height);
+            TableLayoutPnl.Location = new Point(smallWidth, smallWidth * 3 + SettingsLbl.Height);
             TableLayoutPnl.Size = new Size(bigWidth, bigHeight);
         }
 

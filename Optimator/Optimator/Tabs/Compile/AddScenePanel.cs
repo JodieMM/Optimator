@@ -42,7 +42,7 @@ namespace Optimator.Forms.Compile
 
             AddSceneLbl.Location = new Point(lilWidth, lilWidth);
 
-            TableLayoutPnl.Location = new Point(lilWidth, lilWidth * 2 + AddSceneLbl.Height);
+            TableLayoutPnl.Location = new Point(lilWidth, lilWidth * 3 + AddSceneLbl.Height);
             TableLayoutPnl.Size = new Size(bigWidth, bigHeight);
         }
 

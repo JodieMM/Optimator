@@ -35,8 +35,9 @@ namespace Optimator.Forms.Scenes
             int bigWidth = (int)(Width * widthPercent);
             int lilWidth = (int)((Width - bigWidth) / 2.0);
 
+            SaveLbl.Location = new Point(lilWidth, lilWidth);
             NameTb.Width = bigWidth;
-            NameTb.Location = new Point(lilWidth, lilWidth);
+            NameTb.Location = new Point(lilWidth, lilWidth * 3 + SaveLbl.Height);
 
             CompleteBtn.Size = new Size(bigWidth, (int)(Height * heightPercent));
             CompleteBtn.Location = new Point(lilWidth, Height - lilWidth - CompleteBtn.Height);
@@ -47,7 +48,7 @@ namespace Optimator.Forms.Scenes
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void CompleteBtn_Click(object sender, System.EventArgs e)
+        private void CompleteBtn_Click(object sender, EventArgs e)
         {
             //TODO: Add another button for simply 'save' rather than also closing the form
             if (!Utils.CheckValidNewName(NameTb.Text, Consts.ScenesFolder))

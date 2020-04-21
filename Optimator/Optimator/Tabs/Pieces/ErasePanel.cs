@@ -31,7 +31,7 @@ namespace Optimator.Tabs.Pieces
         /// </summary>
         public override void Resize()
         {
-            float widthPercent = 0.1F;
+            float widthPercent = 0.05F;
 
             int smallWidth = (int)(Width * widthPercent);
 

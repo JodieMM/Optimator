@@ -52,7 +52,7 @@
             this.MoveLbl.Name = "MoveLbl";
             this.MoveLbl.Size = new System.Drawing.Size(151, 29);
             this.MoveLbl.TabIndex = 0;
-            this.MoveLbl.Text = "Movements";
+            this.MoveLbl.Text = "Animations";
             // 
             // TableLayoutPnl
             // 

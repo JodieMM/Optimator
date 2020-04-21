@@ -30,16 +30,17 @@
         {
             this.NameTb = new System.Windows.Forms.TextBox();
             this.CompleteBtn = new System.Windows.Forms.Button();
+            this.SaveLbl = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // NameTb
             // 
             this.NameTb.BackColor = System.Drawing.Color.White;
             this.NameTb.Font = Consts.contentFont;
-            this.NameTb.Location = new System.Drawing.Point(42, 52);
-            this.NameTb.Margin = new System.Windows.Forms.Padding(12, 12, 12, 12);
+            this.NameTb.Location = new System.Drawing.Point(46, 150);
+            this.NameTb.Margin = new System.Windows.Forms.Padding(12);
             this.NameTb.Name = "NameTb";
-            this.NameTb.Size = new System.Drawing.Size(596, 58);
+            this.NameTb.Size = new System.Drawing.Size(596, 64);
             this.NameTb.TabIndex = 6;
             this.NameTb.Text = "Piece Name";
             // 
@@ -47,9 +48,9 @@
             // 
             this.CompleteBtn.BackColor = System.Drawing.Color.LightCyan;
             this.CompleteBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CompleteBtn.Font = Consts.contentFont;
+            this.CompleteBtn.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.CompleteBtn.Location = new System.Drawing.Point(42, 512);
-            this.CompleteBtn.Margin = new System.Windows.Forms.Padding(12, 12, 12, 12);
+            this.CompleteBtn.Margin = new System.Windows.Forms.Padding(12);
             this.CompleteBtn.Name = "CompleteBtn";
             this.CompleteBtn.Size = new System.Drawing.Size(600, 173);
             this.CompleteBtn.TabIndex = 10;
@@ -57,13 +58,24 @@
             this.CompleteBtn.UseVisualStyleBackColor = false;
             this.CompleteBtn.Click += new System.EventHandler(this.CompleteBtn_Click);
             // 
+            // SaveLbl
+            // 
+            this.SaveLbl.AutoSize = true;
+            this.SaveLbl.Font = new System.Drawing.Font("Segoe UI", 19.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SaveLbl.Location = new System.Drawing.Point(56, 46);
+            this.SaveLbl.Name = "SaveLbl";
+            this.SaveLbl.Size = new System.Drawing.Size(146, 71);
+            this.SaveLbl.TabIndex = 11;
+            this.SaveLbl.Text = "Save";
+            // 
             // SavePanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.SaveLbl);
             this.Controls.Add(this.CompleteBtn);
             this.Controls.Add(this.NameTb);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "SavePanel";
             this.Size = new System.Drawing.Size(820, 877);
             this.ResumeLayout(false);
@@ -75,5 +87,6 @@
 
         private System.Windows.Forms.TextBox NameTb;
         private System.Windows.Forms.Button CompleteBtn;
+        private System.Windows.Forms.Label SaveLbl;
     }
 }

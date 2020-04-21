@@ -36,15 +36,15 @@ namespace Optimator.Tabs.Scenes
         public override void Resize()
         {
             float bigWidthPercent = 0.8F;
-            float widthPercent = 0.1F;
-            float bigHeightPercent = 0.3F;
+            float widthPercent = 0.05F;
+            float bigHeightPercent = 0.2F;
 
             int smallWidth = (int)(Width * widthPercent);
             int bigWidth = (int)(Width * bigWidthPercent);
             int bigHeight = (int)(Height * bigHeightPercent);
 
             SettingsLbl.Location = new Point(smallWidth, smallWidth);
-            TableLayoutPnl.Location = new Point(smallWidth, smallWidth * 2 + SettingsLbl.Height);
+            TableLayoutPnl.Location = new Point(smallWidth, smallWidth * 3 + SettingsLbl.Height);
             TableLayoutPnl.Size = new Size(bigWidth, bigHeight);
         }
 

@@ -41,26 +41,24 @@
             // 
             // OutlineBox
             // 
-            this.OutlineBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.OutlineBox.BackColor = System.Drawing.Color.White;
             this.OutlineBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.OutlineBox.Dock = System.Windows.Forms.DockStyle.Top;
             this.OutlineBox.Location = new System.Drawing.Point(236, 178);
             this.OutlineBox.Name = "OutlineBox";
-            this.OutlineBox.Size = new System.Drawing.Size(227, 30);
+            this.OutlineBox.Size = new System.Drawing.Size(227, 169);
             this.OutlineBox.TabIndex = 119;
             this.OutlineBox.TabStop = false;
             this.OutlineBox.Click += new System.EventHandler(this.OutlineBox_Click);
             // 
             // FillBox
             // 
-            this.FillBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.FillBox.BackColor = System.Drawing.Color.White;
             this.FillBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.FillBox.Dock = System.Windows.Forms.DockStyle.Top;
             this.FillBox.Location = new System.Drawing.Point(236, 3);
             this.FillBox.Name = "FillBox";
-            this.FillBox.Size = new System.Drawing.Size(227, 30);
+            this.FillBox.Size = new System.Drawing.Size(227, 169);
             this.FillBox.TabIndex = 118;
             this.FillBox.TabStop = false;
             this.FillBox.Click += new System.EventHandler(this.FillBox_Click);
@@ -68,7 +66,7 @@
             // OutlineLbl
             // 
             this.OutlineLbl.AutoSize = true;
-            this.OutlineLbl.Font = Consts.contentFont;
+            this.OutlineLbl.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.OutlineLbl.Location = new System.Drawing.Point(2, 175);
             this.OutlineLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.OutlineLbl.Name = "OutlineLbl";
@@ -79,7 +77,7 @@
             // FillLbl
             // 
             this.FillLbl.AutoSize = true;
-            this.FillLbl.Font = Consts.contentFont;
+            this.FillLbl.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.FillLbl.Location = new System.Drawing.Point(2, 0);
             this.FillLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.FillLbl.Name = "FillLbl";
@@ -90,11 +88,11 @@
             // ColoursLbl
             // 
             this.ColoursLbl.AutoSize = true;
-            this.ColoursLbl.Font = Consts.headingLblFont;
+            this.ColoursLbl.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
             this.ColoursLbl.Location = new System.Drawing.Point(32, 51);
             this.ColoursLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.ColoursLbl.Name = "ColoursLbl";
-            this.ColoursLbl.Size = new System.Drawing.Size(218, 71);
+            this.ColoursLbl.Size = new System.Drawing.Size(223, 72);
             this.ColoursLbl.TabIndex = 115;
             this.ColoursLbl.Text = "Colours";
             // 

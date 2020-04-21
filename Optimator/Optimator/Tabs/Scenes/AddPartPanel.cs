@@ -33,9 +33,9 @@ namespace Optimator.Forms.Scenes
         /// </summary>
         public override void Resize()
         {
-            float widthPercent = 0.5F;
-            float smallWidthPercent = 0.1F;
-            float heightPercent = 0.2F;
+            float widthPercent = 0.8F;
+            float smallWidthPercent = 0.05F;
+            float heightPercent = 0.15F;
 
             int bigWidth = (int)(Width * widthPercent);
             int lilWidth = (int)(Width * smallWidthPercent);
@@ -43,7 +43,7 @@ namespace Optimator.Forms.Scenes
 
             AddPartLbl.Location = new Point(lilWidth, lilWidth);
 
-            TableLayoutPnl.Location = new Point(lilWidth, lilWidth * 2 + AddPartLbl.Height);
+            TableLayoutPnl.Location = new Point(lilWidth, lilWidth * 3 + AddPartLbl.Height);
             TableLayoutPnl.Size = new Size(bigWidth, bigHeight);
         }
 

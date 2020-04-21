@@ -109,6 +109,7 @@ namespace Optimator.Tabs.Compile
             //    CurrentTimeLbl.Text = "Current Time";
             //    VidLengthLbl.Text = "Video Length: " + ConvertTimeToText();
             //}
+            Utils.ResizePanel(Panel);
         }
 
         #region ToolStrip

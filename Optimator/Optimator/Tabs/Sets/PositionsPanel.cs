@@ -44,7 +44,7 @@ namespace Optimator.Tabs.Sets
 
             PositionsLbl.Location = new Point(lilWidth, lilWidth);
 
-            TableLayoutPnl.Location = new Point(lilWidth, lilWidth * 2 + PositionsLbl.Height);
+            TableLayoutPnl.Location = new Point(lilWidth, lilWidth * 3 + PositionsLbl.Height);
             TableLayoutPnl.Size = new Size(bigWidth, bigHeight);
         }        
 

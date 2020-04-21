@@ -37,7 +37,7 @@ namespace Optimator.Tabs.Pieces
         /// </summary>
         public override void Resize()
         {
-            float widthPercent = 0.1F;
+            float widthPercent = 0.05F;
             float heightPercent = 0.2F;
 
             int smallWidth = (int)(Width * widthPercent);
@@ -45,8 +45,8 @@ namespace Optimator.Tabs.Pieces
 
             MovePointLbl.Location = new Point(smallWidth, smallWidth);
 
-            TableLayoutPnl.Size = new Size(smallWidth * 6, bigHeight);
-            TableLayoutPnl.Location = new Point(smallWidth, smallWidth * 2 + MovePointLbl.Height);
+            TableLayoutPnl.Size = new Size(smallWidth * 12, bigHeight);
+            TableLayoutPnl.Location = new Point(smallWidth, smallWidth * 3 + MovePointLbl.Height);
         }
 
         /// <summary>
