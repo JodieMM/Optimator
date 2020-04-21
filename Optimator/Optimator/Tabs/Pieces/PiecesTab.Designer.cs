@@ -53,7 +53,7 @@ namespace Optimator
             // 
             // DrawRight
             // 
-            this.DrawRight.BackColor = System.Drawing.Color.White;
+            this.DrawRight.BackColor = Settings.BackgroundColour;
             this.DrawRight.Location = new System.Drawing.Point(363, 100);
             this.DrawRight.Margin = new System.Windows.Forms.Padding(6);
             this.DrawRight.Name = "DrawRight";
@@ -66,7 +66,7 @@ namespace Optimator
             // 
             // DrawDown
             // 
-            this.DrawDown.BackColor = System.Drawing.Color.White;
+            this.DrawDown.BackColor = Settings.BackgroundColour;
             this.DrawDown.Location = new System.Drawing.Point(33, 430);
             this.DrawDown.Margin = new System.Windows.Forms.Padding(6);
             this.DrawDown.Name = "DrawDown";
@@ -79,7 +79,7 @@ namespace Optimator
             // 
             // DrawBase
             // 
-            this.DrawBase.BackColor = System.Drawing.Color.White;
+            this.DrawBase.BackColor = Settings.BackgroundColour;
             this.DrawBase.Location = new System.Drawing.Point(33, 100);
             this.DrawBase.Margin = new System.Windows.Forms.Padding(6);
             this.DrawBase.Name = "DrawBase";

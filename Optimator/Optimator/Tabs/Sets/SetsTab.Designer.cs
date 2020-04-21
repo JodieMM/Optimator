@@ -163,7 +163,7 @@
             // 
             // DrawRight
             // 
-            this.DrawRight.BackColor = System.Drawing.Color.White;
+            this.DrawRight.BackColor = Settings.BackgroundColour;
             this.DrawRight.Location = new System.Drawing.Point(407, 156);
             this.DrawRight.Margin = new System.Windows.Forms.Padding(6);
             this.DrawRight.Name = "DrawRight";
@@ -176,7 +176,7 @@
             // 
             // DrawDown
             // 
-            this.DrawDown.BackColor = System.Drawing.Color.White;
+            this.DrawDown.BackColor = Settings.BackgroundColour;
             this.DrawDown.Location = new System.Drawing.Point(77, 486);
             this.DrawDown.Margin = new System.Windows.Forms.Padding(6);
             this.DrawDown.Name = "DrawDown";
@@ -189,7 +189,7 @@
             // 
             // DrawBase
             // 
-            this.DrawBase.BackColor = System.Drawing.Color.White;
+            this.DrawBase.BackColor = Settings.BackgroundColour;
             this.DrawBase.Location = new System.Drawing.Point(77, 156);
             this.DrawBase.Margin = new System.Windows.Forms.Padding(6);
             this.DrawBase.Name = "DrawBase";

@@ -170,7 +170,7 @@ namespace Optimator
             CalculateMatches(minMax, 0);
             foreach (var spot in Data)
             {
-                spot.CurrentY = spot.CalculateCurrentValue(state.GetAngles()[1], 0);    //HIDDEN
+                spot.CurrentY = spot.CalculateCurrentValue(state.GetAngles()[1], 0);    //HIDDEN CurrentY
                 points.Add(new double[] { spot.CurrentX, spot.CalculateCurrentValue(state.GetAngles()[1], 0) });
             }
 

@@ -234,7 +234,7 @@ namespace Optimator.Tabs.Compile
             // 
             // DrawPanel
             // 
-            this.DrawPanel.BackColor = System.Drawing.Color.White;
+            this.DrawPanel.BackColor = Settings.BackgroundColour;
             this.DrawPanel.Location = new System.Drawing.Point(116, 129);
             this.DrawPanel.Margin = new System.Windows.Forms.Padding(4);
             this.DrawPanel.Name = "DrawPanel";
