@@ -34,8 +34,7 @@ namespace Optimator.Tabs.Scenes
         {
             InitializeComponent();
             Owner = owner;
-
-            //HIDDEN KeyPreview = true;
+            
             KeyUp += KeyPress;            
 
             g = DrawPanel.CreateGraphics();            

@@ -40,8 +40,7 @@ namespace Optimator
         {
             InitializeComponent();
             Owner = owner;           
-
-            //HIDDEN: KeyPreview = true;
+            
             KeyUp += KeyPress;
             Enter += FocusOn;
             VisibleChanged += FocusOn;

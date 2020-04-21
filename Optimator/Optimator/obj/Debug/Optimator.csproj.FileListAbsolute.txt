@@ -60,3 +60,4 @@ C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\bin
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.Properties.Resources.resources
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.exe
 C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.pdb
+C:\Users\jodie\Documents\0 Documents\Git Repos\Optimator\Optimator\Optimator\obj\Debug\Optimator.Forms.HelpTab.resources

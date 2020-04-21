@@ -258,6 +258,7 @@ namespace Optimator.Tabs.Compile
             this.DisplayPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 75F));
             this.DisplayPanel.Size = new System.Drawing.Size(1784, 350);
             this.DisplayPanel.TabIndex = 42;
+            this.DisplayPanel.Visible = false;
             // 
             // DPDisplayTableLayoutPnl
             // 

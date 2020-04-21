@@ -232,6 +232,12 @@
     <Compile Include="Tabs\SoloTabs\PreviewTab.Designer.cs">
       <DependentUpon>PreviewTab.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tabs\SoloTabs\HelpTab.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Tabs\SoloTabs\HelpTab.Designer.cs">
+      <DependentUpon>HelpTab.cs</DependentUpon>
+    </Compile>
     <Compile Include="Tabs\SoloTabs\SettingsTab.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -351,6 +357,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Tabs\SoloTabs\PreviewTab.resx">
       <DependentUpon>PreviewTab.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\SoloTabs\HelpTab.resx">
+      <DependentUpon>HelpTab.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Tabs\SoloTabs\SettingsTab.resx">
       <DependentUpon>SettingsTab.cs</DependentUpon>

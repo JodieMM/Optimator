@@ -147,10 +147,6 @@ namespace Optimator
 
 
 
-        // --- DIRECTORY ---
-
-
-
         // --- SETTINGS ---
 
         /// <summary>
@@ -160,33 +156,24 @@ namespace Optimator
         /// <param name="e"></param>
         private void SettingsTSMI_Click(object sender, EventArgs e)
         {
-            bool found = false;
-            int index = 0;
-            while (!found && index < TabControl.TabPages.Count)
-            {
-                foreach (Control cntl in TabControl.TabPages[index].Controls)
-                {
-                    if (cntl is SettingsTab)
-                    {
-                        TabControl.SelectedIndex = index;
-                        found = true;
-                    }
-                }
-                index++;
-            }
-            if (!found)
-            {
-                SettingsTab tab = new SettingsTab(this);
-                AddTabPage("Settings", tab);
-                tab.Resize();
-            }
+            SettingsTab tab = new SettingsTab(this);
+            AddTabPageIfNew("Settings", tab);
+            tab.DisplaySettings();
         }
-               
-        
+
+
 
         // --- HELP ---
 
-
+        /// <summary>
+        /// Adds a new HelpTab or opens an existing one.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void HelpTSMI_Click(object sender, EventArgs e)
+        {
+            AddTabPageIfNew("Help", new HelpTab(this));
+        }
 
         #endregion
 
@@ -209,6 +196,35 @@ namespace Optimator
                 TabControl.Controls.Add(page);
                 TabControl.SelectedIndex = TabControl.Controls.Count - 1;
                 TabControl.SelectedTab.Focus();
+            }
+        }
+
+        /// <summary>
+        /// Adds a user control to the TabControl as a TabPage or opens 
+        /// an existing instance of that tab type.
+        /// </summary>
+        /// <param name="name">Tab label</param>
+        /// <param name="tab">The tab to add</param>
+        public void AddTabPageIfNew(string name, TabPageControl tab)
+        {
+            bool found = false;
+            int index = 0;
+            while (!found && index < TabControl.TabPages.Count)
+            {
+                foreach (Control cntl in TabControl.TabPages[index].Controls)
+                {
+                    if (tab.GetType() == cntl.GetType())
+                    {
+                        TabControl.SelectedIndex = index;
+                        found = true;
+                    }
+                }
+                index++;
+            }
+            if (!found)
+            {
+                AddTabPage(name, tab);
+                tab.Resize();
             }
         }
 

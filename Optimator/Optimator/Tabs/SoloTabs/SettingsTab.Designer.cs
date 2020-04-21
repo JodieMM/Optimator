@@ -86,6 +86,7 @@
             this.NewWorkingDirectoryBtn.TabIndex = 132;
             this.NewWorkingDirectoryBtn.Text = "Find New";
             this.NewWorkingDirectoryBtn.UseVisualStyleBackColor = false;
+            this.NewWorkingDirectoryBtn.Click += new System.EventHandler(this.NewWorkingDirectoryBtn_Click);
             // 
             // WorkingDirValueLbl
             // 
@@ -139,6 +140,7 @@
             this.ResetBtn.TabIndex = 128;
             this.ResetBtn.Text = "Reset to Defaults";
             this.ResetBtn.UseVisualStyleBackColor = false;
+            this.ResetBtn.Click += new System.EventHandler(this.ResetBtn_Click);
             // 
             // BackColourBox
             // 
@@ -151,6 +153,7 @@
             this.BackColourBox.Size = new System.Drawing.Size(523, 123);
             this.BackColourBox.TabIndex = 127;
             this.BackColourBox.TabStop = false;
+            this.BackColourBox.Click += new System.EventHandler(this.BackColourBox_Click);
             // 
             // BackColourLbl
             // 
@@ -213,6 +216,7 @@
             this.SaveBtn.TabIndex = 125;
             this.SaveBtn.Text = "Save Changes";
             this.SaveBtn.UseVisualStyleBackColor = false;
+            this.SaveBtn.Click += new System.EventHandler(this.SaveBtn_Click);
             // 
             // SettingsTab
             // 

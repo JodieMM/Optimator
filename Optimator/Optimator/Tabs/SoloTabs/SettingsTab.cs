@@ -53,7 +53,7 @@ namespace Optimator.Forms
         /// <summary>
         /// Displays the current settings to the screen.
         /// </summary>
-        private void DisplaySettings()
+        public void DisplaySettings()
         {
             BackColourBox.BackColor = Settings.BackgroundColour;
             WorkingDirValueLbl.Text = "Current Directory: " + Settings.WorkingDirectory;
@@ -91,6 +91,7 @@ namespace Optimator.Forms
         /// <param name="e"></param>
         private new void CloseBtn_Click(object sender, EventArgs e)
         {
+            // TODO: SHow warning message about losing unsaved changes
             Settings.InitialSettings();
             Owner.RemoveTabPage(this);
         }
