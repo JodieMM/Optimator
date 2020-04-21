@@ -42,7 +42,7 @@
             // XCoordLbl
             // 
             this.XCoordLbl.AutoSize = true;
-            this.XCoordLbl.Font = new System.Drawing.Font("Tahoma", 13.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.XCoordLbl.Font = Consts.contentFont;
             this.XCoordLbl.Location = new System.Drawing.Point(3, 0);
             this.XCoordLbl.Name = "XCoordLbl";
             this.XCoordLbl.Size = new System.Drawing.Size(41, 45);
@@ -52,7 +52,7 @@
             // YCoordLbl
             // 
             this.YCoordLbl.AutoSize = true;
-            this.YCoordLbl.Font = new System.Drawing.Font("Tahoma", 13.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.YCoordLbl.Font = Consts.contentFont;
             this.YCoordLbl.Location = new System.Drawing.Point(3, 118);
             this.YCoordLbl.Name = "YCoordLbl";
             this.YCoordLbl.Size = new System.Drawing.Size(41, 45);
@@ -62,7 +62,7 @@
             // MovePointLbl
             // 
             this.MovePointLbl.AutoSize = true;
-            this.MovePointLbl.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MovePointLbl.Font = Consts.headingLblFont;
             this.MovePointLbl.Location = new System.Drawing.Point(47, 53);
             this.MovePointLbl.Name = "MovePointLbl";
             this.MovePointLbl.Size = new System.Drawing.Size(296, 58);
@@ -73,7 +73,7 @@
             // 
             this.XUpDown.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.XUpDown.Font = new System.Drawing.Font("Tahoma", 13.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.XUpDown.Font = Consts.contentFont;
             this.XUpDown.Location = new System.Drawing.Point(94, 3);
             this.XUpDown.Maximum = new decimal(new int[] {
             1000,
@@ -94,7 +94,7 @@
             // 
             this.YUpDown.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.YUpDown.Font = new System.Drawing.Font("Tahoma", 13.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.YUpDown.Font = Consts.contentFont;
             this.YUpDown.Location = new System.Drawing.Point(94, 121);
             this.YUpDown.Maximum = new decimal(new int[] {
             1000,

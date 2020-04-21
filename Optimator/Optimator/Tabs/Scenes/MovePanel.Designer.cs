@@ -46,7 +46,7 @@
             // MoveLbl
             // 
             this.MoveLbl.AutoSize = true;
-            this.MoveLbl.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MoveLbl.Font = Consts.headingLblFont;
             this.MoveLbl.Location = new System.Drawing.Point(17, 23);
             this.MoveLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.MoveLbl.Name = "MoveLbl";
@@ -67,7 +67,7 @@
             this.TableLayoutPnl.Controls.Add(this.SecondsLbl, 0, 3);
             this.TableLayoutPnl.Controls.Add(this.AmountLbl, 0, 2);
             this.TableLayoutPnl.Controls.Add(this.AnimationAmountTb, 1, 2);
-            this.TableLayoutPnl.Font = new System.Drawing.Font("Tahoma", 13.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TableLayoutPnl.Font = Consts.contentFont;
             this.TableLayoutPnl.Location = new System.Drawing.Point(22, 66);
             this.TableLayoutPnl.Margin = new System.Windows.Forms.Padding(2);
             this.TableLayoutPnl.Name = "TableLayoutPnl";
@@ -85,7 +85,7 @@
             // 
             this.TableLayoutPnl.SetColumnSpan(this.AnimationLb, 2);
             this.AnimationLb.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.AnimationLb.Font = new System.Drawing.Font("Tahoma", 14F);
+            this.AnimationLb.Font = Consts.contentFont;
             this.AnimationLb.FormattingEnabled = true;
             this.AnimationLb.ItemHeight = 23;
             this.AnimationLb.Location = new System.Drawing.Point(2, 2);
@@ -100,7 +100,7 @@
             this.TableLayoutPnl.SetColumnSpan(this.PreviewBtn, 2);
             this.PreviewBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PreviewBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PreviewBtn.Font = new System.Drawing.Font("Tahoma", 14F);
+            this.PreviewBtn.Font = Consts.contentFont;
             this.PreviewBtn.Location = new System.Drawing.Point(1, 311);
             this.PreviewBtn.Margin = new System.Windows.Forms.Padding(1);
             this.PreviewBtn.Name = "PreviewBtn";
@@ -115,7 +115,7 @@
             this.TableLayoutPnl.SetColumnSpan(this.ChangeTypeCb, 2);
             this.ChangeTypeCb.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ChangeTypeCb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.ChangeTypeCb.Font = new System.Drawing.Font("Tahoma", 14F);
+            this.ChangeTypeCb.Font = Consts.contentFont;
             this.ChangeTypeCb.FormattingEnabled = true;
             this.ChangeTypeCb.Items.AddRange(new object[] {
             "X",
@@ -138,7 +138,7 @@
             this.TableLayoutPnl.SetColumnSpan(this.AddAnimationBtn, 2);
             this.AddAnimationBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.AddAnimationBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.AddAnimationBtn.Font = new System.Drawing.Font("Tahoma", 14F);
+            this.AddAnimationBtn.Font = Consts.contentFont;
             this.AddAnimationBtn.Location = new System.Drawing.Point(1, 277);
             this.AddAnimationBtn.Margin = new System.Windows.Forms.Padding(1);
             this.AddAnimationBtn.Name = "AddAnimationBtn";
@@ -153,7 +153,7 @@
             this.SecondsUpDown.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.SecondsUpDown.DecimalPlaces = 3;
-            this.SecondsUpDown.Font = new System.Drawing.Font("Tahoma", 14F);
+            this.SecondsUpDown.Font = Consts.contentFont;
             this.SecondsUpDown.Increment = new decimal(new int[] {
             5,
             0,
@@ -173,7 +173,7 @@
             // SecondsLbl
             // 
             this.SecondsLbl.AutoSize = true;
-            this.SecondsLbl.Font = new System.Drawing.Font("Tahoma", 14F);
+            this.SecondsLbl.Font = Consts.contentFont;
             this.SecondsLbl.Location = new System.Drawing.Point(1, 242);
             this.SecondsLbl.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.SecondsLbl.Name = "SecondsLbl";
@@ -184,7 +184,7 @@
             // AmountLbl
             // 
             this.AmountLbl.AutoSize = true;
-            this.AmountLbl.Font = new System.Drawing.Font("Tahoma", 14F);
+            this.AmountLbl.Font = Consts.contentFont;
             this.AmountLbl.Location = new System.Drawing.Point(1, 208);
             this.AmountLbl.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.AmountLbl.Name = "AmountLbl";
@@ -196,7 +196,7 @@
             // 
             this.AnimationAmountTb.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.AnimationAmountTb.Font = new System.Drawing.Font("Tahoma", 14F);
+            this.AnimationAmountTb.Font = Consts.contentFont;
             this.AnimationAmountTb.Location = new System.Drawing.Point(164, 209);
             this.AnimationAmountTb.Margin = new System.Windows.Forms.Padding(1);
             this.AnimationAmountTb.Name = "AnimationAmountTb";

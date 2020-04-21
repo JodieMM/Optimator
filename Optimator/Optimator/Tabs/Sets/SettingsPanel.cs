@@ -36,8 +36,8 @@ namespace Optimator.Tabs.Sets
 
             int smallWidth = (int)(Width * widthPercent);
 
-            SettingsLb.Location = new Point(smallWidth, smallWidth);
-            SelectFromTopCb.Location = new Point(smallWidth, smallWidth * 2 + SettingsLb.Height);
+            SettingsLbl.Location = new Point(smallWidth, smallWidth);
+            SelectFromTopCb.Location = new Point(smallWidth, smallWidth * 2 + SettingsLbl.Height);
         }
 
         /// <summary>

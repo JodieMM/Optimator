@@ -42,7 +42,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.AddTb.BackColor = System.Drawing.Color.White;
             this.TableLayoutPnl.SetColumnSpan(this.AddTb, 2);
-            this.AddTb.Font = new System.Drawing.Font("Tahoma", 13.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AddTb.Font = Consts.contentFont;
             this.AddTb.Location = new System.Drawing.Point(12, 12);
             this.AddTb.Margin = new System.Windows.Forms.Padding(12);
             this.AddTb.Name = "AddTb";
@@ -55,7 +55,7 @@
             this.AddPieceBtn.BackColor = System.Drawing.Color.Khaki;
             this.AddPieceBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.AddPieceBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.AddPieceBtn.Font = new System.Drawing.Font("Tahoma", 13.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AddPieceBtn.Font = Consts.contentFont;
             this.AddPieceBtn.Location = new System.Drawing.Point(2, 101);
             this.AddPieceBtn.Margin = new System.Windows.Forms.Padding(2);
             this.AddPieceBtn.Name = "AddPieceBtn";
@@ -70,7 +70,7 @@
             this.AddSetBtn.BackColor = System.Drawing.Color.Khaki;
             this.AddSetBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.AddSetBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.AddSetBtn.Font = new System.Drawing.Font("Tahoma", 13.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AddSetBtn.Font = Consts.contentFont;
             this.AddSetBtn.Location = new System.Drawing.Point(220, 101);
             this.AddSetBtn.Margin = new System.Windows.Forms.Padding(2);
             this.AddSetBtn.Name = "AddSetBtn";
@@ -83,7 +83,7 @@
             // AddPartLbl
             // 
             this.AddPartLbl.AutoSize = true;
-            this.AddPartLbl.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AddPartLbl.Font = Consts.headingLblFont;
             this.AddPartLbl.Location = new System.Drawing.Point(34, 46);
             this.AddPartLbl.Name = "AddPartLbl";
             this.AddPartLbl.Size = new System.Drawing.Size(234, 58);

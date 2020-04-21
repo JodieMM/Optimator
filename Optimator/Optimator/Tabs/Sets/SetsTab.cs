@@ -516,6 +516,11 @@ namespace Optimator.Tabs.Sets
         /// </summary>
         public void DisplayDrawings()
         {
+            if (WIP.BasePiece == null)
+            {
+                return;
+            }
+
             // Prepare Boards
             DrawBase.Refresh();
             DrawRight.Refresh();

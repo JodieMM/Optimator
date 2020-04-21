@@ -54,7 +54,7 @@
             this.LoadSetBtn.BackColor = System.Drawing.Color.LightPink;
             this.LoadSetBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.LoadSetBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.LoadSetBtn.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoadSetBtn.Font = Consts.contentFont;
             this.LoadSetBtn.Location = new System.Drawing.Point(145, 56);
             this.LoadSetBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.LoadSetBtn.Name = "LoadSetBtn";
@@ -69,7 +69,7 @@
             this.AllBtn.BackColor = System.Drawing.Color.LightPink;
             this.AllBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.AllBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.AllBtn.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AllBtn.Font = Consts.contentFont;
             this.AllBtn.Location = new System.Drawing.Point(145, 218);
             this.AllBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.AllBtn.Name = "AllBtn";
@@ -84,7 +84,7 @@
             this.OutlineWidthBtn.BackColor = System.Drawing.Color.LightPink;
             this.OutlineWidthBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.OutlineWidthBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.OutlineWidthBtn.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.OutlineWidthBtn.Font = Consts.contentFont;
             this.OutlineWidthBtn.Location = new System.Drawing.Point(2, 164);
             this.OutlineWidthBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.OutlineWidthBtn.Name = "OutlineWidthBtn";
@@ -99,7 +99,7 @@
             this.PieceDetailsBtn.BackColor = System.Drawing.Color.LightPink;
             this.PieceDetailsBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PieceDetailsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PieceDetailsBtn.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PieceDetailsBtn.Font = Consts.contentFont;
             this.PieceDetailsBtn.Location = new System.Drawing.Point(145, 164);
             this.PieceDetailsBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.PieceDetailsBtn.Name = "PieceDetailsBtn";
@@ -114,7 +114,7 @@
             this.ShapeBtn.BackColor = System.Drawing.Color.LightPink;
             this.ShapeBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ShapeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ShapeBtn.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ShapeBtn.Font = Consts.contentFont;
             this.ShapeBtn.Location = new System.Drawing.Point(2, 218);
             this.ShapeBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.ShapeBtn.Name = "ShapeBtn";
@@ -129,7 +129,7 @@
             this.ExitBtn.BackColor = System.Drawing.Color.LightPink;
             this.ExitBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ExitBtn.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ExitBtn.Font = Consts.contentFont;
             this.ExitBtn.Location = new System.Drawing.Point(145, 272);
             this.ExitBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.ExitBtn.Name = "ExitBtn";
@@ -144,7 +144,7 @@
             this.OutlineColourBtn.BackColor = System.Drawing.Color.LightPink;
             this.OutlineColourBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.OutlineColourBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.OutlineColourBtn.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.OutlineColourBtn.Font = Consts.contentFont;
             this.OutlineColourBtn.Location = new System.Drawing.Point(145, 110);
             this.OutlineColourBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.OutlineColourBtn.Name = "OutlineColourBtn";
@@ -159,7 +159,7 @@
             this.LoadPieceBtn.BackColor = System.Drawing.Color.LightPink;
             this.LoadPieceBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.LoadPieceBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.LoadPieceBtn.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoadPieceBtn.Font = Consts.contentFont;
             this.LoadPieceBtn.Location = new System.Drawing.Point(2, 56);
             this.LoadPieceBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.LoadPieceBtn.Name = "LoadPieceBtn";
@@ -174,7 +174,7 @@
             this.NameTb.BackColor = System.Drawing.Color.White;
             this.TableLayoutPnl.SetColumnSpan(this.NameTb, 2);
             this.NameTb.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.NameTb.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.NameTb.Font = Consts.contentFont;
             this.NameTb.Location = new System.Drawing.Point(3, 3);
             this.NameTb.Name = "NameTb";
             this.NameTb.Size = new System.Drawing.Size(280, 33);
@@ -186,7 +186,7 @@
             this.FillColourBtn.BackColor = System.Drawing.Color.LightPink;
             this.FillColourBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.FillColourBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.FillColourBtn.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FillColourBtn.Font = Consts.contentFont;
             this.FillColourBtn.Location = new System.Drawing.Point(2, 110);
             this.FillColourBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.FillColourBtn.Name = "FillColourBtn";
@@ -237,7 +237,7 @@
             this.SketchBtn.BackColor = System.Drawing.Color.LightPink;
             this.SketchBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SketchBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.SketchBtn.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SketchBtn.Font = Consts.contentFont;
             this.SketchBtn.Location = new System.Drawing.Point(2, 272);
             this.SketchBtn.Margin = new System.Windows.Forms.Padding(2);
             this.SketchBtn.Name = "SketchBtn";

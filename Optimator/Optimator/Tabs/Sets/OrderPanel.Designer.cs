@@ -38,7 +38,7 @@
             // OrderLbl
             // 
             this.OrderLbl.AutoSize = true;
-            this.OrderLbl.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.OrderLbl.Font = Consts.headingLblFont;
             this.OrderLbl.Location = new System.Drawing.Point(34, 44);
             this.OrderLbl.Name = "OrderLbl";
             this.OrderLbl.Size = new System.Drawing.Size(163, 58);
@@ -64,7 +64,7 @@
             this.UpBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.UpBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.UpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.UpBtn.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpBtn.Font = Consts.contentFont;
             this.UpBtn.Location = new System.Drawing.Point(2, 2);
             this.UpBtn.Margin = new System.Windows.Forms.Padding(2);
             this.UpBtn.Name = "UpBtn";
@@ -79,7 +79,7 @@
             this.DownBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.DownBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.DownBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DownBtn.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DownBtn.Font = Consts.contentFont;
             this.DownBtn.Location = new System.Drawing.Point(2, 139);
             this.DownBtn.Margin = new System.Windows.Forms.Padding(2);
             this.DownBtn.Name = "DownBtn";

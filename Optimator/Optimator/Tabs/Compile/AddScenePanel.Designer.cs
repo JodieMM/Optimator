@@ -41,21 +41,21 @@
             this.AddTb.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.AddTb.BackColor = System.Drawing.Color.White;
-            this.AddTb.Font = new System.Drawing.Font("Tahoma", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AddTb.Font = Consts.contentFont;
             this.AddTb.Location = new System.Drawing.Point(12, 12);
             this.AddTb.Margin = new System.Windows.Forms.Padding(12);
             this.AddTb.Name = "AddTb";
-            this.AddTb.Size = new System.Drawing.Size(483, 52);
+            this.AddTb.Size = new System.Drawing.Size(483, 65);
             this.AddTb.TabIndex = 6;
             this.AddTb.Text = "Scene Name";
             // 
             // AddSceneLbl
             // 
             this.AddSceneLbl.AutoSize = true;
-            this.AddSceneLbl.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AddSceneLbl.Font = Consts.headingLblFont;
             this.AddSceneLbl.Location = new System.Drawing.Point(34, 46);
             this.AddSceneLbl.Name = "AddSceneLbl";
-            this.AddSceneLbl.Size = new System.Drawing.Size(276, 58);
+            this.AddSceneLbl.Size = new System.Drawing.Size(293, 71);
             this.AddSceneLbl.TabIndex = 84;
             this.AddSceneLbl.Text = "Add Scene";
             // 
@@ -80,7 +80,7 @@
             this.PlayBtn.BackColor = System.Drawing.Color.Salmon;
             this.PlayBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PlayBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PlayBtn.Font = new System.Drawing.Font("Tahoma", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PlayBtn.Font = Consts.contentFont;
             this.PlayBtn.Location = new System.Drawing.Point(2, 190);
             this.PlayBtn.Margin = new System.Windows.Forms.Padding(2);
             this.PlayBtn.Name = "PlayBtn";
@@ -95,7 +95,7 @@
             this.SubmitScene.BackColor = System.Drawing.Color.Salmon;
             this.SubmitScene.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SubmitScene.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.SubmitScene.Font = new System.Drawing.Font("Tahoma", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SubmitScene.Font = Consts.contentFont;
             this.SubmitScene.Location = new System.Drawing.Point(2, 96);
             this.SubmitScene.Margin = new System.Windows.Forms.Padding(2);
             this.SubmitScene.Name = "SubmitScene";

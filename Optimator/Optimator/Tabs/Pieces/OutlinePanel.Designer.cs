@@ -41,7 +41,7 @@
             // OutlineWLbl
             // 
             this.OutlineWLbl.AutoSize = true;
-            this.OutlineWLbl.Font = new System.Drawing.Font("Tahoma", 13.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.OutlineWLbl.Font = Consts.contentFont;
             this.OutlineWLbl.Location = new System.Drawing.Point(2, 0);
             this.OutlineWLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.OutlineWLbl.Name = "OutlineWLbl";
@@ -53,7 +53,7 @@
             // 
             this.OutlineWidthBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.OutlineWidthBox.Font = new System.Drawing.Font("Tahoma", 13.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.OutlineWidthBox.Font = Consts.contentFont;
             this.OutlineWidthBox.Location = new System.Drawing.Point(197, 3);
             this.OutlineWidthBox.Name = "OutlineWidthBox";
             this.OutlineWidthBox.Size = new System.Drawing.Size(188, 52);
@@ -68,7 +68,7 @@
             // ConnectorsLbl
             // 
             this.ConnectorsLbl.AutoSize = true;
-            this.ConnectorsLbl.Font = new System.Drawing.Font("Tahoma", 13.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ConnectorsLbl.Font = Consts.contentFont;
             this.ConnectorsLbl.Location = new System.Drawing.Point(2, 112);
             this.ConnectorsLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.ConnectorsLbl.Name = "ConnectorsLbl";
@@ -81,7 +81,7 @@
             this.ConnectorOptions.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.ConnectorOptions.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.ConnectorOptions.Font = new System.Drawing.Font("Tahoma", 13.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ConnectorOptions.Font = Consts.contentFont;
             this.ConnectorOptions.FormattingEnabled = true;
             this.ConnectorOptions.Items.AddRange(new object[] {
             "Line",
@@ -112,7 +112,7 @@
             // OutlineLbl
             // 
             this.OutlineLbl.AutoSize = true;
-            this.OutlineLbl.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.OutlineLbl.Font = Consts.headingLblFont;
             this.OutlineLbl.Location = new System.Drawing.Point(82, 69);
             this.OutlineLbl.Name = "OutlineLbl";
             this.OutlineLbl.Size = new System.Drawing.Size(201, 58);

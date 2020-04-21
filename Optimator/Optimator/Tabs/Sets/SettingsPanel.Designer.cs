@@ -28,26 +28,26 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.SettingsLb = new System.Windows.Forms.Label();
+            this.SettingsLbl = new System.Windows.Forms.Label();
             this.SelectFromTopCb = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
-            // SettingsLb
+            // SettingsLbl
             // 
-            this.SettingsLb.AutoSize = true;
-            this.SettingsLb.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SettingsLb.Location = new System.Drawing.Point(34, 44);
-            this.SettingsLb.Name = "SettingsLb";
-            this.SettingsLb.Size = new System.Drawing.Size(224, 58);
-            this.SettingsLb.TabIndex = 0;
-            this.SettingsLb.Text = "Settings";
+            this.SettingsLbl.AutoSize = true;
+            this.SettingsLbl.Font = Consts.headingLblFont;
+            this.SettingsLbl.Location = new System.Drawing.Point(34, 44);
+            this.SettingsLbl.Name = "SettingsLb";
+            this.SettingsLbl.Size = new System.Drawing.Size(224, 58);
+            this.SettingsLbl.TabIndex = 0;
+            this.SettingsLbl.Text = "Settings";
             // 
             // SelectFromTopCb
             // 
             this.SelectFromTopCb.AutoSize = true;
             this.SelectFromTopCb.Checked = true;
             this.SelectFromTopCb.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.SelectFromTopCb.Font = new System.Drawing.Font("Tahoma", 13.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SelectFromTopCb.Font = Consts.contentFont;
             this.SelectFromTopCb.Location = new System.Drawing.Point(44, 170);
             this.SelectFromTopCb.Name = "SelectFromTopCb";
             this.SelectFromTopCb.Size = new System.Drawing.Size(405, 49);
@@ -61,7 +61,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.SelectFromTopCb);
-            this.Controls.Add(this.SettingsLb);
+            this.Controls.Add(this.SettingsLbl);
             this.Name = "SettingsPanel";
             this.Size = new System.Drawing.Size(908, 992);
             this.ResumeLayout(false);
@@ -71,7 +71,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Label SettingsLb;
+        private System.Windows.Forms.Label SettingsLbl;
         private System.Windows.Forms.CheckBox SelectFromTopCb;
     }
 }

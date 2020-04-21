@@ -68,33 +68,33 @@
             // OutlineLbl
             // 
             this.OutlineLbl.AutoSize = true;
-            this.OutlineLbl.Font = new System.Drawing.Font("Tahoma", 13.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.OutlineLbl.Font = Consts.contentFont;
             this.OutlineLbl.Location = new System.Drawing.Point(2, 175);
             this.OutlineLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.OutlineLbl.Name = "OutlineLbl";
-            this.OutlineLbl.Size = new System.Drawing.Size(135, 45);
+            this.OutlineLbl.Size = new System.Drawing.Size(162, 59);
             this.OutlineLbl.TabIndex = 117;
             this.OutlineLbl.Text = "Outline";
             // 
             // FillLbl
             // 
             this.FillLbl.AutoSize = true;
-            this.FillLbl.Font = new System.Drawing.Font("Tahoma", 13.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FillLbl.Font = Consts.contentFont;
             this.FillLbl.Location = new System.Drawing.Point(2, 0);
             this.FillLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.FillLbl.Name = "FillLbl";
-            this.FillLbl.Size = new System.Drawing.Size(63, 45);
+            this.FillLbl.Size = new System.Drawing.Size(76, 59);
             this.FillLbl.TabIndex = 116;
             this.FillLbl.Text = "Fill";
             // 
             // ColoursLbl
             // 
             this.ColoursLbl.AutoSize = true;
-            this.ColoursLbl.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ColoursLbl.Font = Consts.headingLblFont;
             this.ColoursLbl.Location = new System.Drawing.Point(32, 51);
             this.ColoursLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.ColoursLbl.Name = "ColoursLbl";
-            this.ColoursLbl.Size = new System.Drawing.Size(208, 58);
+            this.ColoursLbl.Size = new System.Drawing.Size(218, 71);
             this.ColoursLbl.TabIndex = 115;
             this.ColoursLbl.Text = "Colours";
             // 

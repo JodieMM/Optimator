@@ -31,8 +31,8 @@
             this.SettingsLbl = new System.Windows.Forms.Label();
             this.PreviewCb = new System.Windows.Forms.CheckBox();
             this.TableLayoutPnl = new System.Windows.Forms.TableLayoutPanel();
-            this.FpsLbl = new System.Windows.Forms.Label();
             this.FpsUpDown = new System.Windows.Forms.NumericUpDown();
+            this.FpsLbl = new System.Windows.Forms.Label();
             this.TableLayoutPnl.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FpsUpDown)).BeginInit();
             this.SuspendLayout();
@@ -40,10 +40,10 @@
             // SettingsLbl
             // 
             this.SettingsLbl.AutoSize = true;
-            this.SettingsLbl.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SettingsLbl.Font = Consts.headingLblFont;
             this.SettingsLbl.Location = new System.Drawing.Point(34, 44);
             this.SettingsLbl.Name = "SettingsLbl";
-            this.SettingsLbl.Size = new System.Drawing.Size(224, 58);
+            this.SettingsLbl.Size = new System.Drawing.Size(234, 71);
             this.SettingsLbl.TabIndex = 0;
             this.SettingsLbl.Text = "Settings";
             // 
@@ -53,10 +53,10 @@
             this.PreviewCb.Checked = true;
             this.PreviewCb.CheckState = System.Windows.Forms.CheckState.Checked;
             this.TableLayoutPnl.SetColumnSpan(this.PreviewCb, 2);
-            this.PreviewCb.Font = new System.Drawing.Font("Tahoma", 14F);
+            this.PreviewCb.Font = Consts.contentFont;
             this.PreviewCb.Location = new System.Drawing.Point(3, 116);
             this.PreviewCb.Name = "PreviewCb";
-            this.PreviewCb.Size = new System.Drawing.Size(286, 50);
+            this.PreviewCb.Size = new System.Drawing.Size(317, 63);
             this.PreviewCb.TabIndex = 120;
             this.PreviewCb.Text = "Show Preview";
             this.PreviewCb.UseVisualStyleBackColor = true;
@@ -78,21 +78,10 @@
             this.TableLayoutPnl.Size = new System.Drawing.Size(818, 226);
             this.TableLayoutPnl.TabIndex = 124;
             // 
-            // FpsLbl
-            // 
-            this.FpsLbl.AutoSize = true;
-            this.FpsLbl.Font = new System.Drawing.Font("Tahoma", 14F);
-            this.FpsLbl.Location = new System.Drawing.Point(2, 0);
-            this.FpsLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.FpsLbl.Name = "FpsLbl";
-            this.FpsLbl.Size = new System.Drawing.Size(344, 46);
-            this.FpsLbl.TabIndex = 126;
-            this.FpsLbl.Text = "Frames Per Second";
-            // 
             // FpsUpDown
             // 
             this.FpsUpDown.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.FpsUpDown.Font = new System.Drawing.Font("Tahoma", 14F);
+            this.FpsUpDown.Font = Consts.contentFont;
             this.FpsUpDown.Location = new System.Drawing.Point(492, 2);
             this.FpsUpDown.Margin = new System.Windows.Forms.Padding(2);
             this.FpsUpDown.Maximum = new decimal(new int[] {
@@ -106,7 +95,7 @@
             0,
             0});
             this.FpsUpDown.Name = "FpsUpDown";
-            this.FpsUpDown.Size = new System.Drawing.Size(324, 53);
+            this.FpsUpDown.Size = new System.Drawing.Size(324, 65);
             this.FpsUpDown.TabIndex = 125;
             this.FpsUpDown.Value = new decimal(new int[] {
             60,
@@ -114,6 +103,17 @@
             0,
             0});
             this.FpsUpDown.ValueChanged += new System.EventHandler(this.FpsUpDown_ValueChanged);
+            // 
+            // FpsLbl
+            // 
+            this.FpsLbl.AutoSize = true;
+            this.FpsLbl.Font = Consts.contentFont;
+            this.FpsLbl.Location = new System.Drawing.Point(2, 0);
+            this.FpsLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.FpsLbl.Name = "FpsLbl";
+            this.FpsLbl.Size = new System.Drawing.Size(382, 59);
+            this.FpsLbl.TabIndex = 126;
+            this.FpsLbl.Text = "Frames Per Second";
             // 
             // SettingsPanel
             // 

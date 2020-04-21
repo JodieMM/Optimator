@@ -158,7 +158,7 @@ namespace Optimator.Tabs.Scenes
             // VidLengthLbl
             // 
             this.VidLengthLbl.AutoSize = true;
-            this.VidLengthLbl.Font = new System.Drawing.Font("Tahoma", 14F);
+            this.VidLengthLbl.Font = Consts.contentFont;
             this.VidLengthLbl.Location = new System.Drawing.Point(712, 0);
             this.VidLengthLbl.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.VidLengthLbl.Name = "VidLengthLbl";
@@ -170,7 +170,7 @@ namespace Optimator.Tabs.Scenes
             // 
             this.UpArrowImg.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.UpArrowImg.AutoSize = true;
-            this.UpArrowImg.Font = new System.Drawing.Font("Tahoma", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpArrowImg.Font = Consts.headingLblFont;
             this.UpArrowImg.Location = new System.Drawing.Point(631, 93);
             this.UpArrowImg.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.UpArrowImg.Name = "UpArrowImg";
@@ -214,7 +214,7 @@ namespace Optimator.Tabs.Scenes
             // CurrentTimeLbl
             // 
             this.CurrentTimeLbl.AutoSize = true;
-            this.CurrentTimeLbl.Font = new System.Drawing.Font("Tahoma", 14F);
+            this.CurrentTimeLbl.Font = Consts.contentFont;
             this.CurrentTimeLbl.Location = new System.Drawing.Point(4, 0);
             this.CurrentTimeLbl.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.CurrentTimeLbl.Name = "CurrentTimeLbl";
@@ -227,7 +227,7 @@ namespace Optimator.Tabs.Scenes
             this.CurrentTimeUpDown.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.CurrentTimeUpDown.DecimalPlaces = 3;
-            this.CurrentTimeUpDown.Font = new System.Drawing.Font("Tahoma", 14F);
+            this.CurrentTimeUpDown.Font = Consts.contentFont;
             this.CurrentTimeUpDown.Increment = new decimal(new int[] {
             5,
             0,
@@ -245,7 +245,7 @@ namespace Optimator.Tabs.Scenes
             this.ForwardBtn.BackColor = System.Drawing.Color.Khaki;
             this.ForwardBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ForwardBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ForwardBtn.Font = new System.Drawing.Font("Tahoma", 14F);
+            this.ForwardBtn.Font = Consts.contentFont;
             this.ForwardBtn.Location = new System.Drawing.Point(1420, 4);
             this.ForwardBtn.Margin = new System.Windows.Forms.Padding(4);
             this.ForwardBtn.Name = "ForwardBtn";
@@ -260,7 +260,7 @@ namespace Optimator.Tabs.Scenes
             this.BackBtn.BackColor = System.Drawing.Color.Khaki;
             this.BackBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BackBtn.Font = new System.Drawing.Font("Tahoma", 14F);
+            this.BackBtn.Font = Consts.contentFont;
             this.BackBtn.Location = new System.Drawing.Point(1066, 4);
             this.BackBtn.Margin = new System.Windows.Forms.Padding(4);
             this.BackBtn.Name = "BackBtn";

@@ -52,7 +52,7 @@
             // 
             this.LoadingLbl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.LoadingLbl.AutoSize = true;
-            this.LoadingLbl.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoadingLbl.Font = Consts.headingLblFont;
             this.LoadingLbl.Location = new System.Drawing.Point(3, 0);
             this.LoadingLbl.Name = "LoadingLbl";
             this.LoadingLbl.Size = new System.Drawing.Size(494, 116);
@@ -63,7 +63,7 @@
             // PatienceLbl
             // 
             this.PatienceLbl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.PatienceLbl.Font = new System.Drawing.Font("Tahoma", 13.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PatienceLbl.Font = Consts.contentFont;
             this.PatienceLbl.Location = new System.Drawing.Point(3, 233);
             this.PatienceLbl.Name = "PatienceLbl";
             this.PatienceLbl.Size = new System.Drawing.Size(494, 116);

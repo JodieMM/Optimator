@@ -39,6 +39,11 @@ namespace Optimator
         public const string ColonS = ":";
         public const string SemiS = ";";
 
+        // UI
+        public static Font headingLblFont = new Font("Segoe UI", 20F, FontStyle.Bold);
+        public static Font subLblFont = new Font("Segoe UI", 18F, FontStyle.Italic);
+        public static Font contentFont = new Font("Segoe UI", 16F);
+
         // UI Precision
         public static int[] ClickPrecisions = new int[] { 0, 3, 5, 7, 9 };
         public const int DragPrecision = 5;

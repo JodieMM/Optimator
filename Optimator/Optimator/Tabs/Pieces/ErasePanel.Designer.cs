@@ -34,7 +34,7 @@
             // EraseLbl
             // 
             this.EraseLbl.AutoSize = true;
-            this.EraseLbl.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.EraseLbl.Font = Consts.headingLblFont;
             this.EraseLbl.Location = new System.Drawing.Point(34, 44);
             this.EraseLbl.Name = "EraseLbl";
             this.EraseLbl.Size = new System.Drawing.Size(159, 58);

@@ -65,7 +65,7 @@
             this.FlipsTurn.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.FlipsTurn.Enabled = false;
-            this.FlipsTurn.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FlipsTurn.Font = Consts.contentFont;
             this.FlipsTurn.Location = new System.Drawing.Point(251, 514);
             this.FlipsTurn.Margin = new System.Windows.Forms.Padding(2);
             this.FlipsTurn.Maximum = new decimal(new int[] {
@@ -83,7 +83,7 @@
             this.FlipsRotation.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.FlipsRotation.Enabled = false;
-            this.FlipsRotation.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FlipsRotation.Font = Consts.contentFont;
             this.FlipsRotation.Location = new System.Drawing.Point(251, 431);
             this.FlipsRotation.Margin = new System.Windows.Forms.Padding(2);
             this.FlipsRotation.Maximum = new decimal(new int[] {
@@ -104,7 +104,7 @@
             this.JoinBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.TableLayoutPnl.SetColumnSpan(this.JoinBtn, 2);
             this.JoinBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.JoinBtn.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.JoinBtn.Font = Consts.contentFont;
             this.JoinBtn.Location = new System.Drawing.Point(2, 175);
             this.JoinBtn.Margin = new System.Windows.Forms.Padding(2);
             this.JoinBtn.Name = "JoinBtn";
@@ -121,7 +121,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.FlipsCb.AutoSize = true;
             this.TableLayoutPnl.SetColumnSpan(this.FlipsCb, 2);
-            this.FlipsCb.Font = new System.Drawing.Font("Tahoma", 13.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FlipsCb.Font = Consts.contentFont;
             this.FlipsCb.Location = new System.Drawing.Point(2, 348);
             this.FlipsCb.Margin = new System.Windows.Forms.Padding(2);
             this.FlipsCb.Name = "FlipsCb";
@@ -139,7 +139,7 @@
             this.SelectBaseBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.TableLayoutPnl.SetColumnSpan(this.SelectBaseBtn, 2);
             this.SelectBaseBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.SelectBaseBtn.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SelectBaseBtn.Font = Consts.contentFont;
             this.SelectBaseBtn.Location = new System.Drawing.Point(2, 2);
             this.SelectBaseBtn.Margin = new System.Windows.Forms.Padding(2);
             this.SelectBaseBtn.Name = "SelectBaseBtn";
@@ -152,7 +152,7 @@
             // JoinsLbl
             // 
             this.JoinsLbl.AutoSize = true;
-            this.JoinsLbl.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.JoinsLbl.Font = Consts.contentFont;
             this.JoinsLbl.Location = new System.Drawing.Point(82, 39);
             this.JoinsLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.JoinsLbl.Name = "JoinsLbl";
@@ -172,7 +172,7 @@
             this.TableLayoutPnl.Controls.Add(this.TurnFlipLbl, 0, 4);
             this.TableLayoutPnl.Controls.Add(this.FlipsCb, 0, 2);
             this.TableLayoutPnl.Controls.Add(this.RotationFlipLbl, 0, 3);
-            this.TableLayoutPnl.Font = new System.Drawing.Font("Tahoma", 13.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TableLayoutPnl.Font = Consts.contentFont;
             this.TableLayoutPnl.Location = new System.Drawing.Point(47, 113);
             this.TableLayoutPnl.Name = "TableLayoutPnl";
             this.TableLayoutPnl.RowCount = 5;

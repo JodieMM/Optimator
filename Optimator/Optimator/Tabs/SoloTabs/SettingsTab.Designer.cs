@@ -77,7 +77,7 @@
             this.NewWorkingDirectoryBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.NewWorkingDirectoryBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.NewWorkingDirectoryBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.NewWorkingDirectoryBtn.Font = new System.Drawing.Font("Tahoma", 14F);
+            this.NewWorkingDirectoryBtn.Font = Consts.contentFont;
             this.NewWorkingDirectoryBtn.ForeColor = System.Drawing.Color.Black;
             this.NewWorkingDirectoryBtn.Location = new System.Drawing.Point(533, 133);
             this.NewWorkingDirectoryBtn.Margin = new System.Windows.Forms.Padding(2);
@@ -93,7 +93,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.WorkingDirValueLbl.AutoSize = true;
             this.TableLayoutPnl.SetColumnSpan(this.WorkingDirValueLbl, 2);
-            this.WorkingDirValueLbl.Font = new System.Drawing.Font("Tahoma", 14F);
+            this.WorkingDirValueLbl.Font = Consts.contentFont;
             this.WorkingDirValueLbl.Location = new System.Drawing.Point(4, 262);
             this.WorkingDirValueLbl.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.WorkingDirValueLbl.Name = "WorkingDirValueLbl";
@@ -106,7 +106,7 @@
             this.WorkingDirLbl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.WorkingDirLbl.AutoSize = true;
-            this.WorkingDirLbl.Font = new System.Drawing.Font("Tahoma", 14F);
+            this.WorkingDirLbl.Font = Consts.contentFont;
             this.WorkingDirLbl.Location = new System.Drawing.Point(4, 131);
             this.WorkingDirLbl.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.WorkingDirLbl.Name = "WorkingDirLbl";
@@ -117,7 +117,7 @@
             // SettingsLbl
             // 
             this.SettingsLbl.AutoSize = true;
-            this.SettingsLbl.Font = new System.Drawing.Font("Tahoma", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SettingsLbl.Font = Consts.headingLblFont;
             this.SettingsLbl.Location = new System.Drawing.Point(46, 104);
             this.SettingsLbl.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.SettingsLbl.Name = "SettingsLbl";
@@ -130,7 +130,7 @@
             this.ResetBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.ResetBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ResetBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ResetBtn.Font = new System.Drawing.Font("Tahoma", 14F);
+            this.ResetBtn.Font = Consts.contentFont;
             this.ResetBtn.ForeColor = System.Drawing.Color.Black;
             this.ResetBtn.Location = new System.Drawing.Point(533, 395);
             this.ResetBtn.Margin = new System.Windows.Forms.Padding(2);
@@ -157,7 +157,7 @@
             this.BackColourLbl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.BackColourLbl.AutoSize = true;
-            this.BackColourLbl.Font = new System.Drawing.Font("Tahoma", 14F);
+            this.BackColourLbl.Font = Consts.contentFont;
             this.BackColourLbl.Location = new System.Drawing.Point(2, 0);
             this.BackColourLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.BackColourLbl.Name = "BackColourLbl";
@@ -168,7 +168,7 @@
             // VersionLbl
             // 
             this.VersionLbl.AutoSize = true;
-            this.VersionLbl.Font = new System.Drawing.Font("Tahoma", 16F, System.Drawing.FontStyle.Italic);
+            this.VersionLbl.Font = Consts.subLblFont;
             this.VersionLbl.Location = new System.Drawing.Point(50, 208);
             this.VersionLbl.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.VersionLbl.Name = "VersionLbl";
@@ -204,7 +204,7 @@
             this.SaveBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.SaveBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SaveBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.SaveBtn.Font = new System.Drawing.Font("Tahoma", 14F);
+            this.SaveBtn.Font = Consts.contentFont;
             this.SaveBtn.ForeColor = System.Drawing.Color.Black;
             this.SaveBtn.Location = new System.Drawing.Point(2, 395);
             this.SaveBtn.Margin = new System.Windows.Forms.Padding(2);

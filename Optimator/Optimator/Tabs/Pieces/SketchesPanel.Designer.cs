@@ -58,7 +58,7 @@
             // 
             this.YLbl.AutoSize = true;
             this.YLbl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.YLbl.Font = new System.Drawing.Font("Tahoma", 13.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.YLbl.Font = Consts.contentFont;
             this.YLbl.Location = new System.Drawing.Point(2, 537);
             this.YLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.YLbl.Name = "YLbl";
@@ -70,7 +70,7 @@
             // 
             this.XLbl.AutoSize = true;
             this.XLbl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.XLbl.Font = new System.Drawing.Font("Tahoma", 13.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.XLbl.Font = Consts.contentFont;
             this.XLbl.Location = new System.Drawing.Point(2, 468);
             this.XLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.XLbl.Name = "XLbl";
@@ -82,7 +82,7 @@
             // 
             this.SpinLbl.AutoSize = true;
             this.SpinLbl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SpinLbl.Font = new System.Drawing.Font("Tahoma", 13.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SpinLbl.Font = Consts.contentFont;
             this.SpinLbl.Location = new System.Drawing.Point(2, 744);
             this.SpinLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.SpinLbl.Name = "SpinLbl";
@@ -108,7 +108,7 @@
             // 
             this.TurnLbl.AutoSize = true;
             this.TurnLbl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.TurnLbl.Font = new System.Drawing.Font("Tahoma", 13.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TurnLbl.Font = Consts.contentFont;
             this.TurnLbl.Location = new System.Drawing.Point(2, 675);
             this.TurnLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.TurnLbl.Name = "TurnLbl";
@@ -120,7 +120,7 @@
             // 
             this.RotationLbl.AutoSize = true;
             this.RotationLbl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.RotationLbl.Font = new System.Drawing.Font("Tahoma", 13.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RotationLbl.Font = Consts.contentFont;
             this.RotationLbl.Location = new System.Drawing.Point(2, 606);
             this.RotationLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.RotationLbl.Name = "RotationLbl";
@@ -131,7 +131,7 @@
             // YUpDown
             // 
             this.YUpDown.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.YUpDown.Font = new System.Drawing.Font("Tahoma", 13.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.YUpDown.Font = Consts.contentFont;
             this.YUpDown.Location = new System.Drawing.Point(195, 539);
             this.YUpDown.Margin = new System.Windows.Forms.Padding(2);
             this.YUpDown.Maximum = new decimal(new int[] {
@@ -154,7 +154,7 @@
             this.XUpDown.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.XUpDown.Font = new System.Drawing.Font("Tahoma", 13.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.XUpDown.Font = Consts.contentFont;
             this.XUpDown.Location = new System.Drawing.Point(195, 470);
             this.XUpDown.Margin = new System.Windows.Forms.Padding(2);
             this.XUpDown.Maximum = new decimal(new int[] {
@@ -178,7 +178,7 @@
             this.TableLayoutPnl.SetColumnSpan(this.DeleteSketchBtn, 2);
             this.DeleteSketchBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.DeleteSketchBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DeleteSketchBtn.Font = new System.Drawing.Font("Tahoma", 13.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DeleteSketchBtn.Font = Consts.contentFont;
             this.DeleteSketchBtn.Location = new System.Drawing.Point(6, 370);
             this.DeleteSketchBtn.Margin = new System.Windows.Forms.Padding(6);
             this.DeleteSketchBtn.Name = "DeleteSketchBtn";
@@ -191,7 +191,7 @@
             // SketchesLbl
             // 
             this.SketchesLbl.AutoSize = true;
-            this.SketchesLbl.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SketchesLbl.Font = Consts.headingLblFont;
             this.SketchesLbl.Location = new System.Drawing.Point(41, 55);
             this.SketchesLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.SketchesLbl.Name = "SketchesLbl";
@@ -204,7 +204,7 @@
             this.SketchLb.BackColor = System.Drawing.SystemColors.Window;
             this.TableLayoutPnl.SetColumnSpan(this.SketchLb, 2);
             this.SketchLb.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SketchLb.Font = new System.Drawing.Font("Tahoma", 13.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SketchLb.Font = Consts.contentFont;
             this.SketchLb.FormattingEnabled = true;
             this.SketchLb.Location = new System.Drawing.Point(4, 4);
             this.SketchLb.Margin = new System.Windows.Forms.Padding(4);
@@ -255,7 +255,7 @@
             this.TableLayoutPnl.SetColumnSpan(this.LoadSketchBtn, 2);
             this.LoadSketchBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.LoadSketchBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.LoadSketchBtn.Font = new System.Drawing.Font("Tahoma", 13.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoadSketchBtn.Font = Consts.contentFont;
             this.LoadSketchBtn.Location = new System.Drawing.Point(6, 888);
             this.LoadSketchBtn.Margin = new System.Windows.Forms.Padding(6);
             this.LoadSketchBtn.Name = "LoadSketchBtn";
@@ -269,7 +269,7 @@
             // 
             this.SizeLbl.AutoSize = true;
             this.SizeLbl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SizeLbl.Font = new System.Drawing.Font("Tahoma", 13.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SizeLbl.Font = Consts.contentFont;
             this.SizeLbl.Location = new System.Drawing.Point(2, 813);
             this.SizeLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.SizeLbl.Name = "SizeLbl";

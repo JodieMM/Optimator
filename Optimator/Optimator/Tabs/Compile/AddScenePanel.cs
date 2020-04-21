@@ -32,7 +32,7 @@ namespace Optimator.Forms.Compile
         /// </summary>
         public override void Resize()
         {
-            float widthPercent = 0.8F;
+            float widthPercent = 0.9F;
             float smallWidthPercent = 0.05F;
             float heightPercent = 0.3F;
 

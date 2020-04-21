@@ -43,7 +43,7 @@
             // OpenLbl
             // 
             this.OpenLbl.AutoSize = true;
-            this.OpenLbl.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.OpenLbl.Font = Consts.headingLblFont;
             this.OpenLbl.Location = new System.Drawing.Point(28, 16);
             this.OpenLbl.Name = "OpenLbl";
             this.OpenLbl.Size = new System.Drawing.Size(152, 58);
@@ -54,7 +54,7 @@
             // 
             this.TableLayoutPnl.SetColumnSpan(this.NameTb, 2);
             this.NameTb.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.NameTb.Font = new System.Drawing.Font("Tahoma", 14F);
+            this.NameTb.Font = Consts.contentFont;
             this.NameTb.Location = new System.Drawing.Point(3, 3);
             this.NameTb.Name = "NameTb";
             this.NameTb.Size = new System.Drawing.Size(552, 53);
@@ -66,7 +66,7 @@
             this.OpenBtn.BackColor = System.Drawing.Color.LightGoldenrodYellow;
             this.OpenBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.OpenBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.OpenBtn.Font = new System.Drawing.Font("Tahoma", 14F);
+            this.OpenBtn.Font = Consts.contentFont;
             this.OpenBtn.Location = new System.Drawing.Point(3, 129);
             this.OpenBtn.Name = "OpenBtn";
             this.OpenBtn.Size = new System.Drawing.Size(273, 120);
@@ -80,7 +80,7 @@
             this.CancelBtn.BackColor = System.Drawing.Color.LightGoldenrodYellow;
             this.CancelBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.CancelBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CancelBtn.Font = new System.Drawing.Font("Tahoma", 14F);
+            this.CancelBtn.Font = Consts.contentFont;
             this.CancelBtn.Location = new System.Drawing.Point(282, 129);
             this.CancelBtn.Name = "CancelBtn";
             this.CancelBtn.Size = new System.Drawing.Size(273, 120);

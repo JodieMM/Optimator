@@ -59,7 +59,7 @@
             // PositionsLbl
             // 
             this.PositionsLbl.AutoSize = true;
-            this.PositionsLbl.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PositionsLbl.Font = Consts.headingLblFont;
             this.PositionsLbl.Location = new System.Drawing.Point(17, 23);
             this.PositionsLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.PositionsLbl.Name = "PositionsLbl";
@@ -86,7 +86,7 @@
             this.TableLayoutPnl.Controls.Add(this.TurnBar, 1, 2);
             this.TableLayoutPnl.Controls.Add(this.RotationLbl, 0, 1);
             this.TableLayoutPnl.Controls.Add(this.RotationBar, 1, 1);
-            this.TableLayoutPnl.Font = new System.Drawing.Font("Tahoma", 13.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TableLayoutPnl.Font = Consts.contentFont;
             this.TableLayoutPnl.Location = new System.Drawing.Point(22, 79);
             this.TableLayoutPnl.Margin = new System.Windows.Forms.Padding(2);
             this.TableLayoutPnl.Name = "TableLayoutPnl";
@@ -122,7 +122,7 @@
             this.UpBtn.BackColor = System.Drawing.Color.Khaki;
             this.UpBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.UpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.UpBtn.Font = new System.Drawing.Font("Tahoma", 14F);
+            this.UpBtn.Font = Consts.contentFont;
             this.UpBtn.Location = new System.Drawing.Point(2, 2);
             this.UpBtn.Margin = new System.Windows.Forms.Padding(2);
             this.UpBtn.Name = "UpBtn";
@@ -137,7 +137,7 @@
             this.DownBtn.BackColor = System.Drawing.Color.Khaki;
             this.DownBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.DownBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DownBtn.Font = new System.Drawing.Font("Tahoma", 14F);
+            this.DownBtn.Font = Consts.contentFont;
             this.DownBtn.Location = new System.Drawing.Point(142, 2);
             this.DownBtn.Margin = new System.Windows.Forms.Padding(2);
             this.DownBtn.Name = "DownBtn";
@@ -163,7 +163,7 @@
             // SpinLbl
             // 
             this.SpinLbl.AutoSize = true;
-            this.SpinLbl.Font = new System.Drawing.Font("Tahoma", 14F);
+            this.SpinLbl.Font = Consts.contentFont;
             this.SpinLbl.Location = new System.Drawing.Point(2, 147);
             this.SpinLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.SpinLbl.Name = "SpinLbl";
@@ -174,7 +174,7 @@
             // OrderLbl
             // 
             this.OrderLbl.AutoSize = true;
-            this.OrderLbl.Font = new System.Drawing.Font("Tahoma", 14F);
+            this.OrderLbl.Font = Consts.contentFont;
             this.OrderLbl.Location = new System.Drawing.Point(2, 0);
             this.OrderLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.OrderLbl.Name = "OrderLbl";
@@ -185,7 +185,7 @@
             // SMLbl
             // 
             this.SMLbl.AutoSize = true;
-            this.SMLbl.Font = new System.Drawing.Font("Tahoma", 14F);
+            this.SMLbl.Font = Consts.contentFont;
             this.SMLbl.Location = new System.Drawing.Point(2, 294);
             this.SMLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.SMLbl.Name = "SMLbl";
@@ -207,7 +207,7 @@
             // YLbl
             // 
             this.YLbl.AutoSize = true;
-            this.YLbl.Font = new System.Drawing.Font("Tahoma", 14F);
+            this.YLbl.Font = Consts.contentFont;
             this.YLbl.Location = new System.Drawing.Point(2, 245);
             this.YLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.YLbl.Name = "YLbl";
@@ -218,7 +218,7 @@
             // XLbl
             // 
             this.XLbl.AutoSize = true;
-            this.XLbl.Font = new System.Drawing.Font("Tahoma", 14F);
+            this.XLbl.Font = Consts.contentFont;
             this.XLbl.Location = new System.Drawing.Point(2, 196);
             this.XLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.XLbl.Name = "XLbl";
@@ -229,7 +229,7 @@
             // YUpDown
             // 
             this.YUpDown.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.YUpDown.Font = new System.Drawing.Font("Tahoma", 14F);
+            this.YUpDown.Font = Consts.contentFont;
             this.YUpDown.Location = new System.Drawing.Point(124, 247);
             this.YUpDown.Margin = new System.Windows.Forms.Padding(2);
             this.YUpDown.Maximum = new decimal(new int[] {
@@ -250,7 +250,7 @@
             // XUpDown
             // 
             this.XUpDown.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.XUpDown.Font = new System.Drawing.Font("Tahoma", 14F);
+            this.XUpDown.Font = Consts.contentFont;
             this.XUpDown.Location = new System.Drawing.Point(124, 198);
             this.XUpDown.Margin = new System.Windows.Forms.Padding(2);
             this.XUpDown.Maximum = new decimal(new int[] {
@@ -271,7 +271,7 @@
             // TurnLbl
             // 
             this.TurnLbl.AutoSize = true;
-            this.TurnLbl.Font = new System.Drawing.Font("Tahoma", 14F);
+            this.TurnLbl.Font = Consts.contentFont;
             this.TurnLbl.Location = new System.Drawing.Point(2, 98);
             this.TurnLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.TurnLbl.Name = "TurnLbl";
@@ -293,7 +293,7 @@
             // RotationLbl
             // 
             this.RotationLbl.AutoSize = true;
-            this.RotationLbl.Font = new System.Drawing.Font("Tahoma", 14F);
+            this.RotationLbl.Font = Consts.contentFont;
             this.RotationLbl.Location = new System.Drawing.Point(2, 49);
             this.RotationLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.RotationLbl.Name = "RotationLbl";

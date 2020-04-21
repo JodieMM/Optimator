@@ -35,7 +35,7 @@
             // NameTb
             // 
             this.NameTb.BackColor = System.Drawing.Color.White;
-            this.NameTb.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.NameTb.Font = Consts.contentFont;
             this.NameTb.Location = new System.Drawing.Point(42, 52);
             this.NameTb.Margin = new System.Windows.Forms.Padding(12);
             this.NameTb.Name = "NameTb";
@@ -47,7 +47,7 @@
             // 
             this.CompleteBtn.BackColor = System.Drawing.Color.Khaki;
             this.CompleteBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CompleteBtn.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CompleteBtn.Font = Consts.contentFont;
             this.CompleteBtn.Location = new System.Drawing.Point(42, 512);
             this.CompleteBtn.Margin = new System.Windows.Forms.Padding(12);
             this.CompleteBtn.Name = "CompleteBtn";

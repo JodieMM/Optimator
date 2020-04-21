@@ -34,7 +34,7 @@
             // SolidLbl
             // 
             this.SolidLbl.AutoSize = true;
-            this.SolidLbl.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SolidLbl.Font = Consts.headingLblFont;
             this.SolidLbl.Location = new System.Drawing.Point(107, 123);
             this.SolidLbl.Name = "SolidLbl";
             this.SolidLbl.Size = new System.Drawing.Size(155, 58);

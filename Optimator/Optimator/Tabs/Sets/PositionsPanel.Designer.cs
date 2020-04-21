@@ -48,7 +48,7 @@
             // PositionsLbl
             // 
             this.PositionsLbl.AutoSize = true;
-            this.PositionsLbl.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PositionsLbl.Font = Consts.headingLblFont;
             this.PositionsLbl.Location = new System.Drawing.Point(33, 50);
             this.PositionsLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.PositionsLbl.Name = "PositionsLbl";
@@ -59,7 +59,7 @@
             // SizeLbl
             // 
             this.SizeLbl.AutoSize = true;
-            this.SizeLbl.Font = new System.Drawing.Font("Tahoma", 13.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SizeLbl.Font = Consts.contentFont;
             this.SizeLbl.Location = new System.Drawing.Point(2, 354);
             this.SizeLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.SizeLbl.Name = "SizeLbl";
@@ -82,7 +82,7 @@
             // SpinLbl
             // 
             this.SpinLbl.AutoSize = true;
-            this.SpinLbl.Font = new System.Drawing.Font("Tahoma", 13.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SpinLbl.Font = Consts.contentFont;
             this.SpinLbl.Location = new System.Drawing.Point(2, 236);
             this.SpinLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.SpinLbl.Name = "SpinLbl";
@@ -103,7 +103,7 @@
             // TurnLbl
             // 
             this.TurnLbl.AutoSize = true;
-            this.TurnLbl.Font = new System.Drawing.Font("Tahoma", 13.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TurnLbl.Font = Consts.contentFont;
             this.TurnLbl.Location = new System.Drawing.Point(2, 118);
             this.TurnLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.TurnLbl.Name = "TurnLbl";
@@ -124,7 +124,7 @@
             // RotationLbl
             // 
             this.RotationLbl.AutoSize = true;
-            this.RotationLbl.Font = new System.Drawing.Font("Tahoma", 13.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RotationLbl.Font = Consts.contentFont;
             this.RotationLbl.Location = new System.Drawing.Point(2, 0);
             this.RotationLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.RotationLbl.Name = "RotationLbl";

@@ -38,10 +38,10 @@
             this.TableLayoutPnl.SuspendLayout();
             this.SuspendLayout();
             // 
-            // SettingsLb
+            // SettingsLbl
             // 
             this.SettingsLbl.AutoSize = true;
-            this.SettingsLbl.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SettingsLbl.Font = Consts.headingLblFont;
             this.SettingsLbl.Location = new System.Drawing.Point(34, 44);
             this.SettingsLbl.Name = "SettingsLb";
             this.SettingsLbl.Size = new System.Drawing.Size(224, 58);
@@ -51,7 +51,7 @@
             // TimeIntervalLbl
             // 
             this.TimeIntervalLbl.AutoSize = true;
-            this.TimeIntervalLbl.Font = new System.Drawing.Font("Tahoma", 14F);
+            this.TimeIntervalLbl.Font = Consts.contentFont;
             this.TimeIntervalLbl.Location = new System.Drawing.Point(3, 150);
             this.TimeIntervalLbl.Name = "TimeIntervalLbl";
             this.TimeIntervalLbl.Size = new System.Drawing.Size(383, 46);
@@ -63,7 +63,7 @@
             this.TimeIncrementUpDown.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.TimeIncrementUpDown.DecimalPlaces = 1;
-            this.TimeIncrementUpDown.Font = new System.Drawing.Font("Tahoma", 14F);
+            this.TimeIncrementUpDown.Font = Consts.contentFont;
             this.TimeIncrementUpDown.Increment = new decimal(new int[] {
             5,
             0,
@@ -86,7 +86,7 @@
             this.PreviewCb.Checked = true;
             this.PreviewCb.CheckState = System.Windows.Forms.CheckState.Checked;
             this.TableLayoutPnl.SetColumnSpan(this.PreviewCb, 2);
-            this.PreviewCb.Font = new System.Drawing.Font("Tahoma", 14F);
+            this.PreviewCb.Font = Consts.contentFont;
             this.PreviewCb.Location = new System.Drawing.Point(3, 78);
             this.PreviewCb.Name = "PreviewCb";
             this.PreviewCb.Size = new System.Drawing.Size(286, 50);
@@ -101,7 +101,7 @@
             this.SelectFromTopCb.Checked = true;
             this.SelectFromTopCb.CheckState = System.Windows.Forms.CheckState.Checked;
             this.TableLayoutPnl.SetColumnSpan(this.SelectFromTopCb, 2);
-            this.SelectFromTopCb.Font = new System.Drawing.Font("Tahoma", 14F);
+            this.SelectFromTopCb.Font = Consts.contentFont;
             this.SelectFromTopCb.Location = new System.Drawing.Point(2, 2);
             this.SelectFromTopCb.Margin = new System.Windows.Forms.Padding(2);
             this.SelectFromTopCb.Name = "SelectFromTopCb";

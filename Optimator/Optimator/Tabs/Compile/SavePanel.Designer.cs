@@ -36,11 +36,11 @@
             // NameTb
             // 
             this.NameTb.BackColor = System.Drawing.Color.White;
-            this.NameTb.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.NameTb.Font = Consts.contentFont;
             this.NameTb.Location = new System.Drawing.Point(42, 142);
             this.NameTb.Margin = new System.Windows.Forms.Padding(12);
             this.NameTb.Name = "NameTb";
-            this.NameTb.Size = new System.Drawing.Size(596, 58);
+            this.NameTb.Size = new System.Drawing.Size(596, 64);
             this.NameTb.TabIndex = 6;
             this.NameTb.Text = "Video Name";
             // 
@@ -48,7 +48,7 @@
             // 
             this.CompleteBtn.BackColor = System.Drawing.Color.LightCoral;
             this.CompleteBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CompleteBtn.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CompleteBtn.Font = Consts.contentFont;
             this.CompleteBtn.Location = new System.Drawing.Point(42, 512);
             this.CompleteBtn.Margin = new System.Windows.Forms.Padding(12);
             this.CompleteBtn.Name = "CompleteBtn";
@@ -61,10 +61,10 @@
             // SaveLbl
             // 
             this.SaveLbl.AutoSize = true;
-            this.SaveLbl.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SaveLbl.Font = Consts.headingLblFont;
             this.SaveLbl.Location = new System.Drawing.Point(32, 56);
             this.SaveLbl.Name = "SaveLbl";
-            this.SaveLbl.Size = new System.Drawing.Size(290, 58);
+            this.SaveLbl.Size = new System.Drawing.Size(305, 71);
             this.SaveLbl.TabIndex = 11;
             this.SaveLbl.Text = "Save Video";
             // 
