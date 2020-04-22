@@ -123,7 +123,7 @@ namespace Optimator
             // SaveBtn
             // 
             this.SaveBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.SaveBtn.Image = ((System.Drawing.Image)(resources.GetObject("SaveBtn.Image")));
+            this.SaveBtn.Image = Properties.Resources.SaveIcon;
             this.SaveBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.SaveBtn.Name = "SaveBtn";
             this.SaveBtn.Size = new System.Drawing.Size(36, 36);
@@ -133,7 +133,7 @@ namespace Optimator
             // MovePointBtn
             // 
             this.MovePointBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.MovePointBtn.Image = ((System.Drawing.Image)(resources.GetObject("MovePointBtn.Image")));
+            this.MovePointBtn.Image = Properties.Resources.MoveIcon;
             this.MovePointBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.MovePointBtn.Name = "MovePointBtn";
             this.MovePointBtn.Size = new System.Drawing.Size(36, 36);
@@ -144,7 +144,7 @@ namespace Optimator
             // 
             this.CloseBtn.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.CloseBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.CloseBtn.Image = ((System.Drawing.Image)(resources.GetObject("CloseBtn.Image")));
+            this.CloseBtn.Image = Properties.Resources.CloseIcon;
             this.CloseBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.CloseBtn.Name = "CloseBtn";
             this.CloseBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -155,7 +155,7 @@ namespace Optimator
             // ColoursBtn
             // 
             this.ColoursBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.ColoursBtn.Image = ((System.Drawing.Image)(resources.GetObject("ColoursBtn.Image")));
+            this.ColoursBtn.Image = Properties.Resources.ColourIcon;
             this.ColoursBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ColoursBtn.Name = "ColoursBtn";
             this.ColoursBtn.Size = new System.Drawing.Size(36, 36);
@@ -165,7 +165,7 @@ namespace Optimator
             // FixedBtn
             // 
             this.FixedBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.FixedBtn.Image = ((System.Drawing.Image)(resources.GetObject("FixedBtn.Image")));
+            this.FixedBtn.Image = Properties.Resources.FixedIcon;
             this.FixedBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.FixedBtn.Name = "FixedBtn";
             this.FixedBtn.Size = new System.Drawing.Size(36, 36);
@@ -175,7 +175,7 @@ namespace Optimator
             // SketchesBtn
             // 
             this.SketchesBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.SketchesBtn.Image = ((System.Drawing.Image)(resources.GetObject("SketchesBtn.Image")));
+            this.SketchesBtn.Image = Properties.Resources.SketchesIcon;
             this.SketchesBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.SketchesBtn.Name = "SketchesBtn";
             this.SketchesBtn.Size = new System.Drawing.Size(36, 36);
@@ -185,7 +185,7 @@ namespace Optimator
             // EraseBtn
             // 
             this.EraseBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.EraseBtn.Image = ((System.Drawing.Image)(resources.GetObject("EraseBtn.Image")));
+            this.EraseBtn.Image = Properties.Resources.EraseIcon;
             this.EraseBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.EraseBtn.Name = "EraseBtn";
             this.EraseBtn.Size = new System.Drawing.Size(36, 36);
@@ -195,7 +195,7 @@ namespace Optimator
             // OutlineBtn
             // 
             this.OutlineBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.OutlineBtn.Image = ((System.Drawing.Image)(resources.GetObject("OutlineBtn.Image")));
+            this.OutlineBtn.Image = Properties.Resources.OutlineIcon;
             this.OutlineBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.OutlineBtn.Name = "OutlineBtn";
             this.OutlineBtn.Size = new System.Drawing.Size(36, 36);

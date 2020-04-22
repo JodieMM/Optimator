@@ -399,5 +399,77 @@
   <ItemGroup>
     <None Include="Resources\TrayIcon.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SaveIcon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\addparticon_256px.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\colouricon_256px.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\eraseicon_256px.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\fixedicon_256px.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\joinsicon_256px.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\moveicon_256px.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ordericon_256px.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\outlineicon_256px.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\saveicon_256px.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\settingsicon_256px.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sketchesicon_256px.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AddPartIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ColourIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\EraseIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FixedIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\JoinsIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MoveIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\OrderIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\OutlineIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SaveIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SettingsIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SketchesIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CloseIcon.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

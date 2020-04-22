@@ -73,7 +73,7 @@
             // SaveBtn
             // 
             this.SaveBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.SaveBtn.Image = ((System.Drawing.Image)(resources.GetObject("SaveBtn.Image")));
+            this.SaveBtn.Image = Properties.Resources.SaveIcon;
             this.SaveBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.SaveBtn.Name = "SaveBtn";
             this.SaveBtn.Size = new System.Drawing.Size(36, 36);
@@ -83,7 +83,7 @@
             // AddPartBtn
             // 
             this.AddPartBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.AddPartBtn.Image = ((System.Drawing.Image)(resources.GetObject("AddPartBtn.Image")));
+            this.AddPartBtn.Image = Properties.Resources.AddPartIcon;
             this.AddPartBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.AddPartBtn.Name = "AddPartBtn";
             this.AddPartBtn.Size = new System.Drawing.Size(36, 36);
@@ -94,7 +94,7 @@
             // 
             this.CloseBtn.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.CloseBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.CloseBtn.Image = ((System.Drawing.Image)(resources.GetObject("CloseBtn.Image")));
+            this.CloseBtn.Image = Properties.Resources.CloseIcon;
             this.CloseBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.CloseBtn.Name = "CloseBtn";
             this.CloseBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -105,7 +105,7 @@
             // JoinsBtn
             // 
             this.JoinsBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.JoinsBtn.Image = ((System.Drawing.Image)(resources.GetObject("JoinsBtn.Image")));
+            this.JoinsBtn.Image = Properties.Resources.JoinsIcon;
             this.JoinsBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.JoinsBtn.Name = "JoinsBtn";
             this.JoinsBtn.Size = new System.Drawing.Size(36, 36);
@@ -125,7 +125,7 @@
             // OrderBtn
             // 
             this.OrderBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.OrderBtn.Image = ((System.Drawing.Image)(resources.GetObject("OrderBtn.Image")));
+            this.OrderBtn.Image = Properties.Resources.OrderIcon;
             this.OrderBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.OrderBtn.Name = "OrderBtn";
             this.OrderBtn.Size = new System.Drawing.Size(36, 36);
@@ -135,7 +135,7 @@
             // SettingsBtn
             // 
             this.SettingsBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.SettingsBtn.Image = ((System.Drawing.Image)(resources.GetObject("SettingsBtn.Image")));
+            this.SettingsBtn.Image = Properties.Resources.SettingsIcon;
             this.SettingsBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.SettingsBtn.Name = "SettingsBtn";
             this.SettingsBtn.Size = new System.Drawing.Size(36, 36);
@@ -203,7 +203,7 @@
             // EraseBtn
             // 
             this.EraseBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.EraseBtn.Image = ((System.Drawing.Image)(resources.GetObject("EraseBtn.Image")));
+            this.EraseBtn.Image = Properties.Resources.EraseIcon;
             this.EraseBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.EraseBtn.Name = "EraseBtn";
             this.EraseBtn.Size = new System.Drawing.Size(36, 36);
