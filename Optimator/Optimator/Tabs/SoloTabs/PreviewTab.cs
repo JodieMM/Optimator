@@ -27,8 +27,6 @@ namespace Optimator.Forms
             Owner = owner;
             WIP = part;
             Position.SetCoordsBasedOnBoard(DrawPanel);
-            Enter += FocusOn;
-            VisibleChanged += FocusOn;
         }
 
 
@@ -69,16 +67,6 @@ namespace Optimator.Forms
             TurnTrack.Size = new Size((int)(DrawPanel.Width * trackShort), (int)(DrawPanel.Height * trackLong));
             TurnTrack.Location = new Point((int)(DrawPanel.Location.X + DrawPanel.Width - TurnTrack.Width * 1.25),
                 (int)(DrawPanel.Location.Y + (DrawPanel.Height - TurnTrack.Height) / 2.0));
-        }
-
-        /// <summary>
-        /// Redraws board once focus is regained.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void FocusOn(object sender, EventArgs e)
-        {
-            DisplayDrawings();
         }
 
 
@@ -122,22 +110,22 @@ namespace Optimator.Forms
             //HIDDEN EXTRAS BELOW
             Visuals.DrawCross(300, 300, Color.Red, g);
 
-            if (WIP is Set)
+            if (WIP is Piece)
             {
-                foreach (Join join in (WIP as Set).JoinsIndex.Values)
-                {
-                    Visuals.DrawCross(join.CurrentCentre()[0], join.CurrentCentre()[1], Color.Red, g);
-                }
-                foreach (Piece piece in (WIP as Set).PiecesList)
-                {
-                    if (piece != (WIP as Set).BasePiece)
-                    {
-                        //foreach (Spot spot in piece.Data)
-                        //{
-                        //    Visuals.DrawCross(spot.CurrentX + piece.State.X, spot.CurrentY + piece.State.Y, Color.Blue, g);
-                        //}
-                    }
-                }
+                //foreach (Join join in (WIP as Set).JoinsIndex.Values)
+                //{
+                //    Visuals.DrawCross(join.CurrentCentre()[0], join.CurrentCentre()[1], Color.Red, g);
+                //}
+                //foreach (Piece piece in (WIP as Set).PiecesList)
+                //{
+                //    if (piece != (WIP as Set).BasePiece)
+                //    {
+                //        //foreach (Spot spot in piece.Data)
+                //        //{
+                //        //    Visuals.DrawCross(spot.CurrentX + piece.State.X, spot.CurrentY + piece.State.Y, Color.Blue, g);
+                //        //}
+                //    }
+                //}
             }
         }       
     }
