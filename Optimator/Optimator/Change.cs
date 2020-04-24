@@ -12,7 +12,7 @@
         private readonly Scene host;
 
         public decimal StartTime { get; }
-        public double HowMuch { get; }
+        public float HowMuch { get; }
         public decimal HowLong { get; }
         public string Action { get; }
         #endregion
@@ -27,7 +27,7 @@
         /// <param name="howMuch">How much the change should occur per </param>
         /// <param name="howLong">How many frames the change should continue for</param>
         /// <param name="owner">The scene the change belongs to</param>
-        public Change(decimal startTime, string action, Piece affectedPiece, double howMuch, decimal howLong, Scene owner)
+        public Change(decimal startTime, string action, Piece affectedPiece, float howMuch, decimal howLong, Scene owner)
         {
             StartTime = startTime;
             Action = action;
@@ -52,7 +52,7 @@
             }
 
             // Full increment if time passed, partial if in progress
-            var increment = ((time - StartTime) >= HowLong) ? HowMuch : (double)((time - StartTime) / HowLong) * HowMuch;
+            var increment = ((time - StartTime) >= HowLong) ? HowMuch : (float)((time - StartTime) / HowLong) * HowMuch;
 
             // Update Parts
             switch (Action)

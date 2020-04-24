@@ -77,7 +77,7 @@ namespace Optimator
                 for (var index = lastPieceIndex + 1; index < data.Count; index++)
                 {
                     var changes = data[index].Split(Consts.Semi);
-                    Changes.Add(new Change(int.Parse(changes[0]), changes[1], PiecesList[int.Parse(changes[2])], double.Parse(changes[3]), decimal.Parse(changes[4]), this));
+                    Changes.Add(new Change(int.Parse(changes[0]), changes[1], PiecesList[int.Parse(changes[2])], float.Parse(changes[3]), decimal.Parse(changes[4]), this));
                 }                                               
             }
             catch (System.IO.FileNotFoundException)

@@ -156,9 +156,9 @@ namespace Optimator
         /// Finds the points to print based on the rotation, turn, spin and size of the piece
         /// </summary>
         /// <returns></returns>
-        public List<double[]> GetPoints(State state)
+        public List<float[]> GetPoints(State state)
         {
-            var points = new List<double[]>();
+            var points = new List<float[]>();
             var minMax = Utils.FindMinMax(Utils.ConvertSpotsToCoords(Data, 0));
 
             // Get Points
@@ -171,7 +171,7 @@ namespace Optimator
             foreach (var spot in Data)
             {
                 spot.CurrentY = spot.CalculateCurrentValue(state.GetAngles()[1], 0);    //HIDDEN (RTS) CurrentY
-                points.Add(new double[] { spot.CurrentX, spot.CalculateCurrentValue(state.GetAngles()[1], 0) });
+                points.Add(new float[] { spot.CurrentX, spot.CalculateCurrentValue(state.GetAngles()[1], 0) });
             }
 
             // Recentre
@@ -192,7 +192,7 @@ namespace Optimator
         /// </summary>
         /// <param name="pointsArray">The points to be spun</param>
         /// <returns></returns>
-        private List<double[]> SpinMeRound(List<double[]> pointsArray, State state)
+        private List<float[]> SpinMeRound(List<float[]> pointsArray, State state)
         {
             for (var index = 0; index < pointsArray.Count; index++)
             {
@@ -200,7 +200,7 @@ namespace Optimator
                 {
                     var hypotenuse = Math.Sqrt(Math.Pow(state.GetCoords()[0] - pointsArray[index][0], 2) + Math.Pow(state.GetCoords()[1] - pointsArray[index][1], 2)) * state.SM;
                     // Find Angle
-                    double pointAngle;
+                    float pointAngle;
                     if (pointsArray[index][0] == state.GetCoords()[0] && pointsArray[index][1] < state.GetCoords()[1])
                     {
                         pointAngle = 0;
@@ -221,21 +221,21 @@ namespace Optimator
                     //  Third  || Fourth
                     else if (pointsArray[index][0] > state.GetCoords()[0] && pointsArray[index][1] < state.GetCoords()[1]) // First Quadrant
                     {
-                        pointAngle = (180 / Math.PI) * Math.Atan(Math.Abs((state.GetCoords()[0] - pointsArray[index][0]) / (state.GetCoords()[1] - pointsArray[index][1])));
+                        pointAngle = (180 / (float)Math.PI) * (float)Math.Atan(Math.Abs((state.GetCoords()[0] - pointsArray[index][0]) / (state.GetCoords()[1] - pointsArray[index][1])));
                     }
                     else if (pointsArray[index][0] > state.GetCoords()[0] && pointsArray[index][1] > state.GetCoords()[1]) // Fourth Quadrant
                     {
-                        pointAngle = 90 + (180 / Math.PI) * Math.Atan(Math.Abs((state.GetCoords()[1] - pointsArray[index][1]) / (state.GetCoords()[0] - pointsArray[index][0])));
+                        pointAngle = 90 + (180 / (float)Math.PI) * (float)Math.Atan(Math.Abs((state.GetCoords()[1] - pointsArray[index][1]) / (state.GetCoords()[0] - pointsArray[index][0])));
                     }
                     else if (pointsArray[index][0] < state.GetCoords()[0] && pointsArray[index][1] < state.GetCoords()[1]) // Second Quadrant
                     {
-                        pointAngle = 270 + (180 / Math.PI) * Math.Atan(Math.Abs((state.GetCoords()[1] - pointsArray[index][1]) / (state.GetCoords()[0] - pointsArray[index][0])));
+                        pointAngle = 270 + (180 / (float)Math.PI) * (float)Math.Atan(Math.Abs((state.GetCoords()[1] - pointsArray[index][1]) / (state.GetCoords()[0] - pointsArray[index][0])));
                     }
                     else  // Third Quadrant
                     {
-                        pointAngle = 180 + (180 / Math.PI) * Math.Atan(Math.Abs((state.GetCoords()[0] - pointsArray[index][0]) / (state.GetCoords()[1] - pointsArray[index][1])));
+                        pointAngle = 180 + (180 / (float)Math.PI) * (float)Math.Atan(Math.Abs((state.GetCoords()[0] - pointsArray[index][0]) / (state.GetCoords()[1] - pointsArray[index][1])));
                     }
-                    var findAngle = (pointAngle + state.GetAngles()[2]) * Math.PI / 180 % 360;
+                    var findAngle = (pointAngle + state.GetAngles()[2]) * (float)Math.PI / 180 % 360;
 
                     // Find Points
                     pointsArray[index][0] = Convert.ToInt32(state.GetCoords()[0] + hypotenuse * Math.Sin(findAngle));
@@ -250,7 +250,7 @@ namespace Optimator
         /// spots would go and adds them to Data.
         /// </summary>
         /// <param name="xy">Whether searching for an X match (0) or Y match (1)</param>
-        private void CalculateMatches(double[] minMax, int xy = 1)
+        private void CalculateMatches(float[] minMax, int xy = 1)
         {
             // Setup
             CleanseData(xy == 0 ? false : true);
@@ -461,48 +461,48 @@ namespace Optimator
         /// <param name="xy">Whether the x (0) or y (1) should be matched</param>
         /// <param name="line">The join between the lines</param>
         /// <returns></returns>
-        public double[] FindSymmetricalOppositeCoord(double[] from, double[] to, double value, int xy, string line)
+        public float[] FindSymmetricalOppositeCoord(float[] from, float[] to, float value, int xy, string line)
         {
-            double gradient = -1;
+            float gradient = -1;
             if (line == Consts.connectorOptions[0] || line == Consts.connectorOptions[1])
             {
                 if (from[0] == to[0])
                 {
                     if (xy == 0)
                     {
-                        return new double[] { value, to[1] };
+                        return new float[] { value, to[1] };
                     }
                     else
                     {
-                        return new double[] { from[0], value };
+                        return new float[] { from[0], value };
                     }
                 }
                 else if (from[1] == to[1])
                 {
                     if (xy == 0)
                     {
-                        return new double[] { value, from[1] };
+                        return new float[] { value, from[1] };
                     }
                     else
                     {
-                        return new double[] { to[0], value };
+                        return new float[] { to[0], value };
                     }
                 }
 
                 gradient = (from[1] - to[1]) / (from[0] - to[0]);
                 if (xy == 0)
                 {
-                    return new double[] { value, from[1] + (value - from[0]) * gradient };  // y = x * gradient
+                    return new float[] { value, from[1] + (value - from[0]) * gradient };  // y = x * gradient
                 }
                 else
                 {
-                    return new double[] { from[0] + (value - from[1]) / gradient, value };  // x = y / gradient
+                    return new float[] { from[0] + (value - from[1]) / gradient, value };  // x = y / gradient
                 }
             }
             // else if (line == Constants.connectorOptions[2])      
             //CURVE
 
-            return new double[] { -1 }; // Error
+            return new float[] { -1 }; // Error
         }
 
         /// <summary>
@@ -512,10 +512,10 @@ namespace Optimator
         /// <param name="from">The starting point</param>
         /// <param name="to">The end point</param>
         /// <param name="join">How the two points are connected</param>
-        /// <returns>A list of double[ x, (int)y ] with the point coords</returns>
-        private List<double[]> LineCoords(double[] from, double[] to, string join)
+        /// <returns>A list of float[ x, (int)y ] with the point coords</returns>
+        private List<float[]> LineCoords(float[] from, float[] to, string join)
         {
-            var line = new List<double[]> { new double[] { from[0], from[1] } };
+            var line = new List<float[]> { new float[] { from[0], from[1] } };
             var fromUpper = from[1] >= to[1];
             var lower = fromUpper ? to : from;
             var upper = fromUpper ? from : to;
@@ -523,14 +523,14 @@ namespace Optimator
             // Solid Line
             if (join == Consts.connectorOptions[0] || join == Consts.connectorOptions[1])
             {
-                var section = new List<double[]>();
+                var section = new List<float[]>();
 
                 // If straight vertical line
                 if (from[0] - to[0] == 0)
                 {
                     for (var index = (int)lower[1] + 1; index < upper[1]; index++)
                     {
-                        section.Add(new double[] { from[0], index });
+                        section.Add(new float[] { from[0], index });
                     }
                 }
 
@@ -540,7 +540,7 @@ namespace Optimator
                     var gradient = (lower[1] - upper[1]) / (lower[0] - upper[0]);
                     for (var index = (int)lower[1] + 1; index < upper[1]; index++)
                     {
-                        section.Add(new double[] { lower[0] + ((index - lower[1]) / gradient), index });
+                        section.Add(new float[] { lower[0] + ((index - lower[1]) / gradient), index });
                     }
                 }
 
@@ -562,10 +562,10 @@ namespace Optimator
         /// Finds all of the coordinates in the outline of the piece.
         /// Uses a Y-across system.
         /// </summary>
-        /// <returns>A list of double [ x, (int)y ] with the shape outline</returns>
-        private List<double[]> LinesCoords()
+        /// <returns>A list of float [ x, (int)y ] with the shape outline</returns>
+        private List<float[]> LinesCoords()
         {
-            var linesCoords = new List<double[]>();
+            var linesCoords = new List<float[]>();
             var data = GetPoints(State);
             for (var index = 0; index < data.Count; index++)
             {
@@ -578,17 +578,17 @@ namespace Optimator
         /// <summary>
         /// Finds the ranges where the piece has space.
         /// </summary>
-        /// <returns>double[ y, x min, x max]</returns>
-        public List<double[]> LineBounds()
+        /// <returns>float[ y, x min, x max]</returns>
+        public List<float[]> LineBounds()
         {
             // Turn coords into bound ranges
             var outlineShape = LinesCoords();
             var minMax = Utils.FindMinMax(outlineShape);
-            var ranges = new List<double[]>();
+            var ranges = new List<float[]>();
             for (var index = (int)minMax[2]; index <= (int)minMax[3]; index++)
             {
                 // Get coords for the specific Y value that aren't corners
-                var yMatches = new List<double[]>();
+                var yMatches = new List<float[]>();
                 for (var coordIndex = 0; coordIndex < outlineShape.Count; coordIndex++)
                     if (outlineShape[coordIndex][1] == index &&
                         !((outlineShape[Utils.Modulo(coordIndex + 1, outlineShape.Count)][1] > outlineShape[coordIndex][1] &&
@@ -602,8 +602,8 @@ namespace Optimator
                 // Pair Remaining Coords into Bounds
                 while (yMatches.Count > 1)
                 {
-                    double min1 = double.MaxValue;
-                    double min2 = double.MaxValue;
+                    float min1 = float.MaxValue;
+                    float min2 = float.MaxValue;
                     var min1Index = -1;
                     var min2Index = -1;
                     for (var match = 0; match < yMatches.Count; match++)
@@ -621,7 +621,7 @@ namespace Optimator
                             min2Index = match;
                         }
                     }
-                    ranges.Add(new double[3] { index, min1, min2 });
+                    ranges.Add(new float[3] { index, min1, min2 });
                     yMatches.RemoveAt(min1Index);
                     yMatches.RemoveAt(min2Index > min1Index ? min2Index - 1 : min2Index);
                 }

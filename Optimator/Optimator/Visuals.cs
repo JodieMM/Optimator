@@ -18,7 +18,7 @@ namespace Optimator
         /// <param name="ycood">Y coordinate of + centre</param>
         /// <param name="colour">Colour of the +</param>
         /// <param name="board">The graphics board to be drawn on</param>
-        public static void DrawCross(double xcood, double ycood, Color colour, Graphics board)
+        public static void DrawCross(float xcood, float ycood, Color colour, Graphics board)
         {
             var x = (int)xcood;
             var y = (int)ycood;
@@ -34,7 +34,7 @@ namespace Optimator
         /// <param name="ycood">Y coordinate of x centre</param>
         /// <param name="colour">Colour of the x</param>
         /// <param name="board">The graphics board to be drawn on</param>
-        public static void DrawX(double xcood, double ycood, Color colour, Graphics board)
+        public static void DrawX(float xcood, float ycood, Color colour, Graphics board)
         {
             var x = (int)xcood;
             var y = (int)ycood;

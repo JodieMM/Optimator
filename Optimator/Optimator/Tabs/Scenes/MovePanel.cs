@@ -62,7 +62,7 @@ namespace Optimator.Tabs.Scenes
 
             // Adds new change to scene
             Owner.WIP.Changes.Add(new Change(Owner.GetCurrentTimeUpDownValue(), 
-                ChangeTypeCb.Text, Owner.selected.ToPiece(), (double)AnimationAmountTb.Value, SecondsUpDown.Value, Owner.WIP));
+                ChangeTypeCb.Text, Owner.selected.ToPiece(), (float)AnimationAmountTb.Value, SecondsUpDown.Value, Owner.WIP));
             if (Owner.GetCurrentTimeUpDownValue() + SecondsUpDown.Value > Owner.WIP.TimeLength)
             {
                 Owner.UpdateVideoLength(Owner.GetCurrentTimeUpDownValue() + SecondsUpDown.Value);
@@ -98,7 +98,7 @@ namespace Optimator.Tabs.Scenes
                 PreviewBtn.BackColor = pressed;
                 Owner.WIP.RunScene(Owner.GetCurrentTimeUpDownValue() + SecondsUpDown.Value);
                 var tempChange = new Change(Owner.GetCurrentTimeUpDownValue(), ChangeTypeCb.Text,
-                    Owner.selected.ToPiece(), (double)AnimationAmountTb.Value, SecondsUpDown.Value, Owner.WIP);
+                    Owner.selected.ToPiece(), (float)AnimationAmountTb.Value, SecondsUpDown.Value, Owner.WIP);
                 tempChange.Run(Owner.GetCurrentTimeUpDownValue() + SecondsUpDown.Value);
             }
             if (PreviewBtn == ActiveControl)

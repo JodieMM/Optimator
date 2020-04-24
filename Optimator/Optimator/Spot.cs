@@ -11,12 +11,12 @@ namespace Optimator
     public class Spot
     {
         #region Spot Variables
-        public double X { get; set; }
-        public double XRight { get; set; }
-        public double Y { get; set; }
-        public double YDown { get; set; }
-        public double CurrentX { get; set; }
-        public double CurrentY { get; set; }        //HIDDEN (RTS) CurrentY
+        public float X { get; set; }
+        public float XRight { get; set; }
+        public float Y { get; set; }
+        public float YDown { get; set; }
+        public float CurrentX { get; set; }
+        public float CurrentY { get; set; }        //HIDDEN (RTS) CurrentY
 
         public string Connector { get; set; }
         public string Solid { get; set; }
@@ -37,7 +37,7 @@ namespace Optimator
         /// <param name="connect">Connector from this spot to the next</param>
         /// <param name="solid">Flexibility of the spot</param>
         /// /// <param name="drawn">DrawLevel integer</param>
-        public Spot(double x, double y, double? xr = null, double? yd = null, string connect = null, string solid = null, int drawn = 0)
+        public Spot(float x, float y, float? xr = null, float? yd = null, string connect = null, string solid = null, int drawn = 0)
         {
             X = x;
             Y = y;
@@ -77,7 +77,7 @@ namespace Optimator
         /// </summary>
         /// <param name="angle">0 X, 1 Y, 2 XR, 3 YD</param>
         /// <returns>The coord value represented by the provided angle</returns>
-        public double GetCoord(int angle)
+        public float GetCoord(int angle)
         {
             switch (angle)
             {
@@ -102,7 +102,7 @@ namespace Optimator
         /// <param name="angle">The angle the coord is affected in</param>
         /// <param name="xy">Whether the x (0) or y (1) coord is changed</param>
         /// <param name="value">The new value for the coord</param>
-        public void SetCoords(int angle, int xy, double value)
+        public void SetCoords(int angle, int xy, float value)
         {
             if (xy == 0)
             {
@@ -165,25 +165,25 @@ namespace Optimator
         // ----- COORDINATE FUNCTIONS -----
 
         /// <summary>
-        /// Converts the coordinates to doubles to allow
+        /// Converts the coordinates to floats to allow
         /// easier input into arrays/searches.
         /// </summary>
         /// <param name="angle">Original [0], rotated [1], turned [2], current [3], current down [4]</param>
-        /// <returns>Coordinates of the piece as a double</returns>
-        public double[] GetCoordCombination(int angle = 0)
+        /// <returns>Coordinates of the piece as a float</returns>
+        public float[] GetCoordCombination(int angle = 0)
         {
             switch (angle)
             {
                 case 1:
-                    return new double[] { XRight, Y };
+                    return new float[] { XRight, Y };
                 case 2:
-                    return new double[] { X, YDown };
+                    return new float[] { X, YDown };
                 case 3:
-                    return new double[] { CurrentX, Y };
+                    return new float[] { CurrentX, Y };
                 case 4:
-                    return new double[] { CurrentX, YDown };
+                    return new float[] { CurrentX, YDown };
                 default:
-                    return new double[] { X, Y };
+                    return new float[] { X, Y };
             }
         }
 
@@ -194,10 +194,10 @@ namespace Optimator
         /// <param name="mid">The middle of the piece</param>
         /// <param name="xy">Finding current x (0) or y (1)</param>
         /// <returns>The current value</returns>
-        public double CalculateCurrentValue(double angle, int xy = 1)
+        public float CalculateCurrentValue(float angle, int xy = 1)
         {
-            double lower;
-            double upper;
+            float lower;
+            float upper;
             int bottomAngle;
 
             var original = xy == 0 ? Y : X;
@@ -229,7 +229,7 @@ namespace Optimator
                 upper = original;
                 bottomAngle = 270;
             }
-            return lower + (upper - lower) * ((angle - bottomAngle) / 90.0);
+            return lower + (upper - lower) * ((angle - bottomAngle) / 90.0F);
         }
     }
 }

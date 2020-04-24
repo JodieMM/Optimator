@@ -10,12 +10,12 @@ namespace Optimator
     public class State
     {
         #region State Variables
-        public double X { get; set; } = 0;
-        public double Y { get; set; } = 0;
-        public double R { get; set; } = 0;
-        public double T { get; set; } = 0;
-        public double S { get; set; } = 0;
-        public double SM { get; set; } = 1;
+        public float X { get; set; } = 0;
+        public float Y { get; set; } = 0;
+        public float R { get; set; } = 0;
+        public float T { get; set; } = 0;
+        public float S { get; set; } = 0;
+        public float SM { get; set; } = 1;
         #endregion
 
 
@@ -36,7 +36,7 @@ namespace Optimator
         /// <param name="t">Turn angle</param>
         /// <param name="s">Spin angle</param>
         /// <param name="sm">Size modifier</param>
-        public State(double x, double y, double r, double t, double s, double sm)
+        public State(float x, float y, float r, float t, float s, float sm)
         {
             X = x;
             Y = y;
@@ -53,7 +53,7 @@ namespace Optimator
         /// <param name="angle">1 for rotated, 2 for turn, 3 for both</param>
         /// <param name="degree">New r or t value</param>
         /// <param name="degree2">Potential t value if angle is 3</param>
-        public State(State basis, int angle, double degree, double degree2 = 0)
+        public State(State basis, int angle, float degree, float degree2 = 0)
         {
             X = basis.X;
             Y = basis.Y;
@@ -92,19 +92,19 @@ namespace Optimator
         /// <summary>
         /// Gets the X and Y values of the piece.
         /// </summary>
-        /// <returns>double[] { X, Y }</returns>
-        public double[] GetCoords()
+        /// <returns>float[] { X, Y }</returns>
+        public float[] GetCoords()
         {
-            return new double[] { X, Y };
+            return new float[] { X, Y };
         }
 
         /// <summary>
         /// Gets the rotation, turn and spin of the piece.
         /// </summary>
-        /// <returns>double[] { Rotation, Turn, Spin }</returns>
-        public double[] GetAngles()
+        /// <returns>float[] { Rotation, Turn, Spin }</returns>
+        public float[] GetAngles()
         {
-            return new double[3] { R, T, S };
+            return new float[3] { R, T, S };
         }
 
 
@@ -120,7 +120,7 @@ namespace Optimator
         /// <param name="t">New Turn</param>
         /// <param name="s">New Spin</param>
         /// <param name="sm">New Size Modifier</param>
-        public void SetValues(double x, double y, double r, double t, double s, double sm)
+        public void SetValues(float x, float y, float r, float t, float s, float sm)
         {
             X = x;
             Y = y;
@@ -137,8 +137,8 @@ namespace Optimator
         /// <param name="board">The board to centre on</param>
         public void SetCoordsBasedOnBoard(PictureBox board)
         {
-            X = board.Width / 2.0;
-            Y = board.Height / 2.0;
+            X = board.Width / 2.0F;
+            Y = board.Height / 2.0F;
         }
     }
 }

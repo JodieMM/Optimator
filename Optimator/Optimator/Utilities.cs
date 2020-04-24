@@ -270,7 +270,7 @@ namespace Optimator
         /// <param name="a">Value to be divided</param>
         /// <param name="b">Modulus</param>
         /// <returns>a modulo b</returns>
-        public static double Modulo(double a, double b)
+        public static float Modulo(float a, float b)
         {
             return (a % b + b) % b;
         }
@@ -280,20 +280,20 @@ namespace Optimator
         /// </summary>
         /// <param name="coords">Shape points</param>
         /// <returns>The mins and maxes as [minX, maxX, minY, maxY]</returns>
-        public static double[] FindMinMax(List<double[]> coords)
+        public static float[] FindMinMax(List<float[]> coords)
         {
-            double minX = double.MaxValue;
-            double maxX = double.MinValue;
-            double minY = double.MaxValue;
-            double maxY = double.MinValue;
-            foreach (double[] entry in coords)
+            float minX = float.MaxValue;
+            float maxX = float.MinValue;
+            float minY = float.MaxValue;
+            float maxY = float.MinValue;
+            foreach (float[] entry in coords)
             {
                 minX = (entry[0] < minX) ? entry[0] : minX;
                 maxX = (entry[0] > maxX) ? entry[0] : maxX;
                 minY = (entry[1] < minY) ? entry[1] : minY;
                 maxY = (entry[1] > maxY) ? entry[1] : maxY;
             }
-            return new double[] { minX, maxX, minY, maxY };
+            return new float[] { minX, maxX, minY, maxY };
         }
 
         /// <summary>
@@ -301,10 +301,10 @@ namespace Optimator
         /// </summary>
         /// <param name="coords">Shape points</param>
         /// <returns>The middle as [middle x, middle y]</returns>
-        public static double[] FindMid(List<double[]> coords)
+        public static float[] FindMid(List<float[]> coords)
         {
             var minMax = FindMinMax(coords);
-            return new double[] { minMax[0] + (minMax[1] - minMax[0]) / 2.0, minMax[2] + (minMax[3] - minMax[2]) / 2.0 };
+            return new float[] { minMax[0] + (minMax[1] - minMax[0]) / 2.0F, minMax[2] + (minMax[3] - minMax[2]) / 2.0F };
         }
 
         /// <summary>
@@ -313,7 +313,7 @@ namespace Optimator
         /// <param name="coords">Shape coordinates</param>
         /// <param name="width">True if width (x) not height (y) to be found</param>
         /// <returns>Height of shape</returns>
-        public static double FindHeight(List<double[]> coords, bool width = false)
+        public static float FindHeight(List<float[]> coords, bool width = false)
         {
             var minMax = FindMinMax(coords);
             if (width)
@@ -332,30 +332,30 @@ namespace Optimator
         /// <param name="degree">The degree to convert to radians</param>
         /// <param name="reverse">True if converting from radians to degrees</param>
         /// <returns>The degree in radians</returns>
-        public static double ConvertDegreeToRadian(double degree, bool reverse = false)
+        public static float ConvertDegreeToRadian(float degree, bool reverse = false)
         {
             if (!reverse)
             {
-                return Math.PI / 180.0 * degree;
+                return (float)Math.PI / 180.0F * degree;
             }
             else
             {
-                return degree * 180.0 / Math.PI;
+                return degree * 180.0F / (float)Math.PI;
             }
         }
 
         /// <summary>
-        /// Converts an array of strings into an array of doubles.
+        /// Converts an array of strings into an array of floats.
         /// Used when loading from text files.
         /// </summary>
         /// <param name="strArray">The array of strings to be converted</param>
-        /// <returns>A double array of the values in the input</returns>
-        public static double[] ConvertStringArrayToDoubles(string[] strArray)
+        /// <returns>A float array of the values in the input</returns>
+        public static float[] ConvertStringArrayToDoubles(string[] strArray)
         {
-            var dblArray = new double[strArray.Length];
+            var dblArray = new float[strArray.Length];
             for (int index = 0; index < strArray.Length; index++)
             {
-                dblArray[index] = double.Parse(strArray[index]);
+                dblArray[index] = float.Parse(strArray[index]);
             }
             return dblArray;
         }
@@ -497,11 +497,11 @@ namespace Optimator
         /// <param name="initial">The original X or Y value</param>
         /// <param name="angled">The rotated/turned x/y value</param>
         /// <returns></returns>
-        public static double RotOrTurnCalculation(double angle, double initial, double angled)
+        public static float RotOrTurnCalculation(float angle, float initial, float angled)
         {
-            double lower;
-            double upper;
-            double bottomAngle;
+            float lower;
+            float upper;
+            float bottomAngle;
 
             if (angle < 90)
             {
@@ -528,7 +528,7 @@ namespace Optimator
                 bottomAngle = 270;
             }
 
-            return lower + (upper - lower) * ((angle - bottomAngle) / 90.0);
+            return lower + (upper - lower) * ((angle - bottomAngle) / 90.0F);
         }
 
         /// <summary>
@@ -539,12 +539,12 @@ namespace Optimator
         /// <param name="sizeMod">The size modifier state</param>
         /// <param name="coord">The x and y coord of the spun point</param>
         /// <returns></returns>
-        public static double[] SpinAndSizeCoord(double spinAngle, double sizeMod, double[] coord)
+        public static float[] SpinAndSizeCoord(float spinAngle, float sizeMod, float[] coord)
         {
             var hypotenuse = Math.Sqrt(Math.Pow(coord[0], 2) + Math.Pow(coord[1], 2)) * sizeMod;
 
             // Find Angle
-            double pointAngle;
+            float pointAngle;
             if (coord[0] == 0 && coord[1] == 0)
             {
                 return coord;
@@ -569,24 +569,24 @@ namespace Optimator
             //  Third  || Fourth
             else if (coord[0] > 0 && coord[1] < 0) // First Quadrant
             {
-                pointAngle = 180 / Math.PI * Math.Atan(Math.Abs(coord[0] / coord[1]));
+                pointAngle = 180F / (float)Math.PI * (float)Math.Atan(Math.Abs(coord[0] / coord[1]));
             }
             else if (coord[0] > 0 && coord[1] > 0) // Fourth Quadrant
             {
-                pointAngle = 90 + 180 / Math.PI * Math.Atan(Math.Abs(coord[1] / coord[0]));
+                pointAngle = 90F + 180F / (float)Math.PI * (float)Math.Atan(Math.Abs(coord[1] / coord[0]));
             }
             else if (coord[0] < 0 && coord[1] < 0) // Second Quadrant
             {
-                pointAngle = 270 + 180 / Math.PI * Math.Atan(Math.Abs(coord[1] / coord[0]));
+                pointAngle = 270F + 180F / (float)Math.PI * (float)Math.Atan(Math.Abs(coord[1] / coord[0]));
             }
             else  // Third Quadrant
             {
-                pointAngle = 180 + 180 / Math.PI * Math.Atan(Math.Abs(coord[0] / coord[1]));
+                pointAngle = 180F + 180F / (float)Math.PI * (float)Math.Atan(Math.Abs(coord[0] / coord[1]));
             }
-            double findAngle = (pointAngle + spinAngle) * Math.PI / 180 % 360;
+            float findAngle = (pointAngle + spinAngle) * (float)Math.PI / 180F % 360F;
 
             // Find Points
-            return new double[] 
+            return new float[] 
             {
                 Convert.ToInt32(0 + hypotenuse * Math.Sin(findAngle)),
                 coord[1] = Convert.ToInt32(0 - hypotenuse * Math.Cos(findAngle))
@@ -595,14 +595,14 @@ namespace Optimator
 
         /// <summary>
         /// Converts the spots into a list of their original
-        /// coordinates as double[].
+        /// coordinates as float[].
         /// </summary>
         /// <param name="spots">The list of spots to convert</param>
         /// <param name="angle">Original [0], rotated[1], turned[2]</param>
         /// <returns>A list of coordinates</returns>
-        public static List<double[]> ConvertSpotsToCoords(List<Spot> spots, int angle = 0)
+        public static List<float[]> ConvertSpotsToCoords(List<Spot> spots, int angle = 0)
         {
-            var toReturn = new List<double[]>();
+            var toReturn = new List<float[]>();
             foreach (var spot in spots)
             {
                 toReturn.Add(spot.GetCoordCombination(angle));

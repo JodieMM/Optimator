@@ -86,11 +86,11 @@ namespace Optimator.Tabs.Pieces
             }
             else if (sender == XUpDown)
             {
-                selectedPart.ToPiece().State.X = (double)XUpDown.Value;
+                selectedPart.ToPiece().State.X = (float)XUpDown.Value;
             }
             else if (sender == YUpDown)
             {
-                selectedPart.ToPiece().State.Y = (double)YUpDown.Value;
+                selectedPart.ToPiece().State.Y = (float)YUpDown.Value;
             }
             else if (sender == RotationBar)
             {

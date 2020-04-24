@@ -83,9 +83,9 @@ namespace Optimator.Tabs.Pieces
             {
                 if (YUpDown.Enabled)
                 {
-                    Owner.selectedSpot.X = (double)XUpDown.Value;
+                    Owner.selectedSpot.X = (float)XUpDown.Value;
                 }
-                Owner.selectedSpot.XRight = (double)XUpDown.Value;
+                Owner.selectedSpot.XRight = (float)XUpDown.Value;
             }
         }
 
@@ -100,9 +100,9 @@ namespace Optimator.Tabs.Pieces
             {
                 if (XUpDown.Enabled)
                 {
-                    Owner.selectedSpot.Y = (double)YUpDown.Value;
+                    Owner.selectedSpot.Y = (float)YUpDown.Value;
                 }
-                Owner.selectedSpot.YDown = (double)YUpDown.Value;
+                Owner.selectedSpot.YDown = (float)YUpDown.Value;
             }
         }
     }

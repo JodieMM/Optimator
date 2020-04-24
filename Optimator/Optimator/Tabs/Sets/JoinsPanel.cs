@@ -121,7 +121,7 @@ namespace Optimator.Tabs.Sets
             {
                 var controls = new List<Control>() { FlipsRotation, FlipsTurn, RotationFlipLbl, TurnFlipLbl };
                 Utils.VisibleObjects(controls, FlipsCb.Checked);
-                Owner.WIP.JoinsIndex[Owner.selected].FlipAngle = FlipsCb.Checked ? (double)FlipsRotation.Value : -1;
+                Owner.WIP.JoinsIndex[Owner.selected].FlipAngle = FlipsCb.Checked ? (float)FlipsRotation.Value : -1;
                 // SortOrder: Turn value
             }
         }
@@ -136,7 +136,7 @@ namespace Optimator.Tabs.Sets
             if (Owner.selected != null && Owner.WIP.JoinsIndex.ContainsKey(Owner.selected))
             {
                 Owner.WIP.JoinsIndex[Owner.selected].FlipAngle = sender == FlipsRotation ?
-                    (double)FlipsRotation.Value : (double)FlipsTurn.Value;
+                    (float)FlipsRotation.Value : (float)FlipsTurn.Value;
                 //SortOrder: Turn Value
             }
         }

@@ -57,7 +57,7 @@ namespace Optimator.Tabs.Sets
             SizeBar.Enabled = enable;
             if (enable)
             {
-                SizeBar.Value = (int)(Owner.WIP.PersonalStates[Owner.selected].SM * 100.0);
+                SizeBar.Value = (int)(Owner.WIP.PersonalStates[Owner.selected].SM * 100.0F);
             }
             Utils.EnableObjects(new List<Control>() { RotationBar, TurnBar, SpinBar }, enable && Owner.selected != Owner.WIP.BasePiece);
             if (enable && Owner.selected != Owner.WIP.BasePiece)
@@ -99,7 +99,7 @@ namespace Optimator.Tabs.Sets
             }
             else if (sender == SizeBar)
             {
-                Owner.WIP.PersonalStates[Owner.selected].SM = SizeBar.Value / 100.0;
+                Owner.WIP.PersonalStates[Owner.selected].SM = SizeBar.Value / 100.0F;
             }
 
             Owner.DisplayDrawings();

@@ -17,18 +17,18 @@ namespace Optimator
         public Set Set { get; } // Set Belonging To
 
         // Join Positions (Set at A rts = 0, B rts = 0 respectively; B --> Join, Join --> A)
-        public double AX { get; set; } = 0;
-        public double AY { get; set; } = 0;
-        public double AXRight { get; set; } = 0;
-        public double AYDown { get; set; } = 0;
+        public float AX { get; set; } = 0;
+        public float AY { get; set; } = 0;
+        public float AXRight { get; set; } = 0;
+        public float AYDown { get; set; } = 0;
 
-        public double BX { get; set; } = 0;
-        public double BY { get; set; } = 0;
-        public double BXRight { get; set; } = 0;
-        public double BYDown { get; set; } = 0;
+        public float BX { get; set; } = 0;
+        public float BY { get; set; } = 0;
+        public float BXRight { get; set; } = 0;
+        public float BYDown { get; set; } = 0;
 
         // Depth Variables
-        public double FlipAngle { get; set; } = -1;
+        public float FlipAngle { get; set; } = -1;
         public int IndexSwitch { get; set; } = 0;
         #endregion
 
@@ -62,7 +62,7 @@ namespace Optimator
         /// <param name="byd">V's YDown coord</param>
         /// <param name="flipAngle">When the piece flips, -1 if it doesn't</param>
         /// <param name="indexSwitch">What index the piece flips to, 0 if it doesn't flip</param>
-        public Join(Piece a, Piece b, Set set, double ax, double ay, double axr, double ayd, double bx, double by, double bxr, double byd, double flipAngle, int indexSwitch)
+        public Join(Piece a, Piece b, Set set, float ax, float ay, float axr, float ayd, float bx, float by, float bxr, float byd, float flipAngle, int indexSwitch)
         {
             A = a;
             B = b;
@@ -151,21 +151,21 @@ namespace Optimator
             {
                 if (aState.S < 90)
                 {
-                    modS = aState.S * Math.Cos(Utils.ConvertDegreeToRadian(rChange));
+                    modS = aState.S * (float)Math.Cos(Utils.ConvertDegreeToRadian(rChange));
                     var height = Utils.FindHeight(A.GetPoints(new State(0, 0, aState.R, modT, aState.S, modSM)));
                     var flatHeight = Utils.FindHeight(A.GetPoints(new State(0, 0, modR, modT, modS, modSM)));
                     modSM *= flatHeight > 0 ? height / flatHeight : height > 0 ? 1 : 0;
                 }
                 else if (aState.S < 270)
                 {
-                    modS = 180 + (180 - aState.S) * -Math.Cos(Utils.ConvertDegreeToRadian(rChange));
+                    modS = 180 + (180 - aState.S) * -(float)Math.Cos(Utils.ConvertDegreeToRadian(rChange));
                     var height = Utils.FindHeight(A.GetPoints(new State(0, 0, aState.R, modT, aState.S, modSM)));
                     var flatHeight = Utils.FindHeight(A.GetPoints(new State(0, 0, modR, modT, modS, modSM)));
                     modSM *= flatHeight > 0 ? height / flatHeight : height > 0 ? 1 : 0;
                 }
                 else if (aState.S < 360)
                 {
-                    modS = 360 + (360 - aState.S) * -Math.Cos(Utils.ConvertDegreeToRadian(rChange));
+                    modS = 360 + (360 - aState.S) * -(float)Math.Cos(Utils.ConvertDegreeToRadian(rChange));
                     var height = Utils.FindHeight(A.GetPoints(new State(0, 0, aState.R, modT, aState.S, modSM)));
                     var flatHeight = Utils.FindHeight(A.GetPoints(new State(0, 0, modR, modT, modS, modSM)));
                     modSM *= flatHeight > 0 ? height / flatHeight : height > 0 ? 1 : 0;
@@ -176,16 +176,16 @@ namespace Optimator
             var attachedT = Utils.Modulo(modT, 360);
             var attachedS = Utils.Modulo(modS, 360);
 
-            //double attachedR = Utils.Modulo(B.State.R + personalState.R, 360);
-            //double attachedT = Utils.Modulo(B.State.T + personalState.T, 360);
-            //double attachedS = Utils.Modulo(B.State.S + personalState.S, 360);
+            //float attachedR = Utils.Modulo(B.State.R + personalState.R, 360);
+            //float attachedT = Utils.Modulo(B.State.T + personalState.T, 360);
+            //float attachedS = Utils.Modulo(B.State.S + personalState.S, 360);
 
             var attachedSM = aState.SM * modSM;
 
             var attachedJoinB = Utils.SpinAndSizeCoord(B.State.S, B.State.SM,
-                new double[] { Utils.RotOrTurnCalculation(B.State.R, BX, BXRight), Utils.RotOrTurnCalculation(B.State.T, BY, BYDown) });
+                new float[] { Utils.RotOrTurnCalculation(B.State.R, BX, BXRight), Utils.RotOrTurnCalculation(B.State.T, BY, BYDown) });
             var attachedJoinA = Utils.SpinAndSizeCoord(attachedS, attachedSM,
-                new double[] { Utils.RotOrTurnCalculation(attachedR, AX, AXRight), Utils.RotOrTurnCalculation(attachedT, AY, AYDown) });
+                new float[] { Utils.RotOrTurnCalculation(attachedR, AX, AXRight), Utils.RotOrTurnCalculation(attachedT, AY, AYDown) });
 
             var attachedX = B.State.X + attachedJoinB[0] + attachedJoinA[0] + aState.X;
             var attachedY = B.State.Y + attachedJoinB[1] + attachedJoinA[1] + aState.Y;
@@ -197,12 +197,12 @@ namespace Optimator
         /// Uses attached's current state to determine join's centre
         /// </summary>
         /// <returns>Join's current centre</returns>
-        public double[] CurrentCentre()
+        public float[] CurrentCentre()
         {
-            var aJoin = new double[2] {Utils.RotOrTurnCalculation(A.State.R, AX, AXRight),
+            var aJoin = new float[2] {Utils.RotOrTurnCalculation(A.State.R, AX, AXRight),
                 Utils.RotOrTurnCalculation(A.State.T, AY, AYDown)};
             aJoin = Utils.SpinAndSizeCoord(A.State.S, A.State.SM, aJoin);
-            return new double[2] {A.State.X - aJoin[0], A.State.Y - aJoin[1]};
+            return new float[2] {A.State.X - aJoin[0], A.State.Y - aJoin[1]};
         }
     }
 }
