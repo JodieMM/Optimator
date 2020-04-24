@@ -73,11 +73,11 @@ namespace Optimator.Tabs.Sets
         /// </summary>
         public override void Resize()
         {
-            float widthPercent = 0.05F;
-            float heightPercent = 0.5F;
+            var widthPercent = 0.05F;
+            var heightPercent = 0.5F;
 
-            int smallWidth = (int)(Width * widthPercent);
-            int bigHeight = (int)(Height * heightPercent);
+            var smallWidth = (int)(Width * widthPercent);
+            var bigHeight = (int)(Height * heightPercent);
 
             JoinsLbl.Location = new Point(smallWidth, smallWidth);
 
@@ -119,7 +119,7 @@ namespace Optimator.Tabs.Sets
         {
             if (Owner.selected != null && Owner.WIP.JoinsIndex.ContainsKey(Owner.selected))
             {
-                List<Control> controls = new List<Control>() { FlipsRotation, FlipsTurn, RotationFlipLbl, TurnFlipLbl };
+                var controls = new List<Control>() { FlipsRotation, FlipsTurn, RotationFlipLbl, TurnFlipLbl };
                 Utils.VisibleObjects(controls, FlipsCb.Checked);
                 Owner.WIP.JoinsIndex[Owner.selected].FlipAngle = FlipsCb.Checked ? (double)FlipsRotation.Value : -1;
                 // SortOrder: Turn value

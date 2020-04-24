@@ -40,11 +40,11 @@ namespace Optimator.Tabs.SoloTabs
         /// </summary>
         public override void Resize()
         {
-            float smallWidthPercent = 0.05F;
-            float widthPercent = 0.4F;
-            float heightPercent = 0.2F;
+            var smallWidthPercent = 0.05F;
+            var widthPercent = 0.4F;
+            var heightPercent = 0.2F;
 
-            int smallWidth = (int)(Width * smallWidthPercent);
+            var smallWidth = (int)(Width * smallWidthPercent);
 
             OpenLbl.Location = new Point(smallWidth, smallWidth + ToolStrip.Height);
             TableLayoutPnl.Location = new Point(smallWidth, smallWidth * 2 + OpenLbl.Height + ToolStrip.Height);

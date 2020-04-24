@@ -39,21 +39,21 @@ namespace Optimator.Forms
         /// </summary>
         public override void Resize()
         {
-            float widthPercent = 0.75F;
-            float widthSmallPercent = 0.2F;
-            float heightPercent = 0.9F;
+            var widthPercent = 0.75F;
+            var widthSmallPercent = 0.2F;
+            var heightPercent = 0.9F;
 
-            float trackLong = 0.8F;
-            float trackShort = 0.1F;
+            var trackLong = 0.8F;
+            var trackShort = 0.1F;
 
-            int bigWidth = (int)(Width * widthPercent);
-            int bigHeight = (int)(Height * heightPercent);
-            int bigLength = bigHeight < bigWidth ? bigHeight : bigWidth;
+            var bigWidth = (int)(Width * widthPercent);
+            var bigHeight = (int)(Height * heightPercent);
+            var bigLength = bigHeight < bigWidth ? bigHeight : bigWidth;
 
 
-            int smallWidth = (int)(Width * widthSmallPercent);
-            int lilWidth = (int)((Width - bigLength - smallWidth) / 4.0);
-            int smallHeight = (int)((Height - bigHeight - ToolStrip.Height) / 2.0);
+            var smallWidth = (int)(Width * widthSmallPercent);
+            var lilWidth = (int)((Width - bigLength - smallWidth) / 4.0);
+            var smallHeight = (int)((Height - bigHeight - ToolStrip.Height) / 2.0);
 
             DrawPanel.Size = new Size(bigLength, bigLength);
             DrawPanel.Location = new Point(lilWidth, smallHeight + ToolStrip.Height);

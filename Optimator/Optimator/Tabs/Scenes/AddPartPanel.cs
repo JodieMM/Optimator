@@ -33,13 +33,13 @@ namespace Optimator.Forms.Scenes
         /// </summary>
         public override void Resize()
         {
-            float widthPercent = 0.8F;
-            float smallWidthPercent = 0.05F;
-            float heightPercent = 0.15F;
+            var widthPercent = 0.8F;
+            var smallWidthPercent = 0.05F;
+            var heightPercent = 0.15F;
 
-            int bigWidth = (int)(Width * widthPercent);
-            int lilWidth = (int)(Width * smallWidthPercent);
-            int bigHeight = (int)(Height * heightPercent);
+            var bigWidth = (int)(Width * widthPercent);
+            var lilWidth = (int)(Width * smallWidthPercent);
+            var bigHeight = (int)(Height * heightPercent);
 
             AddPartLbl.Location = new Point(lilWidth, lilWidth);
 
@@ -69,7 +69,7 @@ namespace Optimator.Forms.Scenes
                     loaded = new Set(AddTb.Text);
                     loaded.ToPiece().State.SetCoordsBasedOnBoard(Owner.GetBoardSizing());
                     Owner.WIP.Originals.Add(loaded, Utils.CloneState(loaded.ToPiece().State));
-                    foreach (Piece piece in (loaded as Set).PiecesList)
+                    foreach (var piece in (loaded as Set).PiecesList)
                     {
                         Owner.WIP.Originals.Add(piece, Utils.CloneState(piece.State));
                         Owner.WIP.OriginalColours.Add(piece, Utils.CloneColourState(piece.ColourState));

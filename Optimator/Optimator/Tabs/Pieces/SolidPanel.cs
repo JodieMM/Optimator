@@ -31,9 +31,9 @@ namespace Optimator.Tabs.Pieces
         /// </summary>
         public override void Resize()
         {
-            float widthPercent = 0.05F;
+            var widthPercent = 0.05F;
 
-            int smallWidth = (int)(Width * widthPercent);
+            var smallWidth = (int)(Width * widthPercent);
 
             SolidLbl.Location = new Point(smallWidth, smallWidth);
         }

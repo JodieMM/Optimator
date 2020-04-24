@@ -31,9 +31,9 @@ namespace Optimator.Tabs.Sets
         /// </summary>
         public override void Resize()
         {
-            float widthPercent = 0.05F;
+            var widthPercent = 0.05F;
 
-            int smallWidth = (int)(Width * widthPercent);
+            var smallWidth = (int)(Width * widthPercent);
 
             EraseLbl.Location = new Point(smallWidth, smallWidth);
         }

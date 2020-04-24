@@ -27,8 +27,7 @@ namespace Optimator.Tabs.Compile
         public bool PreviewOn = true;
         #endregion
         
-
-
+        
         /// <summary>
         /// Constructor for the tab.
         /// </summary>
@@ -80,12 +79,12 @@ namespace Optimator.Tabs.Compile
 
         public override void Resize()
         {
-            float widthPercent = 0.75F;
-            float heightPercent = 0.75F;
+            var widthPercent = 0.75F;
+            var heightPercent = 0.75F;
 
-            int bigWidth = (int)(Width * widthPercent);
-            int bigHeight = (int)((Height - ToolStrip.Height) * heightPercent);
-            int fraction = (bigWidth / 16.0) > (bigHeight / 9.0) ? (int)(bigHeight / 9.0) : (int)(bigWidth / 16.0);
+            var bigWidth = (int)(Width * widthPercent);
+            var bigHeight = (int)((Height - ToolStrip.Height) * heightPercent);
+            var fraction = (bigWidth / 16.0) > (bigHeight / 9.0) ? (int)(bigHeight / 9.0) : (int)(bigWidth / 16.0);
 
             DrawPanel.Size = new Size(fraction * 16, fraction * 9);
             DrawPanel.Location = new Point((int)((bigWidth - DrawPanel.Width ) / 2.0), 
@@ -94,7 +93,7 @@ namespace Optimator.Tabs.Compile
             Panel.Width = Width - bigWidth;
             DisplayPanel.Height = Height - bigHeight - ToolStrip.Height;
 
-            int panelWidth = (int)(UpArrowImg.Parent.Width / 4.0);
+            var panelWidth = (int)(UpArrowImg.Parent.Width / 4.0);
             UpArrowImg.Location = new Point((int)(2 * panelWidth + (panelWidth - UpArrowImg.Width / 2.0)),
                 (int)((UpArrowImg.Parent.Height - UpArrowImg.Height) / 2.0));
 
@@ -119,7 +118,7 @@ namespace Optimator.Tabs.Compile
         /// </summary>
         private void SelectButton(ToolStripButton btn)
         {
-            bool check = btn.Checked;
+            var check = btn.Checked;
             SaveBtn.Checked = false;
             AddSceneBtn.Checked = false;
             SettingsBtn.Checked = false;
@@ -208,7 +207,7 @@ namespace Optimator.Tabs.Compile
             baseScene.RunScene(workingTime);
 
             // Draw Parts
-            foreach (Part part in baseScene.PartsList)
+            foreach (var part in baseScene.PartsList)
             {
                 part.Draw(g);
             }
@@ -220,9 +219,9 @@ namespace Optimator.Tabs.Compile
         /// <returns>Bitmap of current scene view</returns>
         public Bitmap DrawOnBitmap()
         {
-            Bitmap bitmap = new Bitmap(DrawPanel.Width, DrawPanel.Height);
+            var bitmap = new Bitmap(DrawPanel.Width, DrawPanel.Height);
             g = Graphics.FromImage(bitmap);
-            using (SolidBrush brush = new SolidBrush(backgroundColor))
+            using (var brush = new SolidBrush(backgroundColor))
             {
                 g.FillRectangle(brush, 0, 0, bitmap.Width, bitmap.Height);
             }

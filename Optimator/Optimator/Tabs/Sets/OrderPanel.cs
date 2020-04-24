@@ -31,13 +31,13 @@ namespace Optimator.Tabs.Sets
         /// </summary>
         public override void Resize()
         {
-            float widthPercent = 0.05F;
-            float bigWidthPercent = 0.8F;
-            float heightPercent = 0.2F;
+            var widthPercent = 0.05F;
+            var bigWidthPercent = 0.8F;
+            var heightPercent = 0.2F;
 
-            int smallWidth = (int)(Width * widthPercent);
-            int bigWidth = (int)(Width * bigWidthPercent);
-            int bigHeight = (int)(Height * heightPercent);
+            var smallWidth = (int)(Width * widthPercent);
+            var bigWidth = (int)(Width * bigWidthPercent);
+            var bigHeight = (int)(Height * heightPercent);
 
             OrderLbl.Location = new Point(smallWidth, smallWidth);
 
@@ -57,12 +57,12 @@ namespace Optimator.Tabs.Sets
                 return;
             }
 
-            int selectedIndex = Owner.WIP.PiecesList.IndexOf(Owner.selected);
-            bool condition = sender == UpBtn ? selectedIndex != -1 && selectedIndex < Owner.WIP.PiecesList.Count - 1 : selectedIndex > 0;
+            var selectedIndex = Owner.WIP.PiecesList.IndexOf(Owner.selected);
+            var condition = sender == UpBtn ? selectedIndex != -1 && selectedIndex < Owner.WIP.PiecesList.Count - 1 : selectedIndex > 0;
             if (condition)
             {
-                int change = sender == UpBtn ? 1 : -1;
-                Piece holding = Owner.WIP.PiecesList[selectedIndex];
+                var change = sender == UpBtn ? 1 : -1;
+                var holding = Owner.WIP.PiecesList[selectedIndex];
                 Owner.WIP.PiecesList[selectedIndex] = Owner.WIP.PiecesList[selectedIndex + change];
                 Owner.WIP.PiecesList[selectedIndex + change] = holding;
                 Owner.DisplayDrawings();

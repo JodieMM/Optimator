@@ -78,17 +78,17 @@ namespace Optimator.Tabs.Sets
         /// </summary>
         public override void Resize()
         {
-            float widthPercent = Width > 950 ? 0.25F : 0.3F;
-            float widthBigPercent = Width > 950 ? 0.3F : 0.33F;
-            float heightPercent = Height > 560 ? 0.45F : 0.4F;
+            var widthPercent = Width > 950 ? 0.25F : 0.3F;
+            var widthBigPercent = Width > 950 ? 0.3F : 0.33F;
+            var heightPercent = Height > 560 ? 0.45F : 0.4F;
 
-            int bigWidth = (int)(Width * widthPercent);
-            int largeWidth = (int)(Width * widthBigPercent);
-            int bigHeight = (int)(Height * heightPercent);
-            int bigLength = bigWidth > bigHeight ? bigHeight : bigWidth;
+            var bigWidth = (int)(Width * widthPercent);
+            var largeWidth = (int)(Width * widthBigPercent);
+            var bigHeight = (int)(Height * heightPercent);
+            var bigLength = bigWidth > bigHeight ? bigHeight : bigWidth;
 
-            int lilWidth = (int)((Width - 2 * bigLength - largeWidth) / 3.0);
-            int lilHeight = (int)((Height - 2 * bigLength - ToolStrip.Height) / 3.0);
+            var lilWidth = (int)((Width - 2 * bigLength - largeWidth) / 3.0);
+            var lilHeight = (int)((Height - 2 * bigLength - ToolStrip.Height) / 3.0);
 
             DrawBase.Size = DrawRight.Size = DrawDown.Size = new Size(bigLength, bigLength);
             DrawBase.Location = new Point(lilWidth, lilHeight + ToolStrip.Height);
@@ -185,7 +185,7 @@ namespace Optimator.Tabs.Sets
         {
             if (CheckSingularBasePiece())
             {
-                PreviewTab newTab = new PreviewTab(Owner, WIP);
+                var newTab = new PreviewTab(Owner, WIP);
                 Utils.NewTabPage(newTab, "Preview " + WIP.Name);
                 newTab.Parent.Enter += newTab.RefreshDrawPanel;
             }
@@ -248,7 +248,7 @@ namespace Optimator.Tabs.Sets
             // Move the Piece's Join            
             if (GetIfJoinBtnPressed())
             {
-                State baseState = WIP.BasePiece.State;
+                var baseState = WIP.BasePiece.State;
                 FindCorrectStates(sent);
                 var clickedJoin = Utils.FindClickedJoin(new List<Join>(WIP.FindPieceJoins(selected).Keys),
                     e.X, e.Y, SelectFromTop);
@@ -365,7 +365,7 @@ namespace Optimator.Tabs.Sets
                     FindCorrectStates(sent);
                     for (int index = 0; index < selected.Data.Count; index++)
                     {
-                        State modState = Utils.CloneState(selected.State);
+                        var modState = Utils.CloneState(selected.State);
                         modState.X += xChange;
                         modState.Y += yChange;
                         selected.Draw(board, modState, new ColourState(selected.ColourState,
@@ -533,7 +533,7 @@ namespace Optimator.Tabs.Sets
             turned = DrawDown.CreateGraphics();
 
             var boards = new Graphics[3] { original, rotated, turned };
-            State baseState = WIP.BasePiece.State;
+            var baseState = WIP.BasePiece.State;
 
             // For Each Angle
             for (int angle = 0; angle < 3; angle++)
@@ -541,7 +541,7 @@ namespace Optimator.Tabs.Sets
                 FindCorrectStates(angle);
 
                 // Draw Pieces
-                foreach (Piece piece in WIP.PiecesList)
+                foreach (var piece in WIP.PiecesList)
                 {
                     // Moving
                     if (selected != null && piece == selected && movingFar)
@@ -573,7 +573,7 @@ namespace Optimator.Tabs.Sets
                 if (GetIfJoinBtnPressed())
                 {
                     var joinsDraw = WIP.FindPieceJoins(selected);
-                    foreach (KeyValuePair<Join, bool> joinDraw in joinsDraw)
+                    foreach (var joinDraw in joinsDraw)
                     {
                         joinDraw.Key.Draw(joinDraw.Key == selectedJoin ? Consts.select : joinDraw.Value ? Consts.option1 : Consts.option2, boards[angle]);
                     }
@@ -627,7 +627,7 @@ namespace Optimator.Tabs.Sets
                 return true;
             }
             WIP.BasePiece = null;
-            foreach (Piece piece in WIP.PiecesList)
+            foreach (var piece in WIP.PiecesList)
             {
                 if (WIP.JoinedPieces.ContainsKey(piece) && !WIP.JoinsIndex.ContainsKey(piece))
                 {
@@ -674,7 +674,7 @@ namespace Optimator.Tabs.Sets
             }
             if (WIP.JoinsIndex.ContainsKey(piece))
             {
-                Piece joinedTo = WIP.JoinsIndex[piece].B;
+                var joinedTo = WIP.JoinsIndex[piece].B;
                 WIP.JoinedPieces[joinedTo].Remove(piece);
                 WIP.JoinsIndex.Remove(piece);
             }

@@ -32,11 +32,11 @@ namespace Optimator.Forms
         /// </summary>
         public override void Resize()
         {
-            float smallWidthPercent = 0.02F;
-            float heightPercent = 0.45F;
+            var smallWidthPercent = 0.02F;
+            var heightPercent = 0.45F;
 
-            int smallWidth = (int)(Width * smallWidthPercent);
-            int bigHeight = (int)(Height * heightPercent);
+            var smallWidth = (int)(Width * smallWidthPercent);
+            var bigHeight = (int)(Height * heightPercent);
 
             SettingsLbl.Location = new Point(smallWidth, smallWidth + ToolStrip.Height);
             VersionLbl.Location = new Point(smallWidth, smallWidth * 2 + SettingsLbl.Height + ToolStrip.Height);
@@ -117,7 +117,7 @@ namespace Optimator.Forms
         /// <param name="e"></param>
         private void BackColourBox_Click(object sender, EventArgs e)
         {
-            ColorDialog MyDialog = new ColorDialog
+            var MyDialog = new ColorDialog
             {
                 Color = BackColourBox.BackColor,
                 FullOpen = true

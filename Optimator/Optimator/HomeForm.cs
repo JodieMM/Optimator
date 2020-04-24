@@ -39,7 +39,7 @@ namespace Optimator
             TabControl.Height = Height;
             foreach (TabPage page in TabControl.Controls)
             {
-                foreach (Control cntl in page.Controls)
+                foreach (var cntl in page.Controls)
                 {
                     if (cntl is TabPageControl)
                     {
@@ -64,7 +64,7 @@ namespace Optimator
         /// <param name="e"></param>
         private void NewPieceTSMI_Click(object sender, EventArgs e)
         {
-            PiecesTab tab = new PiecesTab(this);
+            var tab = new PiecesTab(this);
             AddTabPage("New Piece", tab);
             tab.Resize();
         }
@@ -76,7 +76,7 @@ namespace Optimator
         /// <param name="e"></param>
         private void NewSetTSMI_Click(object sender, EventArgs e)
         {
-            SetsTab tab = new SetsTab(this);
+            var tab = new SetsTab(this);
             AddTabPage("New Set", tab);
             tab.Resize();
         }
@@ -88,7 +88,7 @@ namespace Optimator
         /// <param name="e"></param>
         private void NewSceneTSMI_Click(object sender, EventArgs e)
         {
-            ScenesTab tab = new ScenesTab(this);
+            var tab = new ScenesTab(this);
             AddTabPage("New Scene", tab);
             tab.Resize();
         }
@@ -100,7 +100,7 @@ namespace Optimator
         /// <param name="e"></param>
         private void NewVideoTSMI_Click(object sender, EventArgs e)
         {
-            CompileTab tab = new CompileTab(this);
+            var tab = new CompileTab(this);
             AddTabPage("New Video", tab);
             tab.Resize();
         }
@@ -116,7 +116,7 @@ namespace Optimator
         /// <param name="e"></param>
         private void OpenPieceTSMI_Click(object sender, EventArgs e)
         {
-            OpenDialog open = new OpenDialog(this, "Piece", new PiecesTab(this));
+            var open = new OpenDialog(this, "Piece", new PiecesTab(this));
             AddTabPage("Add Piece", open);
             open.Resize();
         }
@@ -128,7 +128,7 @@ namespace Optimator
         /// <param name="e"></param>
         private void OpenSetTSMI_Click(object sender, EventArgs e)
         {
-            OpenDialog open = new OpenDialog(this, "Set", new SetsTab(this));
+            var open = new OpenDialog(this, "Set", new SetsTab(this));
             AddTabPage("Add Set", open);
             open.Resize();
         }
@@ -140,7 +140,7 @@ namespace Optimator
         /// <param name="e"></param>
         private void OpenSceneTSMI_Click(object sender, EventArgs e)
         {
-            OpenDialog open = new OpenDialog(this, "Scene", new ScenesTab(this));
+            var open = new OpenDialog(this, "Scene", new ScenesTab(this));
             AddTabPage("Add Scene", open);
             open.Resize();
         }
@@ -156,7 +156,7 @@ namespace Optimator
         /// <param name="e"></param>
         private void SettingsTSMI_Click(object sender, EventArgs e)
         {
-            SettingsTab tab = new SettingsTab(this);
+            var tab = new SettingsTab(this);
             AddTabPageIfNew("Settings", tab);
             tab.DisplaySettings();
         }
@@ -190,7 +190,7 @@ namespace Optimator
         {
             if (Utils.CheckValidFolder())
             {
-                TabPage page = new TabPage(name);
+                var page = new TabPage(name);
                 tab.Dock = DockStyle.Fill;
                 page.Controls.Add(tab);
                 TabControl.Controls.Add(page);
@@ -207,11 +207,11 @@ namespace Optimator
         /// <param name="tab">The tab to add</param>
         public void AddTabPageIfNew(string name, TabPageControl tab)
         {
-            bool found = false;
-            int index = 0;
+            var found = false;
+            var index = 0;
             while (!found && index < TabControl.TabPages.Count)
             {
-                foreach (Control cntl in TabControl.TabPages[index].Controls)
+                foreach (var cntl in TabControl.TabPages[index].Controls)
                 {
                     if (tab.GetType() == cntl.GetType())
                     {
@@ -234,8 +234,8 @@ namespace Optimator
         /// <param name="tab"></param>
         public void RemoveTabPage(UserControl tab)
         {
-            bool found = false;
-            int index = 0;
+            var found = false;
+            var index = 0;
             while (!found && index < TabControl.Controls.Count)
             {
                 if (TabControl.Controls[index].Contains(tab))

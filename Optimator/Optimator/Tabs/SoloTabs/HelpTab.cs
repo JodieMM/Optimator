@@ -31,11 +31,11 @@ namespace Optimator.Forms
         /// </summary>
         public override void Resize()
         {
-            float smallWidthPercent = 0.02F;
-            float heightPercent = 0.4F;
+            var smallWidthPercent = 0.02F;
+            var heightPercent = 0.4F;
 
-            int smallWidth = (int)(Width * smallWidthPercent);
-            int bigHeight = (int)(Height * heightPercent);
+            var smallWidth = (int)(Width * smallWidthPercent);
+            var bigHeight = (int)(Height * heightPercent);
 
             HelpLbl.Location = new Point(smallWidth, smallWidth + ToolStrip.Height);
             VersionLbl.Location = new Point(smallWidth, smallWidth * 2 + HelpLbl.Height + ToolStrip.Height);

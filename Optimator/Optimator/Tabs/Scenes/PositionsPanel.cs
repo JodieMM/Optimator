@@ -34,13 +34,13 @@ namespace Optimator.Tabs.Scenes
         /// </summary>
         public override void Resize()
         {
-            float bigWidthPercent = 0.9F;
-            float widthPercent = 0.05F;
-            float bigHeightPercent = 0.75F;
+            var bigWidthPercent = 0.9F;
+            var widthPercent = 0.05F;
+            var bigHeightPercent = 0.75F;
 
-            int smallWidth = (int)(Width * widthPercent);
-            int bigWidth = (int)(Width * bigWidthPercent);
-            int bigHeight = (int)(Height * bigHeightPercent);
+            var smallWidth = (int)(Width * widthPercent);
+            var bigWidth = (int)(Width * bigWidthPercent);
+            var bigHeight = (int)(Height * bigHeightPercent);
 
             PositionsLbl.Location = new Point(smallWidth, smallWidth);
             TableLayoutPnl.Location = new Point(smallWidth, smallWidth * 3 + PositionsLbl.Height);
@@ -59,7 +59,7 @@ namespace Optimator.Tabs.Scenes
             {
                 return;
             }
-            int selectedIndex = Owner.WIP.PartsList.IndexOf(Owner.selected);
+            var selectedIndex = Owner.WIP.PartsList.IndexOf(Owner.selected);
             if (selectedIndex == -1 || selectedIndex == Owner.WIP.PartsList.Count - 1)
             {
                 return;
@@ -83,7 +83,7 @@ namespace Optimator.Tabs.Scenes
             {
                 return;
             }
-            int selectedIndex = Owner.WIP.PartsList.IndexOf(Owner.selected);
+            var selectedIndex = Owner.WIP.PartsList.IndexOf(Owner.selected);
             if (selectedIndex == -1 || selectedIndex == 0)
             {
                 return;

@@ -86,12 +86,12 @@ namespace Optimator.Tabs.Scenes
 
         public override void Resize()
         {
-            float widthPercent = 0.75F;
-            float heightPercent = 0.75F;
+            var widthPercent = 0.75F;
+            var heightPercent = 0.75F;
 
-            int bigWidth = (int)(Width * widthPercent);
-            int bigHeight = (int)((Height - ToolStrip.Height) * heightPercent);
-            int fraction = (bigWidth / 16.0) > (bigHeight / 9.0) ? (int)(bigHeight / 9.0) : (int)(bigWidth / 16.0);
+            var bigWidth = (int)(Width * widthPercent);
+            var bigHeight = (int)((Height - ToolStrip.Height) * heightPercent);
+            var fraction = (bigWidth / 16.0) > (bigHeight / 9.0) ? (int)(bigHeight / 9.0) : (int)(bigWidth / 16.0);
 
             DrawPanel.Size = new Size(fraction * 16, fraction * 9);
             DrawPanel.Location = new Point((int)((bigWidth - DrawPanel.Width ) / 2.0), 
@@ -100,7 +100,7 @@ namespace Optimator.Tabs.Scenes
             Panel.Width = Width - bigWidth;
             DisplayPanel.Height = Height - bigHeight - ToolStrip.Height;
 
-            int panelWidth = (int)(UpArrowImg.Parent.Width / 4.0);
+            var panelWidth = (int)(UpArrowImg.Parent.Width / 4.0);
             UpArrowImg.Location = new Point((int)(panelWidth + (panelWidth - UpArrowImg.Width / 2.0)),
                 (int)((UpArrowImg.Parent.Height - UpArrowImg.Height) / 2.0));
 
@@ -126,7 +126,7 @@ namespace Optimator.Tabs.Scenes
         /// </summary>
         private void SelectButton(ToolStripButton btn)
         {
-            bool check = btn.Checked;
+            var check = btn.Checked;
             SaveBtn.Checked = false;
             AddPartBtn.Checked = false;
             PositionsBtn.Checked = false;
@@ -453,10 +453,10 @@ namespace Optimator.Tabs.Scenes
         /// <returns>Time as string</returns>
         private string ConvertTimeToText()
         {
-            string text = "";
-            int hr = (int)Math.Floor(WIP.TimeLength / 3600);
-            int min = (int)Math.Floor((WIP.TimeLength - hr * 3600) / 60);
-            int s = (int)Math.Floor(WIP.TimeLength - (hr * 3600 + min * 60));
+            var text = "";
+            var hr = (int)Math.Floor(WIP.TimeLength / 3600);
+            var min = (int)Math.Floor((WIP.TimeLength - hr * 3600) / 60);
+            var s = (int)Math.Floor(WIP.TimeLength - (hr * 3600 + min * 60));
 
             if (hr > 0)
             {

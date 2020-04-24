@@ -55,17 +55,17 @@ namespace Optimator
         /// </summary>
         public override void Resize()
         {
-            float widthPercent = Width > 950 ? 0.25F : 0.3F;
-            float widthBigPercent = Width > 950 ? 0.3F : 0.33F;
-            float heightPercent = Height > 560 ? 0.45F : 0.4F;
+            var widthPercent = Width > 950 ? 0.25F : 0.3F;
+            var widthBigPercent = Width > 950 ? 0.3F : 0.33F;
+            var heightPercent = Height > 560 ? 0.45F : 0.4F;
 
-            int bigWidth = (int)(Width * widthPercent);
-            int largeWidth = (int)(Width * widthBigPercent);
-            int bigHeight = (int)(Height * heightPercent);
-            int bigLength = bigWidth > bigHeight ? bigHeight : bigWidth;
+            var bigWidth = (int)(Width * widthPercent);
+            var largeWidth = (int)(Width * widthBigPercent);
+            var bigHeight = (int)(Height * heightPercent);
+            var bigLength = bigWidth > bigHeight ? bigHeight : bigWidth;
 
-            int lilWidth = (int)((Width - 2 * bigLength - largeWidth) / 3.0);
-            int lilHeight = (int)((Height - 2 * bigLength - ToolStrip.Height) / 3.0);
+            var lilWidth = (int)((Width - 2 * bigLength - largeWidth) / 3.0);
+            var lilHeight = (int)((Height - 2 * bigLength - ToolStrip.Height) / 3.0);
 
             DrawBase.Size = DrawRight.Size = DrawDown.Size = new Size(bigLength, bigLength);
             DrawBase.Location = new Point(lilWidth, lilHeight + ToolStrip.Height);           
@@ -176,9 +176,9 @@ namespace Optimator
         {
             if (CheckPiecesValid())
             {
-                Piece clone = Utils.ClonePiece(WIP);
+                var clone = Utils.ClonePiece(WIP);
                 Utils.CentrePieceOnAxis(clone);
-                PreviewTab newTab = new PreviewTab(Owner, clone);
+                var newTab = new PreviewTab(Owner, clone);
                 Utils.NewTabPage(newTab, "Preview " + WIP.Name);
                 newTab.Parent.Enter += newTab.RefreshDrawPanel;
             }            
@@ -212,17 +212,17 @@ namespace Optimator
         /// <param name="e"></param>
         private void DrawBoard_MouseDown(object sender, MouseEventArgs e)
         {
-            int sent = sender == DrawBase ? 0 : sender == DrawRight ? 1 : 2;
+            var sent = sender == DrawBase ? 0 : sender == DrawRight ? 1 : 2;
      
             // Select Spot to Move
             if (MovePointBtn.Checked)
             {
-                int closestIndex = Utils.FindClosestIndex(WIP.Data, sent, e.X, e.Y);
+                var closestIndex = Utils.FindClosestIndex(WIP.Data, sent, e.X, e.Y);
                 if (closestIndex != -1)
                 {
                     SelectSpot(WIP.Data[closestIndex]);
                     moving = 1 + sent;
-                    foreach(Control cntl in Panel.Controls)
+                    foreach(var cntl in Panel.Controls)
                     {
                         if (cntl is MovePointPanel)
                         {
@@ -238,11 +238,11 @@ namespace Optimator
             // Select Spot for Outline Updates
             else if (OutlineBtn.Checked)
             {
-                int closestIndex = Utils.FindClosestIndex(WIP.Data, sent, e.X, e.Y);
+                var closestIndex = Utils.FindClosestIndex(WIP.Data, sent, e.X, e.Y);
                 if (closestIndex != -1)
                 {
                     SelectSpot(WIP.Data[closestIndex]);
-                    foreach (Control cntl in Panel.Controls)
+                    foreach (var cntl in Panel.Controls)
                     {
                         if (cntl is OutlinePanel)
                         {
@@ -258,7 +258,7 @@ namespace Optimator
             // Select Spot to Change its Fixed State
             else if (FixedBtn.Checked)
             {
-                int closestIndex = Utils.FindClosestIndex(WIP.Data, sent, e.X, e.Y);
+                var closestIndex = Utils.FindClosestIndex(WIP.Data, sent, e.X, e.Y);
                 if (closestIndex != -1)
                 {
                     SelectSpot(WIP.Data[closestIndex]);
@@ -268,7 +268,7 @@ namespace Optimator
             // Select Spot to Erase
             else if (EraseBtn.Checked)
             {
-                int closestIndex = Utils.FindClosestIndex(WIP.Data, sent, e.X, e.Y);
+                var closestIndex = Utils.FindClosestIndex(WIP.Data, sent, e.X, e.Y);
                 if (closestIndex != -1)
                 {
                     SelectSpot(WIP.Data[closestIndex]);
@@ -320,7 +320,7 @@ namespace Optimator
         /// <param name="e"></param>
         private void DrawBoard_MouseUp(object sender, MouseEventArgs e)
         {
-            int sent = sender == DrawBase ? 0 : sender == DrawRight ? 1 : 2;
+            var sent = sender == DrawBase ? 0 : sender == DrawRight ? 1 : 2;
 
             if (selectedSpot != null && movingFar && moving == 1 + sent)
             {
@@ -355,7 +355,7 @@ namespace Optimator
                 return;
             }
 
-            int sent = sender == DrawBase ? 0 : sender == DrawRight ? 1 : 2;
+            var sent = sender == DrawBase ? 0 : sender == DrawRight ? 1 : 2;
 
             if (!movingFar)
             {
@@ -366,7 +366,7 @@ namespace Optimator
             if (movingFar)
             {
                 DisplayDrawings();
-                Spot shadow = new Spot(sent == 2 ? selectedSpot.X : e.X, sent == 1 ? selectedSpot.Y : e.Y);
+                var shadow = new Spot(sent == 2 ? selectedSpot.X : e.X, sent == 1 ? selectedSpot.Y : e.Y);
                 if (sent != 2)
                 {
                     shadow.Draw(1, Consts.shadowShade, rotated);
@@ -397,7 +397,7 @@ namespace Optimator
                     // Delete Spot
                     if (selectedSpot != null)
                     {
-                        int selectedIndex = WIP.Data.IndexOf(selectedSpot);
+                        var selectedIndex = WIP.Data.IndexOf(selectedSpot);
                         WIP.Data.Remove(selectedSpot);
                         if (WIP.Data.Count == 0)
                         {
@@ -441,11 +441,11 @@ namespace Optimator
         /// <param name="angle">The angle to be drawn</param>
         private void DrawPoints(Graphics board, int angle)
         {
-            foreach (Spot spot in WIP.Data)
+            foreach (var spot in WIP.Data)
             {
                 if (spot.DrawnLevel == 0)
                 {
-                    Color color = FixedBtn.Checked ? (spot.Solid == Consts.solidOptions[0]) ? Consts.option1 : Consts.option2
+                    var color = FixedBtn.Checked ? (spot.Solid == Consts.solidOptions[0]) ? Consts.option1 : Consts.option2
                         : (selectedSpot == spot) ? Consts.select : Color.Black;
                     spot.Draw(angle, color, board);
                 }
@@ -466,11 +466,11 @@ namespace Optimator
             turned = DrawDown.CreateGraphics();
 
             // Draw Sketches
-            foreach (KeyValuePair<Part, bool> sketch in Sketches)
+            foreach (var sketch in Sketches)
             {
                 if (sketch.Value)
                 {
-                    Part part = sketch.Key;
+                    var part = sketch.Key;
                     part.Draw(original);
                     part.Draw(rotated, new State(part.ToPiece().State, 1, part.ToPiece().State.R + 90));
                     part.Draw(turned, new State(part.ToPiece().State, 2, part.ToPiece().State.T + 90));
@@ -513,7 +513,7 @@ namespace Optimator
         private void Deselect()
         {
             selectedSpot = null;
-            foreach (Control cntl in Panel.Controls)
+            foreach (var cntl in Panel.Controls)
             {
                 if (cntl is OutlinePanel)
                 {
@@ -567,9 +567,9 @@ namespace Optimator
         /// <returns>True if only one valley and peak</returns>
         private bool CheckShapeDoubleBack(List<Spot> spots, int angle, string name)
         {
-            bool bigger = spots[0].GetCoord(angle) < spots[1].GetCoord(angle);
-            int switchCount = 0;
-            for (int index = 0; index < spots.Count - 1; index++)
+            var bigger = spots[0].GetCoord(angle) < spots[1].GetCoord(angle);
+            var switchCount = 0;
+            for (var index = 0; index < spots.Count - 1; index++)
             {
                 if (spots[index].GetCoord(angle) != spots[Utils.NextIndex(spots, index)].GetCoord(angle))
                 {

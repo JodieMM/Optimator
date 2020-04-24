@@ -32,9 +32,9 @@ namespace Optimator.Tabs.Sets
         /// </summary>
         public override void Resize()
         {
-            float widthPercent = 0.05F;
+            var widthPercent = 0.05F;
 
-            int smallWidth = (int)(Width * widthPercent);
+            var smallWidth = (int)(Width * widthPercent);
 
             SettingsLbl.Location = new Point(smallWidth, smallWidth);
             SelectFromTopCb.Location = new Point(smallWidth, smallWidth * 3 + SettingsLbl.Height);

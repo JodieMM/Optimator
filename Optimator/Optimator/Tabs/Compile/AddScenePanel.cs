@@ -32,13 +32,13 @@ namespace Optimator.Forms.Compile
         /// </summary>
         public override void Resize()
         {
-            float widthPercent = 0.9F;
-            float smallWidthPercent = 0.05F;
-            float heightPercent = 0.3F;
+            var widthPercent = 0.9F;
+            var smallWidthPercent = 0.05F;
+            var heightPercent = 0.3F;
 
-            int bigWidth = (int)(Width * widthPercent);
-            int lilWidth = (int)(Width * smallWidthPercent);
-            int bigHeight = (int)(Height * heightPercent);
+            var bigWidth = (int)(Width * widthPercent);
+            var lilWidth = (int)(Width * smallWidthPercent);
+            var bigHeight = (int)(Height * heightPercent);
 
             AddSceneLbl.Location = new Point(lilWidth, lilWidth);
 

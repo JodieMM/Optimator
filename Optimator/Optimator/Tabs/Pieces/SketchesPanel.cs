@@ -1,6 +1,5 @@
 ﻿using Optimator.Tabs.SoloTabs;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -23,7 +22,7 @@ namespace Optimator.Tabs.Pieces
             InitializeComponent();
             Owner = owner;
 
-            foreach (KeyValuePair<Part, bool> sketch in Owner.Sketches)
+            foreach (var sketch in Owner.Sketches)
             {
                 SketchLb.Items.Add(sketch.Key);
                 SketchLb.SetItemChecked(SketchLb.Items.Count - 1, sketch.Value);
@@ -39,12 +38,12 @@ namespace Optimator.Tabs.Pieces
         /// </summary>
         public override void Resize()
         {
-            float widthPercent = 0.05F;
-            int widthMultiplier = Height < 650 ? 16 : 18;
-            float heightPercent = 0.8F;
+            var widthPercent = 0.05F;
+            var widthMultiplier = Height < 650 ? 16 : 18;
+            var heightPercent = 0.8F;
 
-            int smallWidth = (int)(Width * widthPercent);
-            int bigHeight = (int)(Height * heightPercent);
+            var smallWidth = (int)(Width * widthPercent);
+            var bigHeight = (int)(Height * heightPercent);
 
             SketchesLbl.Location = new Point(smallWidth, smallWidth);
 
@@ -78,7 +77,7 @@ namespace Optimator.Tabs.Pieces
             {
                 return;
             }
-            Part selectedPart = (Part)SketchLb.SelectedItem;
+            var selectedPart = (Part)SketchLb.SelectedItem;
 
             if (sender == DeleteSketchBtn)
             {

@@ -33,11 +33,11 @@ namespace Optimator.Forms.Compile
         /// </summary>
         public override void Resize()
         {
-            float widthPercent = 0.9F;
-            float heightPercent = 0.1F;
+            var widthPercent = 0.9F;
+            var heightPercent = 0.1F;
 
-            int bigWidth = (int)(Width * widthPercent);
-            int lilWidth = (int)((Width - bigWidth) / 2.0);
+            var bigWidth = (int)(Width * widthPercent);
+            var lilWidth = (int)((Width - bigWidth) / 2.0);
 
             SaveLbl.Location = new Point(lilWidth, lilWidth);
 
@@ -105,13 +105,13 @@ namespace Optimator.Forms.Compile
                 Directory.CreateDirectory(directory);
 
                 // Save Images
-                int numFrames = 0;
-                decimal timeIncrement = 1 / Owner.FPS;
+                var numFrames = 0;
+                var timeIncrement = 1 / Owner.FPS;
                 for (Owner.sceneIndex = 0; Owner.sceneIndex < Owner.videoScenes.Count; Owner.sceneIndex++)
                 {
                     for (Owner.workingTime = 0; Owner.workingTime <= Owner.videoScenes[Owner.sceneIndex].TimeLength; Owner.workingTime += timeIncrement)
                     {
-                        Bitmap bitmap = Owner.DrawOnBitmap();
+                        var bitmap = Owner.DrawOnBitmap();
                         bitmap.Save(Utils.GetDirectory(directory, numFrames.ToString(), Consts.Png), System.Drawing.Imaging.ImageFormat.Png);
                         numFrames++;
                     }

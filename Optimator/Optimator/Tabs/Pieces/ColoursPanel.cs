@@ -34,11 +34,11 @@ namespace Optimator.Tabs.Pieces
         /// </summary>
         public override void Resize()
         {
-            float widthPercent = 0.05F;
-            float heightPercent = 0.3F;
+            var widthPercent = 0.05F;
+            var heightPercent = 0.3F;
 
-            int smallWidth = (int)(Width * widthPercent);
-            int bigHeight = (int)(Height * heightPercent);
+            var smallWidth = (int)(Width * widthPercent);
+            var bigHeight = (int)(Height * heightPercent);
 
             ColoursLbl.Location = new Point(smallWidth, smallWidth);
             OutlineBox.Height = FillBox.Height = (int)(bigHeight / 4.0);
@@ -54,7 +54,7 @@ namespace Optimator.Tabs.Pieces
         /// <param name="e"></param>
         private void FillBox_Click(object sender, EventArgs e)
         {
-            ColorDialog MyDialog = new ColorDialog
+            var MyDialog = new ColorDialog
             {
                 Color = FillBox.BackColor,
                 FullOpen = true
@@ -74,7 +74,7 @@ namespace Optimator.Tabs.Pieces
         /// <param name="e"></param>
         private void OutlineBox_Click(object sender, EventArgs e)
         {
-            ColorDialog MyDialog = new ColorDialog
+            var MyDialog = new ColorDialog
             {
                 Color = OutlineBox.BackColor,
                 FullOpen = true

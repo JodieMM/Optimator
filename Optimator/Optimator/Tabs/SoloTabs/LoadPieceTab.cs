@@ -47,17 +47,17 @@ namespace Optimator.Tabs.SoloTabs
         /// </summary>
         public override void Resize()
         {
-            float widthPercent = 0.65F;
-            float widthSmallPercent = 0.3F;
-            float heightPercent = 0.9F;
+            var widthPercent = 0.65F;
+            var widthSmallPercent = 0.3F;
+            var heightPercent = 0.9F;
 
-            int bigWidth = (int)(Width * widthPercent);
-            int bigHeight = (int)((Height - ToolStrip.Height) * heightPercent);
-            int bigLength = bigHeight < bigWidth ? bigHeight : bigWidth;
+            var bigWidth = (int)(Width * widthPercent);
+            var bigHeight = (int)((Height - ToolStrip.Height) * heightPercent);
+            var bigLength = bigHeight < bigWidth ? bigHeight : bigWidth;
 
-            int smallWidth = (int)(Width * widthSmallPercent);
-            int lilWidth = (int)((Width - smallWidth - bigLength) / 4.0);
-            int smallHeight = (int)((Height - ToolStrip.Height - bigLength) / 2.0);
+            var smallWidth = (int)(Width * widthSmallPercent);
+            var lilWidth = (int)((Width - smallWidth - bigLength) / 4.0);
+            var smallHeight = (int)((Height - ToolStrip.Height - bigLength) / 2.0);
 
             DrawPanel.Size = new Size(bigLength, bigLength);
             DrawPanel.Location = new Point(lilWidth, smallHeight + ToolStrip.Height);
@@ -125,7 +125,7 @@ namespace Optimator.Tabs.SoloTabs
         {
             if (loaded != null && sender is Button)
             {
-                Button clicked = (Button)sender;
+                var clicked = (Button)sender;
                 clicked.BackColor = (clicked.BackColor == button) ? selected : button;
             }
         }

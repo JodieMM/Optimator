@@ -37,11 +37,11 @@ namespace Optimator.Tabs.Pieces
         /// </summary>
         public override void Resize()
         {
-            float widthPercent = 0.05F;
-            float heightPercent = 0.2F;
+            var widthPercent = 0.05F;
+            var heightPercent = 0.2F;
 
-            int smallWidth = (int)(Width * widthPercent);
-            int bigHeight = (int)(Height * heightPercent);
+            var smallWidth = (int)(Width * widthPercent);
+            var bigHeight = (int)(Height * heightPercent);
 
             MovePointLbl.Location = new Point(smallWidth, smallWidth);
 

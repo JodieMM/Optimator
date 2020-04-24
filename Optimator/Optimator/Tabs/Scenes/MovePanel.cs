@@ -35,13 +35,13 @@ namespace Optimator.Tabs.Scenes
         /// </summary>
         public override void Resize()
         {
-            float bigWidthPercent = 0.9F;
-            float widthPercent = 0.05F;
-            float bigHeightPercent = 0.75F;
+            var bigWidthPercent = 0.9F;
+            var widthPercent = 0.05F;
+            var bigHeightPercent = 0.75F;
 
-            int smallWidth = (int)(Width * widthPercent);
-            int bigWidth = (int)(Width * bigWidthPercent);
-            int bigHeight = (int)(Height * bigHeightPercent);
+            var smallWidth = (int)(Width * widthPercent);
+            var bigWidth = (int)(Width * bigWidthPercent);
+            var bigHeight = (int)(Height * bigHeightPercent);
 
             MoveLbl.Location = new Point(smallWidth, smallWidth);
             TableLayoutPnl.Location = new Point(smallWidth, smallWidth * 3 + MoveLbl.Height);
@@ -97,7 +97,7 @@ namespace Optimator.Tabs.Scenes
                 }
                 PreviewBtn.BackColor = pressed;
                 Owner.WIP.RunScene(Owner.GetCurrentTimeUpDownValue() + SecondsUpDown.Value);
-                Change tempChange = new Change(Owner.GetCurrentTimeUpDownValue(), ChangeTypeCb.Text,
+                var tempChange = new Change(Owner.GetCurrentTimeUpDownValue(), ChangeTypeCb.Text,
                     Owner.selected.ToPiece(), (double)AnimationAmountTb.Value, SecondsUpDown.Value, Owner.WIP);
                 tempChange.Run(Owner.GetCurrentTimeUpDownValue() + SecondsUpDown.Value);
             }
@@ -118,8 +118,8 @@ namespace Optimator.Tabs.Scenes
         {
             AnimationLb.Items.Clear();
             AnimationLb.Items.Add("Piece: Action: How Much: Start");
-            List<string> back = new List<string>();
-            foreach (Change change in Owner.WIP.Changes)
+            var back = new List<string>();
+            foreach (var change in Owner.WIP.Changes)
             {
                 string summary = "";
                 summary += change.AffectedPiece.Name + " :" + change.Action + " :" +
@@ -151,7 +151,7 @@ namespace Optimator.Tabs.Scenes
             int counter = 0;
 
             // Search Running Changes
-            foreach (Change change in Owner.WIP.Changes)
+            foreach (var change in Owner.WIP.Changes)
             {
                 if (Owner.GetCurrentTimeUpDownValue() >= change.StartTime &&
                     Owner.GetCurrentTimeUpDownValue() <= change.StartTime + change.HowLong)
@@ -165,7 +165,7 @@ namespace Optimator.Tabs.Scenes
                 }
             }
             // Search Back Changes
-            foreach (Change change in Owner.WIP.Changes)
+            foreach (var change in Owner.WIP.Changes)
             {
                 if (!(Owner.GetCurrentTimeUpDownValue() >= change.StartTime) ||
                     !(Owner.GetCurrentTimeUpDownValue() <= change.StartTime + change.HowLong))

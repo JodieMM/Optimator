@@ -33,13 +33,13 @@ namespace Optimator.Forms.Sets
         /// </summary>
         public override void Resize()
         {
-            float widthPercent = 0.8F;
-            float smallWidthPercent = 0.05F;
-            float heightPercent = 0.15F;
+            var widthPercent = 0.8F;
+            var smallWidthPercent = 0.05F;
+            var heightPercent = 0.15F;
 
-            int bigWidth = (int)(Width * widthPercent);
-            int lilWidth = (int)(Width * smallWidthPercent);
-            int bigHeight = (int)(Height * heightPercent);
+            var bigWidth = (int)(Width * widthPercent);
+            var lilWidth = (int)(Width * smallWidthPercent);
+            var bigHeight = (int)(Height * heightPercent);
 
             AddPartLbl.Location = new Point(lilWidth, lilWidth);
 
