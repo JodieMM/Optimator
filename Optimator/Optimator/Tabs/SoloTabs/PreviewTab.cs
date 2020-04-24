@@ -27,6 +27,7 @@ namespace Optimator.Forms
             Owner = owner;
             WIP = part;
             Position.SetCoordsBasedOnBoard(DrawPanel);
+            Validated += PreviewTab_Validated;
         }
 
 
@@ -69,9 +70,26 @@ namespace Optimator.Forms
                 (int)(DrawPanel.Location.Y + (DrawPanel.Height - TurnTrack.Height) / 2.0));
         }
 
+        /// <summary>
+        /// Starts the drawing timer once the tab has been created.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void PreviewTab_Validated(object sender, EventArgs e)
+        {
+            DisplayTimer.Start();
+        }
 
-
-        // ----- DRAWING BOARD AND OPTIONS -----
+        /// <summary>
+        /// Displays the drawings a short time after the tab has validated.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DisplayTimer_Tick(object sender, EventArgs e)
+        {
+            DisplayTimer.Stop();
+            DisplayDrawings();            
+        }
 
         /// <summary>
         /// Changes the rotation or turn of the piece.

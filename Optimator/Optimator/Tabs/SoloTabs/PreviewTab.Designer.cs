@@ -1,4 +1,6 @@
-﻿namespace Optimator.Forms
+﻿using System.Windows.Forms;
+
+namespace Optimator.Forms
 {
     partial class PreviewTab
     {
@@ -36,6 +38,7 @@
             this.DrawPanel = new System.Windows.Forms.PictureBox();
             this.ToolStrip = new System.Windows.Forms.ToolStrip();
             this.CloseBtn = new System.Windows.Forms.ToolStripButton();
+            this.DisplayTimer = new System.Windows.Forms.Timer();
             ((System.ComponentModel.ISupportInitialize)(this.TurnTrack)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.RotationTrack)).BeginInit();
             this.OptionsMenu.SuspendLayout();
@@ -132,6 +135,11 @@
             this.CloseBtn.Text = "Close";
             this.CloseBtn.Click += new System.EventHandler(this.CloseBtn_Click);
             // 
+            // AnimationTimer
+            // 
+            this.DisplayTimer.Interval = 5;
+            this.DisplayTimer.Tick += new System.EventHandler(this.DisplayTimer_Tick);
+            // 
             // PreviewTab
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -167,5 +175,6 @@
         private System.Windows.Forms.PictureBox DrawPanel;
         private System.Windows.Forms.ToolStrip ToolStrip;
         private System.Windows.Forms.ToolStripButton CloseBtn;
+        private Timer DisplayTimer;
     }
 }
