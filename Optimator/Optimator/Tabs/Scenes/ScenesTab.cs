@@ -115,6 +115,8 @@ namespace Optimator.Tabs.Scenes
                 VidLengthLbl.Text = "Video Length: " + ConvertTimeToText();
             }
             Utils.ResizePanel(Panel);
+
+            DisplayDrawings();
         }
 
         #region ToolStrip

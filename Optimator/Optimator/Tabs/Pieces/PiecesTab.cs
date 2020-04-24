@@ -74,6 +74,8 @@ namespace Optimator
 
             Panel.Width = largeWidth;
             Utils.ResizePanel(Panel);
+
+            DisplayDrawings();
         }
 
         /// <summary>
@@ -178,6 +180,7 @@ namespace Optimator
                 Utils.CentrePieceOnAxis(clone);
                 PreviewTab newTab = new PreviewTab(Owner, clone);
                 Utils.NewTabPage(newTab, "Preview " + WIP.Name);
+                newTab.Parent.Enter += newTab.RefreshDrawPanel;
             }            
         }
 

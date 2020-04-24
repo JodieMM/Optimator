@@ -64,6 +64,21 @@ namespace Optimator.Tabs.SoloTabs
 
             TableLayoutPnl.Size = new Size(smallWidth, bigLength);
             TableLayoutPnl.Location = new Point(bigLength + lilWidth * 3, smallHeight + ToolStrip.Height);
+
+            DisplayDrawings();
+        }
+
+        /// <summary>
+        /// Display any loaded part to the display screen.
+        /// </summary>
+        private void DisplayDrawings()
+        {
+            if (loaded != null)
+            {
+                DrawPanel.Refresh();
+                g = DrawPanel.CreateGraphics();
+                loaded.Draw(g);
+            }
         }
 
 
@@ -80,14 +95,15 @@ namespace Optimator.Tabs.SoloTabs
             try
             {
                 if (sender == LoadSetBtn)
+                {
                     loaded = new Set(NameTb.Text);
+                }
                 else
+                {
                     loaded = new Piece(NameTb.Text);
-
+                }
                 loaded.ToPiece().State.SetCoordsBasedOnBoard(DrawPanel);
-                DrawPanel.Refresh();
-                g = DrawPanel.CreateGraphics();
-                loaded.Draw(g);
+                DisplayDrawings();
             }
             catch (FileNotFoundException)
             {

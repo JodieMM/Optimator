@@ -27,7 +27,7 @@ namespace Optimator.Forms
             Owner = owner;
             WIP = part;
             Position.SetCoordsBasedOnBoard(DrawPanel);
-            Validated += PreviewTab_Validated;
+            Validated += RefreshDrawPanel;
         }
 
 
@@ -68,6 +68,8 @@ namespace Optimator.Forms
             TurnTrack.Size = new Size((int)(DrawPanel.Width * trackShort), (int)(DrawPanel.Height * trackLong));
             TurnTrack.Location = new Point((int)(DrawPanel.Location.X + DrawPanel.Width - TurnTrack.Width * 1.25),
                 (int)(DrawPanel.Location.Y + (DrawPanel.Height - TurnTrack.Height) / 2.0));
+
+            DisplayDrawings();
         }
 
         /// <summary>
@@ -75,7 +77,7 @@ namespace Optimator.Forms
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void PreviewTab_Validated(object sender, EventArgs e)
+        public void RefreshDrawPanel(object sender, EventArgs e)
         {
             DisplayTimer.Start();
         }

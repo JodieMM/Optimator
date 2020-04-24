@@ -97,6 +97,8 @@ namespace Optimator.Tabs.Sets
 
             Panel.Width = largeWidth;
             Utils.ResizePanel(Panel);
+
+            DisplayDrawings();
         }
 
         #region ToolStrip
@@ -185,6 +187,7 @@ namespace Optimator.Tabs.Sets
             {
                 PreviewTab newTab = new PreviewTab(Owner, WIP);
                 Utils.NewTabPage(newTab, "Preview " + WIP.Name);
+                newTab.Parent.Enter += newTab.RefreshDrawPanel;
             }
         }
 
