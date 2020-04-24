@@ -33,7 +33,7 @@ namespace Optimator.Forms
         public override void Resize()
         {
             float smallWidthPercent = 0.02F;
-            float heightPercent = 0.4F;
+            float heightPercent = 0.45F;
 
             int smallWidth = (int)(Width * smallWidthPercent);
             int bigHeight = (int)(Height * heightPercent);
@@ -81,6 +81,7 @@ namespace Optimator.Forms
         /// <param name="e"></param>
         private void SaveBtn_Click(object sender, EventArgs e)
         {
+            Settings.BackgroundColour = BackColourBox.BackColor;
             Settings.UpdateSettings();
         }
 
@@ -91,9 +92,18 @@ namespace Optimator.Forms
         /// <param name="e"></param>
         private new void CloseBtn_Click(object sender, EventArgs e)
         {
-            // TODO: SHow warning message about losing unsaved changes
-            Settings.InitialSettings();
-            Owner.RemoveTabPage(this);
+            var result = DialogResult.OK;
+
+            // Only check saving if something to save
+            if (BackColourBox.BackColor != Settings.BackgroundColour)
+            {
+                result = MessageBox.Show("Do you want to exit without saving? Modified settings will not be saved.", "Exit Confirmation", MessageBoxButtons.OKCancel);
+            }
+            if (result == DialogResult.OK)
+            {
+                Settings.InitialSettings();
+                Owner.RemoveTabPage(this);
+            }
         }
 
 
@@ -105,7 +115,7 @@ namespace Optimator.Forms
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void BackColourBox_Click(object sender, System.EventArgs e)
+        private void BackColourBox_Click(object sender, EventArgs e)
         {
             ColorDialog MyDialog = new ColorDialog
             {
@@ -114,8 +124,7 @@ namespace Optimator.Forms
             };
             if (MyDialog.ShowDialog() == DialogResult.OK)
             {
-                BackColourBox.BackColor = MyDialog.Color;
-                Settings.BackgroundColour = MyDialog.Color;
+                BackColourBox.BackColor = MyDialog.Color;                
             }
         }
 
@@ -124,7 +133,7 @@ namespace Optimator.Forms
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void NewWorkingDirectoryBtn_Click(object sender, System.EventArgs e)
+        private void NewWorkingDirectoryBtn_Click(object sender, EventArgs e)
         {
             var path = Utils.SelectFolder(true);
             if (path != "")

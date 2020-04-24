@@ -44,8 +44,9 @@ namespace Optimator.Forms.Compile
             NameTb.Width = bigWidth;
             NameTb.Location = new Point(lilWidth, lilWidth * 3 + SaveLbl.Height);
 
-            CompleteBtn.Size = new Size(bigWidth, (int)(Height * heightPercent));
+            CompleteBtn.Size = SaveBtn.Size = new Size(bigWidth, (int)(Height * heightPercent));
             CompleteBtn.Location = new Point(lilWidth, Height - lilWidth - CompleteBtn.Height);
+            SaveBtn.Location = new Point(lilWidth, CompleteBtn.Location.Y - lilWidth - SaveBtn.Height);
         }
 
         /// <summary>
@@ -53,12 +54,47 @@ namespace Optimator.Forms.Compile
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void CompleteBtn_Click(object sender, System.EventArgs e)
+        private void SaveBtn_Click(object sender, EventArgs e)
         {
-            //TODO: Add another button for simply 'save' rather than also closing the form
+            Save();
+        }
+
+        /// <summary>
+        /// Exports and saves the video created and closes the tab.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CompleteBtn_Click(object sender, EventArgs e)
+        {
+            if (Save())
+            {
+                Owner.Owner.RemoveTabPage(Owner);
+            }
+        }
+
+        /// <summary>
+        /// Updates the tab name based on the name of the new video.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void NameTb_TextChanged(object sender, EventArgs e)
+        {
+            Owner.Parent.Text = NameTb.Text;
+        }
+
+
+
+        // ----- UTILITY FUNCTIONS -----
+
+        /// <summary>
+        /// Saves the video.
+        /// </summary>
+        /// <returns>True if successful</returns>
+        private bool Save()
+        {
             if (!Utils.CheckValidNewName(NameTb.Text, Consts.VideosFolder))
             {
-                return;
+                return false;
             }
             try
             {
@@ -81,7 +117,7 @@ namespace Optimator.Forms.Compile
                     }
                 }
                 Owner.ShowLoadingMessage(false);
-                Owner.CloseBtn_Click(sender, e);
+                return true;
             }
             catch (FileNotFoundException)
             {
@@ -91,16 +127,7 @@ namespace Optimator.Forms.Compile
             {
                 MessageBox.Show("No data entered for point", "Missing Data", MessageBoxButtons.OK);
             }
-        }
-
-        /// <summary>
-        /// Updates the tab name based on the name of the new video.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void NameTb_TextChanged(object sender, EventArgs e)
-        {
-            Owner.Parent.Text = NameTb.Text;
+            return false;
         }
     }
 }

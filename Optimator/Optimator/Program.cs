@@ -16,9 +16,6 @@ namespace Optimator
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //MenuForm menu = new MenuForm();
-            //Application.Run(menu);
-            // HIDDEN ABOVE TESTING
             HomeForm home = new HomeForm();
             Application.Run(home);
         }

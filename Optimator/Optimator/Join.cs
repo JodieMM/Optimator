@@ -135,7 +135,7 @@ namespace Optimator
         /// <returns>State representing xyrtssm</returns>
         public State CurrentStateOfAttached(State aState)
         {
-            //TODO: Fix loaned base values
+            //TODO (RTS) Fix loaned base values
             double rChange = Utils.Modulo(B.State.R - Set.PersonalStates[B].R, 360);
             double tChange = Utils.Modulo(B.State.T - Set.PersonalStates[B].T, 360);
             double modR = aState.R + B.State.R;

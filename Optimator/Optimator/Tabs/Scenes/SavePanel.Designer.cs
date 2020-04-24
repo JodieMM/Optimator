@@ -31,6 +31,7 @@
             this.NameTb = new System.Windows.Forms.TextBox();
             this.CompleteBtn = new System.Windows.Forms.Button();
             this.SaveLbl = new System.Windows.Forms.Label();
+            this.SaveBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // NameTb
@@ -69,6 +70,20 @@
             this.SaveLbl.TabIndex = 12;
             this.SaveLbl.Text = "Save";
             // 
+            // SaveBtn
+            // 
+            this.SaveBtn.BackColor = System.Drawing.Color.Khaki;
+            this.SaveBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.SaveBtn.Font = new System.Drawing.Font("Segoe UI", 16F);
+            this.SaveBtn.Location = new System.Drawing.Point(54, 394);
+            this.SaveBtn.Margin = new System.Windows.Forms.Padding(12);
+            this.SaveBtn.Name = "SaveBtn";
+            this.SaveBtn.Size = new System.Drawing.Size(600, 173);
+            this.SaveBtn.TabIndex = 12;
+            this.SaveBtn.Text = "Save";
+            this.SaveBtn.UseVisualStyleBackColor = false;
+            this.SaveBtn.Click += new System.EventHandler(this.SaveBtn_Click);
+            // 
             // SavePanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -89,5 +104,6 @@
         private System.Windows.Forms.TextBox NameTb;
         private System.Windows.Forms.Button CompleteBtn;
         private System.Windows.Forms.Label SaveLbl;
+        private System.Windows.Forms.Button SaveBtn;
     }
 }

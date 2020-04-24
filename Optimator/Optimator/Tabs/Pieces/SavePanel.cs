@@ -38,9 +38,21 @@ namespace Optimator.Forms.Pieces
             NameTb.Width = bigWidth;
             NameTb.Location = new Point(lilWidth, lilWidth * 3 + SaveLbl.Height);
 
-            CompleteBtn.Size = new Size(bigWidth, (int)(Height * heightPercent));
+            CompleteBtn.Size = SaveBtn.Size = new Size(bigWidth, (int)(Height * heightPercent));
             CompleteBtn.Location = new Point(lilWidth, Height - lilWidth - CompleteBtn.Height);
+            SaveBtn.Location = new Point(lilWidth, CompleteBtn.Location.Y - lilWidth - SaveBtn.Height);
         }
+
+        /// <summary>
+        /// Saves the WIP.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SaveBtn_Click(object sender, EventArgs e)
+        {
+            Save();
+        }
+
 
         /// <summary>
         /// Save the WIP and close the tab.
@@ -49,27 +61,10 @@ namespace Optimator.Forms.Pieces
         /// <param name="e"></param>
         private void CompleteBtn_Click(object sender, System.EventArgs e)
         {
-            //TODO: Add another button for simply 'save' rather than also closing the form
-            if (!Utils.CheckValidNewName(NameTb.Text, Consts.PiecesFolder) || !Owner.CheckPiecesValid())
+            if (Save())
             {
-                return;
-            }
-
-            // Save Piece and Close Form
-            try
-            {
-                Utils.CentrePieceOnAxis(Owner.WIP);
-                Utils.SaveFile(Utils.GetDirectory(Consts.PiecesFolder, NameTb.Text, Consts.Optr), Owner.WIP.GetData());
-                Owner.CloseBtn_Click(sender, e);
-            }
-            catch (FileNotFoundException)
-            {
-                MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                MessageBox.Show("No data entered for point", "Missing Data", MessageBoxButtons.OK);
-            }
+                Owner.Owner.RemoveTabPage(Owner);
+            }            
         }
 
         /// <summary>
@@ -80,6 +75,39 @@ namespace Optimator.Forms.Pieces
         private void NameTb_TextChanged(object sender, EventArgs e)
         {
             Owner.Parent.Text = NameTb.Text;
+        }
+
+
+
+        // ----- UTILITY FUNCTIONS -----
+
+        /// <summary>
+        /// Saves the piece.
+        /// </summary>
+        /// <returns>True if successful</returns>
+        private bool Save()
+        {
+            if (!Utils.CheckValidNewName(NameTb.Text, Consts.PiecesFolder) || !Owner.CheckPiecesValid())
+            {
+                return false;
+            }
+
+            // Save Piece and Close Form
+            try
+            {
+                Utils.CentrePieceOnAxis(Owner.WIP);
+                Utils.SaveFile(Utils.GetDirectory(Consts.PiecesFolder, NameTb.Text, Consts.Optr), Owner.WIP.GetData());
+                return true;
+            }
+            catch (FileNotFoundException)
+            {
+                MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                MessageBox.Show("No data entered for point", "Missing Data", MessageBoxButtons.OK);
+            }
+            return false;
         }
     }
 }

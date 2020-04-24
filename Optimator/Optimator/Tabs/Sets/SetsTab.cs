@@ -203,7 +203,7 @@ namespace Optimator.Tabs.Sets
                 Owner.RemoveTabPage(this);
             }
 
-            //HIDDEN: Below used for testing
+            //HIDDEN (RTS) Below used for testing
             //WIP = new Set
             //{
             //    PiecesList = new List<Piece>() { new Piece("branch"), new Piece("tri") }

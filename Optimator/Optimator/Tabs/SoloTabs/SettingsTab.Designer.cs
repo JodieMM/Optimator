@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsTab));
             this.ToolStrip = new System.Windows.Forms.ToolStrip();
             this.CloseBtn = new System.Windows.Forms.ToolStripButton();
             this.NewWorkingDirectoryBtn = new System.Windows.Forms.Button();
@@ -64,7 +63,7 @@
             // 
             this.CloseBtn.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.CloseBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.CloseBtn.Image = Properties.Resources.CloseIcon;
+            this.CloseBtn.Image = global::Optimator.Properties.Resources.CloseIcon;
             this.CloseBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.CloseBtn.Name = "CloseBtn";
             this.CloseBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -77,12 +76,12 @@
             this.NewWorkingDirectoryBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.NewWorkingDirectoryBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.NewWorkingDirectoryBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.NewWorkingDirectoryBtn.Font = Consts.contentFont;
+            this.NewWorkingDirectoryBtn.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.NewWorkingDirectoryBtn.ForeColor = System.Drawing.Color.Black;
-            this.NewWorkingDirectoryBtn.Location = new System.Drawing.Point(533, 133);
+            this.NewWorkingDirectoryBtn.Location = new System.Drawing.Point(533, 117);
             this.NewWorkingDirectoryBtn.Margin = new System.Windows.Forms.Padding(2);
             this.NewWorkingDirectoryBtn.Name = "NewWorkingDirectoryBtn";
-            this.NewWorkingDirectoryBtn.Size = new System.Drawing.Size(527, 127);
+            this.NewWorkingDirectoryBtn.Size = new System.Drawing.Size(527, 111);
             this.NewWorkingDirectoryBtn.TabIndex = 132;
             this.NewWorkingDirectoryBtn.Text = "Find New";
             this.NewWorkingDirectoryBtn.UseVisualStyleBackColor = false;
@@ -94,11 +93,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.WorkingDirValueLbl.AutoSize = true;
             this.TableLayoutPnl.SetColumnSpan(this.WorkingDirValueLbl, 2);
-            this.WorkingDirValueLbl.Font = Consts.contentFont;
-            this.WorkingDirValueLbl.Location = new System.Drawing.Point(4, 262);
+            this.WorkingDirValueLbl.Font = new System.Drawing.Font("Segoe UI", 16F);
+            this.WorkingDirValueLbl.Location = new System.Drawing.Point(4, 0);
             this.WorkingDirValueLbl.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.WorkingDirValueLbl.Name = "WorkingDirValueLbl";
-            this.WorkingDirValueLbl.Size = new System.Drawing.Size(1054, 46);
+            this.WorkingDirValueLbl.Size = new System.Drawing.Size(1054, 59);
             this.WorkingDirValueLbl.TabIndex = 131;
             this.WorkingDirValueLbl.Text = "Current Directory";
             // 
@@ -107,22 +106,22 @@
             this.WorkingDirLbl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.WorkingDirLbl.AutoSize = true;
-            this.WorkingDirLbl.Font = Consts.contentFont;
-            this.WorkingDirLbl.Location = new System.Drawing.Point(4, 131);
+            this.WorkingDirLbl.Font = new System.Drawing.Font("Segoe UI", 16F);
+            this.WorkingDirLbl.Location = new System.Drawing.Point(4, 115);
             this.WorkingDirLbl.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.WorkingDirLbl.Name = "WorkingDirLbl";
-            this.WorkingDirLbl.Size = new System.Drawing.Size(523, 46);
+            this.WorkingDirLbl.Size = new System.Drawing.Size(523, 59);
             this.WorkingDirLbl.TabIndex = 130;
             this.WorkingDirLbl.Text = "Working Directory";
             // 
             // SettingsLbl
             // 
             this.SettingsLbl.AutoSize = true;
-            this.SettingsLbl.Font = Consts.headingLblFont;
+            this.SettingsLbl.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
             this.SettingsLbl.Location = new System.Drawing.Point(46, 104);
             this.SettingsLbl.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.SettingsLbl.Name = "SettingsLbl";
-            this.SettingsLbl.Size = new System.Drawing.Size(299, 77);
+            this.SettingsLbl.Size = new System.Drawing.Size(236, 72);
             this.SettingsLbl.TabIndex = 129;
             this.SettingsLbl.Text = "Settings";
             // 
@@ -131,12 +130,12 @@
             this.ResetBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.ResetBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ResetBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ResetBtn.Font = Consts.contentFont;
+            this.ResetBtn.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.ResetBtn.ForeColor = System.Drawing.Color.Black;
-            this.ResetBtn.Location = new System.Drawing.Point(533, 395);
+            this.ResetBtn.Location = new System.Drawing.Point(533, 410);
             this.ResetBtn.Margin = new System.Windows.Forms.Padding(2);
             this.ResetBtn.Name = "ResetBtn";
-            this.ResetBtn.Size = new System.Drawing.Size(527, 130);
+            this.ResetBtn.Size = new System.Drawing.Size(527, 115);
             this.ResetBtn.TabIndex = 128;
             this.ResetBtn.Text = "Reset to Defaults";
             this.ResetBtn.UseVisualStyleBackColor = false;
@@ -147,10 +146,10 @@
             this.BackColourBox.BackColor = System.Drawing.Color.White;
             this.BackColourBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.BackColourBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.BackColourBox.Location = new System.Drawing.Point(535, 4);
+            this.BackColourBox.Location = new System.Drawing.Point(535, 297);
             this.BackColourBox.Margin = new System.Windows.Forms.Padding(4);
             this.BackColourBox.Name = "BackColourBox";
-            this.BackColourBox.Size = new System.Drawing.Size(523, 123);
+            this.BackColourBox.Size = new System.Drawing.Size(523, 107);
             this.BackColourBox.TabIndex = 127;
             this.BackColourBox.TabStop = false;
             this.BackColourBox.Click += new System.EventHandler(this.BackColourBox_Click);
@@ -160,22 +159,22 @@
             this.BackColourLbl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.BackColourLbl.AutoSize = true;
-            this.BackColourLbl.Font = Consts.contentFont;
-            this.BackColourLbl.Location = new System.Drawing.Point(2, 0);
+            this.BackColourLbl.Font = new System.Drawing.Font("Segoe UI", 16F);
+            this.BackColourLbl.Location = new System.Drawing.Point(2, 293);
             this.BackColourLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.BackColourLbl.Name = "BackColourLbl";
-            this.BackColourLbl.Size = new System.Drawing.Size(527, 46);
+            this.BackColourLbl.Size = new System.Drawing.Size(527, 115);
             this.BackColourLbl.TabIndex = 126;
             this.BackColourLbl.Text = "Drawing Board Back Colour";
             // 
             // VersionLbl
             // 
             this.VersionLbl.AutoSize = true;
-            this.VersionLbl.Font = Consts.subLblFont;
+            this.VersionLbl.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Italic);
             this.VersionLbl.Location = new System.Drawing.Point(50, 208);
             this.VersionLbl.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.VersionLbl.Name = "VersionLbl";
-            this.VersionLbl.Size = new System.Drawing.Size(164, 52);
+            this.VersionLbl.Size = new System.Drawing.Size(182, 65);
             this.VersionLbl.TabIndex = 123;
             this.VersionLbl.Text = "Version";
             // 
@@ -184,21 +183,22 @@
             this.TableLayoutPnl.ColumnCount = 2;
             this.TableLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.TableLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.TableLayoutPnl.Controls.Add(this.BackColourLbl, 0, 0);
-            this.TableLayoutPnl.Controls.Add(this.SaveBtn, 0, 3);
-            this.TableLayoutPnl.Controls.Add(this.WorkingDirValueLbl, 0, 2);
+            this.TableLayoutPnl.Controls.Add(this.SaveBtn, 0, 4);
             this.TableLayoutPnl.Controls.Add(this.NewWorkingDirectoryBtn, 1, 1);
-            this.TableLayoutPnl.Controls.Add(this.BackColourBox, 1, 0);
+            this.TableLayoutPnl.Controls.Add(this.WorkingDirValueLbl, 0, 0);
             this.TableLayoutPnl.Controls.Add(this.WorkingDirLbl, 0, 1);
-            this.TableLayoutPnl.Controls.Add(this.ResetBtn, 1, 3);
+            this.TableLayoutPnl.Controls.Add(this.ResetBtn, 1, 4);
+            this.TableLayoutPnl.Controls.Add(this.BackColourLbl, 0, 3);
+            this.TableLayoutPnl.Controls.Add(this.BackColourBox, 1, 3);
             this.TableLayoutPnl.Location = new System.Drawing.Point(60, 315);
             this.TableLayoutPnl.Margin = new System.Windows.Forms.Padding(6);
             this.TableLayoutPnl.Name = "TableLayoutPnl";
-            this.TableLayoutPnl.RowCount = 4;
-            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.TableLayoutPnl.RowCount = 5;
+            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 22F));
+            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 22F));
+            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12F));
+            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 22F));
+            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 22F));
             this.TableLayoutPnl.Size = new System.Drawing.Size(1062, 527);
             this.TableLayoutPnl.TabIndex = 133;
             // 
@@ -207,12 +207,12 @@
             this.SaveBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.SaveBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SaveBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.SaveBtn.Font = Consts.contentFont;
+            this.SaveBtn.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.SaveBtn.ForeColor = System.Drawing.Color.Black;
-            this.SaveBtn.Location = new System.Drawing.Point(2, 395);
+            this.SaveBtn.Location = new System.Drawing.Point(2, 410);
             this.SaveBtn.Margin = new System.Windows.Forms.Padding(2);
             this.SaveBtn.Name = "SaveBtn";
-            this.SaveBtn.Size = new System.Drawing.Size(527, 130);
+            this.SaveBtn.Size = new System.Drawing.Size(527, 115);
             this.SaveBtn.TabIndex = 125;
             this.SaveBtn.Text = "Save Changes";
             this.SaveBtn.UseVisualStyleBackColor = false;

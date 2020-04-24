@@ -24,6 +24,10 @@ namespace Optimator.Forms.Sets
             Owner = owner;
         }
 
+
+
+        // ----- FORM FUNCTIONS -----
+
         /// <summary>
         /// Resize the panel's contents.
         /// </summary>
@@ -39,8 +43,19 @@ namespace Optimator.Forms.Sets
             NameTb.Width = bigWidth;
             NameTb.Location = new Point(lilWidth, lilWidth * 3 + SaveLbl.Height);
 
-            CompleteBtn.Size = new Size(bigWidth, (int)(Height * heightPercent));
+            CompleteBtn.Size = SaveBtn.Size = new Size(bigWidth, (int)(Height * heightPercent));
             CompleteBtn.Location = new Point(lilWidth, Height - lilWidth - CompleteBtn.Height);
+            SaveBtn.Location = new Point(lilWidth, CompleteBtn.Location.Y - lilWidth - SaveBtn.Height);
+        }
+
+        /// <summary>
+        /// Saves the WIP.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SaveBtn_Click(object sender, EventArgs e)
+        {
+            Save();
         }
 
         /// <summary>
@@ -50,34 +65,9 @@ namespace Optimator.Forms.Sets
         /// <param name="e"></param>
         private void CompleteBtn_Click(object sender, System.EventArgs e)
         {
-            //TODO: Add another button for simply 'save' rather than also closing the form
-            if (Owner.WIP.PiecesList.Count < 1)
+            if (Save())
             {
-                Owner.CloseBtn_Click(sender, e);
-            }
-            else if (!Owner.CheckSingularBasePiece())
-            {
-                MessageBox.Show("Please connect all pieces but one or remove unconnected pieces.", "Multiple Sets", MessageBoxButtons.OK);
-            }
-            else if (!Utils.CheckValidNewName(NameTb.Text, Consts.SetsFolder))
-            {
-                return;
-            }
-            else
-            {
-                try
-                {
-                    Utils.SaveFile(Utils.GetDirectory(Consts.SetsFolder, NameTb.Text, Consts.Optr), Owner.WIP.GetData());
-                    Owner.CloseBtn_Click(sender, e);
-                }
-                catch (FileNotFoundException)
-                {
-                    MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
-                }
-                catch (ArgumentOutOfRangeException)
-                {
-                    MessageBox.Show("No data entered for point.", "Missing Data", MessageBoxButtons.OK);
-                }
+                Owner.Owner.RemoveTabPage(Owner);
             }
         }
 
@@ -89,6 +79,47 @@ namespace Optimator.Forms.Sets
         private void NameTb_TextChanged(object sender, EventArgs e)
         {
             Owner.Parent.Text = NameTb.Text;
+        }
+
+
+
+        // ----- UTILITY FUNCTIONS -----
+
+        /// <summary>
+        /// Saves the video.
+        /// </summary>
+        /// <returns>True if successful</returns>
+        private bool Save()
+        {
+            if (Owner.WIP.PiecesList.Count < 1)
+            {
+                return false;
+            }
+            else if (!Owner.CheckSingularBasePiece())
+            {
+                MessageBox.Show("Please connect all pieces but one or remove unconnected pieces.", "Multiple Sets", MessageBoxButtons.OK);
+            }
+            else if (!Utils.CheckValidNewName(NameTb.Text, Consts.SetsFolder))
+            {
+                return false;
+            }
+            else
+            {
+                try
+                {
+                    Utils.SaveFile(Utils.GetDirectory(Consts.SetsFolder, NameTb.Text, Consts.Optr), Owner.WIP.GetData());
+                    return true;
+                }
+                catch (FileNotFoundException)
+                {
+                    MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    MessageBox.Show("No data entered for point.", "Missing Data", MessageBoxButtons.OK);
+                }
+            }
+            return false;
         }
     }
 }

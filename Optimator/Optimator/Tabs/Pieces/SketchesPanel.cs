@@ -62,13 +62,8 @@ namespace Optimator.Tabs.Pieces
         {
             if (SketchLb.SelectedIndex != -1)
             {
-                Owner.Sketches[(Part)SketchLb.SelectedItem] = SketchLb.GetItemChecked(SketchLb.SelectedIndex);
+                Owner.Sketches[(Part)SketchLb.SelectedItem] = !SketchLb.GetItemChecked(SketchLb.SelectedIndex);
                 Owner.DisplayDrawings();
-                // HIDDEN: See if can be removed
-                //BeginInvoke((MethodInvoker)delegate
-                //{
-                //    Owner.DisplayDrawings();
-                //});
             }
         }
 

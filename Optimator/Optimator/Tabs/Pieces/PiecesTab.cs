@@ -300,7 +300,6 @@ namespace Optimator
             // Place Spot
             else
             {
-                // TODO: Check this works for Right and Down views
                 if (selectedSpot != null && WIP.Data.IndexOf(selectedSpot) != WIP.Data.Count - 1)
                 {
                     WIP.Data.Insert(WIP.Data.IndexOf(selectedSpot) + 1, new Spot(e.X, e.Y));

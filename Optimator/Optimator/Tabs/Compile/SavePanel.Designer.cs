@@ -31,6 +31,7 @@
             this.NameTb = new System.Windows.Forms.TextBox();
             this.CompleteBtn = new System.Windows.Forms.Button();
             this.SaveLbl = new System.Windows.Forms.Label();
+            this.SaveBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // NameTb
@@ -50,12 +51,12 @@
             this.CompleteBtn.BackColor = System.Drawing.Color.LightCoral;
             this.CompleteBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CompleteBtn.Font = new System.Drawing.Font("Segoe UI", 16F);
-            this.CompleteBtn.Location = new System.Drawing.Point(42, 512);
+            this.CompleteBtn.Location = new System.Drawing.Point(54, 604);
             this.CompleteBtn.Margin = new System.Windows.Forms.Padding(12);
             this.CompleteBtn.Name = "CompleteBtn";
             this.CompleteBtn.Size = new System.Drawing.Size(600, 173);
             this.CompleteBtn.TabIndex = 10;
-            this.CompleteBtn.Text = "Save";
+            this.CompleteBtn.Text = "Complete";
             this.CompleteBtn.UseVisualStyleBackColor = false;
             this.CompleteBtn.Click += new System.EventHandler(this.CompleteBtn_Click);
             // 
@@ -69,10 +70,25 @@
             this.SaveLbl.TabIndex = 11;
             this.SaveLbl.Text = "Save Video";
             // 
+            // SaveBtn
+            // 
+            this.SaveBtn.BackColor = System.Drawing.Color.LightCoral;
+            this.SaveBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.SaveBtn.Font = new System.Drawing.Font("Segoe UI", 16F);
+            this.SaveBtn.Location = new System.Drawing.Point(54, 394);
+            this.SaveBtn.Margin = new System.Windows.Forms.Padding(12);
+            this.SaveBtn.Name = "SaveBtn";
+            this.SaveBtn.Size = new System.Drawing.Size(600, 173);
+            this.SaveBtn.TabIndex = 12;
+            this.SaveBtn.Text = "Save";
+            this.SaveBtn.UseVisualStyleBackColor = false;
+            this.SaveBtn.Click += new System.EventHandler(this.SaveBtn_Click);
+            // 
             // SavePanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.SaveBtn);
             this.Controls.Add(this.SaveLbl);
             this.Controls.Add(this.CompleteBtn);
             this.Controls.Add(this.NameTb);
@@ -89,5 +105,6 @@
         private System.Windows.Forms.TextBox NameTb;
         private System.Windows.Forms.Button CompleteBtn;
         private System.Windows.Forms.Label SaveLbl;
+        private System.Windows.Forms.Button SaveBtn;
     }
 }

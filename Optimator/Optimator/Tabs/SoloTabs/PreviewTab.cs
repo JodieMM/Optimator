@@ -108,7 +108,7 @@ namespace Optimator.Forms
             {
                 Position.T = TurnTrack.Value;
             }
-            else if (sender == spinBar) // HIDDEN Temporary Spin Bar
+            else if (sender == spinBar) // HIDDEN (RTS) Temporary Spin Bar
             {
                 if (WIP is Set)
                 {
@@ -127,8 +127,7 @@ namespace Optimator.Forms
             DrawPanel.Refresh();
             g = DrawPanel.CreateGraphics();
             WIP.Draw(g, Position);
-            //HIDDEN EXTRAS BELOW
-            Visuals.DrawCross(300, 300, Color.Red, g);
+            //HIDDEN (RTS) EXTRAS BELOW
 
             if (WIP is Piece)
             {
