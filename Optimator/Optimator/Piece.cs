@@ -55,7 +55,7 @@ namespace Optimator
             // Fill Colour Array
             var colours = angleData[2].Split(Consts.Colon);
             ColourState.FillColour = new Color[colours.Length];
-            for (int index = 0; index < colours.Length; index++)
+            for (var index = 0; index < colours.Length; index++)
             {
                 var argbValues = colours[index].Split(Consts.Comma);
                 ColourState.FillColour[index] = Color.FromArgb(int.Parse(argbValues[0]), int.Parse(argbValues[1]), int.Parse(argbValues[2]), int.Parse(argbValues[3]));
@@ -68,7 +68,7 @@ namespace Optimator
             PieceDetails = angleData[4];
 
             // Spots
-            for (int index = 2; index < data.Count; index++)
+            for (var index = 2; index < data.Count; index++)
             {
                 var spotData = data[index].Split(Consts.Semi);
                 var coords = Utils.ConvertStringArrayToDoubles(spotData[0].Split(Consts.Colon));
@@ -175,7 +175,7 @@ namespace Optimator
             }
 
             // Recentre
-            for (int index = 0; index < points.Count; index++)
+            for (var index = 0; index < points.Count; index++)
             {
                 points[index][0] = state.GetCoords()[0] + points[index][0];
                 points[index][1] = state.GetCoords()[1] + points[index][1];
@@ -194,11 +194,11 @@ namespace Optimator
         /// <returns></returns>
         private List<double[]> SpinMeRound(List<double[]> pointsArray, State state)
         {
-            for (int index = 0; index < pointsArray.Count; index++)
+            for (var index = 0; index < pointsArray.Count; index++)
             {
                 if (!(pointsArray[index][0] == state.GetCoords()[0] && pointsArray[index][1] == state.GetCoords()[1]))
                 {
-                    double hypotenuse = Math.Sqrt(Math.Pow(state.GetCoords()[0] - pointsArray[index][0], 2) + Math.Pow(state.GetCoords()[1] - pointsArray[index][1], 2)) * state.SM;
+                    var hypotenuse = Math.Sqrt(Math.Pow(state.GetCoords()[0] - pointsArray[index][0], 2) + Math.Pow(state.GetCoords()[1] - pointsArray[index][1], 2)) * state.SM;
                     // Find Angle
                     double pointAngle;
                     if (pointsArray[index][0] == state.GetCoords()[0] && pointsArray[index][1] < state.GetCoords()[1])
@@ -235,7 +235,7 @@ namespace Optimator
                     {
                         pointAngle = 180 + (180 / Math.PI) * Math.Atan(Math.Abs((state.GetCoords()[0] - pointsArray[index][0]) / (state.GetCoords()[1] - pointsArray[index][1])));
                     }
-                    double findAngle = (pointAngle + state.GetAngles()[2]) * Math.PI / 180 % 360;
+                    var findAngle = (pointAngle + state.GetAngles()[2]) * Math.PI / 180 % 360;
 
                     // Find Points
                     pointsArray[index][0] = Convert.ToInt32(state.GetCoords()[0] + hypotenuse * Math.Sin(findAngle));
@@ -286,15 +286,15 @@ namespace Optimator
                         var insertIndex = FindSymmetricalCoordHome(index, xy);
                         if (insertIndex != -1 && !(xy == 1 && (insertIndex == index || insertIndex == (index + 1) % Data.Count)))
                         {
-                            double[] original = FindSymmetricalOppositeCoord(Data[insertIndex].GetCoordCombination(coordCombo),
+                            var original = FindSymmetricalOppositeCoord(Data[insertIndex].GetCoordCombination(coordCombo),
                                 Data[Utils.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(coordCombo),
                                 spot.GetCoordCombination(coordCombo)[xy], xy, Data[insertIndex].Connector);
 
-                            double rotated = FindSymmetricalOppositeCoord(Data[insertIndex].GetCoordCombination(coordRot),
+                            var rotated = FindSymmetricalOppositeCoord(Data[insertIndex].GetCoordCombination(coordRot),
                                 Data[Utils.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(coordRot),
                                 original[1], 1, Data[insertIndex].Connector)[0];
 
-                            double turned = FindSymmetricalOppositeCoord(Data[insertIndex].GetCoordCombination(coordTurn),
+                            var turned = FindSymmetricalOppositeCoord(Data[insertIndex].GetCoordCombination(coordTurn),
                                 Data[Utils.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(coordTurn),
                                 original[0], 0, Data[insertIndex].Connector)[1];
 
@@ -326,7 +326,7 @@ namespace Optimator
             // Find Matches
             var matches = new List<int>();
             var yx = xy == 0 ? 1 : 0;
-            for (int index = 0; index < Data.Count; index++)
+            for (var index = 0; index < Data.Count; index++)
             {
                 // Check same, but not the same-same
                 if (index != matchIndex && Data[index].GetCoordCombination(3)[xy] == Data[matchIndex].GetCoordCombination(3)[xy])
@@ -339,9 +339,9 @@ namespace Optimator
                     else
                     {
                         // Check index --> matchIndex
-                        bool bends = true;
-                        bool round = false;
-                        int sibling = index;
+                        var bends = true;
+                        var round = false;
+                        var sibling = index;
                         while (!round && bends)
                         {
                             sibling = (sibling + 1) % Data.Count;
@@ -390,7 +390,7 @@ namespace Optimator
             {
                 var min = 0;
                 var max = 0;
-                for (int index = 1; index < matches.Count; index++)
+                for (var index = 1; index < matches.Count; index++)
                 {
                     if (Data[matches[index]].GetCoordCombination(3)[yx] < Data[matches[min]].GetCoordCombination(3)[yx])
                     {
@@ -421,12 +421,12 @@ namespace Optimator
         /// <returns>The index where the matching point would go or -1 in error</returns>
         public int FindSymmetricalCoordHome(int matchIndex, int xy)
         {
-            double goal = Data[matchIndex].GetCoordCombination(3)[xy];
+            var goal = Data[matchIndex].GetCoordCombination(3)[xy];
             var bigger = false;
-            int searchIndex = -1;
+            var searchIndex = -1;
 
             // Find whether we're searching above or below the goal
-            for (int index = 0; index < Data.Count && searchIndex == -1; index++)
+            for (var index = 0; index < Data.Count && searchIndex == -1; index++)
             {
                 if (Data[index].GetCoordCombination(3)[xy] != goal)
                 {
@@ -436,7 +436,7 @@ namespace Optimator
             }
 
             // Find index position
-            for (int index = 0; index < Data.Count; index++)
+            for (var index = 0; index < Data.Count; index++)
             {
                 if (Data[searchIndex].GetCoordCombination(3)[xy] == goal)
                 {
@@ -517,8 +517,8 @@ namespace Optimator
         {
             var line = new List<double[]> { new double[] { from[0], from[1] } };
             var fromUpper = from[1] >= to[1];
-            double[] lower = fromUpper ? to : from;
-            double[] upper = fromUpper ? from : to;
+            var lower = fromUpper ? to : from;
+            var upper = fromUpper ? from : to;
 
             // Solid Line
             if (join == Consts.connectorOptions[0] || join == Consts.connectorOptions[1])
@@ -528,7 +528,7 @@ namespace Optimator
                 // If straight vertical line
                 if (from[0] - to[0] == 0)
                 {
-                    for (int index = (int)lower[1] + 1; index < upper[1]; index++)
+                    for (var index = (int)lower[1] + 1; index < upper[1]; index++)
                     {
                         section.Add(new double[] { from[0], index });
                     }
@@ -538,7 +538,7 @@ namespace Optimator
                 else if (from[1] - to[1] != 0)
                 {
                     var gradient = (lower[1] - upper[1]) / (lower[0] - upper[0]);
-                    for (int index = (int)lower[1] + 1; index < upper[1]; index++)
+                    for (var index = (int)lower[1] + 1; index < upper[1]; index++)
                     {
                         section.Add(new double[] { lower[0] + ((index - lower[1]) / gradient), index });
                     }
@@ -567,7 +567,7 @@ namespace Optimator
         {
             var linesCoords = new List<double[]>();
             var data = GetPoints(State);
-            for (int index = 0; index < data.Count; index++)
+            for (var index = 0; index < data.Count; index++)
             {
                 linesCoords.AddRange(LineCoords(data[index],
                     data[Utils.Modulo(index + 1, data.Count)], Data[index].Connector));
@@ -585,11 +585,11 @@ namespace Optimator
             var outlineShape = LinesCoords();
             var minMax = Utils.FindMinMax(outlineShape);
             var ranges = new List<double[]>();
-            for (int index = (int)minMax[2]; index <= (int)minMax[3]; index++)
+            for (var index = (int)minMax[2]; index <= (int)minMax[3]; index++)
             {
                 // Get coords for the specific Y value that aren't corners
                 var yMatches = new List<double[]>();
-                for (int coordIndex = 0; coordIndex < outlineShape.Count; coordIndex++)
+                for (var coordIndex = 0; coordIndex < outlineShape.Count; coordIndex++)
                     if (outlineShape[coordIndex][1] == index &&
                         !((outlineShape[Utils.Modulo(coordIndex + 1, outlineShape.Count)][1] > outlineShape[coordIndex][1] &&
                             outlineShape[Utils.Modulo(coordIndex - 1, outlineShape.Count)][1] > outlineShape[coordIndex][1]) ||
@@ -602,11 +602,11 @@ namespace Optimator
                 // Pair Remaining Coords into Bounds
                 while (yMatches.Count > 1)
                 {
-                    double min1 = 999999;
-                    double min2 = 999999;
-                    int min1Index = -1;
-                    int min2Index = -1;
-                    for (int match = 0; match < yMatches.Count; match++)
+                    double min1 = double.MaxValue;
+                    double min2 = double.MaxValue;
+                    var min1Index = -1;
+                    var min2Index = -1;
+                    for (var match = 0; match < yMatches.Count; match++)
                     {
                         if (yMatches[match][0] < min1)
                         {
@@ -641,9 +641,9 @@ namespace Optimator
         /// <param name="xMatch">If the drawn level 1 spots should be removed too</param>
         public void CleanseData(bool xMatch = false)
         {
-            for (int index = 0; index < Data.Count; index++)
+            for (var index = 0; index < Data.Count; index++)
             {
-                Spot spot = Data[index];
+                var spot = Data[index];
                 if (spot.DrawnLevel < (xMatch ? 1 : 2))
                 {
                     spot.MatchX = null;

@@ -34,7 +34,7 @@ namespace Optimator
             try
             {
                 // Read File
-                List<string> data = Utils.ReadFile(Utils.GetDirectory(Consts.ScenesFolder, fileName, Consts.Optr));
+                var data = Utils.ReadFile(Utils.GetDirectory(Consts.ScenesFolder, fileName, Consts.Optr));
                 Version = data[0].Split(Consts.Semi)[1];
                 Utils.CheckValidVersion(Version);
 
@@ -42,13 +42,13 @@ namespace Optimator
                 TimeLength = decimal.Parse(data[1]);
 
                 // Parts
-                int partEndIndex = data.IndexOf("Originals");
+                var partEndIndex = data.IndexOf("Originals");
                 if (partEndIndex == -1)
                 {
                     MessageBox.Show("Invalid Scene File", "Invalid File", MessageBoxButtons.OK);
                     return;
                 }
-                for (int index = 2; index < partEndIndex; index++)
+                for (var index = 2; index < partEndIndex; index++)
                 {
                     if (data[index].StartsWith("p"))
                     {
@@ -62,11 +62,11 @@ namespace Optimator
                 UpdatePiecesList();
 
                 // Assign Original States
-                int lastPieceIndex = partEndIndex + PiecesList.Count;
-                for (int index = partEndIndex + 1; index <= lastPieceIndex; index++)
+                var lastPieceIndex = partEndIndex + PiecesList.Count;
+                for (var index = partEndIndex + 1; index <= lastPieceIndex; index++)
                 {
-                    int workingIndex = index - partEndIndex - 1;
-                    Piece piece = PiecesList[workingIndex];
+                    var workingIndex = index - partEndIndex - 1;
+                    var piece = PiecesList[workingIndex];
                     var originals = Utils.ConvertStringArrayToDoubles(data[index].Split(Consts.Semi));
                     piece.State.SetValues(originals[0], originals[1], originals[2], originals[3], originals[4], originals[5]);
                     Originals.Add(piece, Utils.CloneState(piece.State));
@@ -74,9 +74,9 @@ namespace Optimator
                 }
 
                 // Read frame changes
-                for (int index = lastPieceIndex + 1; index < data.Count; index++)
+                for (var index = lastPieceIndex + 1; index < data.Count; index++)
                 {
-                    string[] changes = data[index].Split(Consts.Semi);
+                    var changes = data[index].Split(Consts.Semi);
                     Changes.Add(new Change(int.Parse(changes[0]), changes[1], PiecesList[int.Parse(changes[2])], double.Parse(changes[3]), decimal.Parse(changes[4]), this));
                 }                                               
             }
@@ -108,27 +108,27 @@ namespace Optimator
         /// <returns></returns>
         public List<string> GetData()
         {
-            List<string> data = new List<string>
+            var data = new List<string>
             {
                 Consts.Scene + Consts.Semi + Consts.Version,
                 TimeLength.ToString()
             };
 
             // Save Parts
-            foreach (Part part in PartsList)
+            foreach (var part in PartsList)
             {
                 data.Add((part is Piece ? "p:" : "s:") + part.Name);
             }
 
             // Save Original States
             data.Add("Originals");
-            foreach (Piece piece in PiecesList)
+            foreach (var piece in PiecesList)
             {
                 data.Add(Originals.ContainsKey(piece) ? Originals[piece].GetData() : new State().GetData());
             }
 
             // Save Animation Changes
-            foreach (Change change in Changes)
+            foreach (var change in Changes)
             {
                 data.Add(change.ToString());
             }
@@ -143,14 +143,14 @@ namespace Optimator
         /// </summary>
         public void RunScene(decimal time)
         {
-            foreach (Piece piece in PiecesList)
+            foreach (var piece in PiecesList)
             {
                 if (Originals.ContainsKey(piece))
                 {
                     piece.State = Originals[piece];
                 }
             }
-            foreach (Change change in Changes)
+            foreach (var change in Changes)
             {
                 change.Run(time);
             }
@@ -162,7 +162,7 @@ namespace Optimator
         public void UpdatePiecesList()
         {
             PiecesList.Clear();
-            for (int index = 0; index < PartsList.Count; index++)
+            for (var index = 0; index < PartsList.Count; index++)
             {
                 if (PartsList[index] is Piece)
                 {

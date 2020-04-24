@@ -126,7 +126,7 @@ namespace Optimator
             try
             {
                 var file = new StreamWriter(@directory);
-                for (int index = 0; index < data.Count; index++)
+                for (var index = 0; index < data.Count; index++)
                 {
                     file.WriteLine(data[index]);
                 }
@@ -205,8 +205,8 @@ namespace Optimator
         /// <returns>True if the versions are compatible</returns>
         public static bool CheckValidVersion(string version, bool message = true)
         {
-            string[] thisVer = version.Split(Consts.Stop);
-            string[] currVer = Consts.Version.Split(Consts.Stop);
+            var thisVer = version.Split(Consts.Stop);
+            var currVer = Consts.Version.Split(Consts.Stop);
             if (thisVer[0] == currVer[0] && thisVer[1] == currVer[1])
             {
                 return true;
@@ -227,7 +227,7 @@ namespace Optimator
         /// <returns>True if the name is valid</returns>
         public static bool CheckValidNewName(string name, string folder = "")
         {
-            Regex PermittedName = new Regex(@"^[A-Za-z0-9]+$");
+            var PermittedName = new Regex(@"^[A-Za-z0-9]+$");
             if (!PermittedName.IsMatch(name))
             {
                 MessageBox.Show("Please choose a valid name for your file. Name can only include letters and numbers.", "Name Invalid", MessageBoxButtons.OK);
@@ -282,10 +282,10 @@ namespace Optimator
         /// <returns>The mins and maxes as [minX, maxX, minY, maxY]</returns>
         public static double[] FindMinMax(List<double[]> coords)
         {
-            double minX = 99999;
-            double maxX = -99999;
-            double minY = 99999;
-            double maxY = -99999;
+            double minX = double.MaxValue;
+            double maxX = double.MinValue;
+            double minY = double.MaxValue;
+            double maxY = double.MinValue;
             foreach (double[] entry in coords)
             {
                 minX = (entry[0] < minX) ? entry[0] : minX;
@@ -303,7 +303,7 @@ namespace Optimator
         /// <returns>The middle as [middle x, middle y]</returns>
         public static double[] FindMid(List<double[]> coords)
         {
-            double[] minMax = FindMinMax(coords);
+            var minMax = FindMinMax(coords);
             return new double[] { minMax[0] + (minMax[1] - minMax[0]) / 2.0, minMax[2] + (minMax[3] - minMax[2]) / 2.0 };
         }
 
@@ -315,7 +315,7 @@ namespace Optimator
         /// <returns>Height of shape</returns>
         public static double FindHeight(List<double[]> coords, bool width = false)
         {
-            double[] minMax = FindMinMax(coords);
+            var minMax = FindMinMax(coords);
             if (width)
             {
                 return minMax[1] - minMax[0];
@@ -352,7 +352,7 @@ namespace Optimator
         /// <returns>A double array of the values in the input</returns>
         public static double[] ConvertStringArrayToDoubles(string[] strArray)
         {
-            double[] dblArray = new double[strArray.Length];
+            var dblArray = new double[strArray.Length];
             for (int index = 0; index < strArray.Length; index++)
             {
                 dblArray[index] = double.Parse(strArray[index]);
@@ -378,7 +378,7 @@ namespace Optimator
         /// <returns>A colour with the given ARGB value</returns>
         public static Color ColourFromString(string color)
         {
-            string[] argb = color.Split(Consts.Comma);
+            var argb = color.Split(Consts.Comma);
             return Color.FromArgb(int.Parse(argb[0]), int.Parse(argb[1]), 
                 int.Parse(argb[2]), int.Parse(argb[3]));
         }
@@ -437,8 +437,8 @@ namespace Optimator
         /// <returns>Seperate object with the same contents</returns>
         public static List<Spot> CloneSpotList(List<Spot> list)
         {
-            List<Spot> clone = new List<Spot>();
-            foreach (Spot spot in list)
+            var clone = new List<Spot>();
+            foreach (var spot in list)
             {
                 clone.Add(new Spot(spot.X, spot.Y, spot.XRight, spot.YDown, spot.Connector, spot.Solid, spot.DrawnLevel));
             }
@@ -472,7 +472,7 @@ namespace Optimator
         /// <returns>New piece object with same details</returns>
         public static Piece ClonePiece(Piece piece)
         {
-            Piece clone = new Piece
+            var clone = new Piece
             {
                 Data = CloneSpotList(piece.Data),
                 State = CloneState(piece.State),
@@ -541,7 +541,7 @@ namespace Optimator
         /// <returns></returns>
         public static double[] SpinAndSizeCoord(double spinAngle, double sizeMod, double[] coord)
         {
-            double hypotenuse = Math.Sqrt(Math.Pow(coord[0], 2) + Math.Pow(coord[1], 2)) * sizeMod;
+            var hypotenuse = Math.Sqrt(Math.Pow(coord[0], 2) + Math.Pow(coord[1], 2)) * sizeMod;
 
             // Find Angle
             double pointAngle;
@@ -602,8 +602,8 @@ namespace Optimator
         /// <returns>A list of coordinates</returns>
         public static List<double[]> ConvertSpotsToCoords(List<Spot> spots, int angle = 0)
         {
-            List<double[]> toReturn = new List<double[]>();
-            foreach (Spot spot in spots)
+            var toReturn = new List<double[]>();
+            foreach (var spot in spots)
             {
                 toReturn.Add(spot.GetCoordCombination(angle));
             }
@@ -617,10 +617,10 @@ namespace Optimator
         /// <param name="WIP">The piece being built</param>
         public static void CentrePieceOnAxis(Piece WIP)
         {
-            State defaultState = new State();
-            double[] centre = FindMid(WIP.GetPoints(defaultState));
-            double[] centreR = FindMid(WIP.GetPoints(new State(defaultState, 1, 90)));
-            double[] centreT = FindMid(WIP.GetPoints(new State(defaultState, 2, 90)));
+            var defaultState = new State();
+            var centre = FindMid(WIP.GetPoints(defaultState));
+            var centreR = FindMid(WIP.GetPoints(new State(defaultState, 1, 90)));
+            var centreT = FindMid(WIP.GetPoints(new State(defaultState, 2, 90)));
             foreach (var spot in WIP.Data)
             {
                 spot.X -= centre[0];
@@ -709,7 +709,7 @@ namespace Optimator
         /// <param name="panel">Forms panel</param>
         public static void ResizePanel(Panel panel)
         {
-            foreach (UserControl cntl in panel.Controls)
+            foreach (var cntl in panel.Controls)
             {
                 if (cntl is PanelControl)
                 {
@@ -765,7 +765,7 @@ namespace Optimator
             // Searches joins either from the top or the bottom of the list
             int index;
             int increment = fromTop ? -1 : 1;
-            foreach (int range in Consts.ClickPrecisions)
+            foreach (var range in Consts.ClickPrecisions)
             {
                 for (index = fromTop ? joinsList.Count - 1 : 0; fromTop ? index >= 0 :
                     index < joinsList.Count; index += increment)
@@ -791,9 +791,9 @@ namespace Optimator
         /// <returns>Index of list that is closest</returns>
         public static int FindClosestIndex(List<Spot> toSearch, int angle, int x, int y, bool allDrawn = false)
         {
-            foreach (int range in Consts.ClickPrecisions)
+            foreach (var range in Consts.ClickPrecisions)
             {
-                for (int index = 0; index < toSearch.Count(); index++)
+                for (var index = 0; index < toSearch.Count(); index++)
                 {
                     var spot = toSearch[index];
                     if ((allDrawn || spot.DrawnLevel == 0) 

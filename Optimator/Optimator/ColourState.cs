@@ -62,7 +62,7 @@ namespace Optimator
         /// <returns>ColourState data</returns>
         public string GetData()
         {
-            string data = ColourType + Consts.SemiS + Utils.ColorToString(OutlineColour) + Consts.SemiS;
+            var data = ColourType + Consts.SemiS + Utils.ColorToString(OutlineColour) + Consts.SemiS;
             for (int index = 0; index < FillColour.Length - 1; index++)
             {
                 data += Utils.ColorToString(FillColour[index]) + Consts.ColonS;

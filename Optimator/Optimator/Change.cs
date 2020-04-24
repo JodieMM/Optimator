@@ -52,7 +52,7 @@
             }
 
             // Full increment if time passed, partial if in progress
-            double increment = ((time - StartTime) >= HowLong) ? HowMuch : (double)((time - StartTime) / HowLong) * HowMuch;
+            var increment = ((time - StartTime) >= HowLong) ? HowMuch : (double)((time - StartTime) / HowLong) * HowMuch;
 
             // Update Parts
             switch (Action)

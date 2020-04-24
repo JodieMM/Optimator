@@ -136,12 +136,12 @@ namespace Optimator
         public State CurrentStateOfAttached(State aState)
         {
             //TODO (RTS) Fix loaned base values
-            double rChange = Utils.Modulo(B.State.R - Set.PersonalStates[B].R, 360);
-            double tChange = Utils.Modulo(B.State.T - Set.PersonalStates[B].T, 360);
-            double modR = aState.R + B.State.R;
-            double modT = aState.T;
-            double modS = aState.S;
-            double modSM = B.State.SM;
+            var rChange = Utils.Modulo(B.State.R - Set.PersonalStates[B].R, 360);
+            var tChange = Utils.Modulo(B.State.T - Set.PersonalStates[B].T, 360);
+            var modR = aState.R + B.State.R;
+            var modT = aState.T;
+            var modS = aState.S;
+            var modSM = B.State.SM;
 
             // Adjust Turn
             //modT += aState.S;
@@ -152,43 +152,43 @@ namespace Optimator
                 if (aState.S < 90)
                 {
                     modS = aState.S * Math.Cos(Utils.ConvertDegreeToRadian(rChange));
-                    double height = Utils.FindHeight(A.GetPoints(new State(0, 0, aState.R, modT, aState.S, modSM)));
-                    double flatHeight = Utils.FindHeight(A.GetPoints(new State(0, 0, modR, modT, modS, modSM)));
+                    var height = Utils.FindHeight(A.GetPoints(new State(0, 0, aState.R, modT, aState.S, modSM)));
+                    var flatHeight = Utils.FindHeight(A.GetPoints(new State(0, 0, modR, modT, modS, modSM)));
                     modSM *= flatHeight > 0 ? height / flatHeight : height > 0 ? 1 : 0;
                 }
                 else if (aState.S < 270)
                 {
                     modS = 180 + (180 - aState.S) * -Math.Cos(Utils.ConvertDegreeToRadian(rChange));
-                    double height = Utils.FindHeight(A.GetPoints(new State(0, 0, aState.R, modT, aState.S, modSM)));
-                    double flatHeight = Utils.FindHeight(A.GetPoints(new State(0, 0, modR, modT, modS, modSM)));
+                    var height = Utils.FindHeight(A.GetPoints(new State(0, 0, aState.R, modT, aState.S, modSM)));
+                    var flatHeight = Utils.FindHeight(A.GetPoints(new State(0, 0, modR, modT, modS, modSM)));
                     modSM *= flatHeight > 0 ? height / flatHeight : height > 0 ? 1 : 0;
                 }
                 else if (aState.S < 360)
                 {
                     modS = 360 + (360 - aState.S) * -Math.Cos(Utils.ConvertDegreeToRadian(rChange));
-                    double height = Utils.FindHeight(A.GetPoints(new State(0, 0, aState.R, modT, aState.S, modSM)));
-                    double flatHeight = Utils.FindHeight(A.GetPoints(new State(0, 0, modR, modT, modS, modSM)));
+                    var height = Utils.FindHeight(A.GetPoints(new State(0, 0, aState.R, modT, aState.S, modSM)));
+                    var flatHeight = Utils.FindHeight(A.GetPoints(new State(0, 0, modR, modT, modS, modSM)));
                     modSM *= flatHeight > 0 ? height / flatHeight : height > 0 ? 1 : 0;
                 }
-            }       
+            }
 
-            double attachedR = Utils.Modulo(modR, 360);
-            double attachedT = Utils.Modulo(modT, 360);
-            double attachedS = Utils.Modulo(modS, 360);
+            var attachedR = Utils.Modulo(modR, 360);
+            var attachedT = Utils.Modulo(modT, 360);
+            var attachedS = Utils.Modulo(modS, 360);
 
             //double attachedR = Utils.Modulo(B.State.R + personalState.R, 360);
             //double attachedT = Utils.Modulo(B.State.T + personalState.T, 360);
             //double attachedS = Utils.Modulo(B.State.S + personalState.S, 360);
 
-            double attachedSM = aState.SM * modSM;
+            var attachedSM = aState.SM * modSM;
 
-            double[] attachedJoinB = Utils.SpinAndSizeCoord(B.State.S, B.State.SM,
+            var attachedJoinB = Utils.SpinAndSizeCoord(B.State.S, B.State.SM,
                 new double[] { Utils.RotOrTurnCalculation(B.State.R, BX, BXRight), Utils.RotOrTurnCalculation(B.State.T, BY, BYDown) });
-            double[] attachedJoinA = Utils.SpinAndSizeCoord(attachedS, attachedSM,
+            var attachedJoinA = Utils.SpinAndSizeCoord(attachedS, attachedSM,
                 new double[] { Utils.RotOrTurnCalculation(attachedR, AX, AXRight), Utils.RotOrTurnCalculation(attachedT, AY, AYDown) });
 
-            double attachedX = B.State.X + attachedJoinB[0] + attachedJoinA[0] + aState.X;
-            double attachedY = B.State.Y + attachedJoinB[1] + attachedJoinA[1] + aState.Y;
+            var attachedX = B.State.X + attachedJoinB[0] + attachedJoinA[0] + aState.X;
+            var attachedY = B.State.Y + attachedJoinB[1] + attachedJoinA[1] + aState.Y;
 
             return new State(attachedX, attachedY, attachedR, attachedT, attachedS, attachedSM);
         }
@@ -199,7 +199,7 @@ namespace Optimator
         /// <returns>Join's current centre</returns>
         public double[] CurrentCentre()
         {
-            double[] aJoin = new double[2] {Utils.RotOrTurnCalculation(A.State.R, AX, AXRight),
+            var aJoin = new double[2] {Utils.RotOrTurnCalculation(A.State.R, AX, AXRight),
                 Utils.RotOrTurnCalculation(A.State.T, AY, AYDown)};
             aJoin = Utils.SpinAndSizeCoord(A.State.S, A.State.SM, aJoin);
             return new double[2] {A.State.X - aJoin[0], A.State.Y - aJoin[1]};

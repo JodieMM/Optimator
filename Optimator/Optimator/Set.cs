@@ -38,12 +38,12 @@ namespace Optimator
             Utils.CheckValidVersion(Version);
 
             // Pieces List
-            int index = 1;
+            var index = 1;
             while (data[index] != "Joins")
             {
                 var dataSections = data[index].Split(Consts.Semi);
                 var stateData = Utils.ConvertStringArrayToDoubles(dataSections[1].Split(Consts.Colon));
-                Piece WIP = new Piece(dataSections[0]);
+                var WIP = new Piece(dataSections[0]);
                 PersonalStates.Add(WIP, new State(stateData[0], stateData[1], stateData[2], stateData[3], stateData[4], stateData[5]));
                 PiecesList.Add(WIP);
 
@@ -64,7 +64,7 @@ namespace Optimator
                 var coordsA = Utils.ConvertStringArrayToDoubles(dataSections[2].Split(Consts.Colon));
                 var coordsB = Utils.ConvertStringArrayToDoubles(dataSections[3].Split(Consts.Colon));
 
-                Join WIP = new Join(pieceA, pieceB, this,
+                var WIP = new Join(pieceA, pieceB, this,
                     coordsA[0], coordsA[1], coordsA[2], coordsA[3], coordsB[0], coordsB[1], coordsB[2], coordsB[3], 
                     int.Parse(dataSections[4]), int.Parse(dataSections[5]));
 
@@ -104,10 +104,10 @@ namespace Optimator
             PiecesList = SortOrder();
 
             // Save Each Piece
-            for (int index = 0; index < PiecesList.Count; index++)
+            for (var index = 0; index < PiecesList.Count; index++)
             {
-                Piece piece = PiecesList[index];
-                string pieceDetails = piece.Name + Consts.SemiS + PersonalStates[piece];
+                var piece = PiecesList[index];
+                var pieceDetails = piece.Name + Consts.SemiS + PersonalStates[piece];
 
                 // Base Piece
                 if (piece == BasePiece)
@@ -119,7 +119,7 @@ namespace Optimator
 
             // Save Each Join
             newData.Add("Joins");
-            foreach (Join join in JoinsIndex.Values)
+            foreach (var join in JoinsIndex.Values)
             {
                 newData.Add(PiecesList.IndexOf(join.A) + Consts.SemiS + PiecesList.IndexOf(join.B) + Consts.SemiS + join.ToString());
             }
@@ -152,8 +152,8 @@ namespace Optimator
                 }
             }
 
-            List<Piece> orderedPieces = SortOrder();
-            foreach (Piece piece in orderedPieces)
+            var orderedPieces = SortOrder();
+            foreach (var piece in orderedPieces)
             {
                 piece.Draw(g);
             }
@@ -264,11 +264,11 @@ namespace Optimator
         /// <returns>The join and isBase dictionary</returns>
         public Dictionary<Join, bool> FindPieceJoins(Piece piece)
         {
-            Dictionary<Join, bool> joinsList = new Dictionary<Join, bool>();
+            var joinsList = new Dictionary<Join, bool>();
             // Add Base Joins
             if (JoinedPieces.ContainsKey(piece))
             {
-                foreach (Piece attached in JoinedPieces[piece])
+                foreach (var attached in JoinedPieces[piece])
                 {
                     joinsList.Add(JoinsIndex[attached], true);
                 }

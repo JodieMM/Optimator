@@ -20,9 +20,9 @@ namespace Optimator
         /// <param name="board">The graphics board to be drawn on</param>
         public static void DrawCross(double xcood, double ycood, Color colour, Graphics board)
         {
-            int x = (int)xcood;
-            int y = (int)ycood;
-            Pen pen = new Pen(colour);
+            var x = (int)xcood;
+            var y = (int)ycood;
+            var pen = new Pen(colour);
             board.DrawLine(pen, new Point(x - 2, y), new Point(x + 2, y));
             board.DrawLine(pen, new Point(x, y - 2), new Point(x, y + 2));
         }
@@ -36,9 +36,9 @@ namespace Optimator
         /// <param name="board">The graphics board to be drawn on</param>
         public static void DrawX(double xcood, double ycood, Color colour, Graphics board)
         {
-            int x = (int)xcood;
-            int y = (int)ycood;
-            Pen pen = new Pen(colour);
+            var x = (int)xcood;
+            var y = (int)ycood;
+            var pen = new Pen(colour);
             board.DrawLine(pen, new Point(x - 2, y - 2), new Point(x + 2, y + 2));
             board.DrawLine(pen, new Point(x + 2, y - 2), new Point(x - 2, y + 2));
         }
@@ -50,7 +50,7 @@ namespace Optimator
         /// <param name="g">The graphics to draw to</param>
         public static void DrawPiece(Piece piece, Graphics g, State state, ColourState colourState = null)
         {
-            List<double[]> currentPoints = piece.GetPoints(state);
+            var currentPoints = piece.GetPoints(state);
             if (currentPoints.Count < 1)
             {
                 return;
@@ -61,15 +61,15 @@ namespace Optimator
             {
                 colourState = piece.ColourState;
             }
-            Pen pen = new Pen(colourState.OutlineColour, (float)piece.OutlineWidth);
+            var pen = new Pen(colourState.OutlineColour, (float)piece.OutlineWidth);
             // GRADIENT
-            SolidBrush fill = new SolidBrush(colourState.FillColour[0]);
-            List<Spot> spots = piece.Data;
-            int numCoords = currentPoints.Count;
+            var fill = new SolidBrush(colourState.FillColour[0]);
+            var spots = piece.Data;
+            var numCoords = currentPoints.Count;
 
             // Fill Shape
-            GraphicsPath path = new GraphicsPath();
-            for (int pointIndex = 0; pointIndex < numCoords && numCoords > 2; pointIndex++)
+            var path = new GraphicsPath();
+            for (var pointIndex = 0; pointIndex < numCoords && numCoords > 2; pointIndex++)
             {
                 // Draw Line Between Final Point and First Point
                 if (pointIndex == numCoords - 1)
@@ -88,7 +88,7 @@ namespace Optimator
             g.FillPath(fill, path);
 
             // Draw Outline
-            for (int pointIndex = 0; pointIndex < numCoords && numCoords > 1 && piece.OutlineWidth > 0; pointIndex++)
+            for (var pointIndex = 0; pointIndex < numCoords && numCoords > 1 && piece.OutlineWidth > 0; pointIndex++)
             {
                 if (spots[pointIndex].Connector != Consts.connectorOptions[1])
                 {
@@ -135,7 +135,7 @@ namespace Optimator
                 g = drawPanel.CreateGraphics();
             }
 
-            foreach (Part part in partsList)
+            foreach (var part in partsList)
             {
                 part.Draw(g);
             }

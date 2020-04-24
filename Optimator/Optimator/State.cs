@@ -105,9 +105,6 @@ namespace Optimator
         public double[] GetAngles()
         {
             return new double[3] { R, T, S };
-            //R + S * Math.Sin(Utilities.ToRad(T));      // NOTE: Unsure if accurate
-            //T + S * Math.Sin(Utilities.ToRad(R));
-            //S * Math.Cos(Utilities.ToRad(R)); // + S * Math.Cos(Utilities.ToRad(T));
         }
 
 
