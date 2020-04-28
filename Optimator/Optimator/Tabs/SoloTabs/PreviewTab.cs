@@ -129,12 +129,12 @@ namespace Optimator.Forms
             WIP.Draw(g, Position);
             //HIDDEN (RTS) EXTRAS BELOW
 
-            if (WIP is Piece)
+            if (WIP is Set)
             {
-                //foreach (Join join in (WIP as Set).JoinsIndex.Values)
-                //{
-                //    Visuals.DrawCross(join.CurrentCentre()[0], join.CurrentCentre()[1], Color.Red, g);
-                //}
+                foreach (var join in (WIP as Set).JoinsIndex.Values)
+                {
+                    Visuals.DrawCross(join.CurrentCentre()[0], join.CurrentCentre()[1], Color.Red, g);
+                }
                 //foreach (Piece piece in (WIP as Set).PiecesList)
                 //{
                 //    if (piece != (WIP as Set).BasePiece)

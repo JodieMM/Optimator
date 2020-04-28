@@ -45,9 +45,22 @@ namespace Optimator
             Enter += FocusOn;
             VisibleChanged += FocusOn;
         }
-                
 
-        
+
+
+        // ----- GETTERS -----
+
+        /// <summary>
+        /// Gets a board to use in a utils sizing function in AddPartPanel.
+        /// </summary>
+        /// <returns>A PictureBox used as a board</returns>
+        public PictureBox GetBoardSizing()
+        {
+            return DrawBase;
+        }
+
+
+
         // ----- FORM FUNCTIONS -----
 
         /// <summary>

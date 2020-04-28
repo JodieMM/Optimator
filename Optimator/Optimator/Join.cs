@@ -138,23 +138,25 @@ namespace Optimator
             //TODO (RTS) Fix loaned base values
             var rChange = Utils.Modulo(B.State.R - Set.PersonalStates[B].R, 360);
             var tChange = Utils.Modulo(B.State.T - Set.PersonalStates[B].T, 360);
+
             var modR = aState.R + B.State.R;
-            var modT = aState.T;
+            var modT = aState.T + B.State.T;
             var modS = aState.S;
             var modSM = B.State.SM;
-
-            // Adjust Turn
-            //modT += aState.S;
-
+            var modX = 0F;
+            var modY = 0F;
+            
             // Adjust Spin
             if (aState.S != 0 && aState.S != 180)
-            {
+            {                
                 if (aState.S < 90)
                 {
                     modS = aState.S * (float)Math.Cos(Utils.ConvertDegreeToRadian(rChange));
                     var height = Utils.FindHeight(A.GetPoints(new State(0, 0, aState.R, modT, aState.S, modSM)));
                     var flatHeight = Utils.FindHeight(A.GetPoints(new State(0, 0, modR, modT, modS, modSM)));
                     modSM *= flatHeight > 0 ? height / flatHeight : height > 0 ? 1 : 0;
+
+                    //modY = originalMinMax[3] - modMinMax[3];
                 }
                 else if (aState.S < 270)
                 {
@@ -172,25 +174,29 @@ namespace Optimator
                 }
             }
 
-            var attachedR = Utils.Modulo(modR, 360);
-            var attachedT = Utils.Modulo(modT, 360);
-            var attachedS = Utils.Modulo(modS, 360);
+            modR = Utils.Modulo(modR, 360);
+            modT = Utils.Modulo(modT, 360);
+            modS = Utils.Modulo(modS + B.State.S, 360);
+            modSM *= aState.SM;
 
-            //float attachedR = Utils.Modulo(B.State.R + personalState.R, 360);
-            //float attachedT = Utils.Modulo(B.State.T + personalState.T, 360);
-            //float attachedS = Utils.Modulo(B.State.S + personalState.S, 360);
-
-            var attachedSM = aState.SM * modSM;
+            var minMax = Utils.FindMinMax(A.GetPoints(new State(0, 0, aState.R, modT, aState.S, B.State.SM * aState.SM)));
+            var minMax2 = Utils.FindMinMax(A.GetPoints(new State(0, 0, modR, modT, modS, modSM)));
 
             var attachedJoinB = Utils.SpinAndSizeCoord(B.State.S, B.State.SM,
                 new float[] { Utils.RotOrTurnCalculation(B.State.R, BX, BXRight), Utils.RotOrTurnCalculation(B.State.T, BY, BYDown) });
-            var attachedJoinA = Utils.SpinAndSizeCoord(attachedS, attachedSM,
-                new float[] { Utils.RotOrTurnCalculation(attachedR, AX, AXRight), Utils.RotOrTurnCalculation(attachedT, AY, AYDown) });
+            var attachedJoinA = Utils.SpinAndSizeCoord(modS, modSM,
+                new float[] { Utils.RotOrTurnCalculation(modR, AX, AXRight), Utils.RotOrTurnCalculation(modT, AY, AYDown) });
 
-            var attachedX = B.State.X + attachedJoinB[0] + attachedJoinA[0] + aState.X;
-            var attachedY = B.State.Y + attachedJoinB[1] + attachedJoinA[1] + aState.Y;
+            var originalAttachedJoinA = Utils.SpinAndSizeCoord(aState.S, B.State.SM,
+                new float[] { Utils.RotOrTurnCalculation(aState.R, AX, AXRight), Utils.RotOrTurnCalculation(aState.T, AY, AYDown) });
+            modY = minMax[3] - minMax2[3];
+            //TODO (RTS)
+            //modY = (minMax[3] - B.State.Y - originalAttachedJoinA[1]) - (minMax2[3] - B.State.Y - attachedJoinA[1]);
+            //modY = (attachedJoinA[1] - minMax2[3]) - (originalAttachedJoinA[1] - minMax[3]);//aState.R, modT, aState.S, modSM
 
-            return new State(attachedX, attachedY, attachedR, attachedT, attachedS, attachedSM);
+            modX += B.State.X + attachedJoinB[0] + attachedJoinA[0] + aState.X;
+            modY += B.State.Y + attachedJoinB[1] + attachedJoinA[1] + aState.Y;
+            return new State(modX, modY, modR, modT, modS, modSM);
         }
 
         /// <summary>

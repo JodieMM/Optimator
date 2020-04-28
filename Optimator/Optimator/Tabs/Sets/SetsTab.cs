@@ -64,9 +64,14 @@ namespace Optimator.Tabs.Sets
         /// <summary>
         /// Finds whether the join btn is pressed.
         /// </summary>
+        /// <param name="baseBtn">True if checking base btn pressed instead</param>
         /// <returns>True if pressed</returns>
-        public bool GetIfJoinBtnPressed()
+        public bool GetIfJoinBtnPressed(bool baseBtn = false)
         {
+            if (baseBtn)
+            {
+                return JoinsBtn.Checked && (Baby as JoinsPanel).SelectBaseBtnPressed();
+            }
             return JoinsBtn.Checked && (Baby as JoinsPanel).JoinBtnPressed();
         }
 
@@ -198,33 +203,22 @@ namespace Optimator.Tabs.Sets
         /// <param name="e"></param>
         private new void CloseBtn_Click(object sender, EventArgs e)
         {
-            if (Utils.ExitBtn_Click(WIP.PiecesList.Count > 1))
-            {
-                Owner.RemoveTabPage(this);
-            }
+            //if (Utils.ExitBtn_Click(WIP.PiecesList.Count > 1))
+            //{
+            //    Owner.RemoveTabPage(this);
+            //}
 
             //HIDDEN (RTS) Below used for testing
-            //WIP = new Set
-            //{
-            //    PiecesList = new List<Piece>() { new Piece("branch"), new Piece("tri") }
-            //};
-            //WIP.BasePiece = WIP.PiecesList[0];
-            //WIP.JoinedPieces.Add(WIP.PiecesList[0], new List<Piece>() { WIP.PiecesList[1] });
-            //WIP.JoinsIndex.Add(WIP.PiecesList[1], new Join(WIP.PiecesList[1], WIP.PiecesList[0], WIP, -5, -71, 12, -23, 20, -22, 3, -10, -1, 0));
-            //WIP.PersonalStates.Add(WIP.PiecesList[0], new State(150, 150, 0, 0, 0, 1));
-            //WIP.PersonalStates.Add(WIP.PiecesList[1], new State(0, 0, 0, 0, 40, 1));
-            //DisplayDrawings();
-
-            //WIP = new Set
-            //{
-            //    PiecesList = new List<Piece>() { new Piece("branch"), new Piece("line") }
-            //};
-            //WIP.BasePiece = WIP.PiecesList[0];
-            //WIP.JoinedPieces.Add(WIP.PiecesList[0], new List<Piece>() { WIP.PiecesList[1] });
-            //WIP.JoinsIndex.Add(WIP.PiecesList[1], new Join(WIP.PiecesList[1], WIP.PiecesList[0], WIP, 0, -54, 0, -54, 0, -46, 0, -6, -1, 0));
-            //WIP.PersonalStates.Add(WIP.PiecesList[0], new State(150, 150, 0, 0, 0, 1));
-            //WIP.PersonalStates.Add(WIP.PiecesList[1], new State(0, 0, 0, 0, 175, 1));
-            //DisplayDrawings();
+            WIP = new Set
+            {
+                PiecesList = new List<Piece>() { new Piece("b"), new Piece("b") }
+            };
+            WIP.BasePiece = WIP.PiecesList[0];
+            WIP.JoinedPieces.Add(WIP.PiecesList[0], new List<Piece>() { WIP.PiecesList[1] });
+            WIP.JoinsIndex.Add(WIP.PiecesList[1], new Join(WIP.PiecesList[1], WIP.PiecesList[0], WIP, 16, -13, 16, -13, 76, -37, 7, -37, -1, 0));
+            WIP.PersonalStates.Add(WIP.PiecesList[0], new State(150, 150, 0, 0, 0, 1));
+            WIP.PersonalStates.Add(WIP.PiecesList[1], new State(0, 0, 0, 0, 50, 0.3F));
+            DisplayDrawings();
         }
 
         #endregion
@@ -290,7 +284,7 @@ namespace Optimator.Tabs.Sets
                 if (newSelected != null)
                 {
                     // Set a new base for the selected piece and adjust coords and join
-                    if (GetIfJoinBtnPressed() && selected != newSelected)
+                    if (GetIfJoinBtnPressed(true) && selected != newSelected)
                     {
                         // Remove old joinings
                         if (WIP.JoinsIndex.ContainsKey(selected))
@@ -315,7 +309,10 @@ namespace Optimator.Tabs.Sets
                         moving = sent;
                     }
                 }
-                DeselectPiece();
+                else
+                {
+                    DeselectPiece();
+                }
             }
             DisplayDrawings();
         }

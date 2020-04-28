@@ -1,6 +1,4 @@
 ﻿using System;
-using Optimator.Tabs;
-using Optimator;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
@@ -153,7 +151,7 @@ namespace Optimator.Tabs.SoloTabs
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void ExitBtn_Click(object sender, EventArgs e)
-        {
+        {            
             if (FillColourBtn.BackColor == selected || AllBtn.BackColor == selected)
             {
                 from.WIP.ColourState.FillColour = loaded.ToPiece().ColourState.FillColour;
@@ -172,10 +170,19 @@ namespace Optimator.Tabs.SoloTabs
             }
             if (ShapeBtn.BackColor == selected)
             {
+                var panel = from.GetBoardSizing();
+                foreach (var spot in loaded.ToPiece().Data)
+                {
+                    spot.X += panel.Width / 2.0F;
+                    spot.Y += panel.Height / 2.0F;
+                    spot.XRight += panel.Width / 2.0F;
+                    spot.YDown += panel.Height / 2.0F;
+                }
                 from.WIP.Data = loaded.ToPiece().Data;
             }
             if (SketchBtn.BackColor == selected)
             {
+                loaded.ToPiece().State.SetCoordsBasedOnBoard(from.GetBoardSizing());
                 from.Sketches.Add(loaded, true);
             }
             from.DeselectButtons();

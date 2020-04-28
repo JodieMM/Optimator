@@ -79,7 +79,7 @@ namespace Optimator.Tabs.Pieces
         /// <param name="e"></param>
         private void XUpDown_ValueChanged(object sender, EventArgs e)
         {
-            if (Owner.selectedSpot != null)
+            if (XUpDown.ContainsFocus && Owner.selectedSpot != null)
             {
                 if (YUpDown.Enabled)
                 {
@@ -96,7 +96,7 @@ namespace Optimator.Tabs.Pieces
         /// <param name="e"></param>
         private void YUpDown_ValueChanged(object sender, EventArgs e)
         {
-            if (Owner.selectedSpot != null)
+            if (YUpDown.ContainsFocus && Owner.selectedSpot != null)
             {
                 if (XUpDown.Enabled)
                 {

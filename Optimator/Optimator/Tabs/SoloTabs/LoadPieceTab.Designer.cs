@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LoadPieceTab));
             this.LoadSetBtn = new System.Windows.Forms.Button();
             this.AllBtn = new System.Windows.Forms.Button();
             this.OutlineWidthBtn = new System.Windows.Forms.Button();
@@ -54,13 +53,13 @@
             this.LoadSetBtn.BackColor = System.Drawing.Color.LightPink;
             this.LoadSetBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.LoadSetBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.LoadSetBtn.Font = Consts.contentFont;
-            this.LoadSetBtn.Location = new System.Drawing.Point(145, 56);
-            this.LoadSetBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.LoadSetBtn.Font = new System.Drawing.Font("Segoe UI", 16F);
+            this.LoadSetBtn.Location = new System.Drawing.Point(290, 103);
+            this.LoadSetBtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.LoadSetBtn.Name = "LoadSetBtn";
-            this.LoadSetBtn.Size = new System.Drawing.Size(139, 50);
+            this.LoadSetBtn.Size = new System.Drawing.Size(278, 91);
             this.LoadSetBtn.TabIndex = 38;
-            this.LoadSetBtn.Text = "Set";
+            this.LoadSetBtn.Text = "+ Set";
             this.LoadSetBtn.UseVisualStyleBackColor = false;
             this.LoadSetBtn.Click += new System.EventHandler(this.LoadBtn_Click);
             // 
@@ -69,11 +68,11 @@
             this.AllBtn.BackColor = System.Drawing.Color.LightPink;
             this.AllBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.AllBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.AllBtn.Font = Consts.contentFont;
-            this.AllBtn.Location = new System.Drawing.Point(145, 218);
-            this.AllBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.AllBtn.Font = new System.Drawing.Font("Segoe UI", 16F);
+            this.AllBtn.Location = new System.Drawing.Point(290, 424);
+            this.AllBtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.AllBtn.Name = "AllBtn";
-            this.AllBtn.Size = new System.Drawing.Size(139, 50);
+            this.AllBtn.Size = new System.Drawing.Size(278, 91);
             this.AllBtn.TabIndex = 36;
             this.AllBtn.Text = "All";
             this.AllBtn.UseVisualStyleBackColor = false;
@@ -84,11 +83,11 @@
             this.OutlineWidthBtn.BackColor = System.Drawing.Color.LightPink;
             this.OutlineWidthBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.OutlineWidthBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.OutlineWidthBtn.Font = Consts.contentFont;
-            this.OutlineWidthBtn.Location = new System.Drawing.Point(2, 164);
-            this.OutlineWidthBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.OutlineWidthBtn.Font = new System.Drawing.Font("Segoe UI", 16F);
+            this.OutlineWidthBtn.Location = new System.Drawing.Point(4, 325);
+            this.OutlineWidthBtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.OutlineWidthBtn.Name = "OutlineWidthBtn";
-            this.OutlineWidthBtn.Size = new System.Drawing.Size(139, 50);
+            this.OutlineWidthBtn.Size = new System.Drawing.Size(278, 91);
             this.OutlineWidthBtn.TabIndex = 35;
             this.OutlineWidthBtn.Text = "Outline Width";
             this.OutlineWidthBtn.UseVisualStyleBackColor = false;
@@ -99,11 +98,11 @@
             this.PieceDetailsBtn.BackColor = System.Drawing.Color.LightPink;
             this.PieceDetailsBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PieceDetailsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PieceDetailsBtn.Font = Consts.contentFont;
-            this.PieceDetailsBtn.Location = new System.Drawing.Point(145, 164);
-            this.PieceDetailsBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.PieceDetailsBtn.Font = new System.Drawing.Font("Segoe UI", 16F);
+            this.PieceDetailsBtn.Location = new System.Drawing.Point(290, 325);
+            this.PieceDetailsBtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.PieceDetailsBtn.Name = "PieceDetailsBtn";
-            this.PieceDetailsBtn.Size = new System.Drawing.Size(139, 50);
+            this.PieceDetailsBtn.Size = new System.Drawing.Size(278, 91);
             this.PieceDetailsBtn.TabIndex = 34;
             this.PieceDetailsBtn.Text = "Piece Details";
             this.PieceDetailsBtn.UseVisualStyleBackColor = false;
@@ -114,11 +113,11 @@
             this.ShapeBtn.BackColor = System.Drawing.Color.LightPink;
             this.ShapeBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ShapeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ShapeBtn.Font = Consts.contentFont;
-            this.ShapeBtn.Location = new System.Drawing.Point(2, 218);
-            this.ShapeBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.ShapeBtn.Font = new System.Drawing.Font("Segoe UI", 16F);
+            this.ShapeBtn.Location = new System.Drawing.Point(4, 424);
+            this.ShapeBtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.ShapeBtn.Name = "ShapeBtn";
-            this.ShapeBtn.Size = new System.Drawing.Size(139, 50);
+            this.ShapeBtn.Size = new System.Drawing.Size(278, 91);
             this.ShapeBtn.TabIndex = 33;
             this.ShapeBtn.Text = "Shape";
             this.ShapeBtn.UseVisualStyleBackColor = false;
@@ -129,11 +128,11 @@
             this.ExitBtn.BackColor = System.Drawing.Color.LightPink;
             this.ExitBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ExitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ExitBtn.Font = Consts.contentFont;
-            this.ExitBtn.Location = new System.Drawing.Point(145, 272);
-            this.ExitBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.ExitBtn.Font = new System.Drawing.Font("Segoe UI", 16F);
+            this.ExitBtn.Location = new System.Drawing.Point(290, 523);
+            this.ExitBtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.ExitBtn.Name = "ExitBtn";
-            this.ExitBtn.Size = new System.Drawing.Size(139, 50);
+            this.ExitBtn.Size = new System.Drawing.Size(278, 96);
             this.ExitBtn.TabIndex = 32;
             this.ExitBtn.Text = "Done";
             this.ExitBtn.UseVisualStyleBackColor = false;
@@ -144,11 +143,11 @@
             this.OutlineColourBtn.BackColor = System.Drawing.Color.LightPink;
             this.OutlineColourBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.OutlineColourBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.OutlineColourBtn.Font = Consts.contentFont;
-            this.OutlineColourBtn.Location = new System.Drawing.Point(145, 110);
-            this.OutlineColourBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.OutlineColourBtn.Font = new System.Drawing.Font("Segoe UI", 16F);
+            this.OutlineColourBtn.Location = new System.Drawing.Point(290, 226);
+            this.OutlineColourBtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.OutlineColourBtn.Name = "OutlineColourBtn";
-            this.OutlineColourBtn.Size = new System.Drawing.Size(139, 50);
+            this.OutlineColourBtn.Size = new System.Drawing.Size(278, 91);
             this.OutlineColourBtn.TabIndex = 31;
             this.OutlineColourBtn.Text = "Outline Colour";
             this.OutlineColourBtn.UseVisualStyleBackColor = false;
@@ -159,13 +158,13 @@
             this.LoadPieceBtn.BackColor = System.Drawing.Color.LightPink;
             this.LoadPieceBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.LoadPieceBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.LoadPieceBtn.Font = Consts.contentFont;
-            this.LoadPieceBtn.Location = new System.Drawing.Point(2, 56);
-            this.LoadPieceBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.LoadPieceBtn.Font = new System.Drawing.Font("Segoe UI", 16F);
+            this.LoadPieceBtn.Location = new System.Drawing.Point(4, 103);
+            this.LoadPieceBtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.LoadPieceBtn.Name = "LoadPieceBtn";
-            this.LoadPieceBtn.Size = new System.Drawing.Size(139, 50);
+            this.LoadPieceBtn.Size = new System.Drawing.Size(278, 91);
             this.LoadPieceBtn.TabIndex = 26;
-            this.LoadPieceBtn.Text = "Piece";
+            this.LoadPieceBtn.Text = "+ Piece";
             this.LoadPieceBtn.UseVisualStyleBackColor = false;
             this.LoadPieceBtn.Click += new System.EventHandler(this.LoadBtn_Click);
             // 
@@ -174,10 +173,11 @@
             this.NameTb.BackColor = System.Drawing.Color.White;
             this.TableLayoutPnl.SetColumnSpan(this.NameTb, 2);
             this.NameTb.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.NameTb.Font = Consts.contentFont;
-            this.NameTb.Location = new System.Drawing.Point(3, 3);
+            this.NameTb.Font = new System.Drawing.Font("Segoe UI", 16F);
+            this.NameTb.Location = new System.Drawing.Point(6, 6);
+            this.NameTb.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.NameTb.Name = "NameTb";
-            this.NameTb.Size = new System.Drawing.Size(280, 33);
+            this.NameTb.Size = new System.Drawing.Size(560, 64);
             this.NameTb.TabIndex = 30;
             this.NameTb.Text = "Part Name";
             // 
@@ -186,11 +186,11 @@
             this.FillColourBtn.BackColor = System.Drawing.Color.LightPink;
             this.FillColourBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.FillColourBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.FillColourBtn.Font = Consts.contentFont;
-            this.FillColourBtn.Location = new System.Drawing.Point(2, 110);
-            this.FillColourBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.FillColourBtn.Font = new System.Drawing.Font("Segoe UI", 16F);
+            this.FillColourBtn.Location = new System.Drawing.Point(4, 226);
+            this.FillColourBtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.FillColourBtn.Name = "FillColourBtn";
-            this.FillColourBtn.Size = new System.Drawing.Size(139, 50);
+            this.FillColourBtn.Size = new System.Drawing.Size(278, 91);
             this.FillColourBtn.TabIndex = 29;
             this.FillColourBtn.Text = "Fill Colour";
             this.FillColourBtn.UseVisualStyleBackColor = false;
@@ -199,10 +199,10 @@
             // DrawPanel
             // 
             this.DrawPanel.BackColor = System.Drawing.Color.White;
-            this.DrawPanel.Location = new System.Drawing.Point(14, 53);
-            this.DrawPanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.DrawPanel.Location = new System.Drawing.Point(28, 102);
+            this.DrawPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.DrawPanel.Name = "DrawPanel";
-            this.DrawPanel.Size = new System.Drawing.Size(150, 156);
+            this.DrawPanel.Size = new System.Drawing.Size(300, 300);
             this.DrawPanel.TabIndex = 28;
             this.DrawPanel.TabStop = false;
             // 
@@ -214,9 +214,9 @@
             this.CloseBtn});
             this.ToolStrip.Location = new System.Drawing.Point(0, 0);
             this.ToolStrip.Name = "ToolStrip";
-            this.ToolStrip.Padding = new System.Windows.Forms.Padding(0, 0, 0, 0);
+            this.ToolStrip.Padding = new System.Windows.Forms.Padding(0);
             this.ToolStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.ToolStrip.Size = new System.Drawing.Size(966, 39);
+            this.ToolStrip.Size = new System.Drawing.Size(1932, 39);
             this.ToolStrip.TabIndex = 39;
             this.ToolStrip.Text = "ToolStrip";
             // 
@@ -224,7 +224,7 @@
             // 
             this.CloseBtn.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.CloseBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.CloseBtn.Image = Properties.Resources.CloseIcon;
+            this.CloseBtn.Image = global::Optimator.Properties.Resources.CloseIcon;
             this.CloseBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.CloseBtn.Name = "CloseBtn";
             this.CloseBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -237,11 +237,11 @@
             this.SketchBtn.BackColor = System.Drawing.Color.LightPink;
             this.SketchBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SketchBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.SketchBtn.Font = Consts.contentFont;
-            this.SketchBtn.Location = new System.Drawing.Point(2, 272);
-            this.SketchBtn.Margin = new System.Windows.Forms.Padding(2);
+            this.SketchBtn.Font = new System.Drawing.Font("Segoe UI", 16F);
+            this.SketchBtn.Location = new System.Drawing.Point(4, 523);
+            this.SketchBtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.SketchBtn.Name = "SketchBtn";
-            this.SketchBtn.Size = new System.Drawing.Size(139, 50);
+            this.SketchBtn.Size = new System.Drawing.Size(278, 96);
             this.SketchBtn.TabIndex = 37;
             this.SketchBtn.Text = "Sketch";
             this.SketchBtn.UseVisualStyleBackColor = false;
@@ -254,38 +254,40 @@
             this.TableLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.TableLayoutPnl.Controls.Add(this.NameTb, 0, 0);
             this.TableLayoutPnl.Controls.Add(this.LoadPieceBtn, 0, 1);
-            this.TableLayoutPnl.Controls.Add(this.ExitBtn, 1, 5);
-            this.TableLayoutPnl.Controls.Add(this.SketchBtn, 0, 5);
+            this.TableLayoutPnl.Controls.Add(this.ExitBtn, 1, 6);
+            this.TableLayoutPnl.Controls.Add(this.SketchBtn, 0, 6);
             this.TableLayoutPnl.Controls.Add(this.LoadSetBtn, 1, 1);
-            this.TableLayoutPnl.Controls.Add(this.AllBtn, 1, 4);
-            this.TableLayoutPnl.Controls.Add(this.FillColourBtn, 0, 2);
-            this.TableLayoutPnl.Controls.Add(this.ShapeBtn, 0, 4);
-            this.TableLayoutPnl.Controls.Add(this.PieceDetailsBtn, 1, 3);
-            this.TableLayoutPnl.Controls.Add(this.OutlineWidthBtn, 0, 3);
-            this.TableLayoutPnl.Controls.Add(this.OutlineColourBtn, 1, 2);
-            this.TableLayoutPnl.Location = new System.Drawing.Point(183, 53);
+            this.TableLayoutPnl.Controls.Add(this.AllBtn, 1, 5);
+            this.TableLayoutPnl.Controls.Add(this.FillColourBtn, 0, 3);
+            this.TableLayoutPnl.Controls.Add(this.ShapeBtn, 0, 5);
+            this.TableLayoutPnl.Controls.Add(this.PieceDetailsBtn, 1, 4);
+            this.TableLayoutPnl.Controls.Add(this.OutlineWidthBtn, 0, 4);
+            this.TableLayoutPnl.Controls.Add(this.OutlineColourBtn, 1, 3);
+            this.TableLayoutPnl.Location = new System.Drawing.Point(366, 102);
+            this.TableLayoutPnl.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.TableLayoutPnl.Name = "TableLayoutPnl";
-            this.TableLayoutPnl.RowCount = 6;
-            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.TableLayoutPnl.Size = new System.Drawing.Size(286, 324);
+            this.TableLayoutPnl.RowCount = 7;
+            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16F));
+            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16F));
+            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 4F));
+            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16F));
+            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16F));
+            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16F));
+            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16F));
+            this.TableLayoutPnl.Size = new System.Drawing.Size(572, 623);
             this.TableLayoutPnl.TabIndex = 40;
             // 
             // LoadPieceTab
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Pink;
             this.Controls.Add(this.TableLayoutPnl);
             this.Controls.Add(this.ToolStrip);
             this.Controls.Add(this.DrawPanel);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "LoadPieceTab";
-            this.Size = new System.Drawing.Size(966, 612);
+            this.Size = new System.Drawing.Size(1932, 1177);
             ((System.ComponentModel.ISupportInitialize)(this.DrawPanel)).EndInit();
             this.ToolStrip.ResumeLayout(false);
             this.ToolStrip.PerformLayout();
