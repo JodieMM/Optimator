@@ -211,7 +211,7 @@ namespace Optimator.Tabs.Sets
             //HIDDEN (RTS) Below used for testing
             WIP = new Set
             {
-                PiecesList = new List<Piece>() { new Piece("b"), new Piece("b") }
+                PiecesList = new List<Piece>() { new Piece("c"), new Piece("c") }
             };
             WIP.BasePiece = WIP.PiecesList[0];
             WIP.JoinedPieces.Add(WIP.PiecesList[0], new List<Piece>() { WIP.PiecesList[1] });
