@@ -30,7 +30,7 @@ namespace Optimator.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PreviewTab));
+            this.components = new System.ComponentModel.Container();
             this.TurnTrack = new System.Windows.Forms.TrackBar();
             this.RotationTrack = new System.Windows.Forms.TrackBar();
             this.OptionsMenu = new System.Windows.Forms.Panel();
@@ -38,7 +38,12 @@ namespace Optimator.Forms
             this.DrawPanel = new System.Windows.Forms.PictureBox();
             this.ToolStrip = new System.Windows.Forms.ToolStrip();
             this.CloseBtn = new System.Windows.Forms.ToolStripButton();
-            this.DisplayTimer = new System.Windows.Forms.Timer();
+            this.DisplayTimer = new System.Windows.Forms.Timer(this.components);
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.TurnTrack)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.RotationTrack)).BeginInit();
             this.OptionsMenu.SuspendLayout();
@@ -52,7 +57,7 @@ namespace Optimator.Forms
             this.TurnTrack.BackColor = System.Drawing.Color.White;
             this.TurnTrack.Cursor = System.Windows.Forms.Cursors.Default;
             this.TurnTrack.Location = new System.Drawing.Point(1172, 69);
-            this.TurnTrack.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.TurnTrack.Margin = new System.Windows.Forms.Padding(6);
             this.TurnTrack.Maximum = 359;
             this.TurnTrack.Name = "TurnTrack";
             this.TurnTrack.Orientation = System.Windows.Forms.Orientation.Vertical;
@@ -67,7 +72,7 @@ namespace Optimator.Forms
             this.RotationTrack.BackColor = System.Drawing.Color.White;
             this.RotationTrack.Cursor = System.Windows.Forms.Cursors.Default;
             this.RotationTrack.Location = new System.Drawing.Point(82, 1117);
-            this.RotationTrack.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.RotationTrack.Margin = new System.Windows.Forms.Padding(6);
             this.RotationTrack.Maximum = 359;
             this.RotationTrack.Name = "RotationTrack";
             this.RotationTrack.Size = new System.Drawing.Size(1080, 90);
@@ -78,9 +83,14 @@ namespace Optimator.Forms
             // OptionsMenu
             // 
             this.OptionsMenu.BackColor = System.Drawing.Color.GhostWhite;
+            this.OptionsMenu.Controls.Add(this.label5);
+            this.OptionsMenu.Controls.Add(this.label4);
+            this.OptionsMenu.Controls.Add(this.label3);
+            this.OptionsMenu.Controls.Add(this.label2);
+            this.OptionsMenu.Controls.Add(this.label1);
             this.OptionsMenu.Controls.Add(this.spinBar);
             this.OptionsMenu.Location = new System.Drawing.Point(1322, -85);
-            this.OptionsMenu.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.OptionsMenu.Margin = new System.Windows.Forms.Padding(6);
             this.OptionsMenu.Name = "OptionsMenu";
             this.OptionsMenu.Size = new System.Drawing.Size(400, 1298);
             this.OptionsMenu.TabIndex = 5;
@@ -90,7 +100,7 @@ namespace Optimator.Forms
             this.spinBar.BackColor = System.Drawing.Color.GhostWhite;
             this.spinBar.Cursor = System.Windows.Forms.Cursors.Default;
             this.spinBar.Location = new System.Drawing.Point(130, 65);
-            this.spinBar.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.spinBar.Margin = new System.Windows.Forms.Padding(6);
             this.spinBar.Maximum = 359;
             this.spinBar.Name = "spinBar";
             this.spinBar.Orientation = System.Windows.Forms.Orientation.Vertical;
@@ -104,7 +114,7 @@ namespace Optimator.Forms
             // 
             this.DrawPanel.BackColor = System.Drawing.Color.White;
             this.DrawPanel.Location = new System.Drawing.Point(-28, -37);
-            this.DrawPanel.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.DrawPanel.Margin = new System.Windows.Forms.Padding(6);
             this.DrawPanel.Name = "DrawPanel";
             this.DrawPanel.Size = new System.Drawing.Size(1300, 1250);
             this.DrawPanel.TabIndex = 4;
@@ -127,7 +137,7 @@ namespace Optimator.Forms
             // 
             this.CloseBtn.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.CloseBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.CloseBtn.Image = Properties.Resources.CloseIcon;
+            this.CloseBtn.Image = global::Optimator.Properties.Resources.CloseIcon;
             this.CloseBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.CloseBtn.Name = "CloseBtn";
             this.CloseBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -135,10 +145,55 @@ namespace Optimator.Forms
             this.CloseBtn.Text = "Close";
             this.CloseBtn.Click += new System.EventHandler(this.CloseBtn_Click);
             // 
-            // AnimationTimer
+            // DisplayTimer
             // 
             this.DisplayTimer.Interval = 5;
             this.DisplayTimer.Tick += new System.EventHandler(this.DisplayTimer_Tick);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(216, 177);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(70, 25);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "label1";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(216, 267);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(70, 25);
+            this.label2.TabIndex = 6;
+            this.label2.Text = "label2";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(216, 343);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(70, 25);
+            this.label3.TabIndex = 7;
+            this.label3.Text = "label3";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(216, 429);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(70, 25);
+            this.label4.TabIndex = 8;
+            this.label4.Text = "label4";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(216, 521);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(70, 25);
+            this.label5.TabIndex = 9;
+            this.label5.Text = "label5";
             // 
             // PreviewTab
             // 
@@ -150,7 +205,7 @@ namespace Optimator.Forms
             this.Controls.Add(this.RotationTrack);
             this.Controls.Add(this.OptionsMenu);
             this.Controls.Add(this.DrawPanel);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "PreviewTab";
             this.Size = new System.Drawing.Size(1750, 1237);
             ((System.ComponentModel.ISupportInitialize)(this.TurnTrack)).EndInit();
@@ -176,5 +231,10 @@ namespace Optimator.Forms
         private System.Windows.Forms.ToolStrip ToolStrip;
         private System.Windows.Forms.ToolStripButton CloseBtn;
         private Timer DisplayTimer;
+        private Label label5;
+        private Label label4;
+        private Label label3;
+        private Label label2;
+        private Label label1;
     }
 }
