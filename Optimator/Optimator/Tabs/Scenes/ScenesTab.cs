@@ -36,7 +36,8 @@ namespace Optimator.Tabs.Scenes
             Owner = owner;
             
             KeyUp += KeyPress;
-            Validated += RefreshDrawPanel;
+            Enter += FocusOn;
+            VisibleChanged += FocusOn;
 
             g = DrawPanel.CreateGraphics();            
         }
@@ -117,6 +118,16 @@ namespace Optimator.Tabs.Scenes
             }
             Utils.ResizePanel(Panel);
 
+            DisplayDrawings();
+        }
+
+        /// <summary>
+        /// Redraws boards once focus is regained.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void FocusOn(object sender, EventArgs e)
+        {
             DisplayDrawings();
         }
 
@@ -479,31 +490,6 @@ namespace Optimator.Tabs.Scenes
         public void DisplayDrawPanel()
         {
             Visuals.DrawParts(WIP.PartsList, g, DrawPanel);
-        }
-
-
-
-        // ----- PANEL REFRESH TIMER
-
-        /// <summary>
-        /// Starts the drawing timer once the tab has been created.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        public void RefreshDrawPanel(object sender, EventArgs e)
-        {
-            DisplayTimer.Start();
-        }
-
-        /// <summary>
-        /// Displays the drawings a short time after the tab has validated.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void DisplayTimer_Tick(object sender, EventArgs e)
-        {
-            DisplayTimer.Stop();
-            DisplayDrawings();
         }
     }
 }

@@ -45,7 +45,6 @@ namespace Optimator.Tabs.Sets
             this.DrawDown = new System.Windows.Forms.PictureBox();
             this.DrawBase = new System.Windows.Forms.PictureBox();
             this.EraseBtn = new System.Windows.Forms.ToolStripButton();
-            this.DisplayTimer = new System.Windows.Forms.Timer(this.components);
             this.ToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DrawRight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawDown)).BeginInit();
@@ -213,11 +212,6 @@ namespace Optimator.Tabs.Sets
             this.EraseBtn.Text = "Erase";
             this.EraseBtn.Click += new System.EventHandler(this.BtnWithPanel_Click);
             // 
-            // DisplayTimer
-            // 
-            this.DisplayTimer.Interval = 5;
-            this.DisplayTimer.Tick += new System.EventHandler(this.DisplayTimer_Tick);
-            // 
             // SetsTab
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -256,6 +250,5 @@ namespace Optimator.Tabs.Sets
         private System.Windows.Forms.PictureBox DrawDown;
         private System.Windows.Forms.PictureBox DrawBase;
         private System.Windows.Forms.ToolStripButton EraseBtn;
-        private Timer DisplayTimer;
     }
 }

@@ -53,7 +53,6 @@ namespace Optimator.Tabs.Compile
             this.DPControlsTableLayoutPnl = new System.Windows.Forms.TableLayoutPanel();
             this.AnimationTimer = new System.Windows.Forms.Timer(this.components);
             this.LoadingMessage = new Optimator.Tabs.SoloTabs.LoadingMessage();
-            this.DisplayTimer = new System.Windows.Forms.Timer(this.components);
             this.ToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FuturePreviewBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Past2PreviewBox)).BeginInit();
@@ -327,11 +326,6 @@ namespace Optimator.Tabs.Compile
             this.LoadingMessage.TabIndex = 43;
             this.LoadingMessage.Visible = false;
             // 
-            // DisplayTimer
-            // 
-            this.DisplayTimer.Interval = 5;
-            this.DisplayTimer.Tick += new System.EventHandler(this.DisplayTimer_Tick);
-            // 
             // CompileTab
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -385,6 +379,5 @@ namespace Optimator.Tabs.Compile
         private Label UpArrowImg;
         private Timer AnimationTimer;
         private SoloTabs.LoadingMessage LoadingMessage;
-        private Timer DisplayTimer;
     }
 }

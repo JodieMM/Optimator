@@ -45,7 +45,6 @@ namespace Optimator
             this.EraseBtn = new System.Windows.Forms.ToolStripButton();
             this.OutlineBtn = new System.Windows.Forms.ToolStripButton();
             this.PreviewBtn = new System.Windows.Forms.ToolStripButton();
-            this.DisplayTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.DrawRight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawBase)).BeginInit();
@@ -213,11 +212,6 @@ namespace Optimator
             this.PreviewBtn.Text = "Preview";
             this.PreviewBtn.Click += new System.EventHandler(this.PreviewBtn_Click);
             // 
-            // DisplayTimer
-            // 
-            this.DisplayTimer.Interval = 5;
-            this.DisplayTimer.Tick += new System.EventHandler(this.DisplayTimer_Tick);
-            // 
             // PiecesTab
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -254,6 +248,5 @@ namespace Optimator
         private System.Windows.Forms.ToolStripButton SketchesBtn;
         private System.Windows.Forms.ToolStripButton EraseBtn;
         private System.Windows.Forms.ToolStripButton OutlineBtn;
-        private Timer DisplayTimer;
     }
 }

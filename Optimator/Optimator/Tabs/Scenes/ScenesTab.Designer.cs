@@ -53,7 +53,6 @@ namespace Optimator.Tabs.Scenes
             this.DPDisplayTableLayoutPnl = new System.Windows.Forms.TableLayoutPanel();
             this.DPControlsTableLayoutPnl = new System.Windows.Forms.TableLayoutPanel();
             this.LoadingMessage = new Optimator.Tabs.SoloTabs.LoadingMessage();
-            this.DisplayTimer = new System.Windows.Forms.Timer(this.components);
             this.ToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Future2PreviewBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.FuturePreviewBox)).BeginInit();
@@ -349,11 +348,6 @@ namespace Optimator.Tabs.Scenes
             this.LoadingMessage.TabIndex = 43;
             this.LoadingMessage.Visible = false;
             // 
-            // DisplayTimer
-            // 
-            this.DisplayTimer.Interval = 5;
-            this.DisplayTimer.Tick += new System.EventHandler(this.DisplayTimer_Tick);
-            // 
             // ScenesTab
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -408,6 +402,5 @@ namespace Optimator.Tabs.Scenes
         private System.Windows.Forms.TableLayoutPanel DPControlsTableLayoutPnl;
         private System.Windows.Forms.TableLayoutPanel DPDisplayTableLayoutPnl;
         private SoloTabs.LoadingMessage LoadingMessage;
-        private Timer DisplayTimer;
     }
 }
