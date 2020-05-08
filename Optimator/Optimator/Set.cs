@@ -166,15 +166,18 @@ namespace Optimator
         /// <param name="angle">The angle to find: 0 original, 1 rotated, 2 turned</param>
         public void CalculateStates(int angle = 0, State curr = null)
         {
-            var state = curr ?? Utils.CloneState(PersonalStates[BasePiece]);
-            BasePiece.State = Utils.AdjustStateAngle(angle, state);
-
-            // Calculate Connections
-            if (JoinedPieces.ContainsKey(BasePiece))
+            if (BasePiece != null)
             {
-                foreach (var attached in JoinedPieces[BasePiece])
+                var state = curr ?? Utils.CloneState(PersonalStates[BasePiece]);
+                BasePiece.State = Utils.AdjustStateAngle(angle, state);
+
+                // Calculate Connections
+                if (JoinedPieces.ContainsKey(BasePiece))
                 {
-                    CalculateState(attached);
+                    foreach (var attached in JoinedPieces[BasePiece])
+                    {
+                        CalculateState(attached);
+                    }
                 }
             }
         }
@@ -202,7 +205,7 @@ namespace Optimator
         /// <returns>Ordered list of pieces</returns>
         public List<Piece> SortOrder()
         {
-            CalculateStates(0, BasePiece.State);
+            CalculateStates(0, BasePiece != null ? BasePiece.State : new State());
             return SortOrderFromBasePiece(BasePiece);
         }
 

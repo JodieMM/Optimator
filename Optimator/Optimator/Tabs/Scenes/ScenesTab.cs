@@ -35,7 +35,8 @@ namespace Optimator.Tabs.Scenes
             InitializeComponent();
             Owner = owner;
             
-            KeyUp += KeyPress;            
+            KeyUp += KeyPress;
+            Validated += RefreshDrawPanel;
 
             g = DrawPanel.CreateGraphics();            
         }
@@ -142,8 +143,11 @@ namespace Optimator.Tabs.Scenes
         /// </summary>
         private void DeselectButtons()
         {
-            SelectButton(SaveBtn);
             SaveBtn.Checked = false;
+            AddPartBtn.Checked = false;
+            PositionsBtn.Checked = false;
+            MoveBtn.Checked = false;
+            SettingsBtn.Checked = false;
             Panel.Controls.Clear();
         }
 
@@ -475,6 +479,31 @@ namespace Optimator.Tabs.Scenes
         public void DisplayDrawPanel()
         {
             Visuals.DrawParts(WIP.PartsList, g, DrawPanel);
+        }
+
+
+
+        // ----- PANEL REFRESH TIMER
+
+        /// <summary>
+        /// Starts the drawing timer once the tab has been created.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void RefreshDrawPanel(object sender, EventArgs e)
+        {
+            DisplayTimer.Start();
+        }
+
+        /// <summary>
+        /// Displays the drawings a short time after the tab has validated.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DisplayTimer_Tick(object sender, EventArgs e)
+        {
+            DisplayTimer.Stop();
+            DisplayDrawings();
         }
     }
 }

@@ -163,24 +163,40 @@ namespace Optimator
                         modT *= (float)Math.Cos(Utils.ConvertDegreeToRadian(modR));
                     }
                 }
+
+
+
+
+
                 else if (modS != 0 && modS != 180)
                 {
                     // Just Spin
                     if (modS < 90)
                     {
-                        modT += Math.Abs(modS * (float)Math.Sin(Utils.ConvertDegreeToRadian(modR)));
+                        //modT += Math.Abs(modS * (float)Math.Sin(Utils.ConvertDegreeToRadian(modR)));
                         modS *= (float)Math.Cos(Utils.ConvertDegreeToRadian(modR));
+                    }
+                    else if (modS == 90)
+                    {
+                        //modT += modR;
                     }
                     else if (modS < 270)
                     {
-                        modS = 180 + (180 - modS);
-                        modT += Math.Abs(modS * (float)Math.Sin(Utils.ConvertDegreeToRadian(modR))); //TODO Check
-                        modS *= -(float)Math.Cos(Utils.ConvertDegreeToRadian(modR));
+                        modS = 180 + (180 - modS) * -(float)Math.Cos(Utils.ConvertDegreeToRadian(modR));
+                    }
+                    else if (modS < 270)
+                    {
+                        //modT += Math.Abs(modS * (float)Math.Sin(Utils.ConvertDegreeToRadian(modR))); //TODO Check
+                        modS = 90 + (modS - 90) * - (float)Math.Sin(Utils.ConvertDegreeToRadian(modR));
+                    }
+                    else if (modS < 360)
+                    {
+                        modS = (360 - modS) * -(float)Math.Cos(Utils.ConvertDegreeToRadian(modR));
                     }
                     else if (modS < 360)
                     {
                         modS = 360 + (360 - modS);
-                        modT += Math.Abs(modS * (float)Math.Sin(Utils.ConvertDegreeToRadian(modR))); //TODO Check
+                        //modT += Math.Abs((modS - 360) * (float)Math.Sin(Utils.ConvertDegreeToRadian(modR))); //TODO Check
                         modS *= -(float)Math.Cos(Utils.ConvertDegreeToRadian(modR));
                     }
                 }

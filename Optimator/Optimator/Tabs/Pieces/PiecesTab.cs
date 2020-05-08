@@ -44,6 +44,7 @@ namespace Optimator
             KeyUp += KeyPress;
             Enter += FocusOn;
             VisibleChanged += FocusOn;
+            Validated += RefreshDrawPanel;
         }
 
 
@@ -127,8 +128,13 @@ namespace Optimator
         /// </summary>
         public void DeselectButtons()
         {
-            SelectButton(EraseBtn);
+            SaveBtn.Checked = false;
+            MovePointBtn.Checked = false;
+            ColoursBtn.Checked = false;
+            FixedBtn.Checked = false;
+            SketchesBtn.Checked = false;
             EraseBtn.Checked = false;
+            OutlineBtn.Checked = false;
             Panel.Controls.Clear();
             DisplayDrawings();
         }
@@ -600,6 +606,31 @@ namespace Optimator
                 return false;
             }
             return true;
+        }
+        
+        
+        
+        // ----- PANEL REFRESH TIMER
+
+        /// <summary>
+        /// Starts the drawing timer once the tab has been created.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void RefreshDrawPanel(object sender, EventArgs e)
+        {
+            DisplayTimer.Start();
+        }
+
+        /// <summary>
+        /// Displays the drawings a short time after the tab has validated.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DisplayTimer_Tick(object sender, EventArgs e)
+        {
+            DisplayTimer.Stop();
+            DisplayDrawings();
         }
     }
 }

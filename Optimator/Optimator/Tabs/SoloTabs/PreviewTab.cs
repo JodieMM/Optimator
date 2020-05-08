@@ -73,27 +73,6 @@ namespace Optimator.Forms
         }
 
         /// <summary>
-        /// Starts the drawing timer once the tab has been created.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        public void RefreshDrawPanel(object sender, EventArgs e)
-        {
-            DisplayTimer.Start();
-        }
-
-        /// <summary>
-        /// Displays the drawings a short time after the tab has validated.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void DisplayTimer_Tick(object sender, EventArgs e)
-        {
-            DisplayTimer.Stop();
-            DisplayDrawings();            
-        }
-
-        /// <summary>
         /// Changes the rotation or turn of the piece.
         /// </summary>
         /// <param name="sender"></param>
@@ -153,6 +132,31 @@ namespace Optimator.Forms
                 //    }
                 //}
             }
-        }       
+        }
+
+
+
+        // ----- PANEL REFRESH TIMER
+
+        /// <summary>
+        /// Starts the drawing timer once the tab has been created.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void RefreshDrawPanel(object sender, EventArgs e)
+        {
+            DisplayTimer.Start();
+        }
+
+        /// <summary>
+        /// Displays the drawings a short time after the tab has validated.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DisplayTimer_Tick(object sender, EventArgs e)
+        {
+            DisplayTimer.Stop();
+            DisplayDrawings();
+        }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Optimator.Tabs.Sets
+﻿using System.Windows.Forms;
+
+namespace Optimator.Tabs.Sets
 {
     partial class SetsTab
     {
@@ -43,6 +45,7 @@
             this.DrawDown = new System.Windows.Forms.PictureBox();
             this.DrawBase = new System.Windows.Forms.PictureBox();
             this.EraseBtn = new System.Windows.Forms.ToolStripButton();
+            this.DisplayTimer = new System.Windows.Forms.Timer(this.components);
             this.ToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DrawRight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawDown)).BeginInit();
@@ -210,6 +213,11 @@
             this.EraseBtn.Text = "Erase";
             this.EraseBtn.Click += new System.EventHandler(this.BtnWithPanel_Click);
             // 
+            // DisplayTimer
+            // 
+            this.DisplayTimer.Interval = 5;
+            this.DisplayTimer.Tick += new System.EventHandler(this.DisplayTimer_Tick);
+            // 
             // SetsTab
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -248,5 +256,6 @@
         private System.Windows.Forms.PictureBox DrawDown;
         private System.Windows.Forms.PictureBox DrawBase;
         private System.Windows.Forms.ToolStripButton EraseBtn;
+        private Timer DisplayTimer;
     }
 }

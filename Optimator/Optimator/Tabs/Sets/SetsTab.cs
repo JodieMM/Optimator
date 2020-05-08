@@ -46,6 +46,7 @@ namespace Optimator.Tabs.Sets
             Owner = owner;
 
             KeyUp += KeyPress;
+            Validated += RefreshDrawPanel;
         }
 
 
@@ -129,8 +130,13 @@ namespace Optimator.Tabs.Sets
         /// </summary>
         private void DeselectButtons()
         {
-            SelectButton(SaveBtn);
             SaveBtn.Checked = false;
+            AddPartBtn.Checked = false;
+            JoinsBtn.Checked = false;
+            PositionsBtn.Checked = false;
+            OrderBtn.Checked = false;
+            EraseBtn.Checked = false;
+            SettingsBtn.Checked = false;
             Panel.Controls.Clear();
         }
 
@@ -255,6 +261,7 @@ namespace Optimator.Tabs.Sets
                 }
                 WIP.BasePiece.State = baseState;
             }
+            // Erase Panel
             else if (EraseBtn.Checked && sender != DrawBase)
             {
                 var angle = sender == DrawRight ? "rotated" : "turned";
@@ -299,6 +306,7 @@ namespace Optimator.Tabs.Sets
                         }
                         JoinPieces(selected, newSelected);
                         (Baby as JoinsPanel).UnselectBaseBtn();
+                        CheckSingularBasePiece();
                         WIP.SortOrder();
                     }
                     // Select a new piece
@@ -516,11 +524,6 @@ namespace Optimator.Tabs.Sets
         /// </summary>
         public void DisplayDrawings()
         {
-            if (WIP.BasePiece == null)
-            {
-                return;
-            }
-
             // Prepare Boards
             DrawBase.Refresh();
             DrawRight.Refresh();
@@ -530,7 +533,7 @@ namespace Optimator.Tabs.Sets
             turned = DrawDown.CreateGraphics();
 
             var boards = new Graphics[3] { original, rotated, turned };
-            var baseState = WIP.BasePiece.State;
+            var baseState = WIP.BasePiece != null ? WIP.BasePiece.State : new State();
 
             // For Each Angle
             for (int angle = 0; angle < 3; angle++)
@@ -621,7 +624,8 @@ namespace Optimator.Tabs.Sets
         {
             if (WIP.PiecesList.Count == 1)
             {
-                return true;
+                WIP.BasePiece = WIP.PiecesList[0];
+                return false;
             }
             WIP.BasePiece = null;
             foreach (var piece in WIP.PiecesList)
@@ -709,6 +713,31 @@ namespace Optimator.Tabs.Sets
             WIP.BasePiece.State.R = Utils.Modulo(WIP.BasePiece.State.R - selected.State.R, 360);
             WIP.BasePiece.State.T = Utils.Modulo(WIP.BasePiece.State.T - selected.State.T, 360);
             WIP.BasePiece.State.S = Utils.Modulo(WIP.BasePiece.State.S - selected.State.S, 360);
+        }
+
+
+
+        // ----- PANEL REFRESH TIMER
+
+        /// <summary>
+        /// Starts the drawing timer once the tab has been created.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void RefreshDrawPanel(object sender, EventArgs e)
+        {
+            DisplayTimer.Start();
+        }
+
+        /// <summary>
+        /// Displays the drawings a short time after the tab has validated.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DisplayTimer_Tick(object sender, EventArgs e)
+        {
+            DisplayTimer.Stop();
+            DisplayDrawings();
         }
     }
 }

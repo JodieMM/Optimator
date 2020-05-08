@@ -35,6 +35,7 @@ namespace Optimator.Tabs.Compile
         {
             InitializeComponent();
             Owner = owner;
+            Validated += RefreshDrawPanel;
         }
 
 
@@ -131,8 +132,9 @@ namespace Optimator.Tabs.Compile
         /// </summary>
         public void DeselectButtons()
         {
-            SelectButton(SaveBtn);
             SaveBtn.Checked = false;
+            AddSceneBtn.Checked = false;
+            SettingsBtn.Checked = false;
             Panel.Controls.Clear();
         }
 
@@ -259,6 +261,31 @@ namespace Optimator.Tabs.Compile
         public void StartTimer()
         {
             AnimationTimer.Start();
+        }
+
+
+
+        // ----- PANEL REFRESH TIMER
+
+        /// <summary>
+        /// Starts the drawing timer once the tab has been created.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void RefreshDrawPanel(object sender, EventArgs e)
+        {
+            DisplayTimer.Start();
+        }
+
+        /// <summary>
+        /// Displays the drawings a short time after the tab has validated.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DisplayTimer_Tick(object sender, EventArgs e)
+        {
+            DisplayTimer.Stop();
+            // TODO Show compile panel preview: DisplayDrawings();
         }
     }
 }

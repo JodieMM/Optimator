@@ -76,13 +76,7 @@ namespace Optimator.Forms.Sets
                     (justAdded as Set).CalculateStates();
                 }
                 Owner.DeselectPiece();
-
-                // If first piece, set as base
-                if (Owner.WIP.PiecesList.Count == 1)
-                {
-                    Owner.WIP.BasePiece = justAdded.ToPiece();
-                }
-
+                Owner.CheckSingularBasePiece();
                 Owner.DisplayDrawings();
             }
             catch (FileNotFoundException)
