@@ -55,7 +55,7 @@
             // 
             this.CloseBtn.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.CloseBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.CloseBtn.Image = Properties.Resources.CloseIcon;
+            this.CloseBtn.Image = global::Optimator.Properties.Resources.CloseIcon;
             this.CloseBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.CloseBtn.Name = "CloseBtn";
             this.CloseBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -66,7 +66,7 @@
             // HelpLbl
             // 
             this.HelpLbl.AutoSize = true;
-            this.HelpLbl.Font = Consts.headingLblFont;
+            this.HelpLbl.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
             this.HelpLbl.Location = new System.Drawing.Point(46, 104);
             this.HelpLbl.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.HelpLbl.Name = "HelpLbl";
@@ -77,7 +77,7 @@
             // VersionLbl
             // 
             this.VersionLbl.AutoSize = true;
-            this.VersionLbl.Font = Consts.subLblFont;
+            this.VersionLbl.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Italic);
             this.VersionLbl.Location = new System.Drawing.Point(50, 208);
             this.VersionLbl.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.VersionLbl.Name = "VersionLbl";
@@ -87,15 +87,13 @@
             // 
             // InfoLbl
             // 
-            this.InfoLbl.Font = Consts.contentFont;
+            this.InfoLbl.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.InfoLbl.Location = new System.Drawing.Point(50, 331);
             this.InfoLbl.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.InfoLbl.Name = "InfoLbl";
             this.InfoLbl.Size = new System.Drawing.Size(1158, 567);
             this.InfoLbl.TabIndex = 130;
-            this.InfoLbl.Text = "Unfortunately at this version of the software, comprehensive in-app help is not a" +
-    "vailable. To access assistance, please view the tutorials available on YouTube o" +
-    "r through the Opti website.";
+            this.InfoLbl.Text = resources.GetString("InfoLbl.Text");
             // 
             // HelpTab
             // 
