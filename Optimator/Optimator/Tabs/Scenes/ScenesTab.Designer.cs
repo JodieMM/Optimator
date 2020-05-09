@@ -52,7 +52,6 @@ namespace Optimator.Tabs.Scenes
             this.DisplayPanel = new System.Windows.Forms.TableLayoutPanel();
             this.DPDisplayTableLayoutPnl = new System.Windows.Forms.TableLayoutPanel();
             this.DPControlsTableLayoutPnl = new System.Windows.Forms.TableLayoutPanel();
-            this.LoadingMessage = new Optimator.Tabs.SoloTabs.LoadingMessage();
             this.ToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Future2PreviewBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.FuturePreviewBox)).BeginInit();
@@ -340,20 +339,11 @@ namespace Optimator.Tabs.Scenes
             this.DPControlsTableLayoutPnl.Size = new System.Drawing.Size(1772, 75);
             this.DPControlsTableLayoutPnl.TabIndex = 43;
             // 
-            // LoadingMessage
-            // 
-            this.LoadingMessage.Location = new System.Drawing.Point(1214, 230);
-            this.LoadingMessage.Name = "LoadingMessage";
-            this.LoadingMessage.Size = new System.Drawing.Size(500, 350);
-            this.LoadingMessage.TabIndex = 43;
-            this.LoadingMessage.Visible = false;
-            // 
             // ScenesTab
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Khaki;
-            this.Controls.Add(this.LoadingMessage);
             this.Controls.Add(this.DisplayPanel);
             this.Controls.Add(this.DrawPanel);
             this.Controls.Add(this.Panel);
@@ -401,6 +391,5 @@ namespace Optimator.Tabs.Scenes
         private System.Windows.Forms.TableLayoutPanel DisplayPanel;
         private System.Windows.Forms.TableLayoutPanel DPControlsTableLayoutPnl;
         private System.Windows.Forms.TableLayoutPanel DPDisplayTableLayoutPnl;
-        private SoloTabs.LoadingMessage LoadingMessage;
     }
 }

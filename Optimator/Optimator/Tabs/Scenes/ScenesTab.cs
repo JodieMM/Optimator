@@ -414,42 +414,48 @@ namespace Optimator.Tabs.Scenes
         /// </summary>
         public void DisplayDrawings()
         {
-            LoadingMessage.Visible = true;
-            LoadingMessage.Location = new Point((int)((Width - LoadingMessage.Width) / 2.0),
-                (int)((Height - LoadingMessage.Height) / 2.0));
-
-            // Past Preview
-            if (DisplayPanel.Visible && CurrentTimeUpDown.Value < TimeIncrement)
+            if (WIP.PartsList.Count > 0)
             {
-                PastPreviewBox.BackColor = Color.PaleGoldenrod;
-            }
-            else
-            {
-                PastPreviewBox.BackColor = Color.White;
-                WIP.RunScene(CurrentTimeUpDown.Value - TimeIncrement);
-                Visuals.DrawParts(WIP.PartsList, g, PastPreviewBox, 3 / 11.0F);
-            }
+                var msg = new LoadingMessage();
+                Controls.Add(msg);
+                msg.Location = new Point((int)((Width - msg.Width) / 2.0),
+                    (int)((Height - msg.Height) / 2.0));
 
-            // Draw Panel (Current)
-            WIP.RunScene(CurrentTimeUpDown.Value);
-            Visuals.DrawParts(WIP.PartsList, g, DrawPanel);
+                var scale = PastPreviewBox.Width / (float)DrawPanel.Width;
 
-            // Preview Panels (Future, Future++)
-            if (DisplayPanel.Visible)
-            {
-                WIP.RunScene(CurrentTimeUpDown.Value + TimeIncrement);
-                Visuals.DrawParts(WIP.PartsList, g, FuturePreviewBox, 3 / 11.0F);
-                WIP.RunScene(CurrentTimeUpDown.Value + 2 * TimeIncrement);
-                Visuals.DrawParts(WIP.PartsList, g, Future2PreviewBox, 3 / 11.0F);
+                // Past Preview
+                if (DisplayPanel.Visible && CurrentTimeUpDown.Value < TimeIncrement)
+                {
+                    PastPreviewBox.BackColor = Color.PaleGoldenrod;
+                }
+                else
+                {
+                    PastPreviewBox.BackColor = Color.White;
+                    WIP.RunScene(CurrentTimeUpDown.Value - TimeIncrement);
+                    Visuals.DrawParts(WIP.PartsList, g, PastPreviewBox, scale);
+                }
+
+                // Draw Panel (Current)
+                WIP.RunScene(CurrentTimeUpDown.Value);
+                Visuals.DrawParts(WIP.PartsList, g, DrawPanel);
+
+                // Preview Panels (Future, Future++)
+                if (DisplayPanel.Visible)
+                {
+                    WIP.RunScene(CurrentTimeUpDown.Value + TimeIncrement);
+                    Visuals.DrawParts(WIP.PartsList, g, FuturePreviewBox, scale);
+                    WIP.RunScene(CurrentTimeUpDown.Value + 2 * TimeIncrement);
+                    Visuals.DrawParts(WIP.PartsList, g, Future2PreviewBox, scale);
+                }
+
+                // Update Animation listbox
+                if (Baby != null && Baby is MovePanel)
+                {
+                    (Baby as MovePanel).UpdateListbox();
+                }
+                
+                Controls.Remove(msg);
             }
-
-            // Update Animation listbox
-            if (Baby != null && Baby is MovePanel)
-            {
-                (Baby as MovePanel).UpdateListbox();
-            }
-
-            LoadingMessage.Visible = false;
         }
 
         /// <summary>
