@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using System;
 using Optimator.Tabs.Compile;
+using FFMpegSharp.FFMPEG;
 
 namespace Optimator.Forms.Compile
 {
@@ -116,6 +117,12 @@ namespace Optimator.Forms.Compile
                         numFrames++;
                     }
                 }
+
+                //TODO: Test below works
+                // Save MP4
+                var directory2 = Utils.GetDirectory(directory, NameTb.Text, Consts.Mp4); // TODO Allow for alternate file types
+                new FFMpeg().JoinImageSequence(new FileInfo(directory2), (double)Owner.FPS, new FFMpegSharp.ImageInfo(directory));
+
                 Owner.ShowLoadingMessage(false);
                 return true;
             }

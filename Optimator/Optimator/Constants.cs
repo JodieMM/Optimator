@@ -29,6 +29,7 @@ namespace Optimator
         // File Extensions
         public const string Optr = ".optr";
         public const string Png = ".png";
+        public const string Mp4 = ".mp4";
 
         // Characters
         public static char[] Comma = new char[] { ',' };

@@ -110,7 +110,7 @@ namespace Optimator
         {
             var data = new List<string>
             {
-                Consts.Scene + Consts.Semi + Consts.Version,
+                Consts.Scene + Consts.SemiS + Consts.Version,
                 TimeLength.ToString()
             };
 

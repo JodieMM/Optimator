@@ -96,7 +96,7 @@ namespace Optimator
             // Type and Version
             var newData = new List<string>
             {
-                Consts.Set + Consts.Semi + Consts.Version
+                Consts.Set + Consts.SemiS + Consts.Version
             };
 
             // Reset Set to Save

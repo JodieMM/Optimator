@@ -52,7 +52,6 @@ namespace Optimator.Tabs.Compile
             this.UpArrowImg = new System.Windows.Forms.Label();
             this.DPControlsTableLayoutPnl = new System.Windows.Forms.TableLayoutPanel();
             this.AnimationTimer = new System.Windows.Forms.Timer(this.components);
-            this.LoadingMessage = new Optimator.Tabs.SoloTabs.LoadingMessage();
             this.ToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FuturePreviewBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Past2PreviewBox)).BeginInit();
@@ -318,20 +317,11 @@ namespace Optimator.Tabs.Compile
             // 
             this.AnimationTimer.Tick += new System.EventHandler(this.AnimationTimer_Tick);
             // 
-            // LoadingMessage
-            // 
-            this.LoadingMessage.Location = new System.Drawing.Point(1253, 285);
-            this.LoadingMessage.Name = "LoadingMessage";
-            this.LoadingMessage.Size = new System.Drawing.Size(500, 350);
-            this.LoadingMessage.TabIndex = 43;
-            this.LoadingMessage.Visible = false;
-            // 
             // CompileTab
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightCoral;
-            this.Controls.Add(this.LoadingMessage);
             this.Controls.Add(this.DisplayPanel);
             this.Controls.Add(this.DrawPanel);
             this.Controls.Add(this.Panel);
@@ -378,6 +368,5 @@ namespace Optimator.Tabs.Compile
         private System.Windows.Forms.TableLayoutPanel DPDisplayTableLayoutPnl;
         private Label UpArrowImg;
         private Timer AnimationTimer;
-        private SoloTabs.LoadingMessage LoadingMessage;
     }
 }

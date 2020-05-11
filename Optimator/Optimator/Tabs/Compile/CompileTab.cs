@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using Optimator.Forms.Compile;
+using Optimator.Tabs.SoloTabs;
 
 namespace Optimator.Tabs.Compile
 {
@@ -22,6 +23,7 @@ namespace Optimator.Tabs.Compile
 
         private Graphics g;
         private Color backgroundColor = Color.White;
+        private LoadingMessage loadMsg = null;
 
         public decimal FPS = 60;
         public bool PreviewOn = true;
@@ -68,11 +70,17 @@ namespace Optimator.Tabs.Compile
         /// <param name="show">False if hiding the message</param>
         public void ShowLoadingMessage(bool show = true)
         {
-            LoadingMessage.Visible = show;
+            if (loadMsg != null)
+            {
+                Controls.Remove(loadMsg);
+                loadMsg = null;
+            }
             if (show)
             {
-                LoadingMessage.Location = new Point((int)((Width - LoadingMessage.Width) / 2.0),
-                (int)((Height - LoadingMessage.Height) / 2.0));
+                loadMsg = new LoadingMessage();
+                Controls.Add(loadMsg);
+                loadMsg.Location = new Point((int)((Width - loadMsg.Width) / 2.0),
+                    (int)((Height - loadMsg.Height) / 2.0));
             }
         }
 
@@ -80,6 +88,9 @@ namespace Optimator.Tabs.Compile
 
         // ----- FORM FUNCTIONS -----
 
+        /// <summary>
+        /// Resize the form's contents.
+        /// </summary>
         public override void Resize()
         {
             var widthPercent = 0.75F;
