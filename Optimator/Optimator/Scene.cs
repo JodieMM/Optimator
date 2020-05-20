@@ -67,7 +67,7 @@ namespace Optimator
                 {
                     var workingIndex = index - partEndIndex - 1;
                     var piece = PiecesList[workingIndex];
-                    var originals = Utils.ConvertStringArrayToDoubles(data[index].Split(Consts.Semi));
+                    var originals = Utils.ConvertStringArrayToDoubles(data[index].Split(Consts.Colon));
                     piece.State.SetValues(originals[0], originals[1], originals[2], originals[3], originals[4], originals[5]);
                     Originals.Add(piece, Utils.CloneState(piece.State));
                     OriginalColours.Add(piece, Utils.CloneColourState(piece.ColourState));
@@ -76,8 +76,8 @@ namespace Optimator
                 // Read frame changes
                 for (var index = lastPieceIndex + 1; index < data.Count; index++)
                 {
-                    var changes = data[index].Split(Consts.Semi);
-                    Changes.Add(new Change(int.Parse(changes[0]), changes[1], PiecesList[int.Parse(changes[2])], float.Parse(changes[3]), decimal.Parse(changes[4]), this));
+                    var changes = data[index].Split(Consts.Colon);
+                    Changes.Add(new Change(decimal.Parse(changes[0]), changes[1], PiecesList[int.Parse(changes[2])], float.Parse(changes[3]), decimal.Parse(changes[4]), this));
                 }                                               
             }
             catch (System.IO.FileNotFoundException)

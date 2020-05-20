@@ -4,7 +4,8 @@ using System.Drawing;
 using System.IO;
 using System;
 using Optimator.Tabs.Compile;
-using FFMpegSharp.FFMPEG;
+using FFMpegCore;
+using FFMpegCore.FFMPEG;
 
 namespace Optimator.Forms.Compile
 {
@@ -118,10 +119,18 @@ namespace Optimator.Forms.Compile
                     }
                 }
 
-                //TODO: Test below works
-                // Save MP4
-                var directory2 = Utils.GetDirectory(directory, NameTb.Text, Consts.Mp4); // TODO Allow for alternate file types
-                new FFMpeg().JoinImageSequence(new FileInfo(directory2), (double)Owner.FPS, new FFMpegSharp.ImageInfo(directory));
+                //TODO: CONVERT TO Mp4
+                ImageInfo[] images = new ImageInfo[numFrames];
+                //var files = Directory.GetFiles(@"C:\Users\jodie\Documents\0 Documents\Opti\Videos\testing");
+                var files = Directory.GetFiles(@"C:\Users\jodie\Pictures");
+                images[0] = new ImageInfo(@"C:\Users\jodie\Pictures\Capture.PNG");      //CLEANING
+                for (int index = 0; index < numFrames; index++)
+                {
+                    string check = Utils.GetDirectory(directory, index.ToString(), Consts.Png);
+                    images[index] = new ImageInfo(Utils.GetDirectory(directory, index.ToString(), Consts.Png));
+                }
+                var encoder = new FFMpeg();
+                encoder.JoinImageSequence(new FileInfo(Utils.GetDirectory(directory, NameTb.Text, Consts.Mp4)), (double)Owner.FPS, images);
 
                 Owner.ShowLoadingMessage(false);
                 return true;

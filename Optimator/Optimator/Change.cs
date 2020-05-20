@@ -85,7 +85,7 @@
         public override string ToString()
         {
             return StartTime + Consts.ColonS + Action + Consts.ColonS + host.PartsList.IndexOf(AffectedPiece) 
-                + Consts.ColonS + HowMuch + Consts.ColonS + HowLong;
+                + Consts.ColonS + HowMuch.ToString() + Consts.ColonS + HowLong;
         }
     }
 }
