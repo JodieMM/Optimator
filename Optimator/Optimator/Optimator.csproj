@@ -33,9 +33,6 @@
   </PropertyGroup>
   <PropertyGroup />
   <ItemGroup>
-    <Reference Include="FFMpegCore">
-      <HintPath>..\packages\FFMpegCore.1.4.0\lib\netstandard2.0\FFMpegCore.dll</HintPath>
-    </Reference>
     <Reference Include="netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />

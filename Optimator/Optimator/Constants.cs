@@ -30,6 +30,8 @@ namespace Optimator
         public const string Optr = ".optr";
         public const string Png = ".png";
         public const string Mp4 = ".mp4";
+        public const string Avi = ".avi";
+        public const string Gif = ".gif";
 
         // Characters
         public static char[] Comma = new char[] { ',' };

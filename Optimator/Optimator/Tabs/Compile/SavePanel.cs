@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using System;
 using Optimator.Tabs.Compile;
+using System.Diagnostics;
 
 namespace Optimator.Forms.Compile
 {
@@ -103,9 +104,11 @@ namespace Optimator.Forms.Compile
                 // Prepare Save Location
                 var directory = Utils.GetDirectory(Consts.VideosFolder, NameTb.Text);
                 Directory.CreateDirectory(directory);
+                var imagesDirectory = @"""" + Utils.GetDirectory(directory, "%d", Consts.Png) + @"""";
+                var videosDirectory = @"""" + Utils.GetDirectory(directory, NameTb.Text, Consts.Avi) + @"""";
 
                 // Save Images
-                var numFrames = 0;
+                var numFrames = 0;                
                 var timeIncrement = 1 / Owner.FPS;
                 for (Owner.sceneIndex = 0; Owner.sceneIndex < Owner.videoScenes.Count; Owner.sceneIndex++)
                 {
@@ -117,7 +120,23 @@ namespace Optimator.Forms.Compile
                     }
                 }
 
-                //TODO: CONVERT TO Mp4
+                // Convert To Avi
+                Process process = new Process();
+                process.StartInfo.RedirectStandardOutput = true;
+                process.StartInfo.RedirectStandardError = true;
+                process.StartInfo.FileName = @"""" + Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + @"\ffmpeg\bin\ffmpeg.exe""";
+                process.StartInfo.Arguments = "-framerate " + Owner.FPS + " -f image2 -i " + imagesDirectory + " " + videosDirectory;
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.CreateNoWindow = true;
+
+                try
+                {
+                    process.Start();
+                }
+                catch (Exception exception)
+                {
+                    MessageBox.Show(exception.Message, "Exception - Please Report to jodie@opti.technology", MessageBoxButtons.OK);
+                }
 
                 Owner.ShowLoadingMessage(false);
                 return true;
