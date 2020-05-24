@@ -75,5 +75,7 @@ namespace Optimator
 
         // Scene Options
         public static object[] possibleChanges = new object[] { "X", "Y", "Rotation", "Turn", "Spin", "Size", "Order", "Removed" };
+        public static int defaultWidth = 1920;
+        public static int defaultHeight = 1080;
     }
 }

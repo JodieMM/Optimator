@@ -13,6 +13,7 @@ namespace Optimator
     public class Scene
     {
         #region Scene Variables
+        public string Name { get; set; } = "";
         public string Version { get; }
         public decimal TimeLength { get; set; } = 0;
 
@@ -35,6 +36,7 @@ namespace Optimator
             {
                 // Read File
                 var data = Utils.ReadFile(Utils.GetDirectory(Consts.ScenesFolder, fileName, Consts.Optr));
+                Name = fileName;
                 Version = data[0].Split(Consts.Semi)[1];
                 Utils.CheckValidVersion(Version);
 

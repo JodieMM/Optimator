@@ -22,7 +22,8 @@ namespace Optimator.Tabs.Compile
             Owner = owner;
 
             FpsUpDown.Value = Owner.FPS;
-            PreviewCb.Checked = Owner.GetPreviewVisible();
+            VideoWidthUpDown.Value = Owner.videoWidth;
+            VideoHeightUpDown.Value = Owner.videoHeight;
         }
 
 
@@ -36,7 +37,7 @@ namespace Optimator.Tabs.Compile
         {
             var bigWidthPercent = 0.8F;
             var widthPercent = 0.05F;
-            var bigHeightPercent = 0.25F;
+            var bigHeightPercent = 0.15F;
 
             var smallWidth = (int)(Width * widthPercent);
             var bigWidth = (int)(Width * bigWidthPercent);
@@ -48,16 +49,6 @@ namespace Optimator.Tabs.Compile
         }
 
         /// <summary>
-        /// Modifies the DisplayPanel visibility.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void PreviewCb_CheckedChanged(object sender, System.EventArgs e)
-        {
-            Owner.ShowPreview(PreviewCb.Checked);
-        }
-
-        /// <summary>
         /// Updates the video's FPS.
         /// </summary>
         /// <param name="sender"></param>
@@ -65,6 +56,26 @@ namespace Optimator.Tabs.Compile
         private void FpsUpDown_ValueChanged(object sender, System.EventArgs e)
         {
             Owner.FPS = FpsUpDown.Value;
+        }
+
+        /// <summary>
+        /// Updates the video's width.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void VideoWidthUpDown_ValueChanged(object sender, System.EventArgs e)
+        {
+            Owner.videoWidth = (int)VideoWidthUpDown.Value;
+        }
+
+        /// <summary>
+        /// Updates the video's height.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void VideoHeightUpDown_ValueChanged(object sender, System.EventArgs e)
+        {
+            Owner.videoHeight = (int)VideoHeightUpDown.Value;
         }
     }
 }

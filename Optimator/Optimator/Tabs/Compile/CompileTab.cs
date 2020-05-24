@@ -26,7 +26,8 @@ namespace Optimator.Tabs.Compile
         private LoadingMessage loadMsg = null;
 
         public decimal FPS = 60;
-        public bool PreviewOn = true;
+        public int videoWidth = Consts.defaultWidth;
+        public int videoHeight = Consts.defaultHeight;
         #endregion
         
         
@@ -44,24 +45,25 @@ namespace Optimator.Tabs.Compile
 
 
 
-        // ----- GETTERS & SETTERS -----
+        // ----- FORM FUNCTIONS -----
 
         /// <summary>
-        /// Finds visibility of display panel.
+        /// Resize the form's contents.
         /// </summary>
-        /// <returns>True if panel visible</returns>
-        public bool GetPreviewVisible()
+        public override void Resize()
         {
-            return DisplayPanel.Visible;
+            Utils.ResizePanel(Panel);
         }
 
         /// <summary>
-        /// Shows or hides the display panel.
+        /// Redraws boards once focus is regained.
         /// </summary>
-        /// <param name="visible">False if panel invisible</param>
-        public void ShowPreview(bool visible = true)
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void FocusOn(object sender, EventArgs e)
         {
-            DisplayPanel.Visible = visible;
+            // TODO: Draw compile screen
+            //DisplayDrawings();
         }
 
         /// <summary>
@@ -82,58 +84,6 @@ namespace Optimator.Tabs.Compile
                 loadMsg.Location = new Point((int)((Width - loadMsg.Width) / 2.0),
                     (int)((Height - loadMsg.Height) / 2.0));
             }
-        }
-
-
-
-        // ----- FORM FUNCTIONS -----
-
-        /// <summary>
-        /// Resize the form's contents.
-        /// </summary>
-        public override void Resize()
-        {
-            var widthPercent = 0.75F;
-            var heightPercent = 0.75F;
-
-            var bigWidth = (int)(Width * widthPercent);
-            var bigHeight = (int)((Height - ToolStrip.Height) * heightPercent);
-            var fraction = (bigWidth / 16.0) > (bigHeight / 9.0) ? (int)(bigHeight / 9.0) : (int)(bigWidth / 16.0);
-
-            DrawPanel.Size = new Size(fraction * 16, fraction * 9);
-            DrawPanel.Location = new Point((int)((bigWidth - DrawPanel.Width ) / 2.0), 
-                (int)((bigHeight - DrawPanel.Height) / 2.0 + ToolStrip.Height));
-
-            Panel.Width = Width - bigWidth;
-            DisplayPanel.Height = Height - bigHeight - ToolStrip.Height;
-
-            var panelWidth = (int)(UpArrowImg.Parent.Width / 4.0);
-            UpArrowImg.Location = new Point((int)(2 * panelWidth + (panelWidth - UpArrowImg.Width / 2.0)),
-                (int)((UpArrowImg.Parent.Height - UpArrowImg.Height) / 2.0));
-
-            //TODO: Display panel for compile tab
-            //if (Width < 1140)
-            //{
-            //    CurrentTimeLbl.Text = "Now";
-            //    VidLengthLbl.Text = ConvertTimeToText();
-            //}
-            //else
-            //{
-            //    CurrentTimeLbl.Text = "Current Time";
-            //    VidLengthLbl.Text = "Video Length: " + ConvertTimeToText();
-            //}
-            Utils.ResizePanel(Panel);
-        }
-
-        /// <summary>
-        /// Redraws boards once focus is regained.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void FocusOn(object sender, EventArgs e)
-        {
-            // TODO: Draw compile screen
-            //DisplayDrawings();
         }
 
         #region ToolStrip
@@ -210,12 +160,6 @@ namespace Optimator.Tabs.Compile
 
 
 
-        // --- DISPLAY PANEL ---
-
-        //TODO: Display Panel for CompileTab
-
-
-
         // ----- DRAWING FUNCTIONS -----
 
         /// <summary>
@@ -223,13 +167,8 @@ namespace Optimator.Tabs.Compile
         /// </summary>
         /// <param name="baseScene">The frame to draw</param>
         /// <param name="g">The graphics to display with</param>
-        public void DrawFrame(Scene baseScene, Graphics g = null)
+        public void DrawFrame(Scene baseScene, Graphics g)
         {
-            if (g == null)
-            {
-                DrawPanel.Refresh();
-                g = DrawPanel.CreateGraphics();
-            }
             baseScene.RunScene(workingTime);
 
             // Draw Parts
@@ -245,46 +184,14 @@ namespace Optimator.Tabs.Compile
         /// <returns>Bitmap of current scene view</returns>
         public Bitmap DrawOnBitmap()
         {
-            var bitmap = new Bitmap(DrawPanel.Width, DrawPanel.Height);
+            var bitmap = new Bitmap(videoWidth, videoHeight);
             g = Graphics.FromImage(bitmap);
             using (var brush = new SolidBrush(backgroundColor))
             {
                 g.FillRectangle(brush, 0, 0, bitmap.Width, bitmap.Height);
             }
-
             DrawFrame(videoScenes[sceneIndex], g);
             return bitmap;
-        }
-
-
-
-        // ----- ANIMATION FUNCTIONS -----
-
-        /// <summary>
-        /// Updates the video by a frame.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void AnimationTimer_Tick(object sender, EventArgs e)
-        {
-            if (++workingTime > videoScenes[sceneIndex].TimeLength)
-            {
-                if (++sceneIndex >= videoScenes.Count)
-                {
-                    AnimationTimer.Stop();
-                    return;
-                }
-                workingTime = 0;
-            }
-            DrawFrame(videoScenes[sceneIndex]);
-        }
-
-        /// <summary>
-        /// Starts the animation timer.
-        /// </summary>
-        public void StartTimer()
-        {
-            AnimationTimer.Start();
         }
     }
 }
