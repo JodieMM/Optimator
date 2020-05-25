@@ -21,8 +21,7 @@ namespace Optimator.Tabs.Scenes
         public Part selected = null;
         public Piece subSelected = null;
         private Graphics g;
-
-        public decimal TimeIncrement = (decimal)0.5;
+        
         public bool SelectFromTop = true;
         #endregion
         
@@ -39,6 +38,7 @@ namespace Optimator.Tabs.Scenes
             Enter += FocusOn;
             VisibleChanged += FocusOn;
 
+            DrawPanel.BackColor = Settings.BackgroundColour;
             g = DrawPanel.CreateGraphics();            
         }
 
@@ -64,28 +64,13 @@ namespace Optimator.Tabs.Scenes
             return CurrentTimeUpDown.Value;
         }
 
-        /// <summary>
-        /// Finds visibility of display panel.
-        /// </summary>
-        /// <returns>True if panel visible</returns>
-        public bool GetPreviewVisible()
-        {
-            return DisplayPanel.Visible;
-        }
-
-        /// <summary>
-        /// Shows or hides the display panel.
-        /// </summary>
-        /// <param name="visible">False if panel invisible</param>
-        public void ShowPreview(bool visible = true)
-        {
-            DisplayPanel.Visible = visible;
-        }
-
 
 
         // ----- FORM FUNCTIONS -----
 
+        /// <summary>
+        /// Resizes the tab.
+        /// </summary>
         public override void Resize()
         {
             var widthPercent = 0.75F;
@@ -93,7 +78,7 @@ namespace Optimator.Tabs.Scenes
 
             var bigWidth = (int)(Width * widthPercent);
             var bigHeight = (int)((Height - ToolStrip.Height) * heightPercent);
-            var fraction = (bigWidth / 16.0) > (bigHeight / 9.0) ? (int)(bigHeight / 9.0) : (int)(bigWidth / 16.0);
+            var fraction = (int)Math.Min(bigWidth / 16.0, bigHeight / 9.0);
 
             DrawPanel.Size = new Size(fraction * 16, fraction * 9);
             DrawPanel.Location = new Point((int)((bigWidth - DrawPanel.Width ) / 2.0), 
@@ -101,21 +86,7 @@ namespace Optimator.Tabs.Scenes
 
             Panel.Width = Width - bigWidth;
             DisplayPanel.Height = Height - bigHeight - ToolStrip.Height;
-
-            var panelWidth = (int)(UpArrowImg.Parent.Width / 4.0);
-            UpArrowImg.Location = new Point((int)(panelWidth + (panelWidth - UpArrowImg.Width / 2.0)),
-                (int)((UpArrowImg.Parent.Height - UpArrowImg.Height) / 2.0));
-
-            if (Width < 1140)
-            {
-                CurrentTimeLbl.Text = "Now";
-                VidLengthLbl.Text = ConvertTimeToText();
-            }
-            else
-            {
-                CurrentTimeLbl.Text = "Current Time";
-                VidLengthLbl.Text = "Video Length: " + ConvertTimeToText();
-            }
+            
             Utils.ResizePanel(Panel);
 
             DisplayDrawings();
@@ -225,45 +196,55 @@ namespace Optimator.Tabs.Scenes
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void CurrentTimeUpDown_ValueChanged(object sender, EventArgs e)
+        private void UpdateCurrentTime(object sender, EventArgs e)
         {
+            if (sender == CurrentTimeUpDown)
+            {
+                TimeTrackBar.Value = (int)(CurrentTimeUpDown.Value * 10);
+            }
+            else
+            {
+                CurrentTimeUpDown.Value = (decimal)(TimeTrackBar.Value / 10.0);
+            }
+
             if (CurrentTimeUpDown.Value > WIP.TimeLength)
             {
                 UpdateVideoLength(CurrentTimeUpDown.Value);
             }
-
             DisplayDrawings();
         }
 
         /// <summary>
-        /// Progresses to the next frame of the animation.
+        /// Updates the code and visuals for the video length.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ForwardBtn_Click(object sender, EventArgs e)
+        /// <param name="newTime">The new video length</param>
+        public void UpdateVideoLength(decimal newTime)
         {
-            CurrentTimeUpDown.Value += TimeIncrement;
-            if (WIP.TimeLength < CurrentTimeUpDown.Value)
-            {
-                WIP.TimeLength = CurrentTimeUpDown.Value;
-            }
-
-            DisplayDrawings();
+            WIP.TimeLength = newTime;
+            VidLengthLbl.Text = "Video Length: " + ConvertTimeToText();
+            TimeTrackBar.Maximum = (int)(newTime * 10);
         }
 
         /// <summary>
-        /// Returns to the previous frame of the animation.
+        /// Converts the current time length into a readable format.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void BackBtn_Click(object sender, EventArgs e)
+        /// <returns>Time as string</returns>
+        private string ConvertTimeToText()
         {
-            if (CurrentTimeUpDown.Value < TimeIncrement)
+            var text = "";
+            var hr = (int)Math.Floor(WIP.TimeLength / 3600);
+            var min = (int)Math.Floor((WIP.TimeLength - hr * 3600) / 60);
+            var s = Math.Round(WIP.TimeLength - (hr * 3600 + min * 60), 2);
+
+            if (hr > 0)
             {
-                return;
+                text += hr + "hrs ";
             }
-            CurrentTimeUpDown.Value -= TimeIncrement;
-            DisplayDrawings();
+            if (min > 0)
+            {
+                text += min + "mins ";
+            }
+            return text += s + "s";
         }
 
 
@@ -389,7 +370,7 @@ namespace Optimator.Tabs.Scenes
                             }
 
                             // Update changes to remove those made redundant by deleting a piece/set
-                            foreach (var change in WIP.Changes)
+                            foreach (var change in WIP.Changes) //TODO: Change to for (int index)
                             {
                                 if (!WIP.PiecesList.Contains(change.AffectedPiece))
                                 {
@@ -410,7 +391,7 @@ namespace Optimator.Tabs.Scenes
 
 
 
-        // ----- OTHER FUNCTIONS -----
+        // ----- DRAWING FUNCTIONS -----
 
         /// <summary>
         /// Draws the relevant scene to the screen.
@@ -424,34 +405,12 @@ namespace Optimator.Tabs.Scenes
                 msg.Location = new Point((int)((Width - msg.Width) / 2.0),
                     (int)((Height - msg.Height) / 2.0));
 
-                var scale = PastPreviewBox.Width / (float)DrawPanel.Width;
-
-                // Past Preview
-                if (DisplayPanel.Visible && CurrentTimeUpDown.Value < TimeIncrement)
-                {
-                    PastPreviewBox.BackColor = Color.PaleGoldenrod;
-                }
-                else
-                {
-                    PastPreviewBox.BackColor = Color.White;
-                    WIP.RunScene(CurrentTimeUpDown.Value - TimeIncrement);
-                    Visuals.DrawParts(WIP.PartsList, g, PastPreviewBox, scale);
-                }
-
-                // Draw Panel (Current)
+                // Draw Panel
                 WIP.RunScene(CurrentTimeUpDown.Value);
                 Visuals.DrawParts(WIP.PartsList, g, DrawPanel);
 
-                // Preview Panels (Future, Future++)
-                if (DisplayPanel.Visible)
-                {
-                    WIP.RunScene(CurrentTimeUpDown.Value + TimeIncrement);
-                    Visuals.DrawParts(WIP.PartsList, g, FuturePreviewBox, scale);
-                    WIP.RunScene(CurrentTimeUpDown.Value + 2 * TimeIncrement);
-                    Visuals.DrawParts(WIP.PartsList, g, Future2PreviewBox, scale);
-                }
-
                 // Update Animation listbox
+                // CLEANING: Remove this?
                 if (Baby != null && Baby is MovePanel)
                 {
                     (Baby as MovePanel).UpdateListbox();
@@ -459,39 +418,7 @@ namespace Optimator.Tabs.Scenes
                 
                 Controls.Remove(msg);
             }
-        }
-
-        /// <summary>
-        /// Updates the code and visuals for the video length.
-        /// </summary>
-        /// <param name="newTime">The new video length</param>
-        public void UpdateVideoLength(decimal newTime)
-        {
-            WIP.TimeLength = newTime;
-            Resize();
-        }
-
-        /// <summary>
-        /// Converts the current time length into a readable format.
-        /// </summary>
-        /// <returns>Time as string</returns>
-        private string ConvertTimeToText()
-        {
-            var text = "";
-            var hr = (int)Math.Floor(WIP.TimeLength / 3600);
-            var min = (int)Math.Floor((WIP.TimeLength - hr * 3600) / 60);
-            var s = (int)Math.Floor(WIP.TimeLength - (hr * 3600 + min * 60));
-
-            if (hr > 0)
-            {
-                text += hr + "hrs ";
-            }
-            if (min > 0)
-            {
-                text += min + "mins ";
-            }
-            return text += s + "s";
-        }
+        }        
 
         /// <summary>
         /// Draws the relevant scene to the draw panel only.

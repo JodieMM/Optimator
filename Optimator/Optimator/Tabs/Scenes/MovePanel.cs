@@ -68,11 +68,7 @@ namespace Optimator.Tabs.Scenes
                 Owner.UpdateVideoLength(Owner.GetCurrentTimeUpDownValue() + SecondsUpDown.Value);
             }
 
-            // Displays previews if previews are on
-            if (Owner.GetPreviewVisible())
-            {
-                PreviewBtn_Click(sender, e);
-            }
+            UpdateListbox();
             Owner.DisplayDrawings();
         }
 

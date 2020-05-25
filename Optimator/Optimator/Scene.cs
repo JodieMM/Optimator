@@ -149,7 +149,7 @@ namespace Optimator
             {
                 if (Originals.ContainsKey(piece))
                 {
-                    piece.State = Originals[piece];
+                    piece.State = Utils.CloneState(Originals[piece]);
                 }
             }
             foreach (var change in Changes)

@@ -22,8 +22,6 @@ namespace Optimator.Tabs.Scenes
             Owner = owner;
 
             SelectFromTopCb.Checked = Owner.SelectFromTop;
-            PreviewCb.Checked = Owner.GetPreviewVisible();
-            TimeIncrementUpDown.Value = Owner.TimeIncrement;
         }
 
 
@@ -56,26 +54,6 @@ namespace Optimator.Tabs.Scenes
         private void SelectFromTopCb_CheckedChanged(object sender, System.EventArgs e)
         {
             Owner.SelectFromTop = SelectFromTopCb.Checked;
-        }
-
-        /// <summary>
-        /// Modifies the DisplayPanel visibility.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void PreviewCb_CheckedChanged(object sender, System.EventArgs e)
-        {
-            Owner.ShowPreview(PreviewCb.Checked);
-        }
-
-        /// <summary>
-        /// Changes the time between preview frames.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void TimeIncrementUpDown_ValueChanged(object sender, System.EventArgs e)
-        {
-            Owner.TimeIncrement = TimeIncrementUpDown.Value;
         }
     }
 }

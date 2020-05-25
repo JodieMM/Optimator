@@ -162,7 +162,7 @@ namespace Optimator.Tabs.Compile
                 workingTime = 0;
                 sceneIndex = videoScenes.Count - 1;
                 var image1 = DrawOnBitmap();
-                workingTime = scene.TimeLength; // TODO: Fix: Not showing correctly
+                workingTime = scene.TimeLength;
                 scenePreviews.Add(scene.Name, new Bitmap[2] { image1, DrawOnBitmap() });
             }
             SceneViewPanel.Controls.Add(new ScenePreview(scene, scenePreviews[scene.Name][0], scenePreviews[scene.Name][1]));

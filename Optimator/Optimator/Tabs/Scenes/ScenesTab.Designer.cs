@@ -40,27 +40,18 @@ namespace Optimator.Tabs.Scenes
             this.MoveBtn = new System.Windows.Forms.ToolStripButton();
             this.SettingsBtn = new System.Windows.Forms.ToolStripButton();
             this.VidLengthLbl = new System.Windows.Forms.Label();
-            this.UpArrowImg = new System.Windows.Forms.Label();
-            this.Future2PreviewBox = new System.Windows.Forms.PictureBox();
-            this.FuturePreviewBox = new System.Windows.Forms.PictureBox();
-            this.PastPreviewBox = new System.Windows.Forms.PictureBox();
             this.CurrentTimeLbl = new System.Windows.Forms.Label();
             this.CurrentTimeUpDown = new System.Windows.Forms.NumericUpDown();
-            this.ForwardBtn = new System.Windows.Forms.Button();
-            this.BackBtn = new System.Windows.Forms.Button();
             this.DrawPanel = new System.Windows.Forms.PictureBox();
             this.DisplayPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.DPDisplayTableLayoutPnl = new System.Windows.Forms.TableLayoutPanel();
             this.DPControlsTableLayoutPnl = new System.Windows.Forms.TableLayoutPanel();
+            this.TimeTrackBar = new System.Windows.Forms.TrackBar();
             this.ToolStrip.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Future2PreviewBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.FuturePreviewBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.PastPreviewBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CurrentTimeUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawPanel)).BeginInit();
             this.DisplayPanel.SuspendLayout();
-            this.DPDisplayTableLayoutPnl.SuspendLayout();
             this.DPControlsTableLayoutPnl.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TimeTrackBar)).BeginInit();
             this.SuspendLayout();
             // 
             // Panel
@@ -95,7 +86,7 @@ namespace Optimator.Tabs.Scenes
             // SaveBtn
             // 
             this.SaveBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.SaveBtn.Image = Properties.Resources.SaveIcon;
+            this.SaveBtn.Image = global::Optimator.Properties.Resources.SaveIcon;
             this.SaveBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.SaveBtn.Name = "SaveBtn";
             this.SaveBtn.Size = new System.Drawing.Size(36, 36);
@@ -105,7 +96,7 @@ namespace Optimator.Tabs.Scenes
             // AddPartBtn
             // 
             this.AddPartBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.AddPartBtn.Image = Properties.Resources.AddPartIcon;
+            this.AddPartBtn.Image = global::Optimator.Properties.Resources.AddPartIcon;
             this.AddPartBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.AddPartBtn.Name = "AddPartBtn";
             this.AddPartBtn.Size = new System.Drawing.Size(36, 36);
@@ -116,7 +107,7 @@ namespace Optimator.Tabs.Scenes
             // 
             this.CloseBtn.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.CloseBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.CloseBtn.Image = Properties.Resources.CloseIcon;
+            this.CloseBtn.Image = global::Optimator.Properties.Resources.CloseIcon;
             this.CloseBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.CloseBtn.Name = "CloseBtn";
             this.CloseBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -147,7 +138,7 @@ namespace Optimator.Tabs.Scenes
             // SettingsBtn
             // 
             this.SettingsBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.SettingsBtn.Image = Properties.Resources.SettingsIcon;
+            this.SettingsBtn.Image = global::Optimator.Properties.Resources.SettingsIcon;
             this.SettingsBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.SettingsBtn.Name = "SettingsBtn";
             this.SettingsBtn.Size = new System.Drawing.Size(36, 36);
@@ -157,121 +148,46 @@ namespace Optimator.Tabs.Scenes
             // VidLengthLbl
             // 
             this.VidLengthLbl.AutoSize = true;
-            this.VidLengthLbl.Font = Consts.contentFont;
-            this.VidLengthLbl.Location = new System.Drawing.Point(712, 0);
+            this.VidLengthLbl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.VidLengthLbl.Font = new System.Drawing.Font("Segoe UI", 16F);
+            this.VidLengthLbl.Location = new System.Drawing.Point(1066, 0);
             this.VidLengthLbl.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.VidLengthLbl.Name = "VidLengthLbl";
-            this.VidLengthLbl.Size = new System.Drawing.Size(304, 46);
+            this.VidLengthLbl.Size = new System.Drawing.Size(702, 126);
             this.VidLengthLbl.TabIndex = 41;
             this.VidLengthLbl.Text = "Video Length: 0s";
-            // 
-            // UpArrowImg
-            // 
-            this.UpArrowImg.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.UpArrowImg.AutoSize = true;
-            this.UpArrowImg.Font = Consts.headingLblFont;
-            this.UpArrowImg.Location = new System.Drawing.Point(631, 93);
-            this.UpArrowImg.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
-            this.UpArrowImg.Name = "UpArrowImg";
-            this.UpArrowImg.Size = new System.Drawing.Size(67, 65);
-            this.UpArrowImg.TabIndex = 40;
-            this.UpArrowImg.Text = "^";
-            // 
-            // Future2PreviewBox
-            // 
-            this.Future2PreviewBox.BackColor = System.Drawing.Color.White;
-            this.Future2PreviewBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Future2PreviewBox.Location = new System.Drawing.Point(1333, 4);
-            this.Future2PreviewBox.Margin = new System.Windows.Forms.Padding(4);
-            this.Future2PreviewBox.Name = "Future2PreviewBox";
-            this.Future2PreviewBox.Size = new System.Drawing.Size(435, 243);
-            this.Future2PreviewBox.TabIndex = 39;
-            this.Future2PreviewBox.TabStop = false;
-            // 
-            // FuturePreviewBox
-            // 
-            this.FuturePreviewBox.BackColor = System.Drawing.Color.White;
-            this.FuturePreviewBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.FuturePreviewBox.Location = new System.Drawing.Point(890, 4);
-            this.FuturePreviewBox.Margin = new System.Windows.Forms.Padding(4);
-            this.FuturePreviewBox.Name = "FuturePreviewBox";
-            this.FuturePreviewBox.Size = new System.Drawing.Size(435, 243);
-            this.FuturePreviewBox.TabIndex = 38;
-            this.FuturePreviewBox.TabStop = false;
-            // 
-            // PastPreviewBox
-            // 
-            this.PastPreviewBox.BackColor = System.Drawing.Color.White;
-            this.PastPreviewBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PastPreviewBox.Location = new System.Drawing.Point(4, 4);
-            this.PastPreviewBox.Margin = new System.Windows.Forms.Padding(4);
-            this.PastPreviewBox.Name = "PastPreviewBox";
-            this.PastPreviewBox.Size = new System.Drawing.Size(435, 243);
-            this.PastPreviewBox.TabIndex = 30;
-            this.PastPreviewBox.TabStop = false;
             // 
             // CurrentTimeLbl
             // 
             this.CurrentTimeLbl.AutoSize = true;
-            this.CurrentTimeLbl.Font = Consts.contentFont;
+            this.CurrentTimeLbl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.CurrentTimeLbl.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.CurrentTimeLbl.Location = new System.Drawing.Point(4, 0);
             this.CurrentTimeLbl.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.CurrentTimeLbl.Name = "CurrentTimeLbl";
-            this.CurrentTimeLbl.Size = new System.Drawing.Size(241, 46);
+            this.CurrentTimeLbl.Size = new System.Drawing.Size(346, 126);
             this.CurrentTimeLbl.TabIndex = 37;
             this.CurrentTimeLbl.Text = "Current Time";
             // 
             // CurrentTimeUpDown
             // 
-            this.CurrentTimeUpDown.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.CurrentTimeUpDown.DecimalPlaces = 3;
-            this.CurrentTimeUpDown.Font = Consts.contentFont;
+            this.CurrentTimeUpDown.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.CurrentTimeUpDown.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.CurrentTimeUpDown.Increment = new decimal(new int[] {
             5,
             0,
             0,
             65536});
-            this.CurrentTimeUpDown.Location = new System.Drawing.Point(358, 4);
-            this.CurrentTimeUpDown.Margin = new System.Windows.Forms.Padding(4);
+            this.CurrentTimeUpDown.Location = new System.Drawing.Point(354, 0);
+            this.CurrentTimeUpDown.Margin = new System.Windows.Forms.Padding(0);
             this.CurrentTimeUpDown.Name = "CurrentTimeUpDown";
-            this.CurrentTimeUpDown.Size = new System.Drawing.Size(346, 53);
+            this.CurrentTimeUpDown.Size = new System.Drawing.Size(708, 64);
             this.CurrentTimeUpDown.TabIndex = 37;
-            this.CurrentTimeUpDown.ValueChanged += new System.EventHandler(this.CurrentTimeUpDown_ValueChanged);
-            // 
-            // ForwardBtn
-            // 
-            this.ForwardBtn.BackColor = System.Drawing.Color.Khaki;
-            this.ForwardBtn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ForwardBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ForwardBtn.Font = Consts.contentFont;
-            this.ForwardBtn.Location = new System.Drawing.Point(1420, 4);
-            this.ForwardBtn.Margin = new System.Windows.Forms.Padding(4);
-            this.ForwardBtn.Name = "ForwardBtn";
-            this.ForwardBtn.Size = new System.Drawing.Size(348, 67);
-            this.ForwardBtn.TabIndex = 19;
-            this.ForwardBtn.Text = "Forward";
-            this.ForwardBtn.UseVisualStyleBackColor = false;
-            this.ForwardBtn.Click += new System.EventHandler(this.ForwardBtn_Click);
-            // 
-            // BackBtn
-            // 
-            this.BackBtn.BackColor = System.Drawing.Color.Khaki;
-            this.BackBtn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.BackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BackBtn.Font = Consts.contentFont;
-            this.BackBtn.Location = new System.Drawing.Point(1066, 4);
-            this.BackBtn.Margin = new System.Windows.Forms.Padding(4);
-            this.BackBtn.Name = "BackBtn";
-            this.BackBtn.Size = new System.Drawing.Size(346, 67);
-            this.BackBtn.TabIndex = 23;
-            this.BackBtn.Text = "Back";
-            this.BackBtn.UseVisualStyleBackColor = false;
-            this.BackBtn.Click += new System.EventHandler(this.BackBtn_Click);
+            this.CurrentTimeUpDown.ValueChanged += new System.EventHandler(this.UpdateCurrentTime);
             // 
             // DrawPanel
             // 
-            this.DrawPanel.BackColor = Settings.BackgroundColour;
             this.DrawPanel.Location = new System.Drawing.Point(116, 129);
             this.DrawPanel.Margin = new System.Windows.Forms.Padding(4);
             this.DrawPanel.Name = "DrawPanel";
@@ -285,59 +201,47 @@ namespace Optimator.Tabs.Scenes
             this.DisplayPanel.BackColor = System.Drawing.Color.PaleGoldenrod;
             this.DisplayPanel.ColumnCount = 1;
             this.DisplayPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.DisplayPanel.Controls.Add(this.DPDisplayTableLayoutPnl, 0, 1);
             this.DisplayPanel.Controls.Add(this.DPControlsTableLayoutPnl, 0, 0);
+            this.DisplayPanel.Controls.Add(this.TimeTrackBar, 0, 1);
             this.DisplayPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.DisplayPanel.Location = new System.Drawing.Point(0, 781);
+            this.DisplayPanel.Location = new System.Drawing.Point(0, 933);
             this.DisplayPanel.Margin = new System.Windows.Forms.Padding(6);
             this.DisplayPanel.Name = "DisplayPanel";
             this.DisplayPanel.RowCount = 2;
-            this.DisplayPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.DisplayPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 75F));
-            this.DisplayPanel.Size = new System.Drawing.Size(1784, 350);
+            this.DisplayPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 70F));
+            this.DisplayPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30F));
+            this.DisplayPanel.Size = new System.Drawing.Size(1784, 198);
             this.DisplayPanel.TabIndex = 42;
-            // 
-            // DPDisplayTableLayoutPnl
-            // 
-            this.DPDisplayTableLayoutPnl.ColumnCount = 4;
-            this.DPDisplayTableLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.DPDisplayTableLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.DPDisplayTableLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.DPDisplayTableLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.DPDisplayTableLayoutPnl.Controls.Add(this.Future2PreviewBox, 3, 0);
-            this.DPDisplayTableLayoutPnl.Controls.Add(this.UpArrowImg, 1, 0);
-            this.DPDisplayTableLayoutPnl.Controls.Add(this.FuturePreviewBox, 2, 0);
-            this.DPDisplayTableLayoutPnl.Controls.Add(this.PastPreviewBox, 0, 0);
-            this.DPDisplayTableLayoutPnl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DPDisplayTableLayoutPnl.Location = new System.Drawing.Point(6, 93);
-            this.DPDisplayTableLayoutPnl.Margin = new System.Windows.Forms.Padding(6);
-            this.DPDisplayTableLayoutPnl.Name = "DPDisplayTableLayoutPnl";
-            this.DPDisplayTableLayoutPnl.RowCount = 1;
-            this.DPDisplayTableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.DPDisplayTableLayoutPnl.Size = new System.Drawing.Size(1772, 251);
-            this.DPDisplayTableLayoutPnl.TabIndex = 43;
             // 
             // DPControlsTableLayoutPnl
             // 
-            this.DPControlsTableLayoutPnl.ColumnCount = 5;
+            this.DPControlsTableLayoutPnl.ColumnCount = 3;
             this.DPControlsTableLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.DPControlsTableLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.DPControlsTableLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.DPControlsTableLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.DPControlsTableLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.DPControlsTableLayoutPnl.Controls.Add(this.CurrentTimeLbl, 0, 0);
-            this.DPControlsTableLayoutPnl.Controls.Add(this.CurrentTimeUpDown, 1, 0);
-            this.DPControlsTableLayoutPnl.Controls.Add(this.BackBtn, 3, 0);
-            this.DPControlsTableLayoutPnl.Controls.Add(this.ForwardBtn, 4, 0);
+            this.DPControlsTableLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
+            this.DPControlsTableLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
             this.DPControlsTableLayoutPnl.Controls.Add(this.VidLengthLbl, 2, 0);
+            this.DPControlsTableLayoutPnl.Controls.Add(this.CurrentTimeUpDown, 1, 0);
+            this.DPControlsTableLayoutPnl.Controls.Add(this.CurrentTimeLbl, 0, 0);
             this.DPControlsTableLayoutPnl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.DPControlsTableLayoutPnl.Location = new System.Drawing.Point(6, 6);
             this.DPControlsTableLayoutPnl.Margin = new System.Windows.Forms.Padding(6);
             this.DPControlsTableLayoutPnl.Name = "DPControlsTableLayoutPnl";
             this.DPControlsTableLayoutPnl.RowCount = 1;
-            this.DPControlsTableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.DPControlsTableLayoutPnl.Size = new System.Drawing.Size(1772, 75);
+            this.DPControlsTableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.DPControlsTableLayoutPnl.Size = new System.Drawing.Size(1772, 126);
             this.DPControlsTableLayoutPnl.TabIndex = 43;
+            // 
+            // TimeTrackBar
+            // 
+            this.TimeTrackBar.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.TimeTrackBar.Location = new System.Drawing.Point(0, 138);
+            this.TimeTrackBar.Margin = new System.Windows.Forms.Padding(0);
+            this.TimeTrackBar.Maximum = 5;
+            this.TimeTrackBar.Name = "TimeTrackBar";
+            this.TimeTrackBar.Size = new System.Drawing.Size(1784, 60);
+            this.TimeTrackBar.TabIndex = 44;
+            this.TimeTrackBar.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.TimeTrackBar.Scroll += new System.EventHandler(this.UpdateCurrentTime);
             // 
             // ScenesTab
             // 
@@ -353,16 +257,13 @@ namespace Optimator.Tabs.Scenes
             this.Size = new System.Drawing.Size(2226, 1131);
             this.ToolStrip.ResumeLayout(false);
             this.ToolStrip.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Future2PreviewBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.FuturePreviewBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.PastPreviewBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.CurrentTimeUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawPanel)).EndInit();
             this.DisplayPanel.ResumeLayout(false);
-            this.DPDisplayTableLayoutPnl.ResumeLayout(false);
-            this.DPDisplayTableLayoutPnl.PerformLayout();
+            this.DisplayPanel.PerformLayout();
             this.DPControlsTableLayoutPnl.ResumeLayout(false);
             this.DPControlsTableLayoutPnl.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TimeTrackBar)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -379,17 +280,11 @@ namespace Optimator.Tabs.Scenes
         private System.Windows.Forms.ToolStripButton MoveBtn;
         private System.Windows.Forms.ToolStripButton SettingsBtn;
         private System.Windows.Forms.Label VidLengthLbl;
-        private System.Windows.Forms.Label UpArrowImg;
-        private System.Windows.Forms.PictureBox Future2PreviewBox;
-        private System.Windows.Forms.PictureBox FuturePreviewBox;
-        private System.Windows.Forms.PictureBox PastPreviewBox;
         private System.Windows.Forms.Label CurrentTimeLbl;
         private System.Windows.Forms.NumericUpDown CurrentTimeUpDown;
-        private System.Windows.Forms.Button ForwardBtn;
-        private System.Windows.Forms.Button BackBtn;
         private System.Windows.Forms.PictureBox DrawPanel;
         private System.Windows.Forms.TableLayoutPanel DisplayPanel;
         private System.Windows.Forms.TableLayoutPanel DPControlsTableLayoutPnl;
-        private System.Windows.Forms.TableLayoutPanel DPDisplayTableLayoutPnl;
+        private TrackBar TimeTrackBar;
     }
 }
