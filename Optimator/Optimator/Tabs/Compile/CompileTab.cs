@@ -41,8 +41,6 @@ namespace Optimator.Tabs.Compile
             Owner = owner;
 
             Owner.GetTabControl().KeyUp += KeyPress;
-            //Enter += FocusOn;
-            //VisibleChanged += FocusOn;
         }
 
 
@@ -55,17 +53,6 @@ namespace Optimator.Tabs.Compile
         public override void Resize()
         {
             Utils.ResizePanel(Panel);
-        }
-
-        /// <summary>
-        /// Redraws boards once focus is regained.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void FocusOn(object sender, EventArgs e)
-        {
-            // TODO: Draw compile screen
-            //DisplayDrawings();
         }
 
         /// <summary>
@@ -175,12 +162,11 @@ namespace Optimator.Tabs.Compile
                 workingTime = 0;
                 sceneIndex = videoScenes.Count - 1;
                 var image1 = DrawOnBitmap();
-                workingTime = scene.TimeLength;
+                workingTime = scene.TimeLength; // TODO: Fix: Not showing correctly
                 scenePreviews.Add(scene.Name, new Bitmap[2] { image1, DrawOnBitmap() });
             }
             SceneViewPanel.Controls.Add(new ScenePreview(scene, scenePreviews[scene.Name][0], scenePreviews[scene.Name][1]));
         }
-
 
         /// <summary>
         /// Runs when a key is pressed.
@@ -194,7 +180,6 @@ namespace Optimator.Tabs.Compile
             {
                 switch (e.KeyCode)
                 {
-                    // Delete Selected
                     case Keys.Delete:
                         // Delete Selected Previews
                         foreach (Control control in SceneViewPanel.Controls)
@@ -206,6 +191,18 @@ namespace Optimator.Tabs.Compile
                             }
                         }
                         break;
+
+                    case Keys.Enter:
+                        // Enter Name Textbox
+                        foreach (Control control in Panel.Controls)
+                        {
+                            if (control is AddScenePanel)
+                            {
+                                (control as AddScenePanel).SubmitScene_Click(sender, e);
+                            }
+                        }
+                        break;
+
 
                     // Do nothing for any other key
                     default:

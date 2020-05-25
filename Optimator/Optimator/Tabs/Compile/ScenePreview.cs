@@ -22,8 +22,11 @@ namespace Optimator.Tabs.Compile
 
             scene = previewed;
             SceneNameLbl.Text = previewed.Name;
-            OriginalPreview.BackgroundImage = original;
-            FinalPreview.BackgroundImage = final;
+
+            OriginalPreview.BackgroundImage = Visuals.ScaleBitmap(OriginalPreview.Width,
+                OriginalPreview.Height, original, Color.MistyRose);
+            FinalPreview.BackgroundImage = Visuals.ScaleBitmap(FinalPreview.Width,
+                FinalPreview.Height, final, Color.MistyRose);
         }
 
 

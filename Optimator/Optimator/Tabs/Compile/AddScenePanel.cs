@@ -51,7 +51,7 @@ namespace Optimator.Forms.Compile
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void SubmitScene_Click(object sender, EventArgs e)
+        public void SubmitScene_Click(object sender, EventArgs e)
         {
             var newScene = new Scene(AddTb.Text);
             if (newScene.Version != null)

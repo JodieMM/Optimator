@@ -11,6 +11,8 @@ namespace Optimator
     /// </summary>
     public class Visuals
     {
+        // ----- DRAWING -----
+
         /// <summary>
         /// Draws a + at the given coordinate
         /// </summary>
@@ -139,6 +141,42 @@ namespace Optimator
             {
                 part.Draw(g);
             }
+        }
+
+
+
+        // ----- VISUAL MANIPULATION -----
+
+        /// <summary>
+        /// Resize a bitmap.
+        /// </summary>
+        /// <param name="newWidth">Width of resized bitmap</param>
+        /// <param name="newHeight">Height of resized bitmap</param>
+        /// <param name="original">Original bitmap</param>
+        /// <param name="bg">The colour to fill excess space</param>
+        /// <returns>Re-scaled Bitmap</returns>
+        public static Bitmap ScaleBitmap(int newWidth, int newHeight, Bitmap original, Color bg)
+        {
+            var brush = new SolidBrush(bg);
+
+            float scale = Math.Min((float)newWidth / original.Width, (float)newHeight / original.Height);
+            var newBitmap = new Bitmap(newWidth, newHeight);
+            var g = Graphics.FromImage(newBitmap);
+
+            // uncomment for higher quality output
+            //g.InterpolationMode = InterpolationMode.High;
+            //g.CompositingQuality = CompositingQuality.HighQuality;
+            //g.SmoothingMode = SmoothingMode.AntiAlias;
+
+            var scaleWidth = (int)(original.Width * scale);
+            var scaleHeight = (int)(original.Height * scale);
+
+            using (g)
+            {
+                g.FillRectangle(brush, new RectangleF(0, 0, newWidth, newHeight));
+                g.DrawImage(original, (newWidth - scaleWidth) / 2, (newHeight - scaleHeight) / 2, scaleWidth, scaleHeight);
+            }
+            return newBitmap;
         }
     }
 }
