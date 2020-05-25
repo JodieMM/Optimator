@@ -68,6 +68,12 @@
     <Compile Include="Tabs\Compile\CompileTab.Designer.cs">
       <DependentUpon>CompileTab.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tabs\Compile\ScenePreview.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Tabs\Compile\ScenePreview.Designer.cs">
+      <DependentUpon>ScenePreview.cs</DependentUpon>
+    </Compile>
     <Compile Include="Tabs\SoloTabs\LoadingMessage.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -277,6 +283,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Tabs\Compile\CompileTab.resx">
       <DependentUpon>CompileTab.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\Compile\ScenePreview.resx">
+      <DependentUpon>ScenePreview.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Tabs\SoloTabs\LoadingMessage.resx">
       <DependentUpon>LoadingMessage.cs</DependentUpon>

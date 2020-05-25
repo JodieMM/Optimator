@@ -182,6 +182,15 @@ namespace Optimator
         // ----- TAB PAGES -----
 
         /// <summary>
+        /// Gets the tab control to allow for key press controls.
+        /// </summary>
+        /// <returns>The TabControl</returns>
+        public Control GetTabControl()
+        {
+            return TabControl;
+        }
+
+        /// <summary>
         /// Adds a user control to the TabControl as a TabPage.
         /// </summary>
         /// <param name="name">Tab label</param>

@@ -35,7 +35,7 @@ namespace Optimator.Tabs.Scenes
             InitializeComponent();
             Owner = owner;
             
-            KeyUp += KeyPress;
+            Owner.GetTabControl().KeyUp += KeyPress;
             Enter += FocusOn;
             VisibleChanged += FocusOn;
 
@@ -348,60 +348,63 @@ namespace Optimator.Tabs.Scenes
         /// <param name="e"></param>
         private new void KeyPress(object sender, KeyEventArgs e)
         {
-            switch (e.KeyCode)
+            if (ContainsFocus)
             {
-                // Delete Selected Shape
-                case Keys.Delete:
-                    if (selected == null)
-                    {
-                        return;
-                    }
-
-                    // If Listbox is highlighted, delete change/animation
-                    if (Baby != null && Baby is MovePanel && (Baby as MovePanel).DeleteAnimation())
-                    {
-                        // Done in DeleteAnimation() Bool Check
-                    }
-                    // Delete selected
-                    else
-                    {
-                        if (selected is Set)
+                switch (e.KeyCode)
+                {
+                    // Delete Selected Shape
+                    case Keys.Delete:
+                        if (selected == null)
                         {
-                            var result = MessageBox.Show("This will delete the entire set. Do you wish to continue?",
-                                "Overwrite Confirmation", MessageBoxButtons.OKCancel);
-                            if (result == DialogResult.Cancel)
-                            {
-                                return;
-                            }
-
-                            foreach (var piece in (selected as Set).PiecesList)
-                            {
-                                WIP.PiecesList.Remove(piece);
-                            }
-                            WIP.PartsList.Remove(selected);
+                            return;
                         }
+
+                        // If Listbox is highlighted, delete change/animation
+                        if (Baby != null && Baby is MovePanel && (Baby as MovePanel).DeleteAnimation())
+                        {
+                            // Done in DeleteAnimation() Bool Check
+                        }
+                        // Delete selected
                         else
                         {
-                            WIP.PartsList.Remove(selected);
-                            WIP.PiecesList.Remove(selected.ToPiece());
-                        }
-
-                        // Update changes to remove those made redundant by deleting a piece/set
-                        foreach (var change in WIP.Changes)
-                        {
-                            if (!WIP.PiecesList.Contains(change.AffectedPiece))
+                            if (selected is Set)
                             {
-                                WIP.Changes.Remove(change);
-                            }
-                        }
-                        Deselect();
-                    }
-                    DisplayDrawings();
-                    break;
+                                var result = MessageBox.Show("This will delete the entire set. Do you wish to continue?",
+                                    "Overwrite Confirmation", MessageBoxButtons.OKCancel);
+                                if (result == DialogResult.Cancel)
+                                {
+                                    return;
+                                }
 
-                // Do nothing for any other key
-                default:
-                    break;
+                                foreach (var piece in (selected as Set).PiecesList)
+                                {
+                                    WIP.PiecesList.Remove(piece);
+                                }
+                                WIP.PartsList.Remove(selected);
+                            }
+                            else
+                            {
+                                WIP.PartsList.Remove(selected);
+                                WIP.PiecesList.Remove(selected.ToPiece());
+                            }
+
+                            // Update changes to remove those made redundant by deleting a piece/set
+                            foreach (var change in WIP.Changes)
+                            {
+                                if (!WIP.PiecesList.Contains(change.AffectedPiece))
+                                {
+                                    WIP.Changes.Remove(change);
+                                }
+                            }
+                            Deselect();
+                        }
+                        DisplayDrawings();
+                        break;
+
+                    // Do nothing for any other key
+                    default:
+                        break;
+                }
             }
         }
 

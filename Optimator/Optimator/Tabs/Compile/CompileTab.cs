@@ -24,6 +24,7 @@ namespace Optimator.Tabs.Compile
         private Graphics g;
         private Color backgroundColor = Color.White;
         private LoadingMessage loadMsg = null;
+        private Dictionary<string, Bitmap[]> scenePreviews = new Dictionary<string, Bitmap[]>();
 
         public decimal FPS = 60;
         public int videoWidth = Consts.defaultWidth;
@@ -39,6 +40,7 @@ namespace Optimator.Tabs.Compile
             InitializeComponent();
             Owner = owner;
 
+            Owner.GetTabControl().KeyUp += KeyPress;
             //Enter += FocusOn;
             //VisibleChanged += FocusOn;
         }
@@ -160,6 +162,60 @@ namespace Optimator.Tabs.Compile
 
 
 
+        // ----- SCENE VIEW PANEL -----
+
+        /// <summary>
+        /// Adds a scene preview to the panel.
+        /// </summary>
+        /// <param name="scene"></param>
+        public void AddToSceneViewPanel(Scene scene)
+        {
+            if (!scenePreviews.ContainsKey(scene.Name))
+            {
+                workingTime = 0;
+                sceneIndex = videoScenes.Count - 1;
+                var image1 = DrawOnBitmap();
+                workingTime = scene.TimeLength;
+                scenePreviews.Add(scene.Name, new Bitmap[2] { image1, DrawOnBitmap() });
+            }
+            SceneViewPanel.Controls.Add(new ScenePreview(scene, scenePreviews[scene.Name][0], scenePreviews[scene.Name][1]));
+        }
+
+
+        /// <summary>
+        /// Runs when a key is pressed.
+        /// If delete is pressed and a preview is selected, it will be deleted.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private new void KeyPress(object sender, KeyEventArgs e)
+        {
+            if (ContainsFocus)
+            {
+                switch (e.KeyCode)
+                {
+                    // Delete Selected
+                    case Keys.Delete:
+                        // Delete Selected Previews
+                        foreach (Control control in SceneViewPanel.Controls)
+                        {
+                            if (control is ScenePreview && (control as ScenePreview).GetChecked() == true)
+                            {
+                                videoScenes.Remove((control as ScenePreview).scene);
+                                SceneViewPanel.Controls.Remove(control);
+                            }
+                        }
+                        break;
+
+                    // Do nothing for any other key
+                    default:
+                        break;
+                }
+            }
+        }
+
+
+
         // ----- DRAWING FUNCTIONS -----
 
         /// <summary>
@@ -186,7 +242,7 @@ namespace Optimator.Tabs.Compile
         {
             var bitmap = new Bitmap(videoWidth, videoHeight);
             g = Graphics.FromImage(bitmap);
-            using (var brush = new SolidBrush(backgroundColor))
+            using (var brush = new SolidBrush(backgroundColor)) //TODO: Allow for this to be changed
             {
                 g.FillRectangle(brush, 0, 0, bitmap.Width, bitmap.Height);
             }

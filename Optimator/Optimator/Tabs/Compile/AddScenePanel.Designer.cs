@@ -32,7 +32,6 @@
             this.AddSceneLbl = new System.Windows.Forms.Label();
             this.TableLayoutPnl = new System.Windows.Forms.TableLayoutPanel();
             this.SubmitScene = new System.Windows.Forms.Button();
-            this.SceneLb = new System.Windows.Forms.ListBox();
             this.TableLayoutPnl.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -64,14 +63,13 @@
             this.TableLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.TableLayoutPnl.Controls.Add(this.AddTb, 0, 0);
             this.TableLayoutPnl.Controls.Add(this.SubmitScene, 0, 1);
-            this.TableLayoutPnl.Controls.Add(this.SceneLb, 0, 2);
             this.TableLayoutPnl.Location = new System.Drawing.Point(44, 172);
             this.TableLayoutPnl.Name = "TableLayoutPnl";
-            this.TableLayoutPnl.RowCount = 3;
-            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 80F));
-            this.TableLayoutPnl.Size = new System.Drawing.Size(507, 628);
+            this.TableLayoutPnl.RowCount = 2;
+            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.TableLayoutPnl.Size = new System.Drawing.Size(507, 260);
             this.TableLayoutPnl.TabIndex = 85;
             // 
             // SubmitScene
@@ -80,25 +78,14 @@
             this.SubmitScene.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SubmitScene.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SubmitScene.Font = new System.Drawing.Font("Segoe UI", 16F);
-            this.SubmitScene.Location = new System.Drawing.Point(2, 64);
+            this.SubmitScene.Location = new System.Drawing.Point(2, 132);
             this.SubmitScene.Margin = new System.Windows.Forms.Padding(2);
             this.SubmitScene.Name = "SubmitScene";
-            this.SubmitScene.Size = new System.Drawing.Size(503, 58);
+            this.SubmitScene.Size = new System.Drawing.Size(503, 126);
             this.SubmitScene.TabIndex = 86;
             this.SubmitScene.Text = "Get Scene";
             this.SubmitScene.UseVisualStyleBackColor = false;
             this.SubmitScene.Click += new System.EventHandler(this.SubmitScene_Click);
-            // 
-            // SceneLb
-            // 
-            this.SceneLb.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SceneLb.Font = new System.Drawing.Font("Segoe UI", 16F);
-            this.SceneLb.FormattingEnabled = true;
-            this.SceneLb.ItemHeight = 59;
-            this.SceneLb.Location = new System.Drawing.Point(3, 127);
-            this.SceneLb.Name = "SceneLb";
-            this.SceneLb.Size = new System.Drawing.Size(501, 498);
-            this.SceneLb.TabIndex = 87;
             // 
             // AddScenePanel
             // 
@@ -122,6 +109,5 @@
         private System.Windows.Forms.TableLayoutPanel TableLayoutPnl;
         private System.Windows.Forms.Label AddSceneLbl;
         private System.Windows.Forms.Button SubmitScene;
-        private System.Windows.Forms.ListBox SceneLb;
     }
 }

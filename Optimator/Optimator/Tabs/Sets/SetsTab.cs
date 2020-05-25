@@ -45,7 +45,7 @@ namespace Optimator.Tabs.Sets
             InitializeComponent();
             Owner = owner;
 
-            KeyUp += KeyPress;
+            Owner.GetTabControl().KeyUp += KeyPress;
             Enter += FocusOn;
             VisibleChanged += FocusOn;
         }
@@ -505,22 +505,25 @@ namespace Optimator.Tabs.Sets
         /// <param name="e"></param>
         private new void KeyPress(object sender, KeyEventArgs e)
         {
-            switch (e.KeyCode)
+            if (ContainsFocus)
             {
-                // Delete Selected Piece
-                case Keys.Delete:
-                    if (selected == null)
-                    {
-                        return;
-                    }
-                    RemovePiece(selected);
-                    selected = null;
-                    DisplayDrawings();
-                    break;
+                switch (e.KeyCode)
+                {
+                    // Delete Selected Piece
+                    case Keys.Delete:
+                        if (selected == null)
+                        {
+                            return;
+                        }
+                        RemovePiece(selected);
+                        selected = null;
+                        DisplayDrawings();
+                        break;
 
-                // Do nothing for any other key
-                default:
-                    break;
+                    // Do nothing for any other key
+                    default:
+                        break;
+                }
             }
         }
 

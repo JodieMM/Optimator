@@ -36,6 +36,7 @@ namespace Optimator.Tabs.Compile
             this.AddSceneBtn = new System.Windows.Forms.ToolStripButton();
             this.CloseBtn = new System.Windows.Forms.ToolStripButton();
             this.SettingsBtn = new System.Windows.Forms.ToolStripButton();
+            this.SceneViewPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.ToolStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -108,11 +109,22 @@ namespace Optimator.Tabs.Compile
             this.SettingsBtn.Text = "Settings";
             this.SettingsBtn.Click += new System.EventHandler(this.BtnWithPanel_Click);
             // 
+            // SceneViewPanel
+            // 
+            this.SceneViewPanel.AutoScroll = true;
+            this.SceneViewPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SceneViewPanel.Location = new System.Drawing.Point(0, 39);
+            this.SceneViewPanel.Margin = new System.Windows.Forms.Padding(10);
+            this.SceneViewPanel.Name = "SceneViewPanel";
+            this.SceneViewPanel.Size = new System.Drawing.Size(1784, 1092);
+            this.SceneViewPanel.TabIndex = 26;
+            // 
             // CompileTab
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightCoral;
+            this.Controls.Add(this.SceneViewPanel);
             this.Controls.Add(this.Panel);
             this.Controls.Add(this.ToolStrip);
             this.Margin = new System.Windows.Forms.Padding(4);
@@ -133,5 +145,6 @@ namespace Optimator.Tabs.Compile
         private System.Windows.Forms.ToolStripButton AddSceneBtn;
         private System.Windows.Forms.ToolStripButton CloseBtn;
         private System.Windows.Forms.ToolStripButton SettingsBtn;
+        private FlowLayoutPanel SceneViewPanel;
     }
 }

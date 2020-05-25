@@ -41,7 +41,7 @@ namespace Optimator
             InitializeComponent();
             Owner = owner;           
             
-            KeyUp += KeyPress;
+            Owner.GetTabControl().KeyUp += KeyPress;
             Enter += FocusOn;
             VisibleChanged += FocusOn;
         }
@@ -408,40 +408,43 @@ namespace Optimator
         /// <param name="e"></param>
         private new void KeyPress(object sender, KeyEventArgs e)
         {
-            switch (e.KeyCode)
+            if (ContainsFocus)
             {
-                // Delete Selected
-                case Keys.Delete:
-                    // Delete Spot
-                    if (selectedSpot != null)
-                    {
-                        var selectedIndex = WIP.Data.IndexOf(selectedSpot);
-                        WIP.Data.Remove(selectedSpot);
-                        if (WIP.Data.Count == 0)
+                switch (e.KeyCode)
+                {
+                    // Delete Selected
+                    case Keys.Delete:
+                        // Delete Spot
+                        if (selectedSpot != null)
                         {
-                            Deselect();
+                            var selectedIndex = WIP.Data.IndexOf(selectedSpot);
+                            WIP.Data.Remove(selectedSpot);
+                            if (WIP.Data.Count == 0)
+                            {
+                                Deselect();
+                            }
+                            else
+                            {
+                                SelectSpot(WIP.Data[Utils.Modulo(selectedIndex - 1, WIP.Data.Count)]);
+                            }
                         }
+                        // Delete Piece
                         else
                         {
-                            SelectSpot(WIP.Data[Utils.Modulo(selectedIndex - 1, WIP.Data.Count)]);
+                            var result = MessageBox.Show("Would you like to restart the piece?", "Restart Confirmation", MessageBoxButtons.OKCancel);
+                            if (result == DialogResult.OK)
+                            {
+                                WIP.Data.Clear();
+                                Deselect();
+                            }
                         }
-                    }
-                    // Delete Piece
-                    else
-                    {
-                        var result = MessageBox.Show("Would you like to restart the piece?", "Restart Confirmation", MessageBoxButtons.OKCancel);
-                        if (result == DialogResult.OK)
-                        {
-                            WIP.Data.Clear();
-                            Deselect();
-                        }
-                    }
-                    DisplayDrawings();
-                    break;
+                        DisplayDrawings();
+                        break;
 
-                // Do nothing for any other key
-                default:
-                    break;
+                    // Do nothing for any other key
+                    default:
+                        break;
+                }
             }
         }
 

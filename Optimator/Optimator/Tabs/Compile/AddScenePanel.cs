@@ -21,10 +21,6 @@ namespace Optimator.Forms.Compile
         {
             InitializeComponent();
             Owner = owner;
-            foreach (var scene in Owner.videoScenes)
-            {
-                SceneLb.Items.Add(scene.Name);
-            }
         }
 
 
@@ -38,7 +34,7 @@ namespace Optimator.Forms.Compile
         {
             var widthPercent = 0.9F;
             var smallWidthPercent = 0.05F;
-            var heightPercent = 0.8F;
+            var heightPercent = 0.2F;
 
             var bigWidth = (int)(Width * widthPercent);
             var lilWidth = (int)(Width * smallWidthPercent);
@@ -57,11 +53,11 @@ namespace Optimator.Forms.Compile
         /// <param name="e"></param>
         private void SubmitScene_Click(object sender, EventArgs e)
         {
-            var count = Owner.videoScenes.Count;
-            Owner.videoScenes.Add(new Scene(AddTb.Text));
-            if (count < Owner.videoScenes.Count)
+            var newScene = new Scene(AddTb.Text);
+            if (newScene.Version != null)
             {
-                SceneLb.Items.Add(AddTb.Text);
+                Owner.videoScenes.Add(newScene);
+                Owner.AddToSceneViewPanel(newScene);
             }
         }
     }
