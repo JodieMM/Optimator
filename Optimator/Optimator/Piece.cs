@@ -35,7 +35,7 @@ namespace Optimator
         {
             // Get Piece Data
             Name = inName;
-            var data = Utils.ReadFile(Utils.GetDirectory(Consts.PiecesFolder, Name, Consts.Optr));
+            var data = Utils.ReadFile(Utils.GetDirectory(Name, Consts.PieceExt));
 
             // Get Version
             Version = data[0].Split(Consts.Semi)[1];

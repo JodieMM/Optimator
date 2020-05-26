@@ -79,11 +79,11 @@ namespace Optimator
 
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                if (!CheckValidNewName(Path.GetFileNameWithoutExtension(saveFileDialog.FileName)))
-                {
-                    SaveData(data);
-                    return;
-                }
+                //if (!CheckValidNewName(Path.GetFileNameWithoutExtension(saveFileDialog.FileName)))
+                //{
+                //    SaveData(data);
+                //    return;
+                //}
 
                 var file = new StreamWriter(saveFileDialog.OpenFile());
                 if (file != null)
@@ -105,13 +105,20 @@ namespace Optimator
         public static List<string> ReadFile(string directory)
         {
             var data = new List<string>();
-            var file = new StreamReader(directory);
-            string line;
-            while ((line = file.ReadLine()) != null)
+            try
             {
-                data.Add(line);
+                var file = new StreamReader(directory);
+                string line;
+                while ((line = file.ReadLine()) != null)
+                {
+                    data.Add(line);
+                }
+                file.Close();
             }
-            file.Close();
+            catch (FileNotFoundException)
+            {
+                MessageBox.Show("The file could not be found.", "Invalid Directory Selection");
+            }
 
             return data;
         }
@@ -152,6 +159,17 @@ namespace Optimator
         }
 
         /// <summary>
+        /// Takes an item name and file type and returns the directory name to reach that file.
+        /// </summary>
+        /// <param name="name">The item name</param>
+        /// <param name="fileType">The file's type, e.g. optr</param>
+        /// <returns></returns>
+        public static string GetDirectory(string name, string fileType = "")
+        {
+            return Path.Combine(Settings.WorkingDirectory, name + fileType);
+        }
+
+        /// <summary>
         /// Selects a folder at a user's selected location.
         /// </summary>
         /// <param name="baseFolder">Whether the initial four sub-folders should be added</param>
@@ -171,10 +189,11 @@ namespace Optimator
             {
                 Settings.WorkingDirectory = path;
                 Settings.UpdateSettings();
-                Directory.CreateDirectory(Path.Combine(Settings.WorkingDirectory, Consts.PiecesFolder));
-                Directory.CreateDirectory(Path.Combine(Settings.WorkingDirectory, Consts.SetsFolder));
-                Directory.CreateDirectory(Path.Combine(Settings.WorkingDirectory, Consts.ScenesFolder));
-                Directory.CreateDirectory(Path.Combine(Settings.WorkingDirectory, Consts.VideosFolder));
+                // CLEANING: Remove
+                //Directory.CreateDirectory(Path.Combine(Settings.WorkingDirectory, Consts.PiecesFolder));
+                //Directory.CreateDirectory(Path.Combine(Settings.WorkingDirectory, Consts.SetsFolder));
+                //Directory.CreateDirectory(Path.Combine(Settings.WorkingDirectory, Consts.ScenesFolder));
+                //Directory.CreateDirectory(Path.Combine(Settings.WorkingDirectory, Consts.VideosFolder));
             }
             return path;
         }
@@ -225,7 +244,7 @@ namespace Optimator
         /// <param name="name">The name of the file</param>
         /// <param name="folder">The folder the file belongs in</param>
         /// <returns>True if the name is valid</returns>
-        public static bool CheckValidNewName(string name, string folder = "")
+        public static bool CheckValidNewName(string name, string extension = "", string folder = "")
         {
             var PermittedName = new Regex(@"^[A-Za-z0-9]+$");
             if (!PermittedName.IsMatch(name))
@@ -235,7 +254,7 @@ namespace Optimator
             }
 
             // Check name not already in use, or that overriding is okay
-            if (folder != "" && File.Exists(GetDirectory(folder, name, Consts.Optr)))
+            if (folder != "" && File.Exists(GetDirectory(folder, name, extension)))
             {
                 var result = MessageBox.Show("This name is already in use. Do you want to override the existing file?", "Override Confirmation", MessageBoxButtons.OKCancel);
                 if (result == DialogResult.Cancel)

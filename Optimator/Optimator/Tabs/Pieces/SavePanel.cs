@@ -87,7 +87,7 @@ namespace Optimator.Forms.Pieces
         /// <returns>True if successful</returns>
         private bool Save()
         {
-            if (!Utils.CheckValidNewName(NameTb.Text, Consts.PiecesFolder) || !Owner.CheckPiecesValid())
+            if (!Utils.CheckValidNewName(NameTb.Text, Consts.PieceExt) || !Owner.CheckPiecesValid())
             {
                 return false;
             }
@@ -96,7 +96,7 @@ namespace Optimator.Forms.Pieces
             try
             {
                 Utils.CentrePieceOnAxis(Owner.WIP);
-                Utils.SaveFile(Utils.GetDirectory(Consts.PiecesFolder, NameTb.Text, Consts.Optr), Owner.WIP.GetData());
+                Utils.SaveFile(Utils.GetDirectory(NameTb.Text, Consts.PieceExt), Owner.WIP.GetData());
                 return true;
             }
             catch (FileNotFoundException)

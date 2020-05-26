@@ -93,7 +93,7 @@ namespace Optimator.Forms.Compile
         /// <returns>True if successful</returns>
         private bool Save()
         {
-            if (!Utils.CheckValidNewName(NameTb.Text, Consts.VideosFolder))
+            if (!Utils.CheckValidNewName(NameTb.Text))
             {
                 return false;
             }
@@ -102,7 +102,7 @@ namespace Optimator.Forms.Compile
                 Owner.ShowLoadingMessage();
 
                 // Prepare Save Location
-                var directory = Utils.GetDirectory(Consts.VideosFolder, NameTb.Text);
+                var directory = Utils.GetDirectory(NameTb.Text);
                 Directory.CreateDirectory(directory);
                 var imagesDirectory = @"""" + Utils.GetDirectory(directory, "%d", Consts.Png) + @"""";
                 var videosDirectory = @"""" + Utils.GetDirectory(directory, NameTb.Text, Consts.Avi) + @"""";

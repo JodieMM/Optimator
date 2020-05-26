@@ -91,14 +91,6 @@ namespace Optimator.Tabs.Scenes
 
             DrawPanel.Size = new Size(sceneWidth, sceneHeight);
 
-            //var bigWidth = (int)(Width * widthPercent);
-            //var bigHeight = (int)((Height - ToolStrip.Height) * heightPercent);
-            //var fraction = (int)Math.Min(bigWidth / 16.0, bigHeight / 9.0);
-
-            //DrawPanel.Size = new Size(fraction * 16, fraction * 9);
-            //DrawPanel.Location = new Point((int)((bigWidth - DrawPanel.Width ) / 2.0), 
-            //    (int)((bigHeight - DrawPanel.Height) / 2.0 + ToolStrip.Height));
-
             Panel.Width = (int)(Width * widthPercent);
             DisplayPanel.Height = (int)(Height * heightPercent) - ToolStrip.Height;
             

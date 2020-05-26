@@ -91,13 +91,13 @@ namespace Optimator.Forms.Scenes
         /// <returns>True if successful</returns>
         private bool Save()
         {
-            if (!Utils.CheckValidNewName(NameTb.Text, Consts.ScenesFolder))
+            if (!Utils.CheckValidNewName(NameTb.Text, Consts.SceneExt))
             {
                 return false;
             }
             try
             {
-                Utils.SaveFile(Utils.GetDirectory(Consts.ScenesFolder, NameTb.Text, Consts.Optr), Owner.WIP.GetData());
+                Utils.SaveFile(Utils.GetDirectory(NameTb.Text, Consts.SceneExt), Owner.WIP.GetData());
                 return true;
             }
             catch (FileNotFoundException)

@@ -33,7 +33,7 @@ namespace Optimator
         public Set(string inName)
         {
             Name = inName;
-            var data = Utils.ReadFile(Utils.GetDirectory(Consts.SetsFolder, Name, Consts.Optr));
+            var data = Utils.ReadFile(Utils.GetDirectory(Name, Consts.SetExt));
             Version = data[0].Split(Consts.Semi)[1];
             Utils.CheckValidVersion(Version);
 

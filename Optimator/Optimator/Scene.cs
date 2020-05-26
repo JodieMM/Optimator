@@ -35,7 +35,7 @@ namespace Optimator
             try
             {
                 // Read File
-                var data = Utils.ReadFile(Utils.GetDirectory(Consts.ScenesFolder, fileName, Consts.Optr));
+                var data = Utils.ReadFile(Utils.GetDirectory(fileName, Consts.SceneExt));
                 Name = fileName;
                 Version = data[0].Split(Consts.Semi)[1];
                 Utils.CheckValidVersion(Version);

@@ -99,7 +99,7 @@ namespace Optimator.Forms.Sets
             {
                 MessageBox.Show("Please connect all pieces but one or remove unconnected pieces.", "Multiple Sets", MessageBoxButtons.OK);
             }
-            else if (!Utils.CheckValidNewName(NameTb.Text, Consts.SetsFolder))
+            else if (!Utils.CheckValidNewName(NameTb.Text, Consts.SetExt))
             {
                 return false;
             }
@@ -107,7 +107,7 @@ namespace Optimator.Forms.Sets
             {
                 try
                 {
-                    Utils.SaveFile(Utils.GetDirectory(Consts.SetsFolder, NameTb.Text, Consts.Optr), Owner.WIP.GetData());
+                    Utils.SaveFile(Utils.GetDirectory(NameTb.Text, Consts.SetExt), Owner.WIP.GetData());
                     return true;
                 }
                 catch (FileNotFoundException)

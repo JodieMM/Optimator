@@ -15,19 +15,23 @@ namespace Optimator
         public const string Settings = "Settings.txt";
         public const string DefaultSettings = "DefaultSettings.txt";
 
-        // Folders 
-        public const string PiecesFolder = "Pieces";
-        public const string SetsFolder = "Sets";
-        public const string ScenesFolder = "Scenes";
-        public const string VideosFolder = "Videos";
+        // CLEANING: Folders 
+        //public const string PiecesFolder = "Pieces";
+        //public const string SetsFolder = "Sets";
+        //public const string ScenesFolder = "Scenes";
+        //public const string VideosFolder = "Videos";
 
         // Types
         public const string Piece = "Piece";
         public const string Set = "Set";
         public const string Scene = "Scene";
+        public const string Video = "Video";
 
         // File Extensions
-        public const string Optr = ".optr";
+        public const string PieceExt = ".optrp";
+        public const string SetExt = ".optrs";
+        public const string SceneExt = ".optrc";
+        public const string VideoExt = ".optrv";
         public const string Png = ".png";
         public const string Mp4 = ".mp4";
         public const string Avi = ".avi";
