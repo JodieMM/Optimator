@@ -46,12 +46,14 @@ namespace Optimator.Tabs.Scenes
             this.DisplayPanel = new System.Windows.Forms.TableLayoutPanel();
             this.DPControlsTableLayoutPnl = new System.Windows.Forms.TableLayoutPanel();
             this.TimeTrackBar = new System.Windows.Forms.TrackBar();
+            this.DrawPanelContainer = new System.Windows.Forms.Panel();
             this.ToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CurrentTimeUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawPanel)).BeginInit();
             this.DisplayPanel.SuspendLayout();
             this.DPControlsTableLayoutPnl.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TimeTrackBar)).BeginInit();
+            this.DrawPanelContainer.SuspendLayout();
             this.SuspendLayout();
             // 
             // Panel
@@ -188,10 +190,10 @@ namespace Optimator.Tabs.Scenes
             // 
             // DrawPanel
             // 
-            this.DrawPanel.Location = new System.Drawing.Point(116, 129);
-            this.DrawPanel.Margin = new System.Windows.Forms.Padding(4);
+            this.DrawPanel.Location = new System.Drawing.Point(30, 30);
+            this.DrawPanel.Margin = new System.Windows.Forms.Padding(0);
             this.DrawPanel.Name = "DrawPanel";
-            this.DrawPanel.Size = new System.Drawing.Size(1062, 540);
+            this.DrawPanel.Size = new System.Drawing.Size(800, 530);
             this.DrawPanel.TabIndex = 31;
             this.DrawPanel.TabStop = false;
             this.DrawPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DrawPanel_MouseDown);
@@ -243,13 +245,25 @@ namespace Optimator.Tabs.Scenes
             this.TimeTrackBar.TickStyle = System.Windows.Forms.TickStyle.None;
             this.TimeTrackBar.Scroll += new System.EventHandler(this.UpdateCurrentTime);
             // 
+            // DrawPanelContainer
+            // 
+            this.DrawPanelContainer.AutoScroll = true;
+            this.DrawPanelContainer.AutoScrollMargin = new System.Drawing.Size(15, 15);
+            this.DrawPanelContainer.Controls.Add(this.DrawPanel);
+            this.DrawPanelContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DrawPanelContainer.Location = new System.Drawing.Point(0, 39);
+            this.DrawPanelContainer.Margin = new System.Windows.Forms.Padding(0);
+            this.DrawPanelContainer.Name = "DrawPanelContainer";
+            this.DrawPanelContainer.Size = new System.Drawing.Size(1784, 894);
+            this.DrawPanelContainer.TabIndex = 43;
+            // 
             // ScenesTab
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Khaki;
+            this.Controls.Add(this.DrawPanelContainer);
             this.Controls.Add(this.DisplayPanel);
-            this.Controls.Add(this.DrawPanel);
             this.Controls.Add(this.Panel);
             this.Controls.Add(this.ToolStrip);
             this.Margin = new System.Windows.Forms.Padding(4);
@@ -264,6 +278,7 @@ namespace Optimator.Tabs.Scenes
             this.DPControlsTableLayoutPnl.ResumeLayout(false);
             this.DPControlsTableLayoutPnl.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TimeTrackBar)).EndInit();
+            this.DrawPanelContainer.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -286,5 +301,6 @@ namespace Optimator.Tabs.Scenes
         private System.Windows.Forms.TableLayoutPanel DisplayPanel;
         private System.Windows.Forms.TableLayoutPanel DPControlsTableLayoutPnl;
         private TrackBar TimeTrackBar;
+        private Panel DrawPanelContainer;
     }
 }

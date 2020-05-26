@@ -22,6 +22,8 @@ namespace Optimator.Tabs.Scenes
             Owner = owner;
 
             SelectFromTopCb.Checked = Owner.SelectFromTop;
+            SceneWidthUpDown.Value = Owner.sceneWidth;
+            SceneHeightUpDown.Value = Owner.sceneHeight;
         }
 
 
@@ -35,7 +37,7 @@ namespace Optimator.Tabs.Scenes
         {
             var bigWidthPercent = 0.8F;
             var widthPercent = 0.05F;
-            var bigHeightPercent = 0.2F;
+            var bigHeightPercent = 0.7F;
 
             var smallWidth = (int)(Width * widthPercent);
             var bigWidth = (int)(Width * bigWidthPercent);
@@ -54,6 +56,24 @@ namespace Optimator.Tabs.Scenes
         private void SelectFromTopCb_CheckedChanged(object sender, System.EventArgs e)
         {
             Owner.SelectFromTop = SelectFromTopCb.Checked;
+        }
+
+        /// <summary>
+        /// Updates the scene width or height setting.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SceneSizeUpDown_ValueChanged(object sender, System.EventArgs e)
+        {
+            if (sender == SceneWidthUpDown)
+            {
+                Owner.sceneWidth = (int)SceneWidthUpDown.Value;
+            }
+            else
+            {
+                Owner.sceneHeight = (int)SceneHeightUpDown.Value;
+            }
+            Owner.SetDrawPanelSize(Owner.sceneWidth, Owner.sceneHeight);
         }
     }
 }

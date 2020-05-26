@@ -23,6 +23,8 @@ namespace Optimator.Tabs.Scenes
         private Graphics g;
         
         public bool SelectFromTop = true;
+        public int sceneWidth = Consts.defaultWidth;
+        public int sceneHeight = Consts.defaultHeight;
         #endregion
         
 
@@ -64,6 +66,17 @@ namespace Optimator.Tabs.Scenes
             return CurrentTimeUpDown.Value;
         }
 
+        /// <summary>
+        /// Updates the draw panel size.
+        /// </summary>
+        /// <param name="width">New panel width (x)</param>
+        /// <param name="height">New panel height (y)</param>
+        public void SetDrawPanelSize(int width, int height)
+        {
+            DrawPanel.Width = width;
+            DrawPanel.Height = height;
+        }
+
 
 
         // ----- FORM FUNCTIONS -----
@@ -73,19 +86,21 @@ namespace Optimator.Tabs.Scenes
         /// </summary>
         public override void Resize()
         {
-            var widthPercent = 0.75F;
-            var heightPercent = 0.75F;
+            var widthPercent = 0.25F;
+            var heightPercent = 0.25F;
 
-            var bigWidth = (int)(Width * widthPercent);
-            var bigHeight = (int)((Height - ToolStrip.Height) * heightPercent);
-            var fraction = (int)Math.Min(bigWidth / 16.0, bigHeight / 9.0);
+            DrawPanel.Size = new Size(sceneWidth, sceneHeight);
 
-            DrawPanel.Size = new Size(fraction * 16, fraction * 9);
-            DrawPanel.Location = new Point((int)((bigWidth - DrawPanel.Width ) / 2.0), 
-                (int)((bigHeight - DrawPanel.Height) / 2.0 + ToolStrip.Height));
+            //var bigWidth = (int)(Width * widthPercent);
+            //var bigHeight = (int)((Height - ToolStrip.Height) * heightPercent);
+            //var fraction = (int)Math.Min(bigWidth / 16.0, bigHeight / 9.0);
 
-            Panel.Width = Width - bigWidth;
-            DisplayPanel.Height = Height - bigHeight - ToolStrip.Height;
+            //DrawPanel.Size = new Size(fraction * 16, fraction * 9);
+            //DrawPanel.Location = new Point((int)((bigWidth - DrawPanel.Width ) / 2.0), 
+            //    (int)((bigHeight - DrawPanel.Height) / 2.0 + ToolStrip.Height));
+
+            Panel.Width = (int)(Width * widthPercent);
+            DisplayPanel.Height = (int)(Height * heightPercent) - ToolStrip.Height;
             
             Utils.ResizePanel(Panel);
 
