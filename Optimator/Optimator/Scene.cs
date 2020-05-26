@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace Optimator
@@ -22,6 +23,7 @@ namespace Optimator
         public List<Change> Changes { get; } = new List<Change>();
         public Dictionary<Part, State> Originals { get; } = new Dictionary<Part, State>();
         public Dictionary<Part, ColourState> OriginalColours { get; } = new Dictionary<Part, ColourState>();
+        public Color Background = Color.White;
         #endregion
 
 

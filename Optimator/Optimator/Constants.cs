@@ -15,12 +15,6 @@ namespace Optimator
         public const string Settings = "Settings.txt";
         public const string DefaultSettings = "DefaultSettings.txt";
 
-        // CLEANING: Folders 
-        //public const string PiecesFolder = "Pieces";
-        //public const string SetsFolder = "Sets";
-        //public const string ScenesFolder = "Scenes";
-        //public const string VideosFolder = "Videos";
-
         // Types
         public const string Piece = "Piece";
         public const string Set = "Set";

@@ -377,11 +377,13 @@ namespace Optimator.Tabs.Scenes
                             }
 
                             // Update changes to remove those made redundant by deleting a piece/set
-                            foreach (var change in WIP.Changes) //TODO: Change to for (int index)
+                            for (int index = 0; index < WIP.Changes.Count; index++)
                             {
+                                var change = WIP.Changes[index];
                                 if (!WIP.PiecesList.Contains(change.AffectedPiece))
                                 {
                                     WIP.Changes.Remove(change);
+                                    index--;
                                 }
                             }
                             Deselect();
@@ -417,7 +419,6 @@ namespace Optimator.Tabs.Scenes
                 Visuals.DrawParts(WIP.PartsList, g, DrawPanel);
 
                 // Update Animation listbox
-                // CLEANING: Remove this?
                 if (Baby != null && Baby is MovePanel)
                 {
                     (Baby as MovePanel).UpdateListbox();

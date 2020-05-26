@@ -189,11 +189,6 @@ namespace Optimator
             {
                 Settings.WorkingDirectory = path;
                 Settings.UpdateSettings();
-                // CLEANING: Remove
-                //Directory.CreateDirectory(Path.Combine(Settings.WorkingDirectory, Consts.PiecesFolder));
-                //Directory.CreateDirectory(Path.Combine(Settings.WorkingDirectory, Consts.SetsFolder));
-                //Directory.CreateDirectory(Path.Combine(Settings.WorkingDirectory, Consts.ScenesFolder));
-                //Directory.CreateDirectory(Path.Combine(Settings.WorkingDirectory, Consts.VideosFolder));
             }
             return path;
         }

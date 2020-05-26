@@ -22,7 +22,6 @@ namespace Optimator.Tabs.Compile
         public decimal workingTime = 0;
 
         private Graphics g;
-        private Color backgroundColor = Color.White;
         private LoadingMessage loadMsg = null;
         private Dictionary<string, Bitmap[]> scenePreviews = new Dictionary<string, Bitmap[]>();
 
@@ -239,7 +238,7 @@ namespace Optimator.Tabs.Compile
         {
             var bitmap = new Bitmap(videoWidth, videoHeight);
             g = Graphics.FromImage(bitmap);
-            using (var brush = new SolidBrush(backgroundColor)) //TODO: Allow for this to be changed
+            using (var brush = new SolidBrush(videoScenes[sceneIndex].Background))
             {
                 g.FillRectangle(brush, 0, 0, bitmap.Width, bitmap.Height);
             }

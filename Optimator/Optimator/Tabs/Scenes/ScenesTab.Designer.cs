@@ -256,6 +256,8 @@ namespace Optimator.Tabs.Scenes
             this.DrawPanelContainer.Name = "DrawPanelContainer";
             this.DrawPanelContainer.Size = new System.Drawing.Size(1784, 894);
             this.DrawPanelContainer.TabIndex = 43;
+            this.DrawPanelContainer.Scroll += new System.Windows.Forms.ScrollEventHandler(this.FocusOn);
+            this.DrawPanelContainer.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.FocusOn);
             // 
             // ScenesTab
             // 

@@ -22,6 +22,7 @@ namespace Optimator.Tabs.Scenes
             Owner = owner;
 
             SelectFromTopCb.Checked = Owner.SelectFromTop;
+            BgColourBox.BackColor = Owner.WIP.Background;
             SceneWidthUpDown.Value = Owner.sceneWidth;
             SceneHeightUpDown.Value = Owner.sceneHeight;
         }
@@ -74,6 +75,25 @@ namespace Optimator.Tabs.Scenes
                 Owner.sceneHeight = (int)SceneHeightUpDown.Value;
             }
             Owner.SetDrawPanelSize(Owner.sceneWidth, Owner.sceneHeight);
+        }
+
+        /// <summary>
+        /// Update the scene background colour.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BgColourBox_Click(object sender, System.EventArgs e)
+        {
+            var MyDialog = new ColorDialog
+            {
+                Color = BgColourBox.BackColor,
+                FullOpen = true
+            };
+            if (MyDialog.ShowDialog() == DialogResult.OK)
+            {
+                BgColourBox.BackColor = MyDialog.Color;
+                Owner.WIP.Background = MyDialog.Color;
+            }
         }
     }
 }
