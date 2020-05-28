@@ -77,6 +77,15 @@ namespace Optimator.Tabs.Scenes
             DrawPanel.Height = height;
         }
 
+        /// <summary>
+        /// Updates the draw panel back colour.
+        /// </summary>
+        /// <param name="color"></param>
+        public void SetDrawPanelColour(Color color)
+        {
+            DrawPanel.BackColor = color;
+        }
+
 
 
         // ----- FORM FUNCTIONS -----

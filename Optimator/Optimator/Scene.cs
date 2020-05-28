@@ -45,6 +45,9 @@ namespace Optimator
                 // Time Length
                 TimeLength = decimal.Parse(data[1]);
 
+                // Background Colour
+                Background = Utils.ColourFromString(data[2]);
+
                 // Parts
                 var partEndIndex = data.IndexOf("Originals");
                 if (partEndIndex == -1)
@@ -52,7 +55,7 @@ namespace Optimator
                     MessageBox.Show("Invalid Scene File", "Invalid File", MessageBoxButtons.OK);
                     return;
                 }
-                for (var index = 2; index < partEndIndex; index++)
+                for (var index = 3; index < partEndIndex; index++)
                 {
                     if (data[index].StartsWith("p"))
                     {
@@ -115,7 +118,8 @@ namespace Optimator
             var data = new List<string>
             {
                 Consts.Scene + Consts.SemiS + Consts.Version,
-                TimeLength.ToString()
+                TimeLength.ToString(),
+                Utils.ColorToString(Background)
             };
 
             // Save Parts
