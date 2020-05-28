@@ -58,7 +58,6 @@ namespace Optimator.Tabs.SoloTabs
         /// <param name="e"></param>
         private void OpenBtn_Click(object sender, EventArgs e)
         {
-            //TODO: Use file type instead
             try
             {
                 if (attemptOpen is PiecesTab)

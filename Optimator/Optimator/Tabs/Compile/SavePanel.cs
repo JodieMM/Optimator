@@ -143,7 +143,7 @@ namespace Optimator.Forms.Compile
                 process.StartInfo.RedirectStandardOutput = true;
                 process.StartInfo.RedirectStandardError = true;
                 process.StartInfo.FileName = @"""" + Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + @"\ffmpeg\bin\ffmpeg.exe""";
-                process.StartInfo.Arguments = "-framerate " + Owner.WIP.FPS + " -f image2 -i " + imagesDirectory + " " + videosDirectory;
+                process.StartInfo.Arguments = "-framerate " + Owner.WIP.FPS + " -f image2 -i " + imagesDirectory + " -c:v mpeg4 -q:v 3 " + videosDirectory;
                 process.StartInfo.UseShellExecute = false;
                 process.StartInfo.CreateNoWindow = true;
 
