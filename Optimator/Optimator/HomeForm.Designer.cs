@@ -156,6 +156,7 @@
             this.OpenVideoTSMI.Name = "OpenVideoTSMI";
             this.OpenVideoTSMI.Size = new System.Drawing.Size(217, 38);
             this.OpenVideoTSMI.Text = "Video";
+            this.OpenVideoTSMI.Click += new System.EventHandler(this.OpenVideoTSMI_Click);
             // 
             // spriteSetToolStripMenuItem1
             // 

@@ -56,6 +56,7 @@
     <Compile Include="Change.cs" />
     <Compile Include="ColourState.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Video.cs" />
     <Compile Include="Tabs\Compile\AddScenePanel.cs">
       <SubType>UserControl</SubType>
     </Compile>

@@ -28,7 +28,7 @@ namespace Optimator.Tabs.SoloTabs
             Owner = owner;
             attemptOpen = tabPage;
             OpenLbl.Text = "Open " + partType;
-            NameTb.Text = partType + " Name";            
+            NameTb.Text = partType + " Name";
         }
 
 
@@ -58,6 +58,7 @@ namespace Optimator.Tabs.SoloTabs
         /// <param name="e"></param>
         private void OpenBtn_Click(object sender, EventArgs e)
         {
+            //TODO: Use file type instead
             try
             {
                 if (attemptOpen is PiecesTab)
@@ -72,11 +73,15 @@ namespace Optimator.Tabs.SoloTabs
                 {
                     (attemptOpen as ScenesTab).WIP = new Scene(NameTb.Text);
                 }
-                //TODO: Save videos
-                //else if (attemptOpen is CompileTab)
-                //{
-                //    (attemptOpen as PiecesTab).WIP = new Piece(NameTb.Text);
-                //}
+                else if (attemptOpen is CompileTab)
+                {
+                    var tab = attemptOpen as CompileTab;
+                    tab.WIP = new Video(NameTb.Text);
+                    foreach (var scene in tab.WIP.videoScenes)
+                    {
+                        tab.AddToSceneViewPanel(scene);
+                    }
+                }
                 Owner.AddTabPage(NameTb.Text, attemptOpen);
                 attemptOpen.Resize();
                 CancelBtn_Click(sender, e);

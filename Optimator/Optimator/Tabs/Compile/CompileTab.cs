@@ -17,17 +17,13 @@ namespace Optimator.Tabs.Compile
         #region Video Variables
         public override HomeForm Owner { get; set; }
 
-        public List<Scene> videoScenes = new List<Scene>();
+        public Video WIP = new Video();
         public int sceneIndex = 0;
         public decimal workingTime = 0;
 
         private Graphics g;
         private LoadingMessage loadMsg = null;
         private Dictionary<string, Bitmap[]> scenePreviews = new Dictionary<string, Bitmap[]>();
-
-        public decimal FPS = 60;
-        public int videoWidth = Consts.defaultWidth;
-        public int videoHeight = Consts.defaultHeight;
         #endregion
         
         
@@ -138,7 +134,7 @@ namespace Optimator.Tabs.Compile
         /// <param name="e"></param>
         public new void CloseBtn_Click(object sender, EventArgs e)
         {
-            if (Utils.ExitBtn_Click(videoScenes.Count > 0))
+            if (Utils.ExitBtn_Click(WIP.videoScenes.Count > 0))
             {
                 Owner.RemoveTabPage(this);
             }
@@ -159,7 +155,7 @@ namespace Optimator.Tabs.Compile
             if (!scenePreviews.ContainsKey(scene.Name))
             {
                 workingTime = 0;
-                sceneIndex = videoScenes.Count - 1;
+                sceneIndex = WIP.videoScenes.Count - 1;
                 var image1 = DrawOnBitmap();
                 workingTime = scene.TimeLength;
                 scenePreviews.Add(scene.Name, new Bitmap[2] { image1, DrawOnBitmap() });
@@ -185,7 +181,7 @@ namespace Optimator.Tabs.Compile
                         {
                             if (control is ScenePreview && (control as ScenePreview).GetChecked() == true)
                             {
-                                videoScenes.Remove((control as ScenePreview).scene);
+                                WIP.videoScenes.Remove((control as ScenePreview).scene);
                                 SceneViewPanel.Controls.Remove(control);
                             }
                         }
@@ -236,13 +232,13 @@ namespace Optimator.Tabs.Compile
         /// <returns>Bitmap of current scene view</returns>
         public Bitmap DrawOnBitmap()
         {
-            var bitmap = new Bitmap(videoWidth, videoHeight);
+            var bitmap = new Bitmap(WIP.videoWidth, WIP.videoHeight);
             g = Graphics.FromImage(bitmap);
-            using (var brush = new SolidBrush(videoScenes[sceneIndex].Background))
+            using (var brush = new SolidBrush(WIP.videoScenes[sceneIndex].Background))
             {
                 g.FillRectangle(brush, 0, 0, bitmap.Width, bitmap.Height);
             }
-            DrawFrame(videoScenes[sceneIndex], g);
+            DrawFrame(WIP.videoScenes[sceneIndex], g);
             return bitmap;
         }
     }

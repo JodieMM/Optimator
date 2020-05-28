@@ -145,6 +145,18 @@ namespace Optimator
             open.Resize();
         }
 
+        /// <summary>
+        /// Opens an existing video in a new CompileTab.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OpenVideoTSMI_Click(object sender, EventArgs e)
+        {
+            var open = new OpenDialog(this, "Video", new CompileTab(this));
+            AddTabPage("Add Video", open);
+            open.Resize();
+        }
+
 
 
         // --- SETTINGS ---

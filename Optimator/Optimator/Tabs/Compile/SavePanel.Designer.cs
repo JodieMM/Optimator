@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.NameTb = new System.Windows.Forms.TextBox();
-            this.CompleteBtn = new System.Windows.Forms.Button();
+            this.ExportBtn = new System.Windows.Forms.Button();
             this.SaveLbl = new System.Windows.Forms.Label();
             this.SaveBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -46,19 +46,19 @@
             this.NameTb.Text = "Video Name";
             this.NameTb.TextChanged += new System.EventHandler(this.NameTb_TextChanged);
             // 
-            // CompleteBtn
+            // ExportBtn
             // 
-            this.CompleteBtn.BackColor = System.Drawing.Color.LightCoral;
-            this.CompleteBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CompleteBtn.Font = new System.Drawing.Font("Segoe UI", 16F);
-            this.CompleteBtn.Location = new System.Drawing.Point(54, 604);
-            this.CompleteBtn.Margin = new System.Windows.Forms.Padding(12);
-            this.CompleteBtn.Name = "CompleteBtn";
-            this.CompleteBtn.Size = new System.Drawing.Size(600, 173);
-            this.CompleteBtn.TabIndex = 10;
-            this.CompleteBtn.Text = "Complete";
-            this.CompleteBtn.UseVisualStyleBackColor = false;
-            this.CompleteBtn.Click += new System.EventHandler(this.CompleteBtn_Click);
+            this.ExportBtn.BackColor = System.Drawing.Color.LightCoral;
+            this.ExportBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ExportBtn.Font = new System.Drawing.Font("Segoe UI", 16F);
+            this.ExportBtn.Location = new System.Drawing.Point(54, 604);
+            this.ExportBtn.Margin = new System.Windows.Forms.Padding(12);
+            this.ExportBtn.Name = "ExportBtn";
+            this.ExportBtn.Size = new System.Drawing.Size(600, 173);
+            this.ExportBtn.TabIndex = 10;
+            this.ExportBtn.Text = "Export";
+            this.ExportBtn.UseVisualStyleBackColor = false;
+            this.ExportBtn.Click += new System.EventHandler(this.ExportBtn_Click);
             // 
             // SaveLbl
             // 
@@ -90,7 +90,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.SaveBtn);
             this.Controls.Add(this.SaveLbl);
-            this.Controls.Add(this.CompleteBtn);
+            this.Controls.Add(this.ExportBtn);
             this.Controls.Add(this.NameTb);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "SavePanel";
@@ -103,7 +103,7 @@
         #endregion
 
         private System.Windows.Forms.TextBox NameTb;
-        private System.Windows.Forms.Button CompleteBtn;
+        private System.Windows.Forms.Button ExportBtn;
         private System.Windows.Forms.Label SaveLbl;
         private System.Windows.Forms.Button SaveBtn;
     }

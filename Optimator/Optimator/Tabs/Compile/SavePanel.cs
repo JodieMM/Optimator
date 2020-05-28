@@ -45,19 +45,33 @@ namespace Optimator.Forms.Compile
             NameTb.Width = bigWidth;
             NameTb.Location = new Point(lilWidth, lilWidth * 3 + SaveLbl.Height);
 
-            CompleteBtn.Size = SaveBtn.Size = new Size(bigWidth, (int)(Height * heightPercent));
-            CompleteBtn.Location = new Point(lilWidth, Height - lilWidth - CompleteBtn.Height);
-            SaveBtn.Location = new Point(lilWidth, CompleteBtn.Location.Y - lilWidth - SaveBtn.Height);
+            ExportBtn.Size = SaveBtn.Size = new Size(bigWidth, (int)(Height * heightPercent));
+            ExportBtn.Location = new Point(lilWidth, Height - lilWidth - ExportBtn.Height);
+            SaveBtn.Location = new Point(lilWidth, ExportBtn.Location.Y - lilWidth - SaveBtn.Height);
         }
 
         /// <summary>
-        /// Exports and saves the video created.
+        /// Saves the video created.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void SaveBtn_Click(object sender, EventArgs e)
         {
-            Save();
+            if (Utils.CheckValidNewName(NameTb.Text))
+            {
+                try
+                {
+                    Utils.SaveFile(Utils.GetDirectory(NameTb.Text, Consts.VideoExt), Owner.WIP.GetData());
+                }
+                catch (FileNotFoundException)
+                {
+                    MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    MessageBox.Show("Possible Outdated File", "File Error", MessageBoxButtons.OK);
+                }
+            }
         }
 
         /// <summary>
@@ -65,11 +79,15 @@ namespace Optimator.Forms.Compile
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void CompleteBtn_Click(object sender, EventArgs e)
+        private void ExportBtn_Click(object sender, EventArgs e)
         {
-            if (Save())
+            if (ExportVideo())
             {
-                Owner.Owner.RemoveTabPage(Owner);
+                var result = MessageBox.Show("Would you like to close this tab?", "Close Tab Confirmation", MessageBoxButtons.OKCancel);
+                if (result == DialogResult.OK)
+                {
+                    Owner.Owner.RemoveTabPage(Owner);
+                }                
             }
         }
 
@@ -88,10 +106,10 @@ namespace Optimator.Forms.Compile
         // ----- UTILITY FUNCTIONS -----
 
         /// <summary>
-        /// Saves the video.
+        /// Exports the video.
         /// </summary>
         /// <returns>True if successful</returns>
-        private bool Save()
+        private bool ExportVideo()
         {
             if (!Utils.CheckValidNewName(NameTb.Text))
             {
@@ -109,10 +127,10 @@ namespace Optimator.Forms.Compile
 
                 // Save Images
                 var numFrames = 0;                
-                var timeIncrement = 1 / Owner.FPS;
-                for (Owner.sceneIndex = 0; Owner.sceneIndex < Owner.videoScenes.Count; Owner.sceneIndex++)
+                var timeIncrement = 1 / Owner.WIP.FPS;
+                for (Owner.sceneIndex = 0; Owner.sceneIndex < Owner.WIP.videoScenes.Count; Owner.sceneIndex++)
                 {
-                    for (Owner.workingTime = 0; Owner.workingTime <= Owner.videoScenes[Owner.sceneIndex].TimeLength; Owner.workingTime += timeIncrement)
+                    for (Owner.workingTime = 0; Owner.workingTime <= Owner.WIP.videoScenes[Owner.sceneIndex].TimeLength; Owner.workingTime += timeIncrement)
                     {
                         var bitmap = Owner.DrawOnBitmap();
                         bitmap.Save(Utils.GetDirectory(directory, numFrames.ToString(), Consts.Png), System.Drawing.Imaging.ImageFormat.Png);
@@ -125,7 +143,7 @@ namespace Optimator.Forms.Compile
                 process.StartInfo.RedirectStandardOutput = true;
                 process.StartInfo.RedirectStandardError = true;
                 process.StartInfo.FileName = @"""" + Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + @"\ffmpeg\bin\ffmpeg.exe""";
-                process.StartInfo.Arguments = "-framerate " + Owner.FPS + " -f image2 -i " + imagesDirectory + " " + videosDirectory;
+                process.StartInfo.Arguments = "-framerate " + Owner.WIP.FPS + " -f image2 -i " + imagesDirectory + " " + videosDirectory;
                 process.StartInfo.UseShellExecute = false;
                 process.StartInfo.CreateNoWindow = true;
 

@@ -43,13 +43,12 @@ namespace Optimator
 
             // Get Points and Colours from File
             var angleData = data[1].Split(Consts.Semi);
-            //var outlineARGB = angleData[1].Split(Consts.Comma);
 
             // Colour State
             ColourState = new ColourState
             {
                 ColourType = angleData[0],
-                OutlineColour = Utils.ColourFromString(angleData[1])// CLEANING Color.FromArgb(int.Parse(outlineARGB[0]), int.Parse(outlineARGB[1]), int.Parse(outlineARGB[2]), int.Parse(outlineARGB[3]))
+                OutlineColour = Utils.ColourFromString(angleData[1])
             };
 
             // Fill Colour Array
@@ -57,8 +56,7 @@ namespace Optimator
             ColourState.FillColour = new Color[colours.Length];
             for (var index = 0; index < colours.Length; index++)
             {
-                //var argbValues = colours[index].Split(Consts.Comma);
-                ColourState.FillColour[index] = Utils.ColourFromString(colours[index]);// Color.FromArgb(int.Parse(argbValues[0]), int.Parse(argbValues[1]), int.Parse(argbValues[2]), int.Parse(argbValues[3]));
+                ColourState.FillColour[index] = Utils.ColourFromString(colours[index]);
             }
 
             // Outline Width

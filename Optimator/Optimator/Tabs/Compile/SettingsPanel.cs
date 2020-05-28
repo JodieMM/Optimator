@@ -21,9 +21,9 @@ namespace Optimator.Tabs.Compile
             InitializeComponent();
             Owner = owner;
 
-            FpsUpDown.Value = Owner.FPS;
-            VideoWidthUpDown.Value = Owner.videoWidth;
-            VideoHeightUpDown.Value = Owner.videoHeight;
+            FpsUpDown.Value = Owner.WIP.FPS;
+            VideoWidthUpDown.Value = Owner.WIP.videoWidth;
+            VideoHeightUpDown.Value = Owner.WIP.videoHeight;
         }
 
 
@@ -55,7 +55,7 @@ namespace Optimator.Tabs.Compile
         /// <param name="e"></param>
         private void FpsUpDown_ValueChanged(object sender, System.EventArgs e)
         {
-            Owner.FPS = FpsUpDown.Value;
+            Owner.WIP.FPS = FpsUpDown.Value;
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace Optimator.Tabs.Compile
         /// <param name="e"></param>
         private void VideoWidthUpDown_ValueChanged(object sender, System.EventArgs e)
         {
-            Owner.videoWidth = (int)VideoWidthUpDown.Value;
+            Owner.WIP.videoWidth = (int)VideoWidthUpDown.Value;
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace Optimator.Tabs.Compile
         /// <param name="e"></param>
         private void VideoHeightUpDown_ValueChanged(object sender, System.EventArgs e)
         {
-            Owner.videoHeight = (int)VideoHeightUpDown.Value;
+            Owner.WIP.videoHeight = (int)VideoHeightUpDown.Value;
         }
     }
 }

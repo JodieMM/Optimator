@@ -84,6 +84,7 @@ namespace Optimator.Tabs.Scenes
         public void SetDrawPanelColour(Color color)
         {
             DrawPanel.BackColor = color;
+            DisplayDrawings();
         }
 
 

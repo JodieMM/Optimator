@@ -56,7 +56,7 @@ namespace Optimator.Forms.Compile
             var newScene = new Scene(AddTb.Text);
             if (newScene.Version != null)
             {
-                Owner.videoScenes.Add(newScene);
+                Owner.WIP.videoScenes.Add(newScene);
                 Owner.AddToSceneViewPanel(newScene);
             }
         }
