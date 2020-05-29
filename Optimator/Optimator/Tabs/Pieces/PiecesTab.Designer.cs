@@ -39,11 +39,11 @@ namespace Optimator
             this.SaveBtn = new System.Windows.Forms.ToolStripButton();
             this.MovePointBtn = new System.Windows.Forms.ToolStripButton();
             this.CloseBtn = new System.Windows.Forms.ToolStripButton();
+            this.OutlineBtn = new System.Windows.Forms.ToolStripButton();
             this.ColoursBtn = new System.Windows.Forms.ToolStripButton();
             this.FixedBtn = new System.Windows.Forms.ToolStripButton();
-            this.SketchesBtn = new System.Windows.Forms.ToolStripButton();
             this.EraseBtn = new System.Windows.Forms.ToolStripButton();
-            this.OutlineBtn = new System.Windows.Forms.ToolStripButton();
+            this.SketchesBtn = new System.Windows.Forms.ToolStripButton();
             this.PreviewBtn = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.DrawRight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawDown)).BeginInit();
@@ -53,7 +53,7 @@ namespace Optimator
             // 
             // DrawRight
             // 
-            this.DrawRight.BackColor = Settings.BackgroundColour;
+            this.DrawRight.Cursor = System.Windows.Forms.Cursors.Hand;
             this.DrawRight.Location = new System.Drawing.Point(363, 100);
             this.DrawRight.Margin = new System.Windows.Forms.Padding(6);
             this.DrawRight.Name = "DrawRight";
@@ -66,7 +66,7 @@ namespace Optimator
             // 
             // DrawDown
             // 
-            this.DrawDown.BackColor = Settings.BackgroundColour;
+            this.DrawDown.Cursor = System.Windows.Forms.Cursors.Hand;
             this.DrawDown.Location = new System.Drawing.Point(33, 430);
             this.DrawDown.Margin = new System.Windows.Forms.Padding(6);
             this.DrawDown.Name = "DrawDown";
@@ -79,7 +79,7 @@ namespace Optimator
             // 
             // DrawBase
             // 
-            this.DrawBase.BackColor = Settings.BackgroundColour;
+            this.DrawBase.Cursor = System.Windows.Forms.Cursors.Hand;
             this.DrawBase.Location = new System.Drawing.Point(33, 100);
             this.DrawBase.Margin = new System.Windows.Forms.Padding(6);
             this.DrawBase.Name = "DrawBase";
@@ -123,7 +123,7 @@ namespace Optimator
             // SaveBtn
             // 
             this.SaveBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.SaveBtn.Image = Properties.Resources.SaveIcon;
+            this.SaveBtn.Image = global::Optimator.Properties.Resources.SaveIcon;
             this.SaveBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.SaveBtn.Name = "SaveBtn";
             this.SaveBtn.Size = new System.Drawing.Size(36, 36);
@@ -133,7 +133,7 @@ namespace Optimator
             // MovePointBtn
             // 
             this.MovePointBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.MovePointBtn.Image = Properties.Resources.MoveIcon;
+            this.MovePointBtn.Image = global::Optimator.Properties.Resources.MoveIcon;
             this.MovePointBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.MovePointBtn.Name = "MovePointBtn";
             this.MovePointBtn.Size = new System.Drawing.Size(36, 36);
@@ -144,7 +144,7 @@ namespace Optimator
             // 
             this.CloseBtn.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.CloseBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.CloseBtn.Image = Properties.Resources.CloseIcon;
+            this.CloseBtn.Image = global::Optimator.Properties.Resources.CloseIcon;
             this.CloseBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.CloseBtn.Name = "CloseBtn";
             this.CloseBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -152,10 +152,20 @@ namespace Optimator
             this.CloseBtn.Text = "Close";
             this.CloseBtn.Click += new System.EventHandler(this.CloseBtn_Click);
             // 
+            // OutlineBtn
+            // 
+            this.OutlineBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.OutlineBtn.Image = global::Optimator.Properties.Resources.OutlineIcon;
+            this.OutlineBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.OutlineBtn.Name = "OutlineBtn";
+            this.OutlineBtn.Size = new System.Drawing.Size(36, 36);
+            this.OutlineBtn.Text = "Outline";
+            this.OutlineBtn.Click += new System.EventHandler(this.BtnWithPanel_Click);
+            // 
             // ColoursBtn
             // 
             this.ColoursBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.ColoursBtn.Image = Properties.Resources.ColourIcon;
+            this.ColoursBtn.Image = global::Optimator.Properties.Resources.ColourIcon;
             this.ColoursBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ColoursBtn.Name = "ColoursBtn";
             this.ColoursBtn.Size = new System.Drawing.Size(36, 36);
@@ -165,42 +175,32 @@ namespace Optimator
             // FixedBtn
             // 
             this.FixedBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.FixedBtn.Image = Properties.Resources.FixedIcon;
+            this.FixedBtn.Image = global::Optimator.Properties.Resources.FixedIcon;
             this.FixedBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.FixedBtn.Name = "FixedBtn";
             this.FixedBtn.Size = new System.Drawing.Size(36, 36);
             this.FixedBtn.Text = "Fixed Points";
             this.FixedBtn.Click += new System.EventHandler(this.BtnWithPanel_Click);
             // 
-            // SketchesBtn
-            // 
-            this.SketchesBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.SketchesBtn.Image = Properties.Resources.SketchesIcon;
-            this.SketchesBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.SketchesBtn.Name = "SketchesBtn";
-            this.SketchesBtn.Size = new System.Drawing.Size(36, 36);
-            this.SketchesBtn.Text = "Sketches";
-            this.SketchesBtn.Click += new System.EventHandler(this.BtnWithPanel_Click);
-            // 
             // EraseBtn
             // 
             this.EraseBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.EraseBtn.Image = Properties.Resources.EraseIcon;
+            this.EraseBtn.Image = global::Optimator.Properties.Resources.EraseIcon;
             this.EraseBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.EraseBtn.Name = "EraseBtn";
             this.EraseBtn.Size = new System.Drawing.Size(36, 36);
             this.EraseBtn.Text = "Erase";
             this.EraseBtn.Click += new System.EventHandler(this.BtnWithPanel_Click);
             // 
-            // OutlineBtn
+            // SketchesBtn
             // 
-            this.OutlineBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.OutlineBtn.Image = Properties.Resources.OutlineIcon;
-            this.OutlineBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.OutlineBtn.Name = "OutlineBtn";
-            this.OutlineBtn.Size = new System.Drawing.Size(36, 36);
-            this.OutlineBtn.Text = "Outline";
-            this.OutlineBtn.Click += new System.EventHandler(this.BtnWithPanel_Click);
+            this.SketchesBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.SketchesBtn.Image = global::Optimator.Properties.Resources.SketchesIcon;
+            this.SketchesBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.SketchesBtn.Name = "SketchesBtn";
+            this.SketchesBtn.Size = new System.Drawing.Size(36, 36);
+            this.SketchesBtn.Text = "Sketches";
+            this.SketchesBtn.Click += new System.EventHandler(this.BtnWithPanel_Click);
             // 
             // PreviewBtn
             // 
