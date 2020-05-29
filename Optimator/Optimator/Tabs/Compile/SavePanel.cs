@@ -117,7 +117,7 @@ namespace Optimator.Forms.Compile
             }
             try
             {
-                Owner.ShowLoadingMessage();
+                Cursor = Cursors.WaitCursor;
 
                 // Prepare Save Location
                 var directory = Utils.GetDirectory(NameTb.Text);
@@ -156,7 +156,7 @@ namespace Optimator.Forms.Compile
                     MessageBox.Show(exception.Message, "Exception - Please Report to jodie@opti.technology", MessageBoxButtons.OK);
                 }
 
-                Owner.ShowLoadingMessage(false);
+                Cursor = Cursors.Default;
                 return true;
             }
             catch (FileNotFoundException)

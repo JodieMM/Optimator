@@ -22,7 +22,6 @@ namespace Optimator.Tabs.Compile
         public decimal workingTime = 0;
 
         private Graphics g;
-        private LoadingMessage loadMsg = null;
         private Dictionary<string, Bitmap[]> scenePreviews = new Dictionary<string, Bitmap[]>();
         #endregion
         
@@ -48,26 +47,6 @@ namespace Optimator.Tabs.Compile
         public override void Resize()
         {
             Utils.ResizePanel(Panel);
-        }
-
-        /// <summary>
-        /// Shows the loading message.
-        /// </summary>
-        /// <param name="show">False if hiding the message</param>
-        public void ShowLoadingMessage(bool show = true)
-        {
-            if (loadMsg != null)
-            {
-                Controls.Remove(loadMsg);
-                loadMsg = null;
-            }
-            if (show)
-            {
-                loadMsg = new LoadingMessage();
-                Controls.Add(loadMsg);
-                loadMsg.Location = new Point((int)((Width - loadMsg.Width) / 2.0),
-                    (int)((Height - loadMsg.Height) / 2.0));
-            }
         }
 
         #region ToolStrip

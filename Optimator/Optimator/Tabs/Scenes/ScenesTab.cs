@@ -419,10 +419,7 @@ namespace Optimator.Tabs.Scenes
         {
             if (WIP.PartsList.Count > 0)
             {
-                var msg = new LoadingMessage();
-                Controls.Add(msg);
-                msg.Location = new Point((int)((Width - msg.Width) / 2.0),
-                    (int)((Height - msg.Height) / 2.0));
+                Cursor = Cursors.WaitCursor;
 
                 // Draw Panel
                 WIP.RunScene(CurrentTimeUpDown.Value);
@@ -433,8 +430,8 @@ namespace Optimator.Tabs.Scenes
                 {
                     (Baby as MovePanel).UpdateListbox();
                 }
-                
-                Controls.Remove(msg);
+
+                Cursor = Cursors.Default;
             }
         }        
 
