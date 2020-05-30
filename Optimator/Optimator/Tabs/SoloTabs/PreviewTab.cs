@@ -93,6 +93,10 @@ namespace Optimator.Forms
                 {
                     (WIP as Set).PersonalStates[(WIP as Set).PiecesList[1]].S = spinBar.Value;
                 }
+                else
+                {
+                    Position.S = spinBar.Value;
+                }
             }
 
             DisplayDrawings();
@@ -131,6 +135,12 @@ namespace Optimator.Forms
                 //        //}
                 //    }
                 //}
+            }
+            else
+            {
+                label1.Text = "R: " + WIP.ToPiece().State.R.ToString();
+                label2.Text = "T: " + WIP.ToPiece().State.T.ToString();
+                label3.Text = "S: " + WIP.ToPiece().State.S.ToString();
             }
         }
 

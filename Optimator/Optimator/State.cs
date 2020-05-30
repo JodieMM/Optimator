@@ -15,6 +15,7 @@ namespace Optimator
         public float R { get; set; } = 0;
         public float T { get; set; } = 0;
         public float S { get; set; } = 0;
+        public bool SBase { get; set; } = true; // TODO: Save and load this
         public float SM { get; set; } = 1;
         #endregion
 
@@ -95,6 +96,7 @@ namespace Optimator
         /// <returns>float[] { X, Y }</returns>
         public float[] GetCoords()
         {
+            //CLEANING: Remove
             return new float[] { X, Y };
         }
 
@@ -104,6 +106,7 @@ namespace Optimator
         /// <returns>float[] { Rotation, Turn, Spin }</returns>
         public float[] GetAngles()
         {
+            // CLEANING: Remove
             return new float[3] { R, T, S };
         }
 

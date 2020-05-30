@@ -172,31 +172,31 @@ namespace Optimator
                 points.Add(new float[] { spot.CurrentX, spot.CalculateCurrentValue(state.GetAngles()[1], 0) });
             }
 
-            // Recentre
+            // Recentre & Resize
             for (var index = 0; index < points.Count; index++)
             {
-                points[index][0] = state.GetCoords()[0] + points[index][0];
-                points[index][1] = state.GetCoords()[1] + points[index][1];
+                points[index][0] = points[index][0] * state.SM + state.X;
+                points[index][1] = points[index][1] * state.SM + state.Y;
             }
 
-            // Spin and Size Adjustment
+            // Spin Adjustment
             points = SpinMeRound(points, state);
 
             return points;
         }
 
         /// <summary>
-        /// Spins the coords provided and modifies their size.
+        /// Spins the coords provided.
         /// </summary>
         /// <param name="pointsArray">The points to be spun</param>
-        /// <returns></returns>
+        /// <returns>A list of float[] containing shape's new coordinates</returns>
         private List<float[]> SpinMeRound(List<float[]> pointsArray, State state)
         {
             for (var index = 0; index < pointsArray.Count; index++)
             {
                 if (!(pointsArray[index][0] == state.GetCoords()[0] && pointsArray[index][1] == state.GetCoords()[1]))
                 {
-                    var hypotenuse = Math.Sqrt(Math.Pow(state.GetCoords()[0] - pointsArray[index][0], 2) + Math.Pow(state.GetCoords()[1] - pointsArray[index][1], 2)) * state.SM;
+                    var hypotenuse = Math.Sqrt(Math.Pow(state.GetCoords()[0] - pointsArray[index][0], 2) + Math.Pow(state.GetCoords()[1] - pointsArray[index][1], 2));
                     // Find Angle
                     float pointAngle;
                     if (pointsArray[index][0] == state.GetCoords()[0] && pointsArray[index][1] < state.GetCoords()[1])
