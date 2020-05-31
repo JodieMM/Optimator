@@ -341,6 +341,51 @@ namespace Optimator
         }
 
         /// <summary>
+        /// Loops the index to the beginning (or end) of the list.
+        /// </summary>
+        /// <param name="list">The list to index through</param>
+        /// <param name="currIndex">The index to be increased (or decreased)</param>
+        /// <param name="next">True if next desired, false if previous</param>
+        /// <returns>The next (or previous) index</returns>
+        public static int NextIndex<T>(List<T> list, int currIndex, bool next = true)
+        {
+            if (next)
+            {
+                currIndex = (currIndex == list.Count - 1) ? 0 : currIndex + 1;
+            }
+            else
+            {
+                currIndex = (currIndex == 0) ? list.Count - 1 : currIndex - 1;
+            }
+            return currIndex;
+        }
+
+        /// <summary>
+        /// Adds 90 degrees to either the rotated or turned state, or makes no change.
+        /// </summary>
+        /// <param name="angle">0 original, 1 rotated, 2 turned</param>
+        /// <param name="state">Original state</param>
+        /// <returns></returns>
+        public static State AdjustStateAngle(int angle, State state)
+        {
+            switch (angle)
+            {
+                case 1:
+                    return new State(state, 1, (state.GetAngles()[0] + 90) % 360);
+                case 2:
+                    return new State(state, 2, (state.GetAngles()[1] + 90) % 360);
+                default:
+                    return state;
+            }
+        }
+
+        #endregion
+
+
+
+        // ----- CONVERSIONS -----
+
+        /// <summary>
         /// Converts an angle in degrees to radians.
         /// </summary>
         /// <param name="degree">The degree to convert to radians</param>
@@ -397,46 +442,26 @@ namespace Optimator
                 int.Parse(argb[2]), int.Parse(argb[3]));
         }
 
-        /// <summary>
-        /// Loops the index to the beginning (or end) of the list.
-        /// </summary>
-        /// <param name="list">The list to index through</param>
-        /// <param name="currIndex">The index to be increased (or decreased)</param>
-        /// <param name="next">True if next desired, false if previous</param>
-        /// <returns>The next (or previous) index</returns>
-        public static int NextIndex<T>(List<T> list, int currIndex, bool next = true)
+        public static int AngleAnchorFromAngle(float angle, bool min = true)
         {
-            if (next)
+            //CLEANING
+            if (angle < 90)
             {
-                currIndex = (currIndex == list.Count - 1) ? 0 : currIndex + 1;
+                return min || angle == 0 ? 0 : 1;
+            }
+            else if (angle < 180)
+            {
+                return min || angle == 90 ? 1 : 2;
+            }
+            else if (angle < 270)
+            {
+                return min || angle == 180 ? 2 : 3;
             }
             else
             {
-                currIndex = (currIndex == 0) ? list.Count - 1 : currIndex - 1;
-            }
-            return currIndex;
-        }
-
-        /// <summary>
-        /// Adds 90 degrees to either the rotated or turned state, or makes no change.
-        /// </summary>
-        /// <param name="angle">0 original, 1 rotated, 2 turned</param>
-        /// <param name="state">Original state</param>
-        /// <returns></returns>
-        public static State AdjustStateAngle(int angle, State state)
-        {
-            switch (angle)
-            {
-                case 1:
-                    return new State(state, 1, (state.GetAngles()[0] + 90) % 360);
-                case 2:
-                    return new State(state, 2, (state.GetAngles()[1] + 90) % 360);
-                default:
-                    return state;
+                return min || angle == 270 ? 3 : 0;
             }
         }
-
-        #endregion
 
 
 
@@ -502,6 +527,14 @@ namespace Optimator
 
 
         // ----- COORDINATE FUNCTIONS -----
+
+        public static float FindMiddleSpot(float a, float b, float angle)
+        {
+            //CLEANING
+            float[] result = new float[2];
+            var multiplier = Modulo(angle, 90) / 90;
+            return a == b ? a : a + (b - a) * multiplier;
+        }
 
         /// <summary>
         /// Finds the mid-way point between an original and rotated

@@ -231,5 +231,15 @@ namespace Optimator
             }
             return lower + (upper - lower) * ((angle - bottomAngle) / 90.0F);
         }
+
+        public float[] GetCoordAtAnchorAngle(int r, int t)
+        {
+            // CLEANING
+            // int 0 (<90), 1 (<180), 2 (<270), 3 (>=270)
+            float[] coord = new float[2];
+            coord[0] = r == 0 ? X : r == 1 ? XRight : r == 2 ? -X : -XRight;
+            coord[1] = t == 0 ? Y : r == 1 ? YDown : r == 2 ? -Y : -YDown;
+            return coord;
+        }
     }
 }

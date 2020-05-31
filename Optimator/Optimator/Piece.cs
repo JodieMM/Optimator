@@ -156,21 +156,31 @@ namespace Optimator
         /// <returns></returns>
         public List<float[]> GetPoints(State state)
         {
-            var points = new List<float[]>();
-            var minMax = Utils.FindMinMax(Utils.ConvertSpotsToCoords(Data, 0));
+            // CLEANING
+
+            
 
             // Get Points
-            CalculateMatches(minMax);
-            foreach (var spot in Data)
-            {
-                spot.CurrentX = spot.CalculateCurrentValue(state.GetAngles()[0]);
-            }
-            CalculateMatches(minMax, 0);
-            foreach (var spot in Data)
-            {
-                spot.CurrentY = spot.CalculateCurrentValue(state.GetAngles()[1], 0);    //HIDDEN (RTS) CurrentY
-                points.Add(new float[] { spot.CurrentX, spot.CalculateCurrentValue(state.GetAngles()[1], 0) });
-            }
+            var basePoints = GetAnchorStatePoints(Utils.AngleAnchorFromAngle(state.R),
+                Utils.AngleAnchorFromAngle(state.T), state.SBase, state.S);
+            var rightPoints = GetAnchorStatePoints(Utils.AngleAnchorFromAngle(state.R, false),
+                Utils.AngleAnchorFromAngle(state.T), state.SBase ? 0 : state.S);
+            var downPoints = GetAnchorStatePoints(Utils.AngleAnchorFromAngle(state.R, false),
+                Utils.AngleAnchorFromAngle(state.T), state.SBase ? 0 : state.S);
+
+            // TODO: Get spin state accurately
+
+
+            // - Find Middle Grounds
+            var points3 = new List<float[]>(); //TEMP
+            var points4 = GetAnchorStatePoints(Utils.AngleAnchorFromAngle(state.R, false),
+                Utils.AngleAnchorFromAngle(state.T), state.SBase ? 0 : state.S);
+
+            // - Merge Shapes
+            // Take X's from merge1 and Y's from merge2
+
+            // TODO
+            var points = new List<float[]>(); //TEMP
 
             // Recentre & Resize
             for (var index = 0; index < points.Count; index++)
@@ -179,9 +189,74 @@ namespace Optimator
                 points[index][1] = points[index][1] * state.SM + state.Y;
             }
 
-            // Spin Adjustment
-            points = SpinMeRound(points, state);
+            return points;
+        }
 
+        private List<float[]> GetAnchorStatePoints(State state, int brd)
+        {
+            // CLEANING
+            // brd 0 = base 1 = right (max r min t) 2 = down (min r max t)
+            var points = new List<float[]>();
+            var minR = brd != 1;
+            var minT = brd != 2;
+            int r, t, s = new int();
+
+            //r = Utils.AngleAnchorFromAngle(state.R, minR);
+            //if (state.SBase && (r == 0 || r == 2))
+            //{
+            //    r += Utils.AngleAnchorFromAngle(state.T, minR); //TODO: minR? minT?
+            //}
+
+            r = Utils.AngleAnchorFromAngle(state.R, minR);
+            t = Utils.AngleAnchorFromAngle(state.T, minT);
+            s = r;
+
+            if (state.SBase && (r == 0 || r == 2) || !state.SBase && (r == 1 || r == 3))
+            {
+                r = Utils.Modulo(r + t, 4);
+            }
+
+            // TO CONSIDER:
+            // turn is increased if rotation is spun
+
+            if (!state.SBase)
+            {
+                s++; 
+            }             
+
+            //foreach (var spot in Data)
+            //{
+            //    var point = spot.GetCoordAtAnchorAngle(r, t);
+            //    if (s != 0)
+            //    {
+            //        // Flipped Shape
+            //        if (s > 90 && s < 270)
+            //        {
+            //            if ()
+            //        }
+            //    }
+            //    if (s != 0)
+            //    {
+            //        point = Utils.SpinAndSizeCoord(s, 1, point);
+            //    }
+            //    points.Add(point);
+            //}
+
+            //points = SpinMeRound(points, state);
+
+            //CalculateMatches(minMax);
+            //foreach (var spot in Data)
+            //{
+            //    spot.CurrentX = spot.CalculateCurrentValue(state.R);
+            //}
+            //CalculateMatches(minMax, 0);
+            //foreach (var spot in Data)
+            //{
+            //    spot.CurrentY = spot.CalculateCurrentValue(state.T, 0);    //HIDDEN (RTS) CurrentY
+            //    points.Add(new float[] { spot.CurrentX, spot.CalculateCurrentValue(state.T, 0) });
+            //}
+
+            //points = SpinMeRound(points, state);
             return points;
         }
 
