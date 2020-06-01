@@ -157,30 +157,36 @@ namespace Optimator
         public List<float[]> GetPoints(State state)
         {
             // CLEANING
-
-            
-
             // Get Points
-            var basePoints = GetAnchorStatePoints(Utils.AngleAnchorFromAngle(state.R),
-                Utils.AngleAnchorFromAngle(state.T), state.SBase, state.S);
-            var rightPoints = GetAnchorStatePoints(Utils.AngleAnchorFromAngle(state.R, false),
-                Utils.AngleAnchorFromAngle(state.T), state.SBase ? 0 : state.S);
-            var downPoints = GetAnchorStatePoints(Utils.AngleAnchorFromAngle(state.R, false),
-                Utils.AngleAnchorFromAngle(state.T), state.SBase ? 0 : state.S);
+            var basePoints = GetAnchorStatePoints(state, 0);
+            var rightPoints = GetAnchorStatePoints(state, 1);
+            var downPoints = GetAnchorStatePoints(state, 2);
 
             // TODO: Get spin state accurately
 
 
-            // - Find Middle Grounds
-            var points3 = new List<float[]>(); //TEMP
-            var points4 = GetAnchorStatePoints(Utils.AngleAnchorFromAngle(state.R, false),
-                Utils.AngleAnchorFromAngle(state.T), state.SBase ? 0 : state.S);
+            // Find Middle Grounds
+            
+            // - Squash shapes so they match height/width
+            var r = Utils.AngleAnchorFromAngle(state.R);
+            if (state.SBase && (r == 0 || r == 2) || !state.SBase && (r == 1 || r == 3))
+            {
+                rightPoints = ResizeToMatch(basePoints, rightPoints);
+                downPoints = ResizeToMatch(basePoints, downPoints, false);
+            }
+            else
+            {
+                basePoints = ResizeToMatch(rightPoints, basePoints);
+                basePoints = ResizeToMatch(downPoints, basePoints, false);
+            }
 
-            // - Merge Shapes
+            // - Find matching spots
+
+            // Merge Shapes
             // Take X's from merge1 and Y's from merge2
 
             // TODO
-            var points = new List<float[]>(); //TEMP
+            var points = basePoints; //TEMPORARY!!
 
             // Recentre & Resize
             for (var index = 0; index < points.Count; index++)
@@ -190,6 +196,19 @@ namespace Optimator
             }
 
             return points;
+        }
+
+        private List<float[]> ResizeToMatch(List<float[]> constantPoints, List<float[]> changePoints, bool xMatch = true)
+        {
+            //CLEANING
+            var goalSize = Utils.FindMinMax(constantPoints);
+            var currSize = Utils.FindMinMax(changePoints);
+            var multiplier = goalSize[1] / currSize[1];
+            foreach (var point in changePoints)
+            {
+                point[0] *= multiplier;
+            }
+            return changePoints;
         }
 
         private List<float[]> GetAnchorStatePoints(State state, int brd)
@@ -209,7 +228,7 @@ namespace Optimator
 
             r = Utils.AngleAnchorFromAngle(state.R, minR);
             t = Utils.AngleAnchorFromAngle(state.T, minT);
-            s = r;
+            //s = r;
 
             if (state.SBase && (r == 0 || r == 2) || !state.SBase && (r == 1 || r == 3))
             {
@@ -219,28 +238,28 @@ namespace Optimator
             // TO CONSIDER:
             // turn is increased if rotation is spun
 
-            if (!state.SBase)
-            {
-                s++; 
-            }             
-
-            //foreach (var spot in Data)
+            //if (!state.SBase)
             //{
-            //    var point = spot.GetCoordAtAnchorAngle(r, t);
-            //    if (s != 0)
-            //    {
-            //        // Flipped Shape
-            //        if (s > 90 && s < 270)
-            //        {
-            //            if ()
-            //        }
-            //    }
-            //    if (s != 0)
-            //    {
-            //        point = Utils.SpinAndSizeCoord(s, 1, point);
-            //    }
-            //    points.Add(point);
+            //    s = Utils.Modulo(s + 1, 4); 
             //}
+
+            foreach (var spot in Data)
+            {
+                var point = spot.GetCoordAtAnchorAngle(r, t);
+                //if (state.S != 0)
+                //{
+                //    // Flipped Shape
+                //    if (state.S > 90 && state.S < 270)
+                //    {
+                //        if (state.SBase)
+                //    }
+                //}
+                //if (state.S != 0 && )
+                //{
+                //    point = Utils.SpinAndSizeCoord(s, 1, point);
+                //}
+                points.Add(point);
+            }
 
             //points = SpinMeRound(points, state);
 

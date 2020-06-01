@@ -559,6 +559,7 @@ namespace Optimator
 
         /// <summary>
         /// Checks whether the pieces drawn can be calculated correctly.
+        /// Also re-orders the spots so the top left is first.
         /// </summary>
         /// <returns>True if piece is valid</returns>
         public bool CheckPiecesValid()
@@ -571,8 +572,39 @@ namespace Optimator
             }
             else if (spots.Count < 2)
             {
+                // Sort Spots
+                if (spots[1].Y > spots[0].Y || spots[1].Y == spots[0].Y && spots[1].X < spots[0].X)
+                {
+                    var holder = Utils.CloneSpotList(spots);
+                    spots[0] = holder[1];
+                    spots[1] = holder[0];
+                }
                 return true;
             }
+
+            // Make Spots Clockwise
+            // TODO: Make spots clockwise
+
+            // Set Initial Spot As Top Left
+            var minmax = Utils.FindMinMax(Utils.ConvertSpotsToCoords(spots));
+            int topLeftIndex = 0;
+            bool inARow = false;
+            float leftest = float.MaxValue;
+            for (int index = 0; index < spots.Count; index++)
+            {
+                var spot = spots[index];
+                if (spot.Y == minmax[3] && (spot.X < leftest || spot.X == leftest && !inARow))
+                {
+                    leftest = spot.X;
+                    topLeftIndex = index;
+                    inARow = true;
+                }
+                else
+                {
+                    inARow = false;
+                }
+            }
+            // TODO: Actually reorder the list
 
             // Check X, Y, XR and YD for fold backs
             return CheckShapeDoubleBack(spots, 0, "base") && CheckShapeDoubleBack(spots, 1, "base")
