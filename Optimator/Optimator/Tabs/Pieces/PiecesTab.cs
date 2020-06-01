@@ -468,6 +468,16 @@ namespace Optimator
                 {
                     var color = FixedBtn.Checked ? (spot.Solid == Consts.solidOptions[0]) ? Consts.option1 : Consts.option2
                         : (selectedSpot == spot) ? Consts.select : Color.Black;
+                    // CLEANING: Temporary for testing
+                    if (WIP.Data.Count > 1 && spot == WIP.Data[0])
+                    {
+                        color = Color.Chocolate;
+                    }
+                    else if (WIP.Data.Count > 2 && spot == WIP.Data[1])
+                    {
+                        color = Color.LightGreen;
+                    }
+
                     spot.Draw(angle, color, board);
                 }
             }
@@ -573,7 +583,7 @@ namespace Optimator
             else if (spots.Count < 2)
             {
                 // Sort Spots
-                if (spots[1].Y > spots[0].Y || spots[1].Y == spots[0].Y && spots[1].X < spots[0].X)
+                if (spots[1].Y < spots[0].Y || spots[1].Y == spots[0].Y && spots[1].X < spots[0].X)
                 {
                     var holder = Utils.CloneSpotList(spots);
                     spots[0] = holder[1];
@@ -593,7 +603,7 @@ namespace Optimator
                 if (maxIndex != clockwiseIndex)
                 {
                     // Check If Max
-                    if (spots[clockwiseIndex].Y == minmax[3] || maxFound)
+                    if (spots[clockwiseIndex].Y == minmax[2] || maxFound)
                     {
                         // Set New Max
                         if (!maxFound)
@@ -632,7 +642,7 @@ namespace Optimator
             for (int index = 0; index < spots.Count; index++)
             {
                 var spot = spots[index];
-                if (spot.Y == minmax[3] && (spot.X < leftest || spot.X == leftest && !inARow))
+                if (spot.Y == minmax[2] && (spot.X < leftest || spot.X == leftest && !inARow))
                 {
                     leftest = spot.X;
                     topLeftIndex = index;
