@@ -468,16 +468,6 @@ namespace Optimator
                 {
                     var color = FixedBtn.Checked ? (spot.Solid == Consts.solidOptions[0]) ? Consts.option1 : Consts.option2
                         : (selectedSpot == spot) ? Consts.select : Color.Black;
-                    // CLEANING: Temporary for testing
-                    if (WIP.Data.Count > 1 && spot == WIP.Data[0])
-                    {
-                        color = Color.Chocolate;
-                    }
-                    else if (WIP.Data.Count > 2 && spot == WIP.Data[1])
-                    {
-                        color = Color.LightGreen;
-                    }
-
                     spot.Draw(angle, color, board);
                 }
             }

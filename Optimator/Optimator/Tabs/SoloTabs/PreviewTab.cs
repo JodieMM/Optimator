@@ -98,7 +98,6 @@ namespace Optimator.Forms
                     Position.S = spinBar.Value;
                 }
             }
-
             DisplayDrawings();
         }
 
