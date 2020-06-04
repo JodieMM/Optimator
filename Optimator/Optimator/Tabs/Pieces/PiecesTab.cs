@@ -582,76 +582,7 @@ namespace Optimator
                 return true;
             }
 
-            // Make Spots Clockwise
-            var minmax = Utils.FindMinMax(Utils.ConvertSpotsToCoords(spots));
-            var clockwise = false;
-            var maxFound = false;
-            var maxIndex = -1;
-            var clockwiseIndex = 0;
-            while (!clockwise)
-            {
-                if (maxIndex != clockwiseIndex)
-                {
-                    // Check If Max
-                    if (spots[clockwiseIndex].Y == minmax[2] || maxFound)
-                    {
-                        // Set New Max
-                        if (!maxFound)
-                        {
-                            maxFound = true;
-                            maxIndex = clockwiseIndex;
-                        }
-
-                        // Check If Clockwise
-                        if (spots[clockwiseIndex].X != spots[Utils.NextIndex(spots, clockwiseIndex)].X)
-                        {
-                            // If Anti-Clockwise, Reorder
-                            if (spots[clockwiseIndex].X > spots[Utils.NextIndex(spots, clockwiseIndex)].X)
-                            {
-                                var clone = Utils.CloneSpotList(spots);
-                                for (int index = 0; index < clone.Count; index++)
-                                {
-                                    spots[spots.Count - 1 - index] = clone[index];
-                                }
-                            }
-                            clockwise = true;
-                        }
-                    }
-                    clockwiseIndex = Utils.NextIndex(spots, clockwiseIndex);
-                }
-                else
-                {
-                    clockwise = true;
-                }
-            }
-
-            // Set Initial Spot As Top Left            
-            int topLeftIndex = 0;
-            bool inARow = false;
-            float leftest = float.MaxValue;
-            for (int index = 0; index < spots.Count; index++)
-            {
-                var spot = spots[index];
-                if (spot.Y == minmax[2] && (spot.X < leftest || spot.X == leftest && !inARow))
-                {
-                    leftest = spot.X;
-                    topLeftIndex = index;
-                    inARow = true;
-                }
-                else
-                {
-                    inARow = false;
-                }
-            }
-            // Reorder List
-            if (topLeftIndex != 0)
-            {
-                var clone = Utils.CloneSpotList(spots);
-                for (int index = 0; index < clone.Count; index++)
-                {
-                    spots[index] = clone[Utils.Modulo(index + topLeftIndex, clone.Count)];
-                }
-            }
+            Utils.SortCoordinates(spots);
 
             // Check X, Y, XR and YD for fold backs
             return CheckShapeDoubleBack(spots, 0, "base") && CheckShapeDoubleBack(spots, 1, "base")

@@ -162,31 +162,25 @@ namespace Optimator
             var rightPoints = GetAnchorStatePoints(state, 1);
             var downPoints = GetAnchorStatePoints(state, 2);
 
-            // TODO: Get spin state accurately
-
-
-            // Find Middle Grounds
-            
-            // - Squash shapes so they match height/width
+            // Find Middle Ground
             var r = Utils.AngleAnchorFromAngle(state.R);
             if (state.SBase && (r == 0 || r == 2) || !state.SBase && (r == 1 || r == 3))
             {
-                rightPoints = ResizeToMatch(basePoints, rightPoints);
-                downPoints = ResizeToMatch(basePoints, downPoints, false);
+                rightPoints = ResizeToMatch(basePoints, rightPoints, false);
+                downPoints = ResizeToMatch(basePoints, downPoints);
             }
             else
             {
-                basePoints = ResizeToMatch(rightPoints, basePoints);
-                basePoints = ResizeToMatch(downPoints, basePoints, false);
+                basePoints = ResizeToMatch(rightPoints, basePoints, false);
+                basePoints = ResizeToMatch(downPoints, basePoints);
             }
 
-            // - Find matching spots
+            //TODO **** Nope: Need to merge base and right and then merge1 with down
+            var merge1 = MatchShapes(basePoints, rightPoints, false);
+            var merge2 = MatchShapes(merge1, downPoints);
 
-            // Merge Shapes
-            // Take X's from merge1 and Y's from merge2
 
-            // TODO
-            var points = basePoints; //TEMPORARY!!
+            var points = MergeShapes(merge1, merge2);
 
             // Recentre & Resize
             for (var index = 0; index < points.Count; index++)
@@ -196,19 +190,6 @@ namespace Optimator
             }
 
             return points;
-        }
-
-        private List<float[]> ResizeToMatch(List<float[]> constantPoints, List<float[]> changePoints, bool xMatch = true)
-        {
-            //CLEANING
-            var goalSize = Utils.FindMinMax(constantPoints);
-            var currSize = Utils.FindMinMax(changePoints);
-            var multiplier = goalSize[1] / currSize[1];
-            foreach (var point in changePoints)
-            {
-                point[0] *= multiplier;
-            }
-            return changePoints;
         }
 
         private List<float[]> GetAnchorStatePoints(State state, int brd)
@@ -260,6 +241,7 @@ namespace Optimator
                 //}
                 points.Add(point);
             }
+            // TODO: Get spin state accurately
 
             //points = SpinMeRound(points, state);
 
@@ -276,8 +258,38 @@ namespace Optimator
             //}
 
             //points = SpinMeRound(points, state);
-            return points;
+            return Utils.SortCoordinates(points);
         }
+
+        private List<float[]> ResizeToMatch(List<float[]> constantPoints, List<float[]> changePoints, bool xChange = true)
+        {
+            //CLEANING
+            var goalSize = Utils.FindMinMax(constantPoints);
+            var currSize = Utils.FindMinMax(changePoints);
+            var multiplier = goalSize[xChange ? 1 : 3] / currSize[xChange ? 1 : 3];
+            foreach (var point in changePoints)
+            {
+                point[xChange ? 0 : 1] *= multiplier;
+            }
+            return changePoints;
+        }
+
+        private List<float[]> MatchShapes(List<float[]> shape1, List<float[]> shape2, bool xMatch = true)
+        {
+            // CLEANING
+            // TODO
+            // Find matching spots between shape 1 and 2
+        }
+
+        private List<float[]> MergeShapes(List<float[]> xShape, List<float[]> yShape)
+        {
+            // CLEANING
+            // TODO
+            // Merge Shapes
+            // Take X's from merge1 and Y's from merge2
+        }
+
+
 
         /// <summary>
         /// Spins the coords provided.
@@ -596,6 +608,8 @@ namespace Optimator
 
             return new float[] { -1 }; // Error
         }
+
+
 
         /// <summary>
         /// Finds all of the coordinates between two points.

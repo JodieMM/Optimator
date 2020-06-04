@@ -640,6 +640,160 @@ namespace Optimator
             };
         }
 
+        public static List<Spot> SortCoordinates(List<Spot> spots)
+        {
+            // CLEANING
+            // Make Spots Clockwise
+            var minmax = FindMinMax(ConvertSpotsToCoords(spots));
+            var clockwise = false;
+            var maxFound = false;
+            var maxIndex = -1;
+            var clockwiseIndex = 0;
+            while (!clockwise)
+            {
+                if (maxIndex != clockwiseIndex)
+                {
+                    // Check If Max
+                    if (spots[clockwiseIndex].Y == minmax[2] || maxFound)
+                    {
+                        // Set New Max
+                        if (!maxFound)
+                        {
+                            maxFound = true;
+                            maxIndex = clockwiseIndex;
+                        }
+
+                        // Check If Clockwise
+                        if (spots[clockwiseIndex].X != spots[NextIndex(spots, clockwiseIndex)].X)
+                        {
+                            // If Anti-Clockwise, Reorder
+                            if (spots[clockwiseIndex].X > spots[NextIndex(spots, clockwiseIndex)].X)
+                            {
+                                var clone = CloneSpotList(spots);
+                                for (int index = 0; index < clone.Count; index++)
+                                {
+                                    spots[spots.Count - 1 - index] = clone[index];
+                                }
+                            }
+                            clockwise = true;
+                        }
+                    }
+                    clockwiseIndex = NextIndex(spots, clockwiseIndex);
+                }
+                else
+                {
+                    clockwise = true;
+                }
+            }
+
+            // Set Initial Spot As Top Left            
+            int topLeftIndex = 0;
+            bool inARow = false;
+            float leftest = float.MaxValue;
+            for (int index = 0; index < spots.Count; index++)
+            {
+                var spot = spots[index];
+                if (spot.Y == minmax[2] && (spot.X < leftest || spot.X == leftest && !inARow))
+                {
+                    leftest = spot.X;
+                    topLeftIndex = index;
+                    inARow = true;
+                }
+                else
+                {
+                    inARow = false;
+                }
+            }
+            // Reorder List
+            if (topLeftIndex != 0)
+            {
+                var clone = CloneSpotList(spots);
+                for (int index = 0; index < clone.Count; index++)
+                {
+                    spots[index] = clone[Modulo(index + topLeftIndex, clone.Count)];
+                }
+            }
+
+            return spots;
+        }
+
+        public static List<float[]> SortCoordinates(List<float[]> spots)
+        {
+            // CLEANING
+            // Make Spots Clockwise
+            var minmax = FindMinMax(spots);
+            var clockwise = false;
+            var maxFound = false;
+            var maxIndex = -1;
+            var clockwiseIndex = 0;
+            while (!clockwise)
+            {
+                if (maxIndex != clockwiseIndex)
+                {
+                    // Check If Max
+                    if (spots[clockwiseIndex][1] == minmax[2] || maxFound)
+                    {
+                        // Set New Max
+                        if (!maxFound)
+                        {
+                            maxFound = true;
+                            maxIndex = clockwiseIndex;
+                        }
+
+                        // Check If Clockwise
+                        if (spots[clockwiseIndex][0] != spots[NextIndex(spots, clockwiseIndex)][0])
+                        {
+                            // If Anti-Clockwise, Reorder
+                            if (spots[clockwiseIndex][0] > spots[NextIndex(spots, clockwiseIndex)][0])
+                            {
+                                var clone = spots;  //TODO: Check this doesn't need to be cloned
+                                for (int index = 0; index < clone.Count; index++)
+                                {
+                                    spots[spots.Count - 1 - index] = clone[index];
+                                }
+                            }
+                            clockwise = true;
+                        }
+                    }
+                    clockwiseIndex = NextIndex(spots, clockwiseIndex);
+                }
+                else
+                {
+                    clockwise = true;
+                }
+            }
+
+            // Set Initial Spot As Top Left            
+            int topLeftIndex = 0;
+            bool inARow = false;
+            float leftest = float.MaxValue;
+            for (int index = 0; index < spots.Count; index++)
+            {
+                var spot = spots[index];
+                if (spot[1] == minmax[2] && (spot[0] < leftest || spot[0] == leftest && !inARow))
+                {
+                    leftest = spot[0];
+                    topLeftIndex = index;
+                    inARow = true;
+                }
+                else
+                {
+                    inARow = false;
+                }
+            }
+            // Reorder List
+            if (topLeftIndex != 0)
+            {
+                var clone = spots;      //CLEANING: Ditto cloning
+                for (int index = 0; index < clone.Count; index++)
+                {
+                    spots[index] = clone[Modulo(index + topLeftIndex, clone.Count)];
+                }
+            }
+
+            return spots;
+        }
+
         /// <summary>
         /// Converts the spots into a list of their original
         /// coordinates as float[].
