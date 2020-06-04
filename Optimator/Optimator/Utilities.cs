@@ -714,6 +714,25 @@ namespace Optimator
                 }
             }
 
+            // Remove Chains of 3+
+            for (int index = 0; index < spots.Count; index++)
+            {
+                // Check X
+                if (spots[index].X == spots[NextIndex(spots, index)].X && 
+                    spots[index].X == spots[NextIndex(spots, NextIndex(spots, index))].X)
+                {
+                    spots.RemoveAt(NextIndex(spots, index));
+                    index--;
+                }
+                // Check Y
+                else if (spots[index].Y == spots[NextIndex(spots, index)].Y &&
+                    spots[index].Y == spots[NextIndex(spots, NextIndex(spots, index))].Y)
+                {
+                    spots.RemoveAt(NextIndex(spots, index));
+                    index--;
+                }
+            }
+
             return spots;
         }
 

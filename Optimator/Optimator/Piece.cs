@@ -174,13 +174,9 @@ namespace Optimator
                 basePoints = ResizeToMatch(rightPoints, basePoints, false);
                 basePoints = ResizeToMatch(downPoints, basePoints);
             }
-
-            //TODO **** Nope: Need to merge base and right and then merge1 with down
-            var merge1 = MatchShapes(basePoints, rightPoints, false);
-            var merge2 = MatchShapes(merge1, downPoints);
-
-
-            var points = MergeShapes(merge1, merge2);
+            
+            var merge1 = MergeShapes(basePoints, rightPoints, false);
+            var points = MergeShapes(merge1, downPoints);
 
             // Recentre & Resize
             for (var index = 0; index < points.Count; index++)
@@ -274,22 +270,33 @@ namespace Optimator
             return changePoints;
         }
 
-        private List<float[]> MatchShapes(List<float[]> shape1, List<float[]> shape2, bool xMatch = true)
+        private List<float[]> MergeShapes(List<float[]> shape1, List<float[]> shape2, bool xMatch = true)
         {
             // CLEANING
             // TODO
-            // Find matching spots between shape 1 and 2
+            // NOTE: ** xMatch = false means the y coords [1] are being matched
+            // Ensure All Spots Have Match
+            // Find Mid Point Between Spots
+            var index1 = 0;
+            var index2 = 0;
+            var z = xMatch ? 0 : 1;
+
+            while (index1 != shape1.Count || index2 != shape2.Count)
+            {
+                // Check for neighbouring spots
+                if (index1 < shape1.Count - 1 && shape1[index1][z] == shape1[index1 + 1][z])
+                {
+                    
+                }
+                else
+                {
+
+                }
+            }
+
+
+
         }
-
-        private List<float[]> MergeShapes(List<float[]> xShape, List<float[]> yShape)
-        {
-            // CLEANING
-            // TODO
-            // Merge Shapes
-            // Take X's from merge1 and Y's from merge2
-        }
-
-
 
         /// <summary>
         /// Spins the coords provided.

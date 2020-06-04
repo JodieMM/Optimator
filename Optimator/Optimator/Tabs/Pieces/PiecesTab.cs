@@ -598,6 +598,7 @@ namespace Optimator
         /// <returns>True if only one valley and peak</returns>
         private bool CheckShapeDoubleBack(List<Spot> spots, int angle, string name)
         {
+            // CLEANING: This will always run on sorted spots so can be made easier!
             var bigger = spots[0].GetCoord(angle) < spots[1].GetCoord(angle);
             var switchCount = 0;
             for (var index = 0; index < spots.Count - 1; index++)
