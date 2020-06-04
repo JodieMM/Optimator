@@ -280,13 +280,33 @@ namespace Optimator
             var index1 = 0;
             var index2 = 0;
             var z = xMatch ? 0 : 1;
+            List<float[]> merged = new List<float[]>();
 
             while (index1 != shape1.Count || index2 != shape2.Count)
             {
                 // Check for neighbouring spots
                 if (index1 < shape1.Count - 1 && shape1[index1][z] == shape1[index1 + 1][z])
                 {
-                    
+                    if (shape2[index2][z] == shape1[index1][z] && index2 < shape2.Count - 1 && 
+                        shape2[index2 + 1][z] == shape2[index2][z])
+                    {
+                        if (xMatch)
+                        {
+                            merged.Add(new float[2] { Utils.AverageValue(shape1[index1][0], shape2[index2][0]), shape1[index1][1] });
+                        }
+                        else
+                        {
+                            merged.Add(new float[2] { shape1[index1][0], Utils.AverageValue(shape1[index1][1], shape2[index2][1]) });
+                        }
+                    }
+                    else if ()
+                    {
+                        // Check for same x/y
+                    }
+                    else
+                    {
+                        // Doesn't have a match, build one
+                    }
                 }
                 else
                 {
