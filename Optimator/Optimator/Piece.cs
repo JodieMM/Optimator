@@ -281,19 +281,41 @@ namespace Optimator
             var index2 = 0;
             var shape1 = s1;
             var shape2 = s2;
-            var minmax1 = Utils.FindMinMax(s1);
-            var minmax2 = Utils.FindMinMax(s2);
+            var isSwapped = false;
+            var i1 = 0;
+            var i2 = 0;
+            var reachedBottom1 = false;
+            var reachedBottom2 = false;
             var z = xMatch ? 0 : 1;
             List<float[]> merged = new List<float[]>();
 
-            while (index1 != shape1.Count || index2 != shape2.Count)
+            while (i1 != s1.Count || i2 != s2.Count)
             {
-
-
-                // TODO: Figure out which shape could be shape1 (dominant) and shape2(follower) based on which index is next
-                // Remember to swap indexes when you swap shapes
-
-
+                // Check if reached the bottom
+                if (!reachedBottom1 && i1 != 0 && s1[i1][1] > s1[i1 - 1][1])
+                {
+                    reachedBottom1 = true;
+                }
+                if (!reachedBottom2 && i2 != 0 && s2[i2][1] > s2[i2 - 1][1])
+                {
+                    reachedBottom2 = true;
+                }
+                // Find dominant shape
+                if (reachedBottom1 && !reachedBottom2 || !reachedBottom1 && !reachedBottom2 && s1[i1][1] < s2[i2][1]
+                    || reachedBottom1 && reachedBottom2 & s1[i1][1] > s2[i2][1])
+                {
+                    shape1 = s2;
+                    shape2 = s1;
+                    index1 = i2;
+                    index2 = i1;
+                }
+                else
+                {
+                    shape1 = s1;
+                    shape2 = s2;
+                    index1 = i1;
+                    index2 = i2;
+                }
 
                 // Check for neighbouring spots
                 if (index1 < shape1.Count - 1 && shape1[index1][z] == shape1[index1 + 1][z])
@@ -322,8 +344,8 @@ namespace Optimator
                             //    merged.Add(new float[2] { shape1[index1][0], Utils.FindMiddleSpot(shape1[index1][1], shape2[index2][1], angle) });
                             //    merged.Add(new float[2] { shape1[index1][0], Utils.FindMiddleSpot(shape1[index1 + 1][1], shape2[index2 + 1][1], angle) });
                             //}
-                            index1 += 2;
-                            index2 += 2;
+                            i1 += 2;
+                            i2 += 2;
                         }
                         else
                         {
@@ -334,36 +356,36 @@ namespace Optimator
                             changed = Utils.FindMiddleSpot(shape1[index1 + 1][z], shape2[index2][z], angle);
                             newSpot[z] = changed;
                             merged.Add(newSpot);
-                            index1 += 2;
-                            index2 ++;
+                            i1 += isSwapped ? 1 : 2;
+                            i2 += isSwapped ? 2 : 1;
                         }
                     }
                     // If the neighbours need a spot to be made for them
                     else
                     {
-                        // Doesn't have a match, build one
+                        // TODO: Doesn't have a match, build one
                     }
                 }
                 // Single spot, not in a line
                 else
                 {
                     // Has match
-                    if ()
+                    if (shape2[index2][z] == shape1[index1][z])
                     {
                         // Match has neighbours
-                        if ()
+                        if (index2 < shape2.Count - 1 && shape2[index2 + 1][z] == shape2[index2][z])
                         {
-
+                            // TODO
                         }
                         else
                         {
-
+                            // TODO
                         }
                     }
                     // Need to build match
                     else
                     {
-
+                        // TODO
                     }
                 }
             }
