@@ -375,11 +375,24 @@ namespace Optimator
                         // Match has neighbours
                         if (index2 < shape2.Count - 1 && shape2[index2 + 1][z] == shape2[index2][z])
                         {
-                            // TODO
+                            float unchanged = shape1[index1][xMatch ? 1 : 0];
+                            float changed = Utils.FindMiddleSpot(shape1[index1][z], shape2[index2][z], angle);
+                            float[] newSpot = new float[2] { xMatch ? changed : unchanged, xMatch ? unchanged : changed };
+                            merged.Add(newSpot);
+                            changed = Utils.FindMiddleSpot(shape1[index1][z], shape2[index2 + 1][z], angle);
+                            newSpot[z] = changed;
+                            merged.Add(newSpot);
+                            i1 += isSwapped ? 2 : 1;
+                            i2 += isSwapped ? 1 : 2;
                         }
                         else
                         {
-                            // TODO
+                            float unchanged = shape1[index1][xMatch ? 1 : 0];
+                            float changed = Utils.FindMiddleSpot(shape1[index1][z], shape2[index2][z], angle);
+                            float[] newSpot = new float[2] { xMatch ? changed : unchanged, xMatch ? unchanged : changed };
+                            merged.Add(newSpot);
+                            i1++;
+                            i2++;
                         }
                     }
                     // Need to build match
@@ -389,9 +402,7 @@ namespace Optimator
                     }
                 }
             }
-
-
-
+            return merged;
         }
 
         /// <summary>
