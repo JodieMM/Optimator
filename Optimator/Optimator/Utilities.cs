@@ -321,12 +321,6 @@ namespace Optimator
             return new float[] { minMax[0] + (minMax[1] - minMax[0]) / 2.0F, minMax[2] + (minMax[3] - minMax[2]) / 2.0F };
         }
 
-        public static float AverageValue(float a, float b)
-        {
-            //CLEANING
-            return (a + b) / 2.0;
-        }
-
         /// <summary>
         /// Finds the height of the shape.
         /// </summary>

@@ -175,8 +175,8 @@ namespace Optimator
                 basePoints = ResizeToMatch(downPoints, basePoints);
             }
             
-            var merge1 = MergeShapes(basePoints, rightPoints, false);
-            var points = MergeShapes(merge1, downPoints);
+            var merge1 = MergeShapes(basePoints, rightPoints, state.R, false);
+            var points = MergeShapes(merge1, downPoints, state.T);
 
             // Recentre & Resize
             for (var index = 0; index < points.Count; index++)
@@ -270,7 +270,7 @@ namespace Optimator
             return changePoints;
         }
 
-        private List<float[]> MergeShapes(List<float[]> shape1, List<float[]> shape2, bool xMatch = true)
+        private List<float[]> MergeShapes(List<float[]> s1, List<float[]> s2, float angle, bool xMatch = true)
         {
             // CLEANING
             // TODO
@@ -279,38 +279,92 @@ namespace Optimator
             // Find Mid Point Between Spots
             var index1 = 0;
             var index2 = 0;
+            var shape1 = s1;
+            var shape2 = s2;
+            var minmax1 = Utils.FindMinMax(s1);
+            var minmax2 = Utils.FindMinMax(s2);
             var z = xMatch ? 0 : 1;
             List<float[]> merged = new List<float[]>();
 
             while (index1 != shape1.Count || index2 != shape2.Count)
             {
+
+
+                // TODO: Figure out which shape could be shape1 (dominant) and shape2(follower) based on which index is next
+                // Remember to swap indexes when you swap shapes
+
+
+
                 // Check for neighbouring spots
                 if (index1 < shape1.Count - 1 && shape1[index1][z] == shape1[index1 + 1][z])
                 {
-                    if (shape2[index2][z] == shape1[index1][z] && index2 < shape2.Count - 1 && 
-                        shape2[index2 + 1][z] == shape2[index2][z])
+                    // If the neighbours have a pre-made matching spot
+                    if (shape2[index2][z] == shape1[index1][z])
                     {
-                        if (xMatch)
+                        // If the matching spots also have a neighbour
+                        if (index2 < shape2.Count - 1 && shape2[index2 + 1][z] == shape2[index2][z])
                         {
-                            merged.Add(new float[2] { Utils.AverageValue(shape1[index1][0], shape2[index2][0]), shape1[index1][1] });
+                            float unchanged = shape1[index1][xMatch ? 1 : 0];
+                            float changed = Utils.FindMiddleSpot(shape1[index1][z], shape2[index2][z], angle);
+                            float[] newSpot = new float[2] { xMatch ? changed : unchanged, xMatch ? unchanged : changed };
+                            merged.Add(newSpot);
+                            changed = Utils.FindMiddleSpot(shape1[index1 + 1][z], shape2[index2 + 1][z], angle);
+                            newSpot[z] = changed;
+                            merged.Add(newSpot);
+                            // CLEANING
+                            //if (xMatch)
+                            //{
+                            //    merged.Add(new float[2] { Utils.FindMiddleSpot(shape1[index1][0], shape2[index2][0], angle), shape1[index1][1] });
+                            //    merged.Add(new float[2] { Utils.FindMiddleSpot(shape1[index1 + 1][0], shape2[index2 + 1][0], angle), shape1[index1][1] });
+                            //}
+                            //else
+                            //{
+                            //    merged.Add(new float[2] { shape1[index1][0], Utils.FindMiddleSpot(shape1[index1][1], shape2[index2][1], angle) });
+                            //    merged.Add(new float[2] { shape1[index1][0], Utils.FindMiddleSpot(shape1[index1 + 1][1], shape2[index2 + 1][1], angle) });
+                            //}
+                            index1 += 2;
+                            index2 += 2;
                         }
                         else
                         {
-                            merged.Add(new float[2] { shape1[index1][0], Utils.AverageValue(shape1[index1][1], shape2[index2][1]) });
+                            float unchanged = shape1[index1][xMatch ? 1 : 0];
+                            float changed = Utils.FindMiddleSpot(shape1[index1][z], shape2[index2][z], angle);
+                            float[] newSpot = new float[2] { xMatch ? changed : unchanged, xMatch ? unchanged : changed };
+                            merged.Add(newSpot);
+                            changed = Utils.FindMiddleSpot(shape1[index1 + 1][z], shape2[index2][z], angle);
+                            newSpot[z] = changed;
+                            merged.Add(newSpot);
+                            index1 += 2;
+                            index2 ++;
                         }
                     }
-                    else if ()
-                    {
-                        // Check for same x/y
-                    }
+                    // If the neighbours need a spot to be made for them
                     else
                     {
                         // Doesn't have a match, build one
                     }
                 }
+                // Single spot, not in a line
                 else
                 {
+                    // Has match
+                    if ()
+                    {
+                        // Match has neighbours
+                        if ()
+                        {
 
+                        }
+                        else
+                        {
+
+                        }
+                    }
+                    // Need to build match
+                    else
+                    {
+
+                    }
                 }
             }
 
