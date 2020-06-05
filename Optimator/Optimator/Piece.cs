@@ -156,6 +156,11 @@ namespace Optimator
         /// <returns></returns>
         public List<float[]> GetPoints(State state)
         {
+            if (Data.Count < 1)
+            {
+                return new List<float[]>();
+            }
+
             // CLEANING
             // Get Points
             var basePoints = GetAnchorStatePoints(state, 0);
@@ -289,7 +294,7 @@ namespace Optimator
             var z = xMatch ? 0 : 1;
             List<float[]> merged = new List<float[]>();
 
-            while (i1 != s1.Count || i2 != s2.Count)
+            while (i1 < s1.Count || i2 < s2.Count)
             {
                 // Check if reached the bottom
                 if (!reachedBottom1 && i1 != 0 && s1[i1][1] > s1[i1 - 1][1])
@@ -321,7 +326,7 @@ namespace Optimator
                 if (index1 < shape1.Count - 1 && shape1[index1][z] == shape1[index1 + 1][z])
                 {
                     // If the neighbours have a pre-made matching spot
-                    if (shape2[index2][z] == shape1[index1][z])
+                    if (index2 < shape2.Count && shape2[index2][z] == shape1[index1][z])
                     {
                         // If the matching spots also have a neighbour
                         if (index2 < shape2.Count - 1 && shape2[index2 + 1][z] == shape2[index2][z])
@@ -363,14 +368,26 @@ namespace Optimator
                     // If the neighbours need a spot to be made for them
                     else
                     {
-                        // TODO: Doesn't have a match, build one
+                        var newShape2 = FindSymmetricalOppositeCoord(shape2[Utils.Modulo(Utils.NextIndex(shape2, index2, false), shape2.Count)], 
+                            shape2[Utils.Modulo(index2, shape2.Count)], shape1[index1][z],
+                            z, Consts.connectorOptions[0]); // CURVE: Allow for alternative connector options
+
+                        float unchanged = shape1[index1][xMatch ? 1 : 0];
+                        float changed = Utils.FindMiddleSpot(shape1[index1][z], newShape2[z], angle);
+                        float[] newSpot = new float[2] { xMatch ? changed : unchanged, xMatch ? unchanged : changed };
+                        merged.Add(newSpot);
+                        changed = Utils.FindMiddleSpot(shape1[index1 + 1][z], newShape2[z], angle);
+                        newSpot[z] = changed;
+                        merged.Add(newSpot);
+                        i1 += isSwapped ? 0 : 2;
+                        i2 += isSwapped ? 2 : 0;
                     }
                 }
                 // Single spot, not in a line
                 else
                 {
                     // Has match
-                    if (shape2[index2][z] == shape1[index1][z])
+                    if (index2 < shape2.Count && shape2[index2][z] == shape1[index1][z])
                     {
                         // Match has neighbours
                         if (index2 < shape2.Count - 1 && shape2[index2 + 1][z] == shape2[index2][z])
@@ -398,7 +415,16 @@ namespace Optimator
                     // Need to build match
                     else
                     {
-                        // TODO
+                        var newShape2 = FindSymmetricalOppositeCoord(shape2[Utils.Modulo(Utils.NextIndex(shape2, index2, false), shape2.Count)], 
+                            shape2[Utils.Modulo(index2, shape2.Count)], shape1[index1][z],
+                            z, Consts.connectorOptions[0]); // CURVE: Allow for alternative connector options
+
+                        float unchanged = shape1[index1][xMatch ? 1 : 0];
+                        float changed = Utils.FindMiddleSpot(shape1[index1][z], newShape2[z], angle);
+                        float[] newSpot = new float[2] { xMatch ? changed : unchanged, xMatch ? unchanged : changed };
+                        merged.Add(newSpot);
+                        i1 += isSwapped ? 0 : 1;
+                        i2 += isSwapped ? 1 : 0;
                     }
                 }
             }
