@@ -675,7 +675,7 @@ namespace Optimator
                 if (maxIndex != clockwiseIndex)
                 {
                     // Check If Max
-                    if (spots[clockwiseIndex].Y == minmax[2] || maxFound)
+                    if (spots[clockwiseIndex].Y == minmax[3] || maxFound)
                     {
                         // Set New Max
                         if (!maxFound)
@@ -714,7 +714,7 @@ namespace Optimator
             for (int index = 0; index < spots.Count; index++)
             {
                 var spot = spots[index];
-                if (spot.Y == minmax[2] && (spot.X < leftest || spot.X == leftest && !inARow))
+                if (spot.Y == minmax[3] && (spot.X < leftest || spot.X == leftest && !inARow))
                 {
                     leftest = spot.X;
                     topLeftIndex = index;
