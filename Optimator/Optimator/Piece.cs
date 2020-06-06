@@ -393,14 +393,14 @@ namespace Optimator
                     // If the neighbours need a spot to be made for them
                     else
                     {
-                        var newShape2 = FindSymmetricalOppositeCoord(shape2[Utils.Modulo(Utils.NextIndex(shape2, index2, false), shape2.Count)], 
-                            shape2[Utils.Modulo(index2, shape2.Count)], shape1[index1].GetCoord(z), z);
+                        var newShape1 = FindSymmetricalOppositeCoord(shape1[Utils.Modulo(Utils.NextIndex(shape1, index1, false), shape1.Count)], 
+                            shape1[Utils.Modulo(index1, shape1.Count)], shape1[index1].GetCoord(z), z);
 
                         float unchanged = shape1[index1].GetCoord(z);
-                        float changed = Utils.FindMiddleSpot(shape1[index1].GetCoord(altz), newShape2[altz], angle);
+                        float changed = Utils.FindMiddleSpot(shape1[index1].GetCoord(altz), newShape1[altz], angle);
                         Spot newSpot = new Spot(xChange ? changed : unchanged, xChange ? unchanged : changed);
                         merged.Add(newSpot);
-                        changed = Utils.FindMiddleSpot(shape1[index1 + 1].GetCoord(altz), newShape2[altz], angle);
+                        changed = Utils.FindMiddleSpot(shape1[index1 + 1].GetCoord(altz), newShape1[altz], angle);
                         if (xChange)
                         {
                             newSpot.X = changed;
@@ -453,11 +453,11 @@ namespace Optimator
                     // Need to build match
                     else
                     {
-                        var newShape2 = FindSymmetricalOppositeCoord(shape2[Utils.Modulo(Utils.NextIndex(shape2, index2, false), shape2.Count)], 
-                            shape2[Utils.Modulo(index2, shape2.Count)], shape1[index1].GetCoord(z), z);
+                        var newShape1 = FindSymmetricalOppositeCoord(shape1[Utils.Modulo(Utils.NextIndex(shape1, index1, false), shape1.Count)], 
+                            shape1[Utils.Modulo(index1, shape1.Count)], shape1[index1].GetCoord(z), z);
 
                         float unchanged = shape1[index1].GetCoord(z);
-                        float changed = Utils.FindMiddleSpot(shape1[index1].GetCoord(altz), newShape2[altz], angle);
+                        float changed = Utils.FindMiddleSpot(shape1[index1].GetCoord(altz), newShape1[altz], angle);
                         Spot newSpot = new Spot(xChange ? changed : unchanged, xChange ? unchanged : changed);
                         merged.Add(newSpot);
                         i1 += isSwapped ? 0 : 1;
