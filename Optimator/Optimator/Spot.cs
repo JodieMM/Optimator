@@ -11,15 +11,15 @@ namespace Optimator
     public class Spot
     {
         #region Spot Variables
-        public float X { get; set; }
+        public  float X { get; set; }
         public float XRight { get; set; }
-        public float Y { get; set; }
+        public  float Y { get; set; }
         public float YDown { get; set; }
         public float CurrentX { get; set; }
         public float CurrentY { get; set; }        //HIDDEN (RTS) CurrentY
 
-        public string Connector { get; set; }
-        public string Solid { get; set; }
+        public  string Connector { get; set; }
+        public  string Solid { get; set; }
 
         public Spot MatchX { get; set; } = null;
         public Spot MatchY { get; set; } = null;
@@ -46,6 +46,21 @@ namespace Optimator
             Connector = connect ?? Consts.connectorOptions[0];
             Solid = solid ?? Consts.solidOptions[0];
             DrawnLevel = drawn;
+        }
+
+        /// <summary>
+        /// Constructor for a coord spot.
+        /// </summary>
+        /// <param name="x">X position</param>
+        /// <param name="y">Y position</param>
+        /// <param name="connect">Connector from this spot to the next</param>
+        /// <param name="solid">Flexibility of the spot</param>
+        public Spot(float x, float y, string connect, string solid)
+        {
+            X = x;
+            Y = y;
+            Connector = connect;
+            Solid = solid;
         }
 
 
@@ -232,14 +247,14 @@ namespace Optimator
             return lower + (upper - lower) * ((angle - bottomAngle) / 90.0F);
         }
 
-        public float[] GetCoordAtAnchorAngle(int r, int t)
+        public Spot GetCoordAtAnchorAngle(int r, int t)
         {
             // CLEANING
             // int 0 (<90), 1 (<180), 2 (<270), 3 (>=270)
             float[] coord = new float[2];
             coord[0] = r == 0 ? X : r == 1 ? XRight : r == 2 ? -X : -XRight;
             coord[1] = t == 0 ? Y : r == 1 ? YDown : r == 2 ? -Y : -YDown;
-            return coord;
+            return new Spot(coord[0], coord[1], Connector, Solid);
         }
     }
 }

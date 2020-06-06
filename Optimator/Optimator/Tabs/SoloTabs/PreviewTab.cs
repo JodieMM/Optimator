@@ -121,7 +121,7 @@ namespace Optimator.Forms
                     label1.Text = "R: " + join.A.State.R.ToString();
                     label2.Text = "T: " + join.A.State.T.ToString();
                     label3.Text = "S: " + join.A.State.S.ToString();
-                    label4.Text = "Hei: " + Utils.FindHeight(join.A.GetPoints(join.A.State)).ToString();
+                    //label4.Text = "Hei: " + Utils.FindHeight(join.A.GetPoints(join.A.State)).ToString();
                     label5.Text = "YMin: " + Utils.FindMinMax(join.A.GetPoints(join.A.State))[2].ToString();
                 }
                 //foreach (Piece piece in (WIP as Set).PiecesList)

@@ -74,7 +74,7 @@ namespace Optimator
                 {
                     var workingIndex = index - partEndIndex - 1;
                     var piece = PiecesList[workingIndex];
-                    var originals = Utils.ConvertStringArrayToDoubles(data[index].Split(Consts.Colon));
+                    var originals = Utils.ConvertStringArrayToFloats(data[index].Split(Consts.Colon));
                     piece.State.SetValues(originals[0], originals[1], originals[2], originals[3], originals[4], originals[5]);
                     Originals.Add(piece, Utils.CloneState(piece.State));
                     OriginalColours.Add(piece, Utils.CloneColourState(piece.ColourState));

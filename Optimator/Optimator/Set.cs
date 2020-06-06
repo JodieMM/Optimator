@@ -42,7 +42,7 @@ namespace Optimator
             while (data[index] != "Joins")
             {
                 var dataSections = data[index].Split(Consts.Semi);
-                var stateData = Utils.ConvertStringArrayToDoubles(dataSections[1].Split(Consts.Colon));
+                var stateData = Utils.ConvertStringArrayToFloats(dataSections[1].Split(Consts.Colon));
                 var WIP = new Piece(dataSections[0]);
                 PersonalStates.Add(WIP, new State(stateData[0], stateData[1], stateData[2], stateData[3], stateData[4], stateData[5]));
                 PiecesList.Add(WIP);
@@ -61,8 +61,8 @@ namespace Optimator
                 var dataSections = data[i].Split(Consts.Semi);
                 var pieceA = PiecesList[int.Parse(dataSections[0])];
                 var pieceB = PiecesList[int.Parse(dataSections[1])];
-                var coordsA = Utils.ConvertStringArrayToDoubles(dataSections[2].Split(Consts.Colon));
-                var coordsB = Utils.ConvertStringArrayToDoubles(dataSections[3].Split(Consts.Colon));
+                var coordsA = Utils.ConvertStringArrayToFloats(dataSections[2].Split(Consts.Colon));
+                var coordsB = Utils.ConvertStringArrayToFloats(dataSections[3].Split(Consts.Colon));
 
                 var WIP = new Join(pieceA, pieceB, this,
                     coordsA[0], coordsA[1], coordsA[2], coordsA[3], coordsB[0], coordsB[1], coordsB[2], coordsB[3], 

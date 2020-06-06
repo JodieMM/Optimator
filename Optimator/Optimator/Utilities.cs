@@ -290,7 +290,28 @@ namespace Optimator
         }
 
         /// <summary>
-        /// Finds the minimum and maximum x and y coordinates of a point.
+        /// Finds the minimum and maximum x and y coordinates of a shape.
+        /// </summary>
+        /// <param name="coords">Shape points</param>
+        /// <returns>The mins and maxes as [minX, maxX, minY, maxY]</returns>
+        public static float[] FindMinMax(List<Spot> coords)
+        {
+            float minX = float.MaxValue;
+            float maxX = float.MinValue;
+            float minY = float.MaxValue;
+            float maxY = float.MinValue;
+            foreach (var entry in coords)
+            {
+                minX = (entry.X < minX) ? entry.X : minX;
+                maxX = (entry.X > maxX) ? entry.X : maxX;
+                minY = (entry.Y < minY) ? entry.Y : minY;
+                maxY = (entry.Y > maxY) ? entry.Y : maxY;
+            }
+            return new float[] { minX, maxX, minY, maxY };
+        }
+
+        /// <summary>
+        /// Finds the minimum and maximum x and y coordinates of a shape.
         /// </summary>
         /// <param name="coords">Shape points</param>
         /// <returns>The mins and maxes as [minX, maxX, minY, maxY]</returns>
@@ -300,7 +321,7 @@ namespace Optimator
             float maxX = float.MinValue;
             float minY = float.MaxValue;
             float maxY = float.MinValue;
-            foreach (float[] entry in coords)
+            foreach (var entry in coords)
             {
                 minX = (entry[0] < minX) ? entry[0] : minX;
                 maxX = (entry[0] > maxX) ? entry[0] : maxX;
@@ -315,29 +336,10 @@ namespace Optimator
         /// </summary>
         /// <param name="coords">Shape points</param>
         /// <returns>The middle as [middle x, middle y]</returns>
-        public static float[] FindMid(List<float[]> coords)
+        public static float[] FindMid(List<Spot> coords)
         {
             var minMax = FindMinMax(coords);
             return new float[] { minMax[0] + (minMax[1] - minMax[0]) / 2.0F, minMax[2] + (minMax[3] - minMax[2]) / 2.0F };
-        }
-
-        /// <summary>
-        /// Finds the height of the shape.
-        /// </summary>
-        /// <param name="coords">Shape coordinates</param>
-        /// <param name="width">True if width (x) not height (y) to be found</param>
-        /// <returns>Height of shape</returns>
-        public static float FindHeight(List<float[]> coords, bool width = false)
-        {
-            var minMax = FindMinMax(coords);
-            if (width)
-            {
-                return minMax[1] - minMax[0];
-            }
-            else
-            {
-                return minMax[3] - minMax[2];
-            }
         }
 
         /// <summary>
@@ -409,7 +411,7 @@ namespace Optimator
         /// </summary>
         /// <param name="strArray">The array of strings to be converted</param>
         /// <returns>A float array of the values in the input</returns>
-        public static float[] ConvertStringArrayToDoubles(string[] strArray)
+        public static float[] ConvertStringArrayToFloats(string[] strArray)
         {
             var dblArray = new float[strArray.Length];
             for (int index = 0; index < strArray.Length; index++)
@@ -417,6 +419,25 @@ namespace Optimator
                 dblArray[index] = float.Parse(strArray[index]);
             }
             return dblArray;
+        }
+
+        /// <summary>
+        /// Converts the spots into a list of their original
+        /// coordinates as float[].
+        /// </summary>
+        /// <param name="spots">The list of spots to convert</param>
+        /// <param name="angle">Original [0], rotated[1], turned[2]</param>
+        /// <returns>A list of coordinates</returns>
+        public static List<float[]> ConvertSpotsToCoords(List<Spot> spots, int angle = 0)
+        {
+            // CLEANING: Remove
+            var toReturn = new List<float[]>();
+            foreach (var spot in spots)
+            {
+                toReturn.Add(spot.GetCoordCombination(angle));
+            }
+
+            return toReturn;
         }
 
         /// <summary>
@@ -644,7 +665,7 @@ namespace Optimator
         {
             // CLEANING
             // Make Spots Clockwise
-            var minmax = FindMinMax(ConvertSpotsToCoords(spots));
+            var minmax = FindMinMax(spots);
             var clockwise = false;
             var maxFound = false;
             var maxIndex = -1;
@@ -714,121 +735,7 @@ namespace Optimator
                 }
             }
 
-            // Remove Chains of 3+
-            for (int index = 0; index < spots.Count; index++)
-            {
-                // Check X
-                if (spots[index].X == spots[NextIndex(spots, index)].X && 
-                    spots[index].X == spots[NextIndex(spots, NextIndex(spots, index))].X)
-                {
-                    spots.RemoveAt(NextIndex(spots, index));
-                    index--;
-                }
-                // Check Y
-                else if (spots[index].Y == spots[NextIndex(spots, index)].Y &&
-                    spots[index].Y == spots[NextIndex(spots, NextIndex(spots, index))].Y)
-                {
-                    spots.RemoveAt(NextIndex(spots, index));
-                    index--;
-                }
-            }
-
             return spots;
-        }
-
-        public static List<float[]> SortCoordinates(List<float[]> spots)
-        {
-            // CLEANING
-            // Make Spots Clockwise
-            var minmax = FindMinMax(spots);
-            var clockwise = false;
-            var maxFound = false;
-            var maxIndex = -1;
-            var clockwiseIndex = 0;
-            while (!clockwise)
-            {
-                if (maxIndex != clockwiseIndex)
-                {
-                    // Check If Max
-                    if (spots[clockwiseIndex][1] == minmax[2] || maxFound)
-                    {
-                        // Set New Max
-                        if (!maxFound)
-                        {
-                            maxFound = true;
-                            maxIndex = clockwiseIndex;
-                        }
-
-                        // Check If Clockwise
-                        if (spots[clockwiseIndex][0] != spots[NextIndex(spots, clockwiseIndex)][0])
-                        {
-                            // If Anti-Clockwise, Reorder
-                            if (spots[clockwiseIndex][0] > spots[NextIndex(spots, clockwiseIndex)][0])
-                            {
-                                var clone = spots;  //TODO: Check this doesn't need to be cloned
-                                for (int index = 0; index < clone.Count; index++)
-                                {
-                                    spots[spots.Count - 1 - index] = clone[index];
-                                }
-                            }
-                            clockwise = true;
-                        }
-                    }
-                    clockwiseIndex = NextIndex(spots, clockwiseIndex);
-                }
-                else
-                {
-                    clockwise = true;
-                }
-            }
-
-            // Set Initial Spot As Top Left            
-            int topLeftIndex = 0;
-            bool inARow = false;
-            float leftest = float.MaxValue;
-            for (int index = 0; index < spots.Count; index++)
-            {
-                var spot = spots[index];
-                if (spot[1] == minmax[2] && (spot[0] < leftest || spot[0] == leftest && !inARow))
-                {
-                    leftest = spot[0];
-                    topLeftIndex = index;
-                    inARow = true;
-                }
-                else
-                {
-                    inARow = false;
-                }
-            }
-            // Reorder List
-            if (topLeftIndex != 0)
-            {
-                var clone = spots;      //CLEANING: Ditto cloning
-                for (int index = 0; index < clone.Count; index++)
-                {
-                    spots[index] = clone[Modulo(index + topLeftIndex, clone.Count)];
-                }
-            }
-
-            return spots;
-        }
-
-        /// <summary>
-        /// Converts the spots into a list of their original
-        /// coordinates as float[].
-        /// </summary>
-        /// <param name="spots">The list of spots to convert</param>
-        /// <param name="angle">Original [0], rotated[1], turned[2]</param>
-        /// <returns>A list of coordinates</returns>
-        public static List<float[]> ConvertSpotsToCoords(List<Spot> spots, int angle = 0)
-        {
-            var toReturn = new List<float[]>();
-            foreach (var spot in spots)
-            {
-                toReturn.Add(spot.GetCoordCombination(angle));
-            }
-
-            return toReturn;
         }
 
         /// <summary>
