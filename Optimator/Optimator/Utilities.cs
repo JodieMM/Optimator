@@ -373,9 +373,9 @@ namespace Optimator
             switch (angle)
             {
                 case 1:
-                    return new State(state, 1, (state.GetAngles()[0] + 90) % 360);
+                    return new State(state, 1, (state.R + 90) % 360);
                 case 2:
-                    return new State(state, 2, (state.GetAngles()[1] + 90) % 360);
+                    return new State(state, 2, (state.T + 90) % 360);
                 default:
                     return state;
             }
