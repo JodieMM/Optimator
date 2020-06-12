@@ -318,7 +318,7 @@ namespace Optimator
                 }
                 // Find dominant shape
                 if (i2 < s2.Count && (reachedBottom1 && !reachedBottom2 || i1 >= s1.Count || !reachedBottom1 && !reachedBottom2 && s1[i1].Y < s2[i2].Y
-                    || reachedBottom1 && reachedBottom2 & s1[i1].Y > s2[i2].Y))
+                    || reachedBottom1 && reachedBottom2 & s1[i1].Y > s2[i2].Y || s1[i1].Y == s2[i2].Y && s1[i1].X > s2[i2].X))
                 {
                     shape1 = s2;
                     shape2 = s1;
