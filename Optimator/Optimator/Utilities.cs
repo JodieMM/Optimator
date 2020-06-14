@@ -359,7 +359,7 @@ namespace Optimator
             {
                 currIndex = (currIndex == 0) ? list.Count - 1 : currIndex - 1;
             }
-            return currIndex;
+            return Modulo(currIndex, list.Count);
         }
 
         /// <summary>

@@ -39,8 +39,11 @@ namespace Optimator
         public PiecesTab(HomeForm owner)
         {
             InitializeComponent();
-            Owner = owner;           
-            
+            Owner = owner;
+
+            DrawBase.BackColor = Settings.BackgroundColour;
+            DrawRight.BackColor = Settings.BackgroundColour;
+            DrawDown.BackColor = Settings.BackgroundColour;
             Owner.GetTabControl().KeyUp += KeyPress;
             Enter += FocusOn;
             VisibleChanged += FocusOn;
