@@ -690,10 +690,39 @@ namespace Optimator
                             // If Anti-Clockwise, Reorder
                             if (spots[clockwiseIndex].X > spots[NextIndex(spots, clockwiseIndex)].X)
                             {
-                                var clone = CloneSpotList(spots);
-                                for (int index = 0; index < clone.Count; index++)
+                                if (spots[clockwiseIndex].X != minmax[1])
                                 {
-                                    spots[spots.Count - 1 - index] = clone[index];
+                                    var clone = CloneSpotList(spots);
+                                    for (int index = 0; index < clone.Count; index++)
+                                    {
+                                        spots[spots.Count - 1 - index] = clone[index];
+                                    }
+                                }
+                                else
+                                {
+                                    var checking = NextIndex(spots, clockwiseIndex);
+                                    var lowest = false;
+                                    while (checking != clockwiseIndex && !clockwise)
+                                    {
+                                        if (spots[checking].Y == minmax[2] || lowest)
+                                        {
+                                            lowest = true;
+                                            if (spots[NextIndex(spots, checking)].X < spots[checking].X)
+                                            {
+                                                clockwise = true;
+                                            }
+                                            else if (spots[NextIndex(spots, checking)].X > spots[checking].X)
+                                            {
+                                                var clone = CloneSpotList(spots);
+                                                for (int index = 0; index < clone.Count; index++)
+                                                {
+                                                    spots[spots.Count - 1 - index] = clone[index];
+                                                }
+                                                clockwise = true;
+                                            }                                            
+                                        }
+                                        checking = NextIndex(spots, checking);
+                                    }
                                 }
                             }
                             clockwise = true;
