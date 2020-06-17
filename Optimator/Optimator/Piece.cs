@@ -163,10 +163,10 @@ namespace Optimator
 
             // CLEANING
             // Get Points
-            var basePoints = GetAnchorStatePoints(state, 0);
-            var rightPoints = GetAnchorStatePoints(state, 1);
-            var downPoints = GetAnchorStatePoints(state, 2);
-            var downRightPoints = GetAnchorStatePoints(Utils.AdjustStateAngle(1, state), 2);
+            var basePoints = Utils.SortCoordinates(GetAnchorStatePoints(state, 0));
+            var rightPoints = Utils.SortCoordinates(GetAnchorStatePoints(state, 1));
+            var downPoints = Utils.SortCoordinates(GetAnchorStatePoints(state, 2));
+            var downRightPoints = Utils.SortCoordinates(GetAnchorStatePoints(Utils.AdjustStateAngle(1, state), 2));
 
             // Find Middle Ground
             var r = Utils.AngleAnchorFromAngle(state.R);
@@ -468,6 +468,27 @@ namespace Optimator
                     // Need to build match
                     else
                     {
+                        // TODO: Ensure correct points are being used to find match ***
+                        //var found = false;
+                        //while (!found)
+                        //{
+                        //    if (shape1[index1].GetCoord(z) <= shape2[Utils.NextIndex(shape2, index2, false)].X &&
+                        //        shape1[index1].GetCoord(z) >= shape2[Utils.Modulo(index2, shape2.Count)].X || 
+                        //        shape1[index1].GetCoord(z) >= shape2[Utils.NextIndex(shape2, index2, false)].X &&
+                        //        shape1[index1].GetCoord(z) <= shape2[Utils.Modulo(index2, shape2.Count)].X)
+                        //    {
+                        //        found = true;
+                        //    }
+                        //    else
+                        //    {
+                        //        index2 = Utils.NextIndex(shape2, index2);
+                        //        if (index2 == (isSwapped ? Utils.Modulo(i1, s1.Count) : Utils.Modulo(i2, s2.Count)))
+                        //        {
+                        //            found = true;   // Error - no match
+                        //        }
+                        //    }
+                        //}
+
                         var newShape = FindSymmetricalOppositeCoord(shape2[Utils.NextIndex(shape2, index2, false)], 
                             shape2[Utils.Modulo(index2, shape2.Count)], shape1[index1].GetCoord(z), z);
 

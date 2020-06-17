@@ -674,8 +674,9 @@ namespace Optimator
             {
                 if (maxIndex != clockwiseIndex)
                 {
+                    var currSpot = spots[clockwiseIndex];
                     // Check If Max
-                    if (spots[clockwiseIndex].Y == minmax[3] || maxFound)
+                    if (currSpot.Y == minmax[3] || maxFound)
                     {
                         // Set New Max
                         if (!maxFound)
@@ -684,47 +685,78 @@ namespace Optimator
                             maxIndex = clockwiseIndex;
                         }
 
-                        // Check If Clockwise
-                        if (spots[clockwiseIndex].X != spots[NextIndex(spots, clockwiseIndex)].X)
+                        // Check If In Line
+                        if (currSpot.X != spots[NextIndex(spots, clockwiseIndex)].X)
                         {
-                            // If Anti-Clockwise, Reorder
-                            if (spots[clockwiseIndex].X > spots[NextIndex(spots, clockwiseIndex)].X)
+                            // Check If Clockwise
+                            var nextSpot = spots[NextIndex(spots, clockwiseIndex)];
+                            var prevSpot = spots[NextIndex(spots, clockwiseIndex, false)];
+                            if ((currSpot.X * nextSpot.Y + prevSpot.X * currSpot.Y + prevSpot.Y * nextSpot.X) -
+                                (prevSpot.Y * currSpot.X + currSpot.Y * nextSpot.X + prevSpot.X * nextSpot.Y) > 0)
                             {
-                                if (spots[clockwiseIndex].X != minmax[1])
-                                {
-                                    var clone = CloneSpotList(spots);
-                                    for (int index = 0; index < clone.Count; index++)
-                                    {
-                                        spots[spots.Count - 1 - index] = clone[index];
-                                    }
-                                }
-                                else
-                                {
-                                    var checking = NextIndex(spots, clockwiseIndex);
-                                    var lowest = false;
-                                    while (checking != clockwiseIndex && !clockwise)
-                                    {
-                                        if (spots[checking].Y == minmax[2] || lowest)
-                                        {
-                                            lowest = true;
-                                            if (spots[NextIndex(spots, checking)].X < spots[checking].X)
-                                            {
-                                                clockwise = true;
-                                            }
-                                            else if (spots[NextIndex(spots, checking)].X > spots[checking].X)
-                                            {
-                                                var clone = CloneSpotList(spots);
-                                                for (int index = 0; index < clone.Count; index++)
-                                                {
-                                                    spots[spots.Count - 1 - index] = clone[index];
-                                                }
-                                                clockwise = true;
-                                            }                                            
-                                        }
-                                        checking = NextIndex(spots, checking);
-                                    }
-                                }
+                                ReverseOrder(spots);
                             }
+
+
+                            // CLEANING
+
+
+
+                            //// Check If Clockwise (Simple)
+                            //if (currSpot.X <= spots[NextIndex(spots, clockwiseIndex)].X &&
+                            //    currSpot.X > spots[NextIndex(spots, clockwiseIndex, false)].X || 
+                            //    currSpot.X < spots[NextIndex(spots, clockwiseIndex)].X &&
+                            //    currSpot.X >= spots[NextIndex(spots, clockwiseIndex, false)].X)
+                            //{
+                            //    clockwise = true;
+                            //    // CLEANING: UNNECESSARY ^^
+                            //}
+                            //// Check If Anti-Clockwise (Simple)
+                            //else if (currSpot.X >= spots[NextIndex(spots, clockwiseIndex)].X &&
+                            //    currSpot.X < spots[NextIndex(spots, clockwiseIndex, false)].X || 
+                            //    currSpot.X > spots[NextIndex(spots, clockwiseIndex)].X &&
+                            //    currSpot.X <= spots[NextIndex(spots, clockwiseIndex, false)].X)
+                            //{
+                            //    ReverseOrder(spots);
+                            //}
+                            //// Check If Anti-Clockwise (Next/Previous Both 
+                            //else if (currSpot.X > spots[NextIndex(spots, clockwiseIndex)].X)
+                            //{
+                            //    if (currSpot.X != minmax[1])
+                            //    {
+                            //        var clone = CloneSpotList(spots);
+                            //        for (int index = 0; index < clone.Count; index++)
+                            //        {
+                            //            spots[spots.Count - 1 - index] = clone[index];
+                            //        }
+                            //    }
+                            //    else
+                            //    {
+                            //        var checking = NextIndex(spots, clockwiseIndex);
+                            //        var lowest = false;
+                            //        while (checking != clockwiseIndex && !clockwise)
+                            //        {
+                            //            if (spots[checking].Y == minmax[2] || lowest)
+                            //            {
+                            //                lowest = true;
+                            //                if (spots[NextIndex(spots, checking)].X < spots[checking].X)
+                            //                {
+                            //                    clockwise = true;
+                            //                }
+                            //                else if (spots[NextIndex(spots, checking)].X > spots[checking].X)
+                            //                {
+                            //                    var clone = CloneSpotList(spots);
+                            //                    for (int index = 0; index < clone.Count; index++)
+                            //                    {
+                            //                        spots[spots.Count - 1 - index] = clone[index];
+                            //                    }
+                            //                    clockwise = true;
+                            //                }                                            
+                            //            }
+                            //            checking = NextIndex(spots, checking);
+                            //        }
+                            //    }
+                            //}
                             clockwise = true;
                         }
                     }
@@ -765,6 +797,16 @@ namespace Optimator
             }
 
             return spots;
+        }
+
+        public static void ReverseOrder(List<Spot> toReorder)
+        {
+            // CLEANING
+            var clone = CloneSpotList(toReorder);
+            for (int index = 0; index < clone.Count; index++)
+            {
+                toReorder[toReorder.Count - 1 - index] = clone[index];
+            }
         }
 
         /// <summary>
