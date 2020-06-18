@@ -247,9 +247,14 @@ namespace Optimator
             return lower + (upper - lower) * ((angle - bottomAngle) / 90.0F);
         }
 
+        /// <summary>
+        /// Returns the coordinate at a border position.
+        /// </summary>
+        /// <param name="r">Rotation border</param>
+        /// <param name="t">Turn border</param>
+        /// <returns>Spot at provided angle</returns>
         public Spot GetCoordAtAnchorAngle(int r, int t)
         {
-            // CLEANING
             // int 0 (<90), 1 (<180), 2 (<270), 3 (>=270)
             float[] coord = new float[2];
             coord[0] = r == 0 ? X : r == 1 ? XRight : r == 2 ? -X : -XRight;

@@ -105,7 +105,7 @@ namespace Optimator
         {
             var x = angle == 1 ? BXRight : BX;
             var y = angle == 2 ? BYDown : BY;
-            Visuals.DrawCross(B.State.GetCoords()[0] + x, B.State.GetCoords()[1] + y, colour, board);
+            Visuals.DrawCross(B.State.X + x, B.State.Y + y, colour, board);
         }
 
         /// <summary>

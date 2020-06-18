@@ -83,7 +83,7 @@ namespace Optimator.Forms.Compile
         {
             if (ExportVideo())
             {
-                var result = MessageBox.Show("Would you like to close this tab?", "Close Tab Confirmation", MessageBoxButtons.OKCancel);
+                var result = MessageBox.Show("Export Successful! Would you like to close this tab?", "Close Tab Confirmation", MessageBoxButtons.OKCancel);
                 if (result == DialogResult.OK)
                 {
                     Owner.Owner.RemoveTabPage(Owner);

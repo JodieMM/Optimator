@@ -83,7 +83,6 @@ namespace Optimator
         {
             Name = "";
             Version = Consts.Version;
-            ColourState = new ColourState();
             OutlineWidth = Consts.defaultOutlineWidth;
             PieceDetails = Consts.defaultPieceDetails;
         }
@@ -116,8 +115,7 @@ namespace Optimator
         }
 
         /// <summary>
-        /// Converts into itself to accommodate sets
-        /// in part.
+        /// Converts into itself to accommodate sets in part.
         /// </summary>
         /// <returns>Itself</returns>
         public override Piece ToPiece()
@@ -151,17 +149,17 @@ namespace Optimator
         #region Shape Functions
 
         /// <summary>
-        /// Finds the points to print based on the rotation, turn, spin and size of the piece
+        /// Finds the points to print based on the rotation, turn, spin and size of the piece.
         /// </summary>
-        /// <returns></returns>
+        /// <param name="state">Current angles of piece</param>
+        /// <returns>List of spots to draw</returns>
         public List<Spot> GetPoints(State state)
         {
             if (Data.Count < 1)
             {
                 return new List<Spot>();
             }
-
-            // CLEANING
+            
             // Get Points
             var basePoints = Utils.SortCoordinates(GetAnchorStatePoints(state, 0));
             var rightPoints = Utils.SortCoordinates(GetAnchorStatePoints(state, 1));
@@ -196,6 +194,12 @@ namespace Optimator
             return points;
         }
 
+        /// <summary>
+        /// Determines the border cases of angled shapes.
+        /// </summary>
+        /// <param name="state">Shape angle</param>
+        /// <param name="brd">Base, right or down angle (0, 1 or 2)</param>
+        /// <returns>Shape at that border case</returns>
         private List<Spot> GetAnchorStatePoints(State state, int brd)
         {
             // CLEANING
@@ -265,9 +269,15 @@ namespace Optimator
             return Utils.SortCoordinates(points);
         }
 
+        /// <summary>
+        /// Resize the change points to the same width or height as the constant points.
+        /// </summary>
+        /// <param name="constantPoints">Unchanging shape</param>
+        /// <param name="changePoints">Changing shape</param>
+        /// <param name="xChange">True if x changes (width)</param>
+        /// <returns>Resized change shape</returns>
         private List<Spot> ResizeToMatch(List<Spot> constantPoints, List<Spot> changePoints, bool xChange = true)
         {
-            //CLEANING
             var goalSize = Utils.FindMinMax(constantPoints);
             var currSize = Utils.FindMinMax(changePoints);
             var multiplier = currSize[xChange ? 1 : 3] != 0 ? goalSize[xChange ? 1 : 3] / currSize[xChange ? 1 : 3] : 1;
@@ -285,11 +295,18 @@ namespace Optimator
             return changePoints;
         }
 
+        /// <summary>
+        /// Merge two shapes into one.
+        /// </summary>
+        /// <param name="s1">Initial shape</param>
+        /// <param name="s2">Final shape</param>
+        /// <param name="angle">Percentage from initial to final</param>
+        /// <param name="xChange">Whether the x or y coords change</param>
+        /// <returns></returns>
         private List<Spot> MergeShapes(List<Spot> s1, List<Spot> s2, float angle, bool xChange = true)
         {
-            // CLEANING
-            // TODO
-            // Ensure All Spots Have Match
+            // TODO: Ensure points are not being found twice / no double-ups ***
+
             // Find Mid Point Between Spots
             var index1 = 0;
             var index2 = 0;
@@ -354,7 +371,6 @@ namespace Optimator
                 index1 = isSwapped ? i2 : i1;
                 index2 = isSwapped ? i1 : i2;
 
-                //CLEANING: Remove some of the repetition
                 // Check for neighbouring spots
                 if (index1 < shape1.Count - 1 && shape1[index1].GetCoord(z) == shape1[index1 + 1].GetCoord(z))
                 {
@@ -405,8 +421,9 @@ namespace Optimator
                     // If the neighbours need a spot to be made for them
                     else
                     {
-                        var newShape = FindSymmetricalOppositeCoord(shape2[Utils.NextIndex(shape2, index2, false)], 
-                            shape2[Utils.Modulo(index2, shape2.Count)], shape1[index1].GetCoord(z), z);
+                        var shapeSearch = FindSymmetricalCoordHome(shape1, shape2, shape1[index1], z);
+                        var newShape = FindSymmetricalOppositeCoord(shape2[Utils.NextIndex(shape2, shapeSearch)],
+                            shape2[Utils.Modulo(shapeSearch, shape2.Count)], shape1[index1].GetCoord(z), z);
 
                         float unchanged = shape1[index1].GetCoord(z);
                         float changed = isSwapped ? Utils.FindMiddleSpot(newShape[altz], shape1[index1].GetCoord(altz), angle) : 
@@ -468,9 +485,6 @@ namespace Optimator
                     // Need to build match
                     else
                     {
-                        // TODO: Ensure correct points are being used to find match ***
-
-                        // TODO: Apply below to neighbours above
                         var shapeSearch = FindSymmetricalCoordHome(shape1, shape2, shape1[index1], z);
                         var newShape = FindSymmetricalOppositeCoord(shape2[Utils.NextIndex(shape2, shapeSearch)], 
                             shape2[Utils.Modulo(shapeSearch, shape2.Count)], shape1[index1].GetCoord(z), z);
@@ -486,272 +500,7 @@ namespace Optimator
                 }
             }
             return merged;
-        }
-
-        /// <summary>
-        /// Spins the coords provided.
-        /// </summary>
-        /// <param name="pointsArray">The points to be spun</param>
-        /// <returns>A list of float[] containing shape's new coordinates</returns>
-        private List<float[]> SpinMeRound(List<float[]> pointsArray, State state)
-        {
-            for (var index = 0; index < pointsArray.Count; index++)
-            {
-                if (!(pointsArray[index][0] == state.GetCoords()[0] && pointsArray[index][1] == state.GetCoords()[1]))
-                {
-                    var hypotenuse = Math.Sqrt(Math.Pow(state.GetCoords()[0] - pointsArray[index][0], 2) + Math.Pow(state.GetCoords()[1] - pointsArray[index][1], 2));
-                    // Find Angle
-                    float pointAngle;
-                    if (pointsArray[index][0] == state.GetCoords()[0] && pointsArray[index][1] < state.GetCoords()[1])
-                    {
-                        pointAngle = 0;
-                    }
-                    else if (pointsArray[index][0] == state.GetCoords()[0] && pointsArray[index][1] > state.GetCoords()[1])
-                    {
-                        pointAngle = 180;
-                    }
-                    else if (pointsArray[index][0] > state.GetCoords()[0] && pointsArray[index][1] == state.GetCoords()[1])
-                    {
-                        pointAngle = 90;
-                    }
-                    else if (pointsArray[index][0] < state.GetCoords()[0] && pointsArray[index][1] == state.GetCoords()[1])
-                    {
-                        pointAngle = 270;
-                    }
-                    //  Second || First
-                    //  Third  || Fourth
-                    else if (pointsArray[index][0] > state.GetCoords()[0] && pointsArray[index][1] < state.GetCoords()[1]) // First Quadrant
-                    {
-                        pointAngle = (180 / (float)Math.PI) * (float)Math.Atan(Math.Abs((state.GetCoords()[0] - pointsArray[index][0]) / (state.GetCoords()[1] - pointsArray[index][1])));
-                    }
-                    else if (pointsArray[index][0] > state.GetCoords()[0] && pointsArray[index][1] > state.GetCoords()[1]) // Fourth Quadrant
-                    {
-                        pointAngle = 90 + (180 / (float)Math.PI) * (float)Math.Atan(Math.Abs((state.GetCoords()[1] - pointsArray[index][1]) / (state.GetCoords()[0] - pointsArray[index][0])));
-                    }
-                    else if (pointsArray[index][0] < state.GetCoords()[0] && pointsArray[index][1] < state.GetCoords()[1]) // Second Quadrant
-                    {
-                        pointAngle = 270 + (180 / (float)Math.PI) * (float)Math.Atan(Math.Abs((state.GetCoords()[1] - pointsArray[index][1]) / (state.GetCoords()[0] - pointsArray[index][0])));
-                    }
-                    else  // Third Quadrant
-                    {
-                        pointAngle = 180 + (180 / (float)Math.PI) * (float)Math.Atan(Math.Abs((state.GetCoords()[0] - pointsArray[index][0]) / (state.GetCoords()[1] - pointsArray[index][1])));
-                    }
-                    var findAngle = (pointAngle + state.GetAngles()[2]) * (float)Math.PI / 180 % 360;
-
-                    // Find Points
-                    pointsArray[index][0] = Convert.ToInt32(state.GetCoords()[0] + hypotenuse * Math.Sin(findAngle));
-                    pointsArray[index][1] = Convert.ToInt32(state.GetCoords()[1] - hypotenuse * Math.Cos(findAngle));
-                }
-            }
-            return pointsArray;
-        }
-
-        ///// <summary>
-        ///// Calculates where the spots with the same Y coordinate as drawnlevel 0
-        ///// spots would go and adds them to Data.
-        ///// </summary>
-        ///// <param name="xy">Whether searching for an X match (0) or Y match (1)</param>
-        //private void CalculateMatches(float[] minMax, int xy = 1)
-        //{
-        //    // Setup
-        //    CleanseData(xy == 0 ? false : true);
-        //    if (Data.Count < 3)
-        //    {
-        //        return;
-        //    }
-        //    var drawn = xy == 0 ? 2 : 1;
-        //    var coordCombo = xy == 0 ? 3 : 0;
-        //    var coordRot = xy == 0 ? 3 : 1;
-        //    var coordTurn = xy == 0 ? 4 : 2;
-        //    //var increase = xy == 0 ? 2 : 0;
-
-        //    for (int index = 0; index < Data.Count; index++)
-        //    {
-        //        // Setup
-        //        var spot = Data[index];
-        //        var validDrawn = xy == 0 ? spot.DrawnLevel < 2 : spot.DrawnLevel == 0;
-
-        //        // Only search for match if needed
-        //        if (validDrawn && spot.GetMatch(xy) == null)
-        //        {
-        //            // If spot has existing match
-        //            var symmIndex = FindExistingSymmetricalCoord(index, xy);
-        //            if (symmIndex != -1)
-        //            {
-        //                Data[symmIndex].SetMatch(xy, spot);
-        //                spot.SetMatch(xy, Data[symmIndex]);
-        //            }
-        //            // If spot has no existing match
-        //            else
-        //            {
-        //                var insertIndex = FindSymmetricalCoordHome(index, xy);
-        //                if (insertIndex != -1 && !(xy == 1 && (insertIndex == index || insertIndex == (index + 1) % Data.Count)))
-        //                {
-        //                    var original = FindSymmetricalOppositeCoord(Data[insertIndex].GetCoordCombination(coordCombo),
-        //                        Data[Utils.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(coordCombo),
-        //                        spot.GetCoordCombination(coordCombo)[xy], xy, Data[insertIndex].Connector);
-
-        //                    var rotated = FindSymmetricalOppositeCoord(Data[insertIndex].GetCoordCombination(coordRot),
-        //                        Data[Utils.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(coordRot),
-        //                        original[1], 1, Data[insertIndex].Connector)[0];
-
-        //                    var turned = FindSymmetricalOppositeCoord(Data[insertIndex].GetCoordCombination(coordTurn),
-        //                        Data[Utils.Modulo(insertIndex - 1, Data.Count)].GetCoordCombination(coordTurn),
-        //                        original[0], 0, Data[insertIndex].Connector)[1];
-
-        //                    var basedIndex = Utils.NextIndex(Data, insertIndex, false);
-        //                    var newSpot = new Spot(original[0], original[1], rotated, turned, Data[basedIndex].Connector, Data[basedIndex].Solid, drawn);
-        //                    newSpot.SetMatch(xy, spot);
-        //                    spot.SetMatch(xy, newSpot);
-        //                    if (drawn == 2)
-        //                    {
-        //                        newSpot.CurrentX = newSpot.X;
-        //                    }
-        //                    Data.Insert(insertIndex, newSpot);
-        //                    index--;
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
-                
-        /// <summary>
-        /// Finds the index of the coordinate that has the same x or y value
-        /// as the selected coordinate.
-        /// </summary>
-        /// <param name="matchIndex">The index of the selected coordinate</param>
-        /// <param name="xy">Whether searching for a match in x (0) or y (1)</param>
-        /// <returns>The symmetrical point's index or -1 if none exists</returns>
-        private int FindExistingSymmetricalCoord(int matchIndex, int xy)
-        {
-            // Find Matches
-            var matches = new List<int>();
-            var yx = xy == 0 ? 1 : 0;
-            for (var index = 0; index < Data.Count; index++)
-            {
-                // Check same, but not the same-same
-                if (index != matchIndex && Data[index].GetCoordCombination(3)[xy] == Data[matchIndex].GetCoordCombination(3)[xy])
-                {
-                    if (Data[index].GetCoordCombination(3)[yx] != Data[matchIndex].GetCoordCombination(3)[yx])
-                    {
-                        matches.Add(index);
-                    }
-                    // Check not on the same line
-                    else
-                    {
-                        // Check index --> matchIndex
-                        var bends = true;
-                        var round = false;
-                        var sibling = index;
-                        while (!round && bends)
-                        {
-                            sibling = (sibling + 1) % Data.Count;
-                            if (sibling == matchIndex)
-                            {
-                                bends = false;
-                            }
-                            else if (Data[index].GetCoordCombination(3)[yx] != Data[sibling].GetCoordCombination(3)[yx])
-                            {
-                                round = true;
-                            }
-                        }
-                        // Check matchIndex --> index
-                        round = false;
-                        sibling = matchIndex;
-                        while (!round && bends)
-                        {
-                            sibling = (sibling + 1) % Data.Count;
-                            if (sibling == index)
-                            {
-                                bends = false;
-                            }
-                            else if (Data[index].GetCoordCombination(3)[yx] != Data[sibling].GetCoordCombination(3)[yx])
-                            {
-                                round = true;
-                            }
-                        }
-                        if (bends)
-                        {
-                            matches.Add(index);
-                        }
-                    }
-                }
-            }
-
-            // Decide which match is best
-            if (matches.Count == 0)
-            {
-                return -1;
-            }
-            else if (matches.Count == 1)
-            {
-                return matches[0];
-            }
-            else
-            {
-                var min = 0;
-                var max = 0;
-                for (var index = 1; index < matches.Count; index++)
-                {
-                    if (Data[matches[index]].GetCoordCombination(3)[yx] < Data[matches[min]].GetCoordCombination(3)[yx])
-                    {
-                        min = index;
-                    }
-                    else if (Data[matches[index]].GetCoordCombination(3)[yx] > Data[matches[max]].GetCoordCombination(3)[yx])
-                    {
-                        max = index;
-                    }
-                }
-                if (Data[matchIndex].GetCoordCombination(3)[yx] <= Data[matches[min]].GetCoordCombination(3)[yx])
-                {
-                    return max;
-                }
-                else if (Data[matchIndex].GetCoordCombination(3)[yx] >= Data[matches[max]].GetCoordCombination(3)[yx])
-                {
-                    return min;
-                }
-                return matches[0];
-            }
-        }
-
-        ///// <summary>
-        ///// Finds where a matching point would go if it existed.
-        ///// </summary>
-        ///// <param name="matchIndex">The index of the selected coordinate</param>
-        ///// <param name="xy">Whether searching for a match in x (0) or y (1)</param>
-        ///// <returns>The index where the matching point would go or -1 in error</returns>
-        //public int FindSymmetricalCoordHome(int matchIndex, int xy)
-        //{
-        //    var goal = Data[matchIndex].GetCoordCombination(3)[xy];
-        //    var bigger = false;
-        //    var searchIndex = -1;
-
-        //    // Find whether we're searching above or below the goal
-        //    for (var index = 0; index < Data.Count && searchIndex == -1; index++)
-        //    {
-        //        if (Data[index].GetCoordCombination(3)[xy] != goal)
-        //        {
-        //            bigger = (Data[index].GetCoordCombination(3)[xy] > goal);
-        //            searchIndex = (index + 1) % Data.Count;
-        //        }
-        //    }
-
-        //    // Find index position
-        //    for (var index = 0; index < Data.Count; index++)
-        //    {
-        //        if (Data[searchIndex].GetCoordCombination(3)[xy] == goal)
-        //        {
-        //            bigger = !bigger;
-        //        }
-        //        else if (Data[searchIndex].GetCoordCombination(3)[xy] > goal != bigger)
-        //        {
-        //            return searchIndex;
-        //        }
-
-        //        searchIndex = (searchIndex + 1) % Data.Count;
-        //    }
-        //    return -1;       // None Found
-        //}
+        }          
 
         /// <summary>
         /// Finds where a matching point would go if it existed.
@@ -838,7 +587,6 @@ namespace Optimator
         public float[] FindSymmetricalOppositeCoord(Spot from, Spot to, float value, int xy)
         {
             float gradient = -1;
-            // TODO: Check correct line is chosen
             if (from.Connector == Consts.connectorOptions[0] || from.Connector == Consts.connectorOptions[1])
             {
                 if (from.X == to.X)
@@ -879,8 +627,6 @@ namespace Optimator
 
             return new float[] { -1 }; // Error
         }
-
-
 
         /// <summary>
         /// Finds all of the coordinates between two points.

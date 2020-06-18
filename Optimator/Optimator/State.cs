@@ -15,7 +15,7 @@ namespace Optimator
         public float R { get; set; } = 0;
         public float T { get; set; } = 0;
         public float S { get; set; } = 0;
-        public bool SBase { get; set; } = true; // TODO: Save and load this
+        public bool SBase { get; set; } = true; // TODO: Save and load this (Or remove?)
         public float SM { get; set; } = 1;
         #endregion
 
@@ -88,26 +88,6 @@ namespace Optimator
         public string GetData()
         {
             return X + Consts.ColonS + Y + Consts.ColonS + R + Consts.ColonS + T + Consts.ColonS + S + Consts.ColonS + SM;
-        }
-
-        /// <summary>
-        /// Gets the X and Y values of the piece.
-        /// </summary>
-        /// <returns>float[] { X, Y }</returns>
-        public float[] GetCoords()
-        {
-            //CLEANING: Remove
-            return new float[] { X, Y };
-        }
-
-        /// <summary>
-        /// Gets the rotation, turn and spin of the piece.
-        /// </summary>
-        /// <returns>float[] { Rotation, Turn, Spin }</returns>
-        public float[] GetAngles()
-        {
-            // CLEANING: Remove
-            return new float[3] { R, T, S };
         }
 
 

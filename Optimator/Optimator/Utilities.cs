@@ -422,25 +422,6 @@ namespace Optimator
         }
 
         /// <summary>
-        /// Converts the spots into a list of their original
-        /// coordinates as float[].
-        /// </summary>
-        /// <param name="spots">The list of spots to convert</param>
-        /// <param name="angle">Original [0], rotated[1], turned[2]</param>
-        /// <returns>A list of coordinates</returns>
-        public static List<float[]> ConvertSpotsToCoords(List<Spot> spots, int angle = 0)
-        {
-            // CLEANING: Remove
-            var toReturn = new List<float[]>();
-            foreach (var spot in spots)
-            {
-                toReturn.Add(spot.GetCoordCombination(angle));
-            }
-
-            return toReturn;
-        }
-
-        /// <summary>
         /// Converts a colour into its ARGB values.
         /// </summary>
         /// <param name="color">The colour to convert</param>
@@ -463,9 +444,14 @@ namespace Optimator
                 int.Parse(argb[2]), int.Parse(argb[3]));
         }
 
+        /// <summary>
+        /// Converts angle into its border value.
+        /// </summary>
+        /// <param name="angle">Angle to convert</param>
+        /// <param name="min">If the minimum or maximum border is desired</param>
+        /// <returns>Int value corresponding to border value</returns>
         public static int AngleAnchorFromAngle(float angle, bool min = true)
         {
-            //CLEANING
             if (angle < 90)
             {
                 return min || angle == 0 ? 0 : 1;
@@ -549,9 +535,15 @@ namespace Optimator
 
         // ----- COORDINATE FUNCTIONS -----
 
+        /// <summary>
+        /// Finds a percentage of the way between two points.
+        /// </summary>
+        /// <param name="a">Point a</param>
+        /// <param name="b">Point b</param>
+        /// <param name="angle">The angle percentage from a to b</param>
+        /// <returns></returns>
         public static float FindMiddleSpot(float a, float b, float angle)
         {
-            //CLEANING
             float[] result = new float[2];
             var multiplier = Modulo(angle, 90) / 90;
             return a == b ? a : a + (b - a) * multiplier;
@@ -661,9 +653,13 @@ namespace Optimator
             };
         }
 
+        /// <summary>
+        /// Sorts the coordinates so they are in clockwise direction.
+        /// </summary>
+        /// <param name="spots">Spots to sort</param>
+        /// <returns>Sorted spots</returns>
         public static List<Spot> SortCoordinates(List<Spot> spots)
         {
-            // CLEANING
             // Make Spots Clockwise
             var minmax = FindMinMax(spots);
             var clockwise = false;
@@ -695,68 +691,7 @@ namespace Optimator
                                 (prevSpot.Y * currSpot.X + currSpot.Y * nextSpot.X + prevSpot.X * nextSpot.Y) > 0)
                             {
                                 ReverseOrder(spots);
-                            }
-
-
-                            // CLEANING
-
-
-
-                            //// Check If Clockwise (Simple)
-                            //if (currSpot.X <= spots[NextIndex(spots, clockwiseIndex)].X &&
-                            //    currSpot.X > spots[NextIndex(spots, clockwiseIndex, false)].X || 
-                            //    currSpot.X < spots[NextIndex(spots, clockwiseIndex)].X &&
-                            //    currSpot.X >= spots[NextIndex(spots, clockwiseIndex, false)].X)
-                            //{
-                            //    clockwise = true;
-                            //    // CLEANING: UNNECESSARY ^^
-                            //}
-                            //// Check If Anti-Clockwise (Simple)
-                            //else if (currSpot.X >= spots[NextIndex(spots, clockwiseIndex)].X &&
-                            //    currSpot.X < spots[NextIndex(spots, clockwiseIndex, false)].X || 
-                            //    currSpot.X > spots[NextIndex(spots, clockwiseIndex)].X &&
-                            //    currSpot.X <= spots[NextIndex(spots, clockwiseIndex, false)].X)
-                            //{
-                            //    ReverseOrder(spots);
-                            //}
-                            //// Check If Anti-Clockwise (Next/Previous Both 
-                            //else if (currSpot.X > spots[NextIndex(spots, clockwiseIndex)].X)
-                            //{
-                            //    if (currSpot.X != minmax[1])
-                            //    {
-                            //        var clone = CloneSpotList(spots);
-                            //        for (int index = 0; index < clone.Count; index++)
-                            //        {
-                            //            spots[spots.Count - 1 - index] = clone[index];
-                            //        }
-                            //    }
-                            //    else
-                            //    {
-                            //        var checking = NextIndex(spots, clockwiseIndex);
-                            //        var lowest = false;
-                            //        while (checking != clockwiseIndex && !clockwise)
-                            //        {
-                            //            if (spots[checking].Y == minmax[2] || lowest)
-                            //            {
-                            //                lowest = true;
-                            //                if (spots[NextIndex(spots, checking)].X < spots[checking].X)
-                            //                {
-                            //                    clockwise = true;
-                            //                }
-                            //                else if (spots[NextIndex(spots, checking)].X > spots[checking].X)
-                            //                {
-                            //                    var clone = CloneSpotList(spots);
-                            //                    for (int index = 0; index < clone.Count; index++)
-                            //                    {
-                            //                        spots[spots.Count - 1 - index] = clone[index];
-                            //                    }
-                            //                    clockwise = true;
-                            //                }                                            
-                            //            }
-                            //            checking = NextIndex(spots, checking);
-                            //        }
-                            //    }
-                            //}
+                            }                            
                             clockwise = true;
                         }
                     }
@@ -799,9 +734,12 @@ namespace Optimator
             return spots;
         }
 
+        /// <summary>
+        /// Reverses the order of a sequence of spots.
+        /// </summary>
+        /// <param name="toReorder">Spots to be reordered and saved to this location</param>
         public static void ReverseOrder(List<Spot> toReorder)
         {
-            // CLEANING
             var clone = CloneSpotList(toReorder);
             for (int index = 0; index < clone.Count; index++)
             {
