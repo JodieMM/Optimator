@@ -469,28 +469,11 @@ namespace Optimator
                     else
                     {
                         // TODO: Ensure correct points are being used to find match ***
-                        //var found = false;
-                        //while (!found)
-                        //{
-                        //    if (shape1[index1].GetCoord(z) <= shape2[Utils.NextIndex(shape2, index2, false)].X &&
-                        //        shape1[index1].GetCoord(z) >= shape2[Utils.Modulo(index2, shape2.Count)].X || 
-                        //        shape1[index1].GetCoord(z) >= shape2[Utils.NextIndex(shape2, index2, false)].X &&
-                        //        shape1[index1].GetCoord(z) <= shape2[Utils.Modulo(index2, shape2.Count)].X)
-                        //    {
-                        //        found = true;
-                        //    }
-                        //    else
-                        //    {
-                        //        index2 = Utils.NextIndex(shape2, index2);
-                        //        if (index2 == (isSwapped ? Utils.Modulo(i1, s1.Count) : Utils.Modulo(i2, s2.Count)))
-                        //        {
-                        //            found = true;   // Error - no match
-                        //        }
-                        //    }
-                        //}
 
-                        var newShape = FindSymmetricalOppositeCoord(shape2[Utils.NextIndex(shape2, index2, false)], 
-                            shape2[Utils.Modulo(index2, shape2.Count)], shape1[index1].GetCoord(z), z);
+                        // TODO: Apply below to neighbours above
+                        var shapeSearch = FindSymmetricalCoordHome(shape1, shape2, shape1[index1], z);
+                        var newShape = FindSymmetricalOppositeCoord(shape2[Utils.NextIndex(shape2, shapeSearch)], 
+                            shape2[Utils.Modulo(shapeSearch, shape2.Count)], shape1[index1].GetCoord(z), z);
 
                         float unchanged = shape1[index1].GetCoord(z);
                         float changed = isSwapped ? Utils.FindMiddleSpot(newShape[altz], shape1[index1].GetCoord(altz), angle) : 
@@ -731,41 +714,114 @@ namespace Optimator
             }
         }
 
+        ///// <summary>
+        ///// Finds where a matching point would go if it existed.
+        ///// </summary>
+        ///// <param name="matchIndex">The index of the selected coordinate</param>
+        ///// <param name="xy">Whether searching for a match in x (0) or y (1)</param>
+        ///// <returns>The index where the matching point would go or -1 in error</returns>
+        //public int FindSymmetricalCoordHome(int matchIndex, int xy)
+        //{
+        //    var goal = Data[matchIndex].GetCoordCombination(3)[xy];
+        //    var bigger = false;
+        //    var searchIndex = -1;
+
+        //    // Find whether we're searching above or below the goal
+        //    for (var index = 0; index < Data.Count && searchIndex == -1; index++)
+        //    {
+        //        if (Data[index].GetCoordCombination(3)[xy] != goal)
+        //        {
+        //            bigger = (Data[index].GetCoordCombination(3)[xy] > goal);
+        //            searchIndex = (index + 1) % Data.Count;
+        //        }
+        //    }
+
+        //    // Find index position
+        //    for (var index = 0; index < Data.Count; index++)
+        //    {
+        //        if (Data[searchIndex].GetCoordCombination(3)[xy] == goal)
+        //        {
+        //            bigger = !bigger;
+        //        }
+        //        else if (Data[searchIndex].GetCoordCombination(3)[xy] > goal != bigger)
+        //        {
+        //            return searchIndex;
+        //        }
+
+        //        searchIndex = (searchIndex + 1) % Data.Count;
+        //    }
+        //    return -1;       // None Found
+        //}
+
         /// <summary>
         /// Finds where a matching point would go if it existed.
         /// </summary>
-        /// <param name="matchIndex">The index of the selected coordinate</param>
+        /// <param name="s1">The first shape containing match</param>
+        /// <param name="s2">The second shape searching for match</param>
+        /// <param name="match">The spot to be matched</param>
         /// <param name="xy">Whether searching for a match in x (0) or y (1)</param>
         /// <returns>The index where the matching point would go or -1 in error</returns>
-        public int FindSymmetricalCoordHome(int matchIndex, int xy)
+        public int FindSymmetricalCoordHome(List<Spot> s1, List<Spot> s2, Spot match, int xy)
         {
-            var goal = Data[matchIndex].GetCoordCombination(3)[xy];
-            var bigger = false;
-            var searchIndex = -1;
-
-            // Find whether we're searching above or below the goal
-            for (var index = 0; index < Data.Count && searchIndex == -1; index++)
+            // Determine if first or second instance required
+            var goal = match.GetCoord(xy);
+            var index = 0;
+            var instance = 0;
+            while (index < s1.Count)
             {
-                if (Data[index].GetCoordCombination(3)[xy] != goal)
+                if (s1[index].GetCoord(xy) == goal)
                 {
-                    bigger = (Data[index].GetCoordCombination(3)[xy] > goal);
-                    searchIndex = (index + 1) % Data.Count;
+                    if (s1[index] == match)
+                    {
+                        index = s1.Count;
+                        instance++;
+                    }
+                    else if (s1[Utils.NextIndex(s1, index)].GetCoord(xy) != goal)
+                    {
+                        instance++;
+                    }
                 }
+                else if (s1[index].GetCoord(xy) > goal && s1[Utils.NextIndex(s1, index)].GetCoord(xy) < goal ||
+                    s1[index].GetCoord(xy) < goal && s1[Utils.NextIndex(s1, index)].GetCoord(xy) > goal)
+                {
+                    instance++;
+                }
+                index++;
             }
 
-            // Find index position
-            for (var index = 0; index < Data.Count; index++)
+            // Find said instance
+            if (instance > 0)
             {
-                if (Data[searchIndex].GetCoordCombination(3)[xy] == goal)
+                index = 0;
+                var found = 0;
+                var backup = -1;
+                while (index < s2.Count)
                 {
-                    bigger = !bigger;
+                    if (s2[index].GetCoord(xy) == goal ||
+                        s2[index].GetCoord(xy) > goal && s2[Utils.NextIndex(s2, index)].GetCoord(xy) < goal ||
+                        s2[index].GetCoord(xy) < goal && s2[Utils.NextIndex(s2, index)].GetCoord(xy) > goal)
+                    {
+                        if (instance == 1)
+                        {
+                            return index;
+                        }
+                        else if (found > 0)
+                        {
+                            return index;
+                        }
+                        else if (s2[index].GetCoord(xy) == goal && s2[Utils.NextIndex(s2, index)].GetCoord(xy) != goal
+                            || s2[index].GetCoord(xy) != goal)
+                        {
+                            backup = index;
+                            found++;
+                        }
+                    }
+                    index++;
                 }
-                else if (Data[searchIndex].GetCoordCombination(3)[xy] > goal != bigger)
+                if (backup != -1)
                 {
-                    return searchIndex;
+                    return backup;
                 }
-
-                searchIndex = (searchIndex + 1) % Data.Count;
             }
             return -1;       // None Found
         }
