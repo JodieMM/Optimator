@@ -39,7 +39,7 @@ namespace Optimator
                 // Read File
                 var data = Utils.ReadFile(Utils.GetDirectory(fileName, Consts.SceneExt));
                 Name = fileName;
-                Version = data[0].Split(Consts.Semi)[1];
+                Version = data[0];
                 Utils.CheckValidVersion(Version);
 
                 // Time Length
@@ -117,7 +117,7 @@ namespace Optimator
         {
             var data = new List<string>
             {
-                Consts.Scene + Consts.SemiS + Consts.Version,
+                Consts.Version,
                 TimeLength.ToString(),
                 Utils.ColorToString(Background)
             };

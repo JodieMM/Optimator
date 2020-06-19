@@ -34,7 +34,7 @@ namespace Optimator
         {
             Name = inName;
             var data = Utils.ReadFile(Utils.GetDirectory(Name, Consts.SetExt));
-            Version = data[0].Split(Consts.Semi)[1];
+            Version = data[0];
             Utils.CheckValidVersion(Version);
 
             // Pieces List
@@ -96,7 +96,7 @@ namespace Optimator
             // Type and Version
             var newData = new List<string>
             {
-                Consts.Set + Consts.SemiS + Consts.Version
+                Consts.Version
             };
 
             // Reset Set to Save

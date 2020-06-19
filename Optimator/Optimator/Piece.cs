@@ -38,7 +38,7 @@ namespace Optimator
             var data = Utils.ReadFile(Utils.GetDirectory(Name, Consts.PieceExt));
 
             // Get Version
-            Version = data[0].Split(Consts.Semi)[1];
+            Version = data[0];
             Utils.CheckValidVersion(Version);
 
             // Get Points and Colours from File
@@ -99,7 +99,7 @@ namespace Optimator
             // Type and Version
             var newData = new List<string>
             {
-                Consts.Piece + Consts.SemiS + Version,
+                Version,
                 ColourState.GetData() + Consts.SemiS + OutlineWidth + Consts.SemiS + PieceDetails
             };
 
@@ -313,6 +313,7 @@ namespace Optimator
             var shape1 = s1;
             var shape2 = s2;
             var isSwapped = false;
+            var minmax = Utils.FindMinMax(s1);
             var reachedBottom1 = false;
             var reachedBottom2 = false;
             var reachedBelow1 = false;
@@ -371,7 +372,34 @@ namespace Optimator
                 index1 = isSwapped ? i2 : i1;
                 index2 = isSwapped ? i1 : i2;
 
-                // Check for neighbouring spots
+                // CLEANING: Check Dominant Point not Already Drawn
+                //var undrawn = true;
+                //if (shape1[index1].GetCoord(altz) == (xChange ? minmax[0] : minmax[2]) ||
+                //    shape1[index1].GetCoord(altz) == (xChange ? minmax[1] : minmax[3]))
+                //{
+                //    foreach (var spot in FindSymmetricalMatches(shape2, shape1[index1], z))
+                //    {
+                //        if (shape2.IndexOf(spot) < index2)
+                //        {
+                //            undrawn = false;
+                //            i1 += isSwapped ? 0 : 1;
+                //            i2 += isSwapped ? 1 : 0;
+                //        }
+                //    }
+                //}
+                //if (undrawn)
+                //{
+
+
+
+
+
+
+
+
+
+
+                    // Check for neighbouring spots
                 if (index1 < shape1.Count - 1 && shape1[index1].GetCoord(z) == shape1[index1 + 1].GetCoord(z))
                 {
                     // If the neighbours have a pre-made matching spot
@@ -426,11 +454,11 @@ namespace Optimator
                             shape2[Utils.Modulo(shapeSearch, shape2.Count)], shape1[index1].GetCoord(z), z);
 
                         float unchanged = shape1[index1].GetCoord(z);
-                        float changed = isSwapped ? Utils.FindMiddleSpot(newShape[altz], shape1[index1].GetCoord(altz), angle) : 
+                        float changed = isSwapped ? Utils.FindMiddleSpot(newShape[altz], shape1[index1].GetCoord(altz), angle) :
                             Utils.FindMiddleSpot(shape1[index1].GetCoord(altz), newShape[altz], angle);
                         Spot newSpot = new Spot(xChange ? changed : unchanged, xChange ? unchanged : changed);
                         merged.Add(newSpot);
-                        changed = isSwapped ? Utils.FindMiddleSpot(newShape[altz], shape1[index1 + 1].GetCoord(altz), angle) : 
+                        changed = isSwapped ? Utils.FindMiddleSpot(newShape[altz], shape1[index1 + 1].GetCoord(altz), angle) :
                             Utils.FindMiddleSpot(shape1[index1 + 1].GetCoord(altz), newShape[altz], angle);
                         if (xChange)
                         {
@@ -458,7 +486,7 @@ namespace Optimator
                             float changed = Utils.FindMiddleSpot(s1[Utils.Modulo(i1, s1.Count)].GetCoord(altz), s2[Utils.Modulo(i2, s2.Count)].GetCoord(altz), angle);
                             Spot newSpot = new Spot(xChange ? changed : unchanged, xChange ? unchanged : changed);
                             merged.Add(newSpot);
-                            changed = isSwapped ? Utils.FindMiddleSpot(shape2[Utils.NextIndex(shape2, index2)].GetCoord(altz), shape1[index1].GetCoord(altz), angle) : 
+                            changed = isSwapped ? Utils.FindMiddleSpot(shape2[Utils.NextIndex(shape2, index2)].GetCoord(altz), shape1[index1].GetCoord(altz), angle) :
                                 Utils.FindMiddleSpot(shape1[index1].GetCoord(altz), shape2[Utils.NextIndex(shape2, index2)].GetCoord(altz), angle);
                             if (xChange)
                             {
@@ -486,11 +514,11 @@ namespace Optimator
                     else
                     {
                         var shapeSearch = FindSymmetricalCoordHome(shape1, shape2, shape1[index1], z);
-                        var newShape = FindSymmetricalOppositeCoord(shape2[Utils.NextIndex(shape2, shapeSearch)], 
+                        var newShape = FindSymmetricalOppositeCoord(shape2[Utils.NextIndex(shape2, shapeSearch)],
                             shape2[Utils.Modulo(shapeSearch, shape2.Count)], shape1[index1].GetCoord(z), z);
 
                         float unchanged = shape1[index1].GetCoord(z);
-                        float changed = isSwapped ? Utils.FindMiddleSpot(newShape[altz], shape1[index1].GetCoord(altz), angle) : 
+                        float changed = isSwapped ? Utils.FindMiddleSpot(newShape[altz], shape1[index1].GetCoord(altz), angle) :
                             Utils.FindMiddleSpot(shape1[index1].GetCoord(altz), newShape[altz], angle);
                         Spot newSpot = new Spot(xChange ? changed : unchanged, xChange ? unchanged : changed);
                         merged.Add(newSpot);
@@ -498,6 +526,8 @@ namespace Optimator
                         i2 += isSwapped ? 1 : 0;
                     }
                 }
+                //}
+                // CLEANING
             }
             return merged;
         }          
@@ -626,6 +656,20 @@ namespace Optimator
             //CURVE
 
             return new float[] { -1 }; // Error
+        }
+
+        public List<Spot> FindSymmetricalMatches(List<Spot> spots, Spot match, int xy)
+        {
+            // CLEANING
+            var matches = new List<Spot>();
+            foreach (var spot in spots)
+            {
+                if (spot.GetCoord(xy) == match.GetCoord(xy))
+                {
+                    matches.Add(spot);
+                }
+            }
+            return matches;
         }
 
         /// <summary>

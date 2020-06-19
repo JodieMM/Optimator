@@ -15,12 +15,6 @@ namespace Optimator
         public const string Settings = "Settings.txt";
         public const string DefaultSettings = "DefaultSettings.txt";
 
-        // Types
-        public const string Piece = "Piece";
-        public const string Set = "Set";
-        public const string Scene = "Scene";
-        public const string Video = "Video";
-
         // File Extensions
         public const string PieceExt = ".optrp";
         public const string SetExt = ".optrs";

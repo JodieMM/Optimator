@@ -36,7 +36,7 @@ namespace Optimator
                 // Read File
                 var data = Utils.ReadFile(Utils.GetDirectory(fileName, Consts.VideoExt));
                 Name = fileName;
-                Version = data[0].Split(Consts.Semi)[1];
+                Version = data[0];
                 Utils.CheckValidVersion(Version);
 
                 // FPS, Video Size
@@ -81,7 +81,7 @@ namespace Optimator
         {
             var data = new List<string>
             {
-                Consts.Video + Consts.SemiS + Consts.Version,
+                Consts.Version,
                 FPS.ToString() + Consts.SemiS + videoWidth.ToString() + Consts.ColonS + videoHeight.ToString()
             };
 
