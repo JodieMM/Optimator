@@ -312,12 +312,13 @@ namespace Optimator
             var index2 = 0;
             var shape1 = s1;
             var shape2 = s2;
-            var isSwapped = false;
+            var swapped = false;
             var minmax = Utils.FindMinMax(s1);
             var reachedBottom1 = false;
             var reachedBottom2 = false;
             var reachedBelow1 = false;
             var reachedBelow2 = false;
+            List<int[]> holdingIndexes = new List<int[]>();
             var i1 = 0;
             var i2 = 0;
             var z = xChange ? 1 : 0;
@@ -337,7 +338,7 @@ namespace Optimator
                 }
                 if (xChange)
                 {         
-                    isSwapped = i2 < s2.Count && (i1 >= s1.Count || reachedBottom1 && !reachedBottom2 ||
+                    swapped = i2 < s2.Count && (i1 >= s1.Count || reachedBottom1 && !reachedBottom2 ||
                         !reachedBottom1 && !reachedBottom2 && s1[i1].Y < s2[i2].Y ||
                         reachedBottom1 && reachedBottom2 & s1[i1].Y > s2[i2].Y);
                 }
@@ -359,7 +360,7 @@ namespace Optimator
                     {
                         reachedBelow2 = false;
                     }
-                    isSwapped = i2 < s2.Count && (i1 >= s1.Count || reachedBottom1 && !reachedBottom2 ||
+                    swapped = i2 < s2.Count && (i1 >= s1.Count || reachedBottom1 && !reachedBottom2 ||
                         !reachedBottom1 && !reachedBottom2 &&
                         (s1[i1].Y < s2[i2].Y || s1[i1].Y == s2[i2].Y && (reachedBelow1 && reachedBelow2 && s1[i1].X < s2[i2].X ||
                         !reachedBelow1 && !reachedBelow2 && s1[i1].X > s2[i1].X)) ||
@@ -367,13 +368,25 @@ namespace Optimator
                         (s1[i1].Y > s2[i2].Y || s1[i1].Y == s2[i2].Y && (reachedBelow1 && reachedBelow2 && s1[i1].X < s2[i2].X ||
                         !reachedBelow1 && !reachedBelow2 && s1[i1].X > s2[i1].X)));
                 }
-                shape1 = isSwapped ? s2 : s1;
-                shape2 = isSwapped ? s1 : s2;
-                index1 = isSwapped ? i2 : i1;
-                index2 = isSwapped ? i1 : i2;
+                shape1 = swapped ? s2 : s1;
+                shape2 = swapped ? s1 : s2;
+                index1 = swapped ? Utils.Modulo(i2, s2.Count) : Utils.Modulo(i1, s1.Count);
+                index2 = swapped ? Utils.Modulo(i1, s1.Count) : Utils.Modulo(i2, s2.Count);
 
                 // CLEANING: Check Dominant Point not Already Drawn
-                //var undrawn = true;
+                var undrawn = true;
+                var index = 0;
+                while (index < holdingIndexes.Count && undrawn)
+                {
+                    if (holdingIndexes[index][0] == (swapped ? 1 : 0) && holdingIndexes[index][1] == index1)
+                    {
+                        undrawn = false;
+                        holdingIndexes.RemoveAt(index);
+                        i1 += swapped ? 0 : 1;
+                        i2 += swapped ? 1 : 0;
+                    }
+                    index++;
+                }
                 //if (shape1[index1].GetCoord(altz) == (xChange ? minmax[0] : minmax[2]) ||
                 //    shape1[index1].GetCoord(altz) == (xChange ? minmax[1] : minmax[3]))
                 //{
@@ -387,145 +400,279 @@ namespace Optimator
                 //        }
                 //    }
                 //}
-                //if (undrawn)
+
+
+
+                if (undrawn)
+                {
+                    var matchPosition = FindSymmetricalCoordHome(shape1, shape2, shape1[index1], z);
+
+                    // Single Matching Spot
+                    if (matchPosition.Length == 1 && matchPosition[0] != -1)
+                    {
+                        var match = Utils.Modulo(matchPosition[0], shape2.Count);
+                        var unchanged = shape1[index1].GetCoord(z);
+                        var changed = Utils.FindMiddleSpot(shape1[index1].GetCoord(altz), shape2[match].GetCoord(altz), angle, swapped);
+                        var newSpot = new Spot(xChange ? changed : unchanged, xChange ? unchanged : changed);
+                        merged.Add(newSpot);
+                        index1++;
+                        i1 += swapped ? 0 : 1;
+                        i2 += swapped ? 1 : 0;
+                        if (match == index2)
+                        {
+                            index2++;
+                            i1 += swapped ? 1 : 0;
+                            i2 += swapped ? 0 : 1;
+                        }
+                        else if (match > index2)
+                        {
+                            holdingIndexes.Add(new int[] { swapped ? 0 : 1, match });
+                        }
+
+                        // Check for Self Neighbours
+                        if (index1 < shape1.Count - 1 && shape1[index1].GetCoord(z) == shape1[index1 + 1].GetCoord(z))
+                        {
+                            // Self and Match Neighbours
+                            if (shape2[match].GetCoord(z) == shape2[Utils.NextIndex(shape2, match)].GetCoord(z) && shape2.Count > 1)
+                            {
+                                changed = Utils.FindMiddleSpot(shape1[Utils.NextIndex(shape1, index1)].GetCoord(altz),
+                                    shape2[Utils.NextIndex(shape2, match)].GetCoord(altz), angle, swapped);
+                                if (xChange)
+                                {
+                                    newSpot.X = changed;
+                                }
+                                else
+                                {
+                                    newSpot.Y = changed;
+                                }
+                                merged.Add(newSpot);
+                                index1++;
+                                i1 += swapped ? 0 : 1;
+                                i2 += swapped ? 1 : 0;
+                                if (Utils.NextIndex(shape2, match) == index2)
+                                {
+                                    index2++;
+                                    i1 += swapped ? 1 : 0;
+                                    i2 += swapped ? 0 : 1;
+                                }
+                                else if (Utils.NextIndex(shape2, match) > index2)
+                                {
+                                    holdingIndexes.Add(new int[] { swapped ? 1 : 0, Utils.NextIndex(shape2, match) });
+                                }
+                            }
+                            // Self Neighbour Only
+                            else
+                            {
+                                changed = Utils.FindMiddleSpot(shape1[Utils.NextIndex(shape1, index1)].GetCoord(altz),
+                                    shape2[match].GetCoord(altz), angle, swapped);
+                                if (xChange)
+                                {
+                                    newSpot.X = changed;
+                                }
+                                else
+                                {
+                                    newSpot.Y = changed;
+                                }
+                                merged.Add(newSpot);
+                                index1++;
+                                i1 += swapped ? 0 : 1;
+                                i2 += swapped ? 1 : 0;
+                            }
+                        }
+                        // Check for Match Neighbours
+                        else if (shape2[match].GetCoord(z) == shape2[Utils.NextIndex(shape2, match)].GetCoord(z) && shape2.Count > 1)
+                        {
+                            changed = Utils.FindMiddleSpot(shape1[index1].GetCoord(altz),
+                                    shape2[Utils.NextIndex(shape2, match)].GetCoord(altz), angle, swapped);
+                            if (xChange)
+                            {
+                                newSpot.X = changed;
+                            }
+                            else
+                            {
+                                newSpot.Y = changed;
+                            }
+                            merged.Add(newSpot);
+                            if (Utils.NextIndex(shape2, match) == index2)
+                            {
+                                index2++;
+                                i1 += swapped ? 1 : 0;
+                                i2 += swapped ? 0 : 1;
+                            }
+                            else if (Utils.NextIndex(shape2, match) > index2)
+                            {
+                                holdingIndexes.Add(new int[] { swapped ? 1 : 0, Utils.NextIndex(shape2, match) });
+                            }
+                        }
+                    }
+                    // Spaced Between Two Spots
+                    else if (matchPosition.Length == 2)
+                    {
+                        var match = FindSymmetricalOppositeCoord(shape2[Utils.Modulo(matchPosition[0], shape2.Count)],
+                                shape2[Utils.Modulo(matchPosition[1], shape2.Count)], shape1[index1].GetCoord(z), z);
+                        var unchanged = shape1[index1].GetCoord(z);
+                        var changed = Utils.FindMiddleSpot(shape1[index1].GetCoord(altz), match[altz], angle, swapped);
+                        var newSpot = new Spot(xChange ? changed : unchanged, xChange ? unchanged : changed);
+                        // TODO: New spots need to retain old features
+                        merged.Add(newSpot);
+                        index1++;
+                        i1 += swapped ? 0 : 1;
+                        i2 += swapped ? 1 : 0;
+
+                        // Check for Self Neighbours
+                        if (index1 < shape1.Count - 1 && shape1[index1].GetCoord(z) == shape1[index1 + 1].GetCoord(z))
+                        {
+                            changed = Utils.FindMiddleSpot(shape1[Utils.NextIndex(shape1, index1)].GetCoord(altz),
+                                    match[altz], angle, swapped);
+                            if (xChange)
+                            {
+                                newSpot.X = changed;
+                            }
+                            else
+                            {
+                                newSpot.Y = changed;
+                            }
+                            merged.Add(newSpot);
+                            index1++;
+                            i1 += swapped ? 0 : 1;
+                            i2 += swapped ? 1 : 0;
+                        }
+                    }
+                }
+
+
+
+
+
+
+                // CLEANING
+                //// Check for neighbouring spots
+                //if (index1 < shape1.Count - 1 && shape1[index1].GetCoord(z) == shape1[index1 + 1].GetCoord(z))
                 //{
+                //    // If the neighbours have a pre-made matching spot
+                //    if (shape2[Utils.Modulo(index2, shape2.Count)].GetCoord(z) == shape1[index1].GetCoord(z))
+                //    {
+                //        // If the matching spots also have a neighbour
+                //        if (shape2[Utils.NextIndex(shape2, index2)].GetCoord(z) == shape2[Utils.Modulo(index2, shape2.Count)].GetCoord(z))
+                //        {
+                //            float unchanged = shape1[index1].GetCoord(z);
+                //            float changed = Utils.FindMiddleSpot(s1[Utils.Modulo(i1, s1.Count)].GetCoord(altz), s2[Utils.Modulo(i2, s2.Count)].GetCoord(altz), angle);
+                //            var newSpot = new Spot(xChange ? changed : unchanged, xChange ? unchanged : changed);
+                //            merged.Add(newSpot);
+                //            changed = Utils.FindMiddleSpot(s1[Utils.NextIndex(s1, i1)].GetCoord(altz), s2[Utils.NextIndex(s2, i2)].GetCoord(altz), angle);
+                //            if (xChange)
+                //            {
+                //                newSpot.X = changed;
+                //            }
+                //            else
+                //            {
+                //                newSpot.Y = changed;
+                //            }
+                //            merged.Add(newSpot);
+                //            i1 += 2;
+                //            i2 += 2;
+                //        }
+                //        else
+                //        {
+                //            float unchanged = shape1[index1].GetCoord(z);
+                //            float changed = Utils.FindMiddleSpot(s1[Utils.Modulo(i1, s1.Count)].GetCoord(altz), s2[Utils.Modulo(i2, s2.Count)].GetCoord(altz), angle);
+                //            Spot newSpot = new Spot(xChange ? changed : unchanged, xChange ? unchanged : changed);
+                //            merged.Add(newSpot);
+                //            changed = swapped ? Utils.FindMiddleSpot(shape2[Utils.Modulo(index2, shape2.Count)].GetCoord(altz), shape1[index1 + 1].GetCoord(altz), angle) :
+                //                Utils.FindMiddleSpot(shape1[index1 + 1].GetCoord(altz), shape2[Utils.Modulo(index2, shape2.Count)].GetCoord(altz), angle);
+                //            if (xChange)
+                //            {
+                //                newSpot.X = changed;
+                //            }
+                //            else
+                //            {
+                //                newSpot.Y = changed;
+                //            }
+                //            merged.Add(newSpot);
+                //            i1 += swapped ? 1 : 2;
+                //            i2 += swapped ? 2 : 1;
+                //        }
+                //    }
+                //    // If the neighbours need a spot to be made for them
+                //    else
+                //    {
+                //        var shapeSearch = FindSymmetricalCoordHome(shape1, shape2, shape1[index1], z);
+                //        var newShape = FindSymmetricalOppositeCoord(shape2[Utils.NextIndex(shape2, shapeSearch)],
+                //            shape2[Utils.Modulo(shapeSearch, shape2.Count)], shape1[index1].GetCoord(z), z);
 
+                //        float unchanged = shape1[index1].GetCoord(z);
+                //        float changed = swapped ? Utils.FindMiddleSpot(newShape[altz], shape1[index1].GetCoord(altz), angle) :
+                //            Utils.FindMiddleSpot(shape1[index1].GetCoord(altz), newShape[altz], angle);
+                //        Spot newSpot = new Spot(xChange ? changed : unchanged, xChange ? unchanged : changed);
+                //        merged.Add(newSpot);
+                //        changed = swapped ? Utils.FindMiddleSpot(newShape[altz], shape1[index1 + 1].GetCoord(altz), angle) :
+                //            Utils.FindMiddleSpot(shape1[index1 + 1].GetCoord(altz), newShape[altz], angle);
+                //        if (xChange)
+                //        {
+                //            newSpot.X = changed;
+                //        }
+                //        else
+                //        {
+                //            newSpot.Y = changed;
+                //        }
+                //        merged.Add(newSpot);
+                //        i1 += swapped ? 0 : 2;
+                //        i2 += swapped ? 2 : 0;
+                //    }
+                //}
+                //// Single spot, not in a line
+                //else
+                //{
+                //    // Has match
+                //    if (shape2[Utils.Modulo(index2, shape2.Count)].GetCoord(z) == shape1[index1].GetCoord(z))
+                //    {
+                //        // Match has neighbours
+                //        if (shape2[Utils.NextIndex(shape2, index2)].GetCoord(z) == shape2[Utils.Modulo(index2, shape2.Count)].GetCoord(z))
+                //        {
+                //            float unchanged = shape1[index1].GetCoord(z);
+                //            float changed = Utils.FindMiddleSpot(s1[Utils.Modulo(i1, s1.Count)].GetCoord(altz), s2[Utils.Modulo(i2, s2.Count)].GetCoord(altz), angle);
+                //            Spot newSpot = new Spot(xChange ? changed : unchanged, xChange ? unchanged : changed);
+                //            merged.Add(newSpot);
+                //            changed = swapped ? Utils.FindMiddleSpot(shape2[Utils.NextIndex(shape2, index2)].GetCoord(altz), shape1[index1].GetCoord(altz), angle) :
+                //                Utils.FindMiddleSpot(shape1[index1].GetCoord(altz), shape2[Utils.NextIndex(shape2, index2)].GetCoord(altz), angle);
+                //            if (xChange)
+                //            {
+                //                newSpot.X = changed;
+                //            }
+                //            else
+                //            {
+                //                newSpot.Y = changed;
+                //            }
+                //            merged.Add(newSpot);
+                //            i1 += swapped ? 2 : 1;
+                //            i2 += swapped ? 1 : 2;
+                //        }
+                //        else
+                //        {
+                //            float unchanged = shape1[index1].GetCoord(z);
+                //            float changed = Utils.FindMiddleSpot(s1[Utils.Modulo(i1, s1.Count)].GetCoord(altz), s2[Utils.Modulo(i2, s2.Count)].GetCoord(altz), angle);
+                //            Spot newSpot = new Spot(xChange ? changed : unchanged, xChange ? unchanged : changed);
+                //            merged.Add(newSpot);
+                //            i1++;
+                //            i2++;
+                //        }
+                //    }
+                //    // Need to build match
+                //    else
+                //    {
+                //        var shapeSearch = FindSymmetricalCoordHome(shape1, shape2, shape1[index1], z);
+                //        var newShape = FindSymmetricalOppositeCoord(shape2[Utils.NextIndex(shape2, shapeSearch)],
+                //            shape2[Utils.Modulo(shapeSearch, shape2.Count)], shape1[index1].GetCoord(z), z);
 
-
-
-
-
-
-
-
-
-                    // Check for neighbouring spots
-                if (index1 < shape1.Count - 1 && shape1[index1].GetCoord(z) == shape1[index1 + 1].GetCoord(z))
-                {
-                    // If the neighbours have a pre-made matching spot
-                    if (shape2[Utils.Modulo(index2, shape2.Count)].GetCoord(z) == shape1[index1].GetCoord(z))
-                    {
-                        // If the matching spots also have a neighbour
-                        if (shape2[Utils.NextIndex(shape2, index2)].GetCoord(z) == shape2[Utils.Modulo(index2, shape2.Count)].GetCoord(z))
-                        {
-                            float unchanged = shape1[index1].GetCoord(z);
-                            float changed = Utils.FindMiddleSpot(s1[Utils.Modulo(i1, s1.Count)].GetCoord(altz), s2[Utils.Modulo(i2, s2.Count)].GetCoord(altz), angle);
-                            var newSpot = new Spot(xChange ? changed : unchanged, xChange ? unchanged : changed);
-                            merged.Add(newSpot);
-                            changed = Utils.FindMiddleSpot(s1[Utils.NextIndex(s1, i1)].GetCoord(altz), s2[Utils.NextIndex(s2, i2)].GetCoord(altz), angle);
-                            if (xChange)
-                            {
-                                newSpot.X = changed;
-                            }
-                            else
-                            {
-                                newSpot.Y = changed;
-                            }
-                            merged.Add(newSpot);
-                            i1 += 2;
-                            i2 += 2;
-                        }
-                        else
-                        {
-                            float unchanged = shape1[index1].GetCoord(z);
-                            float changed = Utils.FindMiddleSpot(s1[Utils.Modulo(i1, s1.Count)].GetCoord(altz), s2[Utils.Modulo(i2, s2.Count)].GetCoord(altz), angle);
-                            Spot newSpot = new Spot(xChange ? changed : unchanged, xChange ? unchanged : changed);
-                            merged.Add(newSpot);
-                            changed = isSwapped ? Utils.FindMiddleSpot(shape2[Utils.Modulo(index2, shape2.Count)].GetCoord(altz), shape1[index1 + 1].GetCoord(altz), angle) :
-                                Utils.FindMiddleSpot(shape1[index1 + 1].GetCoord(altz), shape2[Utils.Modulo(index2, shape2.Count)].GetCoord(altz), angle);
-                            if (xChange)
-                            {
-                                newSpot.X = changed;
-                            }
-                            else
-                            {
-                                newSpot.Y = changed;
-                            }
-                            merged.Add(newSpot);
-                            i1 += isSwapped ? 1 : 2;
-                            i2 += isSwapped ? 2 : 1;
-                        }
-                    }
-                    // If the neighbours need a spot to be made for them
-                    else
-                    {
-                        var shapeSearch = FindSymmetricalCoordHome(shape1, shape2, shape1[index1], z);
-                        var newShape = FindSymmetricalOppositeCoord(shape2[Utils.NextIndex(shape2, shapeSearch)],
-                            shape2[Utils.Modulo(shapeSearch, shape2.Count)], shape1[index1].GetCoord(z), z);
-
-                        float unchanged = shape1[index1].GetCoord(z);
-                        float changed = isSwapped ? Utils.FindMiddleSpot(newShape[altz], shape1[index1].GetCoord(altz), angle) :
-                            Utils.FindMiddleSpot(shape1[index1].GetCoord(altz), newShape[altz], angle);
-                        Spot newSpot = new Spot(xChange ? changed : unchanged, xChange ? unchanged : changed);
-                        merged.Add(newSpot);
-                        changed = isSwapped ? Utils.FindMiddleSpot(newShape[altz], shape1[index1 + 1].GetCoord(altz), angle) :
-                            Utils.FindMiddleSpot(shape1[index1 + 1].GetCoord(altz), newShape[altz], angle);
-                        if (xChange)
-                        {
-                            newSpot.X = changed;
-                        }
-                        else
-                        {
-                            newSpot.Y = changed;
-                        }
-                        merged.Add(newSpot);
-                        i1 += isSwapped ? 0 : 2;
-                        i2 += isSwapped ? 2 : 0;
-                    }
-                }
-                // Single spot, not in a line
-                else
-                {
-                    // Has match
-                    if (shape2[Utils.Modulo(index2, shape2.Count)].GetCoord(z) == shape1[index1].GetCoord(z))
-                    {
-                        // Match has neighbours
-                        if (shape2[Utils.NextIndex(shape2, index2)].GetCoord(z) == shape2[Utils.Modulo(index2, shape2.Count)].GetCoord(z))
-                        {
-                            float unchanged = shape1[index1].GetCoord(z);
-                            float changed = Utils.FindMiddleSpot(s1[Utils.Modulo(i1, s1.Count)].GetCoord(altz), s2[Utils.Modulo(i2, s2.Count)].GetCoord(altz), angle);
-                            Spot newSpot = new Spot(xChange ? changed : unchanged, xChange ? unchanged : changed);
-                            merged.Add(newSpot);
-                            changed = isSwapped ? Utils.FindMiddleSpot(shape2[Utils.NextIndex(shape2, index2)].GetCoord(altz), shape1[index1].GetCoord(altz), angle) :
-                                Utils.FindMiddleSpot(shape1[index1].GetCoord(altz), shape2[Utils.NextIndex(shape2, index2)].GetCoord(altz), angle);
-                            if (xChange)
-                            {
-                                newSpot.X = changed;
-                            }
-                            else
-                            {
-                                newSpot.Y = changed;
-                            }
-                            merged.Add(newSpot);
-                            i1 += isSwapped ? 2 : 1;
-                            i2 += isSwapped ? 1 : 2;
-                        }
-                        else
-                        {
-                            float unchanged = shape1[index1].GetCoord(z);
-                            float changed = Utils.FindMiddleSpot(s1[Utils.Modulo(i1, s1.Count)].GetCoord(altz), s2[Utils.Modulo(i2, s2.Count)].GetCoord(altz), angle);
-                            Spot newSpot = new Spot(xChange ? changed : unchanged, xChange ? unchanged : changed);
-                            merged.Add(newSpot);
-                            i1++;
-                            i2++;
-                        }
-                    }
-                    // Need to build match
-                    else
-                    {
-                        var shapeSearch = FindSymmetricalCoordHome(shape1, shape2, shape1[index1], z);
-                        var newShape = FindSymmetricalOppositeCoord(shape2[Utils.NextIndex(shape2, shapeSearch)],
-                            shape2[Utils.Modulo(shapeSearch, shape2.Count)], shape1[index1].GetCoord(z), z);
-
-                        float unchanged = shape1[index1].GetCoord(z);
-                        float changed = isSwapped ? Utils.FindMiddleSpot(newShape[altz], shape1[index1].GetCoord(altz), angle) :
-                            Utils.FindMiddleSpot(shape1[index1].GetCoord(altz), newShape[altz], angle);
-                        Spot newSpot = new Spot(xChange ? changed : unchanged, xChange ? unchanged : changed);
-                        merged.Add(newSpot);
-                        i1 += isSwapped ? 0 : 1;
-                        i2 += isSwapped ? 1 : 0;
-                    }
-                }
+                //        float unchanged = shape1[index1].GetCoord(z);
+                //        float changed = swapped ? Utils.FindMiddleSpot(newShape[altz], shape1[index1].GetCoord(altz), angle) :
+                //            Utils.FindMiddleSpot(shape1[index1].GetCoord(altz), newShape[altz], angle);
+                //        Spot newSpot = new Spot(xChange ? changed : unchanged, xChange ? unchanged : changed);
+                //        merged.Add(newSpot);
+                //        i1 += swapped ? 0 : 1;
+                //        i2 += swapped ? 1 : 0;
+                //    }
+                //}
                 //}
                 // CLEANING
             }
@@ -540,69 +687,125 @@ namespace Optimator
         /// <param name="match">The spot to be matched</param>
         /// <param name="xy">Whether searching for a match in x (0) or y (1)</param>
         /// <returns>The index where the matching point would go or -1 in error</returns>
-        public int FindSymmetricalCoordHome(List<Spot> s1, List<Spot> s2, Spot match, int xy)
+        public int[] FindSymmetricalCoordHome(List<Spot> s1, List<Spot> s2, Spot match, int xy)
         {
-            // Determine if first or second instance required
-            var goal = match.GetCoord(xy);
-            var index = 0;
-            var instance = 0;
-            while (index < s1.Count)
+            // Determine if Coord Occurs Top or Bottom / Left or Right
+            var minmax = Utils.FindMinMaxSpots(s1);
+            bool topLeft = false;
+            if ((xy == 0 && Utils.WithinRanges(s1, s1.IndexOf(minmax[1]), s1.IndexOf(minmax[0]), s1.IndexOf(match))) ||
+                (xy == 1 && Utils.WithinRanges(s1, s1.IndexOf(minmax[3]), s1.IndexOf(minmax[2]), s1.IndexOf(match))))
+
+
+
+                xy == 0 && (s1.IndexOf(match) <= s1.IndexOf(minmax[1]) || s1.IndexOf(match) >= s1.IndexOf(minmax[0])) ||
+                xy == 1 && s1.IndexOf(match) >= s1.IndexOf(minmax[3]) && s1.IndexOf(match) <= s1.IndexOf(minmax[2]))
             {
-                if (s1[index].GetCoord(xy) == goal)
-                {
-                    if (s1[index] == match)
-                    {
-                        index = s1.Count;
-                        instance++;
-                    }
-                    else if (s1[Utils.NextIndex(s1, index)].GetCoord(xy) != goal)
-                    {
-                        instance++;
-                    }
-                }
-                else if (s1[index].GetCoord(xy) > goal && s1[Utils.NextIndex(s1, index)].GetCoord(xy) < goal ||
-                    s1[index].GetCoord(xy) < goal && s1[Utils.NextIndex(s1, index)].GetCoord(xy) > goal)
-                {
-                    instance++;
-                }
-                index++;
+                topLeft = true;
             }
 
-            // Find said instance
-            if (instance > 0)
+            // Find Matching Position
+            var backup = new int[1] { -1 };
+            minmax = Utils.FindMinMaxSpots(s2);
+            var goal = match.GetCoord(xy);
+            for (int index = 0; index < s2.Count; index++)
             {
-                index = 0;
-                var found = 0;
-                var backup = -1;
-                while (index < s2.Count)
+                // Exact Match
+                if (s2[index].GetCoord(xy) == goal)
                 {
-                    if (s2[index].GetCoord(xy) == goal ||
-                        s2[index].GetCoord(xy) > goal && s2[Utils.NextIndex(s2, index)].GetCoord(xy) < goal ||
-                        s2[index].GetCoord(xy) < goal && s2[Utils.NextIndex(s2, index)].GetCoord(xy) > goal)
+                    if (xy == 0 && (index <= s2.IndexOf(minmax[1]) || index >= s2.IndexOf(minmax[0])) ||
+                        xy == 1 && index >= s2.IndexOf(minmax[3]) && index <= s2.IndexOf(minmax[2]))
                     {
-                        if (instance == 1)
+                        if (topLeft)
                         {
-                            return index;
-                        }
-                        else if (found > 0)
-                        {
-                            return index;
-                        }
-                        else if (s2[index].GetCoord(xy) == goal && s2[Utils.NextIndex(s2, index)].GetCoord(xy) != goal
-                            || s2[index].GetCoord(xy) != goal)
-                        {
-                            backup = index;
-                            found++;
+                            return new int[] { index };
                         }
                     }
-                    index++;
+                    else if (!topLeft)
+                    {
+                        return new int[] { index };
+                    }
+                    backup = new int[] { index };
                 }
-                if (backup != -1)
+                // Between Two Points
+                else if (s2[index].GetCoord(xy) > goal && s2[Utils.NextIndex(s2, index)].GetCoord(xy) < goal ||
+                    s2[index].GetCoord(xy) < goal && s2[Utils.NextIndex(s2, index)].GetCoord(xy) > goal)
                 {
-                    return backup;
+                    if ((xy == 0 && (index <= s2.IndexOf(minmax[1]) || index >= s2.IndexOf(minmax[0])) ||
+                        xy == 1 && index >= s2.IndexOf(minmax[3]) && index <= s2.IndexOf(minmax[2])) &&
+                        xy == 0 && (Utils.NextIndex(s2, index) <= s2.IndexOf(minmax[1]) ||
+                        Utils.NextIndex(s2, index) >= s2.IndexOf(minmax[0])) ||
+                        xy == 1 && Utils.NextIndex(s2, index) >= s2.IndexOf(minmax[3]) &&
+                        Utils.NextIndex(s2, index) <= s2.IndexOf(minmax[2]))
+                    {
+                        if (topLeft)
+                        {
+                            return new int[] { index, Utils.NextIndex(s2, index) };
+                        }
+                    }
+                    else if (!topLeft)
+                    {
+                        return new int[] { index, Utils.NextIndex(s2, index) };
+                    }
+                    backup = new int[] { index, Utils.NextIndex(s2, index) };
                 }
             }
-            return -1;       // None Found
+
+
+
+
+            //// Determine if first or second instance required
+            //var goal = match.GetCoord(xy);
+            //var index = 0;
+            //var instance = 0;
+            //while (index < s1.Count)
+            //{
+            //    if (s1[index].GetCoord(xy) == goal)
+            //    {
+            //        if (s1[index] == match)
+            //        {
+            //            index = s1.Count;
+            //            instance++;
+            //        }
+            //        else if (s1[Utils.NextIndex(s1, index)].GetCoord(xy) != goal)
+            //        {
+            //            instance++;
+            //        }
+            //    }
+            //    else if (s1[index].GetCoord(xy) > goal && s1[Utils.NextIndex(s1, index)].GetCoord(xy) < goal ||
+            //        s1[index].GetCoord(xy) < goal && s1[Utils.NextIndex(s1, index)].GetCoord(xy) > goal)
+            //    {
+            //        instance++;
+            //    }
+            //    index++;
+            //}
+
+            // Find said instance
+            //var backup = new int[1] { -1 };
+            //if (instance > 0)
+            //{
+            //    index = 0;
+            //    var found = 0;                
+            //    while (index < s2.Count)
+            //    {
+            //        if (s2[index].GetCoord(xy) == goal ||
+            //            s2[index].GetCoord(xy) > goal && s2[Utils.NextIndex(s2, index)].GetCoord(xy) < goal ||
+            //            s2[index].GetCoord(xy) < goal && s2[Utils.NextIndex(s2, index)].GetCoord(xy) > goal)
+            //        {
+            //            if (instance == 1 || found > 0)
+            //            {
+            //                return s2[index].GetCoord(xy) == goal ? new int[1] { index } : new int[2] { index, Utils.NextIndex(s2, index) };
+            //            }
+            //            else if (s2[index].GetCoord(xy) == goal && s2[Utils.NextIndex(s2, index)].GetCoord(xy) != goal
+            //                || s2[index].GetCoord(xy) != goal)
+            //            {
+            //                backup = new int[1] { index };
+            //                found++;
+            //            }
+            //        }
+            //        index++;
+            //    }
+            //}
+            return backup;       // None Found, Spare Used If Found
         }
 
         /// <summary>

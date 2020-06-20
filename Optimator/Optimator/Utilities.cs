@@ -331,6 +331,40 @@ namespace Optimator
             return new float[] { minX, maxX, minY, maxY };
         }
 
+        public static Spot[] FindMinMaxSpots(List<Spot> coords)
+        {
+            //CLEANING
+            var spots = new Spot[4];
+            float minX = float.MaxValue;
+            float maxX = float.MinValue;
+            float minY = float.MaxValue;
+            float maxY = float.MinValue;
+            foreach (var entry in coords)
+            {
+                if (entry.X < minX)
+                {
+                    minX = entry.X;
+                    spots[0] = entry;
+                }
+                if (entry.X > maxX)
+                {
+                    maxX = entry.X;
+                    spots[1] = entry;
+                }
+                if (entry.Y < minY)
+                {
+                    minY = entry.Y;
+                    spots[2] = entry;
+                }
+                if (entry.Y > maxY)
+                {
+                    maxY = entry.Y;
+                    spots[3] = entry;
+                }
+            }
+            return spots;
+        }
+
         /// <summary>
         /// Finds the middle of a shape.
         /// </summary>
@@ -360,6 +394,17 @@ namespace Optimator
                 currIndex = (currIndex == 0) ? list.Count - 1 : currIndex - 1;
             }
             return Modulo(currIndex, list.Count);
+        }
+
+        public static bool WithinRanges<T>(List<T> list, int minIndex, int maxIndex, int goal)
+        {
+            //CLEANING
+            if ((minIndex <= maxIndex && goal >= minIndex && goal <= maxIndex) ||
+                (minIndex > maxIndex && (goal >= minIndex || goal <= maxIndex)))
+            {
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -542,8 +587,14 @@ namespace Optimator
         /// <param name="b">Point b</param>
         /// <param name="angle">The angle percentage from a to b</param>
         /// <returns></returns>
-        public static float FindMiddleSpot(float a, float b, float angle)
+        public static float FindMiddleSpot(float a, float b, float angle, bool swap = false)
         {
+            if (swap)
+            {
+                var c = a;
+                a = b;
+                b = c;
+            }
             float[] result = new float[2];
             var multiplier = Modulo(angle, 90) / 90;
             return a == b ? a : a + (b - a) * multiplier;
