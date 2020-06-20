@@ -694,11 +694,6 @@ namespace Optimator
             bool topLeft = false;
             if ((xy == 0 && Utils.WithinRanges(s1, s1.IndexOf(minmax[1]), s1.IndexOf(minmax[0]), s1.IndexOf(match))) ||
                 (xy == 1 && Utils.WithinRanges(s1, s1.IndexOf(minmax[3]), s1.IndexOf(minmax[2]), s1.IndexOf(match))))
-
-
-
-                xy == 0 && (s1.IndexOf(match) <= s1.IndexOf(minmax[1]) || s1.IndexOf(match) >= s1.IndexOf(minmax[0])) ||
-                xy == 1 && s1.IndexOf(match) >= s1.IndexOf(minmax[3]) && s1.IndexOf(match) <= s1.IndexOf(minmax[2]))
             {
                 topLeft = true;
             }
@@ -712,8 +707,8 @@ namespace Optimator
                 // Exact Match
                 if (s2[index].GetCoord(xy) == goal)
                 {
-                    if (xy == 0 && (index <= s2.IndexOf(minmax[1]) || index >= s2.IndexOf(minmax[0])) ||
-                        xy == 1 && index >= s2.IndexOf(minmax[3]) && index <= s2.IndexOf(minmax[2]))
+                    if ((xy == 0 && Utils.WithinRanges(s2, s2.IndexOf(minmax[1]), s2.IndexOf(minmax[0]), index)) ||
+                        (xy == 1 && Utils.WithinRanges(s2, s2.IndexOf(minmax[3]), s2.IndexOf(minmax[2]), index)))
                     {
                         if (topLeft)
                         {
@@ -730,12 +725,10 @@ namespace Optimator
                 else if (s2[index].GetCoord(xy) > goal && s2[Utils.NextIndex(s2, index)].GetCoord(xy) < goal ||
                     s2[index].GetCoord(xy) < goal && s2[Utils.NextIndex(s2, index)].GetCoord(xy) > goal)
                 {
-                    if ((xy == 0 && (index <= s2.IndexOf(minmax[1]) || index >= s2.IndexOf(minmax[0])) ||
-                        xy == 1 && index >= s2.IndexOf(minmax[3]) && index <= s2.IndexOf(minmax[2])) &&
-                        xy == 0 && (Utils.NextIndex(s2, index) <= s2.IndexOf(minmax[1]) ||
-                        Utils.NextIndex(s2, index) >= s2.IndexOf(minmax[0])) ||
-                        xy == 1 && Utils.NextIndex(s2, index) >= s2.IndexOf(minmax[3]) &&
-                        Utils.NextIndex(s2, index) <= s2.IndexOf(minmax[2]))
+                    if (((xy == 0 && Utils.WithinRanges(s2, s2.IndexOf(minmax[1]), s2.IndexOf(minmax[0]), index)) ||
+                        (xy == 1 && Utils.WithinRanges(s2, s2.IndexOf(minmax[3]), s2.IndexOf(minmax[2]), index))) &&
+                        ((xy == 0 && Utils.WithinRanges(s2, s2.IndexOf(minmax[1]), s2.IndexOf(minmax[0]), Utils.NextIndex(s2, index))) ||
+                        (xy == 1 && Utils.WithinRanges(s2, s2.IndexOf(minmax[3]), s2.IndexOf(minmax[2]), Utils.NextIndex(s2, index)))))
                     {
                         if (topLeft)
                         {
