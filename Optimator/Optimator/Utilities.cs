@@ -47,7 +47,7 @@ namespace Optimator
                 }
             }
 
-            // Check correct file type
+            // Check correct file type ** NO LONGER ACCURATE - CHANGE INPUTS ON OPENFILEDIALOG
             if (!types.Contains(data[0].Split(Consts.Semi)[0]))
             {
                 if (types.Length == 1)
@@ -407,8 +407,8 @@ namespace Optimator
         /// <returns>True if goal within ranges</returns>
         public static bool WithinRanges<T>(List<T> list, int minIndex, int maxIndex, int goal)
         {
-            if ((minIndex <= maxIndex && goal > minIndex && goal < maxIndex) ||
-                (minIndex > maxIndex && (goal > minIndex || goal < maxIndex)))
+            if ((minIndex <= maxIndex && goal >= minIndex && goal <= maxIndex) ||
+                (minIndex > maxIndex && (goal >= minIndex || goal <= maxIndex)))
             {
                 return true;
             }

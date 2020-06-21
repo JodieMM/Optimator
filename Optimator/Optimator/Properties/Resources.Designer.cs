@@ -91,23 +91,22 @@ namespace Optimator.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 1.0.0
-        ///255,255,255,255
-        ///Blank.
-        /// </summary>
-        internal static string DefaultSettings {
-            get {
-                return ResourceManager.GetString("DefaultSettings", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap EraseIcon {
             get {
                 object obj = ResourceManager.GetObject("EraseIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] ffmpeg {
+            get {
+                object obj = ResourceManager.GetObject("ffmpeg", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         

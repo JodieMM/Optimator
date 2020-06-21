@@ -516,5 +516,8 @@
     <None Include="bin\Debug\DefaultSettings.txt" />
     <None Include="bin\Debug\Settings.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\ffmpeg\bin\ffmpeg.exe" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
