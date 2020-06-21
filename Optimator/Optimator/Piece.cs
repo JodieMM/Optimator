@@ -464,7 +464,7 @@ namespace Optimator
                         // Check for Match Neighbours
                         else if (shape2[match].GetCoord(z) == shape2[Utils.NextIndex(shape2, match)].GetCoord(z) && shape2.Count > 1)
                         {
-                            changed = Utils.FindMiddleSpot(shape1[index1].GetCoord(altz),
+                            changed = Utils.FindMiddleSpot(shape1[Utils.Modulo(index1, shape1.Count)].GetCoord(altz),
                                     shape2[Utils.NextIndex(shape2, match)].GetCoord(altz), angle, swapped);
                             if (xChange)
                             {
@@ -534,11 +534,23 @@ namespace Optimator
         /// <param name="xy">Whether searching for a match in x (0) or y (1)</param>
         /// <returns>The index where the matching point would go or -1 in error</returns>
         public int[] FindSymmetricalCoordHome(List<Spot> s1, List<Spot> s2, Spot match, int xy)
-        {
-            // Determine if Coord Occurs Top or Bottom / Left or Right
+        {            
             var minmax = Utils.FindMinMaxSpots(s1);
             bool topLeft = false;
-            if ((xy == 0 && Utils.WithinRanges(s1, s1.IndexOf(minmax[1]), s1.IndexOf(minmax[0]), s1.IndexOf(match))) ||
+            // Matches Min
+            if (xy == 0 && s1.IndexOf(match) == s1.IndexOf(minmax[0]) || xy == 1 && s1.IndexOf(match) == s1.IndexOf(minmax[2]))
+            {
+                minmax = Utils.FindMinMaxSpots(s2);
+                return new int[] { s2.IndexOf(minmax[xy == 0 ? 0 : 2]) };
+            }
+            // Matches Max
+            else if (xy == 0 && s1.IndexOf(match) == s1.IndexOf(minmax[1]) || xy == 1 && s1.IndexOf(match) == s1.IndexOf(minmax[3]))
+            {
+                minmax = Utils.FindMinMaxSpots(s2);
+                return new int[] { s2.IndexOf(minmax[xy == 0 ? 1 : 3]) };
+            }
+            // Determine if Coord Occurs Top or Bottom / Left or Right
+            else if ((xy == 0 && Utils.WithinRanges(s1, s1.IndexOf(minmax[0]), s1.IndexOf(minmax[1]), s1.IndexOf(match))) ||
                 (xy == 1 && Utils.WithinRanges(s1, s1.IndexOf(minmax[3]), s1.IndexOf(minmax[2]), s1.IndexOf(match))))
             {
                 topLeft = true;
@@ -553,7 +565,7 @@ namespace Optimator
                 // Exact Match
                 if (s2[index].GetCoord(xy) == goal)
                 {
-                    if ((xy == 0 && Utils.WithinRanges(s2, s2.IndexOf(minmax[1]), s2.IndexOf(minmax[0]), index)) ||
+                    if ((xy == 0 && Utils.WithinRanges(s2, s2.IndexOf(minmax[0]), s2.IndexOf(minmax[1]), index)) ||
                         (xy == 1 && Utils.WithinRanges(s2, s2.IndexOf(minmax[3]), s2.IndexOf(minmax[2]), index)))
                     {
                         if (topLeft)
@@ -571,9 +583,9 @@ namespace Optimator
                 else if (s2[index].GetCoord(xy) > goal && s2[Utils.NextIndex(s2, index)].GetCoord(xy) < goal ||
                     s2[index].GetCoord(xy) < goal && s2[Utils.NextIndex(s2, index)].GetCoord(xy) > goal)
                 {
-                    if (((xy == 0 && Utils.WithinRanges(s2, s2.IndexOf(minmax[1]), s2.IndexOf(minmax[0]), index)) ||
+                    if (((xy == 0 && Utils.WithinRanges(s2, s2.IndexOf(minmax[0]), s2.IndexOf(minmax[1]), index)) ||
                         (xy == 1 && Utils.WithinRanges(s2, s2.IndexOf(minmax[3]), s2.IndexOf(minmax[2]), index))) &&
-                        ((xy == 0 && Utils.WithinRanges(s2, s2.IndexOf(minmax[1]), s2.IndexOf(minmax[0]), Utils.NextIndex(s2, index))) ||
+                        ((xy == 0 && Utils.WithinRanges(s2, s2.IndexOf(minmax[0]), s2.IndexOf(minmax[1]), Utils.NextIndex(s2, index))) ||
                         (xy == 1 && Utils.WithinRanges(s2, s2.IndexOf(minmax[3]), s2.IndexOf(minmax[2]), Utils.NextIndex(s2, index)))))
                     {
                         if (topLeft)
@@ -581,7 +593,8 @@ namespace Optimator
                             return new int[] { index, Utils.NextIndex(s2, index) };
                         }
                     }
-                    else if (!topLeft)
+                    else if (!(xy == 0 && (s2.IndexOf(minmax[0]) == index || s2.IndexOf(minmax[1]) == index)) &&
+                        !(xy == 1 && (s2.IndexOf(minmax[2]) == index || s2.IndexOf(minmax[3]) == index)) && !topLeft)
                     {
                         return new int[] { index, Utils.NextIndex(s2, index) };
                     }
