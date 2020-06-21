@@ -81,7 +81,7 @@ namespace Optimator
         public Set()
         {
             Name = "";
-            Version = Consts.Version;
+            Version = Properties.Settings.Default.Version;
         }
 
 
@@ -96,7 +96,7 @@ namespace Optimator
             // Type and Version
             var newData = new List<string>
             {
-                Consts.Version
+                Properties.Settings.Default.Version
             };
 
             // Reset Set to Save

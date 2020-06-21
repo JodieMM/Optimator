@@ -91,6 +91,17 @@ namespace Optimator.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 1.0.0
+        ///255,255,255,255
+        ///Blank.
+        /// </summary>
+        internal static string DefaultSettings {
+            get {
+                return ResourceManager.GetString("DefaultSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap EraseIcon {

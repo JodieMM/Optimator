@@ -1,4 +1,5 @@
 ﻿using Optimator.Tabs;
+using Optimator.Properties;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -11,6 +12,7 @@ namespace Optimator.Forms
     public partial class SettingsTab : TabPageControl
     {
         public override HomeForm Owner { get; set; }
+        private string directory = "";
 
         /// <summary>
         /// Constructor for the tab.
@@ -19,7 +21,6 @@ namespace Optimator.Forms
         {
             InitializeComponent();
             Owner = owner;
-            VersionLbl.Text = "Version " + Consts.Version;
             DisplaySettings();
         }
 
@@ -55,8 +56,9 @@ namespace Optimator.Forms
         /// </summary>
         public void DisplaySettings()
         {
-            BackColourBox.BackColor = Settings.BackgroundColour;
-            WorkingDirValueLbl.Text = "Current Directory: " + Settings.WorkingDirectory;
+            VersionLbl.Text = "Version " + Settings.Default.Version;
+            BackColourBox.BackColor = Utils.ColourFromString(Settings.Default.BgColour);
+            WorkingDirValueLbl.Text = "Current Directory: " + Settings.Default.WorkingDirectory;
         }
 
 
@@ -70,7 +72,8 @@ namespace Optimator.Forms
         /// <param name="e"></param>
         private void ResetBtn_Click(object sender, EventArgs e)
         {
-            Settings.ResetSettings();
+            Settings.Default.BgColour = Utils.ColorToString(Color.White);
+            Settings.Default.WorkingDirectory = "Blank";
             DisplaySettings();
         }
 
@@ -81,8 +84,13 @@ namespace Optimator.Forms
         /// <param name="e"></param>
         private void SaveBtn_Click(object sender, EventArgs e)
         {
-            Settings.BackgroundColour = BackColourBox.BackColor;
-            Settings.UpdateSettings();
+            Settings.Default.BgColour = Utils.ColorToString(BackColourBox.BackColor);
+            if (directory != "")
+            {
+                Settings.Default.WorkingDirectory = directory;
+                directory = "";
+            }
+            Settings.Default.Save();
         }
 
         /// <summary>
@@ -95,13 +103,12 @@ namespace Optimator.Forms
             var result = DialogResult.OK;
 
             // Only check saving if something to save
-            if (BackColourBox.BackColor != Settings.BackgroundColour)
+            if (BackColourBox.BackColor != Utils.ColourFromString(Settings.Default.BgColour) || directory != "")
             {
                 result = MessageBox.Show("Do you want to exit without saving? Modified settings will not be saved.", "Exit Confirmation", MessageBoxButtons.OKCancel);
             }
             if (result == DialogResult.OK)
             {
-                Settings.InitialSettings();
                 Owner.RemoveTabPage(this);
             }
         }
@@ -135,10 +142,11 @@ namespace Optimator.Forms
         /// <param name="e"></param>
         private void NewWorkingDirectoryBtn_Click(object sender, EventArgs e)
         {
-            var path = Utils.SelectFolder(true);
+            var path = Utils.SelectFolder();
             if (path != "")
             {
                 WorkingDirValueLbl.Text = "Current Directory: " + path;
+                directory = path;
             }
         }
     }

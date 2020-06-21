@@ -102,7 +102,7 @@ namespace Optimator
         /// </summary>
         public Scene()
         {
-            Version = Consts.Version;
+            Version = Properties.Settings.Default.Version;
         }
 
 
@@ -117,7 +117,7 @@ namespace Optimator
         {
             var data = new List<string>
             {
-                Consts.Version,
+                Properties.Settings.Default.Version,
                 TimeLength.ToString(),
                 Utils.ColorToString(Background)
             };

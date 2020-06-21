@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using Optimator.Properties;
+using System.Drawing;
 
 namespace Optimator
 {
@@ -10,11 +11,6 @@ namespace Optimator
     /// </summary>
     public static class Consts
     {
-        // Setup
-        public const string Version = "1.0.0";
-        public const string Settings = "Settings.txt";
-        public const string DefaultSettings = "DefaultSettings.txt";
-
         // File Extensions
         public const string PieceExt = ".optrp";
         public const string SetExt = ".optrs";

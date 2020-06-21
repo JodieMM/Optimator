@@ -66,7 +66,7 @@ namespace Optimator
         /// </summary>
         public Video()
         {
-            Version = Consts.Version;
+            Version = Properties.Settings.Default.Version;
         }
 
 
@@ -81,7 +81,7 @@ namespace Optimator
         {
             var data = new List<string>
             {
-                Consts.Version,
+                Properties.Settings.Default.Version,
                 FPS.ToString() + Consts.SemiS + videoWidth.ToString() + Consts.ColonS + videoHeight.ToString()
             };
 

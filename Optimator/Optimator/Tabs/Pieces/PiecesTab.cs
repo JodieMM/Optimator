@@ -41,9 +41,9 @@ namespace Optimator
             InitializeComponent();
             Owner = owner;
 
-            DrawBase.BackColor = Settings.BackgroundColour;
-            DrawRight.BackColor = Settings.BackgroundColour;
-            DrawDown.BackColor = Settings.BackgroundColour;
+            DrawBase.BackColor = Utils.ColourFromString(Properties.Settings.Default.BgColour);
+            DrawRight.BackColor = Utils.ColourFromString(Properties.Settings.Default.BgColour); ;
+            DrawDown.BackColor = Utils.ColourFromString(Properties.Settings.Default.BgColour); ;
             Owner.GetTabControl().KeyUp += KeyPress;
             Enter += FocusOn;
             VisibleChanged += FocusOn;

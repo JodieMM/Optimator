@@ -82,7 +82,7 @@ namespace Optimator
         public Piece()
         {
             Name = "";
-            Version = Consts.Version;
+            Version = Properties.Settings.Default.Version;
             OutlineWidth = Consts.defaultOutlineWidth;
             PieceDetails = Consts.defaultPieceDetails;
         }

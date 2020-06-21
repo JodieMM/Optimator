@@ -165,7 +165,7 @@ namespace Optimator.Tabs.Sets
             // 
             // DrawRight
             // 
-            this.DrawRight.BackColor = Settings.BackgroundColour;
+            this.DrawRight.BackColor = Utils.ColourFromString(Properties.Settings.Default.BgColour);
             this.DrawRight.Location = new System.Drawing.Point(407, 156);
             this.DrawRight.Margin = new System.Windows.Forms.Padding(6);
             this.DrawRight.Name = "DrawRight";
@@ -178,7 +178,7 @@ namespace Optimator.Tabs.Sets
             // 
             // DrawDown
             // 
-            this.DrawDown.BackColor = Settings.BackgroundColour;
+            this.DrawDown.BackColor = Utils.ColourFromString(Properties.Settings.Default.BgColour);
             this.DrawDown.Location = new System.Drawing.Point(77, 486);
             this.DrawDown.Margin = new System.Windows.Forms.Padding(6);
             this.DrawDown.Name = "DrawDown";
@@ -191,7 +191,7 @@ namespace Optimator.Tabs.Sets
             // 
             // DrawBase
             // 
-            this.DrawBase.BackColor = Settings.BackgroundColour;
+            this.DrawBase.BackColor = Utils.ColourFromString(Properties.Settings.Default.BgColour);
             this.DrawBase.Location = new System.Drawing.Point(77, 156);
             this.DrawBase.Margin = new System.Windows.Forms.Padding(6);
             this.DrawBase.Name = "DrawBase";

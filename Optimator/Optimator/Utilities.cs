@@ -155,7 +155,7 @@ namespace Optimator
         /// <returns></returns>
         public static string GetDirectory(string folder, string name, string fileType = "")
         {
-            return Path.Combine(Settings.WorkingDirectory, folder, name + fileType);
+            return Path.Combine(Properties.Settings.Default.WorkingDirectory, folder, name + fileType);
         }
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace Optimator
         /// <returns></returns>
         public static string GetDirectory(string name, string fileType = "")
         {
-            return Path.Combine(Settings.WorkingDirectory, name + fileType);
+            return Path.Combine(Properties.Settings.Default.WorkingDirectory, name + fileType);
         }
 
         /// <summary>
@@ -174,7 +174,7 @@ namespace Optimator
         /// </summary>
         /// <param name="baseFolder">Whether the initial four sub-folders should be added</param>
         /// <returns>Path for new folder</returns>
-        public static string SelectFolder(bool baseFolder = false)
+        public static string SelectFolder()
         {
             var path = "";
             var openFileDialog = new FolderBrowserDialog();
@@ -182,13 +182,6 @@ namespace Optimator
             if (result == DialogResult.OK)
             {
                 path = openFileDialog.SelectedPath;
-            }
-
-            // Create sub-folders if this is the base directory
-            if (baseFolder && path != "")
-            {
-                Settings.WorkingDirectory = path;
-                Settings.UpdateSettings();
             }
             return path;
         }
@@ -200,13 +193,16 @@ namespace Optimator
         /// <returns>True if successful</returns>
         public static bool CheckValidFolder()
         {
-            if (Settings.WorkingDirectory == "Blank" || !Directory.Exists(Settings.WorkingDirectory))
+            if (Properties.Settings.Default.WorkingDirectory == "Blank" || !Directory.Exists(Properties.Settings.Default.WorkingDirectory))
             {
                 MessageBox.Show("Select a directory to work from.", "Directory Selection");
-                if (SelectFolder(true) == "")
+                var location = SelectFolder();
+                if (location == "")
                 {
                     return false;
                 }
+                Properties.Settings.Default.WorkingDirectory = location;
+                Properties.Settings.Default.Save();
             }
             return true;
         }
@@ -220,7 +216,7 @@ namespace Optimator
         public static bool CheckValidVersion(string version, bool message = true)
         {
             var thisVer = version.Split(Consts.Stop);
-            var currVer = Consts.Version.Split(Consts.Stop);
+            var currVer = Properties.Settings.Default.Version.Split(Consts.Stop);
             if (thisVer[0] == currVer[0] && thisVer[1] == currVer[1])
             {
                 return true;

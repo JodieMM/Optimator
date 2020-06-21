@@ -40,7 +40,7 @@ namespace Optimator.Tabs.Scenes
             Enter += FocusOn;
             VisibleChanged += FocusOn;
 
-            DrawPanel.BackColor = Settings.BackgroundColour;
+            DrawPanel.BackColor = Utils.ColourFromString(Properties.Settings.Default.BgColour);
             g = DrawPanel.CreateGraphics();            
         }
 

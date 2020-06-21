@@ -22,7 +22,6 @@ namespace Optimator
         public HomeForm()
         {
             InitializeComponent();
-            Settings.InitialSettings();
         }
 
 
