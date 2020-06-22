@@ -1,5 +1,4 @@
 ﻿using Optimator.Tabs;
-using System;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -43,6 +42,31 @@ namespace Optimator.Forms
             InfoLbl.Location = new Point(smallWidth, smallWidth * 3 + HelpLbl.Height 
                 + VersionLbl.Height + ToolStrip.Height);
             InfoLbl.Size = new Size(Width - 2 * smallWidth, bigHeight);
+
+            YoutubeLinkLbl.Location = new Point(smallWidth, smallWidth * 8 + HelpLbl.Height
+                + VersionLbl.Height + ToolStrip.Height);
+            OptiSiteLbl.Location = new Point(smallWidth, smallWidth * 10 + HelpLbl.Height
+                + VersionLbl.Height + ToolStrip.Height);
+        }
+
+        /// <summary>
+        /// Sends users to the Opti YouTube page.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void YoutubeLinkLbl_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://www.youtube.com/channel/UCiip8jvHNeyuF37XpmbgNog/");
+        }
+
+        /// <summary>
+        /// Sends users to the Opti website.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OptiSiteLbl_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://www.opti.technology/");
         }
     }
 }

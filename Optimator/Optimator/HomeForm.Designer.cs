@@ -190,7 +190,7 @@
             this.MinimumSize = new System.Drawing.Size(650, 450);
             this.Name = "HomeForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Optimator V1.4";
+            this.Text = "Optimator";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.MenuStrip.ResumeLayout(false);
             this.MenuStrip.PerformLayout();

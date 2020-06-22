@@ -120,9 +120,4 @@
   <metadata name="ToolStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <data name="InfoLbl.Text" xml:space="preserve">
-    <value>Unfortunately at this version of the software, comprehensive in-app help is not available. To access assistance, please view the tutorials available on YouTube or through the Opti website.
-
-https://www.youtube.com/channel/UCiip8jvHNeyuF37XpmbgNog/</value>
-  </data>
 </root>

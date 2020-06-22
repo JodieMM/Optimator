@@ -28,12 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HelpTab));
             this.ToolStrip = new System.Windows.Forms.ToolStrip();
             this.CloseBtn = new System.Windows.Forms.ToolStripButton();
             this.HelpLbl = new System.Windows.Forms.Label();
             this.VersionLbl = new System.Windows.Forms.Label();
             this.InfoLbl = new System.Windows.Forms.Label();
+            this.YoutubeLinkLbl = new System.Windows.Forms.LinkLabel();
+            this.OptiSiteLbl = new System.Windows.Forms.LinkLabel();
             this.ToolStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -91,15 +92,49 @@
             this.InfoLbl.Location = new System.Drawing.Point(50, 331);
             this.InfoLbl.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.InfoLbl.Name = "InfoLbl";
-            this.InfoLbl.Size = new System.Drawing.Size(1158, 567);
+            this.InfoLbl.Size = new System.Drawing.Size(1158, 323);
             this.InfoLbl.TabIndex = 130;
-            this.InfoLbl.Text = resources.GetString("InfoLbl.Text");
+            this.InfoLbl.Text = "Unfortunately at this version of the software, comprehensive in-app help is not a" +
+    "vailable. To access assistance, please view the tutorials available on YouTube o" +
+    "r through the Opti website.";
+            // 
+            // YoutubeLinkLbl
+            // 
+            this.YoutubeLinkLbl.ActiveLinkColor = System.Drawing.Color.DarkSeaGreen;
+            this.YoutubeLinkLbl.AutoSize = true;
+            this.YoutubeLinkLbl.Font = new System.Drawing.Font("Segoe UI", 16.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.YoutubeLinkLbl.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
+            this.YoutubeLinkLbl.LinkColor = System.Drawing.Color.Black;
+            this.YoutubeLinkLbl.Location = new System.Drawing.Point(51, 654);
+            this.YoutubeLinkLbl.Name = "YoutubeLinkLbl";
+            this.YoutubeLinkLbl.Size = new System.Drawing.Size(197, 59);
+            this.YoutubeLinkLbl.TabIndex = 131;
+            this.YoutubeLinkLbl.TabStop = true;
+            this.YoutubeLinkLbl.Text = "YouTube";
+            this.YoutubeLinkLbl.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.YoutubeLinkLbl_LinkClicked);
+            // 
+            // OptiSiteLbl
+            // 
+            this.OptiSiteLbl.ActiveLinkColor = System.Drawing.Color.DarkSeaGreen;
+            this.OptiSiteLbl.AutoSize = true;
+            this.OptiSiteLbl.Font = new System.Drawing.Font("Segoe UI", 16.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.OptiSiteLbl.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
+            this.OptiSiteLbl.LinkColor = System.Drawing.Color.Black;
+            this.OptiSiteLbl.Location = new System.Drawing.Point(51, 790);
+            this.OptiSiteLbl.Name = "OptiSiteLbl";
+            this.OptiSiteLbl.Size = new System.Drawing.Size(289, 59);
+            this.OptiSiteLbl.TabIndex = 132;
+            this.OptiSiteLbl.TabStop = true;
+            this.OptiSiteLbl.Text = "Opti Website";
+            this.OptiSiteLbl.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.OptiSiteLbl_LinkClicked);
             // 
             // HelpTab
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Honeydew;
+            this.Controls.Add(this.OptiSiteLbl);
+            this.Controls.Add(this.YoutubeLinkLbl);
             this.Controls.Add(this.InfoLbl);
             this.Controls.Add(this.HelpLbl);
             this.Controls.Add(this.VersionLbl);
@@ -120,5 +155,7 @@
         private System.Windows.Forms.Label HelpLbl;
         private System.Windows.Forms.Label VersionLbl;
         private System.Windows.Forms.Label InfoLbl;
+        private System.Windows.Forms.LinkLabel YoutubeLinkLbl;
+        private System.Windows.Forms.LinkLabel OptiSiteLbl;
     }
 }

@@ -97,7 +97,7 @@ namespace Optimator.Forms.Sets
             }
             else if (!Owner.CheckSingularBasePiece())
             {
-                MessageBox.Show("Please connect all pieces but one or remove unconnected pieces.", "Multiple Sets", MessageBoxButtons.OK);
+                MessageBox.Show("Please connect all pieces or remove unconnected pieces.", "Multiple Sets", MessageBoxButtons.OK);
             }
             else if (!Utils.CheckValidNewName(NameTb.Text, Consts.SetExt))
             {
