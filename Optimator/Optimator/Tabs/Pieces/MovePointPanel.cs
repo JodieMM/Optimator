@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Windows.Forms;
 
 namespace Optimator.Tabs.Pieces
 {
@@ -87,6 +86,7 @@ namespace Optimator.Tabs.Pieces
                 }
                 Owner.selectedSpot.XRight = (float)XUpDown.Value;
             }
+            Owner.DisplayDrawings();
         }
 
         /// <summary>
@@ -104,6 +104,7 @@ namespace Optimator.Tabs.Pieces
                 }
                 Owner.selectedSpot.YDown = (float)YUpDown.Value;
             }
+            Owner.DisplayDrawings();
         }
     }
 }

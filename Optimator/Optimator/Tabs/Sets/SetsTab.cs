@@ -220,22 +220,22 @@ namespace Optimator.Tabs.Sets
         /// <param name="e"></param>
         private new void CloseBtn_Click(object sender, EventArgs e)
         {
-            //if (Utils.ExitBtn_Click(WIP.PiecesList.Count > 1))
-            //{
-            //    Owner.RemoveTabPage(this);
-            //}
-
-            //HIDDEN (RTS) Below used for testing
-            WIP = new Set
+            if (Utils.ExitBtn_Click(WIP.PiecesList.Count > 1))
             {
-                PiecesList = new List<Piece>() { new Piece("c"), new Piece("c") }
-            };
-            WIP.BasePiece = WIP.PiecesList[0];
-            WIP.JoinedPieces.Add(WIP.PiecesList[0], new List<Piece>() { WIP.PiecesList[1] });
-            WIP.JoinsIndex.Add(WIP.PiecesList[1], new Join(WIP.PiecesList[1], WIP.PiecesList[0], WIP, 16, -13, 16, -13, 76, -37, 7, -37, -1, 0));
-            WIP.PersonalStates.Add(WIP.PiecesList[0], new State(150, 150, 0, 0, 0, 1));
-            WIP.PersonalStates.Add(WIP.PiecesList[1], new State(0, 0, 0, 0, 50, 0.3F));
-            DisplayDrawings();
+                Owner.RemoveTabPage(this);
+            }
+
+            ////HIDDEN (RTS) Below used for testing
+            //WIP = new Set
+            //{
+            //    PiecesList = new List<Piece>() { new Piece("c"), new Piece("c") }
+            //};
+            //WIP.BasePiece = WIP.PiecesList[0];
+            //WIP.JoinedPieces.Add(WIP.PiecesList[0], new List<Piece>() { WIP.PiecesList[1] });
+            //WIP.JoinsIndex.Add(WIP.PiecesList[1], new Join(WIP.PiecesList[1], WIP.PiecesList[0], WIP, 16, -13, 16, -13, 76, -37, 7, -37, -1, 0));
+            //WIP.PersonalStates.Add(WIP.PiecesList[0], new State(150, 150, 0, 0, 0, 1));
+            //WIP.PersonalStates.Add(WIP.PiecesList[1], new State(0, 0, 0, 0, 50, 0.3F));
+            //DisplayDrawings();
         }
 
         #endregion
