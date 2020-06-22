@@ -164,21 +164,21 @@ namespace Optimator
             var basePoints = Utils.SortCoordinates(GetAnchorStatePoints(state, 0));
             var rightPoints = Utils.SortCoordinates(GetAnchorStatePoints(state, 1));
             var downPoints = Utils.SortCoordinates(GetAnchorStatePoints(state, 2));
-            var downRightPoints = Utils.SortCoordinates(GetAnchorStatePoints(Utils.AdjustStateAngle(1, state), 2));
+            var downRightPoints = Utils.SortCoordinates(GetAnchorStatePoints(state, 3));
 
             // Find Middle Ground
             var r = Utils.AngleAnchorFromAngle(state.R);
             if (state.SBase && (r == 0 || r == 2) || !state.SBase && (r == 1 || r == 3))
             {
-                rightPoints = ResizeToMatch(basePoints, rightPoints);
-                downPoints = ResizeToMatch(basePoints, downPoints, false);                
+                rightPoints = ResizeToMatch(basePoints, rightPoints, false);
+                downPoints = ResizeToMatch(basePoints, downPoints);                
             }
             else
             {
-                basePoints = ResizeToMatch(rightPoints, basePoints);
-                basePoints = ResizeToMatch(downPoints, basePoints, false);
+                basePoints = ResizeToMatch(rightPoints, basePoints, false);
+                basePoints = ResizeToMatch(downPoints, basePoints);
             }
-            downRightPoints = ResizeToMatch(downPoints, downRightPoints);
+            downRightPoints = ResizeToMatch(downPoints, downRightPoints, false);
 
             var merge1 = Utils.SortCoordinates(MergeShapes(basePoints, rightPoints, state.R));
             var merge2 = Utils.SortCoordinates(MergeShapes(downPoints, downRightPoints, state.R));
@@ -198,15 +198,15 @@ namespace Optimator
         /// Determines the border cases of angled shapes.
         /// </summary>
         /// <param name="state">Shape angle</param>
-        /// <param name="brd">Base, right or down angle (0, 1 or 2)</param>
+        /// <param name="brd">Base, right, down or right down angle (0, 1, 2 or 3)</param>
         /// <returns>Shape at that border case</returns>
         private List<Spot> GetAnchorStatePoints(State state, int brd)
         {
             // CLEANING RTS
-            // brd 0 = base 1 = right (max r min t) 2 = down (min r max t)
+            // brd 0 = base 1 = right (max r min t) 2 = down (min r max t) 3 = right down (max r max t)
             var points = new List<Spot>();
-            var minR = brd != 1;
-            var minT = brd != 2;
+            var minR = brd != 1 && brd != 3;
+            var minT = brd < 2;
             int r, t, s = new int();
 
             //r = Utils.AngleAnchorFromAngle(state.R, minR);
@@ -279,8 +279,37 @@ namespace Optimator
         private List<Spot> ResizeToMatch(List<Spot> constantPoints, List<Spot> changePoints, bool xChange = true)
         {
             var goalSize = Utils.FindMinMax(constantPoints);
+            var goal = xChange ? goalSize[1] - goalSize[0] : goalSize[3] - goalSize[2];
             var currSize = Utils.FindMinMax(changePoints);
-            var multiplier = currSize[xChange ? 1 : 3] != 0 ? goalSize[xChange ? 1 : 3] / currSize[xChange ? 1 : 3] : 1;
+            var curr = xChange ? currSize[1] - currSize[0] : currSize[3] - currSize[2];
+
+            // Flat Goal (Horizontal/Vertical Line)
+            if (goal == 0)
+            {
+                // Set all curr to goal height/width
+                foreach (var point in changePoints)
+                {
+                    if (xChange)
+                    {
+                        point.X = constantPoints[0].GetCoord(0);
+                    }
+                    else
+                    {
+                        point.Y = constantPoints[0].GetCoord(1);
+                    }
+                }
+                return changePoints;
+            }
+            // Flat Current with Non-Flat Goal
+            else if (curr == 0)
+            {
+                // TODO: NON FLAT GOAL
+                // Find bottom/top or left/right split and set all lower to lower value and higher to higher value
+                return changePoints;
+            }
+
+            var multiplier = goal / curr;
+            //CLEANING currSize[xChange ? 1 : 3] != 0 ? goalSize[xChange ? 1 : 3] / currSize[xChange ? 1 : 3] : 1;
             foreach (var point in changePoints)
             {
                 if (xChange)
@@ -412,12 +441,12 @@ namespace Optimator
                         }
 
                         // Check for Self Neighbours
-                        if (index1 < shape1.Count - 1 && shape1[index1].GetCoord(z) == shape1[index1 + 1].GetCoord(z))
+                        if (index1 < shape1.Count && shape1[index1 - 1].GetCoord(z) == shape1[index1].GetCoord(z))
                         {
                             // Self and Match Neighbours
                             if (shape2[match].GetCoord(z) == shape2[Utils.NextIndex(shape2, match)].GetCoord(z) && shape2.Count > 1)
                             {
-                                changed = Utils.FindMiddleSpot(shape1[Utils.NextIndex(shape1, index1)].GetCoord(altz),
+                                changed = Utils.FindMiddleSpot(shape1[index1].GetCoord(altz),
                                     shape2[Utils.NextIndex(shape2, match)].GetCoord(altz), angle, swapped);
                                 if (xChange)
                                 {
@@ -445,7 +474,7 @@ namespace Optimator
                             // Self Neighbour Only
                             else
                             {
-                                changed = Utils.FindMiddleSpot(shape1[Utils.NextIndex(shape1, index1)].GetCoord(altz),
+                                changed = Utils.FindMiddleSpot(shape1[index1].GetCoord(altz),
                                     shape2[match].GetCoord(altz), angle, swapped);
                                 if (xChange)
                                 {
@@ -464,7 +493,7 @@ namespace Optimator
                         // Check for Match Neighbours
                         else if (shape2[match].GetCoord(z) == shape2[Utils.NextIndex(shape2, match)].GetCoord(z) && shape2.Count > 1)
                         {
-                            changed = Utils.FindMiddleSpot(shape1[Utils.Modulo(index1, shape1.Count)].GetCoord(altz),
+                            changed = Utils.FindMiddleSpot(shape1[Utils.NextIndex(shape1, index1, false)].GetCoord(altz),
                                     shape2[Utils.NextIndex(shape2, match)].GetCoord(altz), angle, swapped);
                             if (xChange)
                             {
@@ -502,9 +531,9 @@ namespace Optimator
                         i2 += swapped ? 1 : 0;
 
                         // Check for Self Neighbours
-                        if (index1 < shape1.Count - 1 && shape1[index1].GetCoord(z) == shape1[index1 + 1].GetCoord(z))
+                        if (index1 < shape1.Count && shape1[index1 - 1].GetCoord(z) == shape1[index1].GetCoord(z))
                         {
-                            changed = Utils.FindMiddleSpot(shape1[Utils.NextIndex(shape1, index1)].GetCoord(altz),
+                            changed = Utils.FindMiddleSpot(shape1[index1].GetCoord(altz),
                                     match[altz], angle, swapped);
                             if (xChange)
                             {
@@ -536,7 +565,7 @@ namespace Optimator
         public int[] FindSymmetricalCoordHome(List<Spot> s1, List<Spot> s2, Spot match, int xy)
         {            
             var minmax = Utils.FindMinMaxSpots(s1);
-            bool topLeft = false;
+            bool topRight = false;
             // Matches Min
             if (xy == 0 && s1.IndexOf(match) == s1.IndexOf(minmax[0]) || xy == 1 && s1.IndexOf(match) == s1.IndexOf(minmax[2]))
             {
@@ -553,7 +582,7 @@ namespace Optimator
             else if ((xy == 0 && Utils.WithinRanges(s1, s1.IndexOf(minmax[0]), s1.IndexOf(minmax[1]), s1.IndexOf(match))) ||
                 (xy == 1 && Utils.WithinRanges(s1, s1.IndexOf(minmax[3]), s1.IndexOf(minmax[2]), s1.IndexOf(match))))
             {
-                topLeft = true;
+                topRight = true;
             }
 
             // Find Matching Position
@@ -568,12 +597,12 @@ namespace Optimator
                     if ((xy == 0 && Utils.WithinRanges(s2, s2.IndexOf(minmax[0]), s2.IndexOf(minmax[1]), index)) ||
                         (xy == 1 && Utils.WithinRanges(s2, s2.IndexOf(minmax[3]), s2.IndexOf(minmax[2]), index)))
                     {
-                        if (topLeft)
+                        if (topRight)
                         {
                             return new int[] { index };
                         }
                     }
-                    else if (!topLeft)
+                    else if (!topRight)
                     {
                         return new int[] { index };
                     }
@@ -584,17 +613,20 @@ namespace Optimator
                     s2[index].GetCoord(xy) < goal && s2[Utils.NextIndex(s2, index)].GetCoord(xy) > goal)
                 {
                     if (((xy == 0 && Utils.WithinRanges(s2, s2.IndexOf(minmax[0]), s2.IndexOf(minmax[1]), index)) ||
-                        (xy == 1 && Utils.WithinRanges(s2, s2.IndexOf(minmax[3]), s2.IndexOf(minmax[2]), index))) &&
-                        ((xy == 0 && Utils.WithinRanges(s2, s2.IndexOf(minmax[0]), s2.IndexOf(minmax[1]), Utils.NextIndex(s2, index))) ||
-                        (xy == 1 && Utils.WithinRanges(s2, s2.IndexOf(minmax[3]), s2.IndexOf(minmax[2]), Utils.NextIndex(s2, index)))))
+                        (xy == 1 && Utils.WithinRanges(s2, s2.IndexOf(minmax[3]), s2.IndexOf(minmax[2]), index)))) 
+                        
+                        // CLEANING
+                        //&&
+                        //((xy == 0 && Utils.WithinRanges(s2, s2.IndexOf(minmax[0]), s2.IndexOf(minmax[1]), Utils.NextIndex(s2, index))) ||
+                        //(xy == 1 && Utils.WithinRanges(s2, s2.IndexOf(minmax[3]), s2.IndexOf(minmax[2]), Utils.NextIndex(s2, index)))))
                     {
-                        if (topLeft)
+                        if (topRight)
                         {
                             return new int[] { index, Utils.NextIndex(s2, index) };
                         }
                     }
                     else if (!(xy == 0 && (s2.IndexOf(minmax[0]) == index || s2.IndexOf(minmax[1]) == index)) &&
-                        !(xy == 1 && (s2.IndexOf(minmax[2]) == index || s2.IndexOf(minmax[3]) == index)) && !topLeft)
+                        !(xy == 1 && (s2.IndexOf(minmax[2]) == index || s2.IndexOf(minmax[3]) == index)) && !topRight)
                     {
                         return new int[] { index, Utils.NextIndex(s2, index) };
                     }
