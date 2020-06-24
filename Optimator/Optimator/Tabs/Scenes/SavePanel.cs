@@ -22,6 +22,7 @@ namespace Optimator.Forms.Scenes
         {
             InitializeComponent();
             Owner = owner;
+            Owner.Owner.GetTabControl().KeyDown += KeyPress;
         }
 
 
@@ -79,6 +80,29 @@ namespace Optimator.Forms.Scenes
         private void NameTb_TextChanged(object sender, EventArgs e)
         {
             Owner.Parent.Text = NameTb.Text;
+        }
+
+        /// <summary>
+        /// Runs when a key is pressed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private new void KeyPress(object sender, KeyEventArgs e)
+        {
+            if (ContainsFocus)
+            {
+                switch (e.KeyCode)
+                {
+                    // Enter Pressed
+                    case Keys.Enter:
+                        SaveBtn_Click(sender, e);
+                        break;
+
+                    // Do nothing for any other key
+                    default:
+                        break;
+                }
+            }
         }
 
 

@@ -43,7 +43,7 @@
             this.NameTb.Name = "NameTb";
             this.NameTb.Size = new System.Drawing.Size(596, 64);
             this.NameTb.TabIndex = 6;
-            this.NameTb.Text = "Piece Name";
+            this.NameTb.Text = "Set Name";
             this.NameTb.TextChanged += new System.EventHandler(this.NameTb_TextChanged);
             // 
             // CompleteBtn
@@ -56,7 +56,7 @@
             this.CompleteBtn.Name = "CompleteBtn";
             this.CompleteBtn.Size = new System.Drawing.Size(600, 173);
             this.CompleteBtn.TabIndex = 10;
-            this.CompleteBtn.Text = "Save";
+            this.CompleteBtn.Text = "Complete";
             this.CompleteBtn.UseVisualStyleBackColor = false;
             this.CompleteBtn.Click += new System.EventHandler(this.CompleteBtn_Click);
             // 
@@ -75,11 +75,11 @@
             this.SaveBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.SaveBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SaveBtn.Font = new System.Drawing.Font("Segoe UI", 16F);
-            this.SaveBtn.Location = new System.Drawing.Point(54, 394);
+            this.SaveBtn.Location = new System.Drawing.Point(110, 352);
             this.SaveBtn.Margin = new System.Windows.Forms.Padding(12);
             this.SaveBtn.Name = "SaveBtn";
             this.SaveBtn.Size = new System.Drawing.Size(600, 173);
-            this.SaveBtn.TabIndex = 12;
+            this.SaveBtn.TabIndex = 13;
             this.SaveBtn.Text = "Save";
             this.SaveBtn.UseVisualStyleBackColor = false;
             this.SaveBtn.Click += new System.EventHandler(this.SaveBtn_Click);
@@ -88,6 +88,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.SaveBtn);
             this.Controls.Add(this.SaveLbl);
             this.Controls.Add(this.CompleteBtn);
             this.Controls.Add(this.NameTb);

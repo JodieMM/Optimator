@@ -24,6 +24,7 @@ namespace Optimator.Tabs.Scenes
             InitializeComponent();
             Owner = owner;
             UpdateListbox();
+            Owner.Owner.GetTabControl().KeyDown += KeyPress;
         }
 
 
@@ -100,6 +101,29 @@ namespace Optimator.Tabs.Scenes
             if (PreviewBtn == ActiveControl)
             {
                 Owner.DisplayDrawPanel();
+            }
+        }
+
+        /// <summary>
+        /// Runs when a key is pressed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private new void KeyPress(object sender, KeyEventArgs e)
+        {
+            if (ContainsFocus)
+            {
+                switch (e.KeyCode)
+                {
+                    // Enter Pressed
+                    case Keys.Enter:
+                        AddAnimationBtn_Click(sender, e);
+                        break;
+
+                    // Do nothing for any other key
+                    default:
+                        break;
+                }
             }
         }
 

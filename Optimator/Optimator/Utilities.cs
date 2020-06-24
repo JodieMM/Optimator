@@ -235,7 +235,7 @@ namespace Optimator
         /// <param name="name">The name of the file</param>
         /// <param name="folder">The folder the file belongs in</param>
         /// <returns>True if the name is valid</returns>
-        public static bool CheckValidNewName(string name, string extension = "", string folder = "")
+        public static bool CheckValidNewName(string name, string extension = "")
         {
             var PermittedName = new Regex(@"^[A-Za-z0-9]+$");
             if (!PermittedName.IsMatch(name))
@@ -245,7 +245,7 @@ namespace Optimator
             }
 
             // Check name not already in use, or that overriding is okay
-            if (folder != "" && File.Exists(GetDirectory(folder, name, extension)))
+            if (File.Exists(GetDirectory(name, extension)))
             {
                 var result = MessageBox.Show("This name is already in use. Do you want to override the existing file?", "Override Confirmation", MessageBoxButtons.OKCancel);
                 if (result == DialogResult.Cancel)

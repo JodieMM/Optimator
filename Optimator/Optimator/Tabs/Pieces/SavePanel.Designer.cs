@@ -37,7 +37,7 @@
             // NameTb
             // 
             this.NameTb.BackColor = System.Drawing.Color.White;
-            this.NameTb.Font = Consts.contentFont;
+            this.NameTb.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.NameTb.Location = new System.Drawing.Point(46, 150);
             this.NameTb.Margin = new System.Windows.Forms.Padding(12);
             this.NameTb.Name = "NameTb";
@@ -56,7 +56,7 @@
             this.CompleteBtn.Name = "CompleteBtn";
             this.CompleteBtn.Size = new System.Drawing.Size(600, 173);
             this.CompleteBtn.TabIndex = 10;
-            this.CompleteBtn.Text = "Save";
+            this.CompleteBtn.Text = "Complete";
             this.CompleteBtn.UseVisualStyleBackColor = false;
             this.CompleteBtn.Click += new System.EventHandler(this.CompleteBtn_Click);
             // 
@@ -75,9 +75,9 @@
             this.SaveBtn.BackColor = System.Drawing.Color.LightCyan;
             this.SaveBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SaveBtn.Font = new System.Drawing.Font("Segoe UI", 16F);
-            this.SaveBtn.Location = new System.Drawing.Point(54, 394);
+            this.SaveBtn.Location = new System.Drawing.Point(79, 340);
             this.SaveBtn.Margin = new System.Windows.Forms.Padding(12);
-            this.SaveBtn.Name = "SaveBtn";
+            this.SaveBtn.Name = "button1";
             this.SaveBtn.Size = new System.Drawing.Size(600, 173);
             this.SaveBtn.TabIndex = 12;
             this.SaveBtn.Text = "Save";
@@ -88,12 +88,13 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.SaveBtn);
             this.Controls.Add(this.SaveLbl);
             this.Controls.Add(this.CompleteBtn);
             this.Controls.Add(this.NameTb);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "SavePanel";
-            this.Size = new System.Drawing.Size(820, 877);
+            this.Size = new System.Drawing.Size(758, 853);
             this.ResumeLayout(false);
             this.PerformLayout();
 

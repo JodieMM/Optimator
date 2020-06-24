@@ -21,6 +21,7 @@ namespace Optimator.Forms.Compile
         {
             InitializeComponent();
             Owner = owner;
+            Owner.Owner.GetTabControl().KeyDown += KeyPress;
         }
 
 
@@ -58,6 +59,29 @@ namespace Optimator.Forms.Compile
             {
                 Owner.WIP.videoScenes.Add(newScene);
                 Owner.AddToSceneViewPanel(newScene);
+            }
+        }
+
+        /// <summary>
+        /// Runs when a key is pressed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private new void KeyPress(object sender, KeyEventArgs e)
+        {
+            if (ContainsFocus)
+            {
+                switch (e.KeyCode)
+                {
+                    // Enter Pressed
+                    case Keys.Enter:
+                        SubmitScene_Click(sender, e);
+                        break;
+
+                    // Do nothing for any other key
+                    default:
+                        break;
+                }
             }
         }
     }

@@ -22,6 +22,7 @@ namespace Optimator.Forms.Scenes
         {
             InitializeComponent();
             Owner = owner;
+            //HIDDEN: TO DO Owner.Owner.GetTabControl().KeyDown += KeyPress;
         }
 
 
@@ -87,6 +88,29 @@ namespace Optimator.Forms.Scenes
             catch (ArgumentOutOfRangeException)
             {
                 MessageBox.Show("Suspected outdated file.", "File Indexing Error", MessageBoxButtons.OK);
+            }
+        }
+
+        /// <summary>
+        /// Runs when a key is pressed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private new void KeyPress(object sender, KeyEventArgs e)
+        {
+            if (ContainsFocus)
+            {
+                switch (e.KeyCode)
+                {
+                    // Enter Pressed
+                    case Keys.Enter:
+                        AddBtn_Click(sender, e);
+                        break;
+
+                    // Do nothing for any other key
+                    default:
+                        break;
+                }
             }
         }
     }

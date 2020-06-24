@@ -21,7 +21,12 @@ namespace Optimator.Forms.Pieces
         {
             InitializeComponent();
             Owner = owner;
+            Owner.Owner.GetTabControl().KeyDown += KeyPress;
         }
+
+
+
+        // ----- FORM FUNCTIONS -----
 
         /// <summary>
         /// Resize the panel's contents.
@@ -53,13 +58,12 @@ namespace Optimator.Forms.Pieces
             Save();
         }
 
-
         /// <summary>
         /// Save the WIP and close the tab.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void CompleteBtn_Click(object sender, System.EventArgs e)
+        private void CompleteBtn_Click(object sender, EventArgs e)
         {
             if (Save())
             {
@@ -75,6 +79,29 @@ namespace Optimator.Forms.Pieces
         private void NameTb_TextChanged(object sender, EventArgs e)
         {
             Owner.Parent.Text = NameTb.Text;
+        }
+
+        /// <summary>
+        /// Runs when a key is pressed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private new void KeyPress(object sender, KeyEventArgs e)
+        {
+            if (ContainsFocus)
+            {
+                switch (e.KeyCode)
+                {
+                    // Enter Pressed
+                    case Keys.Enter:
+                        SaveBtn_Click(sender, e);
+                        break;
+
+                    // Do nothing for any other key
+                    default:
+                        break;
+                }
+            }
         }
 
 
@@ -95,8 +122,9 @@ namespace Optimator.Forms.Pieces
             // Save Piece and Close Form
             try
             {
-                Utils.CentrePieceOnAxis(Owner.WIP);
-                Utils.SaveFile(Utils.GetDirectory(NameTb.Text, Consts.PieceExt), Owner.WIP.GetData());
+                var clone = Utils.ClonePiece(Owner.WIP);
+                Utils.CentrePieceOnAxis(clone);
+                Utils.SaveFile(Utils.GetDirectory(NameTb.Text, Consts.PieceExt), clone.GetData());
                 return true;
             }
             catch (FileNotFoundException)

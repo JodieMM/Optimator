@@ -44,7 +44,7 @@ namespace Optimator
             DrawBase.BackColor = Utils.ColourFromString(Properties.Settings.Default.BgColour);
             DrawRight.BackColor = Utils.ColourFromString(Properties.Settings.Default.BgColour); ;
             DrawDown.BackColor = Utils.ColourFromString(Properties.Settings.Default.BgColour); ;
-            Owner.GetTabControl().KeyUp += KeyPress;
+            Owner.GetTabControl().KeyDown += KeyPress;
             Enter += FocusOn;
             VisibleChanged += FocusOn;
         }
