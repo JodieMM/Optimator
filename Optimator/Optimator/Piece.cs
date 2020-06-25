@@ -340,6 +340,8 @@ namespace Optimator
             var shape2 = s2;
             var swapped = false;
             var minmax = Utils.FindMinMax(s1);
+            var minmax1 = Utils.FindMinMaxSpots(s1);
+            var minmax2 = Utils.FindMinMaxSpots(s2);
             var reachedBottom1 = false;
             var reachedBottom2 = false;
             var reachedBelow1 = false;
@@ -354,6 +356,61 @@ namespace Optimator
             while (i1 < s1.Count || i2 < s2.Count)
             {
                 // Find dominant shape
+
+                // HIDDEN: ALTERNATE OPTION (Also Broken)
+                //swapped = false;
+
+                //// Before or At Bottom
+                //if (s1.IndexOf(minmax1[2]) >= i1)
+                //{
+                //    // Shape 2 Matches
+                //    if (s2.IndexOf(minmax2[2]) > i2)
+                //    {
+                //        // Sort by Height
+                //        if (s1[i1].Y < s2[i2].Y)
+                //        {
+                //            swapped = true;
+                //        }
+                //        // Sort by X
+                //        else if (s1[i1].Y == s2[i2].Y)
+                //        {
+                //            if (s1.IndexOf(minmax1[1]) > i1 && s2.IndexOf(minmax2[1]) > i2 && s1[i1].X > s2[i2].X ||
+                //                s1.IndexOf(minmax1[1]) < i1 && s2.IndexOf(minmax2[1]) < i2 && s1[i1].X < s2[i2].X)
+                //            {
+                //                swapped = true;
+                //            }
+                //        }
+                //    }
+                //}
+                //// After Bottom
+                //else
+                //{
+                //    // Shape 2 Doesn't Match
+                //    if (s2.IndexOf(minmax2[2]) < i2)
+                //    {
+                //        swapped = true;
+                //    }
+                //    // Sort by Height
+                //    else if (s1[i1].Y > s2[i2].Y)
+                //    {
+                //        swapped = true;
+                //    }
+                //    // Sort by X
+                //    else if (s1[i1].Y == s2[i2].Y)
+                //    {
+                //        if (s1.IndexOf(minmax1[0]) > i1 && s2.IndexOf(minmax2[0]) > i2 && s1[i1].X > s2[i2].X ||
+                //                s1.IndexOf(minmax1[0]) < i1 && s2.IndexOf(minmax2[0]) < i2 && s1[i1].X < s2[i2].X)
+                //        {
+                //            swapped = true;
+                //        }
+                //    }
+                //}
+                //if (i2 >= s2.Count)
+                //{
+                //    swapped = false;
+                //}
+
+
                 if (!reachedBottom1 && i1 != 0 && i1 < s1.Count && s1[i1].Y > s1[i1 - 1].Y)
                 {
                     reachedBottom1 = true;
@@ -363,7 +420,7 @@ namespace Optimator
                     reachedBottom2 = true;
                 }
                 if (xChange)
-                {         
+                {
                     swapped = i2 < s2.Count && (i1 >= s1.Count || reachedBottom1 && !reachedBottom2 ||
                         !reachedBottom1 && !reachedBottom2 && s1[i1].Y < s2[i2].Y ||
                         reachedBottom1 && reachedBottom2 & s1[i1].Y > s2[i2].Y);
