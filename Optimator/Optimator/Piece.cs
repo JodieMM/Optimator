@@ -358,8 +358,8 @@ namespace Optimator
                 // Find dominant shape
 
                 // HIDDEN: ALTERNATE OPTION (Also Broken)
-                swapped = false;
 
+                swapped = false;
                 // Finished One Shape
                 if (i1 >= s1.Count || i2 >= s2.Count)
                 {
@@ -391,24 +391,38 @@ namespace Optimator
                 else
                 {
                     // Shape 2 Doesn't Match
-                    if (s2.IndexOf(minmax2[2]) < i2)
+                    if (s2.IndexOf(minmax2[2]) >= i2 || s1.IndexOf(minmax1[0]) < i1 && s2.IndexOf(minmax2[0]) >= i2)
                     {
                         swapped = true;
-                    }
-                    // Sort by Height
-                    else if (s1[i1].Y > s2[i2].Y)
+                    }   //TODO: Apply changes to top as well
+                    // Quadrant 3
+                    else if (s1.IndexOf(minmax1[0]) >= i1)
                     {
-                        swapped = true;
+                        swapped = s2.IndexOf(minmax2[0]) >= i2 && s1[Utils.Modulo(i1, s1.Count)].X < s2[Utils.Modulo(i2, s2.Count)].X;
+                        //swapped = s2.IndexOf(minmax2[0]) >= i2 && (xChange ? s1[Utils.Modulo(i1, s1.Count)].Y > s2[Utils.Modulo(i2, s2.Count)].Y :
+                        //s1[Utils.Modulo(i1, s1.Count)].X < s2[Utils.Modulo(i2, s2.Count)].X);
                     }
-                    // Sort by X
-                    else if (s1[i1].Y == s2[i2].Y)
+                    // Quadrant 4
+                    else
                     {
-                        if (s1.IndexOf(minmax1[0]) > i1 && s2.IndexOf(minmax2[0]) > i2 && s1[i1].X > s2[i2].X ||
-                                s1.IndexOf(minmax1[0]) < i1 && s2.IndexOf(minmax2[0]) < i2 && s1[i1].X < s2[i2].X)
-                        {
-                            swapped = true;
-                        }
+                        swapped = s1[Utils.Modulo(i1, s1.Count)].X > s2[Utils.Modulo(i2, s2.Count)].X;
                     }
+
+
+                    //// Sort by Height
+                    //else if (s1[i1].Y > s2[i2].Y)
+                    //{
+                    //    swapped = true;
+                    //}
+                    //// Sort by X
+                    //else if (s1[i1].Y == s2[i2].Y)
+                    //{
+                    //    if (s1.IndexOf(minmax1[0]) > i1 && s2.IndexOf(minmax2[0]) > i2 && s1[i1].X > s2[i2].X ||
+                    //            s1.IndexOf(minmax1[0]) < i1 && s2.IndexOf(minmax2[0]) < i2 && s1[i1].X < s2[i2].X)
+                    //    {
+                    //        swapped = true;
+                    //    }
+                    //}
                 }
 
 
