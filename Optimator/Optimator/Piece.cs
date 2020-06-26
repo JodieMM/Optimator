@@ -340,6 +340,8 @@ namespace Optimator
             var shape2 = s2;
             var swapped = false;
             var minmax = Utils.FindMinMax(s1);
+            var minmax1 = Utils.FindMinMaxSpots(s1);
+            var minmax2 = Utils.FindMinMaxSpots(s2);
             var reachedBottom1 = false;
             var reachedBottom2 = false;
             var reachedBelow1 = false;
@@ -354,46 +356,106 @@ namespace Optimator
             while (i1 < s1.Count || i2 < s2.Count)
             {
                 // Find dominant shape
-                if (!reachedBottom1 && i1 != 0 && i1 < s1.Count && s1[i1].Y > s1[i1 - 1].Y)
+
+                // HIDDEN: ALTERNATE OPTION (Also Broken)
+                swapped = false;
+
+                // Finished One Shape
+                if (i1 >= s1.Count || i2 >= s2.Count)
                 {
-                    reachedBottom1 = true;
+                    swapped = i1 >= s1.Count;
                 }
-                if (!reachedBottom2 && i2 != 0 && i2 < s2.Count && s2[i2].Y > s2[i2 - 1].Y)
+                // Before or At Bottom
+                else if (s1.IndexOf(minmax1[2]) >= i1)
                 {
-                    reachedBottom2 = true;
+                    // Shape 2 Matches
+                    if (s2.IndexOf(minmax2[2]) >= i2)
+                    {
+                        // Sort by Height
+                        if (s1[i1].Y < s2[i2].Y)
+                        {
+                            swapped = true;
+                        }
+                        // Sort by X
+                        else if (s1[i1].Y == s2[i2].Y)
+                        {
+                            if (s1.IndexOf(minmax1[1]) > i1 && s2.IndexOf(minmax2[1]) > i2 && s1[i1].X > s2[i2].X ||
+                                s1.IndexOf(minmax1[1]) < i1 && s2.IndexOf(minmax2[1]) < i2 && s1[i1].X < s2[i2].X)
+                            {
+                                swapped = true;
+                            }
+                        }
+                    }
                 }
-                if (xChange)
-                {
-                    swapped = i2 < s2.Count && (i1 >= s1.Count || reachedBottom1 && !reachedBottom2 ||
-                        !reachedBottom1 && !reachedBottom2 && s1[i1].Y < s2[i2].Y ||
-                        reachedBottom1 && reachedBottom2 & s1[i1].Y > s2[i2].Y);
-                }
+                // After Bottom
                 else
                 {
-                    if (!reachedBelow1 && i1 != 0 && i1 < s1.Count && s1[i1].X < s1[i1 - 1].X)
+                    // Shape 2 Doesn't Match
+                    if (s2.IndexOf(minmax2[2]) < i2)
                     {
-                        reachedBelow1 = true;
+                        swapped = true;
                     }
-                    else if (reachedBelow1 && i1 != 0 && i1 < s1.Count && s1[i1].X > s1[i1 - 1].X)
+                    // Sort by Height
+                    else if (s1[i1].Y > s2[i2].Y)
                     {
-                        reachedBelow1 = false;
+                        swapped = true;
                     }
-                    if (!reachedBelow2 && i2 != 0 && i2 < s2.Count && s2[i2].X < s2[i2 - 1].X)
+                    // Sort by X
+                    else if (s1[i1].Y == s2[i2].Y)
                     {
-                        reachedBelow2 = true;
+                        if (s1.IndexOf(minmax1[0]) > i1 && s2.IndexOf(minmax2[0]) > i2 && s1[i1].X > s2[i2].X ||
+                                s1.IndexOf(minmax1[0]) < i1 && s2.IndexOf(minmax2[0]) < i2 && s1[i1].X < s2[i2].X)
+                        {
+                            swapped = true;
+                        }
                     }
-                    else if (reachedBelow2 && i2 != 0 && i2 < s2.Count && s2[i2].X > s2[i2 - 1].X)
-                    {
-                        reachedBelow2 = false;
-                    }
-                    swapped = i2 < s2.Count && (i1 >= s1.Count || reachedBottom1 && !reachedBottom2 ||
-                        !reachedBottom1 && !reachedBottom2 &&
-                        (s1[i1].Y < s2[i2].Y || s1[i1].Y == s2[i2].Y && (reachedBelow1 && reachedBelow2 && s1[i1].X < s2[i2].X ||
-                        !reachedBelow1 && !reachedBelow2 && s1[i1].X > s2[i1].X)) ||
-                        reachedBottom1 && reachedBottom2 &&
-                        (s1[i1].Y > s2[i2].Y || s1[i1].Y == s2[i2].Y && (reachedBelow1 && reachedBelow2 && s1[i1].X < s2[i2].X ||
-                        !reachedBelow1 && !reachedBelow2 && s1[i1].X > s2[i1].X)));
                 }
+
+
+                //if (!reachedBottom1 && i1 != 0 && i1 < s1.Count && s1[i1].Y > s1[i1 - 1].Y)
+                //{
+                //    reachedBottom1 = true;
+                //}
+                //if (!reachedBottom2 && i2 != 0 && i2 < s2.Count && s2[i2].Y > s2[i2 - 1].Y)
+                //{
+                //    reachedBottom2 = true;
+                //}
+                //if (xChange)
+                //{
+                //    swapped = i2 < s2.Count && (i1 >= s1.Count || reachedBottom1 && !reachedBottom2 ||
+                //        !reachedBottom1 && !reachedBottom2 && s1[i1].Y < s2[i2].Y ||
+                //        reachedBottom1 && reachedBottom2 & s1[i1].Y > s2[i2].Y);
+                //}
+                //else
+                //{
+                //    if (!reachedBelow1 && i1 != 0 && i1 < s1.Count && s1[i1].X < s1[i1 - 1].X)
+                //    {
+                //        reachedBelow1 = true;
+                //    }
+                //    else if (reachedBelow1 && i1 != 0 && i1 < s1.Count && s1[i1].X > s1[i1 - 1].X)
+                //    {
+                //        reachedBelow1 = false;
+                //    }
+                //    if (!reachedBelow2 && i2 != 0 && i2 < s2.Count && s2[i2].X < s2[i2 - 1].X)
+                //    {
+                //        reachedBelow2 = true;
+                //    }
+                //    else if (reachedBelow2 && i2 != 0 && i2 < s2.Count && s2[i2].X > s2[i2 - 1].X)
+                //    {
+                //        reachedBelow2 = false;
+                //    }
+                //    swapped = i2 < s2.Count && (i1 >= s1.Count || reachedBottom1 && !reachedBottom2 ||
+                //        !reachedBottom1 && !reachedBottom2 &&
+                //        (s1[i1].Y < s2[i2].Y || s1[i1].Y == s2[i2].Y && (reachedBelow1 && reachedBelow2 && s1[i1].X < s2[i2].X ||
+                //        !reachedBelow1 && !reachedBelow2 && s1[i1].X > s2[i1].X)) ||
+                //        reachedBottom1 && reachedBottom2 &&
+                //        (s1[i1].Y > s2[i2].Y || s1[i1].Y == s2[i2].Y && (reachedBelow1 && reachedBelow2 && s1[i1].X < s2[i2].X ||
+                //        !reachedBelow1 && !reachedBelow2 && s1[i1].X > s2[i1].X)));
+                //}
+
+
+
+
                 shape1 = swapped ? s2 : s1;
                 shape2 = swapped ? s1 : s2;
                 index1 = swapped ? Utils.Modulo(i2, s2.Count) : Utils.Modulo(i1, s1.Count);
