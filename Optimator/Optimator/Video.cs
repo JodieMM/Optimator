@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
 
 namespace Optimator
 {
@@ -28,37 +27,25 @@ namespace Optimator
         /// Scene constructor. Assigns variables based
         /// on the scene file that is loaded.
         /// </summary>
-        /// <param name="fileName">Name of scene to load</param>
-        public Video(string fileName)
+        /// <param name="name">Name of scene to load</param>
+        /// <param name="data">Video data</param>
+        public Video(string name, List<string> data)
         {
-            try
-            {
-                // Read File
-                var data = Utils.ReadFile(Utils.GetDirectory(fileName, Consts.VideoExt));
-                Name = fileName;
-                Version = data[0];
-                Utils.CheckValidVersion(Version);
+            Name = name;
+            Version = data[0];
 
-                // FPS, Video Size
-                var info = data[1].Split(Consts.Semi);
-                FPS = int.Parse(info[0]);
-                videoWidth = int.Parse(info[1].Split(Consts.Colon)[0]);
-                videoHeight = int.Parse(info[1].Split(Consts.Colon)[1]);
+            // FPS, Video Size
+            var info = data[1].Split(Consts.Semi);
+            FPS = int.Parse(info[0]);
+            videoWidth = int.Parse(info[1].Split(Consts.Colon)[0]);
+            videoHeight = int.Parse(info[1].Split(Consts.Colon)[1]);
 
-                // Scenes
-                for (var index = 2; index < data.Count; index++)
-                {
-                    videoScenes.Add(new Scene(data[index]));
-                }                                             
-            }
-            catch (System.IO.FileNotFoundException)
+            // Scenes
+            for (var index = 2; index < data.Count; index++)
             {
-                MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                MessageBox.Show("Suspected outdated file.", "File Indexing Error", MessageBoxButtons.OK);
-            }
+                videoScenes.Add(new Scene(data[index] + Consts.SceneExt, 
+                    Utils.ReadFile(Utils.GetDirectory(data[index] + Consts.SceneExt))));
+            }                                             
         }
 
         /// <summary>

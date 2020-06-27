@@ -30,15 +30,11 @@ namespace Optimator
         /// Piece values stored in files are accessed.
         /// </summary>
         /// <param Name="inName">The (file) name of the piece</param>
-        public Piece(string inName)
+        /// <param name="data">Piece data</param>
+        public Piece(string name, List<string> data)
         {
-            // Get Piece Data
-            Name = inName;
-            var data = Utils.ReadFile(Utils.GetDirectory(Name, Consts.PieceExt));
-
-            // Get Version
+            Name = name;
             Version = data[0];
-            Utils.CheckValidVersion(Version);
 
             // Get Points and Colours from File
             var angleData = data[1].Split(Consts.Semi);

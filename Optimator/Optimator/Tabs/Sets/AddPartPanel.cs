@@ -54,38 +54,46 @@ namespace Optimator.Forms.Sets
         /// <param name="e"></param>
         private void AddBtn_Click(object sender, EventArgs e)
         {
-            try
+            var name = Utils.OpenFile(Consts.PartFilter);
+            if (name != "")
             {
-                Part justAdded;
-                if (sender == AddPieceBtn)
+                try
                 {
-                    justAdded = new Piece(AddTb.Text);
-                    Owner.WIP.PiecesList.Add(justAdded.ToPiece());
-                    justAdded.ToPiece().State.SetCoordsBasedOnBoard(Owner.GetBoardSizing());
-                    Owner.WIP.PersonalStates.Add(justAdded as Piece, Utils.CloneState(justAdded.ToPiece().State));
-                }
-                else
-                {
-                    justAdded = new Set(AddTb.Text);
-                    Owner.WIP.PiecesList.AddRange((justAdded as Set).PiecesList);
-                    justAdded.ToPiece().State.SetCoordsBasedOnBoard(Owner.GetBoardSizing());
-                    foreach (var piece in (justAdded as Set).PiecesList)
+                    Part justAdded;
+                    if (name.EndsWith(Consts.PieceExt))
                     {
-                        Owner.WIP.PersonalStates.Add(piece, Utils.CloneState(piece.State));
+                        justAdded = new Piece(name, Utils.ReadFile(Utils.GetDirectory(name)));
+                        Owner.WIP.PiecesList.Add(justAdded.ToPiece());
+                        justAdded.ToPiece().State.SetCoordsBasedOnBoard(Owner.GetBoardSizing());
+                        Owner.WIP.PersonalStates.Add(justAdded as Piece, Utils.CloneState(justAdded.ToPiece().State));
                     }
-                    (justAdded as Set).CalculateStates();
+                    else if (name.EndsWith(Consts.SetExt))
+                    {
+                        justAdded = new Set(name, Utils.ReadFile(Utils.GetDirectory(name)));
+                        Owner.WIP.PiecesList.AddRange((justAdded as Set).PiecesList);
+                        justAdded.ToPiece().State.SetCoordsBasedOnBoard(Owner.GetBoardSizing());
+                        foreach (var piece in (justAdded as Set).PiecesList)
+                        {
+                            Owner.WIP.PersonalStates.Add(piece, Utils.CloneState(piece.State));
+                        }
+                        (justAdded as Set).CalculateStates();
+                    }
+                    Owner.DeselectPiece();
+                    Owner.CheckSingularBasePiece();
+                    Owner.DisplayDrawings();
                 }
-                Owner.DeselectPiece();
-                Owner.CheckSingularBasePiece();
-                Owner.DisplayDrawings();
-            }
-            catch (FileNotFoundException)
-            {
-                MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                MessageBox.Show("Suspected outdated file.", "File Indexing Error", MessageBoxButtons.OK);
+                catch (FileNotFoundException)
+                {
+                    MessageBox.Show("File not found. Check your file and sub-files and try again.", "File Not Found", MessageBoxButtons.OK);
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    MessageBox.Show("Suspected outdated file or sub-file.", "File Indexing Error", MessageBoxButtons.OK);
+                }
+                catch (VersionException)
+                {
+                    // Handled by Exception
+                }
             }
         }
     }

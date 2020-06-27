@@ -18,22 +18,22 @@ namespace Optimator
         public Piece BasePiece { get; set; }
 
         public Dictionary<Piece, List<Piece>> JoinedPieces { get; set; } 
-            = new Dictionary<Piece, List<Piece>>();                       // Base Piece --> Attached Pieces
+            = new Dictionary<Piece, List<Piece>>();                         // Base Piece --> Attached Pieces
         public Dictionary<Piece, Join> JoinsIndex { get; set; } 
             = new Dictionary<Piece, Join>();                                // Attached Piece --> Join
-        public Dictionary<Piece, State> PersonalStates { get; set; }                // 
-            = new Dictionary<Piece, State>();                           // Piece --> Original State Position
+        public Dictionary<Piece, State> PersonalStates { get; set; }                 
+            = new Dictionary<Piece, State>();                               // Piece --> Original State Position
         #endregion
 
 
         /// <summary>
         /// Set constructor.
         /// </summary>
-        /// <param name="inName">File name to load</param>
-        public Set(string inName)
+        /// <param name="name">File name to load</param>
+        /// <param name="data">Set data</param>
+        public Set(string name, List<string> data)
         {
-            Name = inName;
-            var data = Utils.ReadFile(Utils.GetDirectory(Name, Consts.SetExt));
+            Name = name;
             Version = data[0];
             Utils.CheckValidVersion(Version);
 
@@ -43,7 +43,7 @@ namespace Optimator
             {
                 var dataSections = data[index].Split(Consts.Semi);
                 var stateData = Utils.ConvertStringArrayToFloats(dataSections[1].Split(Consts.Colon));
-                var WIP = new Piece(dataSections[0]);
+                var WIP = new Piece(dataSections[0] + Consts.PieceExt, Utils.ReadFile(Utils.GetDirectory(dataSections[0]) + Consts.PieceExt));
                 PersonalStates.Add(WIP, new State(stateData[0], stateData[1], stateData[2], stateData[3], stateData[4], stateData[5]));
                 PiecesList.Add(WIP);
 

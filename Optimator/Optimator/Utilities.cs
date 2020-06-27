@@ -20,48 +20,44 @@ namespace Optimator
         #region File I/O
 
         /// <summary>
-        /// Reads information from a user-selected file and returns it.
+        /// Finds directory of user-selected file.
         /// </summary>
         /// <param name="types">The acceptable file types</param>
         /// <returns>Contents of file</returns>
-        public static List<string> ReadData(string[] types)
+        public static string OpenFile(string filter)
         {
             var data = new List<string>();
-            var openFileDialog = new OpenFileDialog();
+            var openFileDialog = new OpenFileDialog
+            {
+                Filter = filter
+            };
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                try
-                {
-                    var file = new StreamReader(openFileDialog.FileName);
-                    string line;
-                    while ((line = file.ReadLine()) != null)
-                    {
-                        data.Add(line);
-                    }
-                    file.Close();
-                }
-                catch (System.Security.SecurityException ex)
-                {
-                    MessageBox.Show($"Security error.\n\nError message: {ex.Message}\n\n" +
-                    $"Details:\n\n{ex.StackTrace}");
-                }
+                Properties.Settings.Default.WorkingDirectory = Path.GetDirectoryName(openFileDialog.FileName);
+                return openFileDialog.SafeFileName;
             }
-
-            // Check correct file type ** NO LONGER ACCURATE - CHANGE INPUTS ON OPENFILEDIALOG
-            if (!types.Contains(data[0].Split(Consts.Semi)[0]))
+            return "";
+        }
+                
+        /// <summary>
+        /// Reads information from a file and returns it.
+        /// </summary>
+        /// <param name="directory">The file to read from</param>
+        /// <returns>A list of strings containing the data</returns>
+        public static List<string> ReadFile(string directory)
+        {
+            var data = new List<string>();
+            var file = new StreamReader(directory);
+            string line;
+            while ((line = file.ReadLine()) != null)
             {
-                if (types.Length == 1)
+                data.Add(line);
+                if (data.Count == 1)
                 {
-                    MessageBox.Show("File is of the wrong type. Please select a "
-                        + types[0] + " file");
+                    CheckValidVersion(data[0]);
                 }
-                else
-                {
-                    MessageBox.Show("File is of the wrong type. Please select a "
-                        + types[0] + " or " + types[1] + " file");
-                }
-                return null;
             }
+            file.Close();
             return data;
         }
 
@@ -95,32 +91,6 @@ namespace Optimator
                     file.Close();
                 }
             }
-        }
-                
-        /// <summary>
-        /// Reads information from a file and returns it.
-        /// </summary>
-        /// <param name="directory">The file to read from</param>
-        /// <returns>A list of strings containing the data</returns>
-        public static List<string> ReadFile(string directory)
-        {
-            var data = new List<string>();
-            try
-            {
-                var file = new StreamReader(directory);
-                string line;
-                while ((line = file.ReadLine()) != null)
-                {
-                    data.Add(line);
-                }
-                file.Close();
-            }
-            catch (FileNotFoundException)
-            {
-                MessageBox.Show("The file could not be found.", "Invalid Directory Selection");
-            }
-
-            return data;
         }
 
         /// <summary>
@@ -187,46 +157,19 @@ namespace Optimator
         }
 
         /// <summary>
-        /// Checks that a working directory has been set, and creates
-        /// one if necessary.
-        /// </summary>
-        /// <returns>True if successful</returns>
-        public static bool CheckValidFolder()
-        {
-            if (Properties.Settings.Default.WorkingDirectory == "Blank" || !Directory.Exists(Properties.Settings.Default.WorkingDirectory))
-            {
-                MessageBox.Show("Select a directory to work from.", "Directory Selection");
-                var location = SelectFolder();
-                if (location == "")
-                {
-                    return false;
-                }
-                Properties.Settings.Default.WorkingDirectory = location;
-                Properties.Settings.Default.Save();
-            }
-            return true;
-        }
-
-        /// <summary>
         /// Checks that the version provided is file compatible with the current version.
         /// </summary>
         /// <param name="version">The version of the file</param>
         /// <param name="message">Whether an error message should be shown on fail</param>
         /// <returns>True if the versions are compatible</returns>
-        public static bool CheckValidVersion(string version, bool message = true)
+        public static void CheckValidVersion(string version)
         {
             var thisVer = version.Split(Consts.Stop);
             var currVer = Properties.Settings.Default.Version.Split(Consts.Stop);
-            if (thisVer[0] == currVer[0] && thisVer[1] == currVer[1])
+            if (!(thisVer[0] == currVer[0] && thisVer[1] == currVer[1]))
             {
-                return true;
-            }
-
-            if (message)
-            {
-                MessageBox.Show("The file version is not compatible.");
-            }
-            return false;
+                throw new VersionException();
+            }           
         }
 
         /// <summary>

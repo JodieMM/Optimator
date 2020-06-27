@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using System.Drawing;
 using System;
 using Optimator.Tabs.Compile;
+using System.IO;
 
 namespace Optimator.Forms.Compile
 {
@@ -54,11 +55,27 @@ namespace Optimator.Forms.Compile
         /// <param name="e"></param>
         public void SubmitScene_Click(object sender, EventArgs e)
         {
-            var newScene = new Scene(AddTb.Text);
-            if (newScene.Version != null)
+            var name = Utils.OpenFile(Consts.SceneFilter);
+            if (name != "")
             {
-                Owner.WIP.videoScenes.Add(newScene);
-                Owner.AddToSceneViewPanel(newScene);
+                try
+                {
+                    var newScene = new Scene(name, Utils.ReadFile(Utils.GetDirectory(name)));
+                    Owner.WIP.videoScenes.Add(newScene);
+                    Owner.AddToSceneViewPanel(newScene);
+                }
+                catch (FileNotFoundException)
+                {
+                    MessageBox.Show("File not found. Check your file and sub-files and try again.", "File Not Found", MessageBoxButtons.OK);
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    MessageBox.Show("Suspected outdated file or sub-file.", "File Indexing Error", MessageBoxButtons.OK);
+                }
+                catch (VersionException)
+                {
+                    // Handled by Exception
+                }
             }
         }
 

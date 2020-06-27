@@ -84,6 +84,7 @@
     <Compile Include="Change.cs" />
     <Compile Include="ColourState.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="VersionException.cs" />
     <Compile Include="Video.cs" />
     <Compile Include="Tabs\Compile\AddScenePanel.cs">
       <SubType>UserControl</SubType>
@@ -250,12 +251,6 @@
     <Compile Include="Tabs\SoloTabs\LoadPieceTab.Designer.cs">
       <DependentUpon>LoadPieceTab.cs</DependentUpon>
     </Compile>
-    <Compile Include="Tabs\SoloTabs\OpenDialog.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Tabs\SoloTabs\OpenDialog.Designer.cs">
-      <DependentUpon>OpenDialog.cs</DependentUpon>
-    </Compile>
     <Compile Include="Tabs\SoloTabs\PreviewTab.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -380,9 +375,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Tabs\SoloTabs\LoadPieceTab.resx">
       <DependentUpon>LoadPieceTab.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Tabs\SoloTabs\OpenDialog.resx">
-      <DependentUpon>OpenDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Tabs\SoloTabs\PreviewTab.resx">
       <DependentUpon>PreviewTab.cs</DependentUpon>

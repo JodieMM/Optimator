@@ -31,70 +31,59 @@ namespace Optimator
         /// Scene constructor. Assigns variables based
         /// on the scene file that is loaded.
         /// </summary>
-        /// <param name="fileName">Name of scene to load</param>
-        public Scene(string fileName)
+        /// <param name="name">Name of scene to load</param>
+        /// <param name="data">Scene data</param>
+        public Scene(string name, List<string> data)
         {
-            try
+            Name = name;
+            Version = data[0];
+
+            // Time Length
+            TimeLength = decimal.Parse(data[1]);
+
+            // Background Colour
+            Background = Utils.ColourFromString(data[2]);
+
+            // Parts
+            var partEndIndex = data.IndexOf("Originals");
+            if (partEndIndex == -1)
             {
-                // Read File
-                var data = Utils.ReadFile(Utils.GetDirectory(fileName, Consts.SceneExt));
-                Name = fileName;
-                Version = data[0];
-                Utils.CheckValidVersion(Version);
-
-                // Time Length
-                TimeLength = decimal.Parse(data[1]);
-
-                // Background Colour
-                Background = Utils.ColourFromString(data[2]);
-
-                // Parts
-                var partEndIndex = data.IndexOf("Originals");
-                if (partEndIndex == -1)
-                {
-                    MessageBox.Show("Invalid Scene File", "Invalid File", MessageBoxButtons.OK);
-                    return;
-                }
-                for (var index = 3; index < partEndIndex; index++)
-                {
-                    if (data[index].StartsWith("p"))
-                    {
-                        PartsList.Add(new Piece(data[index].Remove(0, 2)));
-                    }
-                    else
-                    {
-                        PartsList.Add(new Set(data[index].Remove(0, 2)));
-                    }
-                }
-                UpdatePiecesList();
-
-                // Assign Original States
-                var lastPieceIndex = partEndIndex + PiecesList.Count;
-                for (var index = partEndIndex + 1; index <= lastPieceIndex; index++)
-                {
-                    var workingIndex = index - partEndIndex - 1;
-                    var piece = PiecesList[workingIndex];
-                    var originals = Utils.ConvertStringArrayToFloats(data[index].Split(Consts.Colon));
-                    piece.State.SetValues(originals[0], originals[1], originals[2], originals[3], originals[4], originals[5]);
-                    Originals.Add(piece, Utils.CloneState(piece.State));
-                    OriginalColours.Add(piece, Utils.CloneColourState(piece.ColourState));
-                }
-
-                // Read frame changes
-                for (var index = lastPieceIndex + 1; index < data.Count; index++)
-                {
-                    var changes = data[index].Split(Consts.Colon);
-                    Changes.Add(new Change(decimal.Parse(changes[0]), changes[1], PiecesList[int.Parse(changes[2])], float.Parse(changes[3]), decimal.Parse(changes[4]), this));
-                }                                               
+                MessageBox.Show("Invalid Scene File", "Invalid File", MessageBoxButtons.OK);
+                return;
             }
-            catch (System.IO.FileNotFoundException)
+            for (var index = 3; index < partEndIndex; index++)
             {
-                MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
+                if (data[index].StartsWith("p"))
+                {
+                    PartsList.Add(new Piece(data[index].Remove(0, 2) + Consts.PieceExt,
+                        Utils.ReadFile(Utils.GetDirectory(data[index].Remove(0, 2) + Consts.PieceExt))));
+                }
+                else
+                {
+                    PartsList.Add(new Set(data[index].Remove(0, 2) + Consts.SetExt,
+                        Utils.ReadFile(Utils.GetDirectory(data[index].Remove(0, 2) + Consts.SetExt))));
+                }
             }
-            catch (ArgumentOutOfRangeException)
+            UpdatePiecesList();
+
+            // Assign Original States
+            var lastPieceIndex = partEndIndex + PiecesList.Count;
+            for (var index = partEndIndex + 1; index <= lastPieceIndex; index++)
             {
-                MessageBox.Show("Suspected outdated file.", "File Indexing Error", MessageBoxButtons.OK);
+                var workingIndex = index - partEndIndex - 1;
+                var piece = PiecesList[workingIndex];
+                var originals = Utils.ConvertStringArrayToFloats(data[index].Split(Consts.Colon));
+                piece.State.SetValues(originals[0], originals[1], originals[2], originals[3], originals[4], originals[5]);
+                Originals.Add(piece, Utils.CloneState(piece.State));
+                OriginalColours.Add(piece, Utils.CloneColourState(piece.ColourState));
             }
+
+            // Read frame changes
+            for (var index = lastPieceIndex + 1; index < data.Count; index++)
+            {
+                var changes = data[index].Split(Consts.Colon);
+                Changes.Add(new Change(decimal.Parse(changes[0]), changes[1], PiecesList[int.Parse(changes[2])], float.Parse(changes[3]), decimal.Parse(changes[4]), this));
+            }                                               
         }
 
         /// <summary>

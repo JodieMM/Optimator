@@ -3,8 +3,8 @@ using Optimator.Tabs;
 using Optimator.Tabs.Compile;
 using Optimator.Tabs.Scenes;
 using Optimator.Tabs.Sets;
-using Optimator.Tabs.SoloTabs;
 using System;
+using System.IO;
 using System.Windows.Forms;
 
 namespace Optimator
@@ -103,57 +103,69 @@ namespace Optimator
             AddTabPage("New Video", tab);
             tab.Resize();
         }
-                
+
 
 
         // --- OPEN ---
 
         /// <summary>
-        /// Opens an existing piece in a new PiecesTab.
+        /// Opens an Optimator file for editing.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OpenPieceTSMI_Click(object sender, EventArgs e)
+        private void OpenTSMI_Click(object sender, EventArgs e)
         {
-            var open = new OpenDialog(this, "Piece", new PiecesTab(this));
-            AddTabPage("Add Piece", open);
-            open.Resize();
-        }
-
-        /// <summary>
-        /// Opens an existing set in a new SetsTab.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OpenSetTSMI_Click(object sender, EventArgs e)
-        {
-            var open = new OpenDialog(this, "Set", new SetsTab(this));
-            AddTabPage("Add Set", open);
-            open.Resize();
-        }
-
-        /// <summary>
-        /// Opens an existing scene in a new ScenesTab.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OpenSceneTSMI_Click(object sender, EventArgs e)
-        {
-            var open = new OpenDialog(this, "Scene", new ScenesTab(this));
-            AddTabPage("Add Scene", open);
-            open.Resize();
-        }
-
-        /// <summary>
-        /// Opens an existing video in a new CompileTab.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OpenVideoTSMI_Click(object sender, EventArgs e)
-        {
-            var open = new OpenDialog(this, "Video", new CompileTab(this));
-            AddTabPage("Add Video", open);
-            open.Resize();
+            var name = Utils.OpenFile(Consts.PartFilter);
+            if (name != "")
+            {
+                try
+                {
+                    TabPageControl attemptOpen;
+                    if (name.EndsWith(Consts.PieceExt))
+                    {
+                        attemptOpen = new PiecesTab(this);
+                        (attemptOpen as PiecesTab).WIP = new Piece(name, Utils.ReadFile(Utils.GetDirectory(name)));
+                        
+                        var panel = (attemptOpen as PiecesTab).GetBoardSizing();
+                        foreach (var spot in (attemptOpen as PiecesTab).WIP.Data)
+                        {
+                            spot.X += panel.Width / 2.0F;
+                            spot.Y += panel.Height / 2.0F;
+                            spot.XRight += panel.Width / 2.0F;
+                            spot.YDown += panel.Height / 2.0F;
+                        }
+                    }
+                    else if (name.EndsWith(Consts.SetExt))
+                    {
+                        attemptOpen = new SetsTab(this);
+                        (attemptOpen as SetsTab).WIP = new Set(name, Utils.ReadFile(Utils.GetDirectory(name)));
+                    }
+                    else if (name.EndsWith(Consts.SceneExt))
+                    {
+                        attemptOpen = new ScenesTab(this);
+                        (attemptOpen as ScenesTab).WIP = new Scene(name, Utils.ReadFile(Utils.GetDirectory(name)));
+                    }
+                    else
+                    {
+                        attemptOpen = new CompileTab(this);
+                        (attemptOpen as CompileTab).WIP = new Video(name, Utils.ReadFile(Utils.GetDirectory(name)));
+                    }
+                    AddTabPage(name, attemptOpen);
+                    attemptOpen.Resize();
+                }
+                catch (FileNotFoundException)
+                {
+                    MessageBox.Show("File not found. Check your file and sub-files and try again.", "File Not Found", MessageBoxButtons.OK);
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    MessageBox.Show("Suspected outdated file or sub-file.", "File Indexing Error", MessageBoxButtons.OK);
+                }
+                catch (VersionException)
+                {
+                    // Handled by Exception
+                }
+            }
         }
 
 
@@ -208,15 +220,12 @@ namespace Optimator
         /// <param name="tab">The tab to add</param>
         public void AddTabPage(string name, UserControl tab)
         {
-            if (Utils.CheckValidFolder())
-            {
-                var page = new TabPage(name);
-                tab.Dock = DockStyle.Fill;
-                page.Controls.Add(tab);
-                TabControl.Controls.Add(page);
-                TabControl.SelectedIndex = TabControl.Controls.Count - 1;
-                TabControl.SelectedTab.Focus();
-            }
+            var page = new TabPage(name);
+            tab.Dock = DockStyle.Fill;
+            page.Controls.Add(tab);
+            TabControl.Controls.Add(page);
+            TabControl.SelectedIndex = TabControl.Controls.Count - 1;
+            TabControl.SelectedTab.Focus();
         }
 
         /// <summary>

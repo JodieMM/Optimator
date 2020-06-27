@@ -90,26 +90,34 @@ namespace Optimator.Tabs.SoloTabs
         /// <param name="e"></param>
         private void LoadBtn_Click(object sender, EventArgs e)
         {
-            try
+            var name = Utils.OpenFile(Consts.PartFilter);
+            if (name != "")
             {
-                if (sender == LoadSetBtn)
+                try
                 {
-                    loaded = new Set(NameTb.Text);
+                    if (name.EndsWith(Consts.PieceExt))
+                    {
+                        loaded = new Piece(name, Utils.ReadFile(Utils.GetDirectory(name)));
+                    }
+                    else if (name.EndsWith(Consts.SetExt))
+                    {
+                        loaded = new Set(name, Utils.ReadFile(Utils.GetDirectory(name)));
+                    }
+                    loaded.ToPiece().State.SetCoordsBasedOnBoard(DrawPanel);
+                    DisplayDrawings();
                 }
-                else
+                catch (FileNotFoundException)
                 {
-                    loaded = new Piece(NameTb.Text);
+                    MessageBox.Show("File not found. Check your file and sub-files and try again.", "File Not Found", MessageBoxButtons.OK);
                 }
-                loaded.ToPiece().State.SetCoordsBasedOnBoard(DrawPanel);
-                DisplayDrawings();
-            }
-            catch (FileNotFoundException)
-            {
-                MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                MessageBox.Show("Suspected outdated file.", "File Indexing Error", MessageBoxButtons.OK);
+                catch (ArgumentOutOfRangeException)
+                {
+                    MessageBox.Show("Suspected outdated file or sub-file.", "File Indexing Error", MessageBoxButtons.OK);
+                }
+                catch (VersionException)
+                {
+                    // Handled by Exception
+                }
             }
         }
 

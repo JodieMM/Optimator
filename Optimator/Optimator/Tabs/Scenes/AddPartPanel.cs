@@ -22,7 +22,6 @@ namespace Optimator.Forms.Scenes
         {
             InitializeComponent();
             Owner = owner;
-            //HIDDEN: TO DO Owner.Owner.GetTabControl().KeyDown += KeyPress;
         }
 
 
@@ -55,61 +54,46 @@ namespace Optimator.Forms.Scenes
         /// <param name="e"></param>
         private void AddBtn_Click(object sender, EventArgs e)
         {
-            try
+            var name = Utils.OpenFile(Consts.PartFilter);
+            if (name != "")
             {
-                Part loaded;
-                if (sender == AddPieceBtn)
+                try
                 {
-                    loaded = new Piece(AddTb.Text);
-                    loaded.ToPiece().State.SetCoordsBasedOnBoard(Owner.GetBoardSizing());
-                    Owner.WIP.Originals.Add(loaded, Utils.CloneState(loaded.ToPiece().State));
-                    Owner.WIP.OriginalColours.Add(loaded, Utils.CloneColourState((loaded as Piece).ColourState));
-                }
-                else
-                {
-                    loaded = new Set(AddTb.Text);
-                    loaded.ToPiece().State.SetCoordsBasedOnBoard(Owner.GetBoardSizing());
-                    Owner.WIP.Originals.Add(loaded, Utils.CloneState(loaded.ToPiece().State));
-                    foreach (var piece in (loaded as Set).PiecesList)
+                    Part loaded;
+                    if (name.EndsWith(Consts.PieceExt))
                     {
-                        Owner.WIP.Originals.Add(piece, Utils.CloneState(piece.State));
-                        Owner.WIP.OriginalColours.Add(piece, Utils.CloneColourState(piece.ColourState));
+                        loaded = new Piece(name, Utils.ReadFile(Utils.GetDirectory(name)));
+                        loaded.ToPiece().State.SetCoordsBasedOnBoard(Owner.GetBoardSizing());
+                        Owner.WIP.Originals.Add(loaded, Utils.CloneState(loaded.ToPiece().State));
+                        Owner.WIP.OriginalColours.Add(loaded, Utils.CloneColourState((loaded as Piece).ColourState));
                     }
+                    else
+                    {
+                        loaded = new Set(name, Utils.ReadFile(Utils.GetDirectory(name)));
+                        loaded.ToPiece().State.SetCoordsBasedOnBoard(Owner.GetBoardSizing());
+                        Owner.WIP.Originals.Add(loaded, Utils.CloneState(loaded.ToPiece().State));
+                        foreach (var piece in (loaded as Set).PiecesList)
+                        {
+                            Owner.WIP.Originals.Add(piece, Utils.CloneState(piece.State));
+                            Owner.WIP.OriginalColours.Add(piece, Utils.CloneColourState(piece.ColourState));
+                        }
+                    }
+                    Owner.WIP.PartsList.Add(loaded);
+                    Owner.SelectPart(loaded);
+                    Owner.WIP.UpdatePiecesList();
+                    Owner.DisplayDrawings();
                 }
-                Owner.WIP.PartsList.Add(loaded);
-                Owner.SelectPart(loaded);
-                Owner.WIP.UpdatePiecesList();
-                Owner.DisplayDrawings();
-            }
-            catch (FileNotFoundException)
-            {
-                MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                MessageBox.Show("Suspected outdated file.", "File Indexing Error", MessageBoxButtons.OK);
-            }
-        }
-
-        /// <summary>
-        /// Runs when a key is pressed.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private new void KeyPress(object sender, KeyEventArgs e)
-        {
-            if (ContainsFocus)
-            {
-                switch (e.KeyCode)
+                catch (FileNotFoundException)
                 {
-                    // Enter Pressed
-                    case Keys.Enter:
-                        AddBtn_Click(sender, e);
-                        break;
-
-                    // Do nothing for any other key
-                    default:
-                        break;
+                    MessageBox.Show("File not found. Check your file and sub-files and try again.", "File Not Found", MessageBoxButtons.OK);
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    MessageBox.Show("Suspected outdated file or sub-file.", "File Indexing Error", MessageBoxButtons.OK);
+                }
+                catch (VersionException)
+                {
+                    // Handled by Exception
                 }
             }
         }
