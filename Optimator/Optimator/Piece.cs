@@ -304,7 +304,6 @@ namespace Optimator
             }
 
             var multiplier = goal / curr;
-            //CLEANING currSize[xChange ? 1 : 3] != 0 ? goalSize[xChange ? 1 : 3] / currSize[xChange ? 1 : 3] : 1;
             foreach (var point in changePoints)
             {
                 if (xChange)

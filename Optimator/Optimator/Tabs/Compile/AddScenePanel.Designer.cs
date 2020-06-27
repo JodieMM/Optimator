@@ -28,24 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.AddTb = new System.Windows.Forms.TextBox();
             this.AddSceneLbl = new System.Windows.Forms.Label();
             this.TableLayoutPnl = new System.Windows.Forms.TableLayoutPanel();
             this.SubmitScene = new System.Windows.Forms.Button();
             this.TableLayoutPnl.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // AddTb
-            // 
-            this.AddTb.BackColor = System.Drawing.Color.White;
-            this.AddTb.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.AddTb.Font = new System.Drawing.Font("Segoe UI", 16F);
-            this.AddTb.Location = new System.Drawing.Point(0, 0);
-            this.AddTb.Margin = new System.Windows.Forms.Padding(0);
-            this.AddTb.Name = "AddTb";
-            this.AddTb.Size = new System.Drawing.Size(507, 64);
-            this.AddTb.TabIndex = 6;
-            this.AddTb.Text = "Scene Name";
             // 
             // AddSceneLbl
             // 
@@ -61,8 +48,7 @@
             // 
             this.TableLayoutPnl.ColumnCount = 1;
             this.TableLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.TableLayoutPnl.Controls.Add(this.AddTb, 0, 0);
-            this.TableLayoutPnl.Controls.Add(this.SubmitScene, 0, 1);
+            this.TableLayoutPnl.Controls.Add(this.SubmitScene, 0, 0);
             this.TableLayoutPnl.Location = new System.Drawing.Point(44, 172);
             this.TableLayoutPnl.Name = "TableLayoutPnl";
             this.TableLayoutPnl.RowCount = 2;
@@ -78,7 +64,7 @@
             this.SubmitScene.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SubmitScene.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SubmitScene.Font = new System.Drawing.Font("Segoe UI", 16F);
-            this.SubmitScene.Location = new System.Drawing.Point(2, 132);
+            this.SubmitScene.Location = new System.Drawing.Point(2, 2);
             this.SubmitScene.Margin = new System.Windows.Forms.Padding(2);
             this.SubmitScene.Name = "SubmitScene";
             this.SubmitScene.Size = new System.Drawing.Size(503, 126);
@@ -97,15 +83,12 @@
             this.Name = "AddScenePanel";
             this.Size = new System.Drawing.Size(620, 913);
             this.TableLayoutPnl.ResumeLayout(false);
-            this.TableLayoutPnl.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.TextBox AddTb;
         private System.Windows.Forms.TableLayoutPanel TableLayoutPnl;
         private System.Windows.Forms.Label AddSceneLbl;
         private System.Windows.Forms.Button SubmitScene;
