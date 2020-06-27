@@ -217,16 +217,15 @@ namespace Optimator.Tabs.Scenes
         {
             if (sender == CurrentTimeUpDown)
             {
+                if (CurrentTimeUpDown.Value > WIP.TimeLength)
+                {
+                    UpdateVideoLength(CurrentTimeUpDown.Value);
+                }
                 TimeTrackBar.Value = (int)(CurrentTimeUpDown.Value * 10);
             }
             else
             {
                 CurrentTimeUpDown.Value = (decimal)(TimeTrackBar.Value / 10.0);
-            }
-
-            if (CurrentTimeUpDown.Value > WIP.TimeLength)
-            {
-                UpdateVideoLength(CurrentTimeUpDown.Value);
             }
             DisplayDrawings();
         }
