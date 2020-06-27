@@ -55,13 +55,13 @@ namespace Optimator
             {
                 if (data[index].StartsWith("p"))
                 {
-                    PartsList.Add(new Piece(data[index].Remove(0, 2) + Consts.PieceExt,
-                        Utils.ReadFile(Utils.GetDirectory(data[index].Remove(0, 2) + Consts.PieceExt))));
+                    PartsList.Add(new Piece(data[index].Remove(0, 2),
+                        Utils.ReadFile(Utils.GetDirectory(data[index].Remove(0, 2)))));
                 }
                 else
                 {
-                    PartsList.Add(new Set(data[index].Remove(0, 2) + Consts.SetExt,
-                        Utils.ReadFile(Utils.GetDirectory(data[index].Remove(0, 2) + Consts.SetExt))));
+                    PartsList.Add(new Set(data[index].Remove(0, 2),
+                        Utils.ReadFile(Utils.GetDirectory(data[index].Remove(0, 2)))));
                 }
             }
             UpdatePiecesList();

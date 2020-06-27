@@ -43,7 +43,7 @@ namespace Optimator
             {
                 var dataSections = data[index].Split(Consts.Semi);
                 var stateData = Utils.ConvertStringArrayToFloats(dataSections[1].Split(Consts.Colon));
-                var WIP = new Piece(dataSections[0] + Consts.PieceExt, Utils.ReadFile(Utils.GetDirectory(dataSections[0]) + Consts.PieceExt));
+                var WIP = new Piece(dataSections[0], Utils.ReadFile(Utils.GetDirectory(dataSections[0])));
                 PersonalStates.Add(WIP, new State(stateData[0], stateData[1], stateData[2], stateData[3], stateData[4], stateData[5]));
                 PiecesList.Add(WIP);
 
