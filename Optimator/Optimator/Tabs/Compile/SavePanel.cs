@@ -166,8 +166,7 @@ namespace Optimator.Forms.Compile
                 Process process = new Process();
                 process.StartInfo.RedirectStandardOutput = true;
                 process.StartInfo.RedirectStandardError = true;
-                // TODO: FFMPEG Resource Used Below
-                process.StartInfo.FileName = @"""" + Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + @"\ffmpeg\bin\ffmpeg.exe""";
+                process.StartInfo.FileName = "ffmpeg.exe";
                 process.StartInfo.Arguments = "-framerate " + Owner.WIP.FPS + " -f image2 -i " + imagesDirectory + " -c:v mpeg4 -q:v 3 " + videosDirectory;
                 process.StartInfo.UseShellExecute = false;
                 process.StartInfo.CreateNoWindow = true;
@@ -179,6 +178,7 @@ namespace Optimator.Forms.Compile
                 catch (Exception exception)
                 {
                     MessageBox.Show(exception.Message, "Exception - Please Report to jodie@opti.technology", MessageBoxButtons.OK);
+                    return false;
                 }
 
                 Cursor = Cursors.Default;

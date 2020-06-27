@@ -1,5 +1,4 @@
-﻿using Optimator.Properties;
-using System.Drawing;
+﻿using System.Drawing;
 
 namespace Optimator
 {
