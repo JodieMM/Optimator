@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.AllBtn = new System.Windows.Forms.Button();
             this.OutlineWidthBtn = new System.Windows.Forms.Button();
             this.PieceDetailsBtn = new System.Windows.Forms.Button();
@@ -41,6 +42,7 @@
             this.CloseBtn = new System.Windows.Forms.ToolStripButton();
             this.SketchBtn = new System.Windows.Forms.Button();
             this.TableLayoutPnl = new System.Windows.Forms.TableLayoutPanel();
+            this.DisplayTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.DrawPanel)).BeginInit();
             this.ToolStrip.SuspendLayout();
             this.TableLayoutPnl.SuspendLayout();
@@ -247,6 +249,11 @@
             this.TableLayoutPnl.Size = new System.Drawing.Size(572, 623);
             this.TableLayoutPnl.TabIndex = 40;
             // 
+            // DisplayTimer
+            // 
+            this.DisplayTimer.Interval = 5;
+            this.DisplayTimer.Tick += new System.EventHandler(this.DisplayTimer_Tick);
+            // 
             // LoadPieceTab
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -281,5 +288,6 @@
         private System.Windows.Forms.ToolStripButton CloseBtn;
         private System.Windows.Forms.TableLayoutPanel TableLayoutPnl;
         private System.Windows.Forms.Button SketchBtn;
+        private System.Windows.Forms.Timer DisplayTimer;
     }
 }

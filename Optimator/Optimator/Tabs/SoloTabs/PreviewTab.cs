@@ -16,7 +16,6 @@ namespace Optimator.Forms
         private Part WIP;
         private State Position = new State();
         private Graphics g;
-        //this.CloseBtn.Click += new System.EventHandler(this.CloseBtn_Click);
 
         /// <summary>
         /// Constructor for the control.
@@ -111,36 +110,36 @@ namespace Optimator.Forms
             WIP.Draw(g, Position);
             //HIDDEN (RTS) EXTRAS BELOW
 
-            if (WIP is Set)
-            {
-                foreach (var join in (WIP as Set).JoinsIndex.Values)
-                {
-                    Visuals.DrawCross(join.CurrentCentre()[0], join.CurrentCentre()[1], Color.Red, g);
-                    var minmax = Utils.FindMid(join.A.GetPoints(join.A.State));
-                    Visuals.DrawCross(minmax[0], minmax[1], Color.Blue, g);
-                    label1.Text = "R: " + join.A.State.R.ToString();
-                    label2.Text = "T: " + join.A.State.T.ToString();
-                    label3.Text = "S: " + join.A.State.S.ToString();
-                    //label4.Text = "Hei: " + Utils.FindHeight(join.A.GetPoints(join.A.State)).ToString();
-                    label5.Text = "YMin: " + Utils.FindMinMax(join.A.GetPoints(join.A.State))[2].ToString();
-                }
-                //foreach (Piece piece in (WIP as Set).PiecesList)
-                //{
-                //    if (piece != (WIP as Set).BasePiece)
-                //    {
-                //        //foreach (Spot spot in piece.Data)
-                //        //{
-                //        //    Visuals.DrawCross(spot.CurrentX + piece.State.X, spot.CurrentY + piece.State.Y, Color.Blue, g);
-                //        //}
-                //    }
-                //}
-            }
-            else
-            {
-                label1.Text = "R: " + WIP.ToPiece().State.R.ToString();
-                label2.Text = "T: " + WIP.ToPiece().State.T.ToString();
-                label3.Text = "S: " + WIP.ToPiece().State.S.ToString();
-            }
+            //if (WIP is Set)
+            //{
+            //    foreach (var join in (WIP as Set).JoinsIndex.Values)
+            //    {
+            //        Visuals.DrawCross(join.CurrentCentre()[0], join.CurrentCentre()[1], Color.Red, g);
+            //        var minmax = Utils.FindMid(join.A.GetPoints(join.A.State));
+            //        Visuals.DrawCross(minmax[0], minmax[1], Color.Blue, g);
+            //        label1.Text = "R: " + join.A.State.R.ToString();
+            //        label2.Text = "T: " + join.A.State.T.ToString();
+            //        label3.Text = "S: " + join.A.State.S.ToString();
+            //        //label4.Text = "Hei: " + Utils.FindHeight(join.A.GetPoints(join.A.State)).ToString();
+            //        label5.Text = "YMin: " + Utils.FindMinMax(join.A.GetPoints(join.A.State))[2].ToString();
+            //    }
+            //    //foreach (Piece piece in (WIP as Set).PiecesList)
+            //    //{
+            //    //    if (piece != (WIP as Set).BasePiece)
+            //    //    {
+            //    //        //foreach (Spot spot in piece.Data)
+            //    //        //{
+            //    //        //    Visuals.DrawCross(spot.CurrentX + piece.State.X, spot.CurrentY + piece.State.Y, Color.Blue, g);
+            //    //        //}
+            //    //    }
+            //    //}
+            //}
+            //else
+            //{
+            //    label1.Text = "R: " + WIP.ToPiece().State.R.ToString();
+            //    label2.Text = "T: " + WIP.ToPiece().State.T.ToString();
+            //    label3.Text = "S: " + WIP.ToPiece().State.S.ToString();
+            //}
         }
 
 
@@ -152,7 +151,7 @@ namespace Optimator.Forms
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public void RefreshDrawPanel(object sender, EventArgs e)
+        public override void RefreshDrawPanel(object sender, EventArgs e)
         {
             DisplayTimer.Start();
         }

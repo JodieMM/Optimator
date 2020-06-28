@@ -30,6 +30,7 @@ namespace Optimator.Tabs.Sets
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SetsTab));
             this.ToolStrip = new System.Windows.Forms.ToolStrip();
             this.SaveBtn = new System.Windows.Forms.ToolStripButton();
@@ -38,13 +39,14 @@ namespace Optimator.Tabs.Sets
             this.JoinsBtn = new System.Windows.Forms.ToolStripButton();
             this.PositionsBtn = new System.Windows.Forms.ToolStripButton();
             this.OrderBtn = new System.Windows.Forms.ToolStripButton();
+            this.EraseBtn = new System.Windows.Forms.ToolStripButton();
             this.SettingsBtn = new System.Windows.Forms.ToolStripButton();
             this.PreviewBtn = new System.Windows.Forms.ToolStripButton();
             this.Panel = new System.Windows.Forms.Panel();
             this.DrawRight = new System.Windows.Forms.PictureBox();
             this.DrawDown = new System.Windows.Forms.PictureBox();
             this.DrawBase = new System.Windows.Forms.PictureBox();
-            this.EraseBtn = new System.Windows.Forms.ToolStripButton();
+            this.DisplayTimer = new System.Windows.Forms.Timer(this.components);
             this.ToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DrawRight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawDown)).BeginInit();
@@ -75,7 +77,7 @@ namespace Optimator.Tabs.Sets
             // SaveBtn
             // 
             this.SaveBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.SaveBtn.Image = Properties.Resources.SaveIcon;
+            this.SaveBtn.Image = global::Optimator.Properties.Resources.SaveIcon;
             this.SaveBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.SaveBtn.Name = "SaveBtn";
             this.SaveBtn.Size = new System.Drawing.Size(36, 36);
@@ -85,7 +87,7 @@ namespace Optimator.Tabs.Sets
             // AddPartBtn
             // 
             this.AddPartBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.AddPartBtn.Image = Properties.Resources.AddPartIcon;
+            this.AddPartBtn.Image = global::Optimator.Properties.Resources.AddPartIcon;
             this.AddPartBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.AddPartBtn.Name = "AddPartBtn";
             this.AddPartBtn.Size = new System.Drawing.Size(36, 36);
@@ -96,7 +98,7 @@ namespace Optimator.Tabs.Sets
             // 
             this.CloseBtn.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.CloseBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.CloseBtn.Image = Properties.Resources.CloseIcon;
+            this.CloseBtn.Image = global::Optimator.Properties.Resources.CloseIcon;
             this.CloseBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.CloseBtn.Name = "CloseBtn";
             this.CloseBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -107,7 +109,7 @@ namespace Optimator.Tabs.Sets
             // JoinsBtn
             // 
             this.JoinsBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.JoinsBtn.Image = Properties.Resources.JoinsIcon;
+            this.JoinsBtn.Image = global::Optimator.Properties.Resources.JoinsIcon;
             this.JoinsBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.JoinsBtn.Name = "JoinsBtn";
             this.JoinsBtn.Size = new System.Drawing.Size(36, 36);
@@ -127,17 +129,27 @@ namespace Optimator.Tabs.Sets
             // OrderBtn
             // 
             this.OrderBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.OrderBtn.Image = Properties.Resources.OrderIcon;
+            this.OrderBtn.Image = global::Optimator.Properties.Resources.OrderIcon;
             this.OrderBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.OrderBtn.Name = "OrderBtn";
             this.OrderBtn.Size = new System.Drawing.Size(36, 36);
             this.OrderBtn.Text = "Order";
             this.OrderBtn.Click += new System.EventHandler(this.BtnWithPanel_Click);
             // 
+            // EraseBtn
+            // 
+            this.EraseBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.EraseBtn.Image = global::Optimator.Properties.Resources.EraseIcon;
+            this.EraseBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.EraseBtn.Name = "EraseBtn";
+            this.EraseBtn.Size = new System.Drawing.Size(36, 36);
+            this.EraseBtn.Text = "Erase";
+            this.EraseBtn.Click += new System.EventHandler(this.BtnWithPanel_Click);
+            // 
             // SettingsBtn
             // 
             this.SettingsBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.SettingsBtn.Image = Properties.Resources.SettingsIcon;
+            this.SettingsBtn.Image = global::Optimator.Properties.Resources.SettingsIcon;
             this.SettingsBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.SettingsBtn.Name = "SettingsBtn";
             this.SettingsBtn.Size = new System.Drawing.Size(36, 36);
@@ -165,7 +177,7 @@ namespace Optimator.Tabs.Sets
             // 
             // DrawRight
             // 
-            this.DrawRight.BackColor = Utils.ColourFromString(Properties.Settings.Default.BgColour);
+            this.DrawRight.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.DrawRight.Location = new System.Drawing.Point(407, 156);
             this.DrawRight.Margin = new System.Windows.Forms.Padding(6);
             this.DrawRight.Name = "DrawRight";
@@ -178,7 +190,7 @@ namespace Optimator.Tabs.Sets
             // 
             // DrawDown
             // 
-            this.DrawDown.BackColor = Utils.ColourFromString(Properties.Settings.Default.BgColour);
+            this.DrawDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.DrawDown.Location = new System.Drawing.Point(77, 486);
             this.DrawDown.Margin = new System.Windows.Forms.Padding(6);
             this.DrawDown.Name = "DrawDown";
@@ -191,7 +203,7 @@ namespace Optimator.Tabs.Sets
             // 
             // DrawBase
             // 
-            this.DrawBase.BackColor = Utils.ColourFromString(Properties.Settings.Default.BgColour);
+            this.DrawBase.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.DrawBase.Location = new System.Drawing.Point(77, 156);
             this.DrawBase.Margin = new System.Windows.Forms.Padding(6);
             this.DrawBase.Name = "DrawBase";
@@ -202,15 +214,10 @@ namespace Optimator.Tabs.Sets
             this.DrawBase.MouseMove += new System.Windows.Forms.MouseEventHandler(this.DrawBoard_MouseMove);
             this.DrawBase.MouseUp += new System.Windows.Forms.MouseEventHandler(this.DrawBoard_MouseUp);
             // 
-            // EraseBtn
+            // DisplayTimer
             // 
-            this.EraseBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.EraseBtn.Image = Properties.Resources.EraseIcon;
-            this.EraseBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.EraseBtn.Name = "EraseBtn";
-            this.EraseBtn.Size = new System.Drawing.Size(36, 36);
-            this.EraseBtn.Text = "Erase";
-            this.EraseBtn.Click += new System.EventHandler(this.BtnWithPanel_Click);
+            this.DisplayTimer.Interval = 5;
+            this.DisplayTimer.Tick += new System.EventHandler(this.DisplayTimer_Tick);
             // 
             // SetsTab
             // 
@@ -250,5 +257,6 @@ namespace Optimator.Tabs.Sets
         private System.Windows.Forms.PictureBox DrawDown;
         private System.Windows.Forms.PictureBox DrawBase;
         private System.Windows.Forms.ToolStripButton EraseBtn;
+        private Timer DisplayTimer;
     }
 }

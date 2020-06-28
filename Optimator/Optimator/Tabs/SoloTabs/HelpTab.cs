@@ -1,4 +1,5 @@
 ﻿using Optimator.Tabs;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -67,6 +68,20 @@ namespace Optimator.Forms
         private void OptiSiteLbl_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             System.Diagnostics.Process.Start("https://www.opti.technology/");
+        }
+
+
+
+        // ----- PANEL REFRESH TIMER
+
+        /// <summary>
+        /// Starts the drawing timer once the tab has been created.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public override void RefreshDrawPanel(object sender, EventArgs e)
+        {
+            //Nothing Needed
         }
     }
 }

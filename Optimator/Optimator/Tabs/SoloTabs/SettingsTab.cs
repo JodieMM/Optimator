@@ -49,6 +49,20 @@ namespace Optimator.Forms
 
 
 
+        // ----- PANEL REFRESH TIMER
+
+        /// <summary>
+        /// Starts the drawing timer once the tab has been created.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public override void RefreshDrawPanel(object sender, EventArgs e)
+        {
+            //Nothing Needed
+        }
+
+
+
         // ----- DISPLAY -----
 
         /// <summary>

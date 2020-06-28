@@ -824,7 +824,8 @@ namespace Optimator
             // Only check saving if something to save
             if (saveCondition)
             {
-                result = DialogResult.OK; // HIDDEN: Add back MessageBox.Show("Do you want to exit without saving? Your work will be lost.", "Exit Confirmation", MessageBoxButtons.OKCancel);
+                result = MessageBox.Show("Do you want to exit without saving? Your work will be lost.", "Exit Confirmation", MessageBoxButtons.OKCancel);
+                //HIDDEN DialogResult.OK; // HIDDEN: Add back 
             }
 
             return result == DialogResult.OK;

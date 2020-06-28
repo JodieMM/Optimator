@@ -218,11 +218,12 @@ namespace Optimator
         /// </summary>
         /// <param name="name">Tab label</param>
         /// <param name="tab">The tab to add</param>
-        public void AddTabPage(string name, UserControl tab)
+        public void AddTabPage(string name, TabPageControl tab)
         {
             var page = new TabPage(name);
             tab.Dock = DockStyle.Fill;
             page.Controls.Add(tab);
+            page.Enter += tab.RefreshDrawPanel;
             TabControl.Controls.Add(page);
             TabControl.SelectedIndex = TabControl.Controls.Count - 1;
             TabControl.SelectedTab.Focus();

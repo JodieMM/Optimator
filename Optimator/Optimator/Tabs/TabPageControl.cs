@@ -20,6 +20,13 @@ namespace Optimator.Tabs
         public new abstract void Resize();
 
         /// <summary>
+        /// Redraws the visuals on the tab page.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public abstract void RefreshDrawPanel(object sender, EventArgs e);
+
+        /// <summary>
         /// Closes this form.
         /// </summary>
         /// <param name="sender"></param>

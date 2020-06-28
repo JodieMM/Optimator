@@ -79,6 +79,7 @@ namespace Optimator.Tabs.Sets
         }
 
 
+
         // ----- FORM FUNCTIONS -----
 
         /// <summary>
@@ -210,7 +211,6 @@ namespace Optimator.Tabs.Sets
             {
                 var newTab = new PreviewTab(Owner, WIP);
                 Utils.NewTabPage(newTab, "Preview " + WIP.Name);
-                newTab.Parent.Enter += newTab.RefreshDrawPanel;
             }
         }
 
@@ -240,6 +240,31 @@ namespace Optimator.Tabs.Sets
         }
 
         #endregion
+
+
+
+        // ----- PANEL REFRESH TIMER
+
+        /// <summary>
+        /// Starts the drawing timer once the tab has been created.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public override void RefreshDrawPanel(object sender, EventArgs e)
+        {
+            DisplayTimer.Start();
+        }
+
+        /// <summary>
+        /// Displays the drawings a short time after the tab has validated.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DisplayTimer_Tick(object sender, EventArgs e)
+        {
+            DisplayTimer.Stop();
+            DisplayDrawings();
+        }
 
 
 

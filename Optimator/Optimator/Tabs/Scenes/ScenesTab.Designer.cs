@@ -30,6 +30,7 @@ namespace Optimator.Tabs.Scenes
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScenesTab));
             this.Panel = new System.Windows.Forms.Panel();
             this.ToolStrip = new System.Windows.Forms.ToolStrip();
@@ -47,6 +48,7 @@ namespace Optimator.Tabs.Scenes
             this.DPControlsTableLayoutPnl = new System.Windows.Forms.TableLayoutPanel();
             this.TimeTrackBar = new System.Windows.Forms.TrackBar();
             this.DrawPanelContainer = new System.Windows.Forms.Panel();
+            this.DisplayTimer = new System.Windows.Forms.Timer(this.components);
             this.ToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CurrentTimeUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawPanel)).BeginInit();
@@ -259,6 +261,11 @@ namespace Optimator.Tabs.Scenes
             this.DrawPanelContainer.Scroll += new System.Windows.Forms.ScrollEventHandler(this.FocusOn);
             this.DrawPanelContainer.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.FocusOn);
             // 
+            // DisplayTimer
+            // 
+            this.DisplayTimer.Interval = 5;
+            this.DisplayTimer.Tick += new System.EventHandler(this.DisplayTimer_Tick);
+            // 
             // ScenesTab
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -304,5 +311,6 @@ namespace Optimator.Tabs.Scenes
         private System.Windows.Forms.TableLayoutPanel DPControlsTableLayoutPnl;
         private TrackBar TimeTrackBar;
         private Panel DrawPanelContainer;
+        private Timer DisplayTimer;
     }
 }

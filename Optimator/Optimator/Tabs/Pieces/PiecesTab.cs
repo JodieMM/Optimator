@@ -202,7 +202,6 @@ namespace Optimator
                 Utils.CentrePieceOnAxis(clone);
                 var newTab = new PreviewTab(Owner, clone);
                 Utils.NewTabPage(newTab, "Preview " + WIP.Name);
-                newTab.Parent.Enter += newTab.RefreshDrawPanel;
             }            
         }
 
@@ -214,19 +213,44 @@ namespace Optimator
         public new void CloseBtn_Click(object sender, EventArgs e)
         {
             //HIDDEN: TESTING
-            //if (Utils.ExitBtn_Click(WIP.Data.Count > 0))
-            //{
-            //    Owner.RemoveTabPage(this);
-            //}
-
-            WIP = new Piece()
+            if (Utils.ExitBtn_Click(WIP.Data.Count > 0))
             {
-                Data = new List<Spot> { new Spot(-33.5F, 89F), new Spot(99.5F, 57F), new Spot(64.5F, -74F), new Spot(-23.5F, -89F),
-                new Spot(-99.5F, -51F), new Spot(-74.5F, 37)}
-            };
+                Owner.RemoveTabPage(this);
+            }
+
+            //WIP = new Piece()
+            //{
+            //    Data = new List<Spot> { new Spot(-33.5F, 89F), new Spot(99.5F, 57F), new Spot(64.5F, -74F), new Spot(-23.5F, -89F),
+            //    new Spot(-99.5F, -51F), new Spot(-74.5F, 37)}
+            //};
         }
 
         #endregion
+
+
+
+        // ----- PANEL REFRESH TIMER
+
+        /// <summary>
+        /// Starts the drawing timer once the tab has been created.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public override void RefreshDrawPanel(object sender, EventArgs e)
+        {
+            DisplayTimer.Start();
+        }
+
+        /// <summary>
+        /// Displays the drawings a short time after the tab has validated.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DisplayTimer_Tick(object sender, EventArgs e)
+        {
+            DisplayTimer.Stop();
+            DisplayDrawings();
+        }
 
 
 
