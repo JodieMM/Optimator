@@ -28,34 +28,25 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.NameTb = new System.Windows.Forms.TextBox();
             this.ExportBtn = new System.Windows.Forms.Button();
             this.SaveLbl = new System.Windows.Forms.Label();
             this.SaveBtn = new System.Windows.Forms.Button();
+            this.TableLayoutPnl = new System.Windows.Forms.TableLayoutPanel();
+            this.SaveAsBtn = new System.Windows.Forms.Button();
+            this.TableLayoutPnl.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // NameTb
-            // 
-            this.NameTb.BackColor = System.Drawing.Color.White;
-            this.NameTb.Font = new System.Drawing.Font("Segoe UI", 16F);
-            this.NameTb.Location = new System.Drawing.Point(42, 142);
-            this.NameTb.Margin = new System.Windows.Forms.Padding(12);
-            this.NameTb.Name = "NameTb";
-            this.NameTb.Size = new System.Drawing.Size(596, 64);
-            this.NameTb.TabIndex = 6;
-            this.NameTb.Text = "Video Name";
-            this.NameTb.TextChanged += new System.EventHandler(this.NameTb_TextChanged);
             // 
             // ExportBtn
             // 
             this.ExportBtn.BackColor = System.Drawing.Color.LightCoral;
+            this.ExportBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ExportBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ExportBtn.Font = new System.Drawing.Font("Segoe UI", 16F);
-            this.ExportBtn.Location = new System.Drawing.Point(54, 604);
-            this.ExportBtn.Margin = new System.Windows.Forms.Padding(12);
+            this.ExportBtn.Location = new System.Drawing.Point(0, 386);
+            this.ExportBtn.Margin = new System.Windows.Forms.Padding(0);
             this.ExportBtn.Name = "ExportBtn";
-            this.ExportBtn.Size = new System.Drawing.Size(600, 173);
-            this.ExportBtn.TabIndex = 10;
+            this.ExportBtn.Size = new System.Drawing.Size(519, 194);
+            this.ExportBtn.TabIndex = 14;
             this.ExportBtn.Text = "Export";
             this.ExportBtn.UseVisualStyleBackColor = false;
             this.ExportBtn.Click += new System.EventHandler(this.ExportBtn_Click);
@@ -73,38 +64,69 @@
             // SaveBtn
             // 
             this.SaveBtn.BackColor = System.Drawing.Color.LightCoral;
+            this.SaveBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SaveBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SaveBtn.Font = new System.Drawing.Font("Segoe UI", 16F);
-            this.SaveBtn.Location = new System.Drawing.Point(54, 394);
-            this.SaveBtn.Margin = new System.Windows.Forms.Padding(12);
+            this.SaveBtn.Location = new System.Drawing.Point(0, 0);
+            this.SaveBtn.Margin = new System.Windows.Forms.Padding(0);
             this.SaveBtn.Name = "SaveBtn";
-            this.SaveBtn.Size = new System.Drawing.Size(600, 173);
-            this.SaveBtn.TabIndex = 12;
+            this.SaveBtn.Size = new System.Drawing.Size(519, 193);
+            this.SaveBtn.TabIndex = 10;
             this.SaveBtn.Text = "Save";
             this.SaveBtn.UseVisualStyleBackColor = false;
             this.SaveBtn.Click += new System.EventHandler(this.SaveBtn_Click);
+            // 
+            // TableLayoutPnl
+            // 
+            this.TableLayoutPnl.ColumnCount = 1;
+            this.TableLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.TableLayoutPnl.Controls.Add(this.SaveAsBtn, 0, 1);
+            this.TableLayoutPnl.Controls.Add(this.SaveBtn, 0, 0);
+            this.TableLayoutPnl.Controls.Add(this.ExportBtn, 0, 2);
+            this.TableLayoutPnl.Location = new System.Drawing.Point(54, 197);
+            this.TableLayoutPnl.Name = "TableLayoutPnl";
+            this.TableLayoutPnl.RowCount = 3;
+            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.TableLayoutPnl.Size = new System.Drawing.Size(519, 580);
+            this.TableLayoutPnl.TabIndex = 13;
+            // 
+            // SaveAsBtn
+            // 
+            this.SaveAsBtn.BackColor = System.Drawing.Color.LightCoral;
+            this.SaveAsBtn.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SaveAsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.SaveAsBtn.Font = new System.Drawing.Font("Segoe UI", 16F);
+            this.SaveAsBtn.Location = new System.Drawing.Point(0, 193);
+            this.SaveAsBtn.Margin = new System.Windows.Forms.Padding(0);
+            this.SaveAsBtn.Name = "SaveAsBtn";
+            this.SaveAsBtn.Size = new System.Drawing.Size(519, 193);
+            this.SaveAsBtn.TabIndex = 12;
+            this.SaveAsBtn.Text = "Save As";
+            this.SaveAsBtn.UseVisualStyleBackColor = false;
+            this.SaveAsBtn.Click += new System.EventHandler(this.SaveBtn_Click);
             // 
             // SavePanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.SaveBtn);
+            this.Controls.Add(this.TableLayoutPnl);
             this.Controls.Add(this.SaveLbl);
-            this.Controls.Add(this.ExportBtn);
-            this.Controls.Add(this.NameTb);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "SavePanel";
             this.Size = new System.Drawing.Size(820, 877);
+            this.TableLayoutPnl.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.TextBox NameTb;
         private System.Windows.Forms.Button ExportBtn;
         private System.Windows.Forms.Label SaveLbl;
         private System.Windows.Forms.Button SaveBtn;
+        private System.Windows.Forms.TableLayoutPanel TableLayoutPnl;
+        private System.Windows.Forms.Button SaveAsBtn;
     }
 }

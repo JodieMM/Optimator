@@ -35,18 +35,14 @@ namespace Optimator.Forms.Sets
         public override void Resize()
         {
             var widthPercent = 0.9F;
-            var heightPercent = 0.1F;
+            var heightPercent = 0.4F;
 
             var bigWidth = (int)(Width * widthPercent);
             var lilWidth = (int)((Width - bigWidth) / 2.0);
 
             SaveLbl.Location = new Point(lilWidth, lilWidth);
-            NameTb.Width = bigWidth;
-            NameTb.Location = new Point(lilWidth, lilWidth * 3 + SaveLbl.Height);
-
-            CompleteBtn.Size = SaveBtn.Size = new Size(bigWidth, (int)(Height * heightPercent));
-            CompleteBtn.Location = new Point(lilWidth, Height - lilWidth - CompleteBtn.Height);
-            SaveBtn.Location = new Point(lilWidth, CompleteBtn.Location.Y - lilWidth - SaveBtn.Height);
+            TableLayoutPnl.Location = new Point(lilWidth, lilWidth * 3 + SaveLbl.Height);
+            TableLayoutPnl.Size = new Size(bigWidth, (int)(Height * heightPercent));
         }
 
         /// <summary>
@@ -56,7 +52,7 @@ namespace Optimator.Forms.Sets
         /// <param name="e"></param>
         private void SaveBtn_Click(object sender, EventArgs e)
         {
-            Save();
+            Save(sender);
         }
 
         /// <summary>
@@ -64,22 +60,12 @@ namespace Optimator.Forms.Sets
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void CompleteBtn_Click(object sender, System.EventArgs e)
+        private void CompleteBtn_Click(object sender, EventArgs e)
         {
-            if (Save())
+            if (Save(sender))
             {
                 Owner.Owner.RemoveTabPage(Owner);
             }
-        }
-
-        /// <summary>
-        /// Updates the tab name based on the name of the new video.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void NameTb_TextChanged(object sender, EventArgs e)
-        {
-            Owner.Parent.Text = NameTb.Text;
         }
 
         /// <summary>
@@ -113,7 +99,7 @@ namespace Optimator.Forms.Sets
         /// Saves the video.
         /// </summary>
         /// <returns>True if successful</returns>
-        private bool Save()
+        private bool Save(object sender)
         {
             if (Owner.WIP.PiecesList.Count < 1)
             {
@@ -123,24 +109,13 @@ namespace Optimator.Forms.Sets
             {
                 MessageBox.Show("Please connect all pieces or remove unconnected pieces.", "Multiple Sets", MessageBoxButtons.OK);
             }
-            else if (!Utils.CheckValidNewName(NameTb.Text, Consts.SetExt))
-            {
-                return false;
-            }
             else
             {
-                try
+                Owner.Directory = Utils.SaveFile(Owner.WIP.GetData(), Consts.SetFilter, sender == SaveAsBtn ? "" : Owner.Directory);
+                if (Owner.Directory != "")
                 {
-                    Utils.SaveFile(Utils.GetDirectory(NameTb.Text, Consts.SetExt), Owner.WIP.GetData());
+                    Owner.Parent.Text = Path.GetFileNameWithoutExtension(Owner.Directory);
                     return true;
-                }
-                catch (FileNotFoundException)
-                {
-                    MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
-                }
-                catch (ArgumentOutOfRangeException)
-                {
-                    MessageBox.Show("No data entered for point.", "Missing Data", MessageBoxButtons.OK);
                 }
             }
             return false;

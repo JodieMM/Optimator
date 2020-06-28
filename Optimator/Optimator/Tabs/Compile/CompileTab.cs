@@ -16,6 +16,7 @@ namespace Optimator.Tabs.Compile
     {
         #region Video Variables
         public override HomeForm Owner { get; set; }
+        public string Directory { get; set; } = "";
 
         public Video WIP = new Video();
         public int sceneIndex = 0;

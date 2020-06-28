@@ -82,43 +82,32 @@ namespace Optimator
         }
 
         /// <summary>
-        /// Saves provided data to a user selected location.
+        /// Saves a file to a new or existing location.
         /// </summary>
         /// <param name="data">The data to save</param>
-        public static void SaveData(List<string> data)
+        /// <param name="filter">The permitted file extension</param>
+        /// <param name="direct">The current directory</param>
+        /// <returns>File directory</returns>
+        public static string SaveFile(List<string> data, string filter, string direct = "")
         {
-            var saveFileDialog = new SaveFileDialog
+            var directory = direct == "" || !File.Exists(direct) ? SelectSaveDirectory(filter) : direct;
+            if (directory != "")
             {
-                Filter = "optr files (*.optr)|*.optr|All files (*.*)|*.*",
-                FilterIndex = 0
-            };
-
-            if (saveFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                //if (!CheckValidNewName(Path.GetFileNameWithoutExtension(saveFileDialog.FileName)))
-                //{
-                //    SaveData(data);
-                //    return;
-                //}
-
-                var file = new StreamWriter(saveFileDialog.OpenFile());
-                if (file != null)
+                if (!SaveData(directory, data))
                 {
-                    foreach (var line in data)
-                    {
-                        file.WriteLine(line);
-                    }
-                    file.Close();
+                    return "";
                 }
             }
+            return directory;
         }
 
         /// <summary>
-        /// Saves a file to a provided location.
+        /// Saves data to a file location.
         /// </summary>
-        /// <param name="directory">The file to save to</param>
-        /// <param name="data">The data to save</param>
-        public static void SaveFile(string directory, List<string> data)
+        /// <param name="directory">File location</param>
+        /// <param name="data">Data to save</param>
+        /// <returns>True if successful</returns>
+        public static bool SaveData(string directory, List<string> data)
         {
             try
             {
@@ -128,12 +117,43 @@ namespace Optimator
                     file.WriteLine(data[index]);
                 }
                 file.Close();
+                return true;
             }
             catch (UnauthorizedAccessException)
             {
-                MessageBox.Show("You do not have access to this directory. Please select another.", "Invalid Directory Selection");
-                SaveFile(directory, data);
+                MessageBox.Show("You do not have access to this directory. Please try again.", "Invalid Directory Selection");
             }
+            catch (FileNotFoundException)
+            {
+                MessageBox.Show("File not found. Check your file and sub-files and try again.", "File Not Found", MessageBoxButtons.OK);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                MessageBox.Show("Suspected outdated file or sub-file.", "File Indexing Error", MessageBoxButtons.OK);
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Selects a directory and file name to save to.
+        /// </summary>
+        /// <param name="filter">Permissable file extension(s)</param>
+        /// <returns>File directory</returns>
+        public static string SelectSaveDirectory(string filter)
+        {
+            var saveFileDialog = new SaveFileDialog
+            {
+                Filter = filter
+            };
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                if (CheckValidNewName(Path.GetFileNameWithoutExtension(saveFileDialog.FileName)))
+                {
+                    return saveFileDialog.FileName;
+                }
+            }
+            return "";
         }
 
         /// <summary>

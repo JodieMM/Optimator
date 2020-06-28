@@ -16,6 +16,7 @@ namespace Optimator.Tabs.Scenes
         #region Scenes Form Variables
         public override HomeForm Owner { get; set; }
         private PanelControl Baby = null;
+        public string Directory { get; set; } = "";
 
         public Scene WIP = new Scene();
         public Part selected = null;

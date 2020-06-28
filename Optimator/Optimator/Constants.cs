@@ -21,7 +21,10 @@ namespace Optimator
         public const string Gif = ".gif";
 
         // File Filters
+        public const string PieceFilter = "Piece Files (*" + PieceExt + ")|*" + PieceExt;
+        public const string SetFilter = "Set Files (*" + SetExt + ")|*" + SetExt;
         public const string SceneFilter = "Scene Files (*" + SceneExt + ")|*" + SceneExt;
+        public const string VideoFilter = "Video Files (*" + VideoExt + ")|*" + VideoExt;
         public const string PartFilter = "Part Files (*" + PieceExt + ";*" + SetExt + ")|*" + PieceExt + ";*" + SetExt;
         public const string OptiFilter = "Optimator Files (*" + PieceExt + ";*" + SetExt + ";*" + SceneExt + ";*" + VideoExt +
             ")|*" + PieceExt + ";*" + SetExt + ";*" + SceneExt + ";*" + VideoExt;

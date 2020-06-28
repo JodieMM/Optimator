@@ -18,6 +18,7 @@ namespace Optimator
     {
         #region PiecesTab Variables
         public override HomeForm Owner { get; set; }
+        public string Directory { get; set; } = "";
 
         public Piece WIP = new Piece();
         public Dictionary<Part, bool> Sketches { get; set; } = new Dictionary<Part, bool>();

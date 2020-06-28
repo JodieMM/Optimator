@@ -34,18 +34,14 @@ namespace Optimator.Forms.Pieces
         public override void Resize()
         {
             var widthPercent = 0.9F;
-            var heightPercent = 0.1F;
+            var heightPercent = 0.4F;
 
             var bigWidth = (int)(Width * widthPercent);
             var lilWidth = (int)((Width - bigWidth) / 2.0);
 
             SaveLbl.Location = new Point(lilWidth, lilWidth);
-            NameTb.Width = bigWidth;
-            NameTb.Location = new Point(lilWidth, lilWidth * 3 + SaveLbl.Height);
-
-            CompleteBtn.Size = SaveBtn.Size = new Size(bigWidth, (int)(Height * heightPercent));
-            CompleteBtn.Location = new Point(lilWidth, Height - lilWidth - CompleteBtn.Height);
-            SaveBtn.Location = new Point(lilWidth, CompleteBtn.Location.Y - lilWidth - SaveBtn.Height);
+            TableLayoutPnl.Location = new Point(lilWidth, lilWidth * 3 + SaveLbl.Height);
+            TableLayoutPnl.Size = new Size(bigWidth, (int)(Height * heightPercent));
         }
 
         /// <summary>
@@ -55,7 +51,7 @@ namespace Optimator.Forms.Pieces
         /// <param name="e"></param>
         private void SaveBtn_Click(object sender, EventArgs e)
         {
-            Save();
+            Save(sender);
         }
 
         /// <summary>
@@ -65,20 +61,10 @@ namespace Optimator.Forms.Pieces
         /// <param name="e"></param>
         private void CompleteBtn_Click(object sender, EventArgs e)
         {
-            if (Save())
+            if (Save(sender))
             {
                 Owner.Owner.RemoveTabPage(Owner);
             }            
-        }
-
-        /// <summary>
-        /// Updates the tab name based on the name of the new piece.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void NameTb_TextChanged(object sender, EventArgs e)
-        {
-            Owner.Parent.Text = NameTb.Text;
         }
 
         /// <summary>
@@ -112,28 +98,20 @@ namespace Optimator.Forms.Pieces
         /// Saves the piece.
         /// </summary>
         /// <returns>True if successful</returns>
-        private bool Save()
+        private bool Save(object sender)
         {
-            if (!Utils.CheckValidNewName(NameTb.Text, Consts.PieceExt) || !Owner.CheckPiecesValid())
+            if (!Owner.CheckPiecesValid())
             {
                 return false;
             }
 
-            // Save Piece and Close Form
-            try
+            var clone = Utils.ClonePiece(Owner.WIP);
+            Utils.CentrePieceOnAxis(clone);
+            Owner.Directory = Utils.SaveFile(clone.GetData(), Consts.PieceFilter, sender == SaveAsBtn ? "" : Owner.Directory);
+            if (Owner.Directory != "")
             {
-                var clone = Utils.ClonePiece(Owner.WIP);
-                Utils.CentrePieceOnAxis(clone);
-                Utils.SaveFile(Utils.GetDirectory(NameTb.Text, Consts.PieceExt), clone.GetData());
+                Owner.Parent.Text = Path.GetFileNameWithoutExtension(Owner.Directory);
                 return true;
-            }
-            catch (FileNotFoundException)
-            {
-                MessageBox.Show("File not found. Check your file name and try again.", "File Not Found", MessageBoxButtons.OK);
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                MessageBox.Show("No data entered for point", "Missing Data", MessageBoxButtons.OK);
             }
             return false;
         }

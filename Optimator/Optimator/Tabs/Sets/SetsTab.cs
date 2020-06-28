@@ -19,6 +19,7 @@ namespace Optimator.Tabs.Sets
         #region Sets Form Variables
         public override HomeForm Owner { get; set; }
         private PanelControl Baby;
+        public string Directory { get; set; } = "";
 
         public Set WIP = new Set();
         public Piece selected = null;
