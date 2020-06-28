@@ -54,33 +54,36 @@ namespace Optimator.Forms.Scenes
         /// <param name="e"></param>
         private void AddBtn_Click(object sender, EventArgs e)
         {
-            var name = Utils.OpenFile(Consts.PartFilter);
-            if (name != "")
+            var names = Utils.OpenFiles(Consts.PartFilter);
+            if (names != null)
             {
                 try
                 {
-                    Part loaded;
-                    if (name.EndsWith(Consts.PieceExt))
+                    foreach (var name in names)
                     {
-                        loaded = new Piece(name, Utils.ReadFile(Utils.GetDirectory(name)));
-                        loaded.ToPiece().State.SetCoordsBasedOnBoard(Owner.GetBoardSizing());
-                        Owner.WIP.Originals.Add(loaded, Utils.CloneState(loaded.ToPiece().State));
-                        Owner.WIP.OriginalColours.Add(loaded, Utils.CloneColourState((loaded as Piece).ColourState));
-                    }
-                    else
-                    {
-                        loaded = new Set(name, Utils.ReadFile(Utils.GetDirectory(name)));
-                        loaded.ToPiece().State.SetCoordsBasedOnBoard(Owner.GetBoardSizing());
-                        Owner.WIP.Originals.Add(loaded, Utils.CloneState(loaded.ToPiece().State));
-                        foreach (var piece in (loaded as Set).PiecesList)
+                        Part loaded;
+                        if (name.EndsWith(Consts.PieceExt))
                         {
-                            Owner.WIP.Originals.Add(piece, Utils.CloneState(piece.State));
-                            Owner.WIP.OriginalColours.Add(piece, Utils.CloneColourState(piece.ColourState));
+                            loaded = new Piece(name, Utils.ReadFile(Utils.GetDirectory(name)));
+                            loaded.ToPiece().State.SetCoordsBasedOnBoard(Owner.GetBoardSizing());
+                            Owner.WIP.Originals.Add(loaded, Utils.CloneState(loaded.ToPiece().State));
+                            Owner.WIP.OriginalColours.Add(loaded, Utils.CloneColourState((loaded as Piece).ColourState));
                         }
+                        else
+                        {
+                            loaded = new Set(name, Utils.ReadFile(Utils.GetDirectory(name)));
+                            loaded.ToPiece().State.SetCoordsBasedOnBoard(Owner.GetBoardSizing());
+                            Owner.WIP.Originals.Add(loaded, Utils.CloneState(loaded.ToPiece().State));
+                            foreach (var piece in (loaded as Set).PiecesList)
+                            {
+                                Owner.WIP.Originals.Add(piece, Utils.CloneState(piece.State));
+                                Owner.WIP.OriginalColours.Add(piece, Utils.CloneColourState(piece.ColourState));
+                            }
+                        }
+                        Owner.WIP.PartsList.Add(loaded);
+                        Owner.SelectPart(loaded);
+                        Owner.WIP.UpdatePiecesList();
                     }
-                    Owner.WIP.PartsList.Add(loaded);
-                    Owner.SelectPart(loaded);
-                    Owner.WIP.UpdatePiecesList();
                     Owner.DisplayDrawings();
                 }
                 catch (FileNotFoundException)

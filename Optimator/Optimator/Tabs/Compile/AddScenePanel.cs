@@ -55,14 +55,17 @@ namespace Optimator.Forms.Compile
         /// <param name="e"></param>
         public void SubmitScene_Click(object sender, EventArgs e)
         {
-            var name = Utils.OpenFile(Consts.SceneFilter);
-            if (name != "")
+            var names = Utils.OpenFiles(Consts.SceneFilter);
+            if (names != null)
             {
                 try
                 {
-                    var newScene = new Scene(name, Utils.ReadFile(Utils.GetDirectory(name)));
-                    Owner.WIP.videoScenes.Add(newScene);
-                    Owner.AddToSceneViewPanel(newScene);
+                    foreach (var name in names)
+                    {
+                        var newScene = new Scene(name, Utils.ReadFile(Utils.GetDirectory(name)));
+                        Owner.WIP.videoScenes.Add(newScene);
+                        Owner.AddToSceneViewPanel(newScene);
+                    }
                 }
                 catch (FileNotFoundException)
                 {

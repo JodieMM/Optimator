@@ -23,10 +23,9 @@ namespace Optimator
         /// Finds directory of user-selected file.
         /// </summary>
         /// <param name="types">The acceptable file types</param>
-        /// <returns>Contents of file</returns>
+        /// <returns>File name</returns>
         public static string OpenFile(string filter)
         {
-            var data = new List<string>();
             var openFileDialog = new OpenFileDialog
             {
                 Filter = filter
@@ -37,6 +36,27 @@ namespace Optimator
                 return openFileDialog.SafeFileName;
             }
             return "";
+        }
+
+        /// <summary>
+        /// Finds directory of one or many user-selected files.
+        /// </summary>
+        /// <param name="types">The acceptable file types</param>
+        /// <returns>File name(s)</returns>
+        public static string[] OpenFiles(string filter)
+        {
+            var data = new List<string>();
+            var openFileDialog = new OpenFileDialog
+            {
+                Filter = filter,
+                Multiselect = true
+            };
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                Properties.Settings.Default.WorkingDirectory = Path.GetDirectoryName(openFileDialog.FileName);
+                return openFileDialog.SafeFileNames;
+            }
+            return null;
         }
                 
         /// <summary>

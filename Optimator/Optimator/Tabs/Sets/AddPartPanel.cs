@@ -54,29 +54,32 @@ namespace Optimator.Forms.Sets
         /// <param name="e"></param>
         private void AddBtn_Click(object sender, EventArgs e)
         {
-            var name = Utils.OpenFile(Consts.PartFilter);
-            if (name != "")
+            var names = Utils.OpenFiles(Consts.PartFilter);
+            if (names != null)
             {
                 try
                 {
-                    Part justAdded;
-                    if (name.EndsWith(Consts.PieceExt))
+                    foreach (var name in names)
                     {
-                        justAdded = new Piece(name, Utils.ReadFile(Utils.GetDirectory(name)));
-                        Owner.WIP.PiecesList.Add(justAdded.ToPiece());
-                        justAdded.ToPiece().State.SetCoordsBasedOnBoard(Owner.GetBoardSizing());
-                        Owner.WIP.PersonalStates.Add(justAdded as Piece, Utils.CloneState(justAdded.ToPiece().State));
-                    }
-                    else if (name.EndsWith(Consts.SetExt))
-                    {
-                        justAdded = new Set(name, Utils.ReadFile(Utils.GetDirectory(name)));
-                        Owner.WIP.PiecesList.AddRange((justAdded as Set).PiecesList);
-                        justAdded.ToPiece().State.SetCoordsBasedOnBoard(Owner.GetBoardSizing());
-                        foreach (var piece in (justAdded as Set).PiecesList)
+                        Part justAdded;
+                        if (name.EndsWith(Consts.PieceExt))
                         {
-                            Owner.WIP.PersonalStates.Add(piece, Utils.CloneState(piece.State));
+                            justAdded = new Piece(name, Utils.ReadFile(Utils.GetDirectory(name)));
+                            Owner.WIP.PiecesList.Add(justAdded.ToPiece());
+                            justAdded.ToPiece().State.SetCoordsBasedOnBoard(Owner.GetBoardSizing());
+                            Owner.WIP.PersonalStates.Add(justAdded as Piece, Utils.CloneState(justAdded.ToPiece().State));
                         }
-                        (justAdded as Set).CalculateStates();
+                        else if (name.EndsWith(Consts.SetExt))
+                        {
+                            justAdded = new Set(name, Utils.ReadFile(Utils.GetDirectory(name)));
+                            Owner.WIP.PiecesList.AddRange((justAdded as Set).PiecesList);
+                            justAdded.ToPiece().State.SetCoordsBasedOnBoard(Owner.GetBoardSizing());
+                            foreach (var piece in (justAdded as Set).PiecesList)
+                            {
+                                Owner.WIP.PersonalStates.Add(piece, Utils.CloneState(piece.State));
+                            }
+                            (justAdded as Set).CalculateStates();
+                        }
                     }
                     Owner.DeselectPiece();
                     Owner.CheckSingularBasePiece();
