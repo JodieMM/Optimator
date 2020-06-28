@@ -25,6 +25,7 @@ namespace Optimator
         public const string SetFilter = "Set Files (*" + SetExt + ")|*" + SetExt;
         public const string SceneFilter = "Scene Files (*" + SceneExt + ")|*" + SceneExt;
         public const string VideoFilter = "Video Files (*" + VideoExt + ")|*" + VideoExt;
+        public const string AviFilter = "Avi File (*" + Avi + ")|*" + Avi;
         public const string PartFilter = "Part Files (*" + PieceExt + ";*" + SetExt + ")|*" + PieceExt + ";*" + SetExt;
         public const string OptiFilter = "Optimator Files (*" + PieceExt + ";*" + SetExt + ";*" + SceneExt + ";*" + VideoExt +
             ")|*" + PieceExt + ";*" + SetExt + ";*" + SceneExt + ";*" + VideoExt;

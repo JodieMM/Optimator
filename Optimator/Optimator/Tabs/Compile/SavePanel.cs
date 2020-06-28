@@ -110,9 +110,8 @@ namespace Optimator.Forms.Compile
         /// <returns>True if successful</returns>
         private bool ExportVideo()
         {
-            //TODO: EXPORT NAME SELECT
-            var name = "holder";
-            if (!Utils.CheckValidNewName(name))
+            var chosenDirectory = Utils.SelectSaveDirectory(Consts.AviFilter);
+            if (chosenDirectory == "")
             {
                 return false;
             }
@@ -121,10 +120,10 @@ namespace Optimator.Forms.Compile
                 Cursor = Cursors.WaitCursor;
 
                 // Prepare Save Location
-                var directory = Utils.GetDirectory(name);
-                Directory.CreateDirectory(directory);
-                var imagesDirectory = @"""" + Utils.GetDirectory(directory, "%d", Consts.Png) + @"""";
-                var videosDirectory = @"""" + Utils.GetDirectory(directory, name, Consts.Avi) + @"""";
+                var imagesLocation = Path.Combine(Path.GetDirectoryName(chosenDirectory), Path.GetFileNameWithoutExtension(chosenDirectory));                
+                Directory.CreateDirectory(imagesLocation);
+                var imagesDirectory = @"""" + Utils.GetDirectory(imagesLocation, "%d", Consts.Png) + @"""";
+                var videosDirectory = @"""" + chosenDirectory + @"""";
 
                 // Save Images
                 var numFrames = 0;                
@@ -134,7 +133,7 @@ namespace Optimator.Forms.Compile
                     for (Owner.workingTime = 0; Owner.workingTime <= Owner.WIP.videoScenes[Owner.sceneIndex].TimeLength; Owner.workingTime += timeIncrement)
                     {
                         var bitmap = Owner.DrawOnBitmap();
-                        bitmap.Save(Utils.GetDirectory(directory, numFrames.ToString(), Consts.Png), System.Drawing.Imaging.ImageFormat.Png);
+                        bitmap.Save(Utils.GetDirectory(imagesLocation, numFrames.ToString(), Consts.Png), System.Drawing.Imaging.ImageFormat.Png);
                         numFrames++;
                     }
                 }
@@ -147,16 +146,7 @@ namespace Optimator.Forms.Compile
                 process.StartInfo.Arguments = "-framerate " + Owner.WIP.FPS + " -f image2 -i " + imagesDirectory + " -c:v mpeg4 -q:v 3 " + videosDirectory;
                 process.StartInfo.UseShellExecute = false;
                 process.StartInfo.CreateNoWindow = true;
-
-                try
-                {
-                    process.Start();
-                }
-                catch (Exception exception)
-                {
-                    MessageBox.Show(exception.Message, "Exception - Please Report to jodie@opti.technology", MessageBoxButtons.OK);
-                    return false;
-                }
+                process.Start();
 
                 Cursor = Cursors.Default;
                 return true;
@@ -168,6 +158,10 @@ namespace Optimator.Forms.Compile
             catch (ArgumentOutOfRangeException)
             {
                 MessageBox.Show("No data entered for point", "Missing Data", MessageBoxButtons.OK);
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message, "Exception - Please Report to jodie@opti.technology", MessageBoxButtons.OK);
             }
             return false;
         }
