@@ -191,6 +191,24 @@ namespace Optimator.Tabs.Scenes
         }
 
         /// <summary>
+        /// Snips excess time off of the scene.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SnipBtn_Click(object sender, EventArgs e)
+        {
+            decimal maxTime = 0;
+            foreach(var change in WIP.Changes)
+            {
+                if (change.StartTime + change.HowLong > maxTime)
+                {
+                    maxTime = change.StartTime + change.HowLong;
+                }
+            }
+            UpdateVideoLength(maxTime);
+        }
+
+        /// <summary>
         /// Closes this tab.
         /// </summary>
         /// <param name="sender"></param>
@@ -265,6 +283,10 @@ namespace Optimator.Tabs.Scenes
             WIP.TimeLength = newTime;
             VidLengthLbl.Text = "Video Length: " + ConvertTimeToText();
             TimeTrackBar.Maximum = (int)(newTime * 10);
+            if (CurrentTimeUpDown.Value > WIP.TimeLength)
+            {
+                CurrentTimeUpDown.Value = WIP.TimeLength;
+            }
         }
 
         /// <summary>

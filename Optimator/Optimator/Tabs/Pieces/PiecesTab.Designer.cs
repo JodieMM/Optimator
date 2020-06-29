@@ -125,7 +125,7 @@ namespace Optimator
             // SaveBtn
             // 
             this.SaveBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.SaveBtn.Image = global::Optimator.Properties.Resources.SaveIcon;
+            this.SaveBtn.Image = ((System.Drawing.Image)(resources.GetObject("SaveBtn.Image")));
             this.SaveBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.SaveBtn.Name = "SaveBtn";
             this.SaveBtn.Size = new System.Drawing.Size(36, 36);
@@ -157,7 +157,7 @@ namespace Optimator
             // OutlineBtn
             // 
             this.OutlineBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.OutlineBtn.Image = global::Optimator.Properties.Resources.OutlineIcon;
+            this.OutlineBtn.Image = ((System.Drawing.Image)(resources.GetObject("OutlineBtn.Image")));
             this.OutlineBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.OutlineBtn.Name = "OutlineBtn";
             this.OutlineBtn.Size = new System.Drawing.Size(36, 36);

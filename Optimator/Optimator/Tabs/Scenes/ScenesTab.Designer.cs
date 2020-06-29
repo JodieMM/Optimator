@@ -46,6 +46,7 @@ namespace Optimator.Tabs.Scenes
             this.DrawPanel = new System.Windows.Forms.PictureBox();
             this.DisplayPanel = new System.Windows.Forms.TableLayoutPanel();
             this.DPControlsTableLayoutPnl = new System.Windows.Forms.TableLayoutPanel();
+            this.SnipBtn = new System.Windows.Forms.Button();
             this.TimeTrackBar = new System.Windows.Forms.TrackBar();
             this.DrawPanelContainer = new System.Windows.Forms.Panel();
             this.DisplayTimer = new System.Windows.Forms.Timer(this.components);
@@ -90,7 +91,7 @@ namespace Optimator.Tabs.Scenes
             // SaveBtn
             // 
             this.SaveBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.SaveBtn.Image = global::Optimator.Properties.Resources.SaveIcon;
+            this.SaveBtn.Image = ((System.Drawing.Image)(resources.GetObject("SaveBtn.Image")));
             this.SaveBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.SaveBtn.Name = "SaveBtn";
             this.SaveBtn.Size = new System.Drawing.Size(36, 36);
@@ -154,10 +155,10 @@ namespace Optimator.Tabs.Scenes
             this.VidLengthLbl.AutoSize = true;
             this.VidLengthLbl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.VidLengthLbl.Font = new System.Drawing.Font("Segoe UI", 16F);
-            this.VidLengthLbl.Location = new System.Drawing.Point(1066, 0);
+            this.VidLengthLbl.Location = new System.Drawing.Point(978, 0);
             this.VidLengthLbl.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.VidLengthLbl.Name = "VidLengthLbl";
-            this.VidLengthLbl.Size = new System.Drawing.Size(702, 126);
+            this.VidLengthLbl.Size = new System.Drawing.Size(612, 126);
             this.VidLengthLbl.TabIndex = 41;
             this.VidLengthLbl.Text = "Video Length: 0s";
             // 
@@ -186,7 +187,7 @@ namespace Optimator.Tabs.Scenes
             this.CurrentTimeUpDown.Location = new System.Drawing.Point(354, 0);
             this.CurrentTimeUpDown.Margin = new System.Windows.Forms.Padding(0);
             this.CurrentTimeUpDown.Name = "CurrentTimeUpDown";
-            this.CurrentTimeUpDown.Size = new System.Drawing.Size(708, 64);
+            this.CurrentTimeUpDown.Size = new System.Drawing.Size(620, 64);
             this.CurrentTimeUpDown.TabIndex = 37;
             this.CurrentTimeUpDown.ValueChanged += new System.EventHandler(this.UpdateCurrentTime);
             // 
@@ -219,13 +220,15 @@ namespace Optimator.Tabs.Scenes
             // 
             // DPControlsTableLayoutPnl
             // 
-            this.DPControlsTableLayoutPnl.ColumnCount = 3;
+            this.DPControlsTableLayoutPnl.ColumnCount = 4;
             this.DPControlsTableLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.DPControlsTableLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
-            this.DPControlsTableLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
+            this.DPControlsTableLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 35F));
+            this.DPControlsTableLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 35F));
+            this.DPControlsTableLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.DPControlsTableLayoutPnl.Controls.Add(this.VidLengthLbl, 2, 0);
             this.DPControlsTableLayoutPnl.Controls.Add(this.CurrentTimeUpDown, 1, 0);
             this.DPControlsTableLayoutPnl.Controls.Add(this.CurrentTimeLbl, 0, 0);
+            this.DPControlsTableLayoutPnl.Controls.Add(this.SnipBtn, 3, 0);
             this.DPControlsTableLayoutPnl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.DPControlsTableLayoutPnl.Location = new System.Drawing.Point(6, 6);
             this.DPControlsTableLayoutPnl.Margin = new System.Windows.Forms.Padding(6);
@@ -234,6 +237,23 @@ namespace Optimator.Tabs.Scenes
             this.DPControlsTableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.DPControlsTableLayoutPnl.Size = new System.Drawing.Size(1772, 126);
             this.DPControlsTableLayoutPnl.TabIndex = 43;
+            // 
+            // SnipBtn
+            // 
+            this.SnipBtn.BackgroundImage = global::Optimator.Properties.Resources.SnipIcon;
+            this.SnipBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.SnipBtn.Dock = System.Windows.Forms.DockStyle.Top;
+            this.SnipBtn.FlatAppearance.BorderColor = System.Drawing.Color.PaleGoldenrod;
+            this.SnipBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.SnipBtn.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SnipBtn.Location = new System.Drawing.Point(1594, 0);
+            this.SnipBtn.Margin = new System.Windows.Forms.Padding(0);
+            this.SnipBtn.Name = "SnipBtn";
+            this.SnipBtn.Size = new System.Drawing.Size(178, 126);
+            this.SnipBtn.TabIndex = 42;
+            this.SnipBtn.TextAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.SnipBtn.UseVisualStyleBackColor = true;
+            this.SnipBtn.Click += new System.EventHandler(this.SnipBtn_Click);
             // 
             // TimeTrackBar
             // 
@@ -312,5 +332,6 @@ namespace Optimator.Tabs.Scenes
         private TrackBar TimeTrackBar;
         private Panel DrawPanelContainer;
         private Timer DisplayTimer;
+        private Button SnipBtn;
     }
 }

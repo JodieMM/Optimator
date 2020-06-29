@@ -107,8 +107,6 @@ namespace Optimator
 
         #region ToolStrip
 
-        // --- UTILITIES ---
-
         /// <summary>
         /// Unchecks all of the checkable buttons and checks the provided one.
         /// </summary>
@@ -229,7 +227,7 @@ namespace Optimator
 
 
 
-        // ----- PANEL REFRESH TIMER
+        // ----- PANEL REFRESH TIMER -----
 
         /// <summary>
         /// Starts the drawing timer once the tab has been created.

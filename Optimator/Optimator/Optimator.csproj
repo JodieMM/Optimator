@@ -516,6 +516,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ffmpeg.exe" />
+    <None Include="Resources\SnipIcon01.png" />
+    <None Include="Resources\OutlineIcon01.png" />
+    <None Include="Resources\SaveIcon01.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
