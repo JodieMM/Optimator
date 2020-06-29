@@ -448,7 +448,7 @@ namespace Optimator.Tabs.Scenes
 
                 // Draw Panel
                 WIP.RunScene(CurrentTimeUpDown.Value);
-                Visuals.DrawParts(WIP.PartsList, g, DrawPanel);
+                DisplayDrawPanel();
 
                 // Update Animation listbox
                 if (Baby != null && Baby is MovePanel)

@@ -104,7 +104,7 @@ namespace Optimator.Forms.Scenes
             Owner.Directory = Utils.SaveFile(Owner.WIP.GetData(), Consts.SceneFilter, sender == SaveAsBtn ? "" : Owner.Directory);
             if (Owner.Directory != "")
             {
-                Owner.Parent.Text = Path.GetFileNameWithoutExtension(Owner.Directory);
+                Owner.Parent.Text = Utils.BaseName(Owner.Directory);
                 return true;
             }
             return false;

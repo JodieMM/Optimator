@@ -110,7 +110,7 @@ namespace Optimator.Forms.Pieces
             Owner.Directory = Utils.SaveFile(clone.GetData(), Consts.PieceFilter, sender == SaveAsBtn ? "" : Owner.Directory);
             if (Owner.Directory != "")
             {
-                Owner.Parent.Text = Path.GetFileNameWithoutExtension(Owner.Directory);
+                Owner.Parent.Text = Utils.BaseName(Owner.Directory);
                 return true;
             }
             return false;

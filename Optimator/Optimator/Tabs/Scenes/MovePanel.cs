@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 
 namespace Optimator.Tabs.Scenes
@@ -142,7 +143,7 @@ namespace Optimator.Tabs.Scenes
             foreach (var change in Owner.WIP.Changes)
             {
                 string summary = "";
-                summary += change.AffectedPiece.Name + " :" + change.Action + " :" +
+                summary += Utils.BaseName(change.AffectedPiece.Name) + " :" + change.Action + " :" +
                     change.HowMuch.ToString() + " :" + change.StartTime.ToString();
 
                 if (Owner.GetCurrentTimeUpDownValue() >= change.StartTime &&

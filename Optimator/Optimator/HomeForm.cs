@@ -115,7 +115,7 @@ namespace Optimator
         /// <param name="e"></param>
         private void OpenTSMI_Click(object sender, EventArgs e)
         {
-            var name = Utils.OpenFile(Consts.PartFilter);
+            var name = Utils.OpenFile(Consts.OptiFilter);
             if (name != "")
             {
                 try
@@ -144,13 +144,14 @@ namespace Optimator
                     {
                         attemptOpen = new ScenesTab(this);
                         (attemptOpen as ScenesTab).WIP = new Scene(name, Utils.ReadFile(Utils.GetDirectory(name)));
+                        (attemptOpen as ScenesTab).UpdateVideoLength((attemptOpen as ScenesTab).WIP.TimeLength);
                     }
                     else
                     {
                         attemptOpen = new CompileTab(this);
                         (attemptOpen as CompileTab).WIP = new Video(name, Utils.ReadFile(Utils.GetDirectory(name)));
                     }
-                    AddTabPage(name, attemptOpen);
+                    AddTabPage(Utils.BaseName(name), attemptOpen);
                     attemptOpen.Resize();
                 }
                 catch (FileNotFoundException)

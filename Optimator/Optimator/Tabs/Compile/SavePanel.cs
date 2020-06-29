@@ -56,7 +56,7 @@ namespace Optimator.Forms.Compile
             Owner.Directory = Utils.SaveFile(Owner.WIP.GetData(), Consts.VideoFilter, sender == SaveAsBtn ? "" : Owner.Directory);
             if (Owner.Directory != "")
             {
-                Owner.Parent.Text = Path.GetFileNameWithoutExtension(Owner.Directory);
+                Owner.Parent.Text = Utils.BaseName(Owner.Directory);
             }
         }
 
@@ -120,7 +120,7 @@ namespace Optimator.Forms.Compile
                 Cursor = Cursors.WaitCursor;
 
                 // Prepare Save Location
-                var imagesLocation = Path.Combine(Path.GetDirectoryName(chosenDirectory), Path.GetFileNameWithoutExtension(chosenDirectory));                
+                var imagesLocation = Path.Combine(Path.GetDirectoryName(chosenDirectory), Utils.BaseName(chosenDirectory));                
                 Directory.CreateDirectory(imagesLocation);
                 var imagesDirectory = @"""" + Utils.GetDirectory(imagesLocation, "%d", Consts.Png) + @"""";
                 var videosDirectory = @"""" + chosenDirectory + @"""";

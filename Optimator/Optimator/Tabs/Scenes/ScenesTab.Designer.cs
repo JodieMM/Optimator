@@ -238,11 +238,11 @@ namespace Optimator.Tabs.Scenes
             // TimeTrackBar
             // 
             this.TimeTrackBar.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.TimeTrackBar.Location = new System.Drawing.Point(0, 138);
-            this.TimeTrackBar.Margin = new System.Windows.Forms.Padding(0);
+            this.TimeTrackBar.Location = new System.Drawing.Point(50, 138);
+            this.TimeTrackBar.Margin = new System.Windows.Forms.Padding(50, 0, 50, 0);
             this.TimeTrackBar.Maximum = 5;
             this.TimeTrackBar.Name = "TimeTrackBar";
-            this.TimeTrackBar.Size = new System.Drawing.Size(1784, 60);
+            this.TimeTrackBar.Size = new System.Drawing.Size(1684, 60);
             this.TimeTrackBar.TabIndex = 44;
             this.TimeTrackBar.TickStyle = System.Windows.Forms.TickStyle.None;
             this.TimeTrackBar.Scroll += new System.EventHandler(this.UpdateCurrentTime);

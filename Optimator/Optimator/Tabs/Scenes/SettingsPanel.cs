@@ -75,6 +75,7 @@ namespace Optimator.Tabs.Scenes
                 Owner.sceneHeight = (int)SceneHeightUpDown.Value;
             }
             Owner.SetDrawPanelSize(Owner.sceneWidth, Owner.sceneHeight);
+            Owner.DisplayDrawings();
         }
 
         /// <summary>
@@ -94,6 +95,7 @@ namespace Optimator.Tabs.Scenes
                 BgColourBox.BackColor = MyDialog.Color;
                 Owner.WIP.Background = MyDialog.Color;
                 Owner.SetDrawPanelColour(MyDialog.Color);
+                Owner.DisplayDrawings();
             }
         }
     }

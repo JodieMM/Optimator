@@ -201,7 +201,7 @@ namespace Optimator
                 var clone = Utils.ClonePiece(WIP);
                 Utils.CentrePieceOnAxis(clone);
                 var newTab = new PreviewTab(Owner, clone);
-                Utils.NewTabPage(newTab, "Preview " + WIP.Name);
+                Utils.NewTabPage(newTab, "Preview " + Utils.BaseName(WIP.Name));
             }            
         }
 

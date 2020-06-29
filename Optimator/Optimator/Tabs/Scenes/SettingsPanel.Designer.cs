@@ -31,17 +31,17 @@
             this.SettingsLbl = new System.Windows.Forms.Label();
             this.SelectFromTopCb = new System.Windows.Forms.CheckBox();
             this.TableLayoutPnl = new System.Windows.Forms.TableLayoutPanel();
+            this.BgColourBox = new System.Windows.Forms.PictureBox();
+            this.SceneBgLbl = new System.Windows.Forms.Label();
             this.SceneSizeMsgLbl = new System.Windows.Forms.Label();
             this.SceneHeightUpDown = new System.Windows.Forms.NumericUpDown();
             this.SceneWidthUpDown = new System.Windows.Forms.NumericUpDown();
             this.SceneHeightLbl = new System.Windows.Forms.Label();
             this.SceneWidthLbl = new System.Windows.Forms.Label();
-            this.SceneBgLbl = new System.Windows.Forms.Label();
-            this.BgColourBox = new System.Windows.Forms.PictureBox();
             this.TableLayoutPnl.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.BgColourBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.SceneHeightUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.SceneWidthUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.BgColourBox)).BeginInit();
             this.SuspendLayout();
             // 
             // SettingsLbl
@@ -94,6 +94,30 @@
             this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 40F));
             this.TableLayoutPnl.Size = new System.Drawing.Size(818, 608);
             this.TableLayoutPnl.TabIndex = 124;
+            // 
+            // BgColourBox
+            // 
+            this.BgColourBox.BackColor = System.Drawing.Color.White;
+            this.BgColourBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.BgColourBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.BgColourBox.Location = new System.Drawing.Point(494, 95);
+            this.BgColourBox.Margin = new System.Windows.Forms.Padding(4);
+            this.BgColourBox.Name = "BgColourBox";
+            this.BgColourBox.Size = new System.Drawing.Size(320, 83);
+            this.BgColourBox.TabIndex = 128;
+            this.BgColourBox.TabStop = false;
+            this.BgColourBox.Click += new System.EventHandler(this.BgColourBox_Click);
+            // 
+            // SceneBgLbl
+            // 
+            this.SceneBgLbl.AutoSize = true;
+            this.SceneBgLbl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SceneBgLbl.Font = new System.Drawing.Font("Segoe UI", 16F);
+            this.SceneBgLbl.Location = new System.Drawing.Point(3, 91);
+            this.SceneBgLbl.Name = "SceneBgLbl";
+            this.SceneBgLbl.Size = new System.Drawing.Size(484, 91);
+            this.SceneBgLbl.TabIndex = 126;
+            this.SceneBgLbl.Text = "Scene Background";
             // 
             // SceneSizeMsgLbl
             // 
@@ -180,30 +204,6 @@
             this.SceneWidthLbl.TabIndex = 125;
             this.SceneWidthLbl.Text = "Scene Width*";
             // 
-            // SceneBgLbl
-            // 
-            this.SceneBgLbl.AutoSize = true;
-            this.SceneBgLbl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SceneBgLbl.Font = new System.Drawing.Font("Segoe UI", 16F);
-            this.SceneBgLbl.Location = new System.Drawing.Point(3, 91);
-            this.SceneBgLbl.Name = "SceneBgLbl";
-            this.SceneBgLbl.Size = new System.Drawing.Size(484, 91);
-            this.SceneBgLbl.TabIndex = 126;
-            this.SceneBgLbl.Text = "Scene Background";
-            // 
-            // BgColourBox
-            // 
-            this.BgColourBox.BackColor = System.Drawing.Color.White;
-            this.BgColourBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.BgColourBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.BgColourBox.Location = new System.Drawing.Point(494, 95);
-            this.BgColourBox.Margin = new System.Windows.Forms.Padding(4);
-            this.BgColourBox.Name = "BgColourBox";
-            this.BgColourBox.Size = new System.Drawing.Size(320, 83);
-            this.BgColourBox.TabIndex = 128;
-            this.BgColourBox.TabStop = false;
-            this.BgColourBox.Click += new System.EventHandler(this.BgColourBox_Click);
-            // 
             // SettingsPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -214,9 +214,9 @@
             this.Size = new System.Drawing.Size(908, 992);
             this.TableLayoutPnl.ResumeLayout(false);
             this.TableLayoutPnl.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.BgColourBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.SceneHeightUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.SceneWidthUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.BgColourBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

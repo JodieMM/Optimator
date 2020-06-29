@@ -37,7 +37,7 @@ namespace Optimator.Tabs.Compile
         {
             var bigWidthPercent = 0.8F;
             var widthPercent = 0.05F;
-            var bigHeightPercent = 0.15F;
+            var bigHeightPercent = 0.5F;
 
             var smallWidth = (int)(Width * widthPercent);
             var bigWidth = (int)(Width * bigWidthPercent);

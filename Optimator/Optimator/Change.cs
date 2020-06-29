@@ -61,7 +61,7 @@
                     AffectedPiece.State.X += increment;
                     break;
                 case "Y":
-                    AffectedPiece.State.Y += increment;
+                    AffectedPiece.State.Y -= increment;
                     break;
                 case "Rotation":
                     AffectedPiece.State.R = (AffectedPiece.State.R + increment) % 360;

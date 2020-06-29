@@ -21,7 +21,7 @@ namespace Optimator.Tabs.Compile
             InitializeComponent();
 
             scene = previewed;
-            SceneNameLbl.Text = previewed.Name;
+            SceneNameLbl.Text = Utils.BaseName(previewed.Name);
 
             OriginalPreview.BackgroundImage = Visuals.ScaleBitmap(OriginalPreview.Width,
                 OriginalPreview.Height, original, Color.MistyRose);

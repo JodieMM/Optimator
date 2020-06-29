@@ -114,7 +114,7 @@ namespace Optimator.Forms.Sets
                 Owner.Directory = Utils.SaveFile(Owner.WIP.GetData(), Consts.SetFilter, sender == SaveAsBtn ? "" : Owner.Directory);
                 if (Owner.Directory != "")
                 {
-                    Owner.Parent.Text = Path.GetFileNameWithoutExtension(Owner.Directory);
+                    Owner.Parent.Text = Utils.BaseName(Owner.Directory);
                     return true;
                 }
             }

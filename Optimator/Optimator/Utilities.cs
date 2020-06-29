@@ -148,7 +148,7 @@ namespace Optimator
 
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                if (CheckValidNewName(Path.GetFileNameWithoutExtension(saveFileDialog.FileName)))
+                if (CheckValidNewName(Utils.BaseName(saveFileDialog.FileName)))
                 {
                     return saveFileDialog.FileName;
                 }
@@ -829,6 +829,16 @@ namespace Optimator
             }
 
             return result == DialogResult.OK;
+        }
+
+        /// <summary>
+        /// Removes the extension from a file name.
+        /// </summary>
+        /// <param name="name">Full file name with extension</param>
+        /// <returns>Name only</returns>
+        public static string BaseName(string name)
+        {
+            return Path.GetFileNameWithoutExtension(name);
         }
 
         /// <summary>
