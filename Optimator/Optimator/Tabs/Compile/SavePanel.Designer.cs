@@ -33,6 +33,7 @@
             this.SaveBtn = new System.Windows.Forms.Button();
             this.TableLayoutPnl = new System.Windows.Forms.TableLayoutPanel();
             this.SaveAsBtn = new System.Windows.Forms.Button();
+            this.LocationLbl = new System.Windows.Forms.Label();
             this.TableLayoutPnl.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -42,10 +43,10 @@
             this.ExportBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ExportBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ExportBtn.Font = new System.Drawing.Font("Segoe UI", 16F);
-            this.ExportBtn.Location = new System.Drawing.Point(0, 386);
+            this.ExportBtn.Location = new System.Drawing.Point(0, 232);
             this.ExportBtn.Margin = new System.Windows.Forms.Padding(0);
             this.ExportBtn.Name = "ExportBtn";
-            this.ExportBtn.Size = new System.Drawing.Size(519, 194);
+            this.ExportBtn.Size = new System.Drawing.Size(519, 116);
             this.ExportBtn.TabIndex = 14;
             this.ExportBtn.Text = "Export";
             this.ExportBtn.UseVisualStyleBackColor = false;
@@ -70,7 +71,7 @@
             this.SaveBtn.Location = new System.Drawing.Point(0, 0);
             this.SaveBtn.Margin = new System.Windows.Forms.Padding(0);
             this.SaveBtn.Name = "SaveBtn";
-            this.SaveBtn.Size = new System.Drawing.Size(519, 193);
+            this.SaveBtn.Size = new System.Drawing.Size(519, 116);
             this.SaveBtn.TabIndex = 10;
             this.SaveBtn.Text = "Save";
             this.SaveBtn.UseVisualStyleBackColor = false;
@@ -80,15 +81,17 @@
             // 
             this.TableLayoutPnl.ColumnCount = 1;
             this.TableLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.TableLayoutPnl.Controls.Add(this.LocationLbl, 0, 3);
             this.TableLayoutPnl.Controls.Add(this.SaveAsBtn, 0, 1);
             this.TableLayoutPnl.Controls.Add(this.SaveBtn, 0, 0);
             this.TableLayoutPnl.Controls.Add(this.ExportBtn, 0, 2);
             this.TableLayoutPnl.Location = new System.Drawing.Point(54, 197);
             this.TableLayoutPnl.Name = "TableLayoutPnl";
-            this.TableLayoutPnl.RowCount = 3;
-            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.TableLayoutPnl.RowCount = 4;
+            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 40F));
             this.TableLayoutPnl.Size = new System.Drawing.Size(519, 580);
             this.TableLayoutPnl.TabIndex = 13;
             // 
@@ -98,14 +101,26 @@
             this.SaveAsBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SaveAsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SaveAsBtn.Font = new System.Drawing.Font("Segoe UI", 16F);
-            this.SaveAsBtn.Location = new System.Drawing.Point(0, 193);
+            this.SaveAsBtn.Location = new System.Drawing.Point(0, 116);
             this.SaveAsBtn.Margin = new System.Windows.Forms.Padding(0);
             this.SaveAsBtn.Name = "SaveAsBtn";
-            this.SaveAsBtn.Size = new System.Drawing.Size(519, 193);
+            this.SaveAsBtn.Size = new System.Drawing.Size(519, 116);
             this.SaveAsBtn.TabIndex = 12;
             this.SaveAsBtn.Text = "Save As";
             this.SaveAsBtn.UseVisualStyleBackColor = false;
             this.SaveAsBtn.Click += new System.EventHandler(this.SaveBtn_Click);
+            // 
+            // LocationLbl
+            // 
+            this.LocationLbl.AutoSize = true;
+            this.LocationLbl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LocationLbl.Font = new System.Drawing.Font("Segoe UI", 16F);
+            this.LocationLbl.Location = new System.Drawing.Point(3, 348);
+            this.LocationLbl.Name = "LocationLbl";
+            this.LocationLbl.Size = new System.Drawing.Size(513, 232);
+            this.LocationLbl.TabIndex = 16;
+            this.LocationLbl.Text = "*Videos can only be opened if they are in the same directory as their scenes and " +
+    "the scenes\' sub-parts";
             // 
             // SavePanel
             // 
@@ -117,6 +132,7 @@
             this.Name = "SavePanel";
             this.Size = new System.Drawing.Size(820, 877);
             this.TableLayoutPnl.ResumeLayout(false);
+            this.TableLayoutPnl.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -128,5 +144,6 @@
         private System.Windows.Forms.Button SaveBtn;
         private System.Windows.Forms.TableLayoutPanel TableLayoutPnl;
         private System.Windows.Forms.Button SaveAsBtn;
+        private System.Windows.Forms.Label LocationLbl;
     }
 }

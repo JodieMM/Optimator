@@ -104,6 +104,16 @@ namespace Optimator
             tab.Resize();
         }
 
+        /// <summary>
+        /// Adds a new SpriteSheetTab.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void NewSpriteSheetTSMI_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("This feature is not yet available.", "Feature Under Development", MessageBoxButtons.OK);
+        }
+
 
 
         // --- OPEN ---

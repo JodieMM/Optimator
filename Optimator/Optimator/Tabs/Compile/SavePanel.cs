@@ -36,7 +36,7 @@ namespace Optimator.Forms.Compile
         public override void Resize()
         {
             var widthPercent = 0.9F;
-            var heightPercent = 0.4F;
+            var heightPercent = 0.8F;
 
             var bigWidth = (int)(Width * widthPercent);
             var lilWidth = (int)((Width - bigWidth) / 2.0);

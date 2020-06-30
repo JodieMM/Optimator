@@ -47,10 +47,15 @@ namespace Optimator.Tabs.Sets
             this.DrawDown = new System.Windows.Forms.PictureBox();
             this.DrawBase = new System.Windows.Forms.PictureBox();
             this.DisplayTimer = new System.Windows.Forms.Timer(this.components);
+            this.DrawingLayoutPnl = new System.Windows.Forms.TableLayoutPanel();
+            this.FrontLbl = new System.Windows.Forms.Label();
+            this.TopLbl = new System.Windows.Forms.Label();
+            this.SideLbl = new System.Windows.Forms.Label();
             this.ToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DrawRight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawBase)).BeginInit();
+            this.DrawingLayoutPnl.SuspendLayout();
             this.SuspendLayout();
             // 
             // ToolStrip
@@ -178,8 +183,8 @@ namespace Optimator.Tabs.Sets
             // DrawRight
             // 
             this.DrawRight.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.DrawRight.Location = new System.Drawing.Point(407, 156);
-            this.DrawRight.Margin = new System.Windows.Forms.Padding(6);
+            this.DrawRight.Location = new System.Drawing.Point(586, 66);
+            this.DrawRight.Margin = new System.Windows.Forms.Padding(0);
             this.DrawRight.Name = "DrawRight";
             this.DrawRight.Size = new System.Drawing.Size(300, 300);
             this.DrawRight.TabIndex = 96;
@@ -191,8 +196,8 @@ namespace Optimator.Tabs.Sets
             // DrawDown
             // 
             this.DrawDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.DrawDown.Location = new System.Drawing.Point(77, 486);
-            this.DrawDown.Margin = new System.Windows.Forms.Padding(6);
+            this.DrawDown.Location = new System.Drawing.Point(30, 626);
+            this.DrawDown.Margin = new System.Windows.Forms.Padding(0);
             this.DrawDown.Name = "DrawDown";
             this.DrawDown.Size = new System.Drawing.Size(300, 300);
             this.DrawDown.TabIndex = 95;
@@ -204,8 +209,8 @@ namespace Optimator.Tabs.Sets
             // DrawBase
             // 
             this.DrawBase.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.DrawBase.Location = new System.Drawing.Point(77, 156);
-            this.DrawBase.Margin = new System.Windows.Forms.Padding(6);
+            this.DrawBase.Location = new System.Drawing.Point(30, 66);
+            this.DrawBase.Margin = new System.Windows.Forms.Padding(0);
             this.DrawBase.Name = "DrawBase";
             this.DrawBase.Size = new System.Drawing.Size(300, 300);
             this.DrawBase.TabIndex = 94;
@@ -219,14 +224,68 @@ namespace Optimator.Tabs.Sets
             this.DisplayTimer.Interval = 5;
             this.DisplayTimer.Tick += new System.EventHandler(this.DisplayTimer_Tick);
             // 
+            // DrawingLayoutPnl
+            // 
+            this.DrawingLayoutPnl.ColumnCount = 2;
+            this.DrawingLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.DrawingLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.DrawingLayoutPnl.Controls.Add(this.FrontLbl, 0, 0);
+            this.DrawingLayoutPnl.Controls.Add(this.DrawBase, 0, 1);
+            this.DrawingLayoutPnl.Controls.Add(this.DrawDown, 0, 3);
+            this.DrawingLayoutPnl.Controls.Add(this.DrawRight, 1, 1);
+            this.DrawingLayoutPnl.Controls.Add(this.TopLbl, 0, 2);
+            this.DrawingLayoutPnl.Controls.Add(this.SideLbl, 1, 0);
+            this.DrawingLayoutPnl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DrawingLayoutPnl.Location = new System.Drawing.Point(0, 39);
+            this.DrawingLayoutPnl.Name = "DrawingLayoutPnl";
+            this.DrawingLayoutPnl.Padding = new System.Windows.Forms.Padding(30, 10, 0, 20);
+            this.DrawingLayoutPnl.RowCount = 4;
+            this.DrawingLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5F));
+            this.DrawingLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 45F));
+            this.DrawingLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5F));
+            this.DrawingLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 45F));
+            this.DrawingLayoutPnl.Size = new System.Drawing.Size(1000, 800);
+            this.DrawingLayoutPnl.TabIndex = 97;
+            // 
+            // FrontLbl
+            // 
+            this.FrontLbl.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.FrontLbl.AutoSize = true;
+            this.FrontLbl.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
+            this.FrontLbl.Location = new System.Drawing.Point(33, 10);
+            this.FrontLbl.Name = "FrontLbl";
+            this.FrontLbl.Size = new System.Drawing.Size(133, 56);
+            this.FrontLbl.TabIndex = 97;
+            this.FrontLbl.Text = "Front";
+            // 
+            // TopLbl
+            // 
+            this.TopLbl.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.TopLbl.AutoSize = true;
+            this.TopLbl.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
+            this.TopLbl.Location = new System.Drawing.Point(33, 570);
+            this.TopLbl.Name = "TopLbl";
+            this.TopLbl.Size = new System.Drawing.Size(99, 56);
+            this.TopLbl.TabIndex = 99;
+            this.TopLbl.Text = "Top";
+            // 
+            // SideLbl
+            // 
+            this.SideLbl.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.SideLbl.AutoSize = true;
+            this.SideLbl.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
+            this.SideLbl.Location = new System.Drawing.Point(589, 10);
+            this.SideLbl.Name = "SideLbl";
+            this.SideLbl.Size = new System.Drawing.Size(111, 56);
+            this.SideLbl.TabIndex = 98;
+            this.SideLbl.Text = "Side";
+            // 
             // SetsTab
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.PaleGreen;
-            this.Controls.Add(this.DrawRight);
-            this.Controls.Add(this.DrawDown);
-            this.Controls.Add(this.DrawBase);
+            this.Controls.Add(this.DrawingLayoutPnl);
             this.Controls.Add(this.Panel);
             this.Controls.Add(this.ToolStrip);
             this.Name = "SetsTab";
@@ -236,6 +295,8 @@ namespace Optimator.Tabs.Sets
             ((System.ComponentModel.ISupportInitialize)(this.DrawRight)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawBase)).EndInit();
+            this.DrawingLayoutPnl.ResumeLayout(false);
+            this.DrawingLayoutPnl.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -258,5 +319,9 @@ namespace Optimator.Tabs.Sets
         private System.Windows.Forms.PictureBox DrawBase;
         private System.Windows.Forms.ToolStripButton EraseBtn;
         private Timer DisplayTimer;
+        private TableLayoutPanel DrawingLayoutPnl;
+        private Label FrontLbl;
+        private Label SideLbl;
+        private Label TopLbl;
     }
 }

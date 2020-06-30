@@ -47,17 +47,22 @@ namespace Optimator
             this.SketchesBtn = new System.Windows.Forms.ToolStripButton();
             this.PreviewBtn = new System.Windows.Forms.ToolStripButton();
             this.DisplayTimer = new System.Windows.Forms.Timer(this.components);
+            this.DrawingLayoutPnl = new System.Windows.Forms.TableLayoutPanel();
+            this.TopLbl = new System.Windows.Forms.Label();
+            this.FrontLbl = new System.Windows.Forms.Label();
+            this.SideLbl = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.DrawRight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawBase)).BeginInit();
             this.ToolStrip.SuspendLayout();
+            this.DrawingLayoutPnl.SuspendLayout();
             this.SuspendLayout();
             // 
             // DrawRight
             // 
             this.DrawRight.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.DrawRight.Location = new System.Drawing.Point(363, 100);
-            this.DrawRight.Margin = new System.Windows.Forms.Padding(6);
+            this.DrawRight.Location = new System.Drawing.Point(512, 52);
+            this.DrawRight.Margin = new System.Windows.Forms.Padding(0);
             this.DrawRight.Name = "DrawRight";
             this.DrawRight.Size = new System.Drawing.Size(300, 300);
             this.DrawRight.TabIndex = 26;
@@ -69,8 +74,8 @@ namespace Optimator
             // DrawDown
             // 
             this.DrawDown.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.DrawDown.Location = new System.Drawing.Point(33, 430);
-            this.DrawDown.Margin = new System.Windows.Forms.Padding(6);
+            this.DrawDown.Location = new System.Drawing.Point(30, 479);
+            this.DrawDown.Margin = new System.Windows.Forms.Padding(0);
             this.DrawDown.Name = "DrawDown";
             this.DrawDown.Size = new System.Drawing.Size(300, 300);
             this.DrawDown.TabIndex = 25;
@@ -82,8 +87,8 @@ namespace Optimator
             // DrawBase
             // 
             this.DrawBase.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.DrawBase.Location = new System.Drawing.Point(33, 100);
-            this.DrawBase.Margin = new System.Windows.Forms.Padding(6);
+            this.DrawBase.Location = new System.Drawing.Point(30, 52);
+            this.DrawBase.Margin = new System.Windows.Forms.Padding(0);
             this.DrawBase.Name = "DrawBase";
             this.DrawBase.Size = new System.Drawing.Size(300, 300);
             this.DrawBase.TabIndex = 24;
@@ -219,13 +224,67 @@ namespace Optimator
             this.DisplayTimer.Interval = 5;
             this.DisplayTimer.Tick += new System.EventHandler(this.DisplayTimer_Tick);
             // 
+            // DrawingLayoutPnl
+            // 
+            this.DrawingLayoutPnl.ColumnCount = 2;
+            this.DrawingLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.DrawingLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.DrawingLayoutPnl.Controls.Add(this.TopLbl, 0, 2);
+            this.DrawingLayoutPnl.Controls.Add(this.DrawBase, 0, 1);
+            this.DrawingLayoutPnl.Controls.Add(this.DrawDown, 0, 3);
+            this.DrawingLayoutPnl.Controls.Add(this.DrawRight, 1, 1);
+            this.DrawingLayoutPnl.Controls.Add(this.FrontLbl, 0, 0);
+            this.DrawingLayoutPnl.Controls.Add(this.SideLbl, 1, 0);
+            this.DrawingLayoutPnl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DrawingLayoutPnl.Location = new System.Drawing.Point(0, 39);
+            this.DrawingLayoutPnl.Name = "DrawingLayoutPnl";
+            this.DrawingLayoutPnl.Padding = new System.Windows.Forms.Padding(30, 10, 0, 20);
+            this.DrawingLayoutPnl.RowCount = 4;
+            this.DrawingLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5F));
+            this.DrawingLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 45F));
+            this.DrawingLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5F));
+            this.DrawingLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 45F));
+            this.DrawingLayoutPnl.Size = new System.Drawing.Size(1000, 800);
+            this.DrawingLayoutPnl.TabIndex = 27;
+            // 
+            // TopLbl
+            // 
+            this.TopLbl.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.TopLbl.AutoSize = true;
+            this.TopLbl.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
+            this.TopLbl.Location = new System.Drawing.Point(33, 437);
+            this.TopLbl.Name = "TopLbl";
+            this.TopLbl.Size = new System.Drawing.Size(99, 42);
+            this.TopLbl.TabIndex = 29;
+            this.TopLbl.Text = "Top";
+            // 
+            // FrontLbl
+            // 
+            this.FrontLbl.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.FrontLbl.AutoSize = true;
+            this.FrontLbl.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
+            this.FrontLbl.Location = new System.Drawing.Point(33, 10);
+            this.FrontLbl.Name = "FrontLbl";
+            this.FrontLbl.Size = new System.Drawing.Size(133, 42);
+            this.FrontLbl.TabIndex = 27;
+            this.FrontLbl.Text = "Front";
+            // 
+            // SideLbl
+            // 
+            this.SideLbl.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.SideLbl.AutoSize = true;
+            this.SideLbl.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
+            this.SideLbl.Location = new System.Drawing.Point(515, 10);
+            this.SideLbl.Name = "SideLbl";
+            this.SideLbl.Size = new System.Drawing.Size(111, 42);
+            this.SideLbl.TabIndex = 28;
+            this.SideLbl.Text = "Side";
+            // 
             // PiecesTab
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.PaleTurquoise;
-            this.Controls.Add(this.DrawRight);
-            this.Controls.Add(this.DrawDown);
-            this.Controls.Add(this.DrawBase);
+            this.Controls.Add(this.DrawingLayoutPnl);
             this.Controls.Add(this.Panel);
             this.Controls.Add(this.ToolStrip);
             this.Name = "PiecesTab";
@@ -235,6 +294,8 @@ namespace Optimator
             ((System.ComponentModel.ISupportInitialize)(this.DrawBase)).EndInit();
             this.ToolStrip.ResumeLayout(false);
             this.ToolStrip.PerformLayout();
+            this.DrawingLayoutPnl.ResumeLayout(false);
+            this.DrawingLayoutPnl.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -256,5 +317,9 @@ namespace Optimator
         private System.Windows.Forms.ToolStripButton EraseBtn;
         private System.Windows.Forms.ToolStripButton OutlineBtn;
         private Timer DisplayTimer;
+        private TableLayoutPanel DrawingLayoutPnl;
+        private Label TopLbl;
+        private Label FrontLbl;
+        private Label SideLbl;
     }
 }

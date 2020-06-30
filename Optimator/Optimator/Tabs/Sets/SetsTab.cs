@@ -49,6 +49,10 @@ namespace Optimator.Tabs.Sets
             Owner.GetTabControl().KeyUp += KeyPress;
             Enter += FocusOn;
             VisibleChanged += FocusOn;
+
+            DrawBase.BackColor = Utils.ColourFromString(Properties.Settings.Default.BgColour);
+            DrawRight.BackColor = Utils.ColourFromString(Properties.Settings.Default.BgColour); ;
+            DrawDown.BackColor = Utils.ColourFromString(Properties.Settings.Default.BgColour); ;
         }
 
 
@@ -87,26 +91,15 @@ namespace Optimator.Tabs.Sets
         /// </summary>
         public override void Resize()
         {
-            var widthPercent = Width > 950 ? 0.25F : 0.3F;
-            var widthBigPercent = Width > 950 ? 0.3F : 0.33F;
-            var heightPercent = Height > 560 ? 0.45F : 0.4F;
+            var widthPercent = Width > 950 ? 0.3F : 0.33F;
+            var largeWidth = (int)(Width * widthPercent);
+            var cell = DrawingLayoutPnl.GetCellPosition(DrawBase);
+            var length = DrawingLayoutPnl.GetColumnWidths()[cell.Column] > DrawingLayoutPnl.GetRowHeights()[cell.Row] ?
+                DrawingLayoutPnl.GetRowHeights()[cell.Row] : DrawingLayoutPnl.GetColumnWidths()[cell.Column];
 
-            var bigWidth = (int)(Width * widthPercent);
-            var largeWidth = (int)(Width * widthBigPercent);
-            var bigHeight = (int)(Height * heightPercent);
-            var bigLength = bigWidth > bigHeight ? bigHeight : bigWidth;
-
-            var lilWidth = (int)((Width - 2 * bigLength - largeWidth) / 3.0);
-            var lilHeight = (int)((Height - 2 * bigLength - ToolStrip.Height) / 3.0);
-
-            DrawBase.Size = DrawRight.Size = DrawDown.Size = new Size(bigLength, bigLength);
-            DrawBase.Location = new Point(lilWidth, lilHeight + ToolStrip.Height);
-            DrawRight.Location = new Point(lilWidth * 2 + bigLength, lilHeight + ToolStrip.Height);
-            DrawDown.Location = new Point(lilWidth, lilHeight * 2 + bigLength + ToolStrip.Height);
-
+            DrawBase.Size = DrawRight.Size = DrawDown.Size = new Size(length, length);
             Panel.Width = largeWidth;
             Utils.ResizePanel(Panel);
-
             DisplayDrawings();
         }
 
