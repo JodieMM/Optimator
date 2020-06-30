@@ -55,5 +55,17 @@ namespace Optimator.Properties {
                 this["WorkingDirectory"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SaveVideoFrames {
+            get {
+                return ((bool)(this["SaveVideoFrames"]));
+            }
+            set {
+                this["SaveVideoFrames"] = value;
+            }
+        }
     }
 }

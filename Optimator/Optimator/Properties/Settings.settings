@@ -11,5 +11,8 @@
     <Setting Name="WorkingDirectory" Type="System.String" Scope="User">
       <Value Profile="(Default)">Blank</Value>
     </Setting>
+    <Setting Name="SaveVideoFrames" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -34,7 +34,7 @@ namespace Optimator.Forms
         public override void Resize()
         {
             var smallWidthPercent = 0.02F;
-            var heightPercent = 0.45F;
+            var heightPercent = 0.7F;
 
             var smallWidth = (int)(Width * smallWidthPercent);
             var bigHeight = (int)(Height * heightPercent);
@@ -73,6 +73,7 @@ namespace Optimator.Forms
             VersionLbl.Text = "Version " + Settings.Default.Version;
             BackColourBox.BackColor = Utils.ColourFromString(Settings.Default.BgColour);
             WorkingDirValueLbl.Text = "Current Directory: " + Settings.Default.WorkingDirectory;
+            SaveVideoFramesCb.Checked = Settings.Default.SaveVideoFrames;
         }
 
 
@@ -117,7 +118,7 @@ namespace Optimator.Forms
             var result = DialogResult.OK;
 
             // Only check saving if something to save
-            if (BackColourBox.BackColor != Utils.ColourFromString(Settings.Default.BgColour) || directory != "")
+            if (SomethingToChange())
             {
                 result = MessageBox.Show("Do you want to exit without saving? Modified settings will not be saved.", "Exit Confirmation", MessageBoxButtons.OKCancel);
             }
@@ -125,6 +126,16 @@ namespace Optimator.Forms
             {
                 Owner.RemoveTabPage(this);
             }
+        }
+
+        /// <summary>
+        /// Checks if changes have been made that need saving/ will be lost.
+        /// </summary>
+        /// <returns>True if changes exist</returns>
+        private bool SomethingToChange()
+        {
+            return BackColourBox.BackColor != Utils.ColourFromString(Settings.Default.BgColour) || directory != "" ||
+                SaveVideoFramesCb.Checked != Settings.Default.SaveVideoFrames;
         }
 
 
