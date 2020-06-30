@@ -31,23 +31,18 @@ namespace Optimator.Forms
         /// </summary>
         public override void Resize()
         {
-            var smallWidthPercent = 0.02F;
-            var heightPercent = 0.4F;
+            var widthPercent = 0.02F;
+            var heightPercent = 0.7F;
 
-            var smallWidth = (int)(Width * smallWidthPercent);
+            var smallWidth = (int)(Width * widthPercent);
             var bigHeight = (int)(Height * heightPercent);
 
             HelpLbl.Location = new Point(smallWidth, smallWidth + ToolStrip.Height);
             VersionLbl.Location = new Point(smallWidth, smallWidth * 2 + HelpLbl.Height + ToolStrip.Height);
 
-            InfoLbl.Location = new Point(smallWidth, smallWidth * 3 + HelpLbl.Height 
+            TableLayoutPnl.Location = new Point(smallWidth, smallWidth * 3 + HelpLbl.Height 
                 + VersionLbl.Height + ToolStrip.Height);
-            InfoLbl.Size = new Size(Width - 2 * smallWidth, bigHeight);
-
-            YoutubeLinkLbl.Location = new Point(smallWidth, smallWidth * 8 + HelpLbl.Height
-                + VersionLbl.Height + ToolStrip.Height);
-            OptiSiteLbl.Location = new Point(smallWidth, smallWidth * 10 + HelpLbl.Height
-                + VersionLbl.Height + ToolStrip.Height);
+            TableLayoutPnl.Size = new Size(Width - 2 * smallWidth, bigHeight);
         }
 
         /// <summary>

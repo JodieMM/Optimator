@@ -120,4 +120,20 @@
   <metadata name="ToolStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
+  <data name="InfoLbl01.Text" xml:space="preserve">
+    <value>Videos are a collection of scenes. Scenes indicate how pieces and sets, collectively called parts, will move around. Sets are collections of several pieces and pieces are single shapes.
+Each file must be held in the same directory as the files it uses so it is recommended to save all files from a single project into one location, or even to save all of your Optimator files in one place.</value>
+  </data>
+  <data name="InfoLbl03.Text" xml:space="preserve">
+    <value>Sets allow multiple pieces to move together. One piece in the set should be the 'base piece' that all others are attached to either directly or indirectly. 
+Every piece in a set must be attached to another piece, or be the base piece, and cannot be attached to more than one piece.</value>
+  </data>
+  <data name="InfoLbl02.Text" xml:space="preserve">
+    <value>Pieces are single shapes. They are built by clicking on the squares to create a dot-to-dot outline. The three squares represent the top, side and front view of the shape as used in orthographic projection.
+In this current version, pieces cannot fold in on themselves. To make a piece that would fold in on itself, you must make multiple pieces and put them together into a set.</value>
+  </data>
+  <data name="InfoLbl04.Text" xml:space="preserve">
+    <value>Scenes are like a scene in a movie. Once you move the 'camera' or change the contents of the shot, you should create a new scene. Some videos will consist of a single scene. 
+The Original Positions panel allows you to set how the pieces and sets appear from the beginning of the video while the Animations panel lets you set how they move over time. Moving a piece or set by dragging it will change its original position.</value>
+  </data>
 </root>
