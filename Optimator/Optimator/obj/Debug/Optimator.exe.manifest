@@ -92,14 +92,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Optimator.exe" size="407520">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Optimator.exe" size="408544">
       <assemblyIdentity name="Optimator" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>q9onK3mpIXuP+iFiyg/eoESExDPQ11qHAKZc+Zi6ynY=</dsig:DigestValue>
+        <dsig:DigestValue>DCKGlXOi0fNbNnysdeAqXM8j6kTe1zE5ABvbBeOzB3I=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -112,13 +112,13 @@
       <dsig:DigestValue>9v9OcVReKI/Wr0lvZVQIwO9D5dtWe8cY3wXuJWhRIHc=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="Optimator.exe.config" size="1869">
+  <file name="Optimator.exe.config" size="1870">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>DI4wy2xa63SSGsguPJEBqqj6248ulmIzGUoSzSaXk5c=</dsig:DigestValue>
+      <dsig:DigestValue>Q/q6IySm6n68IoI3uchxwOYASunMcmcDLKrcP1rhkVg=</dsig:DigestValue>
     </hash>
   </file>
 </asmv1:assembly>

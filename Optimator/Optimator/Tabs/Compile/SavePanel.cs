@@ -100,6 +100,31 @@ namespace Optimator.Forms.Compile
             }
         }
 
+        /// <summary>
+        /// Shows the progress bar with fresh values.
+        /// </summary>
+        /// <param name="max"></param>
+        private void ShowProgBar(int max)
+        {
+            ProgBar.Minimum = 1;
+            ProgBar.Maximum = max;
+            ProgBar.Value = 1;
+            ProgBar.Step = 1;
+            ProgBar.Visible = true;
+        }
+
+        /// <summary>
+        /// Increases the loading bar progress.
+        /// </summary>
+        /// <param name="step">How much to progress</param>
+        private void IncrementStep(int step = 1)
+        {
+            for (int index = 0; index < step; index++)
+            {
+                ProgBar.PerformStep();
+            }
+        }
+
 
 
         // ----- UTILITY FUNCTIONS -----
@@ -117,17 +142,34 @@ namespace Optimator.Forms.Compile
             }
             try
             {
-                Cursor = Cursors.WaitCursor;
+                // Prepare Loading Visuals
+                var numFrames = 0;
+                var timeIncrement = 1 / Owner.WIP.FPS;
+                var totalFrames = 0;
+                foreach (var scene in Owner.WIP.videoScenes)
+                {
+                    totalFrames += (int)(scene.TimeLength * Owner.WIP.FPS);
+                }
+                var ConvertExtras = (int)(0.1 * totalFrames);
+                var DeleteFramesExtras = (int)(0.2 * ConvertExtras);
+                ShowProgBar(totalFrames + ConvertExtras + (Properties.Settings.Default.SaveVideoFrames ? 0 : DeleteFramesExtras));
+                
 
                 // Prepare Save Location
-                var imagesLocation = Path.Combine(Path.GetDirectoryName(chosenDirectory), Utils.BaseName(chosenDirectory));                
+                var imagesLocation = Path.Combine(Path.GetDirectoryName(chosenDirectory), Utils.BaseName(chosenDirectory));
+                if (Directory.Exists(imagesLocation))
+                {
+                    Directory.Delete(imagesLocation, true);
+                }
+                if (File.Exists(chosenDirectory))
+                {
+                    File.Delete(chosenDirectory);
+                }
                 Directory.CreateDirectory(imagesLocation);
                 var imagesDirectory = @"""" + Utils.GetDirectory(imagesLocation, "%d", Consts.Png) + @"""";
                 var videosDirectory = @"""" + chosenDirectory + @"""";
 
-                // Save Images
-                var numFrames = 0;                
-                var timeIncrement = 1 / Owner.WIP.FPS;
+                // Save Images                
                 for (Owner.sceneIndex = 0; Owner.sceneIndex < Owner.WIP.videoScenes.Count; Owner.sceneIndex++)
                 {
                     for (Owner.workingTime = 0; Owner.workingTime <= Owner.WIP.videoScenes[Owner.sceneIndex].TimeLength; Owner.workingTime += timeIncrement)
@@ -135,6 +177,7 @@ namespace Optimator.Forms.Compile
                         var bitmap = Owner.DrawOnBitmap();
                         bitmap.Save(Utils.GetDirectory(imagesLocation, numFrames.ToString(), Consts.Png), System.Drawing.Imaging.ImageFormat.Png);
                         numFrames++;
+                        IncrementStep();
                     }
                 }
 
@@ -147,8 +190,18 @@ namespace Optimator.Forms.Compile
                 process.StartInfo.UseShellExecute = false;
                 process.StartInfo.CreateNoWindow = true;
                 process.Start();
+                process.WaitForExit();
+                IncrementStep(totalFrames - numFrames - (Properties.Settings.Default.SaveVideoFrames ? 0 : DeleteFramesExtras));
 
-                Cursor = Cursors.Default;
+
+                // Delete Images if Settings Says So
+                if (!Properties.Settings.Default.SaveVideoFrames)
+                {
+                    Directory.Delete(imagesLocation, true);
+                    IncrementStep(DeleteFramesExtras);
+                }
+
+                ProgBar.Visible = false;
                 return true;
             }
             catch (FileNotFoundException)
@@ -159,10 +212,19 @@ namespace Optimator.Forms.Compile
             {
                 MessageBox.Show("No data entered for point", "Missing Data", MessageBoxButtons.OK);
             }
+            catch (UnauthorizedAccessException)
+            {
+                MessageBox.Show("The program does not have permission to delete the images file." + 
+                    " Your anti-virus may be blocking the process. However, this does not otherwise affect the export process."
+                    , "Unauthorised Access", MessageBoxButtons.OK);
+                ProgBar.Visible = false;
+                return true;
+            }
             catch (Exception exception)
             {
                 MessageBox.Show(exception.Message, "Exception - Please Report to jodie@opti.technology", MessageBoxButtons.OK);
             }
+            ProgBar.Visible = false;
             return false;
         }
     }

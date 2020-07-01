@@ -105,6 +105,7 @@ namespace Optimator.Forms
                 Settings.Default.WorkingDirectory = directory;
                 directory = "";
             }
+            Settings.Default.SaveVideoFrames = SaveVideoFramesCb.Checked;
             Settings.Default.Save();
         }
 
