@@ -8,13 +8,13 @@
     public class Change
     {
         #region Changes Variables
-        public Piece AffectedPiece { get; }
+        public Piece AffectedPiece { get; set; }
         private readonly Scene host;
 
-        public decimal StartTime { get; }
-        public float HowMuch { get; }
-        public decimal HowLong { get; }
-        public string Action { get; }
+        public decimal StartTime { get; set; }
+        public float HowMuch { get; set; }
+        public decimal HowLong { get; set; }
+        public string Action { get; set; }
         #endregion
 
 

@@ -133,7 +133,6 @@ namespace Optimator.Tabs.Scenes
             PositionsBtn.Checked = false;
             MoveBtn.Checked = false;
             SettingsBtn.Checked = false;
-            Baby = null;
             btn.Checked = !check;
             DisplayDrawings();
         }
@@ -149,6 +148,7 @@ namespace Optimator.Tabs.Scenes
             MoveBtn.Checked = false;
             SettingsBtn.Checked = false;
             Panel.Controls.Clear();
+            Baby = null;
         }
 
         /// <summary>
@@ -361,6 +361,10 @@ namespace Optimator.Tabs.Scenes
             {
                 (Baby as PositionsPanel).EnableControls();
             }
+            else if (Baby != null && Baby is MovePanel)
+            {
+                (Baby as MovePanel).PartSelected(select.ToPiece());
+            }
         }
 
         /// <summary>
@@ -414,8 +418,8 @@ namespace Optimator.Tabs.Scenes
                         {
                             if (selected is Set)
                             {
-                                var result = MessageBox.Show("This will delete the entire set. Do you wish to continue?",
-                                    "Overwrite Confirmation", MessageBoxButtons.OKCancel);
+                                var result = MessageBox.Show("This will delete the entire set and its connected animations. Do you wish to continue?",
+                                    "Delete Confirmation", MessageBoxButtons.OKCancel);
                                 if (result == DialogResult.Cancel)
                                 {
                                     return;
@@ -429,6 +433,13 @@ namespace Optimator.Tabs.Scenes
                             }
                             else
                             {
+                                var result = MessageBox.Show("This will delete the piece and its connected animations. Do you wish to continue?",
+                                    "Delete Confirmation", MessageBoxButtons.OKCancel);
+                                if (result == DialogResult.Cancel)
+                                {
+                                    return;
+                                }
+
                                 WIP.PartsList.Remove(selected);
                                 WIP.PiecesList.Remove(selected.ToPiece());
                             }
@@ -479,6 +490,10 @@ namespace Optimator.Tabs.Scenes
                 }
 
                 Cursor = Cursors.Default;
+            }
+            else
+            {
+                DrawPanel.Refresh();
             }
         }        
 

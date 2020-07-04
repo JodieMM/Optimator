@@ -37,22 +37,22 @@
             this.YoutubeLinkLbl = new System.Windows.Forms.LinkLabel();
             this.OptiSiteLbl = new System.Windows.Forms.LinkLabel();
             this.TableLayoutPnl = new System.Windows.Forms.Panel();
+            this.HelpLayoutPnl = new System.Windows.Forms.TableLayoutPanel();
+            this.InfoLbl05 = new System.Windows.Forms.Label();
+            this.VideoLbl = new System.Windows.Forms.Label();
+            this.ScenesLbl = new System.Windows.Forms.Label();
+            this.InfoLbl03 = new System.Windows.Forms.Label();
+            this.SetsLbl = new System.Windows.Forms.Label();
+            this.InfoLbl02 = new System.Windows.Forms.Label();
+            this.PiecesLbl = new System.Windows.Forms.Label();
+            this.BasicsLbl = new System.Windows.Forms.Label();
+            this.InfoLbl04 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.LinksLbl = new System.Windows.Forms.Label();
-            this.BasicsLbl = new System.Windows.Forms.Label();
-            this.HelpLayoutPnl = new System.Windows.Forms.TableLayoutPanel();
-            this.PiecesLbl = new System.Windows.Forms.Label();
-            this.InfoLbl02 = new System.Windows.Forms.Label();
-            this.VideoLbl = new System.Windows.Forms.Label();
-            this.InfoLbl05 = new System.Windows.Forms.Label();
-            this.SetsLbl = new System.Windows.Forms.Label();
-            this.InfoLbl03 = new System.Windows.Forms.Label();
-            this.ScenesLbl = new System.Windows.Forms.Label();
-            this.InfoLbl04 = new System.Windows.Forms.Label();
             this.ToolStrip.SuspendLayout();
             this.TableLayoutPnl.SuspendLayout();
-            this.tableLayoutPanel1.SuspendLayout();
             this.HelpLayoutPnl.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // ToolStrip
@@ -112,7 +112,7 @@
             this.InfoLbl01.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.InfoLbl01.Name = "InfoLbl01";
             this.InfoLbl01.Padding = new System.Windows.Forms.Padding(20, 20, 20, 60);
-            this.InfoLbl01.Size = new System.Drawing.Size(1964, 316);
+            this.InfoLbl01.Size = new System.Drawing.Size(1964, 375);
             this.InfoLbl01.TabIndex = 136;
             this.InfoLbl01.Text = resources.GetString("InfoLbl01.Text");
             // 
@@ -158,6 +158,162 @@
             this.TableLayoutPnl.Size = new System.Drawing.Size(2006, 878);
             this.TableLayoutPnl.TabIndex = 133;
             // 
+            // HelpLayoutPnl
+            // 
+            this.HelpLayoutPnl.AutoSize = true;
+            this.HelpLayoutPnl.ColumnCount = 1;
+            this.HelpLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.HelpLayoutPnl.Controls.Add(this.InfoLbl05, 0, 9);
+            this.HelpLayoutPnl.Controls.Add(this.VideoLbl, 0, 8);
+            this.HelpLayoutPnl.Controls.Add(this.ScenesLbl, 0, 6);
+            this.HelpLayoutPnl.Controls.Add(this.InfoLbl03, 0, 5);
+            this.HelpLayoutPnl.Controls.Add(this.SetsLbl, 0, 4);
+            this.HelpLayoutPnl.Controls.Add(this.InfoLbl02, 0, 3);
+            this.HelpLayoutPnl.Controls.Add(this.PiecesLbl, 0, 2);
+            this.HelpLayoutPnl.Controls.Add(this.BasicsLbl, 0, 0);
+            this.HelpLayoutPnl.Controls.Add(this.InfoLbl01, 0, 1);
+            this.HelpLayoutPnl.Controls.Add(this.InfoLbl04, 0, 7);
+            this.HelpLayoutPnl.Dock = System.Windows.Forms.DockStyle.Top;
+            this.HelpLayoutPnl.Location = new System.Drawing.Point(0, 212);
+            this.HelpLayoutPnl.Margin = new System.Windows.Forms.Padding(0);
+            this.HelpLayoutPnl.Name = "HelpLayoutPnl";
+            this.HelpLayoutPnl.RowCount = 10;
+            this.HelpLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.HelpLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.HelpLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.HelpLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.HelpLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.HelpLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.HelpLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.HelpLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.HelpLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.HelpLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.HelpLayoutPnl.Size = new System.Drawing.Size(1972, 2016);
+            this.HelpLayoutPnl.TabIndex = 137;
+            // 
+            // InfoLbl05
+            // 
+            this.InfoLbl05.AutoSize = true;
+            this.InfoLbl05.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.InfoLbl05.Font = new System.Drawing.Font("Segoe UI", 16F);
+            this.InfoLbl05.Location = new System.Drawing.Point(4, 1877);
+            this.InfoLbl05.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.InfoLbl05.Name = "InfoLbl05";
+            this.InfoLbl05.Padding = new System.Windows.Forms.Padding(20, 20, 20, 60);
+            this.InfoLbl05.Size = new System.Drawing.Size(1964, 139);
+            this.InfoLbl05.TabIndex = 140;
+            this.InfoLbl05.Text = "Videos turn one or multiple scenes into a movie. Videos can be exported as an .av" +
+    "i file.";
+            // 
+            // VideoLbl
+            // 
+            this.VideoLbl.AutoSize = true;
+            this.VideoLbl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.VideoLbl.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
+            this.VideoLbl.Location = new System.Drawing.Point(0, 1778);
+            this.VideoLbl.Margin = new System.Windows.Forms.Padding(0);
+            this.VideoLbl.Name = "VideoLbl";
+            this.VideoLbl.Padding = new System.Windows.Forms.Padding(20);
+            this.VideoLbl.Size = new System.Drawing.Size(1972, 99);
+            this.VideoLbl.TabIndex = 140;
+            this.VideoLbl.Text = "Videos";
+            this.VideoLbl.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // ScenesLbl
+            // 
+            this.ScenesLbl.AutoSize = true;
+            this.ScenesLbl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ScenesLbl.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
+            this.ScenesLbl.Location = new System.Drawing.Point(0, 1304);
+            this.ScenesLbl.Margin = new System.Windows.Forms.Padding(0);
+            this.ScenesLbl.Name = "ScenesLbl";
+            this.ScenesLbl.Padding = new System.Windows.Forms.Padding(20);
+            this.ScenesLbl.Size = new System.Drawing.Size(1972, 99);
+            this.ScenesLbl.TabIndex = 141;
+            this.ScenesLbl.Text = "Scenes";
+            this.ScenesLbl.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // InfoLbl03
+            // 
+            this.InfoLbl03.AutoSize = true;
+            this.InfoLbl03.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.InfoLbl03.Font = new System.Drawing.Font("Segoe UI", 16F);
+            this.InfoLbl03.Location = new System.Drawing.Point(4, 988);
+            this.InfoLbl03.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.InfoLbl03.Name = "InfoLbl03";
+            this.InfoLbl03.Padding = new System.Windows.Forms.Padding(20, 20, 20, 60);
+            this.InfoLbl03.Size = new System.Drawing.Size(1964, 316);
+            this.InfoLbl03.TabIndex = 142;
+            this.InfoLbl03.Text = resources.GetString("InfoLbl03.Text");
+            // 
+            // SetsLbl
+            // 
+            this.SetsLbl.AutoSize = true;
+            this.SetsLbl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SetsLbl.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
+            this.SetsLbl.Location = new System.Drawing.Point(0, 889);
+            this.SetsLbl.Margin = new System.Windows.Forms.Padding(0);
+            this.SetsLbl.Name = "SetsLbl";
+            this.SetsLbl.Padding = new System.Windows.Forms.Padding(20);
+            this.SetsLbl.Size = new System.Drawing.Size(1972, 99);
+            this.SetsLbl.TabIndex = 141;
+            this.SetsLbl.Text = "Sets";
+            this.SetsLbl.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // InfoLbl02
+            // 
+            this.InfoLbl02.AutoSize = true;
+            this.InfoLbl02.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.InfoLbl02.Font = new System.Drawing.Font("Segoe UI", 16F);
+            this.InfoLbl02.Location = new System.Drawing.Point(4, 573);
+            this.InfoLbl02.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.InfoLbl02.Name = "InfoLbl02";
+            this.InfoLbl02.Padding = new System.Windows.Forms.Padding(20, 20, 20, 60);
+            this.InfoLbl02.Size = new System.Drawing.Size(1964, 316);
+            this.InfoLbl02.TabIndex = 139;
+            this.InfoLbl02.Text = resources.GetString("InfoLbl02.Text");
+            // 
+            // PiecesLbl
+            // 
+            this.PiecesLbl.AutoSize = true;
+            this.PiecesLbl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PiecesLbl.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
+            this.PiecesLbl.Location = new System.Drawing.Point(0, 474);
+            this.PiecesLbl.Margin = new System.Windows.Forms.Padding(0);
+            this.PiecesLbl.Name = "PiecesLbl";
+            this.PiecesLbl.Padding = new System.Windows.Forms.Padding(20);
+            this.PiecesLbl.Size = new System.Drawing.Size(1972, 99);
+            this.PiecesLbl.TabIndex = 138;
+            this.PiecesLbl.Text = "Pieces";
+            this.PiecesLbl.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // BasicsLbl
+            // 
+            this.BasicsLbl.AutoSize = true;
+            this.BasicsLbl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.BasicsLbl.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
+            this.BasicsLbl.Location = new System.Drawing.Point(0, 0);
+            this.BasicsLbl.Margin = new System.Windows.Forms.Padding(0);
+            this.BasicsLbl.Name = "BasicsLbl";
+            this.BasicsLbl.Padding = new System.Windows.Forms.Padding(20);
+            this.BasicsLbl.Size = new System.Drawing.Size(1972, 99);
+            this.BasicsLbl.TabIndex = 135;
+            this.BasicsLbl.Text = "OpTips";
+            this.BasicsLbl.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // InfoLbl04
+            // 
+            this.InfoLbl04.AutoSize = true;
+            this.InfoLbl04.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.InfoLbl04.Font = new System.Drawing.Font("Segoe UI", 16F);
+            this.InfoLbl04.Location = new System.Drawing.Point(4, 1403);
+            this.InfoLbl04.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.InfoLbl04.Name = "InfoLbl04";
+            this.InfoLbl04.Padding = new System.Windows.Forms.Padding(20, 20, 20, 60);
+            this.InfoLbl04.Size = new System.Drawing.Size(1964, 375);
+            this.InfoLbl04.TabIndex = 141;
+            this.InfoLbl04.Text = resources.GetString("InfoLbl04.Text");
+            // 
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 2;
@@ -191,162 +347,6 @@
             this.LinksLbl.Text = "Links";
             this.LinksLbl.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // BasicsLbl
-            // 
-            this.BasicsLbl.AutoSize = true;
-            this.BasicsLbl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.BasicsLbl.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
-            this.BasicsLbl.Location = new System.Drawing.Point(0, 0);
-            this.BasicsLbl.Margin = new System.Windows.Forms.Padding(0);
-            this.BasicsLbl.Name = "BasicsLbl";
-            this.BasicsLbl.Padding = new System.Windows.Forms.Padding(20);
-            this.BasicsLbl.Size = new System.Drawing.Size(1972, 99);
-            this.BasicsLbl.TabIndex = 135;
-            this.BasicsLbl.Text = "OpTips";
-            this.BasicsLbl.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // HelpLayoutPnl
-            // 
-            this.HelpLayoutPnl.AutoSize = true;
-            this.HelpLayoutPnl.ColumnCount = 1;
-            this.HelpLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.HelpLayoutPnl.Controls.Add(this.InfoLbl05, 0, 9);
-            this.HelpLayoutPnl.Controls.Add(this.VideoLbl, 0, 8);
-            this.HelpLayoutPnl.Controls.Add(this.ScenesLbl, 0, 6);
-            this.HelpLayoutPnl.Controls.Add(this.InfoLbl03, 0, 5);
-            this.HelpLayoutPnl.Controls.Add(this.SetsLbl, 0, 4);
-            this.HelpLayoutPnl.Controls.Add(this.InfoLbl02, 0, 3);
-            this.HelpLayoutPnl.Controls.Add(this.PiecesLbl, 0, 2);
-            this.HelpLayoutPnl.Controls.Add(this.BasicsLbl, 0, 0);
-            this.HelpLayoutPnl.Controls.Add(this.InfoLbl01, 0, 1);
-            this.HelpLayoutPnl.Controls.Add(this.InfoLbl04, 0, 7);
-            this.HelpLayoutPnl.Dock = System.Windows.Forms.DockStyle.Top;
-            this.HelpLayoutPnl.Location = new System.Drawing.Point(0, 212);
-            this.HelpLayoutPnl.Margin = new System.Windows.Forms.Padding(0);
-            this.HelpLayoutPnl.Name = "HelpLayoutPnl";
-            this.HelpLayoutPnl.RowCount = 10;
-            this.HelpLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.HelpLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.HelpLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.HelpLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.HelpLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.HelpLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.HelpLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.HelpLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.HelpLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.HelpLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.HelpLayoutPnl.Size = new System.Drawing.Size(1972, 1957);
-            this.HelpLayoutPnl.TabIndex = 137;
-            // 
-            // PiecesLbl
-            // 
-            this.PiecesLbl.AutoSize = true;
-            this.PiecesLbl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PiecesLbl.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
-            this.PiecesLbl.Location = new System.Drawing.Point(0, 415);
-            this.PiecesLbl.Margin = new System.Windows.Forms.Padding(0);
-            this.PiecesLbl.Name = "PiecesLbl";
-            this.PiecesLbl.Padding = new System.Windows.Forms.Padding(20);
-            this.PiecesLbl.Size = new System.Drawing.Size(1972, 99);
-            this.PiecesLbl.TabIndex = 138;
-            this.PiecesLbl.Text = "Pieces";
-            this.PiecesLbl.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // InfoLbl02
-            // 
-            this.InfoLbl02.AutoSize = true;
-            this.InfoLbl02.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.InfoLbl02.Font = new System.Drawing.Font("Segoe UI", 16F);
-            this.InfoLbl02.Location = new System.Drawing.Point(4, 514);
-            this.InfoLbl02.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.InfoLbl02.Name = "InfoLbl02";
-            this.InfoLbl02.Padding = new System.Windows.Forms.Padding(20, 20, 20, 60);
-            this.InfoLbl02.Size = new System.Drawing.Size(1964, 316);
-            this.InfoLbl02.TabIndex = 139;
-            this.InfoLbl02.Text = resources.GetString("InfoLbl02.Text");
-            // 
-            // VideoLbl
-            // 
-            this.VideoLbl.AutoSize = true;
-            this.VideoLbl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.VideoLbl.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
-            this.VideoLbl.Location = new System.Drawing.Point(0, 1719);
-            this.VideoLbl.Margin = new System.Windows.Forms.Padding(0);
-            this.VideoLbl.Name = "VideoLbl";
-            this.VideoLbl.Padding = new System.Windows.Forms.Padding(20);
-            this.VideoLbl.Size = new System.Drawing.Size(1972, 99);
-            this.VideoLbl.TabIndex = 140;
-            this.VideoLbl.Text = "Videos";
-            this.VideoLbl.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // InfoLbl05
-            // 
-            this.InfoLbl05.AutoSize = true;
-            this.InfoLbl05.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.InfoLbl05.Font = new System.Drawing.Font("Segoe UI", 16F);
-            this.InfoLbl05.Location = new System.Drawing.Point(4, 1818);
-            this.InfoLbl05.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.InfoLbl05.Name = "InfoLbl05";
-            this.InfoLbl05.Padding = new System.Windows.Forms.Padding(20, 20, 20, 60);
-            this.InfoLbl05.Size = new System.Drawing.Size(1964, 139);
-            this.InfoLbl05.TabIndex = 140;
-            this.InfoLbl05.Text = "Videos turn one or multiple scenes into a movie. Videos can be exported as an .av" +
-    "i file.";
-            // 
-            // SetsLbl
-            // 
-            this.SetsLbl.AutoSize = true;
-            this.SetsLbl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SetsLbl.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
-            this.SetsLbl.Location = new System.Drawing.Point(0, 830);
-            this.SetsLbl.Margin = new System.Windows.Forms.Padding(0);
-            this.SetsLbl.Name = "SetsLbl";
-            this.SetsLbl.Padding = new System.Windows.Forms.Padding(20);
-            this.SetsLbl.Size = new System.Drawing.Size(1972, 99);
-            this.SetsLbl.TabIndex = 141;
-            this.SetsLbl.Text = "Sets";
-            this.SetsLbl.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // InfoLbl03
-            // 
-            this.InfoLbl03.AutoSize = true;
-            this.InfoLbl03.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.InfoLbl03.Font = new System.Drawing.Font("Segoe UI", 16F);
-            this.InfoLbl03.Location = new System.Drawing.Point(4, 929);
-            this.InfoLbl03.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.InfoLbl03.Name = "InfoLbl03";
-            this.InfoLbl03.Padding = new System.Windows.Forms.Padding(20, 20, 20, 60);
-            this.InfoLbl03.Size = new System.Drawing.Size(1964, 316);
-            this.InfoLbl03.TabIndex = 142;
-            this.InfoLbl03.Text = resources.GetString("InfoLbl03.Text");
-            // 
-            // ScenesLbl
-            // 
-            this.ScenesLbl.AutoSize = true;
-            this.ScenesLbl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ScenesLbl.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
-            this.ScenesLbl.Location = new System.Drawing.Point(0, 1245);
-            this.ScenesLbl.Margin = new System.Windows.Forms.Padding(0);
-            this.ScenesLbl.Name = "ScenesLbl";
-            this.ScenesLbl.Padding = new System.Windows.Forms.Padding(20);
-            this.ScenesLbl.Size = new System.Drawing.Size(1972, 99);
-            this.ScenesLbl.TabIndex = 141;
-            this.ScenesLbl.Text = "Scenes";
-            this.ScenesLbl.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // InfoLbl04
-            // 
-            this.InfoLbl04.AutoSize = true;
-            this.InfoLbl04.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.InfoLbl04.Font = new System.Drawing.Font("Segoe UI", 16F);
-            this.InfoLbl04.Location = new System.Drawing.Point(4, 1344);
-            this.InfoLbl04.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.InfoLbl04.Name = "InfoLbl04";
-            this.InfoLbl04.Padding = new System.Windows.Forms.Padding(20, 20, 20, 60);
-            this.InfoLbl04.Size = new System.Drawing.Size(1964, 375);
-            this.InfoLbl04.TabIndex = 141;
-            this.InfoLbl04.Text = resources.GetString("InfoLbl04.Text");
-            // 
             // HelpTab
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -363,10 +363,10 @@
             this.ToolStrip.PerformLayout();
             this.TableLayoutPnl.ResumeLayout(false);
             this.TableLayoutPnl.PerformLayout();
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel1.PerformLayout();
             this.HelpLayoutPnl.ResumeLayout(false);
             this.HelpLayoutPnl.PerformLayout();
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

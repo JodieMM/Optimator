@@ -122,7 +122,8 @@
   </metadata>
   <data name="InfoLbl01.Text" xml:space="preserve">
     <value>Videos are a collection of scenes. Scenes indicate how pieces and sets, collectively called parts, will move around. Sets are collections of several pieces and pieces are single shapes.
-Each file must be held in the same directory as the files it uses so it is recommended to save all files from a single project into one location, or even to save all of your Optimator files in one place.</value>
+Each file must be held in the same directory as the files it uses so it is recommended to save all files from a single project into one location, or even to save all of your Optimator files in one place.
+To delete the selected part, scene or animation, try pressing the delete button.</value>
   </data>
   <data name="InfoLbl03.Text" xml:space="preserve">
     <value>Sets allow multiple pieces to move together. One piece in the set should be the 'base piece' that all others are attached to either directly or indirectly. 

@@ -92,14 +92,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Optimator.exe" size="408544">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Optimator.exe" size="412640">
       <assemblyIdentity name="Optimator" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>DCKGlXOi0fNbNnysdeAqXM8j6kTe1zE5ABvbBeOzB3I=</dsig:DigestValue>
+        <dsig:DigestValue>CZMYbTPxgQTWoheR5H7F0Zx5n0oqaPw8ykYmOoZmxRg=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

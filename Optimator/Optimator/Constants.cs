@@ -69,6 +69,9 @@ namespace Optimator
         public static Color lowlight = Color.CadetBlue;
         public static Color option1 = Color.SaddleBrown;
         public static Color option2 = Color.Purple;
+        public static Color activeAnimation = Color.FromArgb(255, 153, 204, 255);
+        public static Color finishedAnimation = Color.FromArgb(255, 77, 166, 255);
+        public static Color toDoAnimation = Color.FromArgb(255, 204, 230, 255);
 
         // Scene Options
         public static object[] possibleChanges = new object[] { "X", "Y", "Rotation", "Turn", "Spin", "Size", "Order", "Removed" };
