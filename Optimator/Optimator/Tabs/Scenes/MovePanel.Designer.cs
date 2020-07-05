@@ -103,6 +103,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.StartTimeUpDown.DecimalPlaces = 2;
             this.StartTimeUpDown.Font = new System.Drawing.Font("Segoe UI", 16F);
+            this.StartTimeUpDown.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            65536});
             this.StartTimeUpDown.Location = new System.Drawing.Point(366, 581);
             this.StartTimeUpDown.Margin = new System.Windows.Forms.Padding(2);
             this.StartTimeUpDown.Maximum = new decimal(new int[] {
@@ -128,7 +133,7 @@
             // 
             // AnimationLv
             // 
-            this.AnimationLv.BackColor = System.Drawing.Color.PaleGoldenrod;
+            this.AnimationLv.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.AnimationLv.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.Part,
             this.Action,

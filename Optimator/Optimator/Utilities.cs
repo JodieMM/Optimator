@@ -565,6 +565,16 @@ namespace Optimator
             return clone;
         }
 
+        /// <summary>
+        /// Copies the details from a change into a seperate object.
+        /// </summary>
+        /// <param name="change">Change to clone</param>
+        /// <returns>New piece object with same details</returns>
+        public static Change CloneChange(Change change)
+        {
+            return new Change(change.StartTime, change.Action, change.AffectedPiece, change.HowMuch, change.HowLong, change.host);
+        }
+
         #endregion
 
 

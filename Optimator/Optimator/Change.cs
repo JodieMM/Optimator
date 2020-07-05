@@ -9,7 +9,7 @@
     {
         #region Changes Variables
         public Piece AffectedPiece { get; set; }
-        private readonly Scene host;
+        public readonly Scene host;
 
         public decimal StartTime { get; set; }
         public float HowMuch { get; set; }
