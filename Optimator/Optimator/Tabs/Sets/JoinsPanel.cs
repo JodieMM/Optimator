@@ -92,7 +92,7 @@ namespace Optimator.Tabs.Sets
         /// <param name="e"></param>
         private void ToggleButton(object sender, EventArgs e)
         {
-            if (Owner.selected != null)
+            if (Owner.selected != null && !(sender == JoinBtn && Owner.WIP.BasePiece == null))
             {
                 SelectBaseBtn.BackColor = sender == SelectBaseBtn ? SelectBaseBtn.BackColor == pressed ? unpressed : pressed : unpressed;
                 JoinBtn.BackColor = sender == JoinBtn ? JoinBtn.BackColor == pressed ? unpressed : pressed : unpressed;
