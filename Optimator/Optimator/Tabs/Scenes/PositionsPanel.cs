@@ -130,7 +130,7 @@ namespace Optimator.Tabs.Scenes
             }
             else if (sender == SizeBar)
             {
-                Owner.WIP.Originals[modifying].SM = SizeBar.Value;
+                Owner.WIP.Originals[modifying].SM = SizeBar.Value / 100.0F;
             }
             if (sender == ActiveControl)
             {
@@ -152,7 +152,7 @@ namespace Optimator.Tabs.Scenes
                 SpinBar.Value = (int)Owner.WIP.Originals[Owner.selected].S;
                 XUpDown.Value = (decimal)Owner.WIP.Originals[Owner.selected].X;
                 YUpDown.Value = (decimal)Owner.WIP.Originals[Owner.selected].Y;
-                SizeBar.Value = (int)Owner.WIP.Originals[Owner.selected].SM;
+                SizeBar.Value = (int)Owner.WIP.Originals[Owner.selected].SM * 100;
             }
         }
     }

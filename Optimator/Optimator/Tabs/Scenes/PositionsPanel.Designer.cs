@@ -153,12 +153,12 @@
             this.SizeBar.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SizeBar.Location = new System.Drawing.Point(251, 576);
             this.SizeBar.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
-            this.SizeBar.Maximum = 1000;
+            this.SizeBar.Maximum = 5000;
             this.SizeBar.Name = "SizeBar";
             this.SizeBar.Size = new System.Drawing.Size(561, 89);
-            this.SizeBar.SmallChange = 5;
+            this.SizeBar.SmallChange = 1;
             this.SizeBar.TabIndex = 139;
-            this.SizeBar.TickFrequency = 100;
+            this.SizeBar.TickFrequency = 250;
             this.SizeBar.Value = 100;
             this.SizeBar.Scroll += new System.EventHandler(this.UpdateSelectedPiece);
             // 
