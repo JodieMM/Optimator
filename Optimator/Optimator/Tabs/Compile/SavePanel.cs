@@ -178,6 +178,9 @@ namespace Optimator.Forms.Compile
                         bitmap.Save(Utils.GetDirectory(imagesLocation, numFrames.ToString(), Consts.Png), System.Drawing.Imaging.ImageFormat.Png);
                         numFrames++;
                         IncrementStep();
+                        bitmap.Dispose();
+                        GC.Collect();
+                        GC.WaitForPendingFinalizers();
                     }
                 }
 
@@ -190,7 +193,10 @@ namespace Optimator.Forms.Compile
                 process.StartInfo.UseShellExecute = false;
                 process.StartInfo.CreateNoWindow = true;
                 process.Start();
+                var output = process.StandardError.ReadToEnd();
+                var output2 = process.StandardOutput.ReadToEnd();
                 process.WaitForExit();
+                process.Close();
                 IncrementStep(totalFrames - numFrames - (Properties.Settings.Default.SaveVideoFrames ? 0 : DeleteFramesExtras));
 
 

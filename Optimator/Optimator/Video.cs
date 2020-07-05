@@ -16,7 +16,7 @@ namespace Optimator
 
         public List<Scene> videoScenes = new List<Scene>();
 
-        public decimal FPS = 60;
+        public decimal FPS = 20;
         public int videoWidth = Consts.defaultWidth;
         public int videoHeight = Consts.defaultHeight;
         #endregion
