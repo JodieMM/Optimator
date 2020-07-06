@@ -509,10 +509,11 @@ namespace Optimator
                         {
                             holdingIndexes.Add(new int[] { swapped ? 0 : 1, match });
                         }
+                        var newSpot2 = Utils.CloneSpot(newSpot);
 
                         // Check for Self Neighbours
                         if (index1 < shape1.Count && shape1[index1 - 1].GetCoord(z) == shape1[index1].GetCoord(z))
-                        {
+                        {             
                             // Self and Match Neighbours
                             if (shape2[match].GetCoord(z) == shape2[Utils.NextIndex(shape2, match)].GetCoord(z) && shape2.Count > 1)
                             {
@@ -520,13 +521,13 @@ namespace Optimator
                                     shape2[Utils.NextIndex(shape2, match)].GetCoord(altz), angle, swapped);
                                 if (xChange)
                                 {
-                                    newSpot.X = changed;
+                                    newSpot2.X = changed;
                                 }
                                 else
                                 {
-                                    newSpot.Y = changed;
+                                    newSpot2.Y = changed;
                                 }
-                                merged.Add(newSpot);
+                                merged.Add(newSpot2);
                                 index1++;
                                 i1 += swapped ? 0 : 1;
                                 i2 += swapped ? 1 : 0;
@@ -548,13 +549,13 @@ namespace Optimator
                                     shape2[match].GetCoord(z), angle, swapped);
                                 if (xChange)
                                 {
-                                    newSpot.X = changed;
+                                    newSpot2.X = changed;
                                 }
                                 else
                                 {
-                                    newSpot.Y = changed;
+                                    newSpot2.Y = changed;
                                 }
-                                merged.Add(newSpot);
+                                merged.Add(newSpot2);
                                 index1++;
                                 i1 += swapped ? 0 : 1;
                                 i2 += swapped ? 1 : 0;
@@ -567,13 +568,13 @@ namespace Optimator
                                     shape2[Utils.NextIndex(shape2, match)].GetCoord(altz), angle, swapped);
                             if (xChange)
                             {
-                                newSpot.X = changed;
+                                newSpot2.X = changed;
                             }
                             else
                             {
-                                newSpot.Y = changed;
+                                newSpot2.Y = changed;
                             }
-                            merged.Add(newSpot);
+                            merged.Add(newSpot2);
                             if (Utils.NextIndex(shape2, match) == index2)
                             {
                                 index2++;

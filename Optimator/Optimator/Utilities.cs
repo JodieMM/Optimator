@@ -512,6 +512,16 @@ namespace Optimator
         #region Clone Functions
 
         /// <summary>
+        /// Clones a spot into a seperate object.
+        /// </summary>
+        /// <param name="spot">Spot to clone</param>
+        /// <returns>Seperate object with the same contents</returns>
+        public static Spot CloneSpot(Spot spot)
+        {
+            return new Spot(spot.X, spot.Y, spot.XRight, spot.YDown, spot.Connector, spot.Solid, spot.DrawnLevel);
+        }
+
+        /// <summary>
         /// Clones a list into a seperate object.
         /// </summary>
         /// <typeparam name="T">Type of list</typeparam>
@@ -522,7 +532,7 @@ namespace Optimator
             var clone = new List<Spot>();
             foreach (var spot in list)
             {
-                clone.Add(new Spot(spot.X, spot.Y, spot.XRight, spot.YDown, spot.Connector, spot.Solid, spot.DrawnLevel));
+                clone.Add(CloneSpot(spot));
             }
             return clone;
         }
