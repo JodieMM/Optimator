@@ -337,10 +337,6 @@ namespace Optimator
             var minmax = Utils.FindMinMax(s1);
             var minmax1 = Utils.FindMinMaxSpots(s1);
             var minmax2 = Utils.FindMinMaxSpots(s2);
-            var reachedBottom1 = false;
-            var reachedBottom2 = false;
-            var reachedBelow1 = false;
-            var reachedBelow2 = false;
             List<int[]> holdingIndexes = new List<int[]>();
             var i1 = 0;
             var i2 = 0;
@@ -348,122 +344,255 @@ namespace Optimator
             var altz = xChange ? 0 : 1;
             List<Spot> merged = new List<Spot>();
 
+            // Find Dominant Shape
             while (i1 < s1.Count || i2 < s2.Count)
-            {
-                // Find dominant shape
-
-                // HIDDEN: ALTERNATE OPTION (Also Broken)
-
+            {                
                 swapped = false;
+
                 // Finished One Shape
                 if (i1 >= s1.Count || i2 >= s2.Count)
                 {
                     swapped = i1 >= s1.Count;
                 }
-                // Before or At Bottom
-                else if (s1.IndexOf(minmax1[2]) >= i1)
+                // xChange (Match Height)
+                else if (xChange)
                 {
-                    // Shape 2 Matches
-                    if (s2.IndexOf(minmax2[2]) >= i2)
+                    // Before or At Bottom
+                    if (s1.IndexOf(minmax1[2]) >= i1)
                     {
+                        // Shape 2 Matches
+                        if (s2.IndexOf(minmax2[2]) >= i2)
+                        {
+                            // Sort by Height
+                            if (s1[i1].Y < s2[i2].Y)
+                            {
+                                swapped = true;
+                            }
+                            // Sort by X
+                            else if (s1[i1].Y == s2[i2].Y)
+                            {
+                                if (s1.IndexOf(minmax1[1]) > i1 && s2.IndexOf(minmax2[1]) > i2 && s1[i1].X > s2[i2].X ||
+                                    s1.IndexOf(minmax1[1]) < i1 && s2.IndexOf(minmax2[1]) < i2 && s1[i1].X < s2[i2].X)
+                                {
+                                    swapped = true;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // Shape 2 Doesn't Match
+                        if (s2.IndexOf(minmax2[2]) >= i2 || s1.IndexOf(minmax1[0]) < i1 && s2.IndexOf(minmax2[0]) >= i2)
+                        {
+                            swapped = true;
+                        }
                         // Sort by Height
-                        if (s1[i1].Y < s2[i2].Y)
+                        else if (s1[i1].Y > s2[i2].Y)
                         {
                             swapped = true;
                         }
                         // Sort by X
                         else if (s1[i1].Y == s2[i2].Y)
                         {
-                            if (s1.IndexOf(minmax1[1]) > i1 && s2.IndexOf(minmax2[1]) > i2 && s1[i1].X > s2[i2].X ||
-                                s1.IndexOf(minmax1[1]) < i1 && s2.IndexOf(minmax2[1]) < i2 && s1[i1].X < s2[i2].X)
+                            if (s1.IndexOf(minmax1[0]) > i1 && s2.IndexOf(minmax2[0]) > i2 && s1[i1].X > s2[i2].X ||
+                                    s1.IndexOf(minmax1[0]) < i1 && s2.IndexOf(minmax2[0]) < i2 && s1[i1].X < s2[i2].X)
                             {
                                 swapped = true;
                             }
                         }
                     }
                 }
-                // After Bottom
+                // yChange (Match Width)
                 else
                 {
-                    // Shape 2 Doesn't Match
-                    if (s2.IndexOf(minmax2[2]) >= i2 || s1.IndexOf(minmax1[0]) < i1 && s2.IndexOf(minmax2[0]) >= i2)
+                    // Quadrant 1
+                    if (s1.IndexOf(minmax1[1]) >= i1)
                     {
-                        swapped = true;
-                    }   //TODO: Apply changes to top as well
+                        // Shape 2 Matches
+                        if (s2.IndexOf(minmax2[1]) >= i2)
+                        {
+                            // Check X
+                            if (s1[Utils.Modulo(i1, s1.Count)].X > s2[Utils.Modulo(i2, s2.Count)].X)
+                            {
+                                swapped = true;
+                            }
+                            // Check Height
+                            else if (s1[Utils.Modulo(i1, s1.Count)].X == s2[Utils.Modulo(i2, s2.Count)].X &&
+                                s1[Utils.Modulo(i1, s1.Count)].Y > s2[Utils.Modulo(i2, s2.Count)].Y)
+                            {
+                                swapped = true;
+                            }
+                        }
+                    }
+                    // Quadrant 2
+                    else if (s1.IndexOf(minmax1[2]) >= i1)
+                    {
+                        // Shape 2 Matches
+                        if (s2.IndexOf(minmax2[2]) >= i2 && s2.IndexOf(minmax2[1]) < i2)
+                        {
+                            // Check X
+                            if (s1[Utils.Modulo(i1, s1.Count)].X < s2[Utils.Modulo(i2, s2.Count)].X)
+                            {
+                                swapped = true;
+                            }
+                            // Check Height
+                            else if (s1[Utils.Modulo(i1, s1.Count)].X == s2[Utils.Modulo(i2, s2.Count)].X &&
+                                s1[Utils.Modulo(i1, s1.Count)].Y > s2[Utils.Modulo(i2, s2.Count)].Y)
+                            {
+                                swapped = true;
+                            }
+                        }
+                    }
                     // Quadrant 3
                     else if (s1.IndexOf(minmax1[0]) >= i1)
                     {
-                        swapped = s2.IndexOf(minmax2[0]) >= i2 && s1[Utils.Modulo(i1, s1.Count)].X < s2[Utils.Modulo(i2, s2.Count)].X;
-                        //swapped = s2.IndexOf(minmax2[0]) >= i2 && (xChange ? s1[Utils.Modulo(i1, s1.Count)].Y > s2[Utils.Modulo(i2, s2.Count)].Y :
-                        //s1[Utils.Modulo(i1, s1.Count)].X < s2[Utils.Modulo(i2, s2.Count)].X);
+                        // Shape 2 Matches
+                        if (s2.IndexOf(minmax2[0]) >= i2 && s2.IndexOf(minmax2[2]) < i2)
+                        {
+                            // Check X
+                            if (s1[Utils.Modulo(i1, s1.Count)].X < s2[Utils.Modulo(i2, s2.Count)].X)
+                            {
+                                swapped = true;
+                            }
+                            // Check Height
+                            else if (s1[Utils.Modulo(i1, s1.Count)].X == s2[Utils.Modulo(i2, s2.Count)].X &&
+                                s1[Utils.Modulo(i1, s1.Count)].Y < s2[Utils.Modulo(i2, s2.Count)].Y)
+                            {
+                                swapped = true;
+                            }
+                        }
                     }
                     // Quadrant 4
                     else
                     {
-                        swapped = s1[Utils.Modulo(i1, s1.Count)].X > s2[Utils.Modulo(i2, s2.Count)].X;
+                        // Shape 2 Matches
+                        if (s2.IndexOf(minmax2[0]) < i2)
+                        {
+                            // Check X
+                            if (s1[Utils.Modulo(i1, s1.Count)].X > s2[Utils.Modulo(i2, s2.Count)].X)
+                            {
+                                swapped = true;
+                            }
+                            // Check Height
+                            else if (s1[Utils.Modulo(i1, s1.Count)].X == s2[Utils.Modulo(i2, s2.Count)].X &&
+                                s1[Utils.Modulo(i1, s1.Count)].Y < s2[Utils.Modulo(i2, s2.Count)].Y)
+                            {
+                                swapped = true;
+                            }
+                        }
                     }
-
-
-                    //// Sort by Height
-                    //else if (s1[i1].Y > s2[i2].Y)
-                    //{
-                    //    swapped = true;
-                    //}
-                    //// Sort by X
-                    //else if (s1[i1].Y == s2[i2].Y)
-                    //{
-                    //    if (s1.IndexOf(minmax1[0]) > i1 && s2.IndexOf(minmax2[0]) > i2 && s1[i1].X > s2[i2].X ||
-                    //            s1.IndexOf(minmax1[0]) < i1 && s2.IndexOf(minmax2[0]) < i2 && s1[i1].X < s2[i2].X)
-                    //    {
-                    //        swapped = true;
-                    //    }
-                    //}
                 }
 
 
-                //if (!reachedBottom1 && i1 != 0 && i1 < s1.Count && s1[i1].Y > s1[i1 - 1].Y)
+
+                //// Shape 2 Doesn't Match
+                //if (s2.IndexOf(minmax2[2]) >= i2 || s1.IndexOf(minmax1[0]) < i1 && s2.IndexOf(minmax2[0]) >= i2)
                 //{
-                //    reachedBottom1 = true;
+                //    swapped = true;
                 //}
-                //if (!reachedBottom2 && i2 != 0 && i2 < s2.Count && s2[i2].Y > s2[i2 - 1].Y)
+                //// Quadrant 3
+                //else if (s1.IndexOf(minmax1[0]) >= i1)
                 //{
-                //    reachedBottom2 = true;
+                //    swapped = s2.IndexOf(minmax2[0]) >= i2 && s1[Utils.Modulo(i1, s1.Count)].X < s2[Utils.Modulo(i2, s2.Count)].X;
+                //    //swapped = s2.IndexOf(minmax2[0]) >= i2 && (xChange ? s1[Utils.Modulo(i1, s1.Count)].Y > s2[Utils.Modulo(i2, s2.Count)].Y :
+                //    //s1[Utils.Modulo(i1, s1.Count)].X < s2[Utils.Modulo(i2, s2.Count)].X);
                 //}
-                //if (xChange)
-                //{
-                //    swapped = i2 < s2.Count && (i1 >= s1.Count || reachedBottom1 && !reachedBottom2 ||
-                //        !reachedBottom1 && !reachedBottom2 && s1[i1].Y < s2[i2].Y ||
-                //        reachedBottom1 && reachedBottom2 & s1[i1].Y > s2[i2].Y);
-                //}
+                //// Quadrant 4
                 //else
                 //{
-                //    if (!reachedBelow1 && i1 != 0 && i1 < s1.Count && s1[i1].X < s1[i1 - 1].X)
-                //    {
-                //        reachedBelow1 = true;
-                //    }
-                //    else if (reachedBelow1 && i1 != 0 && i1 < s1.Count && s1[i1].X > s1[i1 - 1].X)
-                //    {
-                //        reachedBelow1 = false;
-                //    }
-                //    if (!reachedBelow2 && i2 != 0 && i2 < s2.Count && s2[i2].X < s2[i2 - 1].X)
-                //    {
-                //        reachedBelow2 = true;
-                //    }
-                //    else if (reachedBelow2 && i2 != 0 && i2 < s2.Count && s2[i2].X > s2[i2 - 1].X)
-                //    {
-                //        reachedBelow2 = false;
-                //    }
-                //    swapped = i2 < s2.Count && (i1 >= s1.Count || reachedBottom1 && !reachedBottom2 ||
-                //        !reachedBottom1 && !reachedBottom2 &&
-                //        (s1[i1].Y < s2[i2].Y || s1[i1].Y == s2[i2].Y && (reachedBelow1 && reachedBelow2 && s1[i1].X < s2[i2].X ||
-                //        !reachedBelow1 && !reachedBelow2 && s1[i1].X > s2[i1].X)) ||
-                //        reachedBottom1 && reachedBottom2 &&
-                //        (s1[i1].Y > s2[i2].Y || s1[i1].Y == s2[i2].Y && (reachedBelow1 && reachedBelow2 && s1[i1].X < s2[i2].X ||
-                //        !reachedBelow1 && !reachedBelow2 && s1[i1].X > s2[i1].X)));
+                //    swapped = s1[Utils.Modulo(i1, s1.Count)].X > s2[Utils.Modulo(i2, s2.Count)].X;
                 //}
 
 
+                ////else if...
+                //// Before or At Bottom
+                //if (s1.IndexOf(minmax1[2]) >= i1)
+                //{
+                //    if (xChange)
+                //    {
+                //        // Shape 2 Matches
+                //        if (s2.IndexOf(minmax2[2]) >= i2)
+                //        {
+                //            // Sort by Height
+                //            if (s1[i1].Y < s2[i2].Y)
+                //            {
+                //                swapped = true;
+                //            }
+                //            // Sort by X
+                //            else if (s1[i1].Y == s2[i2].Y)
+                //            {
+                //                if (s1.IndexOf(minmax1[1]) > i1 && s2.IndexOf(minmax2[1]) > i2 && s1[i1].X > s2[i2].X ||
+                //                    s1.IndexOf(minmax1[1]) < i1 && s2.IndexOf(minmax2[1]) < i2 && s1[i1].X < s2[i2].X)
+                //                {
+                //                    swapped = true;
+                //                }
+                //            }
+                //        }
 
+                //    }
+                //    else
+                //    {
+                //        // Quadrant 1
+
+                //        // Quadrant 2
+                //    }
+
+
+                //    //// Shape 2 Matches
+                //    //if (s2.IndexOf(minmax2[2]) >= i2)
+                //    //{
+                //    //    // Sort by Height
+                //    //    if (s1[i1].Y < s2[i2].Y)
+                //    //    {
+                //    //        swapped = true;
+                //    //    }
+                //    //    // Sort by X
+                //    //    else if (s1[i1].Y == s2[i2].Y)
+                //    //    {
+                //    //        if (s1.IndexOf(minmax1[1]) > i1 && s2.IndexOf(minmax2[1]) > i2 && s1[i1].X > s2[i2].X ||
+                //    //            s1.IndexOf(minmax1[1]) < i1 && s2.IndexOf(minmax2[1]) < i2 && s1[i1].X < s2[i2].X)
+                //    //        {
+                //    //            swapped = true;
+                //    //        }
+                //    //    }
+                //    //}
+                //}
+                //// After Bottom
+                //else
+                //{
+                //    // Shape 2 Doesn't Match
+                //    if (s2.IndexOf(minmax2[2]) >= i2 || s1.IndexOf(minmax1[0]) < i1 && s2.IndexOf(minmax2[0]) >= i2)
+                //    {
+                //        swapped = true;
+                //    // Quadrant 3
+                //    else if (s1.IndexOf(minmax1[0]) >= i1)
+                //    {
+                //        swapped = s2.IndexOf(minmax2[0]) >= i2 && s1[Utils.Modulo(i1, s1.Count)].X < s2[Utils.Modulo(i2, s2.Count)].X;
+                //        //swapped = s2.IndexOf(minmax2[0]) >= i2 && (xChange ? s1[Utils.Modulo(i1, s1.Count)].Y > s2[Utils.Modulo(i2, s2.Count)].Y :
+                //        //s1[Utils.Modulo(i1, s1.Count)].X < s2[Utils.Modulo(i2, s2.Count)].X);
+                //    }
+                //    // Quadrant 4
+                //    else
+                //    {
+                //        swapped = s1[Utils.Modulo(i1, s1.Count)].X > s2[Utils.Modulo(i2, s2.Count)].X;
+                //    }
+
+
+                //// Sort by Height
+                //else if (s1[i1].Y > s2[i2].Y)
+                //{
+                //    swapped = true;
+                //}
+                //// Sort by X
+                //else if (s1[i1].Y == s2[i2].Y)
+                //{
+                //    if (s1.IndexOf(minmax1[0]) > i1 && s2.IndexOf(minmax2[0]) > i2 && s1[i1].X > s2[i2].X ||
+                //            s1.IndexOf(minmax1[0]) < i1 && s2.IndexOf(minmax2[0]) < i2 && s1[i1].X < s2[i2].X)
+                //    {
+                //        swapped = true;
+                //    }
+                //}
+                //}
 
                 shape1 = swapped ? s2 : s1;
                 shape2 = swapped ? s1 : s2;
