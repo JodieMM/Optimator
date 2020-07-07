@@ -779,8 +779,8 @@ namespace Optimator
                 return new int[] { s2.IndexOf(minmax[xy == 0 ? 1 : 3]) };
             }
             // Determine if Coord Occurs Top or Bottom / Left or Right
-            else if ((xy == 0 && Utils.WithinRanges(s1, s1.IndexOf(minmax[0]), s1.IndexOf(minmax[1]), s1.IndexOf(match))) ||
-                (xy == 1 && Utils.WithinRanges(s1, s1.IndexOf(minmax[3]), s1.IndexOf(minmax[2]), s1.IndexOf(match))))
+            else if ((xy == 0 && Utils.WithinRanges(s1.IndexOf(minmax[0]), s1.IndexOf(minmax[1]), s1.IndexOf(match))) ||
+                (xy == 1 && Utils.WithinRanges(s1.IndexOf(minmax[3]), s1.IndexOf(minmax[2]), s1.IndexOf(match))))
             {
                 topRight = true;
             }
@@ -791,49 +791,100 @@ namespace Optimator
             var goal = match.GetCoord(xy);
             for (int index = 0; index < s2.Count; index++)
             {
-                // Exact Match
-                if (s2[index].GetCoord(xy) == goal)
+                // Top/Right and in Top/Right
+                if (topRight && ((xy == 0 && Utils.WithinRanges(s2.IndexOf(minmax[0]), s2.IndexOf(minmax[1]), index)) ||
+                    (xy == 1 && Utils.WithinRanges(s2.IndexOf(minmax[3]), s2.IndexOf(minmax[2]), index))))
                 {
-                    if ((xy == 0 && Utils.WithinRanges(s2, s2.IndexOf(minmax[0]), s2.IndexOf(minmax[1]), index)) ||
-                        (xy == 1 && Utils.WithinRanges(s2, s2.IndexOf(minmax[3]), s2.IndexOf(minmax[2]), index)))
-                    {
-                        if (topRight)
-                        {
-                            return new int[] { index };
-                        }
-                    }
-                    else if (!topRight)
+                    // Exact Match
+                    if (s2[index].GetCoord(xy) == goal)
                     {
                         return new int[] { index };
                     }
-                    backup = new int[] { index };
-                }
-                // Between Two Points
-                else if (s2[index].GetCoord(xy) > goal && s2[Utils.NextIndex(s2, index)].GetCoord(xy) < goal ||
-                    s2[index].GetCoord(xy) < goal && s2[Utils.NextIndex(s2, index)].GetCoord(xy) > goal)
-                {
-                    if (((xy == 0 && Utils.WithinRanges(s2, s2.IndexOf(minmax[0]), s2.IndexOf(minmax[1]), index)) ||
-                        (xy == 1 && Utils.WithinRanges(s2, s2.IndexOf(minmax[3]), s2.IndexOf(minmax[2]), index)))) 
-                        
-                        // CLEANING
-                        //&&
-                        //((xy == 0 && Utils.WithinRanges(s2, s2.IndexOf(minmax[0]), s2.IndexOf(minmax[1]), Utils.NextIndex(s2, index))) ||
-                        //(xy == 1 && Utils.WithinRanges(s2, s2.IndexOf(minmax[3]), s2.IndexOf(minmax[2]), Utils.NextIndex(s2, index)))))
-                    {
-                        if (topRight)
-                        {
-                            return new int[] { index, Utils.NextIndex(s2, index) };
-                        }
-                    }
-                    else if (!(xy == 0 && (s2.IndexOf(minmax[0]) == index || s2.IndexOf(minmax[1]) == index)) &&
-                        !(xy == 1 && (s2.IndexOf(minmax[2]) == index || s2.IndexOf(minmax[3]) == index)) && !topRight)
+                    // Between Two Points
+                    else if (s2[index].GetCoord(xy) > goal && s2[Utils.NextIndex(s2, index)].GetCoord(xy) < goal)
                     {
                         return new int[] { index, Utils.NextIndex(s2, index) };
                     }
-                    backup = new int[] { index, Utils.NextIndex(s2, index) };
+                    else if (s2[index].GetCoord(xy) < goal && s2[Utils.NextIndex(s2, index)].GetCoord(xy) > goal)
+                    {
+                        return new int[] { index, Utils.NextIndex(s2, index) };
+                    }
+                }
+                // Bottom/Left and in Bottom/Left
+                else if (!topRight && ((xy == 0 && Utils.WithinRanges(s2.IndexOf(minmax[1]), s2.IndexOf(minmax[0]), index)) ||
+                    (xy == 1 && Utils.WithinRanges(s2.IndexOf(minmax[2]), s2.IndexOf(minmax[3]), index))))
+                {
+                    if (s2[index].GetCoord(xy) == goal)
+                    {
+                        return new int[] { index };
+                    }
+                    // Between Two Points
+                    else if (s2[index].GetCoord(xy) > goal && s2[Utils.NextIndex(s2, index)].GetCoord(xy) < goal)
+                    {
+                        return new int[] { index, Utils.NextIndex(s2, index) };
+                    }
+                    else if (s2[index].GetCoord(xy) < goal && s2[Utils.NextIndex(s2, index)].GetCoord(xy) > goal)
+                    {
+                        return new int[] { index, Utils.NextIndex(s2, index) };
+                    }
                 }
             }
-            return backup;       // None Found, Spare Used If Found
+            return backup;      // None Found, Spare Used If Found
+
+
+
+
+
+
+
+            //var backup = new int[1] { -1 };
+            //minmax = Utils.FindMinMaxSpots(s2);
+            //var goal = match.GetCoord(xy);
+            //for (int index = 0; index < s2.Count; index++)
+            //{
+            //    // Exact Match
+            //    if (s2[index].GetCoord(xy) == goal)
+            //    {
+            //        if ((xy == 0 && Utils.WithinRanges(s2.IndexOf(minmax[0]), s2.IndexOf(minmax[1]), index)) ||
+            //            (xy == 1 && Utils.WithinRanges(s2.IndexOf(minmax[3]), s2.IndexOf(minmax[2]), index)))
+            //        {
+            //            if (topRight)
+            //            {
+            //                return new int[] { index };
+            //            }
+            //        }
+            //        else if (!topRight)
+            //        {
+            //            return new int[] { index };
+            //        }
+            //        backup = new int[] { index };
+            //    }
+            //    // Between Two Points
+            //    else if (s2[index].GetCoord(xy) > goal && s2[Utils.NextIndex(s2, index)].GetCoord(xy) < goal ||
+            //        s2[index].GetCoord(xy) < goal && s2[Utils.NextIndex(s2, index)].GetCoord(xy) > goal)
+            //    {
+            //        if (((xy == 0 && Utils.WithinRanges(s2.IndexOf(minmax[0]), s2.IndexOf(minmax[1]), index)) ||
+            //            (xy == 1 && Utils.WithinRanges(s2.IndexOf(minmax[3]), s2.IndexOf(minmax[2]), index)))) 
+
+            //            // CLEANING
+            //            //&&
+            //            //((xy == 0 && Utils.WithinRanges(s2, s2.IndexOf(minmax[0]), s2.IndexOf(minmax[1]), Utils.NextIndex(s2, index))) ||
+            //            //(xy == 1 && Utils.WithinRanges(s2, s2.IndexOf(minmax[3]), s2.IndexOf(minmax[2]), Utils.NextIndex(s2, index)))))
+            //        {
+            //            if (topRight)
+            //            {
+            //                return new int[] { index, Utils.NextIndex(s2, index) };
+            //            }
+            //        }
+            //        else if (!(xy == 0 && (s2.IndexOf(minmax[0]) == index || s2.IndexOf(minmax[1]) == index)) &&
+            //            !(xy == 1 && (s2.IndexOf(minmax[2]) == index || s2.IndexOf(minmax[3]) == index)) && !topRight)
+            //        {
+            //            return new int[] { index, Utils.NextIndex(s2, index) };
+            //        }
+            //        backup = new int[] { index, Utils.NextIndex(s2, index) };
+            //    }
+            //}
+            //return backup;       // None Found, Spare Used If Found
         }
 
         /// <summary>
@@ -954,7 +1005,7 @@ namespace Optimator
             for (var index = 0; index < data.Count; index++)
             {
                 linesCoords.AddRange(LineCoords(data[index],
-                    data[Utils.Modulo(index + 1, data.Count)], Data[index].Connector));
+                    data[Utils.Modulo(index + 1, data.Count)], data[index].Connector));
             }
             return linesCoords;
         }

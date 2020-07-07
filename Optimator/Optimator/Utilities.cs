@@ -382,13 +382,11 @@ namespace Optimator
         /// <summary>
         /// Checks that the goal is within ranges of an overflowing list.
         /// </summary>
-        /// <typeparam name="T">Type of list</typeparam>
-        /// <param name="list">List to search</param>
         /// <param name="minIndex">The lowest index the goal can be</param>
         /// <param name="maxIndex">The maximum index the goal can have</param>
         /// <param name="goal">The index to fit into the list</param>
         /// <returns>True if goal within ranges</returns>
-        public static bool WithinRanges<T>(List<T> list, int minIndex, int maxIndex, int goal)
+        public static bool WithinRanges(int minIndex, int maxIndex, int goal)
         {
             if ((minIndex <= maxIndex && (goal > minIndex && goal <= maxIndex || goal >= minIndex && goal < maxIndex)) ||
                 (minIndex > maxIndex && (goal >= minIndex || goal <= maxIndex)))
