@@ -73,7 +73,7 @@
                     AffectedPiece.State.S = (AffectedPiece.State.S + increment) % 360;
                     break;
                 case "Size":
-                    AffectedPiece.State.SM += increment;
+                    AffectedPiece.State.SM += increment / 100;
                     break;
             }
         }

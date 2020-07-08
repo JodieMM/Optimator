@@ -182,6 +182,7 @@ namespace Optimator.Tabs.Scenes
             else
             {
                 AddAnimationBtn_Click(sender, e);
+                UpdateListbox();
             }
         }
 
@@ -304,7 +305,7 @@ namespace Optimator.Tabs.Scenes
         /// <summary>
         /// Updates the listbox based on owner's animation changes.
         /// </summary>
-        public void UpdateListbox()
+        public void UpdateListbox(Change reselect = null)
         {
             AnimationLv.Items.Clear();
             changeIndex.Clear();
@@ -325,6 +326,12 @@ namespace Optimator.Tabs.Scenes
                     };
                     changeIndex.Add(AnimationLv.Items.Count, change);
                     AnimationLv.Items.Add(item);
+
+                    // Re-select Change
+                    if (reselect != null && change == reselect)
+                    {
+                        AnimationLv.Items[AnimationLv.Items.Count - 1].Selected = true;
+                    }
                 }
                 else if (Owner.GetCurrentTimeUpDownValue() < change.StartTime)
                 {
@@ -347,6 +354,12 @@ namespace Optimator.Tabs.Scenes
                 };
                 changeIndex.Add(AnimationLv.Items.Count, change);
                 AnimationLv.Items.Add(item);
+                
+                // Re-select Change
+                if (reselect != null && change == reselect)
+                {
+                    AnimationLv.Items[AnimationLv.Items.Count - 1].Selected = true;
+                }
             }
             foreach (var change in back)
             {
@@ -358,6 +371,12 @@ namespace Optimator.Tabs.Scenes
                 };
                 changeIndex.Add(AnimationLv.Items.Count, change);
                 AnimationLv.Items.Add(item);
+
+                // Re-select Change
+                if (reselect != null && change == reselect)
+                {
+                    AnimationLv.Items[AnimationLv.Items.Count - 1].Selected = true;
+                }
             }
         }
 

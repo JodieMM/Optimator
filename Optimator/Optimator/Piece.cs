@@ -150,7 +150,7 @@ namespace Optimator
         /// <returns>List of spots to draw</returns>
         public List<Spot> GetPoints(State state)
         {
-            if (Data.Count < 1)
+            if (Data.Count < 1 || state.SM <= 0)
             {
                 return new List<Spot>();
             }
