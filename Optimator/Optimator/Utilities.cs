@@ -388,8 +388,9 @@ namespace Optimator
         /// <returns>True if goal within ranges</returns>
         public static bool WithinRanges(int minIndex, int maxIndex, int goal)
         {
-            if ((minIndex <= maxIndex && (goal > minIndex && goal <= maxIndex || goal >= minIndex && goal < maxIndex)) ||
-                (minIndex > maxIndex && (goal >= minIndex || goal <= maxIndex)))
+            if ((minIndex == maxIndex && minIndex == goal) ||                
+                (minIndex < maxIndex && goal >= minIndex && goal < maxIndex) ||
+                (minIndex > maxIndex && (goal >= minIndex || goal < maxIndex)))
             {
                 return true;
             }

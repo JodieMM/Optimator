@@ -343,10 +343,10 @@ namespace Optimator
             var z = xChange ? 1 : 0;
             var altz = xChange ? 0 : 1;
             List<Spot> merged = new List<Spot>();
-
-            // Find Dominant Shape
+                        
             while (i1 < s1.Count || i2 < s2.Count)
-            {                
+            {
+                // Find Dominant Shape
                 swapped = false;
 
                 // Finished One Shape
@@ -418,7 +418,7 @@ namespace Optimator
                             }
                             // Check Height
                             else if (s1[Utils.Modulo(i1, s1.Count)].X == s2[Utils.Modulo(i2, s2.Count)].X &&
-                                s1[Utils.Modulo(i1, s1.Count)].Y > s2[Utils.Modulo(i2, s2.Count)].Y)
+                                s1[Utils.Modulo(i1, s1.Count)].Y < s2[Utils.Modulo(i2, s2.Count)].Y)
                             {
                                 swapped = true;
                             }
@@ -437,10 +437,15 @@ namespace Optimator
                             }
                             // Check Height
                             else if (s1[Utils.Modulo(i1, s1.Count)].X == s2[Utils.Modulo(i2, s2.Count)].X &&
-                                s1[Utils.Modulo(i1, s1.Count)].Y > s2[Utils.Modulo(i2, s2.Count)].Y)
+                                s1[Utils.Modulo(i1, s1.Count)].Y < s2[Utils.Modulo(i2, s2.Count)].Y)
                             {
                                 swapped = true;
                             }
+                        }
+                        // Shape 2 Earlier
+                        else if (s2.IndexOf(minmax2[1]) >= i2)
+                        {
+                            swapped = true;
                         }
                     }
                     // Quadrant 3
@@ -456,10 +461,15 @@ namespace Optimator
                             }
                             // Check Height
                             else if (s1[Utils.Modulo(i1, s1.Count)].X == s2[Utils.Modulo(i2, s2.Count)].X &&
-                                s1[Utils.Modulo(i1, s1.Count)].Y < s2[Utils.Modulo(i2, s2.Count)].Y)
+                                s1[Utils.Modulo(i1, s1.Count)].Y > s2[Utils.Modulo(i2, s2.Count)].Y)
                             {
                                 swapped = true;
                             }
+                        }
+                        // Shape 2 Earlier
+                        else if (s2.IndexOf(minmax2[2]) >= i2)
+                        {
+                            swapped = true;
                         }
                     }
                     // Quadrant 4
@@ -475,16 +485,21 @@ namespace Optimator
                             }
                             // Check Height
                             else if (s1[Utils.Modulo(i1, s1.Count)].X == s2[Utils.Modulo(i2, s2.Count)].X &&
-                                s1[Utils.Modulo(i1, s1.Count)].Y < s2[Utils.Modulo(i2, s2.Count)].Y)
+                                s1[Utils.Modulo(i1, s1.Count)].Y > s2[Utils.Modulo(i2, s2.Count)].Y)
                             {
                                 swapped = true;
                             }
                         }
+                        // Shape 2 Earlier
+                        else if (s2.IndexOf(minmax2[0]) >= i2)
+                        {
+                            swapped = true;
+                        }
                     }
                 }
 
-
-
+                //CLEANING
+                #region probably redundant code
                 //// Shape 2 Doesn't Match
                 //if (s2.IndexOf(minmax2[2]) >= i2 || s1.IndexOf(minmax1[0]) < i1 && s2.IndexOf(minmax2[0]) >= i2)
                 //{
@@ -593,6 +608,7 @@ namespace Optimator
                 //    }
                 //}
                 //}
+                #endregion
 
                 shape1 = swapped ? s2 : s1;
                 shape2 = swapped ? s1 : s2;
@@ -763,27 +779,11 @@ namespace Optimator
         /// <param name="xy">Whether searching for a match in x (0) or y (1)</param>
         /// <returns>The index where the matching point would go or -1 in error</returns>
         public int[] FindSymmetricalCoordHome(List<Spot> s1, List<Spot> s2, Spot match, int xy)
-        {            
-            var minmax = Utils.FindMinMaxSpots(s1);
-            bool topRight = false;
-            // Matches Min
-            if (xy == 0 && s1.IndexOf(match) == s1.IndexOf(minmax[0]) || xy == 1 && s1.IndexOf(match) == s1.IndexOf(minmax[2]))
-            {
-                minmax = Utils.FindMinMaxSpots(s2);
-                return new int[] { s2.IndexOf(minmax[xy == 0 ? 0 : 2]) };
-            }
-            // Matches Max
-            else if (xy == 0 && s1.IndexOf(match) == s1.IndexOf(minmax[1]) || xy == 1 && s1.IndexOf(match) == s1.IndexOf(minmax[3]))
-            {
-                minmax = Utils.FindMinMaxSpots(s2);
-                return new int[] { s2.IndexOf(minmax[xy == 0 ? 1 : 3]) };
-            }
+        {
             // Determine if Coord Occurs Top or Bottom / Left or Right
-            else if ((xy == 0 && Utils.WithinRanges(s1.IndexOf(minmax[0]), s1.IndexOf(minmax[1]), s1.IndexOf(match))) ||
-                (xy == 1 && Utils.WithinRanges(s1.IndexOf(minmax[3]), s1.IndexOf(minmax[2]), s1.IndexOf(match))))
-            {
-                topRight = true;
-            }
+            var minmax = Utils.FindMinMaxSpots(s1);
+            bool topRight = (xy == 0 && Utils.WithinRanges(s1.IndexOf(minmax[0]), s1.IndexOf(minmax[1]), s1.IndexOf(match))) ||
+                (xy == 1 && Utils.WithinRanges(s1.IndexOf(minmax[3]), s1.IndexOf(minmax[2]), s1.IndexOf(match)));
 
             // Find Matching Position
             var backup = new int[1] { -1 };
@@ -811,8 +811,8 @@ namespace Optimator
                     }
                 }
                 // Bottom/Left and in Bottom/Left
-                else if (!topRight && ((xy == 0 && Utils.WithinRanges(s2.IndexOf(minmax[1]), s2.IndexOf(minmax[0]), index)) ||
-                    (xy == 1 && Utils.WithinRanges(s2.IndexOf(minmax[2]), s2.IndexOf(minmax[3]), index))))
+                else if (!topRight && !((xy == 0 && Utils.WithinRanges(s2.IndexOf(minmax[0]), s2.IndexOf(minmax[1]), index)) ||
+                    (xy == 1 && Utils.WithinRanges(s2.IndexOf(minmax[3]), s2.IndexOf(minmax[2]), index))))
                 {
                     if (s2[index].GetCoord(xy) == goal)
                     {
@@ -833,8 +833,8 @@ namespace Optimator
 
 
 
-
-
+            //CLEANING
+            #region old code
 
 
             //var backup = new int[1] { -1 };
@@ -885,6 +885,7 @@ namespace Optimator
             //    }
             //}
             //return backup;       // None Found, Spare Used If Found
+            #endregion
         }
 
         /// <summary>
