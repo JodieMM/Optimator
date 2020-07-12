@@ -346,7 +346,8 @@ namespace Optimator
                         
             while (i1 < s1.Count || i2 < s2.Count)
             {
-                // Find Dominant Shape
+                #region Find Dominant Shape
+
                 swapped = false;
 
                 // Finished One Shape
@@ -497,117 +498,6 @@ namespace Optimator
                         }
                     }
                 }
-
-                //CLEANING
-                #region probably redundant code
-                //// Shape 2 Doesn't Match
-                //if (s2.IndexOf(minmax2[2]) >= i2 || s1.IndexOf(minmax1[0]) < i1 && s2.IndexOf(minmax2[0]) >= i2)
-                //{
-                //    swapped = true;
-                //}
-                //// Quadrant 3
-                //else if (s1.IndexOf(minmax1[0]) >= i1)
-                //{
-                //    swapped = s2.IndexOf(minmax2[0]) >= i2 && s1[Utils.Modulo(i1, s1.Count)].X < s2[Utils.Modulo(i2, s2.Count)].X;
-                //    //swapped = s2.IndexOf(minmax2[0]) >= i2 && (xChange ? s1[Utils.Modulo(i1, s1.Count)].Y > s2[Utils.Modulo(i2, s2.Count)].Y :
-                //    //s1[Utils.Modulo(i1, s1.Count)].X < s2[Utils.Modulo(i2, s2.Count)].X);
-                //}
-                //// Quadrant 4
-                //else
-                //{
-                //    swapped = s1[Utils.Modulo(i1, s1.Count)].X > s2[Utils.Modulo(i2, s2.Count)].X;
-                //}
-
-
-                ////else if...
-                //// Before or At Bottom
-                //if (s1.IndexOf(minmax1[2]) >= i1)
-                //{
-                //    if (xChange)
-                //    {
-                //        // Shape 2 Matches
-                //        if (s2.IndexOf(minmax2[2]) >= i2)
-                //        {
-                //            // Sort by Height
-                //            if (s1[i1].Y < s2[i2].Y)
-                //            {
-                //                swapped = true;
-                //            }
-                //            // Sort by X
-                //            else if (s1[i1].Y == s2[i2].Y)
-                //            {
-                //                if (s1.IndexOf(minmax1[1]) > i1 && s2.IndexOf(minmax2[1]) > i2 && s1[i1].X > s2[i2].X ||
-                //                    s1.IndexOf(minmax1[1]) < i1 && s2.IndexOf(minmax2[1]) < i2 && s1[i1].X < s2[i2].X)
-                //                {
-                //                    swapped = true;
-                //                }
-                //            }
-                //        }
-
-                //    }
-                //    else
-                //    {
-                //        // Quadrant 1
-
-                //        // Quadrant 2
-                //    }
-
-
-                //    //// Shape 2 Matches
-                //    //if (s2.IndexOf(minmax2[2]) >= i2)
-                //    //{
-                //    //    // Sort by Height
-                //    //    if (s1[i1].Y < s2[i2].Y)
-                //    //    {
-                //    //        swapped = true;
-                //    //    }
-                //    //    // Sort by X
-                //    //    else if (s1[i1].Y == s2[i2].Y)
-                //    //    {
-                //    //        if (s1.IndexOf(minmax1[1]) > i1 && s2.IndexOf(minmax2[1]) > i2 && s1[i1].X > s2[i2].X ||
-                //    //            s1.IndexOf(minmax1[1]) < i1 && s2.IndexOf(minmax2[1]) < i2 && s1[i1].X < s2[i2].X)
-                //    //        {
-                //    //            swapped = true;
-                //    //        }
-                //    //    }
-                //    //}
-                //}
-                //// After Bottom
-                //else
-                //{
-                //    // Shape 2 Doesn't Match
-                //    if (s2.IndexOf(minmax2[2]) >= i2 || s1.IndexOf(minmax1[0]) < i1 && s2.IndexOf(minmax2[0]) >= i2)
-                //    {
-                //        swapped = true;
-                //    // Quadrant 3
-                //    else if (s1.IndexOf(minmax1[0]) >= i1)
-                //    {
-                //        swapped = s2.IndexOf(minmax2[0]) >= i2 && s1[Utils.Modulo(i1, s1.Count)].X < s2[Utils.Modulo(i2, s2.Count)].X;
-                //        //swapped = s2.IndexOf(minmax2[0]) >= i2 && (xChange ? s1[Utils.Modulo(i1, s1.Count)].Y > s2[Utils.Modulo(i2, s2.Count)].Y :
-                //        //s1[Utils.Modulo(i1, s1.Count)].X < s2[Utils.Modulo(i2, s2.Count)].X);
-                //    }
-                //    // Quadrant 4
-                //    else
-                //    {
-                //        swapped = s1[Utils.Modulo(i1, s1.Count)].X > s2[Utils.Modulo(i2, s2.Count)].X;
-                //    }
-
-
-                //// Sort by Height
-                //else if (s1[i1].Y > s2[i2].Y)
-                //{
-                //    swapped = true;
-                //}
-                //// Sort by X
-                //else if (s1[i1].Y == s2[i2].Y)
-                //{
-                //    if (s1.IndexOf(minmax1[0]) > i1 && s2.IndexOf(minmax2[0]) > i2 && s1[i1].X > s2[i2].X ||
-                //            s1.IndexOf(minmax1[0]) < i1 && s2.IndexOf(minmax2[0]) < i2 && s1[i1].X < s2[i2].X)
-                //    {
-                //        swapped = true;
-                //    }
-                //}
-                //}
                 #endregion
 
                 shape1 = swapped ? s2 : s1;
@@ -830,62 +720,6 @@ namespace Optimator
                 }
             }
             return backup;      // None Found, Spare Used If Found
-
-
-
-            //CLEANING
-            #region old code
-
-
-            //var backup = new int[1] { -1 };
-            //minmax = Utils.FindMinMaxSpots(s2);
-            //var goal = match.GetCoord(xy);
-            //for (int index = 0; index < s2.Count; index++)
-            //{
-            //    // Exact Match
-            //    if (s2[index].GetCoord(xy) == goal)
-            //    {
-            //        if ((xy == 0 && Utils.WithinRanges(s2.IndexOf(minmax[0]), s2.IndexOf(minmax[1]), index)) ||
-            //            (xy == 1 && Utils.WithinRanges(s2.IndexOf(minmax[3]), s2.IndexOf(minmax[2]), index)))
-            //        {
-            //            if (topRight)
-            //            {
-            //                return new int[] { index };
-            //            }
-            //        }
-            //        else if (!topRight)
-            //        {
-            //            return new int[] { index };
-            //        }
-            //        backup = new int[] { index };
-            //    }
-            //    // Between Two Points
-            //    else if (s2[index].GetCoord(xy) > goal && s2[Utils.NextIndex(s2, index)].GetCoord(xy) < goal ||
-            //        s2[index].GetCoord(xy) < goal && s2[Utils.NextIndex(s2, index)].GetCoord(xy) > goal)
-            //    {
-            //        if (((xy == 0 && Utils.WithinRanges(s2.IndexOf(minmax[0]), s2.IndexOf(minmax[1]), index)) ||
-            //            (xy == 1 && Utils.WithinRanges(s2.IndexOf(minmax[3]), s2.IndexOf(minmax[2]), index)))) 
-
-            //            // CLEANING
-            //            //&&
-            //            //((xy == 0 && Utils.WithinRanges(s2, s2.IndexOf(minmax[0]), s2.IndexOf(minmax[1]), Utils.NextIndex(s2, index))) ||
-            //            //(xy == 1 && Utils.WithinRanges(s2, s2.IndexOf(minmax[3]), s2.IndexOf(minmax[2]), Utils.NextIndex(s2, index)))))
-            //        {
-            //            if (topRight)
-            //            {
-            //                return new int[] { index, Utils.NextIndex(s2, index) };
-            //            }
-            //        }
-            //        else if (!(xy == 0 && (s2.IndexOf(minmax[0]) == index || s2.IndexOf(minmax[1]) == index)) &&
-            //            !(xy == 1 && (s2.IndexOf(minmax[2]) == index || s2.IndexOf(minmax[3]) == index)) && !topRight)
-            //        {
-            //            return new int[] { index, Utils.NextIndex(s2, index) };
-            //        }
-            //        backup = new int[] { index, Utils.NextIndex(s2, index) };
-            //    }
-            //}
-            //return backup;       // None Found, Spare Used If Found
-            #endregion
         }
 
         /// <summary>
