@@ -42,8 +42,8 @@ namespace Optimator
             // Scenes
             for (var index = 2; index < data.Count; index++)
             {
-                videoScenes.Add(new Scene(data[index] + Consts.SceneExt, 
-                    Utils.ReadFile(Utils.GetDirectory(data[index] + Consts.SceneExt))));
+                videoScenes.Add(new Scene(data[index], 
+                    Utils.ReadFile(Utils.GetDirectory(data[index]))));
             }                                             
         }
 

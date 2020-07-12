@@ -90,8 +90,8 @@ namespace Optimator
         /// <returns></returns>
         public override string ToString()
         {
-            return AX + Consts.ColonS + AY + Consts.ColonS + AXRight + Consts.ColonS + AYDown + Consts.Semi +
-                BX + Consts.ColonS + BY + Consts.ColonS + BXRight + Consts.ColonS + BYDown + Consts.Semi +
+            return AX + Consts.ColonS + AY + Consts.ColonS + AXRight + Consts.ColonS + AYDown + Consts.SemiS +
+                BX + Consts.ColonS + BY + Consts.ColonS + BXRight + Consts.ColonS + BYDown + Consts.SemiS +
                 FlipAngle + Consts.SemiS + IndexSwitch;
         }
 

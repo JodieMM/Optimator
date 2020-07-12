@@ -75,11 +75,15 @@ namespace Optimator.Tabs.Sets
         /// <returns>True if pressed</returns>
         public bool GetIfJoinBtnPressed(bool baseBtn = false)
         {
-            if (baseBtn)
+            if (Baby is JoinsPanel)
             {
-                return JoinsBtn.Checked && (Baby as JoinsPanel).SelectBaseBtnPressed();
+                if (baseBtn)
+                {
+                    return JoinsBtn.Checked && (Baby as JoinsPanel).SelectBaseBtnPressed();
+                }
+                return JoinsBtn.Checked && (Baby as JoinsPanel).JoinBtnPressed();
             }
-            return JoinsBtn.Checked && (Baby as JoinsPanel).JoinBtnPressed();
+            return false;
         }
 
 

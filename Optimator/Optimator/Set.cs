@@ -53,10 +53,12 @@ namespace Optimator
                     BasePiece = WIP;
                     BasePiece.State = PersonalStates[BasePiece];
                 }
+                index++;
             }
+            index++;
 
             // Joins
-            for (int i = index++; i < data.Count; i++)
+            for (int i = index; i < data.Count; i++)
             {
                 var dataSections = data[i].Split(Consts.Semi);
                 var pieceA = PiecesList[int.Parse(dataSections[0])];
@@ -107,7 +109,7 @@ namespace Optimator
             for (var index = 0; index < PiecesList.Count; index++)
             {
                 var piece = PiecesList[index];
-                var pieceDetails = piece.Name + Consts.SemiS + PersonalStates[piece];
+                var pieceDetails = piece.Name + Consts.SemiS + PersonalStates[piece].GetData();
 
                 // Base Piece
                 if (piece == BasePiece)
@@ -206,7 +208,7 @@ namespace Optimator
         public List<Piece> SortOrder()
         {
             CalculateStates(0, BasePiece != null ? BasePiece.State : new State());
-            return SortOrderFromBasePiece(BasePiece);
+            return BasePiece != null ? SortOrderFromBasePiece(BasePiece) : PiecesList;
         }
 
         /// <summary>
