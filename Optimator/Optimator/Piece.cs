@@ -525,7 +525,7 @@ namespace Optimator
 
                     // Single Matching Spot
                     if (matchPosition.Length == 1 && matchPosition[0] != -1)
-                    {
+                    {                        
                         var match = Utils.Modulo(matchPosition[0], shape2.Count);
                         var unchanged = shape1[index1].GetCoord(z);
                         var changed = Utils.FindMiddleSpot(shape1[index1].GetCoord(altz), shape2[match].GetCoord(altz), angle, swapped);
@@ -542,7 +542,16 @@ namespace Optimator
                         }
                         else if (match > index2)
                         {
-                            holdingIndexes.Add(new int[] { swapped ? 0 : 1, match });
+                            // Will Re-Do Later when Match Occurs
+                            if (Utils.Modulo(angle, 90) < 45)
+                            {
+                                merged.Remove(newSpot);
+                            }
+                            // Don't Do Match When It Occurs
+                            else
+                            {
+                                holdingIndexes.Add(new int[] { swapped ? 0 : 1, match });
+                            }
                         }
                         var newSpot2 = Utils.CloneSpot(newSpot);
 
@@ -686,7 +695,7 @@ namespace Optimator
                     (xy == 1 && Utils.WithinRanges(s2.IndexOf(minmax[3]), s2.IndexOf(minmax[2]), index))))
                 {
                     // Exact Match
-                    if (s2[index].GetCoord(xy) == goal)
+                    if (Utils.SameValue(s2[index].GetCoord(xy), goal))
                     {
                         return new int[] { index };
                     }
@@ -704,7 +713,8 @@ namespace Optimator
                 else if (!topRight && !((xy == 0 && Utils.WithinRanges(s2.IndexOf(minmax[0]), s2.IndexOf(minmax[1]), index)) ||
                     (xy == 1 && Utils.WithinRanges(s2.IndexOf(minmax[3]), s2.IndexOf(minmax[2]), index))))
                 {
-                    if (s2[index].GetCoord(xy) == goal)
+                    // Exact Match
+                    if (Utils.SameValue(s2[index].GetCoord(xy), goal))
                     {
                         return new int[] { index };
                     }

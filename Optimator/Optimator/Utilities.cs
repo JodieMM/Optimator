@@ -398,6 +398,17 @@ namespace Optimator
         }
 
         /// <summary>
+        /// Checks if two values are practically identical.
+        /// </summary>
+        /// <param name="a">First value</param>
+        /// <param name="b">Second value</param>
+        /// <returns>True if values the same to 3dp</returns>
+        public static bool SameValue(float a, float b)
+        {
+            return Math.Round(a, 3) == Math.Round(b, 3);
+        }
+
+        /// <summary>
         /// Adds 90 degrees to either the rotated or turned state, or makes no change.
         /// </summary>
         /// <param name="angle">0 original, 1 rotated, 2 turned</param>
