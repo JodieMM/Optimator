@@ -15,7 +15,6 @@ namespace Optimator
         public float R { get; set; } = 0;
         public float T { get; set; } = 0;
         public float S { get; set; } = 0;
-        public bool SBase { get; set; } = true; // TODO: Save and load this (Or remove?)
         public float SM { get; set; } = 1;
         #endregion
 
