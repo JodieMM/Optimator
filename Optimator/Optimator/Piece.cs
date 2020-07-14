@@ -178,7 +178,7 @@ namespace Optimator
             var merge1 = Utils.SortCoordinates(MergeShapes(basePoints, rightPoints, state.R));
             var merge2 = Utils.SortCoordinates(MergeShapes(downPoints, downRightPoints, state.R));
             var points = Utils.SortCoordinates(MergeShapes(merge1, merge2, state.T, false));
-
+            
             // Recentre & Resize
             for (var index = 0; index < points.Count; index++)
             {
@@ -338,6 +338,7 @@ namespace Optimator
             var minmax1 = Utils.FindMinMaxSpots(s1);
             var minmax2 = Utils.FindMinMaxSpots(s2);
             List<int[]> holdingIndexes = new List<int[]>();
+            var moveBackOne = false;
             var i1 = 0;
             var i2 = 0;
             var z = xChange ? 1 : 0;
@@ -426,7 +427,7 @@ namespace Optimator
                         }
                     }
                     // Quadrant 2
-                    else if (s1.IndexOf(minmax1[2]) >= i1)
+                    else if (s1.IndexOf(minmax1[2]) >= i1 && s1.IndexOf(minmax1[2]) != s1.IndexOf(minmax1[0]))
                     {
                         // Shape 2 Matches
                         if (s2.IndexOf(minmax2[2]) >= i2 && s2.IndexOf(minmax2[1]) < i2)
@@ -450,10 +451,11 @@ namespace Optimator
                         }
                     }
                     // Quadrant 3
-                    else if (s1.IndexOf(minmax1[0]) >= i1)
+                    else if (s1.IndexOf(minmax1[0]) >= i1 || s1.IndexOf(minmax1[0]) == 0)
                     {
                         // Shape 2 Matches
-                        if (s2.IndexOf(minmax2[0]) >= i2 && s2.IndexOf(minmax2[2]) < i2)
+                        if ((s2.IndexOf(minmax2[0]) >= i2 || s2.IndexOf(minmax2[0]) == 0) && (s2.IndexOf(minmax2[2]) < i2 ||
+                            s2.IndexOf(minmax2[2]) == i2 && s2.IndexOf(minmax2[2]) == s2.IndexOf(minmax2[0])))
                         {
                             // Check X
                             if (s1[Utils.Modulo(i1, s1.Count)].X < s2[Utils.Modulo(i2, s2.Count)].X)
@@ -530,7 +532,15 @@ namespace Optimator
                         var unchanged = shape1[index1].GetCoord(z);
                         var changed = Utils.FindMiddleSpot(shape1[index1].GetCoord(altz), shape2[match].GetCoord(altz), angle, swapped);
                         var newSpot = new Spot(xChange ? changed : unchanged, xChange ? unchanged : changed);
-                        merged.Add(newSpot);
+                        if (moveBackOne)
+                        {
+                            //merged.Insert();
+                            merged.Add(newSpot);
+                        }
+                        else
+                        {
+                            merged.Add(newSpot);
+                        }
                         index1++;
                         i1 += swapped ? 0 : 1;
                         i2 += swapped ? 1 : 0;
@@ -542,16 +552,19 @@ namespace Optimator
                         }
                         else if (match > index2)
                         {
-                            // Will Re-Do Later when Match Occurs
-                            if (Utils.Modulo(angle, 90) < 45)
-                            {
-                                merged.Remove(newSpot);
-                            }
-                            // Don't Do Match When It Occurs
-                            else
-                            {
-                                holdingIndexes.Add(new int[] { swapped ? 0 : 1, match });
-                            }
+                            merged.Remove(newSpot);
+                            //holdingIndexes.Add(new int[] { swapped ? 0 : 1, match });
+                            //CLEANING
+                            //// Will Re-Do Later when Match Occurs
+                            //if (swapped && Utils.Modulo(angle, 90) < 45 || !swapped && Utils.Modulo(angle, 90) > 45)
+                            //{
+                            //    merged.Remove(newSpot);
+                            //}
+                            //// Don't Do Match When It Occurs
+                            //else
+                            //{
+                            //    holdingIndexes.Add(new int[] { swapped ? 0 : 1, match });
+                            //}
                         }
                         var newSpot2 = Utils.CloneSpot(newSpot);
 
