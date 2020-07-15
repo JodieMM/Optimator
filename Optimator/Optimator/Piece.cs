@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace Optimator
 {
@@ -508,8 +509,18 @@ namespace Optimator
                 
                 var matchPosition = FindSymmetricalCoordHome(shape1, shape2, shape1[index1], z);
 
+                // An error has occurred and no match could be found
+                if (matchPosition[0] == -1)
+                {
+                    // Skip this spot
+                    index1++;
+                    i1 += swapped ? 0 : 1;
+                    i2 += swapped ? 1 : 0;
+                    MessageBox.Show("An error has occurred building your piece. Please email jodie@opti.technology with a" +
+                        " screenshot of the piece and, if possible, a copy of the saved piece.", "Piece Error", MessageBoxButtons.OK);
+                }
                 // Single Matching Spot
-                if (matchPosition.Length == 1 && matchPosition[0] != -1)
+                else if (matchPosition.Length == 1)
                 {                        
                     var match = Utils.Modulo(matchPosition[0], shape2.Count);
                     var unchanged = shape1[index1].GetCoord(z);
