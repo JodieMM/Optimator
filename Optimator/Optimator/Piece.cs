@@ -383,7 +383,7 @@ namespace Optimator
                     else
                     {
                         // Shape 2 Doesn't Match
-                        if (s2.IndexOf(minmax2[2]) >= i2 || s1.IndexOf(minmax1[0]) < i1 && s2.IndexOf(minmax2[0]) >= i2)
+                        if (s2.IndexOf(minmax2[2]) >= i2)
                         {
                             swapped = true;
                         }

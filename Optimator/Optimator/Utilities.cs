@@ -855,7 +855,6 @@ namespace Optimator
             if (saveCondition)
             {
                 result = MessageBox.Show("Do you want to exit without saving? Your work will be lost.", "Exit Confirmation", MessageBoxButtons.OKCancel);
-                //HIDDEN DialogResult.OK; // HIDDEN: Add back 
             }
 
             return result == DialogResult.OK;
