@@ -74,9 +74,21 @@ namespace Optimator.Forms.Sets
                             justAdded = new Set(name, Utils.ReadFile(Utils.GetDirectory(name)));
                             Owner.WIP.PiecesList.AddRange((justAdded as Set).PiecesList);
                             justAdded.ToPiece().State.SetCoordsBasedOnBoard(Owner.GetBoardSizing());
+
+                            // Add JoinedPieces
+                            foreach (var joinedPiece in (justAdded as Set).JoinedPieces)
+                            {
+                                Owner.WIP.JoinedPieces.Add(joinedPiece.Key, joinedPiece.Value);
+                            }
+                            // Add JoinsIndex
+                            foreach (var joinIndex in (justAdded as Set).JoinsIndex)
+                            {
+                                Owner.WIP.JoinsIndex.Add(joinIndex.Key, joinIndex.Value);
+                            }
+                            // Add PersonalStates
                             foreach (var piece in (justAdded as Set).PiecesList)
                             {
-                                Owner.WIP.PersonalStates.Add(piece, Utils.CloneState(piece.State));
+                                Owner.WIP.PersonalStates.Add(piece, Utils.CloneState((justAdded as Set).PersonalStates[piece]));
                             }
                             (justAdded as Set).CalculateStates();
                         }

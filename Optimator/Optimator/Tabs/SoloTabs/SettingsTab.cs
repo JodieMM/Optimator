@@ -135,8 +135,8 @@ namespace Optimator.Forms
         /// <returns>True if changes exist</returns>
         private bool SomethingToChange()
         {
-            return BackColourBox.BackColor != Utils.ColourFromString(Settings.Default.BgColour) || directory != "" ||
-                SaveVideoFramesCb.Checked != Settings.Default.SaveVideoFrames;
+            return BackColourBox.BackColor.ToArgb() != Utils.ColourFromString(Settings.Default.BgColour).ToArgb() || 
+                directory != "" || SaveVideoFramesCb.Checked != Settings.Default.SaveVideoFrames;
         }
 
 

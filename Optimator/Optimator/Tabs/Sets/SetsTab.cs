@@ -209,6 +209,10 @@ namespace Optimator.Tabs.Sets
                 var newTab = new PreviewTab(Owner, WIP);
                 Utils.NewTabPage(newTab, "Preview " + WIP.Name);
             }
+            else
+            {
+                MessageBox.Show("Set has unconnected pieces.", "Invalid Preview", MessageBoxButtons.OK);
+            }
         }
 
         /// <summary>
@@ -330,18 +334,10 @@ namespace Optimator.Tabs.Sets
                         // Remove old joinings
                         if (WIP.JoinsIndex.ContainsKey(selected))
                         {
-                            var basePiece = WIP.JoinsIndex[selected].B;
-                            WIP.JoinedPieces[basePiece].Remove(selected);
-                            if (WIP.JoinedPieces[basePiece].Count < 1)
-                            {
-                                WIP.JoinedPieces.Remove(basePiece);
-                            }
-                            WIP.JoinsIndex.Remove(selected);
+                            RemovePieceJoinings(selected);
                         }
                         JoinPieces(selected, newSelected);
                         (Baby as JoinsPanel).UnselectBaseBtn();
-                        CheckSingularBasePiece();
-                        WIP.SortOrder();
                     }
                     // Select a new piece
                     else
@@ -570,6 +566,7 @@ namespace Optimator.Tabs.Sets
             turned = DrawDown.CreateGraphics();
 
             var boards = new Graphics[3] { original, rotated, turned };
+            CheckSingularBasePiece();
             var baseState = WIP.BasePiece != null ? WIP.BasePiece.State : new State();
 
             // For Each Angle
@@ -578,7 +575,7 @@ namespace Optimator.Tabs.Sets
                 FindCorrectStates(angle);
 
                 // Draw Pieces
-                foreach (var piece in WIP.PiecesList)
+                foreach (var piece in GetPiecesInOrder())
                 {
                     // Moving
                     if (selected != null && piece == selected && movingFar)
@@ -688,6 +685,23 @@ namespace Optimator.Tabs.Sets
         }
 
         /// <summary>
+        /// Finds a sorted list of pieces with extras added on at the end
+        /// </summary>
+        /// <returns>A sorted list of pieces including those not in the set</returns>
+        private List<Piece> GetPiecesInOrder()
+        {
+            var sorted = WIP.BasePiece != null? WIP.SortOrder() : new List<Piece>();
+            foreach (var piece in WIP.PiecesList)
+            {
+                if (!sorted.Contains(piece))
+                {
+                    sorted.Add(piece);
+                }
+            }
+            return sorted;
+        }
+
+        /// <summary>
         /// Creates a join between two pieces.
         /// </summary>
         /// <param name="a">The attaching piece</param>
@@ -696,8 +710,10 @@ namespace Optimator.Tabs.Sets
         {
             WIP.JoinsIndex.Add(a, new Join(a, b, WIP));
             WIP.AddToJoinedPieces(a, b);
-            WIP.PersonalStates[a].X = 0;
-            WIP.PersonalStates[a].Y = 0;
+            WIP.PersonalStates[a] = new State(0, 0, Utils.Modulo(WIP.PersonalStates[a].R - WIP.PersonalStates[b].R, 360),
+                Utils.Modulo(WIP.PersonalStates[a].T - WIP.PersonalStates[b].T, 360),
+                Utils.Modulo(WIP.PersonalStates[a].S - WIP.PersonalStates[b].S, 360), 
+                WIP.PersonalStates[a].SM / WIP.PersonalStates[b].SM);
         }
 
         /// <summary>
@@ -712,11 +728,24 @@ namespace Optimator.Tabs.Sets
             }
             if (WIP.JoinsIndex.ContainsKey(piece))
             {
-                var joinedTo = WIP.JoinsIndex[piece].B;
-                WIP.JoinedPieces[joinedTo].Remove(piece);
-                WIP.JoinsIndex.Remove(piece);
+                RemovePieceJoinings(piece);
             }
             WIP.PiecesList.Remove(piece);
+        }
+
+        /// <summary>
+        /// Removes piece from any joins where it is not the base
+        /// </summary>
+        /// <param name="piece">Piece to remove from joins</param>
+        private void RemovePieceJoinings(Piece piece)
+        {
+            var basePiece = WIP.JoinsIndex[piece].B;
+            WIP.JoinedPieces[basePiece].Remove(piece);
+            if (WIP.JoinedPieces[basePiece].Count < 1)
+            {
+                WIP.JoinedPieces.Remove(basePiece);
+            }
+            WIP.JoinsIndex.Remove(piece);
         }
 
         /// <summary>
