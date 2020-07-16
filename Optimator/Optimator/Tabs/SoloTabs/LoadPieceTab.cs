@@ -184,7 +184,17 @@ namespace Optimator.Tabs.SoloTabs
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void ExitBtn_Click(object sender, EventArgs e)
-        {            
+        {
+            if (FillColourBtn.BackColor != selected && OutlineColourBtn.BackColor != selected && OutlineWidthBtn.BackColor != selected &&
+                PieceDetailsBtn.BackColor != selected && ShapeBtn.BackColor != selected && SketchBtn.BackColor != selected)
+            {
+                var result = MessageBox.Show("No options have been selected. Continue closing the tab?", "Tab Close Confirmation", MessageBoxButtons.OKCancel);
+                if (result == DialogResult.Cancel)
+                {
+                    return;
+                }
+            }
+
             if (FillColourBtn.BackColor == selected || AllBtn.BackColor == selected)
             {
                 from.WIP.ColourState.FillColour = loaded.ToPiece().ColourState.FillColour;

@@ -160,6 +160,7 @@ namespace Optimator
                     {
                         attemptOpen = new CompileTab(this);
                         (attemptOpen as CompileTab).WIP = new Video(name, Utils.ReadFile(Utils.GetDirectory(name)));
+                        (attemptOpen as CompileTab).RedrawSceneViewPanel();
                     }
                     AddTabPage(Utils.BaseName(name), attemptOpen);
                     attemptOpen.Resize();
@@ -281,6 +282,10 @@ namespace Optimator
             {
                 if (TabControl.Controls[index].Contains(tab))
                 {
+                    if (TabControl.SelectedIndex == index && index > 0)
+                    {
+                        TabControl.SelectedIndex = index - 1;
+                    }
                     TabControl.Controls.RemoveAt(index);
                     found = true;
                 }

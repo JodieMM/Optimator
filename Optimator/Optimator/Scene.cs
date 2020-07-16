@@ -53,15 +53,13 @@ namespace Optimator
             }
             for (var index = 3; index < partEndIndex; index++)
             {
-                if (data[index].StartsWith("p"))
+                if (data[index].EndsWith(Consts.PieceExt))
                 {
-                    PartsList.Add(new Piece(data[index].Remove(0, 2),
-                        Utils.ReadFile(Utils.GetDirectory(data[index].Remove(0, 2)))));
+                    PartsList.Add(new Piece(data[index], Utils.ReadFile(Utils.GetDirectory(data[index]))));
                 }
-                else
+                else if (data[index].EndsWith(Consts.SetExt))
                 {
-                    PartsList.Add(new Set(data[index].Remove(0, 2),
-                        Utils.ReadFile(Utils.GetDirectory(data[index].Remove(0, 2)))));
+                    PartsList.Add(new Set(data[index], Utils.ReadFile(Utils.GetDirectory(data[index]))));
                 }
             }
             UpdatePiecesList();
@@ -115,7 +113,7 @@ namespace Optimator
             // Save Parts
             foreach (var part in PartsList)
             {
-                data.Add((part is Piece ? "p:" : "s:") + part.Name);
+                data.Add(part.Name);
             }
 
             // Save Original States

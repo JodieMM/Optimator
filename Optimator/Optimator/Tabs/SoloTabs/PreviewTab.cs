@@ -68,6 +68,7 @@ namespace Optimator.Forms
             TurnTrack.Location = new Point((int)(DrawPanel.Location.X + DrawPanel.Width - TurnTrack.Width * 1.25),
                 (int)(DrawPanel.Location.Y + (DrawPanel.Height - TurnTrack.Height) / 2.0));
 
+            Position.SetCoordsBasedOnBoard(DrawPanel);
             DisplayDrawings();
         }
 

@@ -59,23 +59,21 @@ namespace Optimator.Tabs.Compile
         }
 
         /// <summary>
-        /// Updates the video's width.
+        /// Updates the video's height or width.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void VideoWidthUpDown_ValueChanged(object sender, System.EventArgs e)
+        private void VideoSizeUpDown_ValueChanged(object sender, System.EventArgs e)
         {
-            Owner.WIP.videoWidth = (int)VideoWidthUpDown.Value;
-        }
-
-        /// <summary>
-        /// Updates the video's height.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void VideoHeightUpDown_ValueChanged(object sender, System.EventArgs e)
-        {
-            Owner.WIP.videoHeight = (int)VideoHeightUpDown.Value;
+            if (sender == VideoWidthUpDown)
+            {
+                Owner.WIP.videoWidth = (int)VideoWidthUpDown.Value;
+            }
+            else
+            {
+                Owner.WIP.videoHeight = (int)VideoHeightUpDown.Value;
+            }
+            Owner.RedrawSceneViewPanel();
         }
     }
 }

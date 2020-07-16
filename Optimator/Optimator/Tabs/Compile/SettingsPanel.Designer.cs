@@ -155,7 +155,7 @@
             0,
             0,
             0});
-            this.VideoWidthUpDown.ValueChanged += new System.EventHandler(this.VideoWidthUpDown_ValueChanged);
+            this.VideoWidthUpDown.ValueChanged += new System.EventHandler(this.VideoSizeUpDown_ValueChanged);
             // 
             // VideoHeightUpDown
             // 
@@ -181,7 +181,7 @@
             0,
             0,
             0});
-            this.VideoHeightUpDown.ValueChanged += new System.EventHandler(this.VideoHeightUpDown_ValueChanged);
+            this.VideoHeightUpDown.ValueChanged += new System.EventHandler(this.VideoSizeUpDown_ValueChanged);
             // 
             // SettingsPanel
             // 

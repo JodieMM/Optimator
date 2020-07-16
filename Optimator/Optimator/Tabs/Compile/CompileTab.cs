@@ -146,15 +146,34 @@ namespace Optimator.Tabs.Compile
         /// <param name="scene"></param>
         public void AddToSceneViewPanel(Scene scene)
         {
-            if (!scenePreviews.ContainsKey(scene.Name))
+            if (!scenePreviews.ContainsKey(scene.Name) || scenePreviews[scene.Name][0].Size != new Size(WIP.videoWidth, WIP.videoHeight))
             {
                 workingTime = 0;
                 sceneIndex = WIP.videoScenes.Count - 1;
                 var image1 = DrawOnBitmap();
                 workingTime = scene.TimeLength;
-                scenePreviews.Add(scene.Name, new Bitmap[2] { image1, DrawOnBitmap() });
+                if (scenePreviews.ContainsKey(scene.Name))
+                {
+                    scenePreviews[scene.Name] = new Bitmap[2] { image1, DrawOnBitmap() };
+                }
+                else
+                {
+                    scenePreviews.Add(scene.Name, new Bitmap[2] { image1, DrawOnBitmap() });
+                }
             }
             SceneViewPanel.Controls.Add(new ScenePreview(scene, scenePreviews[scene.Name][0], scenePreviews[scene.Name][1]));
+        }
+
+        /// <summary>
+        /// Clears the scene view panel and redraws all of the previews.
+        /// </summary>
+        public void RedrawSceneViewPanel()
+        {
+            SceneViewPanel.Controls.Clear();
+            foreach (var scene in WIP.videoScenes)
+            {
+                AddToSceneViewPanel(scene);
+            }
         }
 
         /// <summary>

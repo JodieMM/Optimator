@@ -40,8 +40,7 @@ namespace Optimator.Tabs.Scenes
             Owner.GetTabControl().KeyUp += KeyPress;
             Enter += FocusOn;
             VisibleChanged += FocusOn;
-
-            DrawPanel.BackColor = Utils.ColourFromString(Properties.Settings.Default.BgColour);
+            
             g = DrawPanel.CreateGraphics();            
         }
 
