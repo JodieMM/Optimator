@@ -40,8 +40,10 @@ namespace Optimator.Tabs.Sets
             this.PositionsBtn = new System.Windows.Forms.ToolStripButton();
             this.OrderBtn = new System.Windows.Forms.ToolStripButton();
             this.EraseBtn = new System.Windows.Forms.ToolStripButton();
+            this.ReloadBtn = new System.Windows.Forms.ToolStripButton();
             this.SettingsBtn = new System.Windows.Forms.ToolStripButton();
             this.PreviewBtn = new System.Windows.Forms.ToolStripButton();
+            this.WarningBtn = new System.Windows.Forms.ToolStripButton();
             this.Panel = new System.Windows.Forms.Panel();
             this.DrawRight = new System.Windows.Forms.PictureBox();
             this.DrawDown = new System.Windows.Forms.PictureBox();
@@ -70,8 +72,10 @@ namespace Optimator.Tabs.Sets
             this.PositionsBtn,
             this.OrderBtn,
             this.EraseBtn,
+            this.ReloadBtn,
             this.SettingsBtn,
-            this.PreviewBtn});
+            this.PreviewBtn,
+            this.WarningBtn});
             this.ToolStrip.Location = new System.Drawing.Point(0, 0);
             this.ToolStrip.Name = "ToolStrip";
             this.ToolStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
@@ -151,6 +155,16 @@ namespace Optimator.Tabs.Sets
             this.EraseBtn.Text = "Erase";
             this.EraseBtn.Click += new System.EventHandler(this.BtnWithPanel_Click);
             // 
+            // ReloadBtn
+            // 
+            this.ReloadBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.ReloadBtn.Image = global::Optimator.Properties.Resources.Refresh01;
+            this.ReloadBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.ReloadBtn.Name = "ReloadBtn";
+            this.ReloadBtn.Size = new System.Drawing.Size(36, 36);
+            this.ReloadBtn.Text = "Reload";
+            this.ReloadBtn.Click += new System.EventHandler(this.ReloadBtn_Click);
+            // 
             // SettingsBtn
             // 
             this.SettingsBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -170,6 +184,17 @@ namespace Optimator.Tabs.Sets
             this.PreviewBtn.Size = new System.Drawing.Size(36, 36);
             this.PreviewBtn.Text = "Preview";
             this.PreviewBtn.Click += new System.EventHandler(this.PreviewBtn_Click);
+            // 
+            // WarningBtn
+            // 
+            this.WarningBtn.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.WarningBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.WarningBtn.Image = global::Optimator.Properties.Resources.Warning01;
+            this.WarningBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.WarningBtn.Name = "WarningBtn";
+            this.WarningBtn.Size = new System.Drawing.Size(36, 36);
+            this.WarningBtn.Text = "Invalid Set - Not all pieces are connected";
+            this.WarningBtn.Visible = false;
             // 
             // Panel
             // 
@@ -244,7 +269,7 @@ namespace Optimator.Tabs.Sets
             this.DrawingLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 45F));
             this.DrawingLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5F));
             this.DrawingLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 45F));
-            this.DrawingLayoutPnl.Size = new System.Drawing.Size(1000, 800);
+            this.DrawingLayoutPnl.Size = new System.Drawing.Size(1142, 1151);
             this.DrawingLayoutPnl.TabIndex = 97;
             // 
             // FrontLbl
@@ -323,5 +348,7 @@ namespace Optimator.Tabs.Sets
         private Label FrontLbl;
         private Label SideLbl;
         private Label TopLbl;
+        private ToolStripButton ReloadBtn;
+        private ToolStripButton WarningBtn;
     }
 }

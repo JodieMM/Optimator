@@ -43,8 +43,8 @@ namespace Optimator
             Owner = owner;
 
             DrawBase.BackColor = Utils.ColourFromString(Properties.Settings.Default.BgColour);
-            DrawRight.BackColor = Utils.ColourFromString(Properties.Settings.Default.BgColour); ;
-            DrawDown.BackColor = Utils.ColourFromString(Properties.Settings.Default.BgColour); ;
+            DrawRight.BackColor = Utils.ColourFromString(Properties.Settings.Default.BgColour);
+            DrawDown.BackColor = Utils.ColourFromString(Properties.Settings.Default.BgColour);
             Owner.GetTabControl().KeyDown += KeyPress;
             Enter += FocusOn;
             VisibleChanged += FocusOn;
@@ -174,6 +174,46 @@ namespace Optimator
             {
                 DeselectButtons();
             }
+        }
+
+        /// <summary>
+        /// Hides or shows the points around the shape.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void HidePointsBtn_Click(object sender, EventArgs e)
+        {
+            HidePointsBtn.Checked = !HidePointsBtn.Checked;
+            DisplayDrawings();
+        }
+
+        /// <summary>
+        /// Reloads the settings and sketches.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ReloadBtn_Click(object sender, EventArgs e)
+        {
+            // Reload Settings
+            DrawBase.BackColor = Utils.ColourFromString(Properties.Settings.Default.BgColour);
+            DrawRight.BackColor = Utils.ColourFromString(Properties.Settings.Default.BgColour);
+            DrawDown.BackColor = Utils.ColourFromString(Properties.Settings.Default.BgColour);
+
+            // Reload Sketches
+            //var newSketches = new Dictionary<Part, bool>();
+            //foreach (var sketch in Sketches)
+            //{
+            //    if (sketch.Key is Piece)
+            //    {
+            //        newSketches.Add(new Piece(sketch.Key.Name, Utils.ReadFile(Utils.GetDirectory(sketch.Key.Name))), sketch.Value);
+            //    }
+            //    else
+            //    {
+            //        newSketches.Add(new Set(sketch.Key.Name, Utils.ReadFile(Utils.GetDirectory(sketch.Key.Name))), sketch.Value);
+            //    }                
+            //}
+            //Sketches = newSketches;
+            DisplayDrawings();
         }
 
         /// <summary>
@@ -477,13 +517,16 @@ namespace Optimator
         /// <param name="angle">The angle to be drawn</param>
         private void DrawPoints(Graphics board, int angle)
         {
-            foreach (var spot in WIP.Data)
+            if (HidePointsBtn.Checked == false)
             {
-                if (spot.DrawnLevel == 0)
+                foreach (var spot in WIP.Data)
                 {
-                    var color = FixedBtn.Checked ? (spot.Solid == Consts.solidOptions[0]) ? Consts.option1 : Consts.option2
-                        : (selectedSpot == spot) ? Consts.select : Color.Black;
-                    spot.Draw(angle, color, board);
+                    if (spot.DrawnLevel == 0)
+                    {
+                        var color = FixedBtn.Checked ? (spot.Solid == Consts.solidOptions[0]) ? Consts.option1 : Consts.option2
+                            : (selectedSpot == spot) ? Consts.select : Color.Black;
+                        spot.Draw(angle, color, board);
+                    }
                 }
             }
         }

@@ -198,6 +198,27 @@ namespace Optimator.Tabs.Sets
         }
 
         /// <summary>
+        /// Reloads the settings and pieces in the set.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ReloadBtn_Click(object sender, EventArgs e)
+        {
+            // Reload Settings
+            DrawBase.BackColor = Utils.ColourFromString(Properties.Settings.Default.BgColour);
+            DrawRight.BackColor = Utils.ColourFromString(Properties.Settings.Default.BgColour);
+            DrawDown.BackColor = Utils.ColourFromString(Properties.Settings.Default.BgColour);
+
+            // Reload Pieces
+            //for (int index = 0; index < WIP.PiecesList.Count; index++)
+            //{
+            //    WIP.PiecesList[index] = new Piece(WIP.PiecesList[index].Name,
+            //        Utils.ReadFile(Utils.GetDirectory(WIP.PiecesList[index].Name)));
+            //}
+            DisplayDrawings();
+        }
+
+        /// <summary>
         /// Opens a preview form for the WIP Set.
         /// </summary>
         /// <param name="sender"></param>
@@ -659,9 +680,15 @@ namespace Optimator.Tabs.Sets
             if (WIP.PiecesList.Count == 1)
             {
                 WIP.BasePiece = WIP.PiecesList[0];
+                WarningBtn.Visible = false;
                 return false;
             }
             WIP.BasePiece = null;
+            if (WIP.PiecesList.Count == 0)
+            {
+                return false;
+            }
+            WarningBtn.Visible = true;
             foreach (var piece in WIP.PiecesList)
             {
                 if (WIP.JoinedPieces.ContainsKey(piece) && !WIP.JoinsIndex.ContainsKey(piece))
@@ -681,6 +708,7 @@ namespace Optimator.Tabs.Sets
                     return false;
                 }
             }
+            WarningBtn.Visible = WIP.BasePiece == null;
             return WIP.BasePiece == null ? false : true;
         }
 

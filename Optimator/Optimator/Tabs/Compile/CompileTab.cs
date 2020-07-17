@@ -108,6 +108,21 @@ namespace Optimator.Tabs.Compile
         }
 
         /// <summary>
+        /// Reload all of the scenes.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ReloadBtn_Click(object sender, EventArgs e)
+        {
+            for (int index = 0; index < WIP.videoScenes.Count; index++)
+            {
+                WIP.videoScenes[index] = new Scene(WIP.videoScenes[index].Name,
+                    Utils.ReadFile(Utils.GetDirectory(WIP.videoScenes[index].Name)));
+            }
+            RedrawSceneViewPanel();
+        }
+
+        /// <summary>
         /// Closes this tab.
         /// </summary>
         /// <param name="sender"></param>

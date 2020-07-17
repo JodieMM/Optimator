@@ -190,6 +190,21 @@ namespace Optimator.Tabs.Scenes
         }
 
         /// <summary>
+        /// Reloads the parts on the scene.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ReloadBtn_Click(object sender, EventArgs e)
+        {
+            //for (int index = 0; index < WIP.PiecesList.Count; index++)
+            //{
+            //    WIP.PiecesList[index] = new Piece(WIP.PiecesList[index].Name, 
+            //        Utils.ReadFile(Utils.GetDirectory(WIP.PiecesList[index].Name)));
+            //}
+            //DisplayDrawings();
+        }
+
+        /// <summary>
         /// Snips excess time off of the scene.
         /// </summary>
         /// <param name="sender"></param>

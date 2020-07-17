@@ -113,6 +113,16 @@ namespace Optimator.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap HidePoints01 {
+            get {
+                object obj = ResourceManager.GetObject("HidePoints01", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap JoinsIcon {
             get {
                 object obj = ResourceManager.GetObject("JoinsIcon", resourceCulture);
@@ -146,6 +156,16 @@ namespace Optimator.Properties {
         internal static System.Drawing.Bitmap OutlineIcon {
             get {
                 object obj = ResourceManager.GetObject("OutlineIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Refresh01 {
+            get {
+                object obj = ResourceManager.GetObject("Refresh01", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -197,6 +217,16 @@ namespace Optimator.Properties {
             get {
                 object obj = ResourceManager.GetObject("TrayIcon", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Warning01 {
+            get {
+                object obj = ResourceManager.GetObject("Warning01", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }
