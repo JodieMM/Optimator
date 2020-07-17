@@ -18,7 +18,6 @@ namespace Optimator.Tabs.Sets
     {
         #region Sets Form Variables
         public override HomeForm Owner { get; set; }
-        private PanelControl Baby;
         public string Directory { get; set; } = "";
 
         public Set WIP = new Set();
@@ -76,13 +75,13 @@ namespace Optimator.Tabs.Sets
         /// <returns>True if pressed</returns>
         public bool GetIfJoinBtnPressed(bool baseBtn = false)
         {
-            if (Baby is JoinsPanel)
+            if (Panel.Controls[0] != null && Panel.Controls[0] is JoinsPanel)
             {
                 if (baseBtn)
                 {
-                    return JoinsBtn.Checked && (Baby as JoinsPanel).SelectBaseBtnPressed();
+                    return JoinsBtn.Checked && (Panel.Controls[0] as JoinsPanel).SelectBaseBtnPressed();
                 }
-                return JoinsBtn.Checked && (Baby as JoinsPanel).JoinBtnPressed();
+                return JoinsBtn.Checked && (Panel.Controls[0] as JoinsPanel).JoinBtnPressed();
             }
             return false;
         }
@@ -160,36 +159,34 @@ namespace Optimator.Tabs.Sets
         {
             if (!(sender as ToolStripButton).Checked)
             {
-                // Set Baby
                 if (sender == SaveBtn)
                 {
-                    Baby = new SavePanel(this);
+                    Utils.NewPanelContent(Panel, new SavePanel(this));
                 }
                 else if (sender == AddPartBtn)
                 {
-                    Baby = new AddPartPanel(this);
+                    Utils.NewPanelContent(Panel, new AddPartPanel(this));
                 }
                 else if (sender == JoinsBtn)
                 {
-                    Baby = new JoinsPanel(this);
+                    Utils.NewPanelContent(Panel, new JoinsPanel(this));
                 }
                 else if (sender == PositionsBtn)
                 {
-                    Baby = new PositionsPanel(this);
+                    Utils.NewPanelContent(Panel, new PositionsPanel(this));
                 }
                 else if (sender == OrderBtn)
                 {
-                    Baby = new OrderPanel(this);
+                    Utils.NewPanelContent(Panel, new OrderPanel(this));
                 }
                 else if (sender == EraseBtn)
                 {
-                    Baby = new ErasePanel(this);
+                    Utils.NewPanelContent(Panel, new ErasePanel(this));
                 }
                 else if (sender == SettingsBtn)
                 {
-                    Baby = new SettingsPanel(this);
+                    Utils.NewPanelContent(Panel, new SettingsPanel(this));
                 }
-                Utils.NewPanelContent(Panel, Baby);
                 SelectButton(sender as ToolStripButton);
             }
             else
@@ -359,7 +356,7 @@ namespace Optimator.Tabs.Sets
                             RemovePieceJoinings(selected);
                         }
                         JoinPieces(selected, newSelected);
-                        (Baby as JoinsPanel).UnselectBaseBtn();
+                        (Panel.Controls[0] as JoinsPanel).UnselectBaseBtn();
                     }
                     // Select a new piece
                     else
@@ -676,9 +673,9 @@ namespace Optimator.Tabs.Sets
         {
             DeselectPiece();
             selected = piece;
-            if (Baby is PositionsPanel)
+            if (Panel.Controls[0] != null && Panel.Controls[0] is PositionsPanel)
             {
-                (Baby as PositionsPanel).EnableScrolls();
+                (Panel.Controls[0] as PositionsPanel).EnableScrolls();
             }
         }
 
@@ -691,13 +688,13 @@ namespace Optimator.Tabs.Sets
             {
                 selected = null;
             }
-            if (Baby is JoinsPanel)
+            if (Panel.Controls[0] != null && Panel.Controls[0] is JoinsPanel)
             {
-                (Baby as JoinsPanel).UnselectButtons();
+                (Panel.Controls[0] as JoinsPanel).UnselectButtons();
             }
-            else if (Baby is PositionsPanel)
+            else if (Panel.Controls[0] != null && Panel.Controls[0] is PositionsPanel)
             {
-                (Baby as PositionsPanel).EnableScrolls(false);
+                (Panel.Controls[0] as PositionsPanel).EnableScrolls(false);
             }
         }
 

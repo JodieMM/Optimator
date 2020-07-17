@@ -15,7 +15,6 @@ namespace Optimator.Tabs.Scenes
     {
         #region Scenes Form Variables
         public override HomeForm Owner { get; set; }
-        private PanelControl Baby = null;
         public string Directory { get; set; } = "";
 
         public Scene WIP = new Scene();
@@ -147,7 +146,6 @@ namespace Optimator.Tabs.Scenes
             MoveBtn.Checked = false;
             SettingsBtn.Checked = false;
             Panel.Controls.Clear();
-            Baby = null;
         }
 
         /// <summary>
@@ -159,28 +157,26 @@ namespace Optimator.Tabs.Scenes
         {
             if (!(sender as ToolStripButton).Checked)
             {
-                // Set Baby
                 if (sender == SaveBtn)
                 {
-                    Baby = new SavePanel(this);
+                    Utils.NewPanelContent(Panel, new SavePanel(this));
                 }
                 else if (sender == AddPartBtn)
                 {
-                    Baby = new AddPartPanel(this);
+                    Utils.NewPanelContent(Panel, new AddPartPanel(this));
                 }
                 else if (sender == PositionsBtn)
                 {
-                    Baby = new PositionsPanel(this);
+                    Utils.NewPanelContent(Panel, new PositionsPanel(this));
                 }
                 else if (sender == MoveBtn)
                 {
-                    Baby = new MovePanel(this);
+                    Utils.NewPanelContent(Panel, new MovePanel(this));
                 }
                 else if (sender == SettingsBtn)
                 {
-                    Baby = new SettingsPanel(this);
-                }
-                Utils.NewPanelContent(Panel, Baby);
+                    Utils.NewPanelContent(Panel, new SettingsPanel(this));
+                }                
                 SelectButton(sender as ToolStripButton);
             }
             else
@@ -371,13 +367,13 @@ namespace Optimator.Tabs.Scenes
                 subSelected = select as Piece;
             }
             select.ToPiece().ColourState.OutlineColour = (select is Piece) ? Color.Red : Color.Purple;
-            if (Baby != null && Baby is PositionsPanel)
+            if (Panel.Controls[0] != null && Panel.Controls[0] is PositionsPanel)
             {
-                (Baby as PositionsPanel).EnableControls();
+                (Panel.Controls[0] as PositionsPanel).EnableControls();
             }
-            else if (Baby != null && Baby is MovePanel)
+            else if (Panel.Controls[0] != null && Panel.Controls[0] is MovePanel)
             {
-                (Baby as MovePanel).PartSelected(select.ToPiece());
+                (Panel.Controls[0] as MovePanel).PartSelected(select.ToPiece());
             }
         }
 
@@ -396,9 +392,9 @@ namespace Optimator.Tabs.Scenes
                 }
                 selected.ToPiece().ColourState.OutlineColour = WIP.OriginalColours[selected.ToPiece()].OutlineColour;
                 selected = null;
-                if (Baby != null && Baby is PositionsPanel)
+                if (Panel.Controls[0] != null && Panel.Controls[0] is PositionsPanel)
                 {
-                    (Baby as PositionsPanel).EnableControls(false);
+                    (Panel.Controls[0] as PositionsPanel).EnableControls(false);
                 }
             }
         }
@@ -423,7 +419,7 @@ namespace Optimator.Tabs.Scenes
                         }
 
                         // If Listbox is highlighted, delete change/animation
-                        if (Baby != null && Baby is MovePanel && (Baby as MovePanel).DeleteAnimation())
+                        if (Panel.Controls[0] != null && Panel.Controls[0] is MovePanel && (Panel.Controls[0] as MovePanel).DeleteAnimation())
                         {
                             // Done in DeleteAnimation() Bool Check
                         }
@@ -475,34 +471,34 @@ namespace Optimator.Tabs.Scenes
 
                     // Move Selected Piece
                     case Keys.Up:
-                        if (selected != null && Baby != null && Baby is PositionsPanel)
+                        if (selected != null && Panel.Controls[0] != null && Panel.Controls[0] is PositionsPanel)
                         {
                             WIP.Originals[selected].Y -= 1;
-                            (Baby as PositionsPanel).EnableControls();
+                            (Panel.Controls[0] as PositionsPanel).EnableControls();
                             DisplayDrawings();
                         }
                         break;
                     case Keys.Down:
-                        if (selected != null && Baby != null && Baby is PositionsPanel)
+                        if (selected != null && Panel.Controls[0] != null && Panel.Controls[0] is PositionsPanel)
                         {
                             WIP.Originals[selected].Y += 1;
-                            (Baby as PositionsPanel).EnableControls();
+                            (Panel.Controls[0] as PositionsPanel).EnableControls();
                             DisplayDrawings();
                         }
                         break;
                     case Keys.Left:
-                        if (selected != null && Baby != null && Baby is PositionsPanel)
+                        if (selected != null && Panel.Controls[0] != null && Panel.Controls[0] is PositionsPanel)
                         {
                             WIP.Originals[selected].X -= 1;
-                            (Baby as PositionsPanel).EnableControls();
+                            (Panel.Controls[0] as PositionsPanel).EnableControls();
                             DisplayDrawings();
                         }
                         break;
                     case Keys.Right:
-                        if (selected != null && Baby != null && Baby is PositionsPanel)
+                        if (selected != null && Panel.Controls[0] != null && Panel.Controls[0] is PositionsPanel)
                         {
                             WIP.Originals[selected].X += 1;
-                            (Baby as PositionsPanel).EnableControls();
+                            (Panel.Controls[0] as PositionsPanel).EnableControls();
                             DisplayDrawings();
                         }
                         break;
@@ -532,9 +528,9 @@ namespace Optimator.Tabs.Scenes
                 DisplayDrawPanel();
 
                 // Update Animation listbox
-                if (Baby != null && Baby is MovePanel)
+                if (Panel.Controls[0] != null && Panel.Controls[0] is MovePanel)
                 {
-                    (Baby as MovePanel).UpdateListbox();
+                    (Panel.Controls[0] as MovePanel).UpdateListbox();
                 }
 
                 Cursor = Cursors.Default;
