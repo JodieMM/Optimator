@@ -311,6 +311,7 @@ namespace Optimator
             this.Controls.Add(this.DrawingLayoutPnl);
             this.Controls.Add(this.Panel);
             this.Controls.Add(this.ToolStrip);
+            this.DoubleBuffered = true;
             this.Name = "PiecesTab";
             this.Size = new System.Drawing.Size(1444, 926);
             this.ToolStrip.ResumeLayout(false);

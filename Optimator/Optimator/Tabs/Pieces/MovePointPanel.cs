@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace Optimator.Tabs.Pieces
 {
@@ -24,6 +25,10 @@ namespace Optimator.Tabs.Pieces
             if (Owner.selectedSpot == null)
             {
                 UpdateLabels();
+            }
+            else
+            {
+                UpdateLabels(0, Owner.selectedSpot.X, Owner.selectedSpot.Y);
             }
         }
 
@@ -69,6 +74,27 @@ namespace Optimator.Tabs.Pieces
             YUpDown.Enabled = sent != 1;
             XUpDown.Value = (decimal)x;
             YUpDown.Value = (decimal)y;
+        }
+
+        /// <summary>
+        /// Updates the X or Y UpDown value.
+        /// </summary>
+        /// <param name="spot">Spot holding original coords</param>
+        /// <param name="positive">True if increment is positive</param>
+        /// <param name="x">True if XUpDown, false if YUpDown</param>
+        public void ChangeUpDownValue(Spot spot, bool positive, bool x)
+        {
+            var increment = positive ? 1 : -1;
+            if (x && XUpDown.Enabled)
+            {
+                XUpDown.Focus();
+                XUpDown.Value = (YUpDown.Enabled ? (decimal)spot.X : (decimal)spot.XRight) + increment;
+            }
+            else if (!x && YUpDown.Enabled)
+            {
+                YUpDown.Focus();
+                YUpDown.Value = (XUpDown.Enabled ? (decimal)spot.Y : (decimal)spot.YDown) + increment; ;
+            }
         }
 
         /// <summary>

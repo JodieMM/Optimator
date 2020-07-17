@@ -286,7 +286,8 @@ namespace Optimator
         private void DrawBoard_MouseDown(object sender, MouseEventArgs e)
         {
             var sent = sender == DrawBase ? 0 : sender == DrawRight ? 1 : 2;
-     
+            ActiveControl = DrawBase;
+
             // Select Spot to Move
             if (MovePointBtn.Checked)
             {
@@ -298,8 +299,9 @@ namespace Optimator
                     foreach(var cntl in Panel.Controls)
                     {
                         if (cntl is MovePointPanel)
-                        {
-                            (cntl as MovePointPanel).UpdateLabels(sent, selectedSpot.X, selectedSpot.Y);
+                        {                            
+                            (cntl as MovePointPanel).UpdateLabels(sent, sent == 1 ? selectedSpot.XRight : selectedSpot.X,
+                                sent == 2 ? selectedSpot.YDown : selectedSpot.Y);
                         }
                     }
                 }
@@ -421,7 +423,7 @@ namespace Optimator
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void DrawBoard_MouseMove(object sender, MouseEventArgs e)
-        {         
+        {
             if (selectedSpot == null || moving == 0 || e.X > DrawBase.Size.Width || e.Y > DrawBase.Size.Height || e.X < 0 || e.Y < 0)
             {
                 StopMoving();
@@ -457,7 +459,6 @@ namespace Optimator
 
         /// <summary>
         /// Runs when a key is pressed.
-        /// If delete is pressed and a piece is selected, it will be deleted.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -494,6 +495,32 @@ namespace Optimator
                             }
                         }
                         DisplayDrawings();
+                        break;
+
+                    // Move Selected Point
+                    case Keys.Up:
+                        if (selectedSpot != null && Panel.Controls[0] is MovePointPanel)
+                        {
+                            (Panel.Controls[0] as MovePointPanel).ChangeUpDownValue(selectedSpot, false, false);
+                        }
+                        break;
+                    case Keys.Down:
+                        if (selectedSpot != null && Panel.Controls[0] is MovePointPanel)
+                        {
+                            (Panel.Controls[0] as MovePointPanel).ChangeUpDownValue(selectedSpot, true, false);
+                        }
+                        break;
+                    case Keys.Left:
+                        if (selectedSpot != null && Panel.Controls[0] is MovePointPanel)
+                        {
+                            (Panel.Controls[0] as MovePointPanel).ChangeUpDownValue(selectedSpot, false, true);
+                        }
+                        break;
+                    case Keys.Right:
+                        if (selectedSpot != null && Panel.Controls[0] is MovePointPanel)
+                        {
+                            (Panel.Controls[0] as MovePointPanel).ChangeUpDownValue(selectedSpot, true, true);
+                        }
                         break;
 
                     // Do nothing for any other key

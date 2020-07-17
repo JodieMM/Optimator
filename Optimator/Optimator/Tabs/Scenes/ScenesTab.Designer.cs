@@ -196,6 +196,7 @@ namespace Optimator.Tabs.Scenes
             0,
             0,
             65536});
+            this.CurrentTimeUpDown.InterceptArrowKeys = false;
             this.CurrentTimeUpDown.Location = new System.Drawing.Point(354, 0);
             this.CurrentTimeUpDown.Margin = new System.Windows.Forms.Padding(0);
             this.CurrentTimeUpDown.Name = "CurrentTimeUpDown";
@@ -205,6 +206,7 @@ namespace Optimator.Tabs.Scenes
             // 
             // DrawPanel
             // 
+            this.DrawPanel.BackColor = System.Drawing.Color.White;
             this.DrawPanel.Location = new System.Drawing.Point(30, 30);
             this.DrawPanel.Margin = new System.Windows.Forms.Padding(0);
             this.DrawPanel.Name = "DrawPanel";

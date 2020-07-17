@@ -42,30 +42,30 @@
             // XCoordLbl
             // 
             this.XCoordLbl.AutoSize = true;
-            this.XCoordLbl.Font = Consts.contentFont;
+            this.XCoordLbl.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.XCoordLbl.Location = new System.Drawing.Point(3, 0);
             this.XCoordLbl.Name = "XCoordLbl";
-            this.XCoordLbl.Size = new System.Drawing.Size(41, 45);
+            this.XCoordLbl.Size = new System.Drawing.Size(50, 59);
             this.XCoordLbl.TabIndex = 0;
             this.XCoordLbl.Text = "X";
             // 
             // YCoordLbl
             // 
             this.YCoordLbl.AutoSize = true;
-            this.YCoordLbl.Font = Consts.contentFont;
+            this.YCoordLbl.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.YCoordLbl.Location = new System.Drawing.Point(3, 118);
             this.YCoordLbl.Name = "YCoordLbl";
-            this.YCoordLbl.Size = new System.Drawing.Size(41, 45);
+            this.YCoordLbl.Size = new System.Drawing.Size(49, 59);
             this.YCoordLbl.TabIndex = 1;
             this.YCoordLbl.Text = "Y";
             // 
             // MovePointLbl
             // 
             this.MovePointLbl.AutoSize = true;
-            this.MovePointLbl.Font = Consts.headingLblFont;
+            this.MovePointLbl.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
             this.MovePointLbl.Location = new System.Drawing.Point(47, 53);
             this.MovePointLbl.Name = "MovePointLbl";
-            this.MovePointLbl.Size = new System.Drawing.Size(296, 58);
+            this.MovePointLbl.Size = new System.Drawing.Size(320, 72);
             this.MovePointLbl.TabIndex = 2;
             this.MovePointLbl.Text = "Move Point";
             // 
@@ -73,7 +73,8 @@
             // 
             this.XUpDown.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.XUpDown.Font = Consts.contentFont;
+            this.XUpDown.Font = new System.Drawing.Font("Segoe UI", 16F);
+            this.XUpDown.InterceptArrowKeys = false;
             this.XUpDown.Location = new System.Drawing.Point(94, 3);
             this.XUpDown.Maximum = new decimal(new int[] {
             1000,
@@ -86,7 +87,7 @@
             0,
             -2147483648});
             this.XUpDown.Name = "XUpDown";
-            this.XUpDown.Size = new System.Drawing.Size(361, 52);
+            this.XUpDown.Size = new System.Drawing.Size(361, 64);
             this.XUpDown.TabIndex = 3;
             this.XUpDown.ValueChanged += new System.EventHandler(this.XUpDown_ValueChanged);
             // 
@@ -94,7 +95,8 @@
             // 
             this.YUpDown.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.YUpDown.Font = Consts.contentFont;
+            this.YUpDown.Font = new System.Drawing.Font("Segoe UI", 16F);
+            this.YUpDown.InterceptArrowKeys = false;
             this.YUpDown.Location = new System.Drawing.Point(94, 121);
             this.YUpDown.Maximum = new decimal(new int[] {
             1000,
@@ -107,7 +109,7 @@
             0,
             -2147483648});
             this.YUpDown.Name = "YUpDown";
-            this.YUpDown.Size = new System.Drawing.Size(361, 52);
+            this.YUpDown.Size = new System.Drawing.Size(361, 64);
             this.YUpDown.TabIndex = 4;
             this.YUpDown.ValueChanged += new System.EventHandler(this.YUpDown_ValueChanged);
             // 

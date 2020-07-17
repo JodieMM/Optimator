@@ -88,7 +88,7 @@
             this.TableLayoutPnl.Controls.Add(this.RotationBar, 1, 1);
             this.TableLayoutPnl.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.TableLayoutPnl.Location = new System.Drawing.Point(44, 152);
-            this.TableLayoutPnl.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.TableLayoutPnl.Margin = new System.Windows.Forms.Padding(4);
             this.TableLayoutPnl.Name = "TableLayoutPnl";
             this.TableLayoutPnl.RowCount = 7;
             this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
@@ -111,7 +111,7 @@
             this.OrderLayoutPnl.Controls.Add(this.DownBtn, 1, 0);
             this.OrderLayoutPnl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.OrderLayoutPnl.Location = new System.Drawing.Point(251, 6);
-            this.OrderLayoutPnl.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.OrderLayoutPnl.Margin = new System.Windows.Forms.Padding(6);
             this.OrderLayoutPnl.Name = "OrderLayoutPnl";
             this.OrderLayoutPnl.RowCount = 1;
             this.OrderLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -125,7 +125,7 @@
             this.UpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.UpBtn.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.UpBtn.Location = new System.Drawing.Point(4, 4);
-            this.UpBtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.UpBtn.Margin = new System.Windows.Forms.Padding(4);
             this.UpBtn.Name = "UpBtn";
             this.UpBtn.Size = new System.Drawing.Size(272, 75);
             this.UpBtn.TabIndex = 131;
@@ -140,7 +140,7 @@
             this.DownBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.DownBtn.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.DownBtn.Location = new System.Drawing.Point(284, 4);
-            this.DownBtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.DownBtn.Margin = new System.Windows.Forms.Padding(4);
             this.DownBtn.Name = "DownBtn";
             this.DownBtn.Size = new System.Drawing.Size(273, 75);
             this.DownBtn.TabIndex = 132;
@@ -152,11 +152,10 @@
             // 
             this.SizeBar.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SizeBar.Location = new System.Drawing.Point(251, 576);
-            this.SizeBar.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.SizeBar.Margin = new System.Windows.Forms.Padding(6);
             this.SizeBar.Maximum = 5000;
             this.SizeBar.Name = "SizeBar";
             this.SizeBar.Size = new System.Drawing.Size(561, 89);
-            this.SizeBar.SmallChange = 1;
             this.SizeBar.TabIndex = 139;
             this.SizeBar.TickFrequency = 250;
             this.SizeBar.Value = 100;
@@ -199,7 +198,7 @@
             // 
             this.SpinBar.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SpinBar.Location = new System.Drawing.Point(251, 291);
-            this.SpinBar.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.SpinBar.Margin = new System.Windows.Forms.Padding(6);
             this.SpinBar.Maximum = 359;
             this.SpinBar.Name = "SpinBar";
             this.SpinBar.Size = new System.Drawing.Size(561, 83);
@@ -233,8 +232,9 @@
             // 
             this.YUpDown.Dock = System.Windows.Forms.DockStyle.Fill;
             this.YUpDown.Font = new System.Drawing.Font("Segoe UI", 16F);
+            this.YUpDown.InterceptArrowKeys = false;
             this.YUpDown.Location = new System.Drawing.Point(249, 479);
-            this.YUpDown.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.YUpDown.Margin = new System.Windows.Forms.Padding(4);
             this.YUpDown.Maximum = new decimal(new int[] {
             3000,
             0,
@@ -254,8 +254,9 @@
             // 
             this.XUpDown.Dock = System.Windows.Forms.DockStyle.Fill;
             this.XUpDown.Font = new System.Drawing.Font("Segoe UI", 16F);
+            this.XUpDown.InterceptArrowKeys = false;
             this.XUpDown.Location = new System.Drawing.Point(249, 384);
-            this.XUpDown.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.XUpDown.Margin = new System.Windows.Forms.Padding(4);
             this.XUpDown.Maximum = new decimal(new int[] {
             3000,
             0,
@@ -286,7 +287,7 @@
             // 
             this.TurnBar.Dock = System.Windows.Forms.DockStyle.Fill;
             this.TurnBar.Location = new System.Drawing.Point(251, 196);
-            this.TurnBar.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.TurnBar.Margin = new System.Windows.Forms.Padding(6);
             this.TurnBar.Maximum = 359;
             this.TurnBar.Name = "TurnBar";
             this.TurnBar.Size = new System.Drawing.Size(561, 83);
@@ -309,7 +310,7 @@
             // 
             this.RotationBar.Dock = System.Windows.Forms.DockStyle.Fill;
             this.RotationBar.Location = new System.Drawing.Point(251, 101);
-            this.RotationBar.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.RotationBar.Margin = new System.Windows.Forms.Padding(6);
             this.RotationBar.Maximum = 359;
             this.RotationBar.Name = "RotationBar";
             this.RotationBar.Size = new System.Drawing.Size(561, 83);
@@ -323,7 +324,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.TableLayoutPnl);
             this.Controls.Add(this.PositionsLbl);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "PositionsPanel";
             this.Size = new System.Drawing.Size(906, 1100);
             this.TableLayoutPnl.ResumeLayout(false);

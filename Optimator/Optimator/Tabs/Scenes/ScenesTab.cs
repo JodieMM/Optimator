@@ -473,6 +473,40 @@ namespace Optimator.Tabs.Scenes
                         DisplayDrawings();
                         break;
 
+                    // Move Selected Piece
+                    case Keys.Up:
+                        if (selected != null && Baby != null && Baby is PositionsPanel)
+                        {
+                            WIP.Originals[selected].Y -= 1;
+                            (Baby as PositionsPanel).EnableControls();
+                            DisplayDrawings();
+                        }
+                        break;
+                    case Keys.Down:
+                        if (selected != null && Baby != null && Baby is PositionsPanel)
+                        {
+                            WIP.Originals[selected].Y += 1;
+                            (Baby as PositionsPanel).EnableControls();
+                            DisplayDrawings();
+                        }
+                        break;
+                    case Keys.Left:
+                        if (selected != null && Baby != null && Baby is PositionsPanel)
+                        {
+                            WIP.Originals[selected].X -= 1;
+                            (Baby as PositionsPanel).EnableControls();
+                            DisplayDrawings();
+                        }
+                        break;
+                    case Keys.Right:
+                        if (selected != null && Baby != null && Baby is PositionsPanel)
+                        {
+                            WIP.Originals[selected].X += 1;
+                            (Baby as PositionsPanel).EnableControls();
+                            DisplayDrawings();
+                        }
+                        break;
+
                     // Do nothing for any other key
                     default:
                         break;

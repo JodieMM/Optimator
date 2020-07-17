@@ -46,6 +46,7 @@ namespace Optimator.Tabs.Sets
             InitializeComponent();
             Owner = owner;
 
+            Owner.GetTabControl().KeyDown += KeyPress;
             Owner.GetTabControl().KeyUp += KeyPress;
             Enter += FocusOn;
             VisibleChanged += FocusOn;
@@ -558,6 +559,36 @@ namespace Optimator.Tabs.Sets
                         RemovePiece(selected);
                         selected = null;
                         DisplayDrawings();
+                        break;
+
+                    // Move Selected Piece
+                    case Keys.Up:
+                        if (selected != null)
+                        {
+                            WIP.PersonalStates[selected].Y -= 1;
+                            DisplayDrawings();
+                        }
+                        break;
+                    case Keys.Down:
+                        if (selected != null)
+                        {
+                            WIP.PersonalStates[selected].Y += 1;
+                            DisplayDrawings();
+                        }
+                        break;
+                    case Keys.Left:
+                        if (selected != null)
+                        {
+                            WIP.PersonalStates[selected].X -= 1;
+                            DisplayDrawings();
+                        }
+                        break;
+                    case Keys.Right:
+                        if (selected != null)
+                        {
+                            WIP.PersonalStates[selected].X += 1;
+                            DisplayDrawings();
+                        }
                         break;
 
                     // Do nothing for any other key
