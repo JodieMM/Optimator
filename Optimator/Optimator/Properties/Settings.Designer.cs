@@ -91,5 +91,17 @@ namespace Optimator.Properties {
                 this["SceneHeight"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("60")]
+        public int FPS {
+            get {
+                return ((int)(this["FPS"]));
+            }
+            set {
+                this["FPS"] = value;
+            }
+        }
     }
 }

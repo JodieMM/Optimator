@@ -34,9 +34,11 @@ namespace Optimator.Forms
         public override void Resize()
         {
             var smallWidthPercent = 0.02F;
-            var heightPercent = 0.7F;
+            var bigWidthPercent = 1F;
+            var heightPercent = Height < 600 ? Height < 500 ? 0.5F : 0.6F : 0.7F;
 
             var smallWidth = (int)(Width * smallWidthPercent);
+            var bigWidth = (int)(Width * bigWidthPercent);
             var bigHeight = (int)(Height * heightPercent);
 
             SettingsLbl.Location = new Point(smallWidth, smallWidth + ToolStrip.Height);
@@ -44,7 +46,7 @@ namespace Optimator.Forms
 
             TableLayoutPnl.Location = new Point(smallWidth, smallWidth * 3 + SettingsLbl.Height 
                 + VersionLbl.Height + ToolStrip.Height);
-            TableLayoutPnl.Size = new Size(Width - 2 * smallWidth, bigHeight);
+            TableLayoutPnl.Size = new Size(bigWidth - 2 * smallWidth, bigHeight);
         }
 
 
@@ -76,6 +78,7 @@ namespace Optimator.Forms
             SaveVideoFramesCb.Checked = Settings.Default.SaveVideoFrames;
             SceneWidthUpDown.Value = Settings.Default.SceneWidth;
             SceneHeightUpDown.Value = Settings.Default.SceneHeight;
+            FPSUpDown.Value = Settings.Default.FPS;
         }
 
 
@@ -93,6 +96,7 @@ namespace Optimator.Forms
             Settings.Default.WorkingDirectory = "Blank";
             Settings.Default.SceneWidth = 1920;
             Settings.Default.SceneHeight = 1080;
+            Settings.Default.FPS = 60;
             DisplaySettings();
         }
 
@@ -112,6 +116,7 @@ namespace Optimator.Forms
             Settings.Default.SceneWidth = (int)Math.Round(SceneWidthUpDown.Value, MidpointRounding.AwayFromZero);
             Settings.Default.SceneHeight = (int)Math.Round(SceneHeightUpDown.Value, MidpointRounding.AwayFromZero);
             Settings.Default.SaveVideoFrames = SaveVideoFramesCb.Checked;
+            Settings.Default.FPS = (int)Math.Round(FPSUpDown.Value, MidpointRounding.AwayFromZero);
             Settings.Default.Save();
         }
 
@@ -141,9 +146,10 @@ namespace Optimator.Forms
         /// <returns>True if changes exist</returns>
         private bool SomethingToChange()
         {
-            return BackColourBox.BackColor.ToArgb() != Utils.ColourFromString(Settings.Default.BgColour).ToArgb() || 
-                directory != "" || SaveVideoFramesCb.Checked != Settings.Default.SaveVideoFrames || 
-                SceneWidthUpDown.Value != Settings.Default.SceneWidth || SceneHeightUpDown.Value != Settings.Default.SceneHeight;
+            return BackColourBox.BackColor.ToArgb() != Utils.ColourFromString(Settings.Default.BgColour).ToArgb() ||
+                directory != "" || SaveVideoFramesCb.Checked != Settings.Default.SaveVideoFrames ||
+                SceneWidthUpDown.Value != Settings.Default.SceneWidth || SceneHeightUpDown.Value != Settings.Default.SceneHeight ||
+                FPSUpDown.Value != Settings.Default.FPS;
         }
 
 
