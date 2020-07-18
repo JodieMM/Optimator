@@ -17,8 +17,8 @@ namespace Optimator
         public List<Scene> videoScenes = new List<Scene>();
 
         public decimal FPS = 20;
-        public int videoWidth = Consts.defaultWidth;
-        public int videoHeight = Consts.defaultHeight;
+        public int videoWidth;
+        public int videoHeight;
         #endregion
 
 
@@ -53,6 +53,8 @@ namespace Optimator
         public Video()
         {
             Version = Properties.Settings.Default.Version;
+            videoWidth = Properties.Settings.Default.SceneWidth;
+            videoHeight = Properties.Settings.Default.SceneHeight;
         }
 
 

@@ -41,9 +41,15 @@
             this.TableLayoutPnl = new System.Windows.Forms.TableLayoutPanel();
             this.SaveVideoFramesCb = new System.Windows.Forms.CheckBox();
             this.SaveBtn = new System.Windows.Forms.Button();
+            this.SceneHeightLbl = new System.Windows.Forms.Label();
+            this.SceneWidthLbl = new System.Windows.Forms.Label();
+            this.SceneWidthUpDown = new System.Windows.Forms.NumericUpDown();
+            this.SceneHeightUpDown = new System.Windows.Forms.NumericUpDown();
             this.ToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.BackColourBox)).BeginInit();
             this.TableLayoutPnl.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SceneWidthUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SceneHeightUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // ToolStrip
@@ -80,10 +86,10 @@
             this.NewWorkingDirectoryBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.NewWorkingDirectoryBtn.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.NewWorkingDirectoryBtn.ForeColor = System.Drawing.Color.Black;
-            this.NewWorkingDirectoryBtn.Location = new System.Drawing.Point(585, 189);
+            this.NewWorkingDirectoryBtn.Location = new System.Drawing.Point(602, 115);
             this.NewWorkingDirectoryBtn.Margin = new System.Windows.Forms.Padding(0);
             this.NewWorkingDirectoryBtn.Name = "NewWorkingDirectoryBtn";
-            this.NewWorkingDirectoryBtn.Size = new System.Drawing.Size(585, 189);
+            this.NewWorkingDirectoryBtn.Size = new System.Drawing.Size(602, 115);
             this.NewWorkingDirectoryBtn.TabIndex = 132;
             this.NewWorkingDirectoryBtn.Text = "Find New";
             this.NewWorkingDirectoryBtn.UseVisualStyleBackColor = false;
@@ -98,7 +104,7 @@
             this.WorkingDirValueLbl.Location = new System.Drawing.Point(4, 0);
             this.WorkingDirValueLbl.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.WorkingDirValueLbl.Name = "WorkingDirValueLbl";
-            this.WorkingDirValueLbl.Size = new System.Drawing.Size(1162, 189);
+            this.WorkingDirValueLbl.Size = new System.Drawing.Size(1196, 115);
             this.WorkingDirValueLbl.TabIndex = 131;
             this.WorkingDirValueLbl.Text = "Current Directory";
             // 
@@ -107,10 +113,10 @@
             this.WorkingDirLbl.AutoSize = true;
             this.WorkingDirLbl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.WorkingDirLbl.Font = new System.Drawing.Font("Segoe UI", 16F);
-            this.WorkingDirLbl.Location = new System.Drawing.Point(4, 189);
+            this.WorkingDirLbl.Location = new System.Drawing.Point(4, 115);
             this.WorkingDirLbl.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.WorkingDirLbl.Name = "WorkingDirLbl";
-            this.WorkingDirLbl.Size = new System.Drawing.Size(577, 189);
+            this.WorkingDirLbl.Size = new System.Drawing.Size(594, 115);
             this.WorkingDirLbl.TabIndex = 130;
             this.WorkingDirLbl.Text = "Working Directory";
             // 
@@ -133,10 +139,10 @@
             this.ResetBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ResetBtn.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.ResetBtn.ForeColor = System.Drawing.Color.Black;
-            this.ResetBtn.Location = new System.Drawing.Point(585, 756);
+            this.ResetBtn.Location = new System.Drawing.Point(602, 574);
             this.ResetBtn.Margin = new System.Windows.Forms.Padding(0);
             this.ResetBtn.Name = "ResetBtn";
-            this.ResetBtn.Size = new System.Drawing.Size(585, 190);
+            this.ResetBtn.Size = new System.Drawing.Size(602, 121);
             this.ResetBtn.TabIndex = 128;
             this.ResetBtn.Text = "Reset to Defaults\r\n";
             this.ResetBtn.UseVisualStyleBackColor = false;
@@ -147,10 +153,10 @@
             this.BackColourBox.BackColor = System.Drawing.Color.White;
             this.BackColourBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.BackColourBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.BackColourBox.Location = new System.Drawing.Point(589, 382);
-            this.BackColourBox.Margin = new System.Windows.Forms.Padding(4);
+            this.BackColourBox.Location = new System.Drawing.Point(602, 230);
+            this.BackColourBox.Margin = new System.Windows.Forms.Padding(0);
             this.BackColourBox.Name = "BackColourBox";
-            this.BackColourBox.Size = new System.Drawing.Size(577, 181);
+            this.BackColourBox.Size = new System.Drawing.Size(602, 115);
             this.BackColourBox.TabIndex = 127;
             this.BackColourBox.TabStop = false;
             this.BackColourBox.Click += new System.EventHandler(this.BackColourBox_Click);
@@ -160,10 +166,10 @@
             this.BackColourLbl.AutoSize = true;
             this.BackColourLbl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.BackColourLbl.Font = new System.Drawing.Font("Segoe UI", 16F);
-            this.BackColourLbl.Location = new System.Drawing.Point(2, 378);
+            this.BackColourLbl.Location = new System.Drawing.Point(2, 230);
             this.BackColourLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.BackColourLbl.Name = "BackColourLbl";
-            this.BackColourLbl.Size = new System.Drawing.Size(581, 189);
+            this.BackColourLbl.Size = new System.Drawing.Size(598, 115);
             this.BackColourLbl.TabIndex = 126;
             this.BackColourLbl.Text = "Drawing Board Back Colour";
             // 
@@ -184,23 +190,29 @@
             this.TableLayoutPnl.ColumnCount = 2;
             this.TableLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.TableLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.TableLayoutPnl.Controls.Add(this.SaveVideoFramesCb, 0, 3);
+            this.TableLayoutPnl.Controls.Add(this.SceneWidthUpDown, 1, 3);
+            this.TableLayoutPnl.Controls.Add(this.SceneHeightUpDown, 1, 4);
+            this.TableLayoutPnl.Controls.Add(this.SceneHeightLbl, 0, 4);
+            this.TableLayoutPnl.Controls.Add(this.SceneWidthLbl, 0, 3);
+            this.TableLayoutPnl.Controls.Add(this.SaveVideoFramesCb, 0, 5);
             this.TableLayoutPnl.Controls.Add(this.NewWorkingDirectoryBtn, 1, 1);
             this.TableLayoutPnl.Controls.Add(this.WorkingDirValueLbl, 0, 0);
             this.TableLayoutPnl.Controls.Add(this.WorkingDirLbl, 0, 1);
             this.TableLayoutPnl.Controls.Add(this.BackColourLbl, 0, 2);
             this.TableLayoutPnl.Controls.Add(this.BackColourBox, 1, 2);
-            this.TableLayoutPnl.Controls.Add(this.ResetBtn, 1, 4);
-            this.TableLayoutPnl.Controls.Add(this.SaveBtn, 0, 4);
+            this.TableLayoutPnl.Controls.Add(this.ResetBtn, 1, 6);
+            this.TableLayoutPnl.Controls.Add(this.SaveBtn, 0, 6);
             this.TableLayoutPnl.Location = new System.Drawing.Point(60, 309);
             this.TableLayoutPnl.Margin = new System.Windows.Forms.Padding(6);
             this.TableLayoutPnl.Name = "TableLayoutPnl";
-            this.TableLayoutPnl.RowCount = 5;
-            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.TableLayoutPnl.RowCount = 7;
+            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.333333F));
+            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.333333F));
+            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
             this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.TableLayoutPnl.Size = new System.Drawing.Size(1204, 596);
             this.TableLayoutPnl.TabIndex = 133;
@@ -211,9 +223,9 @@
             this.TableLayoutPnl.SetColumnSpan(this.SaveVideoFramesCb, 2);
             this.SaveVideoFramesCb.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SaveVideoFramesCb.Font = new System.Drawing.Font("Segoe UI", 16F);
-            this.SaveVideoFramesCb.Location = new System.Drawing.Point(3, 570);
+            this.SaveVideoFramesCb.Location = new System.Drawing.Point(3, 462);
             this.SaveVideoFramesCb.Name = "SaveVideoFramesCb";
-            this.SaveVideoFramesCb.Size = new System.Drawing.Size(1164, 183);
+            this.SaveVideoFramesCb.Size = new System.Drawing.Size(1198, 109);
             this.SaveVideoFramesCb.TabIndex = 134;
             this.SaveVideoFramesCb.Text = "Save Video Frames on Export";
             this.SaveVideoFramesCb.UseVisualStyleBackColor = true;
@@ -226,14 +238,90 @@
             this.SaveBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SaveBtn.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.SaveBtn.ForeColor = System.Drawing.Color.Black;
-            this.SaveBtn.Location = new System.Drawing.Point(0, 756);
+            this.SaveBtn.Location = new System.Drawing.Point(0, 574);
             this.SaveBtn.Margin = new System.Windows.Forms.Padding(0);
             this.SaveBtn.Name = "SaveBtn";
-            this.SaveBtn.Size = new System.Drawing.Size(585, 190);
+            this.SaveBtn.Size = new System.Drawing.Size(602, 121);
             this.SaveBtn.TabIndex = 125;
             this.SaveBtn.Text = "Save Changes\r\n";
             this.SaveBtn.UseVisualStyleBackColor = false;
             this.SaveBtn.Click += new System.EventHandler(this.SaveBtn_Click);
+            // 
+            // SceneHeightLbl
+            // 
+            this.SceneHeightLbl.AutoSize = true;
+            this.SceneHeightLbl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SceneHeightLbl.Font = new System.Drawing.Font("Segoe UI", 16F);
+            this.SceneHeightLbl.Location = new System.Drawing.Point(2, 402);
+            this.SceneHeightLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.SceneHeightLbl.Name = "SceneHeightLbl";
+            this.SceneHeightLbl.Size = new System.Drawing.Size(598, 57);
+            this.SceneHeightLbl.TabIndex = 134;
+            this.SceneHeightLbl.Text = "Default Video Height";
+            // 
+            // SceneWidthLbl
+            // 
+            this.SceneWidthLbl.AutoSize = true;
+            this.SceneWidthLbl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SceneWidthLbl.Font = new System.Drawing.Font("Segoe UI", 16F);
+            this.SceneWidthLbl.Location = new System.Drawing.Point(2, 345);
+            this.SceneWidthLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.SceneWidthLbl.Name = "SceneWidthLbl";
+            this.SceneWidthLbl.Size = new System.Drawing.Size(598, 57);
+            this.SceneWidthLbl.TabIndex = 135;
+            this.SceneWidthLbl.Text = "Default Video Width";
+            // 
+            // SceneWidthUpDown
+            // 
+            this.SceneWidthUpDown.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SceneWidthUpDown.Font = new System.Drawing.Font("Segoe UI", 16F);
+            this.SceneWidthUpDown.InterceptArrowKeys = false;
+            this.SceneWidthUpDown.Location = new System.Drawing.Point(602, 345);
+            this.SceneWidthUpDown.Margin = new System.Windows.Forms.Padding(0);
+            this.SceneWidthUpDown.Maximum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
+            this.SceneWidthUpDown.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.SceneWidthUpDown.Name = "SceneWidthUpDown";
+            this.SceneWidthUpDown.Size = new System.Drawing.Size(602, 64);
+            this.SceneWidthUpDown.TabIndex = 134;
+            this.SceneWidthUpDown.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // SceneHeightUpDown
+            // 
+            this.SceneHeightUpDown.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SceneHeightUpDown.Font = new System.Drawing.Font("Segoe UI", 16F);
+            this.SceneHeightUpDown.InterceptArrowKeys = false;
+            this.SceneHeightUpDown.Location = new System.Drawing.Point(602, 402);
+            this.SceneHeightUpDown.Margin = new System.Windows.Forms.Padding(0);
+            this.SceneHeightUpDown.Maximum = new decimal(new int[] {
+            3000,
+            0,
+            0,
+            0});
+            this.SceneHeightUpDown.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.SceneHeightUpDown.Name = "SceneHeightUpDown";
+            this.SceneHeightUpDown.Size = new System.Drawing.Size(602, 64);
+            this.SceneHeightUpDown.TabIndex = 135;
+            this.SceneHeightUpDown.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // SettingsTab
             // 
@@ -252,6 +340,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.BackColourBox)).EndInit();
             this.TableLayoutPnl.ResumeLayout(false);
             this.TableLayoutPnl.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SceneWidthUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SceneHeightUpDown)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -271,5 +361,9 @@
         private System.Windows.Forms.TableLayoutPanel TableLayoutPnl;
         private System.Windows.Forms.Button SaveBtn;
         private System.Windows.Forms.CheckBox SaveVideoFramesCb;
+        private System.Windows.Forms.Label SceneHeightLbl;
+        private System.Windows.Forms.Label SceneWidthLbl;
+        private System.Windows.Forms.NumericUpDown SceneWidthUpDown;
+        private System.Windows.Forms.NumericUpDown SceneHeightUpDown;
     }
 }

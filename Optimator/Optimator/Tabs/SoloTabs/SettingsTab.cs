@@ -74,6 +74,8 @@ namespace Optimator.Forms
             BackColourBox.BackColor = Utils.ColourFromString(Settings.Default.BgColour);
             WorkingDirValueLbl.Text = "Current Directory: " + Settings.Default.WorkingDirectory;
             SaveVideoFramesCb.Checked = Settings.Default.SaveVideoFrames;
+            SceneWidthUpDown.Value = Settings.Default.SceneWidth;
+            SceneHeightUpDown.Value = Settings.Default.SceneHeight;
         }
 
 
@@ -89,6 +91,8 @@ namespace Optimator.Forms
         {
             Settings.Default.BgColour = Utils.ColorToString(Color.White);
             Settings.Default.WorkingDirectory = "Blank";
+            Settings.Default.SceneWidth = 1920;
+            Settings.Default.SceneHeight = 1080;
             DisplaySettings();
         }
 
@@ -105,6 +109,8 @@ namespace Optimator.Forms
                 Settings.Default.WorkingDirectory = directory;
                 directory = "";
             }
+            Settings.Default.SceneWidth = (int)Math.Round(SceneWidthUpDown.Value, MidpointRounding.AwayFromZero);
+            Settings.Default.SceneHeight = (int)Math.Round(SceneHeightUpDown.Value, MidpointRounding.AwayFromZero);
             Settings.Default.SaveVideoFrames = SaveVideoFramesCb.Checked;
             Settings.Default.Save();
         }
@@ -136,7 +142,8 @@ namespace Optimator.Forms
         private bool SomethingToChange()
         {
             return BackColourBox.BackColor.ToArgb() != Utils.ColourFromString(Settings.Default.BgColour).ToArgb() || 
-                directory != "" || SaveVideoFramesCb.Checked != Settings.Default.SaveVideoFrames;
+                directory != "" || SaveVideoFramesCb.Checked != Settings.Default.SaveVideoFrames || 
+                SceneWidthUpDown.Value != Settings.Default.SceneWidth || SceneHeightUpDown.Value != Settings.Default.SceneHeight;
         }
 
 

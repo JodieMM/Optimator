@@ -66,15 +66,8 @@ namespace Optimator.Tabs.Scenes
         /// <param name="e"></param>
         private void SceneSizeUpDown_ValueChanged(object sender, System.EventArgs e)
         {
-            if (sender == SceneWidthUpDown)
-            {
-                Owner.sceneWidth = (int)SceneWidthUpDown.Value;
-            }
-            else
-            {
-                Owner.sceneHeight = (int)SceneHeightUpDown.Value;
-            }
-            Owner.SetDrawPanelSize(Owner.sceneWidth, Owner.sceneHeight);
+            Owner.SetDrawPanelSize(sender == SceneWidthUpDown ? (int)SceneWidthUpDown.Value : Owner.sceneWidth,
+                sender == SceneHeightUpDown ? (int)SceneHeightUpDown.Value : Owner.sceneHeight);
             Owner.DisplayDrawings();
         }
 

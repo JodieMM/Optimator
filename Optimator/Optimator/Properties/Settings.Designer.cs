@@ -67,5 +67,29 @@ namespace Optimator.Properties {
                 this["SaveVideoFrames"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1920")]
+        public int SceneWidth {
+            get {
+                return ((int)(this["SceneWidth"]));
+            }
+            set {
+                this["SceneWidth"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1080")]
+        public int SceneHeight {
+            get {
+                return ((int)(this["SceneHeight"]));
+            }
+            set {
+                this["SceneHeight"] = value;
+            }
+        }
     }
 }

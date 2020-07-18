@@ -1,4 +1,5 @@
 ﻿using Optimator.Forms.Scenes;
+using Optimator.Properties;
 using Optimator.Tabs.SoloTabs;
 using System;
 using System.Drawing;
@@ -23,8 +24,8 @@ namespace Optimator.Tabs.Scenes
         private Graphics g;
         
         public bool SelectFromTop = true;
-        public int sceneWidth = Consts.defaultWidth;
-        public int sceneHeight = Consts.defaultHeight;
+        public int sceneWidth;
+        public int sceneHeight;
         #endregion
         
 
@@ -39,7 +40,8 @@ namespace Optimator.Tabs.Scenes
             Owner.GetTabControl().KeyUp += KeyPress;
             Enter += FocusOn;
             VisibleChanged += FocusOn;
-            
+
+            SetDrawPanelSize(Settings.Default.SceneWidth, Settings.Default.SceneHeight);
             g = DrawPanel.CreateGraphics();            
         }
 
@@ -72,6 +74,8 @@ namespace Optimator.Tabs.Scenes
         /// <param name="height">New panel height (y)</param>
         public void SetDrawPanelSize(int width, int height)
         {
+            sceneWidth = width;
+            sceneHeight = height;
             DrawPanel.Width = width;
             DrawPanel.Height = height;
         }
