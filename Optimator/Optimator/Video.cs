@@ -16,7 +16,7 @@ namespace Optimator
 
         public List<Scene> videoScenes = new List<Scene>();
 
-        public decimal FPS = 20;
+        public decimal FPS;
         public int videoWidth;
         public int videoHeight;
         #endregion
@@ -55,6 +55,7 @@ namespace Optimator
             Version = Properties.Settings.Default.Version;
             videoWidth = Properties.Settings.Default.SceneWidth;
             videoHeight = Properties.Settings.Default.SceneHeight;
+            FPS = Properties.Settings.Default.FPS;
         }
 
 
