@@ -75,7 +75,7 @@ namespace Optimator.Tabs.Sets
         /// <returns>True if pressed</returns>
         public bool GetIfJoinBtnPressed(bool baseBtn = false)
         {
-            if (Panel.Controls[0] != null && Panel.Controls[0] is JoinsPanel)
+            if (Panel.Controls.Count > 0 && Panel.Controls[0] is JoinsPanel)
             {
                 if (baseBtn)
                 {
@@ -673,7 +673,7 @@ namespace Optimator.Tabs.Sets
         {
             DeselectPiece();
             selected = piece;
-            if (Panel.Controls[0] != null && Panel.Controls[0] is PositionsPanel)
+            if (Panel.Controls.Count > 0 && Panel.Controls[0] is PositionsPanel)
             {
                 (Panel.Controls[0] as PositionsPanel).EnableScrolls();
             }
@@ -688,11 +688,11 @@ namespace Optimator.Tabs.Sets
             {
                 selected = null;
             }
-            if (Panel.Controls[0] != null && Panel.Controls[0] is JoinsPanel)
+            if (Panel.Controls.Count > 0 && Panel.Controls[0] is JoinsPanel)
             {
                 (Panel.Controls[0] as JoinsPanel).UnselectButtons();
             }
-            else if (Panel.Controls[0] != null && Panel.Controls[0] is PositionsPanel)
+            else if (Panel.Controls.Count > 0 && Panel.Controls[0] is PositionsPanel)
             {
                 (Panel.Controls[0] as PositionsPanel).EnableScrolls(false);
             }

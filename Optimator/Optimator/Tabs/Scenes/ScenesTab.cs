@@ -367,11 +367,11 @@ namespace Optimator.Tabs.Scenes
                 subSelected = select as Piece;
             }
             select.ToPiece().ColourState.OutlineColour = (select is Piece) ? Color.Red : Color.Purple;
-            if (Panel.Controls[0] != null && Panel.Controls[0] is PositionsPanel)
+            if (Panel.Controls.Count > 0 && Panel.Controls[0] is PositionsPanel)
             {
                 (Panel.Controls[0] as PositionsPanel).EnableControls();
             }
-            else if (Panel.Controls[0] != null && Panel.Controls[0] is MovePanel)
+            else if (Panel.Controls.Count > 0 && Panel.Controls[0] is MovePanel)
             {
                 (Panel.Controls[0] as MovePanel).PartSelected(select.ToPiece());
             }
@@ -392,7 +392,7 @@ namespace Optimator.Tabs.Scenes
                 }
                 selected.ToPiece().ColourState.OutlineColour = WIP.OriginalColours[selected.ToPiece()].OutlineColour;
                 selected = null;
-                if (Panel.Controls[0] != null && Panel.Controls[0] is PositionsPanel)
+                if (Panel.Controls.Count > 0 && Panel.Controls[0] is PositionsPanel)
                 {
                     (Panel.Controls[0] as PositionsPanel).EnableControls(false);
                 }
@@ -419,7 +419,7 @@ namespace Optimator.Tabs.Scenes
                         }
 
                         // If Listbox is highlighted, delete change/animation
-                        if (Panel.Controls[0] != null && Panel.Controls[0] is MovePanel && (Panel.Controls[0] as MovePanel).DeleteAnimation())
+                        if (Panel.Controls.Count > 0 && Panel.Controls[0] is MovePanel && (Panel.Controls[0] as MovePanel).DeleteAnimation())
                         {
                             // Done in DeleteAnimation() Bool Check
                         }
@@ -471,7 +471,7 @@ namespace Optimator.Tabs.Scenes
 
                     // Move Selected Piece
                     case Keys.Up:
-                        if (selected != null && Panel.Controls[0] != null && Panel.Controls[0] is PositionsPanel)
+                        if (selected != null && Panel.Controls.Count > 0 && Panel.Controls[0] is PositionsPanel)
                         {
                             WIP.Originals[selected].Y -= 1;
                             (Panel.Controls[0] as PositionsPanel).EnableControls();
@@ -479,7 +479,7 @@ namespace Optimator.Tabs.Scenes
                         }
                         break;
                     case Keys.Down:
-                        if (selected != null && Panel.Controls[0] != null && Panel.Controls[0] is PositionsPanel)
+                        if (selected != null && Panel.Controls.Count > 0 && Panel.Controls[0] is PositionsPanel)
                         {
                             WIP.Originals[selected].Y += 1;
                             (Panel.Controls[0] as PositionsPanel).EnableControls();
@@ -487,7 +487,7 @@ namespace Optimator.Tabs.Scenes
                         }
                         break;
                     case Keys.Left:
-                        if (selected != null && Panel.Controls[0] != null && Panel.Controls[0] is PositionsPanel)
+                        if (selected != null && Panel.Controls.Count > 0 && Panel.Controls[0] is PositionsPanel)
                         {
                             WIP.Originals[selected].X -= 1;
                             (Panel.Controls[0] as PositionsPanel).EnableControls();
@@ -495,7 +495,7 @@ namespace Optimator.Tabs.Scenes
                         }
                         break;
                     case Keys.Right:
-                        if (selected != null && Panel.Controls[0] != null && Panel.Controls[0] is PositionsPanel)
+                        if (selected != null && Panel.Controls.Count > 0 && Panel.Controls[0] is PositionsPanel)
                         {
                             WIP.Originals[selected].X += 1;
                             (Panel.Controls[0] as PositionsPanel).EnableControls();
@@ -528,7 +528,7 @@ namespace Optimator.Tabs.Scenes
                 DisplayDrawPanel();
 
                 // Update Animation listbox
-                if (Panel.Controls[0] != null && Panel.Controls[0] is MovePanel)
+                if (Panel.Controls.Count > 0 && Panel.Controls[0] is MovePanel)
                 {
                     (Panel.Controls[0] as MovePanel).UpdateListbox();
                 }

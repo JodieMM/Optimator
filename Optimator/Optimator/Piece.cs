@@ -851,6 +851,7 @@ namespace Optimator
             var outlineShape = LinesCoords();
             var minMax = Utils.FindMinMax(outlineShape);
             var ranges = new List<float[]>();
+            var halfOutline = OutlineWidth < 3 && Data.Count < 3 ? 3 : (float)(OutlineWidth / 2);
             for (var index = (int)minMax[2]; index <= (int)minMax[3]; index++)
             {
                 // Get coords for the specific Y value that aren't corners
@@ -887,7 +888,7 @@ namespace Optimator
                             min2Index = match;
                         }
                     }
-                    ranges.Add(new float[3] { index, min1, min2 });
+                    ranges.Add(new float[3] { index, min1 - halfOutline, min2 + halfOutline });
                     yMatches.RemoveAt(min1Index);
                     yMatches.RemoveAt(min2Index > min1Index ? min2Index - 1 : min2Index);
                 }
