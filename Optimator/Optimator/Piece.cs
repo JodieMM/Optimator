@@ -893,6 +893,15 @@ namespace Optimator
                     yMatches.RemoveAt(min2Index > min1Index ? min2Index - 1 : min2Index);
                 }
             }
+            // Flat Horizontal Line
+            if (ranges.Count == 0)
+            {
+                var minIndex = outlineShape[0][0] > outlineShape[1][0] ? 1 : 0;
+                for (int index = (int)(outlineShape[0][1] - halfOutline); index < (int)(outlineShape[0][1] + halfOutline); index++)
+                {
+                    ranges.Add(new float[3] { index, outlineShape[minIndex][0], outlineShape[minIndex == 0 ? 1 : 0][0] });
+                }
+            }
             return ranges;
         }
 
