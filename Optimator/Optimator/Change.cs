@@ -87,5 +87,21 @@
             return StartTime + Consts.ColonS + Action + Consts.ColonS + host.PiecesList.IndexOf(AffectedPiece) 
                 + Consts.ColonS + HowMuch.ToString() + Consts.ColonS + HowLong;
         }
+
+        /// <summary>
+        /// Finds the index of the action text.
+        /// </summary>
+        /// <returns></returns>
+        public int ActionIndex()
+        {
+            for (int index = 0; index < Consts.possibleChanges.Length; index++)
+            {
+                if (Action == (string)Consts.possibleChanges[index])
+                {
+                    return index;
+                }
+            }
+            return -1; //Error
+        }
     }
 }

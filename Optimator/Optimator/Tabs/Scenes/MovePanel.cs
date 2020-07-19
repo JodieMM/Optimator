@@ -97,7 +97,7 @@ namespace Optimator.Tabs.Scenes
                     WIP.AffectedPiece = Owner.selected.ToPiece();
                     PartNameLbl.Text = Utils.BaseName(WIP.AffectedPiece.Name);
                 }
-                ChangeTypeCb.SelectedText = WIP.Action;
+                ChangeTypeCb.SelectedIndex = WIP.ActionIndex();
                 AnimationAmountTb.Value = (decimal)WIP.HowMuch;
                 StartTimeUpDown.Value = WIP.StartTime;
                 SecondsUpDown.Value = WIP.HowLong;
@@ -172,7 +172,7 @@ namespace Optimator.Tabs.Scenes
             if (AnimationLv.SelectedIndices.Count > 0)
             {
                 PartNameLbl.Text = Utils.BaseName(changeIndex[AnimationLv.SelectedIndices[0]].AffectedPiece.Name);
-                ChangeTypeCb.SelectedText = changeIndex[AnimationLv.SelectedIndices[0]].Action;
+                ChangeTypeCb.SelectedIndex = changeIndex[AnimationLv.SelectedIndices[0]].ActionIndex();
                 AnimationAmountTb.Value = (decimal)changeIndex[AnimationLv.SelectedIndices[0]].HowMuch;
                 StartTimeUpDown.Value = changeIndex[AnimationLv.SelectedIndices[0]].StartTime;
                 SecondsUpDown.Value = changeIndex[AnimationLv.SelectedIndices[0]].HowLong;

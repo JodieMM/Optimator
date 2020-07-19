@@ -114,11 +114,11 @@ namespace Optimator.Forms.Scenes
                 Owner.WIP.PiecesList.Add(clone);
                 Owner.WIP.PartsList.Add(clone);
                 clone.State.SetCoordsBasedOnBoard(Owner.GetBoardSizing());
-                Owner.WIP.Originals.Add(clone, Utils.CloneState(clone.State));
-                Owner.WIP.OriginalColours.Add(clone, Utils.CloneColourState(clone.ColourState));
+                Owner.WIP.Originals.Add(clone, Utils.CloneState(Owner.WIP.Originals[Owner.selected]));
+                Owner.WIP.OriginalColours.Add(clone, Utils.CloneColourState(Owner.WIP.OriginalColours[Owner.selected]));
                 if (sender == CloneAttachmentsBtn)
                 {
-                    // HIDDEN: Clone Attachments
+                    // TODO: Clone Attachments
                 }
             }
             Owner.DisplayDrawings();
