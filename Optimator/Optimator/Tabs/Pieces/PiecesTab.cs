@@ -91,7 +91,7 @@ namespace Optimator
         /// <param name="e"></param>
         private void FocusOn(object sender, EventArgs e)
         {
-            DisplayDrawings();
+            DisplayTimer.Start();
         }
 
         #region ToolStrip
