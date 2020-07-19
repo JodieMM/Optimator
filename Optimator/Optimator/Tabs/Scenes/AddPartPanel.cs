@@ -35,7 +35,7 @@ namespace Optimator.Forms.Scenes
         {
             var widthPercent = 0.8F;
             var smallWidthPercent = 0.05F;
-            var heightPercent = 0.15F;
+            var heightPercent = 0.45F;
 
             var bigWidth = (int)(Width * widthPercent);
             var lilWidth = (int)(Width * smallWidthPercent);
@@ -99,6 +99,29 @@ namespace Optimator.Forms.Scenes
                     // Handled by Exception
                 }
             }
+        }
+
+        /// <summary>
+        /// Clones the selected part.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CloneBtn_Click(object sender, EventArgs e)
+        {
+            if (Owner.selected != null && Owner.selected is Piece)
+            {
+                var clone = Utils.ClonePiece(Owner.selected as Piece);
+                Owner.WIP.PiecesList.Add(clone);
+                Owner.WIP.PartsList.Add(clone);
+                clone.State.SetCoordsBasedOnBoard(Owner.GetBoardSizing());
+                Owner.WIP.Originals.Add(clone, Utils.CloneState(clone.State));
+                Owner.WIP.OriginalColours.Add(clone, Utils.CloneColourState(clone.ColourState));
+                if (sender == CloneAttachmentsBtn)
+                {
+                    // HIDDEN: Clone Attachments
+                }
+            }
+            Owner.DisplayDrawings();
         }
     }
 }

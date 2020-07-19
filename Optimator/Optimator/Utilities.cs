@@ -589,10 +589,21 @@ namespace Optimator
         /// Copies the details from a change into a seperate object.
         /// </summary>
         /// <param name="change">Change to clone</param>
-        /// <returns>New piece object with same details</returns>
+        /// <returns>New change object with same details</returns>
         public static Change CloneChange(Change change)
         {
             return new Change(change.StartTime, change.Action, change.AffectedPiece, change.HowMuch, change.HowLong, change.host);
+        }
+
+        /// <summary>
+        /// Copies the details from a join into a seperate object.
+        /// </summary>
+        /// <param name="join">Join to clone</param>
+        /// <returns>New join object with same details</returns>
+        public static Join CloneJoin(Join join, Piece a, Piece b, Set set)
+        {
+            return new Join(a, b, set, join.AX, join.AY, join.AXRight, join.AYDown, join.BX, join.BY, join.BXRight, join.BYDown,
+                join.FlipAngle, join.IndexSwitch);
         }
 
         #endregion

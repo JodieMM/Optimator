@@ -35,7 +35,7 @@ namespace Optimator.Forms.Sets
         {
             var widthPercent = 0.8F;
             var smallWidthPercent = 0.05F;
-            var heightPercent = 0.15F;
+            var heightPercent = 0.45F;
 
             var bigWidth = (int)(Width * widthPercent);
             var lilWidth = (int)(Width * smallWidthPercent);
@@ -108,6 +108,49 @@ namespace Optimator.Forms.Sets
                 catch (VersionException)
                 {
                     // Handled by Exception
+                }
+            }
+        }
+
+        /// <summary>
+        /// Clones the selected piece.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CloneBtn_Click(object sender, EventArgs e)
+        {
+            if (Owner.selected != null)
+            {
+                var clone = Utils.ClonePiece(Owner.selected);
+                Owner.WIP.PiecesList.Add(clone);
+                clone.State.SetCoordsBasedOnBoard(Owner.GetBoardSizing());
+                Owner.WIP.PersonalStates.Add(clone, Utils.CloneState(clone.State));
+                if (sender == CloneAttachmentsBtn)
+                {
+                    CloneAttached(Owner.selected, clone);
+                }
+            }
+            Owner.DisplayDrawings();
+        }
+
+        /// <summary>
+        /// Recursively clones all of the attached pieces.
+        /// </summary>
+        /// <param name="original">Pre-made instance of piece</param>
+        /// <param name="clone">Cloned instance of piece</param>
+        private void CloneAttached(Piece original, Piece clone)
+        {
+            foreach (var attached in Owner.WIP.JoinedPieces[original])
+            {
+                var clone2 = Utils.ClonePiece(attached);
+                Owner.WIP.PiecesList.Add(clone2);
+                clone2.State.SetCoordsBasedOnBoard(Owner.GetBoardSizing());
+                Owner.WIP.PersonalStates.Add(clone2, Utils.CloneState(clone2.State));
+                Owner.WIP.JoinsIndex.Add(clone2, Utils.CloneJoin(Owner.WIP.JoinsIndex[attached], clone2, clone, Owner.WIP));
+                Owner.WIP.AddToJoinedPieces(clone2, clone);
+                if (Owner.WIP.JoinedPieces.ContainsKey(attached))
+                {
+                    CloneAttached(attached, clone2);
                 }
             }
         }
