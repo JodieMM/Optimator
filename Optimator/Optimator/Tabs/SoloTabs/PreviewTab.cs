@@ -64,9 +64,12 @@ namespace Optimator.Forms
             RotationTrack.Location = new Point((int)(DrawPanel.Location.X + (DrawPanel.Width - RotationTrack.Width) / 2.0),
                 (int)(DrawPanel.Location.Y + DrawPanel.Height - RotationTrack.Height * 1.25));
 
-            TurnTrack.Size = new Size((int)(DrawPanel.Width * trackShort), (int)(DrawPanel.Height * trackLong));
+            TurnTrack.Size = SpinTrack.Size = new Size((int)(DrawPanel.Width * trackShort), (int)(DrawPanel.Height * trackLong));
             TurnTrack.Location = new Point((int)(DrawPanel.Location.X + DrawPanel.Width - TurnTrack.Width * 1.25),
                 (int)(DrawPanel.Location.Y + (DrawPanel.Height - TurnTrack.Height) / 2.0));
+            
+            SpinTrack.Location = new Point((OptionsMenu.Size.Width - SpinTrack.Size.Width) / 2,
+                (OptionsMenu.Size.Height - SpinTrack.Size.Height) / 2);
 
             Position.SetCoordsBasedOnBoard(DrawPanel);
             DisplayDrawings();
@@ -87,16 +90,9 @@ namespace Optimator.Forms
             {
                 Position.T = TurnTrack.Value;
             }
-            else if (sender == spinBar) // HIDDEN (RTS) Temporary Spin Bar
+            else if (sender == SpinTrack)
             {
-                if (WIP is Set)
-                {
-                    (WIP as Set).PersonalStates[(WIP as Set).PiecesList[1]].S = spinBar.Value;
-                }
-                else
-                {
-                    Position.S = spinBar.Value;
-                }
+                Position.S = SpinTrack.Value;
             }
             DisplayDrawings();
         }
@@ -109,38 +105,6 @@ namespace Optimator.Forms
             DrawPanel.Refresh();
             g = DrawPanel.CreateGraphics();
             WIP.Draw(g, Position);
-            //HIDDEN (RTS) EXTRAS BELOW
-
-            //if (WIP is Set)
-            //{
-            //    foreach (var join in (WIP as Set).JoinsIndex.Values)
-            //    {
-            //        Visuals.DrawCross(join.CurrentCentre()[0], join.CurrentCentre()[1], Color.Red, g);
-            //        var minmax = Utils.FindMid(join.A.GetPoints(join.A.State));
-            //        Visuals.DrawCross(minmax[0], minmax[1], Color.Blue, g);
-            //        label1.Text = "R: " + join.A.State.R.ToString();
-            //        label2.Text = "T: " + join.A.State.T.ToString();
-            //        label3.Text = "S: " + join.A.State.S.ToString();
-            //        //label4.Text = "Hei: " + Utils.FindHeight(join.A.GetPoints(join.A.State)).ToString();
-            //        label5.Text = "YMin: " + Utils.FindMinMax(join.A.GetPoints(join.A.State))[2].ToString();
-            //    }
-            //    //foreach (Piece piece in (WIP as Set).PiecesList)
-            //    //{
-            //    //    if (piece != (WIP as Set).BasePiece)
-            //    //    {
-            //    //        //foreach (Spot spot in piece.Data)
-            //    //        //{
-            //    //        //    Visuals.DrawCross(spot.CurrentX + piece.State.X, spot.CurrentY + piece.State.Y, Color.Blue, g);
-            //    //        //}
-            //    //    }
-            //    //}
-            //}
-            //else
-            //{
-            //    label1.Text = "R: " + WIP.ToPiece().State.R.ToString();
-            //    label2.Text = "T: " + WIP.ToPiece().State.T.ToString();
-            //    label3.Text = "S: " + WIP.ToPiece().State.S.ToString();
-            //}
         }
 
 

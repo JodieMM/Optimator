@@ -11,15 +11,13 @@ namespace Optimator
     public class Spot
     {
         #region Spot Variables
-        public  float X { get; set; }
+        public float X { get; set; }
         public float XRight { get; set; }
-        public  float Y { get; set; }
+        public float Y { get; set; }
         public float YDown { get; set; }
-        public float CurrentX { get; set; }
-        public float CurrentY { get; set; }        //HIDDEN (RTS) CurrentY
 
-        public  string Connector { get; set; }
-        public  string Solid { get; set; }
+        public string Connector { get; set; }
+        public string Solid { get; set; }
 
         public Spot MatchX { get; set; } = null;
         public Spot MatchY { get; set; } = null;
@@ -183,7 +181,7 @@ namespace Optimator
         /// Converts the coordinates to floats to allow
         /// easier input into arrays/searches.
         /// </summary>
-        /// <param name="angle">Original [0], rotated [1], turned [2], current [3], current down [4]</param>
+        /// <param name="angle">Original [0], rotated [1], turned [2]</param>
         /// <returns>Coordinates of the piece as a float</returns>
         public float[] GetCoordCombination(int angle = 0)
         {
@@ -193,10 +191,6 @@ namespace Optimator
                     return new float[] { XRight, Y };
                 case 2:
                     return new float[] { X, YDown };
-                case 3:
-                    return new float[] { CurrentX, Y };
-                case 4:
-                    return new float[] { CurrentX, YDown };
                 default:
                     return new float[] { X, Y };
             }

@@ -180,11 +180,12 @@ namespace Optimator
             var merge2 = Utils.SortCoordinates(MergeShapes(downPoints, downRightPoints, state.R));
             var points = Utils.SortCoordinates(MergeShapes(merge1, merge2, state.T, false));
             
-            // Recentre & Resize
+            // Recentre, Resize & Spin
             for (var index = 0; index < points.Count; index++)
             {
-                points[index].X = points[index].X * state.SM + state.X;
-                points[index].Y = points[index].Y * state.SM + state.Y;
+                var coords = Utils.SpinAndSizeCoord(state.S, 1, new float[] { points[index].X, points[index].Y });
+                points[index].X = coords[0] * state.SM + state.X;
+                points[index].Y = coords[1] * state.SM + state.Y;
             }
 
             return points;
@@ -198,70 +199,19 @@ namespace Optimator
         /// <returns>Shape at that border case</returns>
         private List<Spot> GetAnchorStatePoints(State state, int brd)
         {
-            // CLEANING RTS
-            // brd 0 = base 1 = right (max r min t) 2 = down (min r max t) 3 = right down (max r max t)
+            // brd: 0 = base 1 = right (max r min t) 2 = down (min r max t) 3 = right down (max r max t)
             var points = new List<Spot>();
             var minR = brd != 1 && brd != 3;
             var minT = brd < 2;
-            int r, t, s = new int();
-
-            //r = Utils.AngleAnchorFromAngle(state.R, minR);
-            //if (state.SBase && (r == 0 || r == 2))
-            //{
-            //    r += Utils.AngleAnchorFromAngle(state.T, minR); //TODO: minR? minT?
-            //}
-
+            int r, t = new int();
+            
             r = Utils.AngleAnchorFromAngle(state.R, minR);
             t = Utils.AngleAnchorFromAngle(state.T, minT);
-            //s = r;
-
-            //if (state.SBase && (r == 0 || r == 2) || !state.SBase && (r == 1 || r == 3))
-            //{
-            //    r = Utils.Modulo(r + t, 4);
-            //}
-
-            // TO CONSIDER:
-            // turn is increased if rotation is spun
-
-            //if (!state.SBase)
-            //{
-            //    s = Utils.Modulo(s + 1, 4); 
-            //}
 
             foreach (var spot in Data)
             {
-                var point = spot.GetCoordAtAnchorAngle(r, t);
-                //if (state.S != 0)
-                //{
-                //    // Flipped Shape
-                //    if (state.S > 90 && state.S < 270)
-                //    {
-                //        if (state.SBase)
-                //    }
-                //}
-                //if (state.S != 0 && )
-                //{
-                //    point = Utils.SpinAndSizeCoord(s, 1, point);
-                //}
-                points.Add(point);
+                points.Add(spot.GetCoordAtAnchorAngle(r, t));
             }
-            // TODO: Get spin state accurately
-
-            //points = SpinMeRound(points, state);
-
-            //CalculateMatches(minMax);
-            //foreach (var spot in Data)
-            //{
-            //    spot.CurrentX = spot.CalculateCurrentValue(state.R);
-            //}
-            //CalculateMatches(minMax, 0);
-            //foreach (var spot in Data)
-            //{
-            //    spot.CurrentY = spot.CalculateCurrentValue(state.T, 0);    //HIDDEN (RTS) CurrentY
-            //    points.Add(new float[] { spot.CurrentX, spot.CalculateCurrentValue(state.T, 0) });
-            //}
-
-            //points = SpinMeRound(points, state);
             return Utils.SortCoordinates(points);
         }
 
@@ -817,7 +767,7 @@ namespace Optimator
                 }
                 line.AddRange(section);
             }
-            // Curve
+            // CURVE
             else if (join == Consts.connectorOptions[2])
             {
             }
