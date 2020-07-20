@@ -21,6 +21,7 @@ namespace Optimator.Tabs.Sets
             InitializeComponent();
             Owner = owner;
             SelectFromTopCb.Checked = Owner.SelectFromTop;
+            BackColourBox.BackColor = Owner.GetBoardColor();
         }
 
 
@@ -37,7 +38,8 @@ namespace Optimator.Tabs.Sets
             var smallWidth = (int)(Width * widthPercent);
 
             SettingsLbl.Location = new Point(smallWidth, smallWidth);
-            SelectFromTopCb.Location = new Point(smallWidth, smallWidth * 3 + SettingsLbl.Height);
+            TableLayoutPnl.Location = new Point(smallWidth, smallWidth * 3 + SettingsLbl.Height);
+            TableLayoutPnl.Size = new Size(Width - 2 * smallWidth, TableLayoutPnl.Size.Height);
         }
 
         /// <summary>
@@ -48,6 +50,26 @@ namespace Optimator.Tabs.Sets
         private void SelectFromTopCb_CheckedChanged(object sender, System.EventArgs e)
         {
             Owner.SelectFromTop = SelectFromTopCb.Checked;
+        }
+
+        /// <summary>
+        /// Changes the background colour of the display.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BackColourBox_Click(object sender, System.EventArgs e)
+        {
+            var MyDialog = new ColorDialog
+            {
+                Color = BackColourBox.BackColor,
+                FullOpen = true
+            };
+            if (MyDialog.ShowDialog() == DialogResult.OK)
+            {
+                BackColourBox.BackColor = MyDialog.Color;
+                Owner.ChangeDrawingBgs(MyDialog.Color);
+                Owner.DisplayDrawings();
+            }
         }
     }
 }

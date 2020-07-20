@@ -12,7 +12,7 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>C:\Users\jodie\Downloads\Program2\</PublishUrl>
+    <PublishUrl>C:\Users\jodie\Downloads\OptimatorProgram\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -22,7 +22,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>14</ApplicationRevision>
+    <ApplicationRevision>16</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -84,6 +84,12 @@
     <Compile Include="Change.cs" />
     <Compile Include="ColourState.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Tabs\Pieces\SettingsPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Tabs\Pieces\SettingsPanel.Designer.cs">
+      <DependentUpon>SettingsPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="VersionException.cs" />
     <Compile Include="Video.cs" />
     <Compile Include="Tabs\Compile\AddScenePanel.cs">
@@ -315,6 +321,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Tabs\Pieces\ErasePanel.resx">
       <DependentUpon>ErasePanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\Pieces\SettingsPanel.resx">
+      <DependentUpon>SettingsPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Tabs\Pieces\SketchesPanel.resx">
       <DependentUpon>SketchesPanel.cs</DependentUpon>

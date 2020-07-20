@@ -138,6 +138,17 @@ namespace Optimator.Tabs.Scenes
             }
         }
 
+        /// <summary>
+        /// Update the UI to match drag movements.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public void UpdateXY(int x, int y)
+        {
+            XUpDown.Value = x;
+            YUpDown.Value = y;
+        }
+
 
 
         // ----- OTHER FUNCTIONS -----

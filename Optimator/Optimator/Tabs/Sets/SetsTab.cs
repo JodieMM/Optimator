@@ -50,9 +50,7 @@ namespace Optimator.Tabs.Sets
             Enter += FocusOn;
             VisibleChanged += FocusOn;
 
-            DrawBase.BackColor = Utils.ColourFromString(Properties.Settings.Default.BgColour);
-            DrawRight.BackColor = Utils.ColourFromString(Properties.Settings.Default.BgColour); ;
-            DrawDown.BackColor = Utils.ColourFromString(Properties.Settings.Default.BgColour); ;
+            ChangeDrawingBgs(Utils.ColourFromString(Properties.Settings.Default.BgColour));
         }
 
 
@@ -66,6 +64,15 @@ namespace Optimator.Tabs.Sets
         public PictureBox GetBoardSizing()
         {
             return DrawBase;
+        }
+
+        /// <summary>
+        /// Gets the back colour of the drawing boards.
+        /// </summary>
+        /// <returns></returns>
+        public Color GetBoardColor()
+        {
+            return DrawBase.BackColor;
         }
 
         /// <summary>
@@ -196,18 +203,12 @@ namespace Optimator.Tabs.Sets
         }
 
         /// <summary>
-        /// Reloads the settings and pieces in the set.
+        /// Reloads the pieces in the set.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void ReloadBtn_Click(object sender, EventArgs e)
         {
-            // Reload Settings
-            DrawBase.BackColor = Utils.ColourFromString(Properties.Settings.Default.BgColour);
-            DrawRight.BackColor = Utils.ColourFromString(Properties.Settings.Default.BgColour);
-            DrawDown.BackColor = Utils.ColourFromString(Properties.Settings.Default.BgColour);
-
-            // Reload Pieces
             //for (int index = 0; index < WIP.PiecesList.Count; index++)
             //{
             //    WIP.PiecesList[index] = new Piece(WIP.PiecesList[index].Name,
@@ -248,6 +249,15 @@ namespace Optimator.Tabs.Sets
         }
 
         #endregion
+
+        /// <summary>
+        /// Changes the background colour of the drawing boards.
+        /// </summary>
+        /// <param name="color"></param>
+        public void ChangeDrawingBgs(Color color)
+        {
+            DrawBase.BackColor = DrawRight.BackColor = DrawDown.BackColor = color;
+        }
 
 
 

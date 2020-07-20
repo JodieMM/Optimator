@@ -74,6 +74,6 @@ namespace Optimator
         public static Color toDoAnimation = Color.FromArgb(255, 204, 230, 255);
 
         // Scene Options
-        public static object[] possibleChanges = new object[] { "X", "Y", "Rotation", "Turn", "Spin", "Size", "Order", "Removed" };
+        public static object[] possibleChanges = new object[] { "X", "Y", "Rotation", "Turn", "Spin", "Size" };
     }
 }

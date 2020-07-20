@@ -216,15 +216,6 @@
             this.ChangeTypeCb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ChangeTypeCb.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.ChangeTypeCb.FormattingEnabled = true;
-            this.ChangeTypeCb.Items.AddRange(new object[] {
-            "X",
-            "Y",
-            "Rotation",
-            "Turn",
-            "Spin",
-            "Size",
-            "Order",
-            "Removed"});
             this.ChangeTypeCb.Location = new System.Drawing.Point(2, 431);
             this.ChangeTypeCb.Margin = new System.Windows.Forms.Padding(2);
             this.ChangeTypeCb.Name = "ChangeTypeCb";

@@ -30,6 +30,8 @@ namespace Optimator
         public Spot selectedSpot = null;
         private int moving = 0;                             // 0 = not, 1 = X & Y, 2 = X, 3 = Y
         private bool movingFar = false;                     // Whether a piece is being selected or moved
+
+        public bool showPoints = true;
         #endregion
 
 
@@ -42,9 +44,7 @@ namespace Optimator
             InitializeComponent();
             Owner = owner;
 
-            DrawBase.BackColor = Utils.ColourFromString(Properties.Settings.Default.BgColour);
-            DrawRight.BackColor = Utils.ColourFromString(Properties.Settings.Default.BgColour);
-            DrawDown.BackColor = Utils.ColourFromString(Properties.Settings.Default.BgColour);
+            ChangeDrawingBgs(Utils.ColourFromString(Properties.Settings.Default.BgColour));
             Owner.GetTabControl().KeyDown += KeyPress;
             Enter += FocusOn;
             VisibleChanged += FocusOn;
@@ -61,6 +61,15 @@ namespace Optimator
         public PictureBox GetBoardSizing()
         {
             return DrawBase;
+        }
+
+        /// <summary>
+        /// Gets the back colour of the drawing boards.
+        /// </summary>
+        /// <returns></returns>
+        public Color GetBoardColor()
+        {
+            return DrawBase.BackColor;
         }
 
 
@@ -101,13 +110,7 @@ namespace Optimator
         /// </summary>
         private void SelectButton(ToolStripButton btn)
         {
-            SaveBtn.Checked = false;
-            MovePointBtn.Checked = false;
-            ColoursBtn.Checked = false;
-            FixedBtn.Checked = false;
-            SketchesBtn.Checked = false;
-            EraseBtn.Checked = false;
-            OutlineBtn.Checked = false;
+            UncheckAllButtons();
             btn.Checked = true;
             DisplayDrawings();
         }
@@ -118,6 +121,16 @@ namespace Optimator
         /// </summary>
         public void DeselectButtons()
         {
+            UncheckAllButtons();
+            Panel.Controls.Clear();
+            DisplayDrawings();
+        }
+
+        /// <summary>
+        /// Unchecks all of the toop strip buttons.
+        /// </summary>
+        private void UncheckAllButtons()
+        {
             SaveBtn.Checked = false;
             MovePointBtn.Checked = false;
             ColoursBtn.Checked = false;
@@ -125,8 +138,7 @@ namespace Optimator
             SketchesBtn.Checked = false;
             EraseBtn.Checked = false;
             OutlineBtn.Checked = false;
-            Panel.Controls.Clear();
-            DisplayDrawings();
+            SettingsBtn.Checked = false;
         }
 
         /// <summary>
@@ -167,6 +179,10 @@ namespace Optimator
                 {
                     panel = new SketchesPanel(this);
                 }
+                else if (sender == SettingsBtn)
+                {
+                    panel = new SettingsPanel(this);
+                }
                 Utils.NewPanelContent(Panel, panel);
                 SelectButton(sender as ToolStripButton);
             }
@@ -177,29 +193,12 @@ namespace Optimator
         }
 
         /// <summary>
-        /// Hides or shows the points around the shape.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void HidePointsBtn_Click(object sender, EventArgs e)
-        {
-            HidePointsBtn.Checked = !HidePointsBtn.Checked;
-            DisplayDrawings();
-        }
-
-        /// <summary>
-        /// Reloads the settings and sketches.
+        /// Reloads the sketches.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void ReloadBtn_Click(object sender, EventArgs e)
         {
-            // Reload Settings
-            DrawBase.BackColor = Utils.ColourFromString(Properties.Settings.Default.BgColour);
-            DrawRight.BackColor = Utils.ColourFromString(Properties.Settings.Default.BgColour);
-            DrawDown.BackColor = Utils.ColourFromString(Properties.Settings.Default.BgColour);
-
-            // Reload Sketches
             //var newSketches = new Dictionary<Part, bool>();
             //foreach (var sketch in Sketches)
             //{
@@ -246,6 +245,15 @@ namespace Optimator
         }
 
         #endregion
+
+        /// <summary>
+        /// Changes the background colour of the drawing boards.
+        /// </summary>
+        /// <param name="color"></param>
+        public void ChangeDrawingBgs(Color color)
+        {
+            DrawBase.BackColor = DrawRight.BackColor = DrawDown.BackColor = color;
+        }
 
 
 
@@ -544,7 +552,7 @@ namespace Optimator
         /// <param name="angle">The angle to be drawn</param>
         private void DrawPoints(Graphics board, int angle)
         {
-            if (HidePointsBtn.Checked == false)
+            if (showPoints == true)
             {
                 foreach (var spot in WIP.Data)
                 {

@@ -22,7 +22,10 @@ namespace Optimator.Tabs.Scenes
         public Part selected = null;
         public Piece subSelected = null;
         private Graphics g;
-        
+
+        private int[] originalMoving;
+        private bool movingFar = false;
+
         public bool SelectFromTop = true;
         public int sceneWidth;
         public int sceneHeight;
@@ -345,13 +348,89 @@ namespace Optimator.Tabs.Scenes
             else if (selected != null && selected is Set && (selected as Set).PiecesList.Contains(newSelected))
             {
                 SelectPart(newSelected, true);
+                originalMoving = new int[] { e.X, e.Y };
             }
             else
             {
                 SelectPart(newSelected);
+                originalMoving = new int[] { e.X, e.Y };
             }
 
             DisplayDrawings();
+        }
+
+        /// <summary>
+        /// Checks if a piece is being moved or just clicked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DrawPanel_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (originalMoving != null)
+            {
+                // Invalid Mouse Position
+                if (selected is null || e.X < 0 || e.Y < 0 || e.X > DrawPanel.Size.Width || e.Y > DrawPanel.Size.Height)
+                {
+                    StopMoving();
+                }
+                // Move Point
+                else if (!movingFar)
+                {
+                    movingFar = Math.Abs(selected.ToPiece().State.X - e.X) > Consts.DragPrecision
+                        || Math.Abs(selected.ToPiece().State.Y - e.Y) > Consts.DragPrecision;
+                }
+                DisplayDrawings();
+
+                // Shadows
+                if (movingFar)
+                {
+                    var xChange = e.X - originalMoving[0];
+                    var yChange = e.Y - originalMoving[1];
+
+                    for (int index = 0; index < selected.ToPiece().Data.Count; index++)
+                    {
+                        var modState = Utils.CloneState(selected.ToPiece().State);
+                        modState.X += xChange;
+                        modState.Y += yChange;
+                        selected.Draw(g, modState, new ColourState(selected.ToPiece().ColourState,
+                            Consts.shadowShade, new Color[] { Consts.shadowShade }));
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Updates the user interface for the selected piece and stops
+        /// the movement search, actioning it if necessary.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DrawPanel_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (movingFar && selected != null && originalMoving != null)
+            {
+                var x = e.X - originalMoving[0];
+                var y = e.Y - originalMoving[1];
+
+                WIP.Originals[selected].X += x;
+                WIP.Originals[selected].Y += y;
+                StopMoving();
+                DisplayDrawings();
+
+                if (Panel.Controls.Count > 0 && Panel.Controls[0] is PositionsPanel)
+                {
+                    (Panel.Controls[0] as PositionsPanel).UpdateXY((int)WIP.Originals[selected].X, (int)WIP.Originals[selected].Y);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Resets all moving variables.
+        /// </summary>
+        private void StopMoving()
+        {
+            movingFar = false;
+            originalMoving = null;
         }
 
         /// <summary>

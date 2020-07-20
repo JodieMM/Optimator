@@ -42,8 +42,8 @@ namespace Optimator
             this.FixedBtn = new System.Windows.Forms.ToolStripButton();
             this.EraseBtn = new System.Windows.Forms.ToolStripButton();
             this.SketchesBtn = new System.Windows.Forms.ToolStripButton();
-            this.HidePointsBtn = new System.Windows.Forms.ToolStripButton();
             this.ReloadBtn = new System.Windows.Forms.ToolStripButton();
+            this.SettingsBtn = new System.Windows.Forms.ToolStripButton();
             this.PreviewBtn = new System.Windows.Forms.ToolStripButton();
             this.DisplayTimer = new System.Windows.Forms.Timer(this.components);
             this.DrawingLayoutPnl = new System.Windows.Forms.TableLayoutPanel();
@@ -82,8 +82,8 @@ namespace Optimator
             this.FixedBtn,
             this.EraseBtn,
             this.SketchesBtn,
-            this.HidePointsBtn,
             this.ReloadBtn,
+            this.SettingsBtn,
             this.PreviewBtn});
             this.ToolStrip.Location = new System.Drawing.Point(0, 0);
             this.ToolStrip.Name = "ToolStrip";
@@ -174,16 +174,6 @@ namespace Optimator
             this.SketchesBtn.Text = "Sketches";
             this.SketchesBtn.Click += new System.EventHandler(this.BtnWithPanel_Click);
             // 
-            // HidePointsBtn
-            // 
-            this.HidePointsBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.HidePointsBtn.Image = global::Optimator.Properties.Resources.HidePoints01;
-            this.HidePointsBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.HidePointsBtn.Name = "HidePointsBtn";
-            this.HidePointsBtn.Size = new System.Drawing.Size(36, 36);
-            this.HidePointsBtn.Text = "Hide Points";
-            this.HidePointsBtn.Click += new System.EventHandler(this.HidePointsBtn_Click);
-            // 
             // ReloadBtn
             // 
             this.ReloadBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -193,6 +183,16 @@ namespace Optimator
             this.ReloadBtn.Size = new System.Drawing.Size(36, 36);
             this.ReloadBtn.Text = "Reload";
             this.ReloadBtn.Click += new System.EventHandler(this.ReloadBtn_Click);
+            // 
+            // SettingsBtn
+            // 
+            this.SettingsBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.SettingsBtn.Image = global::Optimator.Properties.Resources.SettingsIcon;
+            this.SettingsBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.SettingsBtn.Name = "SettingsBtn";
+            this.SettingsBtn.Size = new System.Drawing.Size(36, 36);
+            this.SettingsBtn.Text = "Settings";
+            this.SettingsBtn.Click += new System.EventHandler(this.BtnWithPanel_Click);
             // 
             // PreviewBtn
             // 
@@ -346,7 +346,7 @@ namespace Optimator
         private Label TopLbl;
         private Label FrontLbl;
         private Label SideLbl;
-        private ToolStripButton HidePointsBtn;
         private ToolStripButton ReloadBtn;
+        private ToolStripButton SettingsBtn;
     }
 }

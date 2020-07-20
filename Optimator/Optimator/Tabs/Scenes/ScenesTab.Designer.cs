@@ -214,6 +214,8 @@ namespace Optimator.Tabs.Scenes
             this.DrawPanel.TabIndex = 31;
             this.DrawPanel.TabStop = false;
             this.DrawPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DrawPanel_MouseDown);
+            this.DrawPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.DrawPanel_MouseUp);
+            this.DrawPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.DrawPanel_MouseMove);
             // 
             // DisplayPanel
             // 

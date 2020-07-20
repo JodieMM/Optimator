@@ -26,6 +26,7 @@ namespace Optimator.Tabs.Scenes
         {
             InitializeComponent();
             Owner = owner;
+            ChangeTypeCb.Items.AddRange(Consts.possibleChanges);
             UpdateListbox();
             Owner.Owner.GetTabControl().KeyDown += KeyPress;
 
