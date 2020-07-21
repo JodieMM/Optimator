@@ -111,14 +111,17 @@ namespace Optimator.Tabs.Scenes
             if (sender == RotationBar)
             {
                 Owner.WIP.Originals[modifying].R = RotationBar.Value;
+                ValueToolTip.SetToolTip(sender as Control, (sender as TrackBar).Value.ToString());
             }
             else if (sender == TurnBar)
             {
                 Owner.WIP.Originals[modifying].T = TurnBar.Value;
+                ValueToolTip.SetToolTip(sender as Control, (sender as TrackBar).Value.ToString());
             }
             else if (sender == SpinBar)
             {
                 Owner.WIP.Originals[modifying].S = SpinBar.Value;
+                ValueToolTip.SetToolTip(sender as Control, (sender as TrackBar).Value.ToString());
             }
             else if (sender == XUpDown)
             {
@@ -131,6 +134,7 @@ namespace Optimator.Tabs.Scenes
             else if (sender == SizeBar)
             {
                 Owner.WIP.Originals[modifying].SM = SizeBar.Value / 100.0F;
+                ValueToolTip.SetToolTip(sender as Control, (sender as TrackBar).Value.ToString());
             }
             if (sender == ActiveControl)
             {
@@ -147,6 +151,16 @@ namespace Optimator.Tabs.Scenes
         {
             XUpDown.Value = x;
             YUpDown.Value = y;
+        }
+
+        /// <summary>
+        /// Adds a tool tip to the track bar.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TrackHover(object sender, EventArgs e)
+        {
+            ValueToolTip.SetToolTip(sender as Control, (sender as TrackBar).Value.ToString());
         }
 
 

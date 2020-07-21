@@ -94,7 +94,18 @@ namespace Optimator.Forms
             {
                 Position.S = SpinTrack.Value;
             }
+            ValueToolTip.SetToolTip(sender as Control, (sender as TrackBar).Value.ToString());
             DisplayDrawings();
+        }
+
+        /// <summary>
+        /// Adds a tool tip to the track bar.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TrackHover(object sender, EventArgs e)
+        {
+            ValueToolTip.SetToolTip(sender as Control, (sender as TrackBar).Value.ToString());
         }
 
         /// <summary>

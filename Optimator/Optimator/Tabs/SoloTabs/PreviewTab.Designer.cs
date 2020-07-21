@@ -39,6 +39,7 @@ namespace Optimator.Forms
             this.ToolStrip = new System.Windows.Forms.ToolStrip();
             this.CloseBtn = new System.Windows.Forms.ToolStripButton();
             this.DisplayTimer = new System.Windows.Forms.Timer(this.components);
+            this.ValueToolTip = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.TurnTrack)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.RotationTrack)).BeginInit();
             this.OptionsMenu.SuspendLayout();
@@ -61,6 +62,7 @@ namespace Optimator.Forms
             this.TurnTrack.TickFrequency = 10;
             this.TurnTrack.TickStyle = System.Windows.Forms.TickStyle.TopLeft;
             this.TurnTrack.Scroll += new System.EventHandler(this.Track_Scroll);
+            this.TurnTrack.MouseHover += new System.EventHandler(this.TrackHover);
             // 
             // RotationTrack
             // 
@@ -74,6 +76,7 @@ namespace Optimator.Forms
             this.RotationTrack.TabIndex = 6;
             this.RotationTrack.TickFrequency = 10;
             this.RotationTrack.Scroll += new System.EventHandler(this.Track_Scroll);
+            this.RotationTrack.MouseHover += new System.EventHandler(this.TrackHover);
             // 
             // OptionsMenu
             // 
@@ -85,20 +88,21 @@ namespace Optimator.Forms
             this.OptionsMenu.Size = new System.Drawing.Size(400, 1298);
             this.OptionsMenu.TabIndex = 5;
             // 
-            // SpinBar
+            // SpinTrack
             // 
             this.SpinTrack.BackColor = System.Drawing.Color.GhostWhite;
             this.SpinTrack.Cursor = System.Windows.Forms.Cursors.Default;
             this.SpinTrack.Location = new System.Drawing.Point(130, 65);
             this.SpinTrack.Margin = new System.Windows.Forms.Padding(6);
             this.SpinTrack.Maximum = 359;
-            this.SpinTrack.Name = "SpinBar";
+            this.SpinTrack.Name = "SpinTrack";
             this.SpinTrack.Orientation = System.Windows.Forms.Orientation.Vertical;
             this.SpinTrack.Size = new System.Drawing.Size(90, 1038);
             this.SpinTrack.TabIndex = 4;
             this.SpinTrack.TickFrequency = 10;
             this.SpinTrack.TickStyle = System.Windows.Forms.TickStyle.TopLeft;
             this.SpinTrack.Scroll += new System.EventHandler(this.Track_Scroll);
+            this.SpinTrack.MouseHover += new System.EventHandler(this.TrackHover);
             // 
             // DrawPanel
             // 
@@ -140,6 +144,10 @@ namespace Optimator.Forms
             this.DisplayTimer.Interval = 5;
             this.DisplayTimer.Tick += new System.EventHandler(this.DisplayTimer_Tick);
             // 
+            // ValueToolTip
+            // 
+            this.ValueToolTip.BackColor = System.Drawing.SystemColors.ControlLight;
+            // 
             // PreviewTab
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -176,5 +184,6 @@ namespace Optimator.Forms
         private System.Windows.Forms.ToolStrip ToolStrip;
         private System.Windows.Forms.ToolStripButton CloseBtn;
         private Timer DisplayTimer;
+        private ToolTip ValueToolTip;
     }
 }

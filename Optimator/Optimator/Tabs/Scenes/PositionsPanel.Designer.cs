@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.PositionsLbl = new System.Windows.Forms.Label();
             this.TableLayoutPnl = new System.Windows.Forms.TableLayoutPanel();
             this.OrderLayoutPnl = new System.Windows.Forms.TableLayoutPanel();
@@ -36,7 +37,7 @@
             this.SizeBar = new System.Windows.Forms.TrackBar();
             this.SpinLbl = new System.Windows.Forms.Label();
             this.OrderLbl = new System.Windows.Forms.Label();
-            this.SMLbl = new System.Windows.Forms.Label();
+            this.SizeLbl = new System.Windows.Forms.Label();
             this.SpinBar = new System.Windows.Forms.TrackBar();
             this.YLbl = new System.Windows.Forms.Label();
             this.XLbl = new System.Windows.Forms.Label();
@@ -46,6 +47,7 @@
             this.TurnBar = new System.Windows.Forms.TrackBar();
             this.RotationLbl = new System.Windows.Forms.Label();
             this.RotationBar = new System.Windows.Forms.TrackBar();
+            this.ValueToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.TableLayoutPnl.SuspendLayout();
             this.OrderLayoutPnl.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SizeBar)).BeginInit();
@@ -76,7 +78,7 @@
             this.TableLayoutPnl.Controls.Add(this.SizeBar, 1, 6);
             this.TableLayoutPnl.Controls.Add(this.SpinLbl, 0, 3);
             this.TableLayoutPnl.Controls.Add(this.OrderLbl, 0, 0);
-            this.TableLayoutPnl.Controls.Add(this.SMLbl, 0, 6);
+            this.TableLayoutPnl.Controls.Add(this.SizeLbl, 0, 6);
             this.TableLayoutPnl.Controls.Add(this.SpinBar, 1, 3);
             this.TableLayoutPnl.Controls.Add(this.YLbl, 0, 5);
             this.TableLayoutPnl.Controls.Add(this.XLbl, 0, 4);
@@ -160,6 +162,7 @@
             this.SizeBar.TickFrequency = 250;
             this.SizeBar.Value = 100;
             this.SizeBar.Scroll += new System.EventHandler(this.UpdateSelectedPiece);
+            this.SizeBar.MouseHover += new System.EventHandler(this.TrackHover);
             // 
             // SpinLbl
             // 
@@ -183,16 +186,16 @@
             this.OrderLbl.TabIndex = 135;
             this.OrderLbl.Text = "Order";
             // 
-            // SMLbl
+            // SizeLbl
             // 
-            this.SMLbl.AutoSize = true;
-            this.SMLbl.Font = new System.Drawing.Font("Segoe UI", 16F);
-            this.SMLbl.Location = new System.Drawing.Point(4, 570);
-            this.SMLbl.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.SMLbl.Name = "SMLbl";
-            this.SMLbl.Size = new System.Drawing.Size(200, 59);
-            this.SMLbl.TabIndex = 130;
-            this.SMLbl.Text = "Size Mod";
+            this.SizeLbl.AutoSize = true;
+            this.SizeLbl.Font = new System.Drawing.Font("Segoe UI", 16F);
+            this.SizeLbl.Location = new System.Drawing.Point(4, 570);
+            this.SizeLbl.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.SizeLbl.Name = "SizeLbl";
+            this.SizeLbl.Size = new System.Drawing.Size(99, 59);
+            this.SizeLbl.TabIndex = 130;
+            this.SizeLbl.Text = "Size";
             // 
             // SpinBar
             // 
@@ -205,6 +208,7 @@
             this.SpinBar.TabIndex = 138;
             this.SpinBar.TickFrequency = 30;
             this.SpinBar.Scroll += new System.EventHandler(this.UpdateSelectedPiece);
+            this.SpinBar.MouseHover += new System.EventHandler(this.TrackHover);
             // 
             // YLbl
             // 
@@ -294,6 +298,7 @@
             this.TurnBar.TabIndex = 137;
             this.TurnBar.TickFrequency = 30;
             this.TurnBar.Scroll += new System.EventHandler(this.UpdateSelectedPiece);
+            this.TurnBar.MouseHover += new System.EventHandler(this.TrackHover);
             // 
             // RotationLbl
             // 
@@ -317,6 +322,11 @@
             this.RotationBar.TabIndex = 136;
             this.RotationBar.TickFrequency = 30;
             this.RotationBar.Scroll += new System.EventHandler(this.UpdateSelectedPiece);
+            this.RotationBar.MouseHover += new System.EventHandler(this.TrackHover);
+            // 
+            // ValueToolTip
+            // 
+            this.ValueToolTip.BackColor = System.Drawing.SystemColors.ControlLight;
             // 
             // PositionsPanel
             // 
@@ -348,7 +358,7 @@
         private System.Windows.Forms.TrackBar SizeBar;
         private System.Windows.Forms.Label SpinLbl;
         private System.Windows.Forms.Label OrderLbl;
-        private System.Windows.Forms.Label SMLbl;
+        private System.Windows.Forms.Label SizeLbl;
         private System.Windows.Forms.TrackBar SpinBar;
         private System.Windows.Forms.Label YLbl;
         private System.Windows.Forms.Label XLbl;
@@ -361,5 +371,6 @@
         private System.Windows.Forms.Button DownBtn;
         private System.Windows.Forms.Button UpBtn;
         private System.Windows.Forms.TableLayoutPanel OrderLayoutPnl;
+        private System.Windows.Forms.ToolTip ValueToolTip;
     }
 }

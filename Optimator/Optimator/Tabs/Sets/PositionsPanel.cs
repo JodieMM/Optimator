@@ -23,7 +23,7 @@ namespace Optimator.Tabs.Sets
         {
             InitializeComponent();
             Owner = owner;
-            EnableScrolls(Owner.selected != null);
+            EnableControls(Owner.selected != null);
         }
 
 
@@ -36,7 +36,7 @@ namespace Optimator.Tabs.Sets
         public override void Resize()
         {
             var widthPercent = 0.9F;
-            var heightPercent = 0.3F;
+            var heightPercent = 0.6F;
 
             var bigWidth = (int)(Width * widthPercent);
             var lilWidth = (int)((Width - bigWidth) / 2.0);
@@ -52,19 +52,22 @@ namespace Optimator.Tabs.Sets
         /// Enable scroll bars.
         /// </summary>
         /// <param name="enable">False if disabling</param>
-        public void EnableScrolls(bool enable = true)
+        public void EnableControls(bool enable = true)
         {
             SizeBar.Enabled = enable;
             if (enable)
             {
                 SizeBar.Value = (int)(Owner.WIP.PersonalStates[Owner.selected].SM * 100.0F);
             }
-            Utils.EnableObjects(new List<Control>() { RotationBar, TurnBar, SpinBar }, enable && Owner.selected != Owner.WIP.BasePiece);
+            Utils.EnableObjects(new List<Control>() { RotationBar, TurnBar, SpinBar, XUpDown, YUpDown },
+                enable && Owner.selected != Owner.WIP.BasePiece);
             if (enable && Owner.selected != Owner.WIP.BasePiece)
             {               
                 RotationBar.Value = (int)Owner.WIP.PersonalStates[Owner.selected].R;
                 TurnBar.Value = (int)Owner.WIP.PersonalStates[Owner.selected].T;
                 SpinBar.Value = (int)Owner.WIP.PersonalStates[Owner.selected].S;
+                XUpDown.Value = (decimal)Owner.WIP.PersonalStates[Owner.selected].X;
+                YUpDown.Value = (decimal)Owner.WIP.PersonalStates[Owner.selected].Y;
             }
         }
 
@@ -101,8 +104,41 @@ namespace Optimator.Tabs.Sets
             {
                 Owner.WIP.PersonalStates[Owner.selected].SM = SizeBar.Value / 100.0F;
             }
-
+            ValueToolTip.SetToolTip(sender as Control, (sender as TrackBar).Value.ToString());
             Owner.DisplayDrawings();
+        }
+
+        /// <summary>
+        /// Updates the values of the selected item based on updown value.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void UpDown_ValueChanged(object sender, EventArgs e)
+        {
+            if (Owner.selected == null)
+            {
+                return;
+            }
+
+            if (sender == XUpDown)
+            {
+                Owner.WIP.PersonalStates[Owner.selected].X = (float)XUpDown.Value;
+            }
+            else if (sender == YUpDown)
+            {
+                Owner.WIP.PersonalStates[Owner.selected].Y = (float)YUpDown.Value;
+            }
+            Owner.DisplayDrawings();
+        }
+
+        /// <summary>
+        /// Adds a tool tip to the track bar.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TrackHover(object sender, EventArgs e)
+        {
+            ValueToolTip.SetToolTip(sender as Control, (sender as TrackBar).Value.ToString());
         }
     }
 }

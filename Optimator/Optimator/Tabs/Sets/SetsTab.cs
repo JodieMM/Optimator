@@ -673,7 +673,7 @@ namespace Optimator.Tabs.Sets
             selected = piece;
             if (Panel.Controls.Count > 0 && Panel.Controls[0] is PositionsPanel)
             {
-                (Panel.Controls[0] as PositionsPanel).EnableScrolls();
+                (Panel.Controls[0] as PositionsPanel).EnableControls();
             }
         }
 
@@ -692,7 +692,7 @@ namespace Optimator.Tabs.Sets
             }
             else if (Panel.Controls.Count > 0 && Panel.Controls[0] is PositionsPanel)
             {
-                (Panel.Controls[0] as PositionsPanel).EnableScrolls(false);
+                (Panel.Controls[0] as PositionsPanel).EnableControls(false);
             }
         }
 

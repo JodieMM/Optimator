@@ -604,8 +604,6 @@ namespace Optimator.Tabs.Scenes
         {
             if (WIP.PartsList.Count > 0)
             {
-                Cursor = Cursors.WaitCursor;
-
                 // Draw Panel
                 WIP.RunScene(CurrentTimeUpDown.Value);
                 DisplayDrawPanel();
@@ -615,8 +613,6 @@ namespace Optimator.Tabs.Scenes
                 {
                     (Panel.Controls[0] as MovePanel).UpdateListbox();
                 }
-
-                Cursor = Cursors.Default;
             }
             else
             {

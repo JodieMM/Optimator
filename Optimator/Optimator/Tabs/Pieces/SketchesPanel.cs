@@ -52,6 +52,26 @@ namespace Optimator.Tabs.Pieces
         }
 
         /// <summary>
+        /// Enable controls when a sketch is selected.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SketchLb_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            EnableControls(SketchLb.SelectedIndex != -1);
+            if (SketchLb.SelectedIndex != -1)
+            {
+                var selectedPart = (Part)SketchLb.SelectedItem;
+                XUpDown.Value = (decimal)selectedPart.ToPiece().State.X;
+                YUpDown.Value = (decimal)selectedPart.ToPiece().State.Y;
+                SpinBar.Value = (int)selectedPart.ToPiece().State.S;
+                SizeBar.Value = (int)(selectedPart.ToPiece().State.SM * 100);
+                RotationBar.Value = (int)selectedPart.ToPiece().State.R;
+                TurnBar.Value = (int)selectedPart.ToPiece().State.T;
+            }
+        }
+
+        /// <summary>
         /// Displays drawing with/without sketch item after
         /// its visability is changed.
         /// </summary>
@@ -95,18 +115,22 @@ namespace Optimator.Tabs.Pieces
             else if (sender == RotationBar)
             {
                 selectedPart.ToPiece().State.R = RotationBar.Value;
+                ValueToolTip.SetToolTip(sender as Control, (sender as TrackBar).Value.ToString());
             }
             else if (sender == TurnBar)
             {
                 selectedPart.ToPiece().State.T = TurnBar.Value;
+                ValueToolTip.SetToolTip(sender as Control, (sender as TrackBar).Value.ToString());
             }
             else if (sender == SpinBar)
             {
                 selectedPart.ToPiece().State.S = SpinBar.Value;
+                ValueToolTip.SetToolTip(sender as Control, (sender as TrackBar).Value.ToString());
             }
             else if (sender == SizeBar)
             {
-                selectedPart.ToPiece().State.SM = SizeBar.Value;
+                selectedPart.ToPiece().State.SM = SizeBar.Value / 100.0F;
+                ValueToolTip.SetToolTip(sender as Control, (sender as TrackBar).Value.ToString());
             }
 
             Owner.DisplayDrawings();
@@ -120,6 +144,31 @@ namespace Optimator.Tabs.Pieces
         private void LoadSketchBtn_Click(object sender, EventArgs e)
         {
             Utils.NewTabPage(new LoadPieceTab(Owner.Owner, Owner), "Load");
+        }
+
+        /// <summary>
+        /// Adds a tool tip to the track bar.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TrackHover(object sender, EventArgs e)
+        {
+            ValueToolTip.SetToolTip(sender as Control, (sender as TrackBar).Value.ToString());
+        }
+
+        /// <summary>
+        /// Enables or disables the sketch controls.
+        /// </summary>
+        /// <param name="enable">True if enabled</param>
+        private void EnableControls(bool enable = true)
+        {
+            XUpDown.Enabled = enable;
+            YUpDown.Enabled = enable;
+            SpinBar.Enabled = enable;
+            SizeBar.Enabled = enable;
+            RotationBar.Enabled = enable;
+            TurnBar.Enabled = enable;
+            DeleteSketchBtn.Enabled = enable;
         }
     }
 }
