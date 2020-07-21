@@ -46,8 +46,8 @@ namespace Optimator
 
             ChangeDrawingBgs(Utils.ColourFromString(Properties.Settings.Default.BgColour));
             Owner.GetTabControl().KeyDown += KeyPress;
-            Enter += FocusOn;
-            VisibleChanged += FocusOn;
+            Enter += RefreshDrawPanel;
+            VisibleChanged += RefreshDrawPanel;
         }
 
 
@@ -91,16 +91,6 @@ namespace Optimator
             Panel.Width = largeWidth;
             Utils.ResizePanel(Panel);
             DisplayDrawings();
-        }
-
-        /// <summary>
-        /// Redraws boards once focus is regained.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void FocusOn(object sender, EventArgs e)
-        {
-            DisplayTimer.Start();
         }
 
         #region ToolStrip

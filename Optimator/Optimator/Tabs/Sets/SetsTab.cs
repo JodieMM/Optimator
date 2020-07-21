@@ -47,8 +47,8 @@ namespace Optimator.Tabs.Sets
 
             Owner.GetTabControl().KeyDown += KeyPress;
             Owner.GetTabControl().KeyUp += KeyPress;
-            Enter += FocusOn;
-            VisibleChanged += FocusOn;
+            Enter += RefreshDrawPanel;
+            VisibleChanged += RefreshDrawPanel;
 
             ChangeDrawingBgs(Utils.ColourFromString(Properties.Settings.Default.BgColour));
         }
@@ -111,16 +111,6 @@ namespace Optimator.Tabs.Sets
             DrawBase.Size = DrawRight.Size = DrawDown.Size = new Size(length, length);
             Panel.Width = largeWidth;
             Utils.ResizePanel(Panel);
-            DisplayDrawings();
-        }
-
-        /// <summary>
-        /// Redraws boards once focus is regained.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void FocusOn(object sender, EventArgs e)
-        {
             DisplayDrawings();
         }
 
@@ -764,10 +754,12 @@ namespace Optimator.Tabs.Sets
         {
             WIP.JoinsIndex.Add(a, new Join(a, b, WIP));
             WIP.AddToJoinedPieces(a, b);
-            WIP.PersonalStates[a] = new State(0, 0, Utils.Modulo(WIP.PersonalStates[a].R - WIP.PersonalStates[b].R, 360),
-                Utils.Modulo(WIP.PersonalStates[a].T - WIP.PersonalStates[b].T, 360),
-                Utils.Modulo(WIP.PersonalStates[a].S - WIP.PersonalStates[b].S, 360), 
-                WIP.PersonalStates[a].SM / WIP.PersonalStates[b].SM);
+            var baseState = WIP.JoinsIndex.ContainsKey(b) ? 
+                WIP.JoinsIndex[b].CurrentStateOfAttached(WIP.PersonalStates[b]) : WIP.PersonalStates[b];
+            WIP.PersonalStates[a] = new State(0, 0, Utils.Modulo(WIP.PersonalStates[a].R - baseState.R, 360),
+                Utils.Modulo(WIP.PersonalStates[a].T - baseState.T, 360),
+                Utils.Modulo(WIP.PersonalStates[a].S - baseState.S, 360), 
+                WIP.PersonalStates[a].SM / baseState.SM);
         }
 
         /// <summary>

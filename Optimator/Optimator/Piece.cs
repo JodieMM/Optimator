@@ -844,7 +844,7 @@ namespace Optimator
                 }
             }
             // Flat Horizontal Line
-            if (ranges.Count == 0)
+            if (ranges.Count == 0 && outlineShape.Count == 2)
             {
                 var minIndex = outlineShape[0][0] > outlineShape[1][0] ? 1 : 0;
                 for (int index = (int)(outlineShape[0][1] - halfOutline); index < (int)(outlineShape[0][1] + halfOutline); index++)

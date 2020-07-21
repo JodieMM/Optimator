@@ -132,13 +132,14 @@ namespace Optimator
         /// <summary>
         /// Finds the current state for the attached piece.
         /// </summary>
+        /// <param name="aState">Personal state</param>
         /// <returns>State representing xyrtssm</returns>
         public State CurrentStateOfAttached(State aState)
         {
             var modR = Utils.Modulo(aState.R + B.State.R, 360);
             var modT = Utils.Modulo(aState.T + B.State.T, 360);
             var modS = Utils.Modulo(aState.S + B.State.S, 360);
-            var modSM = B.State.SM * A.State.SM;
+            var modSM = B.State.SM * aState.SM;
 
             var attachedJoinB = Utils.SpinAndSizeCoord(B.State.S, B.State.SM,
                 new float[] { Utils.RotOrTurnCalculation(B.State.R, BX, BXRight), Utils.RotOrTurnCalculation(B.State.T, BY, BYDown) });
