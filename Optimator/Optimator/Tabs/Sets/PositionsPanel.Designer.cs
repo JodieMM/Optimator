@@ -85,6 +85,7 @@
             this.SizeBar.Size = new System.Drawing.Size(376, 138);
             this.SizeBar.SmallChange = 5;
             this.SizeBar.TabIndex = 128;
+            this.SizeBar.TabStop = false;
             this.SizeBar.TickFrequency = 50;
             this.SizeBar.Value = 100;
             this.SizeBar.Scroll += new System.EventHandler(this.ScrollBar_Scroll);
@@ -110,6 +111,7 @@
             this.SpinBar.Name = "SpinBar";
             this.SpinBar.Size = new System.Drawing.Size(376, 90);
             this.SpinBar.TabIndex = 126;
+            this.SpinBar.TabStop = false;
             this.SpinBar.TickFrequency = 10;
             this.SpinBar.Scroll += new System.EventHandler(this.ScrollBar_Scroll);
             this.SpinBar.MouseHover += new System.EventHandler(this.TrackHover);
@@ -122,7 +124,7 @@
             this.TurnLbl.Margin = new System.Windows.Forms.Padding(0, 0, 0, 30);
             this.TurnLbl.Name = "TurnLbl";
             this.TurnLbl.Size = new System.Drawing.Size(111, 59);
-            this.TurnLbl.TabIndex = 125;
+            this.TurnLbl.TabIndex = 122;
             this.TurnLbl.Text = "Turn";
             // 
             // TurnBar
@@ -134,6 +136,7 @@
             this.TurnBar.Name = "TurnBar";
             this.TurnBar.Size = new System.Drawing.Size(376, 90);
             this.TurnBar.TabIndex = 124;
+            this.TurnBar.TabStop = false;
             this.TurnBar.TickFrequency = 10;
             this.TurnBar.Scroll += new System.EventHandler(this.ScrollBar_Scroll);
             this.TurnBar.MouseHover += new System.EventHandler(this.TrackHover);
@@ -157,7 +160,8 @@
             this.RotationBar.Maximum = 359;
             this.RotationBar.Name = "RotationBar";
             this.RotationBar.Size = new System.Drawing.Size(376, 90);
-            this.RotationBar.TabIndex = 122;
+            this.RotationBar.TabIndex = 125;
+            this.RotationBar.TabStop = false;
             this.RotationBar.TickFrequency = 10;
             this.RotationBar.Scroll += new System.EventHandler(this.ScrollBar_Scroll);
             this.RotationBar.MouseHover += new System.EventHandler(this.TrackHover);
@@ -233,6 +237,7 @@
             this.XUpDown.Name = "XUpDown";
             this.XUpDown.Size = new System.Drawing.Size(376, 64);
             this.XUpDown.TabIndex = 132;
+            this.XUpDown.TabStop = false;
             this.XUpDown.ValueChanged += new System.EventHandler(this.UpDown_ValueChanged);
             // 
             // YUpDown
@@ -255,6 +260,7 @@
             this.YUpDown.Name = "YUpDown";
             this.YUpDown.Size = new System.Drawing.Size(376, 64);
             this.YUpDown.TabIndex = 133;
+            this.YUpDown.TabStop = false;
             this.YUpDown.ValueChanged += new System.EventHandler(this.UpDown_ValueChanged);
             // 
             // ValueToolTip

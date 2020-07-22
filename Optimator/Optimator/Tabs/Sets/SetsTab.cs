@@ -289,6 +289,7 @@ namespace Optimator.Tabs.Sets
         private void DrawBoard_MouseDown(object sender, MouseEventArgs e)
         {
             var sent = sender == DrawBase ? 0 : sender == DrawRight ? 1 : 2;
+            ActiveControl = DrawBase;
 
             // Move the Piece's Join            
             if (GetIfJoinBtnPressed())
@@ -551,6 +552,10 @@ namespace Optimator.Tabs.Sets
                         if (selected != null)
                         {
                             WIP.PersonalStates[selected].Y -= 1;
+                            if (Panel.Controls.Count > 0 && Panel.Controls[0] is PositionsPanel)
+                            {
+                                (Panel.Controls[0] as PositionsPanel).UpdateXYValue(WIP.PersonalStates[selected].Y, false);
+                            }
                             DisplayDrawings();
                         }
                         break;
@@ -558,6 +563,10 @@ namespace Optimator.Tabs.Sets
                         if (selected != null)
                         {
                             WIP.PersonalStates[selected].Y += 1;
+                            if (Panel.Controls.Count > 0 && Panel.Controls[0] is PositionsPanel)
+                            {
+                                (Panel.Controls[0] as PositionsPanel).UpdateXYValue(WIP.PersonalStates[selected].Y, false);
+                            }
                             DisplayDrawings();
                         }
                         break;
@@ -565,6 +574,10 @@ namespace Optimator.Tabs.Sets
                         if (selected != null)
                         {
                             WIP.PersonalStates[selected].X -= 1;
+                            if (Panel.Controls.Count > 0 && Panel.Controls[0] is PositionsPanel)
+                            {
+                                (Panel.Controls[0] as PositionsPanel).UpdateXYValue(WIP.PersonalStates[selected].X, true);
+                            }
                             DisplayDrawings();
                         }
                         break;
@@ -572,6 +585,10 @@ namespace Optimator.Tabs.Sets
                         if (selected != null)
                         {
                             WIP.PersonalStates[selected].X += 1;
+                            if (Panel.Controls.Count > 0 && Panel.Controls[0] is PositionsPanel)
+                            {
+                                (Panel.Controls[0] as PositionsPanel).UpdateXYValue(WIP.PersonalStates[selected].X, true);
+                            }
                             DisplayDrawings();
                         }
                         break;

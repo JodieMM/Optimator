@@ -132,6 +132,23 @@ namespace Optimator.Tabs.Sets
         }
 
         /// <summary>
+        /// Update the UI to reflect changes to X or Y.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="x"></param>
+        public void UpdateXYValue(float value, bool x)
+        {
+            if (x)
+            {
+                XUpDown.Value = (decimal)value;
+            }
+            else
+            {
+                YUpDown.Value = (decimal)value;
+            }
+        }
+
+        /// <summary>
         /// Adds a tool tip to the track bar.
         /// </summary>
         /// <param name="sender"></param>

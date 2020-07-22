@@ -70,6 +70,7 @@
             this.UpBtn.Name = "UpBtn";
             this.UpBtn.Size = new System.Drawing.Size(374, 133);
             this.UpBtn.TabIndex = 127;
+            this.UpBtn.TabStop = false;
             this.UpBtn.Text = "Move Up";
             this.UpBtn.UseVisualStyleBackColor = false;
             this.UpBtn.Click += new System.EventHandler(this.UpDownBtn_Click);
@@ -85,6 +86,7 @@
             this.DownBtn.Name = "DownBtn";
             this.DownBtn.Size = new System.Drawing.Size(374, 133);
             this.DownBtn.TabIndex = 128;
+            this.DownBtn.TabStop = false;
             this.DownBtn.Text = "Move Down";
             this.DownBtn.UseVisualStyleBackColor = false;
             this.DownBtn.Click += new System.EventHandler(this.UpDownBtn_Click);

@@ -59,6 +59,7 @@
             this.SelectFromTopCb.Name = "SelectFromTopCb";
             this.SelectFromTopCb.Size = new System.Drawing.Size(462, 63);
             this.SelectFromTopCb.TabIndex = 1;
+            this.SelectFromTopCb.TabStop = false;
             this.SelectFromTopCb.Text = "Select Piece from Top";
             this.SelectFromTopCb.UseVisualStyleBackColor = true;
             this.SelectFromTopCb.CheckedChanged += new System.EventHandler(this.SelectFromTopCb_CheckedChanged);

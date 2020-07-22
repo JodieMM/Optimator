@@ -48,6 +48,7 @@
             this.CompleteBtn.Name = "CompleteBtn";
             this.CompleteBtn.Size = new System.Drawing.Size(468, 109);
             this.CompleteBtn.TabIndex = 13;
+            this.CompleteBtn.TabStop = false;
             this.CompleteBtn.Text = "Complete";
             this.CompleteBtn.UseVisualStyleBackColor = false;
             this.CompleteBtn.Click += new System.EventHandler(this.CompleteBtn_Click);
@@ -59,7 +60,7 @@
             this.SaveLbl.Location = new System.Drawing.Point(30, 45);
             this.SaveLbl.Name = "SaveLbl";
             this.SaveLbl.Size = new System.Drawing.Size(146, 71);
-            this.SaveLbl.TabIndex = 12;
+            this.SaveLbl.TabIndex = 10;
             this.SaveLbl.Text = "Save";
             // 
             // SaveBtn
@@ -72,7 +73,8 @@
             this.SaveBtn.Margin = new System.Windows.Forms.Padding(0);
             this.SaveBtn.Name = "SaveBtn";
             this.SaveBtn.Size = new System.Drawing.Size(468, 109);
-            this.SaveBtn.TabIndex = 10;
+            this.SaveBtn.TabIndex = 12;
+            this.SaveBtn.TabStop = false;
             this.SaveBtn.Text = "Save";
             this.SaveBtn.UseVisualStyleBackColor = false;
             this.SaveBtn.Click += new System.EventHandler(this.SaveBtn_Click);
@@ -106,6 +108,7 @@
             this.SaveAsBtn.Name = "SaveAsBtn";
             this.SaveAsBtn.Size = new System.Drawing.Size(468, 109);
             this.SaveAsBtn.TabIndex = 15;
+            this.SaveAsBtn.TabStop = false;
             this.SaveAsBtn.Text = "Save As";
             this.SaveAsBtn.UseVisualStyleBackColor = false;
             this.SaveAsBtn.Click += new System.EventHandler(this.SaveBtn_Click);

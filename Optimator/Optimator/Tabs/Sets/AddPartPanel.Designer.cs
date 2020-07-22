@@ -46,7 +46,8 @@
             this.AddPartBtn.Margin = new System.Windows.Forms.Padding(0);
             this.AddPartBtn.Name = "AddPartBtn";
             this.AddPartBtn.Size = new System.Drawing.Size(437, 107);
-            this.AddPartBtn.TabIndex = 82;
+            this.AddPartBtn.TabIndex = 84;
+            this.AddPartBtn.TabStop = false;
             this.AddPartBtn.Text = "Select Part";
             this.AddPartBtn.UseVisualStyleBackColor = false;
             this.AddPartBtn.Click += new System.EventHandler(this.AddBtn_Click);
@@ -58,7 +59,7 @@
             this.AddPartLbl.Location = new System.Drawing.Point(34, 46);
             this.AddPartLbl.Name = "AddPartLbl";
             this.AddPartLbl.Size = new System.Drawing.Size(254, 72);
-            this.AddPartLbl.TabIndex = 84;
+            this.AddPartLbl.TabIndex = 82;
             this.AddPartLbl.Text = "Add Part";
             // 
             // TableLayoutPnl
@@ -88,6 +89,7 @@
             this.CloneAttachmentsBtn.Name = "CloneAttachmentsBtn";
             this.CloneAttachmentsBtn.Size = new System.Drawing.Size(437, 108);
             this.CloneAttachmentsBtn.TabIndex = 84;
+            this.CloneAttachmentsBtn.TabStop = false;
             this.CloneAttachmentsBtn.Text = "Clone Attachments";
             this.CloneAttachmentsBtn.UseVisualStyleBackColor = false;
             this.CloneAttachmentsBtn.Visible = false;
@@ -104,6 +106,7 @@
             this.CloneSoloBtn.Name = "CloneSoloBtn";
             this.CloneSoloBtn.Size = new System.Drawing.Size(437, 107);
             this.CloneSoloBtn.TabIndex = 83;
+            this.CloneSoloBtn.TabStop = false;
             this.CloneSoloBtn.Text = "Clone";
             this.CloneSoloBtn.UseVisualStyleBackColor = false;
             this.CloneSoloBtn.Click += new System.EventHandler(this.CloneBtn_Click);

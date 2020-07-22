@@ -98,6 +98,14 @@ namespace Optimator.Forms.Scenes
                 {
                     // Handled by Exception
                 }
+                catch (UnauthorizedAccessException)
+                {
+                    MessageBox.Show("You do not have access to this file.", "Unauthorised Access Error", MessageBoxButtons.OK);
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("An error has occurred.", "Error", MessageBoxButtons.OK);
+                }
             }
         }
 

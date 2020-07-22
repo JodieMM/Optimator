@@ -57,7 +57,7 @@
             this.RotationFlipLbl.Location = new System.Drawing.Point(3, 429);
             this.RotationFlipLbl.Name = "RotationFlipLbl";
             this.RotationFlipLbl.Size = new System.Drawing.Size(155, 45);
-            this.RotationFlipLbl.TabIndex = 130;
+            this.RotationFlipLbl.TabIndex = 124;
             this.RotationFlipLbl.Text = "Rotation";
             // 
             // FlipsTurn
@@ -76,6 +76,7 @@
             this.FlipsTurn.Name = "FlipsTurn";
             this.FlipsTurn.Size = new System.Drawing.Size(245, 46);
             this.FlipsTurn.TabIndex = 129;
+            this.FlipsTurn.TabStop = false;
             this.FlipsTurn.ValueChanged += new System.EventHandler(this.FlipsUpDown_ValueChanged);
             // 
             // FlipsRotation
@@ -93,7 +94,8 @@
             0});
             this.FlipsRotation.Name = "FlipsRotation";
             this.FlipsRotation.Size = new System.Drawing.Size(245, 46);
-            this.FlipsRotation.TabIndex = 124;
+            this.FlipsRotation.TabIndex = 130;
+            this.FlipsRotation.TabStop = false;
             this.FlipsRotation.ValueChanged += new System.EventHandler(this.FlipsUpDown_ValueChanged);
             // 
             // JoinBtn
@@ -110,6 +112,7 @@
             this.JoinBtn.Name = "JoinBtn";
             this.JoinBtn.Size = new System.Drawing.Size(494, 169);
             this.JoinBtn.TabIndex = 140;
+            this.JoinBtn.TabStop = false;
             this.JoinBtn.Text = "Modify Join";
             this.JoinBtn.UseVisualStyleBackColor = false;
             this.JoinBtn.Click += new System.EventHandler(this.ToggleButton);
@@ -127,6 +130,7 @@
             this.FlipsCb.Name = "FlipsCb";
             this.FlipsCb.Size = new System.Drawing.Size(494, 79);
             this.FlipsCb.TabIndex = 139;
+            this.FlipsCb.TabStop = false;
             this.FlipsCb.Text = "Flips?";
             this.FlipsCb.UseVisualStyleBackColor = true;
             this.FlipsCb.CheckedChanged += new System.EventHandler(this.FlipsCb_CheckedChanged);
@@ -145,6 +149,7 @@
             this.SelectBaseBtn.Name = "SelectBaseBtn";
             this.SelectBaseBtn.Size = new System.Drawing.Size(494, 169);
             this.SelectBaseBtn.TabIndex = 138;
+            this.SelectBaseBtn.TabStop = false;
             this.SelectBaseBtn.Text = "Select Base";
             this.SelectBaseBtn.UseVisualStyleBackColor = false;
             this.SelectBaseBtn.Click += new System.EventHandler(this.ToggleButton);

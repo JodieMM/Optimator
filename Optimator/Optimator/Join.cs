@@ -42,8 +42,10 @@ namespace Optimator
             A = a;
             B = b;
             Set = set;
-            BX = BXRight = (As.X - Bs.X) / Bs.SM;
-            BY = BYDown = (As.Y - Bs.Y) / Bs.SM;
+            var coord = Utils.SpinAndSizeCoord(-Bs.S, 1, new float[] { (As.X - Bs.X) / Bs.SM, (As.Y - Bs.Y) / Bs.SM });
+            BX = BXRight = coord[0];
+            BY = BYDown = coord[1];
+            
             AX = AXRight = AY = AYDown = 0;
         }
 
