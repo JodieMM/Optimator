@@ -67,17 +67,18 @@ namespace Optimator
         public static List<string> ReadFile(string directory)
         {
             var data = new List<string>();
-            var file = new StreamReader(directory);
-            string line;
-            while ((line = file.ReadLine()) != null)
+            using (var file = new StreamReader(directory))
             {
-                data.Add(line);
-                if (data.Count == 1)
+                string line;
+                while ((line = file.ReadLine()) != null)
                 {
-                    CheckValidVersion(data[0]);
+                    data.Add(line);
+                    if (data.Count == 1)
+                    {
+                        CheckValidVersion(data[0]);
+                    }
                 }
             }
-            file.Close();
             return data;
         }
 
@@ -576,6 +577,7 @@ namespace Optimator
         {
             var clone = new Piece
             {
+                Name = piece.Name,
                 Data = CloneSpotList(piece.Data),
                 State = CloneState(piece.State),
                 ColourState = CloneColourState(piece.ColourState),

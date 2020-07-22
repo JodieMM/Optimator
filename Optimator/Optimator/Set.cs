@@ -208,7 +208,8 @@ namespace Optimator
         public List<Piece> SortOrder()
         {
             CalculateStates(0, BasePiece.State);
-            return SortOrderFromBasePiece(BasePiece);
+            return PiecesList;
+            // TODO: Sort Order return SortOrderFromBasePiece(BasePiece);
         }
 
         /// <summary>
@@ -223,8 +224,7 @@ namespace Optimator
             // Check if current piece is a base
             if (JoinedPieces.ContainsKey(baseIndex))
             {
-                var attachedPieces = JoinedPieces[baseIndex];
-                foreach(var attachedPiece in attachedPieces)
+                foreach(var attachedPiece in JoinedPieces[baseIndex])
                 {
                     var attachedJoin = JoinsIndex[attachedPiece];
                     var tempPieceList = SortOrderFromBasePiece(attachedPiece);
