@@ -123,8 +123,9 @@ namespace Optimator.Forms.Sets
             {
                 var clone = Utils.ClonePiece(Owner.selected);
                 Owner.WIP.PiecesList.Add(clone);
-                clone.State.SetCoordsBasedOnBoard(Owner.GetBoardSizing());
-                Owner.WIP.PersonalStates.Add(clone, Utils.CloneState(clone.State));
+                Owner.WIP.PersonalStates.Add(clone, new State());
+                Owner.WIP.PersonalStates[clone].SetCoordsBasedOnBoard(Owner.GetBoardSizing());
+                
                 if (sender == CloneAttachmentsBtn)
                 {
                     CloneAttached(Owner.selected, clone);

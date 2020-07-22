@@ -37,13 +37,13 @@ namespace Optimator
         /// Constructor for creating a new join.
         /// </summary>
         /// <param name="piece">The piece being joined</param>
-        public Join(Piece a, Piece b, Set set)
+        public Join(Piece a, Piece b, Set set, State As, State Bs)
         {
             A = a;
             B = b;
             Set = set;
-            BX = BXRight = A.State.X - B.State.X;
-            BY = BYDown = A.State.Y - B.State.Y;
+            BX = BXRight = (As.X - Bs.X) / Bs.SM;
+            BY = BYDown = (As.Y - Bs.Y) / Bs.SM;
             AX = AXRight = AY = AYDown = 0;
         }
 

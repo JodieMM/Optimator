@@ -752,10 +752,10 @@ namespace Optimator.Tabs.Sets
         /// <param name="b">The base piece</param>
         private void JoinPieces(Piece a, Piece b)
         {
-            WIP.JoinsIndex.Add(a, new Join(a, b, WIP));
-            WIP.AddToJoinedPieces(a, b);
-            var baseState = WIP.JoinsIndex.ContainsKey(b) ? 
+            var baseState = WIP.JoinsIndex.ContainsKey(b) ?
                 WIP.JoinsIndex[b].CurrentStateOfAttached(WIP.PersonalStates[b]) : WIP.PersonalStates[b];
+            WIP.JoinsIndex.Add(a, new Join(a, b, WIP, WIP.PersonalStates[a], baseState));
+            WIP.AddToJoinedPieces(a, b);            
             WIP.PersonalStates[a] = new State(0, 0, Utils.Modulo(WIP.PersonalStates[a].R - baseState.R, 360),
                 Utils.Modulo(WIP.PersonalStates[a].T - baseState.T, 360),
                 Utils.Modulo(WIP.PersonalStates[a].S - baseState.S, 360), 
@@ -811,6 +811,11 @@ namespace Optimator.Tabs.Sets
                     if (!WIP.JoinsIndex.ContainsKey(piece))
                     {
                         piece.State = Utils.AdjustStateAngle(angle, WIP.PersonalStates[piece]);
+                    }
+                    else
+                    {
+                        piece.State = Utils.AdjustStateAngle(angle, 
+                            WIP.JoinsIndex[piece].CurrentStateOfAttached(WIP.PersonalStates[piece]));
                     }
                 }
             }
