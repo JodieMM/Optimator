@@ -209,7 +209,7 @@ namespace Optimator
         {
             CalculateStates(0, BasePiece.State);
             return PiecesList;
-            // TODO: Sort Order return SortOrderFromBasePiece(BasePiece);
+            // SortOrder: return SortOrderFromBasePiece(BasePiece);
         }
 
         /// <summary>
