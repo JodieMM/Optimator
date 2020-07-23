@@ -617,8 +617,8 @@ namespace Optimator
         {
             // Determine if Coord Occurs Top or Bottom / Left or Right
             var minmax = Utils.FindMinMaxSpots(s1);
-            bool topRight = (xy == 0 && Utils.WithinRanges(s1.IndexOf(minmax[0]), s1.IndexOf(minmax[1]), s1.IndexOf(match))) ||
-                (xy == 1 && Utils.WithinRanges(s1.IndexOf(minmax[3]), s1.IndexOf(minmax[2]), s1.IndexOf(match)));
+            bool topRight = (xy == 0 && Utils.WithinRanges(s1.IndexOf(minmax[0]), s1.IndexOf(minmax[1]), s1.IndexOf(match), true, s1)) ||
+                (xy == 1 && Utils.WithinRanges(s1.IndexOf(minmax[3]), s1.IndexOf(minmax[2]), s1.IndexOf(match), false, s1));
 
             // Find Matching Position
             var backup = new int[1] { -1 };
@@ -627,8 +627,8 @@ namespace Optimator
             for (int index = 0; index < s2.Count; index++)
             {
                 // Top/Right and in Top/Right
-                if (topRight && ((xy == 0 && Utils.WithinRanges(s2.IndexOf(minmax[0]), s2.IndexOf(minmax[1]), index)) ||
-                    (xy == 1 && Utils.WithinRanges(s2.IndexOf(minmax[3]), s2.IndexOf(minmax[2]), index))))
+                if (topRight && ((xy == 0 && Utils.WithinRanges(s2.IndexOf(minmax[0]), s2.IndexOf(minmax[1]), index, true, s2)) ||
+                    (xy == 1 && Utils.WithinRanges(s2.IndexOf(minmax[3]), s2.IndexOf(minmax[2]), index, false, s2))))
                 {
                     // Exact Match
                     if (Utils.SameValue(s2[index].GetCoord(xy), goal))
@@ -646,8 +646,8 @@ namespace Optimator
                     }
                 }
                 // Bottom/Left and in Bottom/Left
-                else if (!topRight && !((xy == 0 && Utils.WithinRanges(s2.IndexOf(minmax[0]), s2.IndexOf(minmax[1]), index)) ||
-                    (xy == 1 && Utils.WithinRanges(s2.IndexOf(minmax[3]), s2.IndexOf(minmax[2]), index))))
+                else if (!topRight && !((xy == 0 && Utils.WithinRanges(s2.IndexOf(minmax[0]), s2.IndexOf(minmax[1]), index, true, s2)) ||
+                    (xy == 1 && Utils.WithinRanges(s2.IndexOf(minmax[3]), s2.IndexOf(minmax[2]), index, false, s2))))
                 {
                     // Exact Match
                     if (Utils.SameValue(s2[index].GetCoord(xy), goal))

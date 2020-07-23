@@ -386,9 +386,19 @@ namespace Optimator
         /// <param name="minIndex">The lowest index the goal can be</param>
         /// <param name="maxIndex">The maximum index the goal can have</param>
         /// <param name="goal">The index to fit into the list</param>
+        /// <param name="x">True if looking at x, false if y</param>
+        /// <param name="spots">List of spots</param>
         /// <returns>True if goal within ranges</returns>
-        public static bool WithinRanges(int minIndex, int maxIndex, int goal)
+        public static bool WithinRanges(int minIndex, int maxIndex, int goal, bool x, List<Spot> spots)
         {
+            if (minIndex < spots.Count - 1 && (x ? spots[minIndex].X : spots[minIndex].Y) == (x ? spots[minIndex + 1].X : spots[minIndex + 1].Y))
+            {
+                minIndex++;
+            }
+            if (maxIndex < spots.Count - 1 && (x ? spots[maxIndex].X : spots[maxIndex].Y) == (x ? spots[maxIndex + 1].X : spots[maxIndex + 1].Y))
+            {
+                maxIndex++;
+            }
             if ((minIndex == maxIndex && minIndex == goal) ||                
                 (minIndex < maxIndex && goal >= minIndex && goal < maxIndex) ||
                 (minIndex > maxIndex && (goal >= minIndex || goal < maxIndex)))
