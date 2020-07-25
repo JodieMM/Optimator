@@ -450,6 +450,8 @@ namespace Optimator.Tabs.Sets
                             {
                                 selectedJoin.AXRight = selectedJoin.AX -= x;
                                 selectedJoin.AYDown = selectedJoin.AY -= y;
+                                selectedJoin.BXRight = selectedJoin.BX += x;
+                                selectedJoin.BYDown = selectedJoin.BY += y;
                             }
                             else
                             {
@@ -463,6 +465,7 @@ namespace Optimator.Tabs.Sets
                             if (WIP.JoinsIndex.ContainsKey(selected) && WIP.JoinsIndex[selected] == selectedJoin)
                             {
                                 selectedJoin.AXRight -= x;
+                                selectedJoin.BXRight += x;
                             }
                             else
                             {
@@ -475,6 +478,7 @@ namespace Optimator.Tabs.Sets
                             if (WIP.JoinsIndex.ContainsKey(selected) && WIP.JoinsIndex[selected] == selectedJoin)
                             {
                                 selectedJoin.AYDown -= y;
+                                selectedJoin.BYDown += y;
                             }
                             else
                             {
@@ -551,10 +555,22 @@ namespace Optimator.Tabs.Sets
                     case Keys.Up:
                         if (selected != null)
                         {
-                            WIP.PersonalStates[selected].Y -= 1;
-                            if (Panel.Controls.Count > 0 && Panel.Controls[0] is PositionsPanel)
+                            if (WIP.JoinsIndex.ContainsKey(selected))
                             {
-                                (Panel.Controls[0] as PositionsPanel).UpdateXYValue(WIP.PersonalStates[selected].Y, false);
+                                WIP.JoinsIndex[selected].BYDown = WIP.JoinsIndex[selected].BY -= 1;
+                                if (Panel.Controls.Count > 0 && Panel.Controls[0] is PositionsPanel)
+                                {
+                                    (Panel.Controls[0] as PositionsPanel).UpdateXYValue(
+                                        WIP.JoinsIndex[selected].CurrentStateOfAttached(WIP.PersonalStates[selected]).Y, false);
+                                }
+                            }
+                            else
+                            {
+                                WIP.PersonalStates[selected].Y -= 1;
+                                if (Panel.Controls.Count > 0 && Panel.Controls[0] is PositionsPanel)
+                                {
+                                    (Panel.Controls[0] as PositionsPanel).UpdateXYValue(WIP.PersonalStates[selected].Y, false);
+                                }
                             }
                             DisplayDrawings();
                         }
@@ -562,10 +578,22 @@ namespace Optimator.Tabs.Sets
                     case Keys.Down:
                         if (selected != null)
                         {
-                            WIP.PersonalStates[selected].Y += 1;
-                            if (Panel.Controls.Count > 0 && Panel.Controls[0] is PositionsPanel)
+                            if (WIP.JoinsIndex.ContainsKey(selected))
                             {
-                                (Panel.Controls[0] as PositionsPanel).UpdateXYValue(WIP.PersonalStates[selected].Y, false);
+                                WIP.JoinsIndex[selected].BYDown = WIP.JoinsIndex[selected].BY += 1;
+                                if (Panel.Controls.Count > 0 && Panel.Controls[0] is PositionsPanel)
+                                {
+                                    (Panel.Controls[0] as PositionsPanel).UpdateXYValue(
+                                        WIP.JoinsIndex[selected].CurrentStateOfAttached(WIP.PersonalStates[selected]).Y, false);
+                                }
+                            }
+                            else
+                            {
+                                WIP.PersonalStates[selected].Y += 1;
+                                if (Panel.Controls.Count > 0 && Panel.Controls[0] is PositionsPanel)
+                                {
+                                    (Panel.Controls[0] as PositionsPanel).UpdateXYValue(WIP.PersonalStates[selected].Y, false);
+                                }
                             }
                             DisplayDrawings();
                         }
@@ -573,10 +601,22 @@ namespace Optimator.Tabs.Sets
                     case Keys.Left:
                         if (selected != null)
                         {
-                            WIP.PersonalStates[selected].X -= 1;
-                            if (Panel.Controls.Count > 0 && Panel.Controls[0] is PositionsPanel)
+                            if (WIP.JoinsIndex.ContainsKey(selected))
                             {
-                                (Panel.Controls[0] as PositionsPanel).UpdateXYValue(WIP.PersonalStates[selected].X, true);
+                                WIP.JoinsIndex[selected].BXRight = WIP.JoinsIndex[selected].BX -= 1;
+                                if (Panel.Controls.Count > 0 && Panel.Controls[0] is PositionsPanel)
+                                {
+                                    (Panel.Controls[0] as PositionsPanel).UpdateXYValue(
+                                        WIP.JoinsIndex[selected].CurrentStateOfAttached(WIP.PersonalStates[selected]).X, true);
+                                }
+                            }
+                            else
+                            {
+                                WIP.PersonalStates[selected].X -= 1;
+                                if (Panel.Controls.Count > 0 && Panel.Controls[0] is PositionsPanel)
+                                {
+                                    (Panel.Controls[0] as PositionsPanel).UpdateXYValue(WIP.PersonalStates[selected].X, true);
+                                }
                             }
                             DisplayDrawings();
                         }
@@ -584,10 +624,22 @@ namespace Optimator.Tabs.Sets
                     case Keys.Right:
                         if (selected != null)
                         {
-                            WIP.PersonalStates[selected].X += 1;
-                            if (Panel.Controls.Count > 0 && Panel.Controls[0] is PositionsPanel)
+                            if (WIP.JoinsIndex.ContainsKey(selected))
                             {
-                                (Panel.Controls[0] as PositionsPanel).UpdateXYValue(WIP.PersonalStates[selected].X, true);
+                                WIP.JoinsIndex[selected].BXRight = WIP.JoinsIndex[selected].BX += 1;
+                                if (Panel.Controls.Count > 0 && Panel.Controls[0] is PositionsPanel)
+                                {
+                                    (Panel.Controls[0] as PositionsPanel).UpdateXYValue(
+                                        WIP.JoinsIndex[selected].CurrentStateOfAttached(WIP.PersonalStates[selected]).X, true);
+                                }
+                            }
+                            else
+                            {
+                                WIP.PersonalStates[selected].X += 1;
+                                if (Panel.Controls.Count > 0 && Panel.Controls[0] is PositionsPanel)
+                                {
+                                    (Panel.Controls[0] as PositionsPanel).UpdateXYValue(WIP.PersonalStates[selected].X, true);
+                                }
                             }
                             DisplayDrawings();
                         }

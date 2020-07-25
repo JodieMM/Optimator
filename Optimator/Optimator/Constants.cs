@@ -73,6 +73,10 @@ namespace Optimator
         public static Color finishedAnimation = Color.FromArgb(255, 77, 166, 255);
         public static Color toDoAnimation = Color.FromArgb(255, 204, 230, 255);
 
+        // Maximum Values
+        public static float MaximumSize = 1000;
+        public static float MaximumXY = 6000;
+
         // Scene Options
         public static object[] possibleChanges = new object[] { "X", "Y", "Rotation", "Turn", "Spin", "Size" };
     }

@@ -54,20 +54,33 @@ namespace Optimator.Tabs.Sets
         /// <param name="enable">False if disabling</param>
         public void EnableControls(bool enable = true)
         {
-            SizeBar.Enabled = enable;
-            if (enable)
+            if (Owner.selected != null)
             {
-                SizeBar.Value = (int)(Owner.WIP.PersonalStates[Owner.selected].SM * 100.0F);
-            }
-            Utils.EnableObjects(new List<Control>() { RotationBar, TurnBar, SpinBar, XUpDown, YUpDown },
-                enable && Owner.selected != Owner.WIP.BasePiece);
-            if (enable && Owner.selected != Owner.WIP.BasePiece)
-            {               
-                RotationBar.Value = (int)Owner.WIP.PersonalStates[Owner.selected].R;
-                TurnBar.Value = (int)Owner.WIP.PersonalStates[Owner.selected].T;
-                SpinBar.Value = (int)Owner.WIP.PersonalStates[Owner.selected].S;
-                XUpDown.Value = (decimal)Owner.WIP.PersonalStates[Owner.selected].X;
-                YUpDown.Value = (decimal)Owner.WIP.PersonalStates[Owner.selected].Y;
+                Utils.EnableObjects(new List<Control>() { SizeBar, XUpDown, YUpDown });
+                Utils.EnableObjects(new List<Control>() { RotationBar, TurnBar, SpinBar },
+                    enable && Owner.selected != Owner.WIP.BasePiece);
+                if (enable)
+                {                    
+                    SizeBar.Value = (int)(Owner.WIP.PersonalStates[Owner.selected].SM * 100.0F);
+                    if (Owner.WIP.JoinsIndex.ContainsKey(Owner.selected))
+                    {
+                        XUpDown.Value = (decimal)Owner.WIP.JoinsIndex[Owner.selected].CurrentStateOfAttached(
+                            Owner.WIP.PersonalStates[Owner.selected]).X;
+                        YUpDown.Value = (decimal)Owner.WIP.JoinsIndex[Owner.selected].CurrentStateOfAttached(
+                            Owner.WIP.PersonalStates[Owner.selected]).Y;
+                    }
+                    else
+                    {
+                        XUpDown.Value = (decimal)Owner.WIP.PersonalStates[Owner.selected].X;
+                        YUpDown.Value = (decimal)Owner.WIP.PersonalStates[Owner.selected].Y;
+                    }
+                    if (Owner.selected != Owner.WIP.BasePiece)
+                    {
+                        RotationBar.Value = (int)Owner.WIP.PersonalStates[Owner.selected].R;
+                        TurnBar.Value = (int)Owner.WIP.PersonalStates[Owner.selected].T;
+                        SpinBar.Value = (int)Owner.WIP.PersonalStates[Owner.selected].S;
+                    }
+                }
             }
         }
 
@@ -120,13 +133,33 @@ namespace Optimator.Tabs.Sets
                 return;
             }
 
-            if (sender == XUpDown)
+            if (Owner.WIP.JoinsIndex.ContainsKey(Owner.selected))
             {
-                Owner.WIP.PersonalStates[Owner.selected].X = (float)XUpDown.Value;
+                if (sender == XUpDown)
+                {
+                    Owner.WIP.JoinsIndex[Owner.selected].BXRight = 
+                        Owner.WIP.JoinsIndex[Owner.selected].BX += (float)XUpDown.Value - 
+                        Owner.WIP.JoinsIndex[Owner.selected].CurrentStateOfAttached(
+                            Owner.WIP.PersonalStates[Owner.selected]).X;
+                }
+                else if (sender == YUpDown)
+                {
+                    Owner.WIP.JoinsIndex[Owner.selected].BYDown =
+                        Owner.WIP.JoinsIndex[Owner.selected].BY += (float)YUpDown.Value - 
+                        Owner.WIP.JoinsIndex[Owner.selected].CurrentStateOfAttached(
+                            Owner.WIP.PersonalStates[Owner.selected]).Y;
+                }
             }
-            else if (sender == YUpDown)
+            else
             {
-                Owner.WIP.PersonalStates[Owner.selected].Y = (float)YUpDown.Value;
+                if (sender == XUpDown)
+                {
+                    Owner.WIP.PersonalStates[Owner.selected].X = (float)XUpDown.Value;
+                }
+                else if (sender == YUpDown)
+                {
+                    Owner.WIP.PersonalStates[Owner.selected].Y = (float)YUpDown.Value;
+                }
             }
             Owner.DisplayDrawings();
         }
