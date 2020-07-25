@@ -229,6 +229,12 @@ namespace Optimator
             var currSize = Utils.FindMinMax(changePoints);
             var curr = xChange ? currSize[1] - currSize[0] : currSize[3] - currSize[2];
 
+            // No Resizing Needed
+            if (goal == curr)
+            {
+                return changePoints;
+            }
+
             // Flat Goal (Horizontal/Vertical Line)
             if (goal == 0)
             {
@@ -249,8 +255,55 @@ namespace Optimator
             // Flat Current with Non-Flat Goal
             else if (curr == 0)
             {
-                // TODO: NON FLAT GOAL
-                // Find bottom/top or left/right split and set all lower to lower value and higher to higher value
+                var goalPoints = Utils.FindMinMaxSpots(changePoints);
+                for (int index  = 0; index < changePoints.Count; index++)
+                {
+                    var point = changePoints[index];
+                    if (xChange)
+                    {
+                        if (point == goalPoints[3] || point == goalPoints[2])
+                        {
+                            if (changePoints[Utils.NextIndex(changePoints, index)].X == point.X)
+                            {
+                                point.X = point == goalPoints[3] ? goalSize[0] : goalSize[1];
+                                changePoints[Utils.NextIndex(changePoints, index)].X = point == goalPoints[3] ? goalSize[1] : goalSize[0];
+                                index++;
+                            }
+                        }
+                        else if (Utils.WithinRanges(changePoints.IndexOf(goalPoints[3]), 
+                            changePoints.IndexOf(goalPoints[2]), changePoints.IndexOf(point), true, changePoints))
+                        {
+                            point.X = goalSize[1];
+                        }
+                        else if (Utils.WithinRanges(changePoints.IndexOf(goalPoints[2]),
+                            changePoints.IndexOf(goalPoints[3]), changePoints.IndexOf(point), true, changePoints))
+                        {
+                            point.X = goalSize[0];
+                        }
+                    }
+                    else
+                    {
+                        if (point == goalPoints[0] || point == goalPoints[1])
+                        {
+                            if (changePoints[Utils.NextIndex(changePoints, index)].Y == point.Y)
+                            {
+                                point.Y = point == goalPoints[0] ? goalSize[2] : goalSize[3];
+                                changePoints[Utils.NextIndex(changePoints, index)].Y = point == goalPoints[0] ? goalSize[3] : goalSize[2];
+                                index++;
+                            }
+                        }
+                        else if (Utils.WithinRanges(changePoints.IndexOf(goalPoints[0]),
+                            changePoints.IndexOf(goalPoints[1]), changePoints.IndexOf(point), true, changePoints))
+                        {
+                            point.Y = goalSize[3];
+                        }
+                        else if (Utils.WithinRanges(changePoints.IndexOf(goalPoints[1]),
+                            changePoints.IndexOf(goalPoints[0]), changePoints.IndexOf(point), true, changePoints))
+                        {
+                            point.Y = goalSize[2];
+                        }
+                    }
+                }
                 return changePoints;
             }
 
