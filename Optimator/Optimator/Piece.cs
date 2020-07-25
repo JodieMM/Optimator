@@ -102,10 +102,7 @@ namespace Optimator
             // Add Spots
             foreach (var spot in Data)
             {
-                if (spot.DrawnLevel == 0)
-                {
-                    newData.Add(spot.ToString());
-                }
+                newData.Add(spot.ToString());
             }
             return newData;
         }
@@ -528,7 +525,9 @@ namespace Optimator
                     var match = Utils.Modulo(matchPosition[0], shape2.Count);
                     var unchanged = shape1[index1].GetCoord(z);
                     var changed = Utils.FindMiddleSpot(shape1[index1].GetCoord(altz), shape2[match].GetCoord(altz), angle, swapped);
-                    var newSpot = new Spot(xChange ? changed : unchanged, xChange ? unchanged : changed);
+                    // TODO: Connector/Solid
+                    var newSpot = new Spot(xChange ? changed : unchanged, xChange ? unchanged : changed, 
+                        shape1[index1].Connector, shape1[index1].Solid);
                     merged.Add(newSpot);
                     index1++;
                     i1 += swapped ? 0 : 1;
@@ -544,6 +543,9 @@ namespace Optimator
                         merged.Remove(newSpot);
                     }
                     var newSpot2 = Utils.CloneSpot(newSpot);
+                    // TODO: Connector/Solid
+                    newSpot2.Connector = shape1[Utils.NextIndex(shape1, index1)].Connector;
+                    newSpot2.Solid = shape1[Utils.NextIndex(shape1, index1)].Solid;
 
                     // Check for Self Neighbours
                     if (index1 < shape1.Count && shape1[index1 - 1].GetCoord(z) == shape1[index1].GetCoord(z))
@@ -628,12 +630,17 @@ namespace Optimator
                             shape2[Utils.Modulo(matchPosition[1], shape2.Count)], shape1[index1].GetCoord(z), z);
                     var unchanged = shape1[index1].GetCoord(z);
                     var changed = Utils.FindMiddleSpot(shape1[index1].GetCoord(altz), match[altz], angle, swapped);
-                    var newSpot = new Spot(xChange ? changed : unchanged, xChange ? unchanged : changed);
-                    // TODO: New spots need to retain old features
+                    // TODO: Connector/Solid
+                    var newSpot = new Spot(xChange ? changed : unchanged, xChange ? unchanged : changed, 
+                        shape1[index1].Connector, shape1[index1].Solid);
                     merged.Add(newSpot);
                     index1++;
                     i1 += swapped ? 0 : 1;
                     i2 += swapped ? 1 : 0;
+                    var newSpot2 = Utils.CloneSpot(newSpot);
+                    // TODO: Connector/Solid
+                    newSpot2.Connector = shape1[Utils.NextIndex(shape1, index1)].Connector;
+                    newSpot2.Solid = shape1[Utils.NextIndex(shape1, index1)].Solid;
 
                     // Check for Self Neighbours
                     if (index1 < shape1.Count && shape1[index1 - 1].GetCoord(z) == shape1[index1].GetCoord(z))
@@ -642,13 +649,13 @@ namespace Optimator
                                 match[altz], angle, swapped);
                         if (xChange)
                         {
-                            newSpot.X = changed;
+                            newSpot2.X = changed;
                         }
                         else
                         {
-                            newSpot.Y = changed;
+                            newSpot2.Y = changed;
                         }
-                        merged.Add(newSpot);
+                        merged.Add(newSpot2);
                         index1++;
                         i1 += swapped ? 0 : 1;
                         i2 += swapped ? 1 : 0;
@@ -909,34 +916,5 @@ namespace Optimator
         }
 
         #endregion
-
-
-
-        // ----- OTHER FUNCTIONS -----
-
-        /// <summary>
-        /// Remove coords from Data.
-        /// </summary>
-        /// <param name="xMatch">If the drawn level 1 spots should be removed too</param>
-        public void CleanseData(bool xMatch = false)
-        {
-            for (var index = 0; index < Data.Count; index++)
-            {
-                var spot = Data[index];
-                if (spot.DrawnLevel < (xMatch ? 1 : 2))
-                {
-                    spot.MatchX = null;
-                    if (xMatch)
-                    {
-                        spot.MatchY = null;
-                    }
-                }
-                else
-                {
-                    Data.RemoveAt(index);
-                    index--;
-                }
-            }
-        }
     }
 }

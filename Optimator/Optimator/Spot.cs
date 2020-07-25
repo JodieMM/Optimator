@@ -18,10 +18,6 @@ namespace Optimator
 
         public string Connector { get; set; }
         public string Solid { get; set; }
-
-        public Spot MatchX { get; set; } = null;
-        public Spot MatchY { get; set; } = null;
-        public int DrawnLevel { get; set; }
         #endregion
 
 
@@ -35,7 +31,7 @@ namespace Optimator
         /// <param name="connect">Connector from this spot to the next</param>
         /// <param name="solid">Flexibility of the spot</param>
         /// /// <param name="drawn">DrawLevel integer</param>
-        public Spot(float x, float y, float? xr = null, float? yd = null, string connect = null, string solid = null, int drawn = 0)
+        public Spot(float x, float y, float? xr = null, float? yd = null, string connect = null, string solid = null)
         {
             X = x;
             Y = y;
@@ -43,7 +39,6 @@ namespace Optimator
             YDown = yd ?? y;
             Connector = connect ?? Consts.connectorOptions[0];
             Solid = solid ?? Consts.solidOptions[0];
-            DrawnLevel = drawn;
         }
 
         /// <summary>
@@ -73,16 +68,6 @@ namespace Optimator
         {
             return X + Consts.ColonS + Y + Consts.ColonS + XRight + Consts.ColonS + YDown + Consts.SemiS +
                 Connector + Consts.SemiS + Solid;
-        }
-
-        /// <summary>
-        /// Gets either the MatchX or MatchY.
-        /// </summary>
-        /// <param name="xy"></param>
-        /// <returns></returns>
-        public Spot GetMatch(int xy)
-        {
-            return xy == 0 ? MatchX : MatchY;
         }
 
         /// <summary>
@@ -141,23 +126,6 @@ namespace Optimator
             }
         }
 
-        /// <summary>
-        /// Sets either the MatchX or MatchY to assigned value.
-        /// </summary>
-        /// <param name="xy">MatchX (0) or MatchY(1)</param>
-        /// <param name="match">Spot to assign</param>
-        public void SetMatch(int xy, Spot match)
-        {
-            if (xy == 0)
-            {
-                MatchX = match;
-            }
-            else
-            {
-                MatchY = match;
-            }
-        }
-
 
 
         // ----- DRAW FUNCTIONS -----
@@ -194,51 +162,6 @@ namespace Optimator
                 default:
                     return new float[] { X, Y };
             }
-        }
-
-        /// <summary>
-        /// Finds the current X value of the spot based on the piece's rotation.
-        /// </summary>
-        /// <param name="angle">The rotation or turn of the piece</param>
-        /// <param name="mid">The middle of the piece</param>
-        /// <param name="xy">Finding current x (0) or y (1)</param>
-        /// <returns>The current value</returns>
-        public float CalculateCurrentValue(float angle, int xy = 1)
-        {
-            float lower;
-            float upper;
-            int bottomAngle;
-
-            var original = xy == 0 ? Y : X;
-            var angled = xy == 0 ? YDown : XRight;
-            var matchOrig = xy == 0 ? MatchX == null ? original : MatchX.Y : MatchY == null ? original : MatchY.X;
-            var matchAng = xy == 0 ? MatchX == null ? angled : MatchX.YDown : MatchY == null ? angled : MatchY.XRight;
-
-            if (angle < 90)
-            {
-                lower = original;
-                upper = angled;
-                bottomAngle = 0;
-            }
-            else if (angle < 180)
-            {
-                lower = angled;
-                upper = -matchOrig;
-                bottomAngle = 90;
-            }
-            else if (angle < 270)
-            {
-                lower = -matchOrig;
-                upper = -matchAng;
-                bottomAngle = 180;
-            }
-            else
-            {
-                lower = -matchAng;
-                upper = original;
-                bottomAngle = 270;
-            }
-            return lower + (upper - lower) * ((angle - bottomAngle) / 90.0F);
         }
 
         /// <summary>

@@ -546,12 +546,9 @@ namespace Optimator
             {
                 foreach (var spot in WIP.Data)
                 {
-                    if (spot.DrawnLevel == 0)
-                    {
-                        var color = FixedBtn.Checked ? (spot.Solid == Consts.solidOptions[0]) ? Consts.option1 : Consts.option2
+                    var color = FixedBtn.Checked ? (spot.Solid == Consts.solidOptions[0]) ? Consts.option1 : Consts.option2
                             : (selectedSpot == spot) ? Consts.select : Color.Black;
-                        spot.Draw(angle, color, board);
-                    }
+                    spot.Draw(angle, color, board);
                 }
             }
         }
@@ -647,7 +644,6 @@ namespace Optimator
         /// <returns>True if piece is valid</returns>
         public bool CheckPiecesValid()
         {
-            WIP.CleanseData(true);
             var spots = WIP.Data;
             if (spots.Count == 0)
             {
