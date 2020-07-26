@@ -143,19 +143,19 @@ namespace Optimator
             {
                 if (part is Piece)
                 {
-                    (part as Piece).State = Utils.CloneState(Originals[part as Piece]);
+                    (part as Piece).State = Utils.CloneState(Originals[part]);
                 }
                 else if (part is Set)
                 {
                     foreach (var piece in (part as Set).PiecesList)
                     {
-                        if (Originals.ContainsKey(piece))
+                        if (Originals.ContainsKey(piece) && (part as Set).PersonalStates.ContainsKey(piece))
                         {
-                            piece.State = Utils.CloneState(Originals[piece]);                            
+                            (part as Set).PersonalStates[piece] = Utils.CloneState(Originals[piece]);                            
                         }
-                        if ((part as Set).ChangedStates.ContainsKey(piece))
+                        if (piece == (part as Set).BasePiece)
                         {
-                            (part as Set).ChangedStates[piece] = new State();
+                            piece.State = Utils.CloneState(Originals[piece]);
                         }
                     }
                 }
@@ -196,13 +196,9 @@ namespace Optimator
             {
                 if (part is Set)
                 {
-                    if ((part as Set).JoinsIndex.ContainsKey(piece))
-                    {
-                        if (!(part as Set).ChangedStates.ContainsKey(piece))
-                        {
-                            (part as Set).ChangedStates.Add(piece, new State());
-                        }
-                        return (part as Set).ChangedStates[piece];
+                    if ((part as Set).PersonalStates.ContainsKey(piece))
+                    {                        
+                        return (part as Set).PersonalStates[piece];
                     }
                 }
                 else if (part is Piece && part == piece)

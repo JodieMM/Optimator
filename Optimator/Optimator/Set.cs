@@ -23,8 +23,6 @@ namespace Optimator
             = new Dictionary<Piece, Join>();                                  // Attached Piece --> Join
         public Dictionary<Piece, State> PersonalStates { get; set; }                 
             = new Dictionary<Piece, State>();                             // Piece --> Original State Position
-        public Dictionary<Piece, State> ChangedStates { get; set; } 
-            = new Dictionary<Piece, State>();                              // Piece --> Updated State via Movement
         #endregion
 
 
@@ -104,7 +102,8 @@ namespace Optimator
             };
 
             // Reset Set to Save
-            PiecesList = SortOrder(new State());
+            BasePiece.State = new State();
+            PiecesList = SortOrder();
 
             // Save Each Piece
             for (var index = 0; index < PiecesList.Count; index++)
@@ -146,7 +145,11 @@ namespace Optimator
         /// <param name="colours">Sets colours</param>
         public override void Draw(Graphics g, State state = null, ColourState colours = null)
         {
-            var orderedPieces = SortOrder(state);
+            if (state != null)
+            {
+                BasePiece.State = state;
+            }
+            var orderedPieces = SortOrder();
             foreach (var piece in orderedPieces)
             {
                 if (piece == BasePiece)
@@ -204,7 +207,7 @@ namespace Optimator
         /// Finds the correct order to draw pieces so they are layered correctly.
         /// </summary>
         /// <returns>Ordered list of pieces</returns>
-        public List<Piece> SortOrder(State state = null)
+        public List<Piece> SortOrder()
         {
             CalculateStates(0, BasePiece.State);
             return PiecesList;

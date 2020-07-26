@@ -76,7 +76,7 @@ namespace Optimator.Forms.Scenes
                             Owner.WIP.Originals.Add(loaded, Utils.CloneState(loaded.ToPiece().State));
                             foreach (var piece in (loaded as Set).PiecesList)
                             {
-                                Owner.WIP.Originals.Add(piece, Utils.CloneState(piece.State));
+                                Owner.WIP.Originals.Add(piece, Utils.CloneState((loaded as Set).PersonalStates[piece]));
                                 Owner.WIP.OriginalColours.Add(piece, Utils.CloneColourState(piece.ColourState));
                             }
                         }
