@@ -139,13 +139,27 @@ namespace Optimator
         /// </summary>
         public void RunScene(decimal time)
         {
-            foreach (var piece in PiecesList)
+            foreach (var part in PartsList)
             {
-                if (Originals.ContainsKey(piece))
+                if (part is Piece)
                 {
-                    piece.State = Utils.CloneState(Originals[piece]);
+                    (part as Piece).State = Utils.CloneState(Originals[part as Piece]);
                 }
-            }
+                else if (part is Set)
+                {
+                    foreach (var piece in (part as Set).PiecesList)
+                    {
+                        if (Originals.ContainsKey(piece))
+                        {
+                            piece.State = Utils.CloneState(Originals[piece]);                            
+                        }
+                        if ((part as Set).ChangedStates.ContainsKey(piece))
+                        {
+                            (part as Set).ChangedStates[piece] = new State();
+                        }
+                    }
+                }
+            }            
             foreach (var change in Changes)
             {
                 change.Run(time);
@@ -169,6 +183,34 @@ namespace Optimator
                     PiecesList.AddRange((PartsList[index] as Set).PiecesList);
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets a piece's state or a set component's personal state.
+        /// </summary>
+        /// <param name="piece">The piece owning the state</param>
+        /// <returns>State of provided piece</returns>
+        public State GetPieceState(Piece piece)
+        {
+            foreach (var part in PartsList)
+            {
+                if (part is Set)
+                {
+                    if ((part as Set).JoinsIndex.ContainsKey(piece))
+                    {
+                        if (!(part as Set).ChangedStates.ContainsKey(piece))
+                        {
+                            (part as Set).ChangedStates.Add(piece, new State());
+                        }
+                        return (part as Set).ChangedStates[piece];
+                    }
+                }
+                else if (part is Piece && part == piece)
+                {
+                    return piece.State;
+                }
+            }
+            return new State(); // Error 
         }
     }
 }

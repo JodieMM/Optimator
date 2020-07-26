@@ -64,10 +64,8 @@ namespace Optimator.Tabs.Sets
                     SizeBar.Value = (int)(Owner.WIP.PersonalStates[Owner.selected].SM * 100.0F);
                     if (Owner.WIP.JoinsIndex.ContainsKey(Owner.selected))
                     {
-                        XUpDown.Value = (decimal)Owner.WIP.JoinsIndex[Owner.selected].CurrentStateOfAttached(
-                            Owner.WIP.PersonalStates[Owner.selected]).X;
-                        YUpDown.Value = (decimal)Owner.WIP.JoinsIndex[Owner.selected].CurrentStateOfAttached(
-                            Owner.WIP.PersonalStates[Owner.selected]).Y;
+                        XUpDown.Value = (decimal)Owner.WIP.JoinsIndex[Owner.selected].CurrentStateOfAttached().X;
+                        YUpDown.Value = (decimal)Owner.WIP.JoinsIndex[Owner.selected].CurrentStateOfAttached().Y;
                     }
                     else
                     {
@@ -139,15 +137,13 @@ namespace Optimator.Tabs.Sets
                 {
                     Owner.WIP.JoinsIndex[Owner.selected].BXRight = 
                         Owner.WIP.JoinsIndex[Owner.selected].BX += (float)XUpDown.Value - 
-                        Owner.WIP.JoinsIndex[Owner.selected].CurrentStateOfAttached(
-                            Owner.WIP.PersonalStates[Owner.selected]).X;
+                        Owner.WIP.JoinsIndex[Owner.selected].CurrentStateOfAttached().X;
                 }
                 else if (sender == YUpDown)
                 {
                     Owner.WIP.JoinsIndex[Owner.selected].BYDown =
                         Owner.WIP.JoinsIndex[Owner.selected].BY += (float)YUpDown.Value - 
-                        Owner.WIP.JoinsIndex[Owner.selected].CurrentStateOfAttached(
-                            Owner.WIP.PersonalStates[Owner.selected]).Y;
+                        Owner.WIP.JoinsIndex[Owner.selected].CurrentStateOfAttached().Y;
                 }
             }
             else

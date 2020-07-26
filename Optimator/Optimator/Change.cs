@@ -55,25 +55,27 @@
             var increment = ((time - StartTime) >= HowLong) ? HowMuch : (float)((time - StartTime) / HowLong) * HowMuch;
 
             // Update Parts
+            var affectedState = host.GetPieceState(AffectedPiece);
+
             switch (Action)
             {
                 case "X":
-                    AffectedPiece.State.X += increment;
+                    affectedState.X += increment;
                     break;
                 case "Y":
-                    AffectedPiece.State.Y -= increment;
+                    affectedState.Y -= increment;
                     break;
                 case "Rotation":
-                    AffectedPiece.State.R = (AffectedPiece.State.R + increment) % 360;
+                    affectedState.R = (affectedState.R + increment) % 360;
                     break;
                 case "Turn":
-                    AffectedPiece.State.T = (AffectedPiece.State.T + increment) % 360;
+                    affectedState.T = (affectedState.T + increment) % 360;
                     break;
                 case "Spin":
-                    AffectedPiece.State.S = (AffectedPiece.State.S + increment) % 360;
+                    affectedState.S = (affectedState.S + increment) % 360;
                     break;
                 case "Size":
-                    AffectedPiece.State.SM += increment / 100;
+                    affectedState.SM += increment / 100;
                     break;
             }
         }

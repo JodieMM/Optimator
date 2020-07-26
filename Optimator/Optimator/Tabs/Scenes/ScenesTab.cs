@@ -345,11 +345,12 @@ namespace Optimator.Tabs.Scenes
             {
                 Deselect();
             }
-            else if (selected != null && selected is Set && (selected as Set).PiecesList.Contains(newSelected))
-            {
-                SelectPart(newSelected, true);
-                originalMoving = new int[] { e.X, e.Y };
-            }
+            // TODO: Allow for set to be moved as a whole
+            //else if (selected != null && selected is Set && (selected as Set).PiecesList.Contains(newSelected))
+            //{
+            //    SelectPart(newSelected, true);
+            //    originalMoving = new int[] { e.X, e.Y };
+            //}
             else
             {
                 SelectPart(newSelected);
@@ -377,7 +378,7 @@ namespace Optimator.Tabs.Scenes
                 else if (!movingFar)
                 {
                     movingFar = Math.Abs(selected.ToPiece().State.X - e.X) > Consts.DragPrecision
-                        || Math.Abs(selected.ToPiece().State.Y - e.Y) > Consts.DragPrecision;
+                        || Math.Abs(selected.ToPiece().State.Y - e.Y) > Consts.DragPrecision;                    
                 }
                 DisplayDrawings();
 
@@ -409,19 +410,16 @@ namespace Optimator.Tabs.Scenes
         {
             if (movingFar && selected != null && originalMoving != null)
             {
-                var x = e.X - originalMoving[0];
-                var y = e.Y - originalMoving[1];
-
-                WIP.Originals[selected].X += x;
-                WIP.Originals[selected].Y += y;
-                StopMoving();
-                DisplayDrawings();
+                WIP.Originals[selected].X += e.X - originalMoving[0];
+                WIP.Originals[selected].Y += e.Y - originalMoving[1];                
 
                 if (Panel.Controls.Count > 0 && Panel.Controls[0] is PositionsPanel)
                 {
                     (Panel.Controls[0] as PositionsPanel).UpdateXY((int)WIP.Originals[selected].X, (int)WIP.Originals[selected].Y);
                 }
             }
+            StopMoving();
+            DisplayDrawings();
         }
 
         /// <summary>
@@ -440,6 +438,7 @@ namespace Optimator.Tabs.Scenes
         /// <param name="select"></param>
         public void SelectPart(Part select, bool subSelect = false)
         {
+            // TODO: Allow for set to be moved as a whole
             if (!subSelect)
             {
                 Deselect();
@@ -450,13 +449,16 @@ namespace Optimator.Tabs.Scenes
                 subSelected = select as Piece;
             }
             select.ToPiece().ColourState.OutlineColour = (select is Piece) ? Color.Red : Color.Purple;
-            if (Panel.Controls.Count > 0 && Panel.Controls[0] is PositionsPanel)
+            if (Panel.Controls.Count > 0)
             {
-                (Panel.Controls[0] as PositionsPanel).EnableControls();
-            }
-            else if (Panel.Controls.Count > 0 && Panel.Controls[0] is MovePanel)
-            {
-                (Panel.Controls[0] as MovePanel).PartSelected(select.ToPiece());
+                if (Panel.Controls[0] is PositionsPanel)
+                {
+                    (Panel.Controls[0] as PositionsPanel).EnableControls();
+                }
+                else if (Panel.Controls[0] is MovePanel)
+                {
+                    (Panel.Controls[0] as MovePanel).PartSelected(select.ToPiece());
+                }
             }
         }
 

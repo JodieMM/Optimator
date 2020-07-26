@@ -20,9 +20,11 @@ namespace Optimator
         public Dictionary<Piece, List<Piece>> JoinedPieces { get; set; } 
             = new Dictionary<Piece, List<Piece>>();                         // Base Piece --> Attached Pieces
         public Dictionary<Piece, Join> JoinsIndex { get; set; } 
-            = new Dictionary<Piece, Join>();                                // Attached Piece --> Join
+            = new Dictionary<Piece, Join>();                                  // Attached Piece --> Join
         public Dictionary<Piece, State> PersonalStates { get; set; }                 
-            = new Dictionary<Piece, State>();                               // Piece --> Original State Position
+            = new Dictionary<Piece, State>();                             // Piece --> Original State Position
+        public Dictionary<Piece, State> ChangedStates { get; set; } 
+            = new Dictionary<Piece, State>();                              // Piece --> Updated State via Movement
         #endregion
 
 
@@ -102,8 +104,7 @@ namespace Optimator
             };
 
             // Reset Set to Save
-            BasePiece.State = new State();
-            PiecesList = SortOrder();
+            PiecesList = SortOrder(new State());
 
             // Save Each Piece
             for (var index = 0; index < PiecesList.Count; index++)
@@ -145,19 +146,17 @@ namespace Optimator
         /// <param name="colours">Sets colours</param>
         public override void Draw(Graphics g, State state = null, ColourState colours = null)
         {
-            if (state != null)
-            {
-                BasePiece.State = state;
-                if (colours != null)
-                {
-                    BasePiece.ColourState = colours;
-                }
-            }
-
-            var orderedPieces = SortOrder();
+            var orderedPieces = SortOrder(state);
             foreach (var piece in orderedPieces)
             {
-                piece.Draw(g);
+                if (piece == BasePiece)
+                {
+                    piece.Draw(g, state, colours);
+                }
+                else
+                {
+                    piece.Draw(g);
+                }                
             }
         }
 
@@ -191,7 +190,7 @@ namespace Optimator
         /// <param name="piece">Piece to find state of</param>
         private void CalculateState(Piece piece)
         {
-            piece.State = JoinsIndex[piece].CurrentStateOfAttached(PersonalStates[piece]);
+            piece.State = JoinsIndex[piece].CurrentStateOfAttached();
             if (JoinedPieces.ContainsKey(piece))
             {
                 foreach (var attached in JoinedPieces[piece])
@@ -205,7 +204,7 @@ namespace Optimator
         /// Finds the correct order to draw pieces so they are layered correctly.
         /// </summary>
         /// <returns>Ordered list of pieces</returns>
-        public List<Piece> SortOrder()
+        public List<Piece> SortOrder(State state = null)
         {
             CalculateStates(0, BasePiece.State);
             return PiecesList;

@@ -561,7 +561,7 @@ namespace Optimator.Tabs.Sets
                                 if (Panel.Controls.Count > 0 && Panel.Controls[0] is PositionsPanel)
                                 {
                                     (Panel.Controls[0] as PositionsPanel).UpdateXYValue(
-                                        WIP.JoinsIndex[selected].CurrentStateOfAttached(WIP.PersonalStates[selected]).Y, false);
+                                        WIP.JoinsIndex[selected].CurrentStateOfAttached().Y, false);
                                 }
                             }
                             else
@@ -584,7 +584,7 @@ namespace Optimator.Tabs.Sets
                                 if (Panel.Controls.Count > 0 && Panel.Controls[0] is PositionsPanel)
                                 {
                                     (Panel.Controls[0] as PositionsPanel).UpdateXYValue(
-                                        WIP.JoinsIndex[selected].CurrentStateOfAttached(WIP.PersonalStates[selected]).Y, false);
+                                        WIP.JoinsIndex[selected].CurrentStateOfAttached().Y, false);
                                 }
                             }
                             else
@@ -607,7 +607,7 @@ namespace Optimator.Tabs.Sets
                                 if (Panel.Controls.Count > 0 && Panel.Controls[0] is PositionsPanel)
                                 {
                                     (Panel.Controls[0] as PositionsPanel).UpdateXYValue(
-                                        WIP.JoinsIndex[selected].CurrentStateOfAttached(WIP.PersonalStates[selected]).X, true);
+                                        WIP.JoinsIndex[selected].CurrentStateOfAttached().X, true);
                                 }
                             }
                             else
@@ -630,7 +630,7 @@ namespace Optimator.Tabs.Sets
                                 if (Panel.Controls.Count > 0 && Panel.Controls[0] is PositionsPanel)
                                 {
                                     (Panel.Controls[0] as PositionsPanel).UpdateXYValue(
-                                        WIP.JoinsIndex[selected].CurrentStateOfAttached(WIP.PersonalStates[selected]).X, true);
+                                        WIP.JoinsIndex[selected].CurrentStateOfAttached().X, true);
                                 }
                             }
                             else
@@ -822,7 +822,7 @@ namespace Optimator.Tabs.Sets
         private void JoinPieces(Piece a, Piece b)
         {
             var baseState = WIP.JoinsIndex.ContainsKey(b) ?
-                WIP.JoinsIndex[b].CurrentStateOfAttached(WIP.PersonalStates[b]) : WIP.PersonalStates[b];
+                WIP.JoinsIndex[b].CurrentStateOfAttached() : WIP.PersonalStates[b];
             WIP.JoinsIndex.Add(a, new Join(a, b, WIP, WIP.PersonalStates[a], baseState));
             WIP.AddToJoinedPieces(a, b);            
             WIP.PersonalStates[a] = new State(0, 0, Utils.Modulo(WIP.PersonalStates[a].R - baseState.R, 360),
@@ -884,7 +884,7 @@ namespace Optimator.Tabs.Sets
                     else
                     {
                         piece.State = Utils.AdjustStateAngle(angle, 
-                            WIP.JoinsIndex[piece].CurrentStateOfAttached(WIP.PersonalStates[piece]));
+                            WIP.JoinsIndex[piece].CurrentStateOfAttached());
                     }
                 }
             }

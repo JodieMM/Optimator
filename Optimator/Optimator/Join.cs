@@ -136,20 +136,23 @@ namespace Optimator
         /// </summary>
         /// <param name="aState">Personal state</param>
         /// <returns>State representing xyrtssm</returns>
-        public State CurrentStateOfAttached(State aState)
+        public State CurrentStateOfAttached()
         {
-            var modR = Utils.Modulo(aState.R + B.State.R, 360);
-            var modT = Utils.Modulo(aState.T + B.State.T, 360);
-            var modS = Utils.Modulo(aState.S + B.State.S, 360);
-            var modSM = B.State.SM * aState.SM;
+            var aState = Set.ChangedStates.ContainsKey(A) ? Set.ChangedStates[A] : new State();
+            var aState2 = Set.PersonalStates.ContainsKey(A) ? Set.PersonalStates[A] : new State();
+
+            var modR = Utils.Modulo(aState.R + aState2.R + B.State.R, 360);
+            var modT = Utils.Modulo(aState.T + aState2.T + B.State.T, 360);
+            var modS = Utils.Modulo(aState.S + aState2.S + B.State.S, 360);
+            var modSM = B.State.SM * aState.SM * aState2.SM;
 
             var attachedJoinB = Utils.SpinAndSizeCoord(B.State.S, B.State.SM,
                 new float[] { Utils.RotOrTurnCalculation(B.State.R, BX, BXRight), Utils.RotOrTurnCalculation(B.State.T, BY, BYDown) });
             var attachedJoinA = Utils.SpinAndSizeCoord(modS, modSM,
                 new float[] { Utils.RotOrTurnCalculation(modR, AX, AXRight), Utils.RotOrTurnCalculation(modT, AY, AYDown) });
 
-            var modX = B.State.X + attachedJoinB[0] + attachedJoinA[0] + aState.X;
-            var modY = B.State.Y + attachedJoinB[1] + attachedJoinA[1] + aState.Y;
+            var modX = B.State.X + attachedJoinB[0] + attachedJoinA[0] + aState.X + aState2.X;
+            var modY = B.State.Y + attachedJoinB[1] + attachedJoinA[1] + aState.Y + aState2.Y;
             return new State(modX, modY, modR, modT, modS, modSM);
         }
 
