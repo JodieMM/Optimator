@@ -287,5 +287,37 @@ namespace Optimator
             }
             return joinsList;
         }
+
+        /// <summary>
+        /// Removes all mentions of a piece from the set.
+        /// </summary>
+        /// <param name="piece">The piece to remove</param>
+        public void RemovePiece(Piece piece)
+        {
+            if (JoinedPieces.ContainsKey(piece))
+            {
+                JoinedPieces.Remove(piece);
+            }
+            if (JoinsIndex.ContainsKey(piece))
+            {
+                RemovePieceJoinings(piece);
+            }
+            PiecesList.Remove(piece);
+        }
+
+        /// <summary>
+        /// Removes piece from any joins where it is not the base
+        /// </summary>
+        /// <param name="piece">Piece to remove from joins</param>
+        public void RemovePieceJoinings(Piece piece)
+        {
+            var basePiece = JoinsIndex[piece].B;
+            JoinedPieces[basePiece].Remove(piece);
+            if (JoinedPieces[basePiece].Count < 1)
+            {
+                JoinedPieces.Remove(basePiece);
+            }
+            JoinsIndex.Remove(piece);
+        }
     }
 }

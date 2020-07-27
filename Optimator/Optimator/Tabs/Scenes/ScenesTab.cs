@@ -523,8 +523,10 @@ namespace Optimator.Tabs.Scenes
                                 foreach (var piece in (selected as Set).PiecesList)
                                 {
                                     WIP.PiecesList.Remove(piece);
+                                    WIP.Originals.Remove(piece);
                                 }
                                 WIP.PartsList.Remove(selected);
+                                WIP.Originals.Remove(selected);
                             }
                             else
                             {
@@ -535,8 +537,25 @@ namespace Optimator.Tabs.Scenes
                                     return;
                                 }
 
-                                WIP.PartsList.Remove(selected);
-                                WIP.PiecesList.Remove(selected.ToPiece());
+                                for (var index = 0; index < WIP.PartsList.Count; index++)
+                                {
+                                    var part = WIP.PartsList[index];
+                                    if (part is Set && (part as Set).PiecesList.Contains(selected as Piece) || 
+                                        part is Piece && part == selected)
+                                    {
+                                        if (part is Set)
+                                        {
+                                            (part as Set).RemovePiece(selected as Piece);
+                                        }
+                                        else
+                                        {
+                                            WIP.PartsList.Remove(selected);                                            
+                                        }                                        
+                                        WIP.PiecesList.Remove(selected.ToPiece());
+                                        WIP.Originals.Remove(selected);
+                                        index = WIP.PartsList.Count;
+                                    }
+                                }                                
                             }
 
                             // Update changes to remove those made redundant by deleting a piece/set

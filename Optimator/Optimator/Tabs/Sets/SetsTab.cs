@@ -342,7 +342,7 @@ namespace Optimator.Tabs.Sets
                         // Remove old joinings
                         if (WIP.JoinsIndex.ContainsKey(selected))
                         {
-                            RemovePieceJoinings(selected);
+                            WIP.RemovePieceJoinings(selected);
                         }
                         JoinPieces(selected, newSelected);
                         (Panel.Controls[0] as JoinsPanel).UnselectBaseBtn();
@@ -546,7 +546,7 @@ namespace Optimator.Tabs.Sets
                         {
                             return;
                         }
-                        RemovePiece(selected);
+                        WIP.RemovePiece(selected);
                         selected = null;
                         DisplayDrawings();
                         break;
@@ -829,38 +829,6 @@ namespace Optimator.Tabs.Sets
                 Utils.Modulo(WIP.PersonalStates[a].T - baseState.T, 360),
                 Utils.Modulo(WIP.PersonalStates[a].S - baseState.S, 360), 
                 WIP.PersonalStates[a].SM / baseState.SM);
-        }
-
-        /// <summary>
-        /// Removes all mentions of a piece from the set.
-        /// </summary>
-        /// <param name="piece">The piece to remove</param>
-        public void RemovePiece(Piece piece)
-        {
-            if (WIP.JoinedPieces.ContainsKey(piece))
-            {
-                WIP.JoinedPieces.Remove(piece);
-            }
-            if (WIP.JoinsIndex.ContainsKey(piece))
-            {
-                RemovePieceJoinings(piece);
-            }
-            WIP.PiecesList.Remove(piece);
-        }
-
-        /// <summary>
-        /// Removes piece from any joins where it is not the base
-        /// </summary>
-        /// <param name="piece">Piece to remove from joins</param>
-        private void RemovePieceJoinings(Piece piece)
-        {
-            var basePiece = WIP.JoinsIndex[piece].B;
-            WIP.JoinedPieces[basePiece].Remove(piece);
-            if (WIP.JoinedPieces[basePiece].Count < 1)
-            {
-                WIP.JoinedPieces.Remove(basePiece);
-            }
-            WIP.JoinsIndex.Remove(piece);
         }
 
         /// <summary>
