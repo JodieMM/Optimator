@@ -195,9 +195,13 @@ namespace Optimator
             foreach (var part in PartsList)
             {
                 if (part is Set)
-                {
+                {                    
                     if ((part as Set).PersonalStates.ContainsKey(piece))
-                    {                        
+                    {
+                        if ((part as Set).BasePiece == piece)
+                        {
+                            return piece.State;
+                        }
                         return (part as Set).PersonalStates[piece];
                     }
                 }

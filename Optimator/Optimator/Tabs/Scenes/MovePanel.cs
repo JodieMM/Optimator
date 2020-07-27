@@ -26,15 +26,16 @@ namespace Optimator.Tabs.Scenes
         {
             InitializeComponent();
             Owner = owner;
+
             ChangeTypeCb.Items.AddRange(Consts.possibleChanges);
             UpdateListbox();
             Owner.Owner.GetTabControl().KeyDown += KeyPress;
-
             WIP = new Change(0, "", null, 0, 0, Owner.WIP);
             if (Owner.selected != null)
             {
                 PartSelected(Owner.selected.ToPiece());
             }
+            StartTimeUpDown.Value = Owner.GetCurrentTimeUpDownValue();
         }
 
 
