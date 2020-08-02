@@ -73,7 +73,7 @@ namespace Optimator.Forms.Sets
                         {
                             justAdded = new Set(name, Utils.ReadFile(Utils.GetDirectory(name)));
                             Owner.WIP.PiecesList.AddRange((justAdded as Set).PiecesList);
-                            justAdded.ToPiece().State.SetCoordsBasedOnBoard(Owner.GetBoardSizing());
+                            (justAdded as Set).PersonalStates[justAdded.ToPiece()].SetCoordsBasedOnBoard(Owner.GetBoardSizing());
 
                             // Add JoinedPieces
                             foreach (var joinedPiece in (justAdded as Set).JoinedPieces)

@@ -572,9 +572,13 @@ namespace Optimator
                 if (sketch.Value)
                 {
                     var part = sketch.Key;
+                    if (part is Set)
+                    {
+                        (part as Set).BasePiece.State = (part as Set).PersonalStates[(part as Set).BasePiece];
+                    }
                     part.Draw(original);
-                    part.Draw(rotated, new State(part.ToPiece().State, 1, part.ToPiece().State.R + 90));
-                    part.Draw(turned, new State(part.ToPiece().State, 2, part.ToPiece().State.T + 90));
+                    part.Draw(rotated, new State(Utils.CloneState(part.ToPiece().State), 1, part.ToPiece().State.R + 90));
+                    part.Draw(turned, new State(Utils.CloneState(part.ToPiece().State), 2, part.ToPiece().State.T + 90));
                 }
             }
 

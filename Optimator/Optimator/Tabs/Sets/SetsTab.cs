@@ -384,8 +384,8 @@ namespace Optimator.Tabs.Sets
             // Move Point
             else if (!movingFar)
             {
-                movingFar = Math.Abs(selected.State.X - e.X) > Consts.DragPrecision
-                    || Math.Abs(selected.State.Y - e.Y) > Consts.DragPrecision;
+                movingFar = Math.Abs(originalMoving[0] - e.X) > Consts.DragPrecision
+                    || Math.Abs(originalMoving[1] - e.Y) > Consts.DragPrecision;
             }
             DisplayDrawings();
 
@@ -399,8 +399,11 @@ namespace Optimator.Tabs.Sets
                 // Move Join
                 if (GetIfJoinBtnPressed())
                 {
+                    var baseState = WIP.BasePiece.State;
+                    FindCorrectStates(sent);
                     Visuals.DrawCross(selectedJoin.CurrentCentre()[0] + xChange,
                         selectedJoin.CurrentCentre()[1] + yChange, Consts.shadowShade, board);
+                    WIP.BasePiece.State = baseState;
                 }
                 // Move Piece
                 else
@@ -450,8 +453,10 @@ namespace Optimator.Tabs.Sets
                             {
                                 selectedJoin.AXRight = selectedJoin.AX -= x;
                                 selectedJoin.AYDown = selectedJoin.AY -= y;
-                                selectedJoin.BXRight = selectedJoin.BX += x;
-                                selectedJoin.BYDown = selectedJoin.BY += y;
+                                var reversedforBase = Utils.SpinAndSizeCoord(-selectedJoin.B.State.S, 1 / selectedJoin.B.State.SM,
+                                    new float[] { x, y });
+                                selectedJoin.BXRight = selectedJoin.BX += reversedforBase[0];
+                                selectedJoin.BYDown = selectedJoin.BY += reversedforBase[1];
                             }
                             else
                             {
@@ -465,7 +470,6 @@ namespace Optimator.Tabs.Sets
                             if (WIP.JoinsIndex.ContainsKey(selected) && WIP.JoinsIndex[selected] == selectedJoin)
                             {
                                 selectedJoin.AXRight -= x;
-                                selectedJoin.BXRight += x;
                             }
                             else
                             {
@@ -478,7 +482,6 @@ namespace Optimator.Tabs.Sets
                             if (WIP.JoinsIndex.ContainsKey(selected) && WIP.JoinsIndex[selected] == selectedJoin)
                             {
                                 selectedJoin.AYDown -= y;
-                                selectedJoin.BYDown += y;
                             }
                             else
                             {
@@ -787,7 +790,6 @@ namespace Optimator.Tabs.Sets
                     }
                     else
                     {
-                        WIP.BasePiece = null;
                         return false;
                     }
                 }
@@ -799,7 +801,8 @@ namespace Optimator.Tabs.Sets
             }
             if (WIP.BasePiece == null)
             {
-                WarningBtn.Visible = WIP.BasePiece == null;
+                WarningBtn.Visible = true;
+                WIP.BasePiece = WIP.PiecesList[0];
                 return false;
             }
             else

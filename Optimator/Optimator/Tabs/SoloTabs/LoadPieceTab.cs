@@ -122,7 +122,7 @@ namespace Optimator.Tabs.SoloTabs
                 {
                     if (name.EndsWith(Consts.PieceExt))
                     {
-                        loaded = new Piece(name, Utils.ReadFile(Utils.GetDirectory(name)));
+                        loaded = new Piece(name, Utils.ReadFile(Utils.GetDirectory(name)));                        
                     }
                     else if (name.EndsWith(Consts.SetExt))
                     {
@@ -233,7 +233,15 @@ namespace Optimator.Tabs.SoloTabs
             }
             if (SketchBtn.BackColor == selected)
             {
-                loaded.ToPiece().State.SetCoordsBasedOnBoard(from.GetBoardSizing());
+                if (loaded is Piece)
+                {
+                    loaded.ToPiece().State.SetCoordsBasedOnBoard(from.GetBoardSizing());
+                }
+                else if (loaded is Set)
+                {
+                    (loaded as Set).PersonalStates[loaded.ToPiece()] = new State();
+                    (loaded as Set).PersonalStates[loaded.ToPiece()].SetCoordsBasedOnBoard(from.GetBoardSizing());
+                }                
                 from.Sketches.Add(loaded, true);
             }
             from.DeselectButtons();

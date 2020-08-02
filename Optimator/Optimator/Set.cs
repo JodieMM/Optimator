@@ -149,7 +149,7 @@ namespace Optimator
             {
                 BasePiece.State = state;
             }
-            var orderedPieces = SortOrder();
+            var orderedPieces = SortOrder(state);
             foreach (var piece in orderedPieces)
             {
                 if (piece == BasePiece)
@@ -208,9 +208,9 @@ namespace Optimator
         /// Finds the correct order to draw pieces so they are layered correctly.
         /// </summary>
         /// <returns>Ordered list of pieces</returns>
-        public List<Piece> SortOrder()
+        public List<Piece> SortOrder(State state = null)
         {
-            CalculateStates(BasePiece.State);
+            CalculateStates(state ?? BasePiece.State);
             return PiecesList;
             // SortOrder: return SortOrderFromBasePiece(BasePiece);
         }

@@ -72,7 +72,7 @@ namespace Optimator.Forms.Scenes
                         else
                         {
                             loaded = new Set(name, Utils.ReadFile(Utils.GetDirectory(name)));
-                            loaded.ToPiece().State.SetCoordsBasedOnBoard(Owner.GetBoardSizing());
+                            (loaded as Set).PersonalStates[loaded.ToPiece()].SetCoordsBasedOnBoard(Owner.GetBoardSizing());
                             Owner.WIP.Originals.Add(loaded, Utils.CloneState(loaded.ToPiece().State));
                             foreach (var piece in (loaded as Set).PiecesList)
                             {
@@ -81,7 +81,7 @@ namespace Optimator.Forms.Scenes
                             }
                         }
                         Owner.WIP.PartsList.Add(loaded);
-                        Owner.SelectPart(loaded);
+                        Owner.SelectPart(loaded.ToPiece());
                         Owner.WIP.UpdatePiecesList();
                     }
                     Owner.DisplayDrawings();
