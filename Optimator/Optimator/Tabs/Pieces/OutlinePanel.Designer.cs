@@ -75,6 +75,7 @@
             this.ConnectorsLbl.Size = new System.Drawing.Size(185, 45);
             this.ConnectorsLbl.TabIndex = 125;
             this.ConnectorsLbl.Text = "Connector";
+            this.ConnectorsLbl.Visible = false;
             // 
             // ConnectorOptions
             // 
@@ -91,6 +92,7 @@
             this.ConnectorOptions.Size = new System.Drawing.Size(188, 53);
             this.ConnectorOptions.TabIndex = 124;
             this.ConnectorOptions.SelectedIndexChanged += new System.EventHandler(this.ConnectorOptions_SelectedIndexChanged);
+            this.ConnectorOptions.Visible = false;
             // 
             // TableLayoutPnl
             // 

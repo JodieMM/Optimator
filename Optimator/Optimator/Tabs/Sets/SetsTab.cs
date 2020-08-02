@@ -542,7 +542,7 @@ namespace Optimator.Tabs.Sets
                 {
                     // Delete Selected Piece
                     case Keys.Delete:
-                        if (selected == null)
+                        if (selected == null || GetIfJoinBtnPressed())
                         {
                             return;
                         }
@@ -765,6 +765,9 @@ namespace Optimator.Tabs.Sets
             if (WIP.PiecesList.Count == 1)
             {
                 WIP.BasePiece = WIP.PiecesList[0];
+                WIP.PersonalStates[WIP.PiecesList[0]].R = 0;
+                WIP.PersonalStates[WIP.PiecesList[0]].T = 0;
+                WIP.PersonalStates[WIP.PiecesList[0]].S = 0;
                 WarningBtn.Visible = false;
                 return false;
             }
@@ -790,11 +793,22 @@ namespace Optimator.Tabs.Sets
                 }
                 else if (!WIP.JoinedPieces.ContainsKey(piece) && !WIP.JoinsIndex.ContainsKey(piece))
                 {
+                    WIP.BasePiece = null;
                     return false;
                 }
             }
-            WarningBtn.Visible = WIP.BasePiece == null;
-            return WIP.BasePiece == null ? false : true;
+            if (WIP.BasePiece == null)
+            {
+                WarningBtn.Visible = WIP.BasePiece == null;
+                return false;
+            }
+            else
+            {
+                WIP.PersonalStates[WIP.PiecesList[0]].R = 0;
+                WIP.PersonalStates[WIP.PiecesList[0]].T = 0;
+                WIP.PersonalStates[WIP.PiecesList[0]].S = 0;
+                return true;
+            }
         }
 
         /// <summary>
@@ -838,7 +852,7 @@ namespace Optimator.Tabs.Sets
         private void FindCorrectStates(int angle = 0)
         {
             // Take current state if flat join in progress
-            WIP.CalculateStates(angle, GetIfJoinBtnPressed() ? WIP.BasePiece.State : null);
+            WIP.CalculateStates(GetIfJoinBtnPressed() ? WIP.BasePiece.State : null, angle);
 
             // Consider unattached pieces
             if (WIP.JoinsIndex.Count != WIP.PiecesList.Count - 1)

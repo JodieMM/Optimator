@@ -167,8 +167,9 @@ namespace Optimator
         /// Figures out the state of each piece based on 
         /// its personal and base states.
         /// </summary>
+        /// <param name="curr">The current state of the base piece</param>
         /// <param name="angle">The angle to find: 0 original, 1 rotated, 2 turned</param>
-        public void CalculateStates(int angle = 0, State curr = null)
+        public void CalculateStates(State curr = null, int angle = 0)
         {
             if (BasePiece != null)
             {
@@ -209,7 +210,7 @@ namespace Optimator
         /// <returns>Ordered list of pieces</returns>
         public List<Piece> SortOrder()
         {
-            CalculateStates(0, BasePiece.State);
+            CalculateStates(BasePiece.State);
             return PiecesList;
             // SortOrder: return SortOrderFromBasePiece(BasePiece);
         }
@@ -294,15 +295,31 @@ namespace Optimator
         /// <param name="piece">The piece to remove</param>
         public void RemovePiece(Piece piece)
         {
+            // Where Base
             if (JoinedPieces.ContainsKey(piece))
             {
+                if (BasePiece != null)
+                {
+                    CalculateStates(new State()
+                    {
+                        X = BasePiece.State.X,
+                        Y = BasePiece.State.Y
+                    });
+                }
+                foreach (var attached in JoinedPieces[piece])
+                {
+                    PersonalStates[attached] = attached.State;
+                    JoinsIndex.Remove(attached);
+                }
                 JoinedPieces.Remove(piece);
             }
+            // Where Attached
             if (JoinsIndex.ContainsKey(piece))
             {
                 RemovePieceJoinings(piece);
             }
             PiecesList.Remove(piece);
+            PersonalStates.Remove(piece);
         }
 
         /// <summary>
