@@ -277,6 +277,7 @@ namespace Optimator.Tabs.Scenes
         private void UpdateCurrentTime(object sender, EventArgs e)
         {
             if (sender == CurrentTimeUpDown)
+
             {
                 if (CurrentTimeUpDown.Value > WIP.TimeLength)
                 {
@@ -289,6 +290,15 @@ namespace Optimator.Tabs.Scenes
                 CurrentTimeUpDown.Value = (decimal)(TimeTrackBar.Value / 10.0);
             }
             DisplayDrawings();
+        }
+
+        /// <summary>
+        /// Programmatically updates the current working time.
+        /// </summary>
+        /// <param name="value">New working time</param>
+        public void UpdateCurrentTime(decimal value)
+        {
+            CurrentTimeUpDown.Value = value;
         }
 
         /// <summary>

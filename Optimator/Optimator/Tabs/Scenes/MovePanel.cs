@@ -128,6 +128,7 @@ namespace Optimator.Tabs.Scenes
                     return;
                 }
                 PreviewBtn.BackColor = pressed;
+                Owner.UpdateCurrentTime(StartTimeUpDown.Value);
                 Owner.WIP.RunScene(Owner.GetCurrentTimeUpDownValue() + SecondsUpDown.Value);
                 WIP.Run(Owner.GetCurrentTimeUpDownValue() + SecondsUpDown.Value);
             }
