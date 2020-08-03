@@ -27,8 +27,6 @@ namespace Optimator.Tabs.Scenes
         private bool movingFar = false;
 
         public bool SelectFromTop = true;
-        public int sceneWidth;
-        public int sceneHeight;
         #endregion
         
 
@@ -77,8 +75,8 @@ namespace Optimator.Tabs.Scenes
         /// <param name="height">New panel height (y)</param>
         public void SetDrawPanelSize(int width, int height)
         {
-            sceneWidth = width;
-            sceneHeight = height;
+            WIP.Width = width;
+            WIP.Height = height;
             DrawPanel.Width = width;
             DrawPanel.Height = height;
         }
@@ -105,7 +103,7 @@ namespace Optimator.Tabs.Scenes
             var widthPercent = 0.25F;
             var heightPercent = 0.25F;
 
-            DrawPanel.Size = new Size(sceneWidth, sceneHeight);
+            DrawPanel.Size = new Size(WIP.Width, WIP.Height);
 
             Panel.Width = (int)(Width * widthPercent);
             DisplayPanel.Height = (int)(Height * heightPercent) - ToolStrip.Height;
@@ -636,14 +634,15 @@ namespace Optimator.Tabs.Scenes
             if (WIP.PartsList.Count > 0)
             {
                 // Draw Panel
-                WIP.RunScene(CurrentTimeUpDown.Value);
-                DisplayDrawPanel();
+                WIP.RunScene(CurrentTimeUpDown.Value);                
 
                 // Update Animation listbox
                 if (Panel.Controls.Count > 0 && Panel.Controls[0] is MovePanel)
                 {
                     (Panel.Controls[0] as MovePanel).UpdateListbox();
+                    (Panel.Controls[0] as MovePanel).AddWIPChange();
                 }
+                DisplayDrawPanel();
             }
             else
             {

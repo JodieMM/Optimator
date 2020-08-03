@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Optimator.Properties;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
@@ -17,6 +18,8 @@ namespace Optimator
         public string Name { get; set; } = "";
         public string Version { get; }
         public decimal TimeLength { get; set; } = 0;
+        public int Width { get; set; }
+        public int Height { get; set; }
 
         public List<Part> PartsList { get; } = new List<Part>();
         public List<Piece> PiecesList { get; } = new List<Piece>();
@@ -41,8 +44,13 @@ namespace Optimator
             // Time Length
             TimeLength = decimal.Parse(data[1]);
 
+            // Scene Size
+            var sizes = data[2].Split(Consts.Semi);
+            Width = int.Parse(sizes[0]);
+            Height = int.Parse(sizes[1]);
+
             // Background Colour
-            Background = Utils.ColourFromString(data[2]);
+            Background = Utils.ColourFromString(data[3]);
 
             // Parts
             var partEndIndex = data.IndexOf("Originals");
@@ -51,7 +59,7 @@ namespace Optimator
                 MessageBox.Show("Invalid Scene File", "Invalid File", MessageBoxButtons.OK);
                 return;
             }
-            for (var index = 3; index < partEndIndex; index++)
+            for (var index = 4; index < partEndIndex; index++)
             {
                 if (data[index].EndsWith(Consts.PieceExt))
                 {
@@ -91,6 +99,8 @@ namespace Optimator
         public Scene()
         {
             Version = Properties.Settings.Default.Version;
+            Width = Settings.Default.SceneWidth;
+            Height = Settings.Default.SceneHeight;
         }
 
 
@@ -105,8 +115,9 @@ namespace Optimator
         {
             var data = new List<string>
             {
-                Properties.Settings.Default.Version,
+                Settings.Default.Version,
                 TimeLength.ToString(),
+                Width.ToString() + Consts.SemiS + Height.ToString(),
                 Utils.ColorToString(Background)
             };
 

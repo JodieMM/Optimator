@@ -172,7 +172,7 @@ namespace Optimator.Tabs.Scenes
         /// <param name="e"></param>
         private void AnimationLv_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (AnimationLv.SelectedIndices.Count > 0)
+            if (AnimationLv.SelectedIndices.Count > 0 && changeIndex.ContainsKey(AnimationLv.SelectedIndices[0]))
             {
                 PartNameLbl.Text = Utils.BaseName(changeIndex[AnimationLv.SelectedIndices[0]].AffectedPiece.Name);
                 ChangeTypeCb.SelectedIndex = changeIndex[AnimationLv.SelectedIndices[0]].ActionIndex();
@@ -380,6 +380,17 @@ namespace Optimator.Tabs.Scenes
                 {
                     AnimationLv.Items[AnimationLv.Items.Count - 1].Selected = true;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Draws the WIP change if preview is on.
+        /// </summary>
+        public void AddWIPChange()
+        {
+            if (PreviewBtn.BackColor == pressed)
+            {
+                WIP.Run(Owner.GetCurrentTimeUpDownValue() + SecondsUpDown.Value);
             }
         }
 

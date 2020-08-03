@@ -155,6 +155,9 @@ namespace Optimator
                         attemptOpen = new ScenesTab(this);
                         (attemptOpen as ScenesTab).WIP = new Scene(name, Utils.ReadFile(Utils.GetDirectory(name)));
                         (attemptOpen as ScenesTab).UpdateVideoLength((attemptOpen as ScenesTab).WIP.TimeLength);
+                        (attemptOpen as ScenesTab).SetDrawPanelColour((attemptOpen as ScenesTab).WIP.Background);
+                        (attemptOpen as ScenesTab).SetDrawPanelSize((attemptOpen as ScenesTab).WIP.Width,
+                            (attemptOpen as ScenesTab).WIP.Height);
                     }
                     else
                     {

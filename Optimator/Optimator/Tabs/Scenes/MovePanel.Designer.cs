@@ -293,12 +293,12 @@
             this.AnimationAmountTb.Location = new System.Drawing.Point(366, 506);
             this.AnimationAmountTb.Margin = new System.Windows.Forms.Padding(2);
             this.AnimationAmountTb.Maximum = new decimal(new int[] {
-            1000,
+            10000,
             0,
             0,
             0});
             this.AnimationAmountTb.Minimum = new decimal(new int[] {
-            1000,
+            10000,
             0,
             0,
             -2147483648});

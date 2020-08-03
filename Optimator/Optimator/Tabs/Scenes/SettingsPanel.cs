@@ -23,8 +23,8 @@ namespace Optimator.Tabs.Scenes
 
             SelectFromTopCb.Checked = Owner.SelectFromTop;
             BgColourBox.BackColor = Owner.WIP.Background;
-            SceneWidthUpDown.Value = Owner.sceneWidth;
-            SceneHeightUpDown.Value = Owner.sceneHeight;
+            SceneWidthUpDown.Value = Owner.WIP.Width;
+            SceneHeightUpDown.Value = Owner.WIP.Height;
         }
 
 
@@ -66,8 +66,8 @@ namespace Optimator.Tabs.Scenes
         /// <param name="e"></param>
         private void SceneSizeUpDown_ValueChanged(object sender, System.EventArgs e)
         {
-            Owner.SetDrawPanelSize(sender == SceneWidthUpDown ? (int)SceneWidthUpDown.Value : Owner.sceneWidth,
-                sender == SceneHeightUpDown ? (int)SceneHeightUpDown.Value : Owner.sceneHeight);
+            Owner.SetDrawPanelSize(sender == SceneWidthUpDown ? (int)SceneWidthUpDown.Value : Owner.WIP.Width,
+                sender == SceneHeightUpDown ? (int)SceneHeightUpDown.Value : Owner.WIP.Height);
             Owner.DisplayDrawings();
         }
 
