@@ -37,7 +37,6 @@ namespace Optimator.Tabs.Compile
             this.CloseBtn = new System.Windows.Forms.ToolStripButton();
             this.SettingsBtn = new System.Windows.Forms.ToolStripButton();
             this.SceneViewPanel = new System.Windows.Forms.FlowLayoutPanel();
-            this.ReloadBtn = new System.Windows.Forms.ToolStripButton();
             this.ToolStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -59,7 +58,6 @@ namespace Optimator.Tabs.Compile
             this.SaveBtn,
             this.AddSceneBtn,
             this.CloseBtn,
-            this.ReloadBtn,
             this.SettingsBtn});
             this.ToolStrip.Location = new System.Drawing.Point(0, 0);
             this.ToolStrip.Name = "ToolStrip";
@@ -121,16 +119,6 @@ namespace Optimator.Tabs.Compile
             this.SceneViewPanel.Size = new System.Drawing.Size(1784, 1092);
             this.SceneViewPanel.TabIndex = 26;
             // 
-            // ReloadBtn
-            // 
-            this.ReloadBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.ReloadBtn.Image = global::Optimator.Properties.Resources.Refresh01;
-            this.ReloadBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.ReloadBtn.Name = "ReloadBtn";
-            this.ReloadBtn.Size = new System.Drawing.Size(36, 36);
-            this.ReloadBtn.Text = "Reload";
-            this.ReloadBtn.Click += new System.EventHandler(this.ReloadBtn_Click);
-            // 
             // CompileTab
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -158,6 +146,5 @@ namespace Optimator.Tabs.Compile
         private System.Windows.Forms.ToolStripButton CloseBtn;
         private System.Windows.Forms.ToolStripButton SettingsBtn;
         private FlowLayoutPanel SceneViewPanel;
-        private ToolStripButton ReloadBtn;
     }
 }

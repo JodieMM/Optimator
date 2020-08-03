@@ -39,7 +39,6 @@ namespace Optimator.Tabs.Scenes
             this.CloseBtn = new System.Windows.Forms.ToolStripButton();
             this.PositionsBtn = new System.Windows.Forms.ToolStripButton();
             this.MoveBtn = new System.Windows.Forms.ToolStripButton();
-            this.ReloadBtn = new System.Windows.Forms.ToolStripButton();
             this.SettingsBtn = new System.Windows.Forms.ToolStripButton();
             this.VidLengthLbl = new System.Windows.Forms.Label();
             this.CurrentTimeLbl = new System.Windows.Forms.Label();
@@ -80,7 +79,6 @@ namespace Optimator.Tabs.Scenes
             this.CloseBtn,
             this.PositionsBtn,
             this.MoveBtn,
-            this.ReloadBtn,
             this.SettingsBtn});
             this.ToolStrip.Location = new System.Drawing.Point(0, 0);
             this.ToolStrip.Name = "ToolStrip";
@@ -141,16 +139,6 @@ namespace Optimator.Tabs.Scenes
             this.MoveBtn.Size = new System.Drawing.Size(36, 36);
             this.MoveBtn.Text = "Animations";
             this.MoveBtn.Click += new System.EventHandler(this.BtnWithPanel_Click);
-            // 
-            // ReloadBtn
-            // 
-            this.ReloadBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.ReloadBtn.Image = global::Optimator.Properties.Resources.Refresh01;
-            this.ReloadBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.ReloadBtn.Name = "ReloadBtn";
-            this.ReloadBtn.Size = new System.Drawing.Size(36, 36);
-            this.ReloadBtn.Text = "Reload";
-            this.ReloadBtn.Click += new System.EventHandler(this.ReloadBtn_Click);
             // 
             // SettingsBtn
             // 
@@ -214,8 +202,8 @@ namespace Optimator.Tabs.Scenes
             this.DrawPanel.TabIndex = 31;
             this.DrawPanel.TabStop = false;
             this.DrawPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DrawPanel_MouseDown);
-            this.DrawPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.DrawPanel_MouseUp);
             this.DrawPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.DrawPanel_MouseMove);
+            this.DrawPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.DrawPanel_MouseUp);
             // 
             // DisplayPanel
             // 
@@ -349,6 +337,5 @@ namespace Optimator.Tabs.Scenes
         private Panel DrawPanelContainer;
         private Timer DisplayTimer;
         private Button SnipBtn;
-        private ToolStripButton ReloadBtn;
     }
 }

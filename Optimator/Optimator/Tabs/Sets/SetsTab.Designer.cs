@@ -40,7 +40,6 @@ namespace Optimator.Tabs.Sets
             this.PositionsBtn = new System.Windows.Forms.ToolStripButton();
             this.OrderBtn = new System.Windows.Forms.ToolStripButton();
             this.EraseBtn = new System.Windows.Forms.ToolStripButton();
-            this.ReloadBtn = new System.Windows.Forms.ToolStripButton();
             this.SettingsBtn = new System.Windows.Forms.ToolStripButton();
             this.PreviewBtn = new System.Windows.Forms.ToolStripButton();
             this.WarningBtn = new System.Windows.Forms.ToolStripButton();
@@ -72,7 +71,6 @@ namespace Optimator.Tabs.Sets
             this.PositionsBtn,
             this.OrderBtn,
             this.EraseBtn,
-            this.ReloadBtn,
             this.SettingsBtn,
             this.PreviewBtn,
             this.WarningBtn});
@@ -154,16 +152,6 @@ namespace Optimator.Tabs.Sets
             this.EraseBtn.Size = new System.Drawing.Size(36, 36);
             this.EraseBtn.Text = "Erase";
             this.EraseBtn.Click += new System.EventHandler(this.BtnWithPanel_Click);
-            // 
-            // ReloadBtn
-            // 
-            this.ReloadBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.ReloadBtn.Image = global::Optimator.Properties.Resources.Refresh01;
-            this.ReloadBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.ReloadBtn.Name = "ReloadBtn";
-            this.ReloadBtn.Size = new System.Drawing.Size(36, 36);
-            this.ReloadBtn.Text = "Reload";
-            this.ReloadBtn.Click += new System.EventHandler(this.ReloadBtn_Click);
             // 
             // SettingsBtn
             // 
@@ -348,7 +336,6 @@ namespace Optimator.Tabs.Sets
         private Label FrontLbl;
         private Label SideLbl;
         private Label TopLbl;
-        private ToolStripButton ReloadBtn;
         private ToolStripButton WarningBtn;
     }
 }
