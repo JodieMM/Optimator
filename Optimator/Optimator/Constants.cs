@@ -53,7 +53,7 @@ namespace Optimator
         public static Color defaultFill = Color.FromArgb(255, 204, 240, 255);
         public static Color defaultOutline = Color.FromArgb(255, 204, 204, 255);
         public const decimal defaultOutlineWidth = 2;
-        public const string defaultPieceDetails = "wr100";
+        public const string defaultPieceDetails = "f";
 
         // Piece Options
         public static string[] connectorOptions = { "line", "none" };

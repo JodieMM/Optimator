@@ -148,9 +148,34 @@ namespace Optimator
         /// <returns>List of spots to draw</returns>
         public List<Spot> GetPoints(State state)
         {
+            // No Points / No Size
             if (Data.Count < 1 || state.SM <= 0)
             {
                 return new List<Spot>();
+            }
+            // Flat Piece
+            else if (PieceDetails == "f")
+            {
+                var flatList = new List<Spot>();
+                if (state.R == 90)
+                {
+                    foreach (var spot in Data)
+                    {
+                        flatList.Add(new Spot(spot.XRight, spot.Y, spot.Connector, spot.Solid));
+                    }
+                }
+                else if (state.T == 90)
+                {
+                    foreach (var spot in Data)
+                    {
+                        flatList.Add(new Spot(spot.X, spot.YDown, spot.Connector, spot.Solid));
+                    }
+                }
+                else
+                {
+                    return Utils.CloneSpotList(Data);
+                }
+                return flatList;
             }
             
             // Get Points

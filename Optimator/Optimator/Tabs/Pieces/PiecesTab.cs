@@ -212,9 +212,11 @@ namespace Optimator
         /// <param name="e"></param>
         private void PreviewBtn_Click(object sender, EventArgs e)
         {
-            if (CheckPiecesValid())
+            if (CheckPieceValid())
             {
                 var clone = Utils.ClonePiece(WIP);
+                // TODO: Flat Shape
+                clone.PieceDetails = "p";
                 Utils.CentrePieceOnAxis(clone);
                 var newTab = new PreviewTab(Owner, clone);
                 Utils.NewTabPage(newTab, "Preview " + Utils.BaseName(WIP.Name));
@@ -642,18 +644,18 @@ namespace Optimator
         }
 
         /// <summary>
-        /// Checks whether the pieces drawn can be calculated correctly.
+        /// Checks whether the piece drawn can be calculated correctly.
         /// Also re-orders the spots so the top left is first.
         /// </summary>
         /// <returns>True if piece is valid</returns>
-        public bool CheckPiecesValid()
+        public bool CheckPieceValid()
         {
             var spots = WIP.Data;
-            if (spots.Count == 0)
+            if (spots.Count < 2)
             {
                 return false;
             }
-            else if (spots.Count < 2)
+            else if (spots.Count == 2)
             {
                 // Sort Spots
                 if (spots[1].Y < spots[0].Y || spots[1].Y == spots[0].Y && spots[1].X < spots[0].X)

@@ -100,12 +100,14 @@ namespace Optimator.Forms.Pieces
         /// <returns>True if successful</returns>
         private bool Save(object sender)
         {
-            if (!Owner.CheckPiecesValid())
+            if (!Owner.CheckPieceValid())
             {
                 return false;
             }
 
             var clone = Utils.ClonePiece(Owner.WIP);
+            // TODO: Flat Shape
+            clone.PieceDetails = "p";
             Utils.CentrePieceOnAxis(clone);
             Owner.Directory = Utils.SaveFile(clone.GetData(), Consts.PieceFilter, sender == SaveAsBtn ? "" : Owner.Directory);
             if (Owner.Directory != "")
