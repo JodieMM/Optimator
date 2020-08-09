@@ -23,9 +23,9 @@ namespace Optimator
         public Piece WIP = new Piece();
         public Dictionary<Part, bool> Sketches { get; set; } = new Dictionary<Part, bool>();
 
-        private Graphics original;
-        private Graphics rotated;
-        private Graphics turned;
+        private Bitmap original;
+        private Bitmap rotated;
+        private Bitmap turned;
 
         public Spot selectedSpot = null;
         private int moving = 0;                             // 0 = not, 1 = X & Y, 2 = X, 3 = Y
@@ -48,6 +48,10 @@ namespace Optimator
             Owner.GetTabControl().KeyDown += KeyPress;
             Enter += RefreshDrawPanel;
             VisibleChanged += RefreshDrawPanel;
+
+            original = new Bitmap(DrawBase.Width, DrawBase.Height);
+            rotated = new Bitmap(DrawRight.Width, DrawRight.Height);
+            turned = new Bitmap(DrawDown.Width, DrawDown.Height);
         }
 
 
@@ -88,6 +92,10 @@ namespace Optimator
                 DrawingLayoutPnl.GetRowHeights()[cell.Row] : DrawingLayoutPnl.GetColumnWidths()[cell.Column];
 
             DrawBase.Size = DrawRight.Size = DrawDown.Size = new Size(length, length);
+            original = new Bitmap(DrawBase.Width, DrawBase.Height);
+            rotated = new Bitmap(DrawRight.Width, DrawRight.Height);
+            turned = new Bitmap(DrawDown.Width, DrawDown.Height);
+
             Panel.Width = largeWidth;
             Utils.ResizePanel(Panel);
             DisplayDrawings();
@@ -444,15 +452,25 @@ namespace Optimator
                 var shadow = new Spot(sent == 2 ? selectedSpot.X : e.X, sent == 1 ? selectedSpot.Y : e.Y);
                 if (sent != 2)
                 {
-                    shadow.Draw(1, Consts.shadowShade, rotated);
+                    // TODO: Shadow layer (og, rt, td)
+                    using (Graphics rt = DrawRight.CreateGraphics())
+                    {
+                        shadow.Draw(1, Consts.shadowShade, rt);
+                    }
                 }
                 if (sent != 1)
                 {
-                    shadow.Draw(2, Consts.shadowShade, turned);
+                    using (Graphics td = DrawDown.CreateGraphics())
+                    {
+                        shadow.Draw(2, Consts.shadowShade, td);
+                    }
                 }
                 if (sent == 0)
                 {
-                    shadow.Draw(0, Consts.shadowShade, original);
+                    using (Graphics og = DrawBase.CreateGraphics())
+                    {
+                        shadow.Draw(0, Consts.shadowShade, og);
+                    }
                 }               
             }
         }
@@ -560,42 +578,49 @@ namespace Optimator
         /// </summary>
         public void DisplayDrawings()
         {
-            // Prepare
-            DrawBase.Refresh();
-            DrawRight.Refresh();
-            DrawDown.Refresh();
-            original = DrawBase.CreateGraphics();
-            rotated = DrawRight.CreateGraphics();
-            turned = DrawDown.CreateGraphics();
-
-            // Draw Sketches
-            foreach (var sketch in Sketches)
+            using (Graphics og = Graphics.FromImage(original))
+            using (Graphics rt = Graphics.FromImage(rotated))
+            using (Graphics td = Graphics.FromImage(turned))
             {
-                if (sketch.Value)
+                // Draw BGs
+                og.FillRectangle(new SolidBrush(GetBoardColor()), new Rectangle(0, 0, DrawBase.Width, DrawBase.Height));
+                rt.FillRectangle(new SolidBrush(GetBoardColor()), new Rectangle(0, 0, DrawRight.Width, DrawRight.Height));
+                td.FillRectangle(new SolidBrush(GetBoardColor()), new Rectangle(0, 0, DrawDown.Width, DrawDown.Height));
+
+                // Draw Sketches
+                foreach (var sketch in Sketches)
                 {
-                    var part = sketch.Key;
-                    if (part is Set)
+                    if (sketch.Value)
                     {
-                        (part as Set).BasePiece.State = (part as Set).PersonalStates[(part as Set).BasePiece];
+                        var part = sketch.Key;
+                        if (part is Set)
+                        {
+                            (part as Set).BasePiece.State = (part as Set).PersonalStates[(part as Set).BasePiece];
+                        }
+                        part.Draw(og);
+                        part.Draw(rt, new State(Utils.CloneState(part.ToPiece().State), 1, part.ToPiece().State.R + 90));
+                        part.Draw(td, new State(Utils.CloneState(part.ToPiece().State), 2, part.ToPiece().State.T + 90));
                     }
-                    part.Draw(original);
-                    part.Draw(rotated, new State(Utils.CloneState(part.ToPiece().State), 1, part.ToPiece().State.R + 90));
-                    part.Draw(turned, new State(Utils.CloneState(part.ToPiece().State), 2, part.ToPiece().State.T + 90));
                 }
+
+                // Draw Base Board
+                WIP.Draw(og, WIP.State);
+                DrawPoints(og, 0);
+
+                // Draw Rotated Board
+                WIP.Draw(rt, new State(WIP.State, 1, 90));
+                DrawPoints(rt, 1);
+
+                // Draw Turned Board
+                WIP.Draw(td, new State(WIP.State, 2, 90));
+                DrawPoints(td, 2);
+                WIP.State.T = 0;
+
+                // Draw To Screen
+                DrawBase.CreateGraphics().DrawImageUnscaled(original, 0, 0);
+                DrawRight.CreateGraphics().DrawImageUnscaled(rotated, 0, 0);
+                DrawDown.CreateGraphics().DrawImageUnscaled(turned, 0, 0);
             }
-
-            // Draw Base Board
-            WIP.Draw(original, WIP.State);
-            DrawPoints(original, 0);
-
-            // Draw Rotated Board
-            WIP.Draw(rotated, new State(WIP.State, 1, 90));
-            DrawPoints(rotated, 1);
-
-            // Draw Turned Board
-            WIP.Draw(turned, new State(WIP.State, 2, 90));
-            DrawPoints(turned, 2);
-            WIP.State.T = 0;
         }
 
 

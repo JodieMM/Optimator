@@ -214,8 +214,8 @@ namespace Optimator.Tabs.Scenes
             this.DrawPanel.TabIndex = 31;
             this.DrawPanel.TabStop = false;
             this.DrawPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DrawPanel_MouseDown);
-            this.DrawPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.DrawPanel_MouseUp);
             this.DrawPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.DrawPanel_MouseMove);
+            this.DrawPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.DrawPanel_MouseUp);
             // 
             // DisplayPanel
             // 
@@ -294,12 +294,12 @@ namespace Optimator.Tabs.Scenes
             this.DrawPanelContainer.Name = "DrawPanelContainer";
             this.DrawPanelContainer.Size = new System.Drawing.Size(1784, 894);
             this.DrawPanelContainer.TabIndex = 43;
-            this.DrawPanelContainer.Scroll += new System.Windows.Forms.ScrollEventHandler(this.FocusOn);
-            this.DrawPanelContainer.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.FocusOn);
+            this.DrawPanelContainer.Scroll += new System.Windows.Forms.ScrollEventHandler(this.RefreshDrawPanel);
+            this.DrawPanelContainer.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.RefreshDrawPanel);
             // 
             // DisplayTimer
             // 
-            this.DisplayTimer.Interval = 5;
+            this.DisplayTimer.Interval = 3;
             this.DisplayTimer.Tick += new System.EventHandler(this.DisplayTimer_Tick);
             // 
             // ScenesTab

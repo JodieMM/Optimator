@@ -24,9 +24,9 @@ namespace Optimator.Tabs.Sets
         public Piece selected = null;
         public Join selectedJoin = null;
 
-        private Graphics original;
-        private Graphics rotated;
-        private Graphics turned;
+        private Bitmap original;
+        private Bitmap rotated;
+        private Bitmap turned;
 
         private int moving = -1;                // -1 = not, 0 = X & Y, 1 = X, 2 = Y
         private bool movingFar = false;         // Whether the piece is being selected or moved
@@ -49,6 +49,10 @@ namespace Optimator.Tabs.Sets
             Owner.GetTabControl().KeyUp += KeyPress;
             Enter += RefreshDrawPanel;
             VisibleChanged += RefreshDrawPanel;
+
+            original = new Bitmap(DrawBase.Width, DrawBase.Height);
+            rotated = new Bitmap(DrawRight.Width, DrawRight.Height);
+            turned = new Bitmap(DrawDown.Width, DrawDown.Height);
 
             ChangeDrawingBgs(Utils.ColourFromString(Properties.Settings.Default.BgColour));
         }
@@ -109,6 +113,10 @@ namespace Optimator.Tabs.Sets
                 DrawingLayoutPnl.GetRowHeights()[cell.Row] : DrawingLayoutPnl.GetColumnWidths()[cell.Column];
 
             DrawBase.Size = DrawRight.Size = DrawDown.Size = new Size(length, length);
+            original = new Bitmap(DrawBase.Width, DrawBase.Height);
+            rotated = new Bitmap(DrawRight.Width, DrawRight.Height);
+            turned = new Bitmap(DrawDown.Width, DrawDown.Height);
+
             Panel.Width = largeWidth;
             Utils.ResizePanel(Panel);
             DisplayDrawings();
@@ -394,15 +402,19 @@ namespace Optimator.Tabs.Sets
             {
                 var xChange = sent == 2 ? 0 : e.X - originalMoving[0];
                 var yChange = sent == 1 ? 0 : e.Y - originalMoving[1];
-                var board = sent == 0 ? original : sent == 1 ? rotated : turned;
+                var board = sent == 0 ? DrawBase : sent == 1 ? DrawRight : DrawDown;
 
                 // Move Join
                 if (GetIfJoinBtnPressed())
                 {
                     var baseState = WIP.BasePiece.State;
                     FindCorrectStates(sent);
-                    Visuals.DrawCross(selectedJoin.CurrentCentre()[0] + xChange,
-                        selectedJoin.CurrentCentre()[1] + yChange, Consts.shadowShade, board);
+                    // TODO: Shadow layer
+                    using (Graphics g = board.CreateGraphics())
+                    {
+                        Visuals.DrawCross(selectedJoin.CurrentCentre()[0] + xChange,
+                        selectedJoin.CurrentCentre()[1] + yChange, Consts.shadowShade, g);
+                    }
                     WIP.BasePiece.State = baseState;
                 }
                 // Move Piece
@@ -414,8 +426,12 @@ namespace Optimator.Tabs.Sets
                         var modState = Utils.CloneState(selected.State);
                         modState.X += xChange;
                         modState.Y += yChange;
-                        selected.Draw(board, modState, new ColourState(selected.ColourState,
+                        // TODO: Shadow Layer
+                        using (Graphics g = board.CreateGraphics())
+                        {
+                            selected.Draw(g, modState, new ColourState(selected.ColourState,
                             Consts.shadowShade, new Color[] { Consts.shadowShade }));
+                        }
                     }
                 }
             }
@@ -666,62 +682,69 @@ namespace Optimator.Tabs.Sets
         /// </summary>
         public void DisplayDrawings()
         {
-            // Prepare Boards
-            DrawBase.Refresh();
-            DrawRight.Refresh();
-            DrawDown.Refresh();
-            original = DrawBase.CreateGraphics();
-            rotated = DrawRight.CreateGraphics();
-            turned = DrawDown.CreateGraphics();
-
-            var boards = new Graphics[3] { original, rotated, turned };
-            CheckSingularBasePiece();
-            var baseState = WIP.BasePiece != null ? WIP.BasePiece.State : new State();
-
-            // For Each Angle
-            for (int angle = 0; angle < 3; angle++)
+            using (Graphics og = Graphics.FromImage(original))
+            using (Graphics rt = Graphics.FromImage(rotated))
+            using (Graphics td = Graphics.FromImage(turned))
             {
-                FindCorrectStates(angle);
+                // Draw BGs
+                og.FillRectangle(new SolidBrush(GetBoardColor()), new Rectangle(0, 0, DrawBase.Width, DrawBase.Height));
+                rt.FillRectangle(new SolidBrush(GetBoardColor()), new Rectangle(0, 0, DrawRight.Width, DrawRight.Height));
+                td.FillRectangle(new SolidBrush(GetBoardColor()), new Rectangle(0, 0, DrawDown.Width, DrawDown.Height));
 
-                // Draw Pieces
-                foreach (var piece in GetPiecesInOrder())
+                var boards = new Graphics[3] { og, rt, td };
+                CheckSingularBasePiece();
+                var baseState = WIP.BasePiece != null ? WIP.BasePiece.State : new State();
+
+                // For Each Angle
+                for (int angle = 0; angle < 3; angle++)
                 {
-                    // Moving
-                    if (selected != null && piece == selected && movingFar)
+                    FindCorrectStates(angle);
+
+                    // Draw Pieces
+                    foreach (var piece in GetPiecesInOrder())
                     {
-                        piece.Draw(boards[angle], piece.State, new ColourState(piece.ColourState, Consts.shadowShade));
+                        // Moving
+                        if (selected != null && piece == selected && movingFar)
+                        {
+                            piece.Draw(boards[angle], piece.State, new ColourState(piece.ColourState, Consts.shadowShade));
+                        }
+                        // Selected
+                        else if (selected != null && piece == selected)
+                        {
+                            piece.Draw(boards[angle], piece.State, new ColourState(piece.ColourState, Consts.select));
+                        }
+                        // Attached to Selected
+                        else if (selected != null && WIP.JoinedPieces.ContainsKey(selected) && WIP.JoinedPieces[selected].Contains(piece))
+                        {
+                            piece.Draw(boards[angle], piece.State, new ColourState(piece.ColourState, Consts.highlight));
+                        }
+                        // Base of Selected
+                        else if (selected != null && WIP.JoinsIndex.ContainsKey(selected) && WIP.JoinsIndex[selected].B == piece)
+                        {
+                            piece.Draw(boards[angle], piece.State, new ColourState(piece.ColourState, Consts.lowlight));
+                        }
+                        else
+                        {
+                            piece.Draw(boards[angle], piece.State);
+                        }
                     }
-                    // Selected
-                    else if (selected != null && piece == selected)
+
+                    // Draw Joins if JoinBtn Pressed
+                    if (GetIfJoinBtnPressed())
                     {
-                        piece.Draw(boards[angle], piece.State, new ColourState(piece.ColourState, Consts.select));
-                    }
-                    // Attached to Selected
-                    else if (selected != null && WIP.JoinedPieces.ContainsKey(selected) && WIP.JoinedPieces[selected].Contains(piece))
-                    {
-                        piece.Draw(boards[angle], piece.State, new ColourState(piece.ColourState, Consts.highlight));
-                    }
-                    // Base of Selected
-                    else if (selected != null && WIP.JoinsIndex.ContainsKey(selected) && WIP.JoinsIndex[selected].B == piece)
-                    {
-                        piece.Draw(boards[angle], piece.State, new ColourState(piece.ColourState, Consts.lowlight));
-                    }
-                    else
-                    {
-                        piece.Draw(boards[angle], piece.State);
+                        var joinsDraw = WIP.FindPieceJoins(selected);
+                        foreach (var joinDraw in joinsDraw)
+                        {
+                            joinDraw.Key.Draw(joinDraw.Key == selectedJoin ? Consts.select : joinDraw.Value ? Consts.option1 : Consts.option2, boards[angle]);
+                        }
+                        WIP.BasePiece.State = baseState;
                     }
                 }
 
-                // Draw Joins if JoinBtn Pressed
-                if (GetIfJoinBtnPressed())
-                {
-                    var joinsDraw = WIP.FindPieceJoins(selected);
-                    foreach (var joinDraw in joinsDraw)
-                    {
-                        joinDraw.Key.Draw(joinDraw.Key == selectedJoin ? Consts.select : joinDraw.Value ? Consts.option1 : Consts.option2, boards[angle]);
-                    }
-                    WIP.BasePiece.State = baseState;
-                }
+                // Draw To Screen
+                DrawBase.CreateGraphics().DrawImageUnscaled(original, 0, 0);
+                DrawRight.CreateGraphics().DrawImageUnscaled(rotated, 0, 0);
+                DrawDown.CreateGraphics().DrawImageUnscaled(turned, 0, 0);
             }
         }
 

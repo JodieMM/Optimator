@@ -15,7 +15,7 @@ namespace Optimator.Forms
         public override HomeForm Owner { get; set; }
         private Part WIP;
         private State Position = new State();
-        private Graphics g;
+        private Bitmap original;
 
         /// <summary>
         /// Constructor for the control.
@@ -25,8 +25,9 @@ namespace Optimator.Forms
             InitializeComponent();
             Owner = owner;
             WIP = part;
+            original = new Bitmap(DrawPanel.Width, DrawPanel.Height);
             Position.SetCoordsBasedOnBoard(DrawPanel);
-            Validated += RefreshDrawPanel;
+            Validated += RefreshDrawPanel;            
         }
 
 
@@ -56,6 +57,7 @@ namespace Optimator.Forms
 
             DrawPanel.Size = new Size(bigLength, bigLength);
             DrawPanel.Location = new Point(lilWidth, smallHeight + ToolStrip.Height);
+            original = new Bitmap(DrawPanel.Width, DrawPanel.Height);
 
             OptionsMenu.Size = new Size(smallWidth, bigLength);
             OptionsMenu.Location = new Point(bigLength + 3 * lilWidth, smallHeight + ToolStrip.Height);
@@ -113,9 +115,17 @@ namespace Optimator.Forms
         /// </summary>
         public void DisplayDrawings()
         {
-            DrawPanel.Refresh();
-            g = DrawPanel.CreateGraphics();
-            WIP.Draw(g, Position);
+            using (Graphics g = Graphics.FromImage(original))
+            {
+                // Draw BGs
+                g.FillRectangle(Brushes.White, new Rectangle(0, 0, DrawPanel.Width, DrawPanel.Height));
+
+                // Draw Content
+                WIP.Draw(g, Position);
+
+                // Draw To Screen
+                DrawPanel.CreateGraphics().DrawImageUnscaled(original, 0, 0);
+            }
         }
 
 

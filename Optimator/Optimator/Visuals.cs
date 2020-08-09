@@ -126,16 +126,8 @@ namespace Optimator
         /// </summary>
         /// <param name="partsList">Parts to be drawn</param>
         /// <param name="g">Graphics to draw</param>
-        /// <param name="drawPanel">If the panel is being reset it is assigned</param>
-        public static void DrawParts(List<Part> partsList, Graphics g, PictureBox drawPanel = null, float scale = 1)
+        public static void DrawParts(List<Part> partsList, Graphics g)
         {
-            g.ScaleTransform(scale, scale);
-            if (drawPanel != null)
-            {
-                drawPanel.Refresh();
-                g = drawPanel.CreateGraphics();
-            }
-
             foreach (var part in partsList)
             {
                 part.Draw(g);

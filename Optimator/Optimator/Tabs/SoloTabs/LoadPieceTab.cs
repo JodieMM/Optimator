@@ -17,7 +17,7 @@ namespace Optimator.Tabs.SoloTabs
         private readonly PiecesTab from;
         private Part loaded = null;
 
-        private Graphics g;
+        private Bitmap original;
 
         private Color button = Color.LightPink;
         private Color selected = Color.FromArgb(255, 255, 153, 179);
@@ -34,6 +34,7 @@ namespace Optimator.Tabs.SoloTabs
             InitializeComponent();
             Owner = owner;
             this.from = from;
+            original = new Bitmap(DrawPanel.Width, DrawPanel.Height);
         }
 
 
@@ -59,6 +60,7 @@ namespace Optimator.Tabs.SoloTabs
 
             DrawPanel.Size = new Size(bigLength, bigLength);
             DrawPanel.Location = new Point(lilWidth, smallHeight + ToolStrip.Height);
+            original = new Bitmap(DrawPanel.Width, DrawPanel.Height);
 
             TableLayoutPnl.Size = new Size(smallWidth, bigLength);
             TableLayoutPnl.Location = new Point(bigLength + lilWidth * 3, smallHeight + ToolStrip.Height);
@@ -73,9 +75,17 @@ namespace Optimator.Tabs.SoloTabs
         {
             if (loaded != null)
             {
-                DrawPanel.Refresh();
-                g = DrawPanel.CreateGraphics();
-                loaded.Draw(g);
+                using (Graphics g = Graphics.FromImage(original))
+                {
+                    // Draw BGs
+                    g.FillRectangle(Brushes.White, new Rectangle(0, 0, DrawPanel.Width, DrawPanel.Height));
+
+                    // Draw Content
+                    loaded.Draw(g);
+
+                    // Draw To Screen
+                    DrawPanel.CreateGraphics().DrawImageUnscaled(original, 0, 0);
+                }
             }
         }
 

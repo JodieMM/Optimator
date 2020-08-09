@@ -21,7 +21,7 @@ namespace Optimator.Tabs.Scenes
         public Scene WIP = new Scene();
         public Part selected = null;
         public Piece subSelected = null;
-        private Graphics g;
+        private Bitmap original;
 
         private int[] originalMoving;
         private bool movingFar = false;
@@ -39,11 +39,12 @@ namespace Optimator.Tabs.Scenes
             Owner = owner;
             
             Owner.GetTabControl().KeyUp += KeyPress;
-            Enter += FocusOn;
-            VisibleChanged += FocusOn;
+            Enter += RefreshDrawPanel;
+            VisibleChanged += RefreshDrawPanel;
+            DrawPanelContainer.Scroll += RefreshDrawPanel;
 
             SetDrawPanelSize(Settings.Default.SceneWidth, Settings.Default.SceneHeight);
-            g = DrawPanel.CreateGraphics();            
+            original = new Bitmap(DrawPanel.Width, DrawPanel.Height);
         }
 
 
@@ -79,6 +80,7 @@ namespace Optimator.Tabs.Scenes
             WIP.Height = height;
             DrawPanel.Width = width;
             DrawPanel.Height = height;
+            original = new Bitmap(DrawPanel.Width, DrawPanel.Height);
         }
 
         /// <summary>
@@ -111,6 +113,7 @@ namespace Optimator.Tabs.Scenes
             Utils.ResizePanel(Panel);
 
             DisplayDrawings();
+            RefreshDrawPanel(this, new EventArgs());
         }
 
         /// <summary>
@@ -401,8 +404,12 @@ namespace Optimator.Tabs.Scenes
                         var modState = Utils.CloneState(selected.ToPiece().State);
                         modState.X += xChange;
                         modState.Y += yChange;
-                        selected.Draw(g, modState, new ColourState(selected.ToPiece().ColourState,
-                            Consts.shadowShade, new Color[] { Consts.shadowShade }));
+                        // TODO: Shadow layer
+                        using (Graphics g = DrawPanel.CreateGraphics())
+                        {
+                            selected.Draw(g, modState, new ColourState(selected.ToPiece().ColourState,
+                                Consts.shadowShade, new Color[] { Consts.shadowShade }));
+                        }
                     }
                 }
             }
@@ -655,7 +662,17 @@ namespace Optimator.Tabs.Scenes
         /// </summary>
         public void DisplayDrawPanel()
         {
-            Visuals.DrawParts(WIP.PartsList, g, DrawPanel);
+            using (Graphics g = Graphics.FromImage(original))
+            {
+                // Draw BGs
+                g.FillRectangle(new SolidBrush(DrawPanel.BackColor), new Rectangle(0, 0, DrawPanel.Width, DrawPanel.Height));
+
+                // Draw Content
+                Visuals.DrawParts(WIP.PartsList, g);
+
+                // Draw To Screen
+                DrawPanel.CreateGraphics().DrawImageUnscaled(original, 0, 0);
+            }            
         }
     }
 }
