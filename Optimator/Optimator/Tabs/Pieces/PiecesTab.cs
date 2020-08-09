@@ -30,6 +30,7 @@ namespace Optimator
         public Spot selectedSpot = null;
         private int moving = 0;                             // 0 = not, 1 = X & Y, 2 = X, 3 = Y
         private bool movingFar = false;                     // Whether a piece is being selected or moved
+        private Spot shadow = null;
 
         public bool showPoints = true;
         #endregion
@@ -448,31 +449,20 @@ namespace Optimator
 
             if (movingFar)
             {
-                DisplayDrawings();
-                var shadow = new Spot(sent == 2 ? selectedSpot.X : e.X, sent == 1 ? selectedSpot.Y : e.Y);
-                if (sent != 2)
-                {
-                    // TODO: Shadow layer (og, rt, td)
-                    using (Graphics rt = DrawRight.CreateGraphics())
-                    {
-                        shadow.Draw(1, Consts.shadowShade, rt);
-                    }
-                }
-                if (sent != 1)
-                {
-                    using (Graphics td = DrawDown.CreateGraphics())
-                    {
-                        shadow.Draw(2, Consts.shadowShade, td);
-                    }
-                }
-                if (sent == 0)
-                {
-                    using (Graphics og = DrawBase.CreateGraphics())
-                    {
-                        shadow.Draw(0, Consts.shadowShade, og);
-                    }
-                }               
+                shadow = new Spot(sent == 2 ? selectedSpot.X : e.X, sent == 1 ? selectedSpot.Y : e.Y);
+                DisplayDrawings();                      
             }
+        }
+
+        /// <summary>
+        /// Changes moving variables to indicate no
+        /// movement is in process.
+        /// </summary>
+        private void StopMoving()
+        {
+            moving = 0;
+            movingFar = false;
+            shadow = null;
         }
 
         /// <summary>
@@ -616,6 +606,25 @@ namespace Optimator
                 DrawPoints(td, 2);
                 WIP.State.T = 0;
 
+                // Shadows
+                if (shadow != null)
+                {
+                    if (moving == 1)
+                    {
+                        shadow.Draw(0, Consts.shadowShade, og);
+                        shadow.Draw(0, Consts.shadowShade, rt);
+                        shadow.Draw(0, Consts.shadowShade, td);
+                    }
+                    else if (moving == 2)
+                    {
+                        shadow.Draw(0, Consts.shadowShade, rt);
+                    }
+                    else if (moving == 3)
+                    {
+                        shadow.Draw(0, Consts.shadowShade, td);
+                    }
+                }
+
                 // Draw To Screen
                 DrawBase.CreateGraphics().DrawImageUnscaled(original, 0, 0);
                 DrawRight.CreateGraphics().DrawImageUnscaled(rotated, 0, 0);
@@ -656,16 +665,6 @@ namespace Optimator
                     (cntl as MovePointPanel).UpdateLabels();
                 }
             }
-        }
-
-        /// <summary>
-        /// Changes moving variables to indicate no
-        /// movement is in process.
-        /// </summary>
-        private void StopMoving()
-        {
-            moving = 0;
-            movingFar = false;
         }
 
         /// <summary>

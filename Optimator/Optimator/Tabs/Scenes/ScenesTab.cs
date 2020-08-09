@@ -24,6 +24,7 @@ namespace Optimator.Tabs.Scenes
         private Bitmap original;
 
         private int[] originalMoving;
+        private State shadowState = null;
         private bool movingFar = false;
 
         public bool SelectFromTop = true;
@@ -391,7 +392,6 @@ namespace Optimator.Tabs.Scenes
                     movingFar = Math.Abs(selected.ToPiece().State.X - e.X) > Consts.DragPrecision
                         || Math.Abs(selected.ToPiece().State.Y - e.Y) > Consts.DragPrecision;                    
                 }
-                DisplayDrawings();
 
                 // Shadows
                 if (movingFar)
@@ -401,17 +401,12 @@ namespace Optimator.Tabs.Scenes
 
                     for (int index = 0; index < selected.ToPiece().Data.Count; index++)
                     {
-                        var modState = Utils.CloneState(selected.ToPiece().State);
-                        modState.X += xChange;
-                        modState.Y += yChange;
-                        // TODO: Shadow layer
-                        using (Graphics g = DrawPanel.CreateGraphics())
-                        {
-                            selected.Draw(g, modState, new ColourState(selected.ToPiece().ColourState,
-                                Consts.shadowShade, new Color[] { Consts.shadowShade }));
-                        }
+                        shadowState = Utils.CloneState(selected.ToPiece().State);
+                        shadowState.X += xChange;
+                        shadowState.Y += yChange;
                     }
                 }
+                DisplayDrawings();
             }
         }
 
@@ -444,6 +439,7 @@ namespace Optimator.Tabs.Scenes
         {
             movingFar = false;
             originalMoving = null;
+            shadowState = null;
         }
 
         /// <summary>
@@ -669,6 +665,13 @@ namespace Optimator.Tabs.Scenes
 
                 // Draw Content
                 Visuals.DrawParts(WIP.PartsList, g);
+
+                // Draw Shadows
+                if (movingFar && selected != null && shadowState != null)
+                {
+                    selected.Draw(g, shadowState, new ColourState(selected.ToPiece().ColourState,
+                        Consts.shadowShade, new Color[] { Consts.shadowShade }));
+                }
 
                 // Draw To Screen
                 DrawPanel.CreateGraphics().DrawImageUnscaled(original, 0, 0);

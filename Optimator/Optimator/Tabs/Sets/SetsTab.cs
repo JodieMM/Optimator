@@ -31,6 +31,8 @@ namespace Optimator.Tabs.Sets
         private int moving = -1;                // -1 = not, 0 = X & Y, 1 = X, 2 = Y
         private bool movingFar = false;         // Whether the piece is being selected or moved
         private int[] originalMoving;
+        private Spot shadow = null;
+        private State shadowState = null;
 
         public bool SelectFromTop = true;
         #endregion
@@ -395,7 +397,6 @@ namespace Optimator.Tabs.Sets
                 movingFar = Math.Abs(originalMoving[0] - e.X) > Consts.DragPrecision
                     || Math.Abs(originalMoving[1] - e.Y) > Consts.DragPrecision;
             }
-            DisplayDrawings();
 
             // Shadows
             if (movingFar)
@@ -409,12 +410,7 @@ namespace Optimator.Tabs.Sets
                 {
                     var baseState = WIP.BasePiece.State;
                     FindCorrectStates(sent);
-                    // TODO: Shadow layer
-                    using (Graphics g = board.CreateGraphics())
-                    {
-                        Visuals.DrawCross(selectedJoin.CurrentCentre()[0] + xChange,
-                        selectedJoin.CurrentCentre()[1] + yChange, Consts.shadowShade, g);
-                    }
+                    shadow = new Spot(selectedJoin.CurrentCentre()[0] + xChange, selectedJoin.CurrentCentre()[1] + yChange);
                     WIP.BasePiece.State = baseState;
                 }
                 // Move Piece
@@ -423,18 +419,13 @@ namespace Optimator.Tabs.Sets
                     FindCorrectStates(sent);
                     for (int index = 0; index < selected.Data.Count; index++)
                     {
-                        var modState = Utils.CloneState(selected.State);
-                        modState.X += xChange;
-                        modState.Y += yChange;
-                        // TODO: Shadow Layer
-                        using (Graphics g = board.CreateGraphics())
-                        {
-                            selected.Draw(g, modState, new ColourState(selected.ColourState,
-                            Consts.shadowShade, new Color[] { Consts.shadowShade }));
-                        }
+                        shadowState = Utils.CloneState(selected.State);
+                        shadowState.X += xChange;
+                        shadowState.Y += yChange;
                     }
                 }
             }
+            DisplayDrawings();
         }
 
         /// <summary>
@@ -545,7 +536,9 @@ namespace Optimator.Tabs.Sets
             moving = -1;
             movingFar = false;
             selectedJoin = null;
-        }
+            shadow = null;
+            shadowState = null;
+    }
 
         /// <summary>
         /// Runs when a key is pressed.
@@ -738,6 +731,50 @@ namespace Optimator.Tabs.Sets
                             joinDraw.Key.Draw(joinDraw.Key == selectedJoin ? Consts.select : joinDraw.Value ? Consts.option1 : Consts.option2, boards[angle]);
                         }
                         WIP.BasePiece.State = baseState;
+                    }
+                }
+
+                // Shadows
+                if (movingFar)
+                {
+                    if (shadow != null)
+                    {
+                        if (moving == 0)
+                        {
+                            Visuals.DrawCross(shadow.X, shadow.Y, Consts.shadowShade, og);
+                            Visuals.DrawCross(shadow.X, shadow.Y, Consts.shadowShade, rt);
+                            Visuals.DrawCross(shadow.X, shadow.Y, Consts.shadowShade, td);
+                        }
+                        else if (moving == 1)
+                        {
+                            Visuals.DrawCross(shadow.X, shadow.Y, Consts.shadowShade, rt);
+                        }
+                        else if (moving == 2)
+                        {
+                            Visuals.DrawCross(shadow.X, shadow.Y, Consts.shadowShade, td);
+                        }
+                    }
+                    else if (shadowState != null)
+                    {
+                        if (moving == 0)
+                        {
+                            selected.Draw(og, shadowState, new ColourState(selected.ColourState, 
+                                Consts.shadowShade, new Color[] { Consts.shadowShade }));
+                            selected.Draw(rt, shadowState, new ColourState(selected.ColourState,
+                                Consts.shadowShade, new Color[] { Consts.shadowShade }));
+                            selected.Draw(td, shadowState, new ColourState(selected.ColourState,
+                                Consts.shadowShade, new Color[] { Consts.shadowShade }));
+                        }
+                        else if (moving == 1)
+                        {
+                            selected.Draw(rt, shadowState, new ColourState(selected.ColourState,
+                                Consts.shadowShade, new Color[] { Consts.shadowShade }));
+                        }
+                        else if (moving == 2)
+                        {
+                            selected.Draw(td, shadowState, new ColourState(selected.ColourState,
+                                Consts.shadowShade, new Color[] { Consts.shadowShade }));
+                        }
                     }
                 }
 
