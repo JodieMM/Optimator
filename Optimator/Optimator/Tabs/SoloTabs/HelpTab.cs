@@ -52,7 +52,7 @@ namespace Optimator.Forms
         /// <param name="e"></param>
         private void YoutubeLinkLbl_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            System.Diagnostics.Process.Start("https://www.youtube.com/channel/UCiip8jvHNeyuF37XpmbgNog/");
+            System.Diagnostics.Process.Start("https://www.youtube.com/playlist?list=PLPa90e_a9ym09_D2TicBnUTZm3aCdsAPb");
         }
 
         /// <summary>
