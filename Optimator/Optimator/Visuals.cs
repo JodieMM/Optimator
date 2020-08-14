@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Windows.Forms;
 
 namespace Optimator
 {
@@ -22,6 +21,7 @@ namespace Optimator
         /// <param name="board">The graphics board to be drawn on</param>
         public static void DrawCross(float xcood, float ycood, Color colour, Graphics board)
         {
+            board.SmoothingMode = SmoothingMode.AntiAlias;
             var x = (int)xcood;
             var y = (int)ycood;
             var pen = new Pen(colour);
@@ -38,6 +38,7 @@ namespace Optimator
         /// <param name="board">The graphics board to be drawn on</param>
         public static void DrawX(float xcood, float ycood, Color colour, Graphics board)
         {
+            board.SmoothingMode = SmoothingMode.AntiAlias;
             var x = (int)xcood;
             var y = (int)ycood;
             var pen = new Pen(colour);
@@ -64,6 +65,7 @@ namespace Optimator
                 colourState = piece.ColourState;
             }
             var pen = new Pen(colourState.OutlineColour, (float)piece.OutlineWidth);
+            g.SmoothingMode = SmoothingMode.AntiAlias;
             // GRADIENT
             var fill = new SolidBrush(colourState.FillColour[0]);
             var numCoords = currentPoints.Count;
@@ -154,10 +156,9 @@ namespace Optimator
             var newBitmap = new Bitmap(newWidth, newHeight);
             var g = Graphics.FromImage(newBitmap);
 
-            // uncomment for higher quality output
-            //g.InterpolationMode = InterpolationMode.High;
-            //g.CompositingQuality = CompositingQuality.HighQuality;
-            //g.SmoothingMode = SmoothingMode.AntiAlias;
+            g.InterpolationMode = InterpolationMode.High;
+            g.CompositingQuality = CompositingQuality.HighQuality;
+            g.SmoothingMode = SmoothingMode.AntiAlias;
 
             var scaleWidth = (int)(original.Width * scale);
             var scaleHeight = (int)(original.Height * scale);
