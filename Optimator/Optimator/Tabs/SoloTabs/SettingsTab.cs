@@ -72,7 +72,7 @@ namespace Optimator.Forms
         /// </summary>
         public void DisplaySettings()
         {
-            VersionLbl.Text = "Version " + Settings.Default.Version;
+            VersionLbl.Text = "Version " + "Beta 1.1";//TODO: Return Settings.Default.Version;
             BackColourBox.BackColor = Utils.ColourFromString(Settings.Default.BgColour);
             WorkingDirValueLbl.Text = "Current Directory: " + Settings.Default.WorkingDirectory;
             SaveVideoFramesCb.Checked = Settings.Default.SaveVideoFrames;

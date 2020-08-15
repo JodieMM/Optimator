@@ -19,7 +19,7 @@ namespace Optimator.Forms
         {
             InitializeComponent();
             Owner = owner;
-            VersionLbl.Text = "Version " + Properties.Settings.Default.Version;
+            VersionLbl.Text = "Version " + "Beta 1.1";//TODO: Return Properties.Settings.Default.Version;
         }
 
 
