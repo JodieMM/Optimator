@@ -51,6 +51,8 @@ namespace Optimator.Tabs.Sets
             Owner.GetTabControl().KeyUp += KeyPress;
             Enter += RefreshDrawPanel;
             VisibleChanged += RefreshDrawPanel;
+            Validated += RefreshDrawPanel;
+            Paint += RefreshDrawPanel;
 
             original = new Bitmap(DrawBase.Width, DrawBase.Height);
             rotated = new Bitmap(DrawRight.Width, DrawRight.Height);
@@ -115,13 +117,16 @@ namespace Optimator.Tabs.Sets
                 DrawingLayoutPnl.GetRowHeights()[cell.Row] : DrawingLayoutPnl.GetColumnWidths()[cell.Column];
 
             DrawBase.Size = DrawRight.Size = DrawDown.Size = new Size(length, length);
-            original = new Bitmap(DrawBase.Width, DrawBase.Height);
-            rotated = new Bitmap(DrawRight.Width, DrawRight.Height);
-            turned = new Bitmap(DrawDown.Width, DrawDown.Height);
+            if (DrawBase.Width != 0 && DrawBase.Height != 0)
+            {
+                original = new Bitmap(DrawBase.Width, DrawBase.Height);
+                rotated = new Bitmap(DrawRight.Width, DrawRight.Height);
+                turned = new Bitmap(DrawDown.Width, DrawDown.Height);
 
-            Panel.Width = largeWidth;
-            Utils.ResizePanel(Panel);
-            DisplayDrawings();
+                Panel.Width = largeWidth;
+                Utils.ResizePanel(Panel);
+                DisplayDrawings();
+            }
         }
 
         #region ToolStrip

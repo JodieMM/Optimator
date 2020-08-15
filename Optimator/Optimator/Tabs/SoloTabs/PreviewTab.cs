@@ -27,7 +27,8 @@ namespace Optimator.Forms
             WIP = part;
             original = new Bitmap(DrawPanel.Width, DrawPanel.Height);
             Position.SetCoordsBasedOnBoard(DrawPanel);
-            Validated += RefreshDrawPanel;            
+            Validated += RefreshDrawPanel;
+            Paint += RefreshDrawPanel;
         }
 
 
@@ -56,25 +57,28 @@ namespace Optimator.Forms
             var smallHeight = (int)((Height - bigHeight - ToolStrip.Height) / 2.0);
 
             DrawPanel.Size = new Size(bigLength, bigLength);
-            DrawPanel.Location = new Point(lilWidth, smallHeight + ToolStrip.Height);
-            original = new Bitmap(DrawPanel.Width, DrawPanel.Height);
+            if (DrawPanel.Width != 0 && DrawPanel.Height != 0)
+            {
+                DrawPanel.Location = new Point(lilWidth, smallHeight + ToolStrip.Height);
+                original = new Bitmap(DrawPanel.Width, DrawPanel.Height);
 
-            OptionsMenu.Size = new Size(smallWidth, bigLength);
-            OptionsMenu.Location = new Point(bigLength + 3 * lilWidth, smallHeight + ToolStrip.Height);
+                OptionsMenu.Size = new Size(smallWidth, bigLength);
+                OptionsMenu.Location = new Point(bigLength + 3 * lilWidth, smallHeight + ToolStrip.Height);
 
-            RotationTrack.Size = new Size((int)(DrawPanel.Width * trackLong), (int)(DrawPanel.Height * trackShort));
-            RotationTrack.Location = new Point((int)(DrawPanel.Location.X + (DrawPanel.Width - RotationTrack.Width) / 2.0),
-                (int)(DrawPanel.Location.Y + DrawPanel.Height - RotationTrack.Height * 1.25));
+                RotationTrack.Size = new Size((int)(DrawPanel.Width * trackLong), (int)(DrawPanel.Height * trackShort));
+                RotationTrack.Location = new Point((int)(DrawPanel.Location.X + (DrawPanel.Width - RotationTrack.Width) / 2.0),
+                    (int)(DrawPanel.Location.Y + DrawPanel.Height - RotationTrack.Height * 1.25));
 
-            TurnTrack.Size = SpinTrack.Size = new Size((int)(DrawPanel.Width * trackShort), (int)(DrawPanel.Height * trackLong));
-            TurnTrack.Location = new Point((int)(DrawPanel.Location.X + DrawPanel.Width - TurnTrack.Width * 1.25),
-                (int)(DrawPanel.Location.Y + (DrawPanel.Height - TurnTrack.Height) / 2.0));
-            
-            SpinTrack.Location = new Point((OptionsMenu.Size.Width - SpinTrack.Size.Width) / 2,
-                (OptionsMenu.Size.Height - SpinTrack.Size.Height) / 2);
+                TurnTrack.Size = SpinTrack.Size = new Size((int)(DrawPanel.Width * trackShort), (int)(DrawPanel.Height * trackLong));
+                TurnTrack.Location = new Point((int)(DrawPanel.Location.X + DrawPanel.Width - TurnTrack.Width * 1.25),
+                    (int)(DrawPanel.Location.Y + (DrawPanel.Height - TurnTrack.Height) / 2.0));
 
-            Position.SetCoordsBasedOnBoard(DrawPanel);
-            DisplayDrawings();
+                SpinTrack.Location = new Point((OptionsMenu.Size.Width - SpinTrack.Size.Width) / 2,
+                    (OptionsMenu.Size.Height - SpinTrack.Size.Height) / 2);
+
+                Position.SetCoordsBasedOnBoard(DrawPanel);
+                DisplayDrawings();
+            }
         }
 
         /// <summary>

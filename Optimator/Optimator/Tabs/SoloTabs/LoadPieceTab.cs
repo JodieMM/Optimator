@@ -34,6 +34,9 @@ namespace Optimator.Tabs.SoloTabs
             InitializeComponent();
             Owner = owner;
             this.from = from;
+            Paint += RefreshDrawPanel;
+            Validated += RefreshDrawPanel;
+
             original = new Bitmap(DrawPanel.Width, DrawPanel.Height);
         }
 
@@ -59,13 +62,16 @@ namespace Optimator.Tabs.SoloTabs
             var smallHeight = (int)((Height - ToolStrip.Height - bigLength) / 2.0);
 
             DrawPanel.Size = new Size(bigLength, bigLength);
-            DrawPanel.Location = new Point(lilWidth, smallHeight + ToolStrip.Height);
-            original = new Bitmap(DrawPanel.Width, DrawPanel.Height);
+            if (DrawPanel.Width != 0 && DrawPanel.Height != 0)
+            {
+                DrawPanel.Location = new Point(lilWidth, smallHeight + ToolStrip.Height);
+                original = new Bitmap(DrawPanel.Width, DrawPanel.Height);
 
-            TableLayoutPnl.Size = new Size(smallWidth, bigLength);
-            TableLayoutPnl.Location = new Point(bigLength + lilWidth * 3, smallHeight + ToolStrip.Height);
+                TableLayoutPnl.Size = new Size(smallWidth, bigLength);
+                TableLayoutPnl.Location = new Point(bigLength + lilWidth * 3, smallHeight + ToolStrip.Height);
 
-            DisplayDrawings();
+                DisplayDrawings();
+            }
         }
 
         /// <summary>

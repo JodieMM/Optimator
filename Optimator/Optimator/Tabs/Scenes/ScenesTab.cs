@@ -43,6 +43,7 @@ namespace Optimator.Tabs.Scenes
             Enter += RefreshDrawPanel;
             VisibleChanged += RefreshDrawPanel;
             DrawPanelContainer.Scroll += RefreshDrawPanel;
+            Paint += RefreshDrawPanel;
 
             SetDrawPanelSize(Settings.Default.SceneWidth, Settings.Default.SceneHeight);
             original = new Bitmap(DrawPanel.Width, DrawPanel.Height);
