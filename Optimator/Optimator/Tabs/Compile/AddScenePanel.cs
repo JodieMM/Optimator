@@ -4,6 +4,7 @@ using System.Drawing;
 using System;
 using Optimator.Tabs.Compile;
 using System.IO;
+using Optimator.Properties;
 
 namespace Optimator.Forms.Compile
 {
@@ -65,12 +66,16 @@ namespace Optimator.Forms.Compile
                         var newScene = new Scene(name, Utils.ReadFile(Utils.GetDirectory(name)));
                         Owner.WIP.videoScenes.Add(newScene);
                         Owner.AddToSceneViewPanel(newScene);
-                        if (newScene.Width > Owner.WIP.videoWidth)
+                        var unchangedSize = Owner.WIP.videoWidth == Settings.Default.SceneWidth && 
+                            Owner.WIP.videoHeight == Settings.Default.SceneHeight;
+                        if (newScene.Width > Owner.WIP.videoWidth || 
+                            Owner.WIP.videoScenes.Count == 1 && unchangedSize && newScene.Width != Owner.WIP.videoWidth)
                         {
                             Owner.WIP.videoWidth = newScene.Width;
                             Owner.RedrawSceneViewPanel();
                         }
-                        if (newScene.Height > Owner.WIP.videoHeight)
+                        if (newScene.Height > Owner.WIP.videoHeight || 
+                            Owner.WIP.videoScenes.Count == 1 && unchangedSize && newScene.Height != Owner.WIP.videoHeight)
                         {
                             Owner.WIP.videoHeight = newScene.Height;
                             Owner.RedrawSceneViewPanel();
