@@ -155,7 +155,7 @@
             this.SizeBar.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SizeBar.Location = new System.Drawing.Point(251, 576);
             this.SizeBar.Margin = new System.Windows.Forms.Padding(6);
-            this.SizeBar.Maximum = 5000;
+            this.SizeBar.Maximum = 500;
             this.SizeBar.Name = "SizeBar";
             this.SizeBar.Size = new System.Drawing.Size(561, 89);
             this.SizeBar.TabIndex = 139;
