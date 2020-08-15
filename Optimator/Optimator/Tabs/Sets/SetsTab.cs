@@ -830,18 +830,10 @@ namespace Optimator.Tabs.Sets
         /// <returns>True if only one unconnected piece</returns>
         public bool CheckSingularBasePiece()
         {
-            if (WIP.PiecesList.Count == 1)
-            {
-                WIP.BasePiece = WIP.PiecesList[0];
-                WIP.PersonalStates[WIP.PiecesList[0]].R = 0;
-                WIP.PersonalStates[WIP.PiecesList[0]].T = 0;
-                WIP.PersonalStates[WIP.PiecesList[0]].S = 0;
-                WarningBtn.Visible = false;
-                return false;
-            }
             WIP.BasePiece = null;
-            if (WIP.PiecesList.Count == 0)
+            if (WIP.PiecesList.Count <= 1)
             {
+                WarningBtn.Visible = false;
                 return false;
             }
             WarningBtn.Visible = true;
@@ -855,6 +847,7 @@ namespace Optimator.Tabs.Sets
                     }
                     else
                     {
+                        WIP.BasePiece = null;
                         return false;
                     }
                 }
@@ -866,15 +859,14 @@ namespace Optimator.Tabs.Sets
             }
             if (WIP.BasePiece == null)
             {
-                WarningBtn.Visible = true;
-                WIP.BasePiece = WIP.PiecesList[0];
                 return false;
             }
             else
             {
-                WIP.PersonalStates[WIP.PiecesList[0]].R = 0;
-                WIP.PersonalStates[WIP.PiecesList[0]].T = 0;
-                WIP.PersonalStates[WIP.PiecesList[0]].S = 0;
+                WIP.PersonalStates[WIP.BasePiece].R = 0;
+                WIP.PersonalStates[WIP.BasePiece].T = 0;
+                WIP.PersonalStates[WIP.BasePiece].S = 0;
+                WarningBtn.Visible = false;
                 return true;
             }
         }
