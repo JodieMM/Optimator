@@ -80,6 +80,11 @@ namespace Optimator.Tabs.Sets
                     }
                 }
             }
+            else
+            {
+                Utils.EnableObjects(new List<Control>() { SizeBar, XUpDown, YUpDown }, false);
+                Utils.EnableObjects(new List<Control>() { RotationBar, TurnBar, SpinBar }, false);
+            }
         }
 
         /// <summary>
