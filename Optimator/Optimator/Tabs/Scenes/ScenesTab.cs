@@ -510,11 +510,7 @@ namespace Optimator.Tabs.Scenes
                 {
                     // Delete Selected Shape
                     case Keys.Delete:
-                        if (selected == null)
-                        {
-                            return;
-                        }
-
+                        
                         // If Listbox is highlighted, delete change/animation
                         if (Panel.Controls.Count > 0 && Panel.Controls[0] is MovePanel && (Panel.Controls[0] as MovePanel).DeleteAnimation())
                         {
@@ -523,6 +519,10 @@ namespace Optimator.Tabs.Scenes
                         // Delete selected
                         else
                         {
+                            if (selected == null)
+                            {
+                                return;
+                            }
                             if (selected is Set)
                             {
                                 var result = MessageBox.Show("This will delete the entire set and its connected animations. Do you wish to continue?",

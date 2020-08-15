@@ -403,7 +403,8 @@ namespace Optimator.Tabs.Scenes
             if (ActiveControl == AnimationLv && AnimationLv.SelectedIndices != null)
             {
                 Owner.WIP.Changes.Remove(changeIndex[AnimationLv.SelectedIndices[0]]);
-                AnimationLv.Items.Remove(AnimationLv.SelectedItems[0]);
+                AddAnimationBtn_Click(new object(), new EventArgs());
+                Owner.DisplayDrawings();
                 return true;
             }
             return false;
