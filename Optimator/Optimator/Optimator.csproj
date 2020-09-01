@@ -143,12 +143,6 @@
     <Compile Include="Tabs\Pieces\SketchesPanel.Designer.cs">
       <DependentUpon>SketchesPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Tabs\Pieces\SolidPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Tabs\Pieces\SolidPanel.Designer.cs">
-      <DependentUpon>SolidPanel.cs</DependentUpon>
-    </Compile>
     <Compile Include="Tabs\Pieces\MovePointPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -327,9 +321,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Tabs\Pieces\SketchesPanel.resx">
       <DependentUpon>SketchesPanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Tabs\Pieces\SolidPanel.resx">
-      <DependentUpon>SolidPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Tabs\Pieces\MovePointPanel.resx">
       <DependentUpon>MovePointPanel.cs</DependentUpon>

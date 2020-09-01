@@ -39,7 +39,6 @@ namespace Optimator
             this.CloseBtn = new System.Windows.Forms.ToolStripButton();
             this.OutlineBtn = new System.Windows.Forms.ToolStripButton();
             this.ColoursBtn = new System.Windows.Forms.ToolStripButton();
-            this.FixedBtn = new System.Windows.Forms.ToolStripButton();
             this.EraseBtn = new System.Windows.Forms.ToolStripButton();
             this.SketchesBtn = new System.Windows.Forms.ToolStripButton();
             this.ReloadBtn = new System.Windows.Forms.ToolStripButton();
@@ -79,7 +78,6 @@ namespace Optimator
             this.CloseBtn,
             this.OutlineBtn,
             this.ColoursBtn,
-            this.FixedBtn,
             this.EraseBtn,
             this.SketchesBtn,
             this.ReloadBtn,
@@ -143,16 +141,6 @@ namespace Optimator
             this.ColoursBtn.Size = new System.Drawing.Size(36, 36);
             this.ColoursBtn.Text = "Colours";
             this.ColoursBtn.Click += new System.EventHandler(this.BtnWithPanel_Click);
-            // 
-            // FixedBtn
-            // 
-            this.FixedBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.FixedBtn.Image = global::Optimator.Properties.Resources.FixedIcon;
-            this.FixedBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.FixedBtn.Name = "FixedBtn";
-            this.FixedBtn.Size = new System.Drawing.Size(36, 36);
-            this.FixedBtn.Text = "Fixed Points";
-            this.FixedBtn.Click += new System.EventHandler(this.BtnWithPanel_Click);
             // 
             // EraseBtn
             // 
@@ -337,7 +325,6 @@ namespace Optimator
         private System.Windows.Forms.ToolStripButton PreviewBtn;
         private System.Windows.Forms.ToolStripButton CloseBtn;
         private System.Windows.Forms.ToolStripButton ColoursBtn;
-        private System.Windows.Forms.ToolStripButton FixedBtn;
         private System.Windows.Forms.ToolStripButton SketchesBtn;
         private System.Windows.Forms.ToolStripButton EraseBtn;
         private System.Windows.Forms.ToolStripButton OutlineBtn;

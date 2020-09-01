@@ -137,7 +137,6 @@ namespace Optimator
             SaveBtn.Checked = false;
             MovePointBtn.Checked = false;
             ColoursBtn.Checked = false;
-            FixedBtn.Checked = false;
             SketchesBtn.Checked = false;
             EraseBtn.Checked = false;
             OutlineBtn.Checked = false;
@@ -169,10 +168,6 @@ namespace Optimator
                 else if (sender == ColoursBtn)
                 {
                     panel = new ColoursPanel(this);
-                }
-                else if (sender == FixedBtn)
-                {
-                    panel = new SolidPanel(this);
                 }
                 else if (sender == EraseBtn)
                 {
@@ -342,16 +337,6 @@ namespace Optimator
                 else
                 {
                     Deselect();
-                }
-            }
-            // Select Spot to Change its Fixed State
-            else if (FixedBtn.Checked)
-            {
-                var closestIndex = Utils.FindClosestIndex(WIP.Data, sent, e.X, e.Y);
-                if (closestIndex != -1)
-                {
-                    SelectSpot(WIP.Data[closestIndex]);
-                    selectedSpot.Solid = selectedSpot.Solid == Consts.solidOptions[0] ? Consts.solidOptions[1] : Consts.solidOptions[0];
                 }
             }
             // Select Spot to Erase
@@ -561,8 +546,7 @@ namespace Optimator
             {
                 foreach (var spot in WIP.Data)
                 {
-                    var color = FixedBtn.Checked ? (spot.Solid == Consts.solidOptions[0]) ? Consts.option1 : Consts.option2
-                            : (selectedSpot == spot) ? Consts.select : Color.Black;
+                    var color = (selectedSpot == spot) ? Consts.select : Color.Black;
                     spot.Draw(angle, color, board);
                 }
             }
