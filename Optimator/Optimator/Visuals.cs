@@ -125,7 +125,16 @@ namespace Optimator
                     {
                         // CURVE
                     }
+
+                    // Smooth Corner
+                    g.FillEllipse(new SolidBrush(pen.Color), end.X - (pen.Width / 2), end.Y - (pen.Width / 2), pen.Width, pen.Width);
                 }
+            }
+            // Smooth Start for Lines
+            if (!connected)
+            {
+                g.FillEllipse(new SolidBrush(pen.Color), currentPoints[0].X - (pen.Width / 2), 
+                    currentPoints[0].Y - (pen.Width / 2), pen.Width, pen.Width);
             }
         }
 
