@@ -84,6 +84,12 @@
     <Compile Include="Change.cs" />
     <Compile Include="ColourState.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Tabs\Pieces\OptionsPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Tabs\Pieces\OptionsPanel.Designer.cs">
+      <DependentUpon>OptionsPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Tabs\Pieces\SettingsPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -315,6 +321,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Tabs\Pieces\ErasePanel.resx">
       <DependentUpon>ErasePanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\Pieces\OptionsPanel.resx">
+      <DependentUpon>OptionsPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Tabs\Pieces\SettingsPanel.resx">
       <DependentUpon>SettingsPanel.cs</DependentUpon>

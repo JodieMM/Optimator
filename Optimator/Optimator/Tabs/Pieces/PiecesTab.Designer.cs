@@ -52,6 +52,7 @@ namespace Optimator
             this.DrawRight = new System.Windows.Forms.PictureBox();
             this.FrontLbl = new System.Windows.Forms.Label();
             this.SideLbl = new System.Windows.Forms.Label();
+            this.OptionsBtn = new System.Windows.Forms.ToolStripButton();
             this.ToolStrip.SuspendLayout();
             this.DrawingLayoutPnl.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DrawBase)).BeginInit();
@@ -74,6 +75,7 @@ namespace Optimator
             this.ToolStrip.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.ToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.SaveBtn,
+            this.OptionsBtn,
             this.MovePointBtn,
             this.CloseBtn,
             this.OutlineBtn,
@@ -292,6 +294,16 @@ namespace Optimator
             this.SideLbl.TabIndex = 28;
             this.SideLbl.Text = "Side";
             // 
+            // OptionsBtn
+            // 
+            this.OptionsBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.OptionsBtn.Image = ((System.Drawing.Image)(resources.GetObject("OptionsBtn.Image")));
+            this.OptionsBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.OptionsBtn.Name = "OptionsBtn";
+            this.OptionsBtn.Size = new System.Drawing.Size(36, 36);
+            this.OptionsBtn.Text = "Options";
+            this.OptionsBtn.Click += new System.EventHandler(this.BtnWithPanel_Click);
+            // 
             // PiecesTab
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -335,5 +347,6 @@ namespace Optimator
         private Label SideLbl;
         private ToolStripButton ReloadBtn;
         private ToolStripButton SettingsBtn;
+        private ToolStripButton OptionsBtn;
     }
 }

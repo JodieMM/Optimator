@@ -106,8 +106,6 @@ namespace Optimator.Forms.Pieces
             }
 
             var clone = Utils.ClonePiece(Owner.WIP);
-            // TODO: Flat Shape
-            clone.PieceDetails = "p";
             Utils.CentrePieceOnAxis(clone);
             Owner.Directory = Utils.SaveFile(clone.GetData(), Consts.PieceFilter, sender == SaveAsBtn ? "" : Owner.Directory);
             if (Owner.Directory != "")

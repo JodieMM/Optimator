@@ -22,7 +22,7 @@ namespace Optimator
         public State State { get; set; } = new State();
         public ColourState ColourState { get; set; } = new ColourState();
         public decimal OutlineWidth { get; set; }
-        public string PieceDetails { get; set; }                   // Wind resistance and more
+        public PieceOption Type { get; set; }
 
         #endregion
 
@@ -60,7 +60,7 @@ namespace Optimator
             OutlineWidth = int.Parse(angleData[3]);
 
             // Piece Details
-            PieceDetails = angleData[4];
+            Type = (PieceOption)int.Parse(angleData[4]);
 
             // Spots
             for (var index = 2; index < data.Count; index++)
@@ -81,7 +81,7 @@ namespace Optimator
             Name = "";
             Version = Properties.Settings.Default.Version;
             OutlineWidth = defaultOutlineWidth;
-            PieceDetails = defaultPieceDetails;
+            Type = PieceOption.Piece;
         }
 
 
@@ -97,7 +97,7 @@ namespace Optimator
             var newData = new List<string>
             {
                 Version,
-                ColourState.GetData() + SemiS + OutlineWidth + SemiS + PieceDetails
+                ColourState.GetData() + SemiS + OutlineWidth + SemiS + Type
             };
 
             // Add Spots
@@ -127,13 +127,17 @@ namespace Optimator
         public override void Draw(Graphics g, State state = null, ColourState colours = null)
         {
             state = state ?? State;
-            if (colours == null)
+            colours = colours ?? ColourState;
+            switch (Type)
             {
-                Visuals.DrawPiece(this, g, state);
-            }
-            else
-            {
-                Visuals.DrawPiece(this, g, state, colours);
+                case PieceOption.Piece:
+                case PieceOption.Flat:
+                    Visuals.DrawPiece(this, g, state, colours);
+                    break;
+                case PieceOption.Line:
+                case PieceOption.FlatLine:
+                    Visuals.DrawOutline(g, GetPoints(state), new Pen(colours.OutlineColour, (float)OutlineWidth), false);
+                    break;
             }
         }
 
@@ -155,7 +159,7 @@ namespace Optimator
                 return new List<Spot>();
             }
             // Flat Piece
-            else if (PieceDetails == "f")
+            else if (Type == PieceOption.Flat || Type == PieceOption.FlatLine)
             {
                 var flatList = new List<Spot>();
                 if (state.R == 90)

@@ -574,7 +574,7 @@ namespace Optimator
                 State = CloneState(piece.State),
                 ColourState = CloneColourState(piece.ColourState),
                 OutlineWidth = piece.OutlineWidth,
-                PieceDetails = piece.PieceDetails
+                Type = piece.Type
             };
             return clone;
         }

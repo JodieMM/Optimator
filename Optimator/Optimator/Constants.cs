@@ -53,7 +53,6 @@ namespace Optimator
         public static Color defaultFill = Color.FromArgb(255, 204, 240, 255);
         public static Color defaultOutline = Color.FromArgb(255, 204, 204, 255);
         public const decimal defaultOutlineWidth = 2;
-        public const string defaultPieceDetails = "f";
 
         // Piece Options
         public enum ConnectorOption
@@ -70,9 +69,11 @@ namespace Optimator
         }
         public enum PieceOption
         {
-            Flat,
             Piece,
-            Line
+            Flat,
+            Line,
+            FlatLine,
+            Decal
         }
 
         // Colours

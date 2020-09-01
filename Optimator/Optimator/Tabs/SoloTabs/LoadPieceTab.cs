@@ -233,7 +233,7 @@ namespace Optimator.Tabs.SoloTabs
             }
             if (PieceDetailsBtn.BackColor == selected || AllBtn.BackColor == selected)
             {
-                from.WIP.PieceDetails = loaded.ToPiece().PieceDetails;
+                from.WIP.Type = loaded.ToPiece().Type;
             }
             if (ShapeBtn.BackColor == selected)
             {

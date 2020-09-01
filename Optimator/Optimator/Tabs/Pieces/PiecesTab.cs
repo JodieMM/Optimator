@@ -135,6 +135,7 @@ namespace Optimator
         private void UncheckAllButtons()
         {
             SaveBtn.Checked = false;
+            OptionsBtn.Checked = false;
             MovePointBtn.Checked = false;
             ColoursBtn.Checked = false;
             SketchesBtn.Checked = false;
@@ -156,6 +157,10 @@ namespace Optimator
                 if (sender == SaveBtn)
                 {
                     panel = new SavePanel(this);
+                }
+                else if (sender == OptionsBtn)
+                {
+                    panel = new OptionsPanel(this);
                 }
                 else if (sender == MovePointBtn)
                 {
@@ -223,8 +228,6 @@ namespace Optimator
             if (CheckPieceValid())
             {
                 var clone = Utils.ClonePiece(WIP);
-                // TODO: Flat Shape
-                clone.PieceDetails = "p";
                 Utils.CentrePieceOnAxis(clone);
                 var newTab = new PreviewTab(Owner, clone);
                 Utils.NewTabPage(newTab, "Preview " + Utils.BaseName(WIP.Name));
@@ -668,23 +671,30 @@ namespace Optimator
             {
                 return false;
             }
-            else if (spots.Count == 2)
+            if (WIP.Type == Consts.PieceOption.Piece || WIP.Type == Consts.PieceOption.Line)
             {
-                // Sort Spots
-                if (spots[1].Y < spots[0].Y || spots[1].Y == spots[0].Y && spots[1].X < spots[0].X)
+                if (spots.Count == 2)
                 {
-                    var holder = Utils.CloneSpotList(spots);
-                    spots[0] = holder[1];
-                    spots[1] = holder[0];
+                    // Sort Spots
+                    if (spots[1].Y < spots[0].Y || spots[1].Y == spots[0].Y && spots[1].X < spots[0].X)
+                    {
+                        var holder = Utils.CloneSpotList(spots);
+                        spots[0] = holder[1];
+                        spots[1] = holder[0];
+                    }
+                    return true;
                 }
+
+                Utils.SortCoordinates(spots);
+
+                // Check X, Y, XR and YD for fold backs
+                return CheckShapeDoubleBack(spots, 0, "base") && CheckShapeDoubleBack(spots, 1, "base")
+                    && CheckShapeDoubleBack(spots, 2, "rotated") && CheckShapeDoubleBack(spots, 3, "turned");
+            }
+            else
+            {
                 return true;
             }
-
-            Utils.SortCoordinates(spots);
-
-            // Check X, Y, XR and YD for fold backs
-            return CheckShapeDoubleBack(spots, 0, "base") && CheckShapeDoubleBack(spots, 1, "base")
-                && CheckShapeDoubleBack(spots, 2, "rotated") && CheckShapeDoubleBack(spots, 3, "turned");
         }
 
         /// <summary>
