@@ -56,6 +56,23 @@ namespace Optimator
         public const string defaultPieceDetails = "f";
 
         // Piece Options
+        enum ConnectorOptions
+        {
+            Line,
+            None,
+            Curve
+        }
+        enum FillOptions
+        {
+            Fill,
+            Gradient
+        }
+        enum PieceOptions
+        {
+            Flat,
+            Piece,
+            Line
+        }
         public static string[] connectorOptions = { "line", "none" };
         public static object[] connectorOptionsReadable = new object[] { "Line", "Blank" };
         public static string[] fillOptions = { "fill", "gradient" };

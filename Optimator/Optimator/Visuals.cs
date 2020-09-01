@@ -54,68 +54,74 @@ namespace Optimator
         public static void DrawPiece(Piece piece, Graphics g, State state, ColourState colourState = null)
         {
             var currentPoints = piece.GetPoints(state);
-            if (currentPoints.Count < 1)
+            if (currentPoints.Count < 2)
             {
                 return;
             }
 
             // Prepare for Drawing
+            g.SmoothingMode = SmoothingMode.AntiAlias;
             if (colourState == null)
             {
                 colourState = piece.ColourState;
             }
             var pen = new Pen(colourState.OutlineColour, (float)piece.OutlineWidth);
-            g.SmoothingMode = SmoothingMode.AntiAlias;
-            // GRADIENT
-            var fill = new SolidBrush(colourState.FillColour[0]);
-            var numCoords = currentPoints.Count;
+            var fill = new SolidBrush(colourState.FillColour[0]); // GRADIENT
 
-            // Fill Shape
-            var path = new GraphicsPath();
-            for (var pointIndex = 0; pointIndex < numCoords && numCoords > 2; pointIndex++)
+            // Draw
+            if (currentPoints.Count > 1)
             {
-                // Draw Line Between Final Point and First Point
-                if (pointIndex == numCoords - 1)
-                {
-                    path.AddLine(new Point(Convert.ToInt32(currentPoints[numCoords - 1].X), Convert.ToInt32(currentPoints[numCoords - 1].Y)),
-                        new Point(Convert.ToInt32(currentPoints[0].X), Convert.ToInt32(currentPoints[0].Y)));
-                }
+                DrawShape(g, currentPoints, fill);
+            }
+            if (piece.OutlineWidth > 0)
+            {
+                DrawOutline(g, currentPoints, pen);
+            }
+        }
 
-                // Draw Remaining Lines
-                else
-                {
-                    path.AddLine(new Point(Convert.ToInt32(currentPoints[pointIndex].X), Convert.ToInt32(currentPoints[pointIndex].Y)),
-                            new Point(Convert.ToInt32(currentPoints[pointIndex + 1].X), Convert.ToInt32(currentPoints[pointIndex + 1].Y)));
-                }
+        /// <summary>
+        /// Draws the constant colour section of a piece.
+        /// </summary>
+        /// <param name="g">Graphics to draw on</param>
+        /// <param name="currentPoints">Shape outline</param>
+        /// <param name="fill">Brush to colour the section</param>
+        public static void DrawShape(Graphics g, List<Spot> currentPoints, Brush fill)
+        {
+            var path = new GraphicsPath();
+            for (var index = 0; index < currentPoints.Count; index++)
+            {
+                var nextIndex = Utils.NextIndex(currentPoints, index);
+                path.AddLine(new Point(Convert.ToInt32(currentPoints[index].X), Convert.ToInt32(currentPoints[index].Y)),
+                    new Point(Convert.ToInt32(currentPoints[nextIndex].X), Convert.ToInt32(currentPoints[nextIndex].Y)));
             }
             g.FillPath(fill, path);
+        }
 
+        /// <summary>
+        /// Draws the outline of the piece.
+        /// </summary>
+        /// <param name="piece">Piece holding spot coordinates to draw</param>
+        /// <param name="connected">False if shape is a line</param>
+        public static void DrawOutline(Graphics g, List<Spot> currentPoints, Pen pen, bool connected = true)
+        {
             // Draw Outline
-            for (var pointIndex = 0; pointIndex < numCoords && numCoords > 1 && piece.OutlineWidth > 0; pointIndex++)
+            var maxIndex = connected ? currentPoints.Count : currentPoints.Count - 1;
+            for (var index = 0; index < maxIndex; index++)
             {
-                if (currentPoints[pointIndex].Connector != Consts.connectorOptions[1])
+                if (currentPoints[index].Connector != Consts.connectorOptions[1])
                 {
                     Point start; Point end;
-                    // Draw Line Between Final Point and First Point
-                    if (pointIndex == numCoords - 1)
-                    {
-                        start = new Point(Convert.ToInt32(currentPoints[0].X), Convert.ToInt32(currentPoints[0].Y));
-                        end = new Point(Convert.ToInt32(currentPoints[numCoords - 1].X), Convert.ToInt32(currentPoints[numCoords - 1].Y));
-                    }
-                    // Draw Remaining Lines
-                    else
-                    {
-                        start = new Point(Convert.ToInt32(currentPoints[pointIndex].X), Convert.ToInt32(currentPoints[pointIndex].Y));
-                        end = new Point(Convert.ToInt32(currentPoints[pointIndex + 1].X), Convert.ToInt32(currentPoints[pointIndex + 1].Y));
-                    }
+                    var nextIndex = Utils.NextIndex(currentPoints, index);
+                    start = new Point(Convert.ToInt32(currentPoints[index].X), Convert.ToInt32(currentPoints[index].Y));
+                    end = new Point(Convert.ToInt32(currentPoints[nextIndex].X), Convert.ToInt32(currentPoints[nextIndex].Y));
 
                     // Connected by Line
-                    if (currentPoints[pointIndex].Connector == Consts.connectorOptions[0])
+                    if (currentPoints[index].Connector == Consts.connectorOptions[0])
                     {
                         g.DrawLine(pen, start, end);
                     }
                     // Connected by Curve
-                    else
+                    else if (currentPoints[index].Connector == "Curve")
                     {
                         // CURVE
                     }
