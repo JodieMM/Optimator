@@ -685,6 +685,11 @@ namespace Optimator.Tabs.Sets
             using (Graphics rt = Graphics.FromImage(rotated))
             using (Graphics td = Graphics.FromImage(turned))
             {
+                // Draw BGs
+                og.FillRectangle(new SolidBrush(GetBoardColor()), new Rectangle(0, 0, DrawBase.Width, DrawBase.Height));
+                rt.FillRectangle(new SolidBrush(GetBoardColor()), new Rectangle(0, 0, DrawRight.Width, DrawRight.Height));
+                td.FillRectangle(new SolidBrush(GetBoardColor()), new Rectangle(0, 0, DrawDown.Width, DrawDown.Height));
+
                 var boards = new Graphics[3] { og, rt, td };
                 CheckSingularBasePiece();
                 var baseState = WIP.BasePiece != null ? WIP.BasePiece.State : new State();

@@ -41,11 +41,11 @@
             // OutlineWLbl
             // 
             this.OutlineWLbl.AutoSize = true;
-            this.OutlineWLbl.Font = Consts.contentFont;
+            this.OutlineWLbl.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.OutlineWLbl.Location = new System.Drawing.Point(2, 0);
             this.OutlineWLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.OutlineWLbl.Name = "OutlineWLbl";
-            this.OutlineWLbl.Size = new System.Drawing.Size(147, 90);
+            this.OutlineWLbl.Size = new System.Drawing.Size(174, 112);
             this.OutlineWLbl.TabIndex = 123;
             this.OutlineWLbl.Text = "Outline Width";
             // 
@@ -53,10 +53,10 @@
             // 
             this.OutlineWidthBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.OutlineWidthBox.Font = Consts.contentFont;
+            this.OutlineWidthBox.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.OutlineWidthBox.Location = new System.Drawing.Point(197, 3);
             this.OutlineWidthBox.Name = "OutlineWidthBox";
-            this.OutlineWidthBox.Size = new System.Drawing.Size(188, 52);
+            this.OutlineWidthBox.Size = new System.Drawing.Size(188, 64);
             this.OutlineWidthBox.TabIndex = 122;
             this.OutlineWidthBox.Value = new decimal(new int[] {
             2,
@@ -68,31 +68,26 @@
             // ConnectorsLbl
             // 
             this.ConnectorsLbl.AutoSize = true;
-            this.ConnectorsLbl.Font = Consts.contentFont;
+            this.ConnectorsLbl.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.ConnectorsLbl.Location = new System.Drawing.Point(2, 112);
             this.ConnectorsLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.ConnectorsLbl.Name = "ConnectorsLbl";
-            this.ConnectorsLbl.Size = new System.Drawing.Size(185, 45);
+            this.ConnectorsLbl.Size = new System.Drawing.Size(182, 112);
             this.ConnectorsLbl.TabIndex = 125;
             this.ConnectorsLbl.Text = "Connector";
-            this.ConnectorsLbl.Visible = false;
             // 
             // ConnectorOptions
             // 
             this.ConnectorOptions.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.ConnectorOptions.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.ConnectorOptions.Font = Consts.contentFont;
+            this.ConnectorOptions.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.ConnectorOptions.FormattingEnabled = true;
-            this.ConnectorOptions.Items.AddRange(new object[] {
-            "Line",
-            "Blank"});
             this.ConnectorOptions.Location = new System.Drawing.Point(197, 115);
             this.ConnectorOptions.Name = "ConnectorOptions";
-            this.ConnectorOptions.Size = new System.Drawing.Size(188, 53);
+            this.ConnectorOptions.Size = new System.Drawing.Size(188, 67);
             this.ConnectorOptions.TabIndex = 124;
             this.ConnectorOptions.SelectedIndexChanged += new System.EventHandler(this.ConnectorOptions_SelectedIndexChanged);
-            this.ConnectorOptions.Visible = false;
             // 
             // TableLayoutPnl
             // 
@@ -100,9 +95,9 @@
             this.TableLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.TableLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.TableLayoutPnl.Controls.Add(this.OutlineWLbl, 0, 0);
-            this.TableLayoutPnl.Controls.Add(this.ConnectorOptions, 1, 1);
             this.TableLayoutPnl.Controls.Add(this.ConnectorsLbl, 0, 1);
             this.TableLayoutPnl.Controls.Add(this.OutlineWidthBox, 1, 0);
+            this.TableLayoutPnl.Controls.Add(this.ConnectorOptions, 1, 1);
             this.TableLayoutPnl.Location = new System.Drawing.Point(92, 207);
             this.TableLayoutPnl.Name = "TableLayoutPnl";
             this.TableLayoutPnl.RowCount = 2;
@@ -114,10 +109,10 @@
             // OutlineLbl
             // 
             this.OutlineLbl.AutoSize = true;
-            this.OutlineLbl.Font = Consts.headingLblFont;
+            this.OutlineLbl.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
             this.OutlineLbl.Location = new System.Drawing.Point(82, 69);
             this.OutlineLbl.Name = "OutlineLbl";
-            this.OutlineLbl.Size = new System.Drawing.Size(201, 58);
+            this.OutlineLbl.Size = new System.Drawing.Size(217, 72);
             this.OutlineLbl.TabIndex = 127;
             this.OutlineLbl.Text = "Outline";
             // 

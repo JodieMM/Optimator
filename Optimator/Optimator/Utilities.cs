@@ -521,7 +521,7 @@ namespace Optimator
         /// <returns>Seperate object with the same contents</returns>
         public static Spot CloneSpot(Spot spot)
         {
-            return new Spot(spot.X, spot.Y, spot.XRight, spot.YDown, spot.Connector, spot.Solid);
+            return new Spot(spot.X, spot.Y, spot.XRight, spot.YDown, spot.Connector);
         }
 
         /// <summary>

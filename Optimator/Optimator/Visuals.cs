@@ -108,7 +108,7 @@ namespace Optimator
             var maxIndex = connected ? currentPoints.Count : currentPoints.Count - 1;
             for (var index = 0; index < maxIndex; index++)
             {
-                if (currentPoints[index].Connector != Consts.connectorOptions[1])
+                if (currentPoints[index].Connector != Consts.ConnectorOption.None)
                 {
                     Point start; Point end;
                     var nextIndex = Utils.NextIndex(currentPoints, index);
@@ -116,12 +116,12 @@ namespace Optimator
                     end = new Point(Convert.ToInt32(currentPoints[nextIndex].X), Convert.ToInt32(currentPoints[nextIndex].Y));
 
                     // Connected by Line
-                    if (currentPoints[index].Connector == Consts.connectorOptions[0])
+                    if (currentPoints[index].Connector == Consts.ConnectorOption.Line)
                     {
                         g.DrawLine(pen, start, end);
                     }
                     // Connected by Curve
-                    else if (currentPoints[index].Connector == "Curve")
+                    else if (currentPoints[index].Connector == Consts.ConnectorOption.Curve)
                     {
                         // CURVE
                     }

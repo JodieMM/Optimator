@@ -56,27 +56,24 @@ namespace Optimator
         public const string defaultPieceDetails = "f";
 
         // Piece Options
-        enum ConnectorOptions
+        public enum ConnectorOption
         {
-            Line,
             None,
+            Line,            
             Curve
         }
-        enum FillOptions
+        public enum FillOption
         {
+            None,
             Fill,
             Gradient
         }
-        enum PieceOptions
+        public enum PieceOption
         {
             Flat,
             Piece,
             Line
         }
-        public static string[] connectorOptions = { "line", "none" };
-        public static object[] connectorOptionsReadable = new object[] { "Line", "Blank" };
-        public static string[] fillOptions = { "fill", "gradient" };
-        public static string[] solidOptions = { "s", "f" };
 
         // Colours
         public static Color shadowShade = Color.DarkGray;
@@ -95,6 +92,15 @@ namespace Optimator
         public static float MaximumXY = 6000;
 
         // Scene Options
-        public static object[] possibleChanges = new object[] { "X", "Y", "Rotation", "Turn", "Spin", "Size" };
+        public enum Action
+        {
+            None,
+            X,
+            Y,
+            Rotation,
+            Turn,
+            Spin,
+            Size
+        }
     }
 }

@@ -627,8 +627,6 @@ namespace Optimator.Tabs.Scenes
         {
             if (WIP.PartsList.Count > 0)
             {
-                // Draw BG
-
                 // Draw Panel
                 WIP.RunScene(CurrentTimeUpDown.Value);                
 
@@ -653,6 +651,9 @@ namespace Optimator.Tabs.Scenes
         {
             using (Graphics g = Graphics.FromImage(original))
             {
+                // Draw BG
+                g.FillRectangle(new SolidBrush(DrawPanel.BackColor), new Rectangle(0, 0, DrawPanel.Width, DrawPanel.Height));
+
                 // Draw Content
                 Visuals.DrawParts(WIP.PartsList, g);
 

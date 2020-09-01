@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using static Optimator.Consts;
 
 namespace Optimator
 {
@@ -16,8 +17,7 @@ namespace Optimator
         public float Y { get; set; }
         public float YDown { get; set; }
 
-        public string Connector { get; set; }
-        public string Solid { get; set; }
+        public ConnectorOption Connector { get; set; }
         #endregion
 
 
@@ -31,14 +31,13 @@ namespace Optimator
         /// <param name="connect">Connector from this spot to the next</param>
         /// <param name="solid">Flexibility of the spot</param>
         /// /// <param name="drawn">DrawLevel integer</param>
-        public Spot(float x, float y, float? xr = null, float? yd = null, string connect = null, string solid = null)
+        public Spot(float x, float y, float? xr = null, float? yd = null, ConnectorOption? connect = null)
         {
             X = x;
             Y = y;
             XRight = xr ?? x;
             YDown = yd ?? y;
-            Connector = connect ?? Consts.connectorOptions[0];
-            Solid = solid ?? Consts.solidOptions[0];
+            Connector = connect ?? ConnectorOption.Line;
         }
 
         /// <summary>
@@ -48,12 +47,11 @@ namespace Optimator
         /// <param name="y">Y position</param>
         /// <param name="connect">Connector from this spot to the next</param>
         /// <param name="solid">Flexibility of the spot</param>
-        public Spot(float x, float y, string connect, string solid)
+        public Spot(float x, float y, ConnectorOption connect)
         {
             X = x;
             Y = y;
             Connector = connect;
-            Solid = solid;
         }
 
 
@@ -66,8 +64,8 @@ namespace Optimator
         /// <returns>Spot data</returns>
         public override string ToString()
         {
-            return X + Consts.ColonS + Y + Consts.ColonS + XRight + Consts.ColonS + YDown + Consts.SemiS +
-                Connector + Consts.SemiS + Solid;
+            return X + ColonS + Y + ColonS + XRight + ColonS + YDown + SemiS +
+                Connector.ToString("d");
         }
 
         /// <summary>
@@ -176,7 +174,7 @@ namespace Optimator
             float[] coord = new float[2];
             coord[0] = r == 0 ? X : r == 1 ? XRight : r == 2 ? -X : -XRight;
             coord[1] = t == 0 ? Y : t == 1 ? YDown : t == 2 ? -Y : -YDown;
-            return new Spot(coord[0], coord[1], Connector, Solid);
+            return new Spot(coord[0], coord[1], Connector);
         }
     }
 }

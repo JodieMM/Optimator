@@ -27,10 +27,10 @@ namespace Optimator.Tabs.Scenes
             InitializeComponent();
             Owner = owner;
 
-            ChangeTypeCb.Items.AddRange(Consts.possibleChanges);
+            ChangeTypeCb.Items.AddRange(Enum.GetNames(typeof(Consts.Action)));
             UpdateListbox();
             Owner.Owner.GetTabControl().KeyDown += KeyPress;
-            WIP = new Change(0, "", null, 0, 0, Owner.WIP);
+            WIP = new Change(0, Consts.Action.None, null, 0, 0, Owner.WIP);
             if (Owner.selected != null)
             {
                 PartSelected(Owner.selected.ToPiece());
@@ -69,7 +69,7 @@ namespace Optimator.Tabs.Scenes
         {
             if (AddAnimationBtn.Text == "Add")
             {
-                if (WIP.Action == "" || WIP.AffectedPiece == null || WIP.HowMuch == 0 || WIP.HowLong == 0)
+                if (WIP.Action == Consts.Action.None || WIP.AffectedPiece == null || WIP.HowMuch == 0 || WIP.HowLong == 0)
                 {
                     return;
                 }
@@ -99,7 +99,7 @@ namespace Optimator.Tabs.Scenes
                     WIP.AffectedPiece = Owner.selected.ToPiece();
                     PartNameLbl.Text = Utils.BaseName(WIP.AffectedPiece.Name);
                 }
-                ChangeTypeCb.SelectedIndex = WIP.ActionIndex();
+                ChangeTypeCb.SelectedIndex = (int)WIP.Action;
                 AnimationAmountTb.Value = (decimal)WIP.HowMuch;
                 StartTimeUpDown.Value = WIP.StartTime;
                 SecondsUpDown.Value = WIP.HowLong;
@@ -123,7 +123,7 @@ namespace Optimator.Tabs.Scenes
             }
             else
             {
-                if (WIP.Action == "" || WIP.AffectedPiece == null || WIP.HowMuch == 0 || WIP.HowLong == 0)
+                if (WIP.Action == Consts.Action.None || WIP.AffectedPiece == null || WIP.HowMuch == 0 || WIP.HowLong == 0)
                 {
                     return;
                 }
@@ -175,7 +175,7 @@ namespace Optimator.Tabs.Scenes
             if (AnimationLv.SelectedIndices.Count > 0 && changeIndex.ContainsKey(AnimationLv.SelectedIndices[0]))
             {
                 PartNameLbl.Text = Utils.BaseName(changeIndex[AnimationLv.SelectedIndices[0]].AffectedPiece.Name);
-                ChangeTypeCb.SelectedIndex = changeIndex[AnimationLv.SelectedIndices[0]].ActionIndex();
+                ChangeTypeCb.SelectedIndex = (int)changeIndex[AnimationLv.SelectedIndices[0]].Action;
                 AnimationAmountTb.Value = (decimal)changeIndex[AnimationLv.SelectedIndices[0]].HowMuch;
                 StartTimeUpDown.Value = changeIndex[AnimationLv.SelectedIndices[0]].StartTime;
                 SecondsUpDown.Value = changeIndex[AnimationLv.SelectedIndices[0]].HowLong;
@@ -219,13 +219,13 @@ namespace Optimator.Tabs.Scenes
             // Update Animation
             if (AnimationLv.SelectedIndices.Count != 0)
             {
-                changeIndex[AnimationLv.SelectedIndices[0]].Action = ChangeTypeCb.Text;
+                changeIndex[AnimationLv.SelectedIndices[0]].Action = (Consts.Action)ChangeTypeCb.SelectedIndex;
                 AnimationLv.SelectedItems[0].SubItems[1].Text = ChangeTypeCb.Text;
             }
             // Update New Animation Part
             else
             {
-                WIP.Action = ChangeTypeCb.Text;
+                WIP.Action = (Consts.Action)ChangeTypeCb.SelectedIndex;
             }
         }
 
@@ -321,8 +321,8 @@ namespace Optimator.Tabs.Scenes
                 if (Owner.GetCurrentTimeUpDownValue() >= change.StartTime &&
                     Owner.GetCurrentTimeUpDownValue() <= change.StartTime + change.HowLong)
                 {
-                    var summary = new string[] { Utils.BaseName(change.AffectedPiece.Name), change.Action, change.HowMuch.ToString(),
-                        change.StartTime.ToString(), change.HowLong.ToString() };
+                    var summary = new string[] { Utils.BaseName(change.AffectedPiece.Name), change.Action.ToString(),
+                        change.HowMuch.ToString(), change.StartTime.ToString(), change.HowLong.ToString() };
                     var item = new ListViewItem(summary)
                     {
                         BackColor = Consts.activeAnimation
@@ -349,8 +349,8 @@ namespace Optimator.Tabs.Scenes
             // Add Changes
             foreach (var change in mid)
             {
-                var summary = new string[] { Utils.BaseName(change.AffectedPiece.Name), change.Action, change.HowMuch.ToString(),
-                        change.StartTime.ToString(), change.HowLong.ToString() };
+                var summary = new string[] { Utils.BaseName(change.AffectedPiece.Name), change.Action.ToString(),
+                    change.HowMuch.ToString(), change.StartTime.ToString(), change.HowLong.ToString() };
                 var item = new ListViewItem(summary)
                 {
                     BackColor = Consts.toDoAnimation
@@ -366,8 +366,8 @@ namespace Optimator.Tabs.Scenes
             }
             foreach (var change in back)
             {
-                var summary = new string[] { Utils.BaseName(change.AffectedPiece.Name), change.Action, change.HowMuch.ToString(),
-                        change.StartTime.ToString(), change.HowLong.ToString() };
+                var summary = new string[] { Utils.BaseName(change.AffectedPiece.Name), change.Action.ToString(),
+                    change.HowMuch.ToString(), change.StartTime.ToString(), change.HowLong.ToString() };
                 var item = new ListViewItem(summary)
                 {
                     BackColor = Consts.finishedAnimation

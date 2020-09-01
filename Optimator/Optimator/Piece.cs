@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using static Optimator.Consts;
 
 namespace Optimator
 {
@@ -38,17 +39,17 @@ namespace Optimator
             Version = data[0];
 
             // Get Points and Colours from File
-            var angleData = data[1].Split(Consts.Semi);
+            var angleData = data[1].Split(Semi);
 
             // Colour State
             ColourState = new ColourState
             {
-                ColourType = angleData[0],
+                ColourType = (FillOption)int.Parse(angleData[0]),
                 OutlineColour = Utils.ColourFromString(angleData[1])
             };
 
             // Fill Colour Array
-            var colours = angleData[2].Split(Consts.Colon);
+            var colours = angleData[2].Split(Colon);
             ColourState.FillColour = new Color[colours.Length];
             for (var index = 0; index < colours.Length; index++)
             {
@@ -64,10 +65,10 @@ namespace Optimator
             // Spots
             for (var index = 2; index < data.Count; index++)
             {
-                var spotData = data[index].Split(Consts.Semi);
-                var coords = Utils.ConvertStringArrayToFloats(spotData[0].Split(Consts.Colon));
+                var spotData = data[index].Split(Semi);
+                var coords = Utils.ConvertStringArrayToFloats(spotData[0].Split(Colon));
 
-                Data.Add(new Spot(coords[0], coords[1], coords[2], coords[3], spotData[1], spotData[2]));
+                Data.Add(new Spot(coords[0], coords[1], coords[2], coords[3], (ConnectorOption)int.Parse(spotData[1])));
             }
         }
 
@@ -79,8 +80,8 @@ namespace Optimator
         {
             Name = "";
             Version = Properties.Settings.Default.Version;
-            OutlineWidth = Consts.defaultOutlineWidth;
-            PieceDetails = Consts.defaultPieceDetails;
+            OutlineWidth = defaultOutlineWidth;
+            PieceDetails = defaultPieceDetails;
         }
 
 
@@ -96,7 +97,7 @@ namespace Optimator
             var newData = new List<string>
             {
                 Version,
-                ColourState.GetData() + Consts.SemiS + OutlineWidth + Consts.SemiS + PieceDetails
+                ColourState.GetData() + SemiS + OutlineWidth + SemiS + PieceDetails
             };
 
             // Add Spots
@@ -161,14 +162,14 @@ namespace Optimator
                 {
                     foreach (var spot in Data)
                     {
-                        flatList.Add(new Spot(spot.XRight, spot.Y, spot.Connector, spot.Solid));
+                        flatList.Add(new Spot(spot.XRight, spot.Y, spot.Connector));
                     }
                 }
                 else if (state.T == 90)
                 {
                     foreach (var spot in Data)
                     {
-                        flatList.Add(new Spot(spot.X, spot.YDown, spot.Connector, spot.Solid));
+                        flatList.Add(new Spot(spot.X, spot.YDown, spot.Connector));
                     }
                 }
                 else
@@ -552,7 +553,7 @@ namespace Optimator
                     var changed = Utils.FindMiddleSpot(shape1[index1].GetCoord(altz), shape2[match].GetCoord(altz), angle, swapped);
                     // TODO: Connector/Solid
                     var newSpot = new Spot(xChange ? changed : unchanged, xChange ? unchanged : changed, 
-                        shape1[index1].Connector, shape1[index1].Solid);
+                        shape1[index1].Connector);
                     merged.Add(newSpot);
                     index1++;
                     i1 += swapped ? 0 : 1;
@@ -568,9 +569,8 @@ namespace Optimator
                         merged.Remove(newSpot);
                     }
                     var newSpot2 = Utils.CloneSpot(newSpot);
-                    // TODO: Connector/Solid
+                    // TODO: Connector
                     newSpot2.Connector = shape1[Utils.NextIndex(shape1, index1)].Connector;
-                    newSpot2.Solid = shape1[Utils.NextIndex(shape1, index1)].Solid;
 
                     // Check for Self Neighbours
                     if (index1 < shape1.Count && shape1[index1 - 1].GetCoord(z) == shape1[index1].GetCoord(z))
@@ -655,17 +655,16 @@ namespace Optimator
                             shape2[Utils.Modulo(matchPosition[1], shape2.Count)], shape1[index1].GetCoord(z), z);
                     var unchanged = shape1[index1].GetCoord(z);
                     var changed = Utils.FindMiddleSpot(shape1[index1].GetCoord(altz), match[altz], angle, swapped);
-                    // TODO: Connector/Solid
+                    // TODO: Connector
                     var newSpot = new Spot(xChange ? changed : unchanged, xChange ? unchanged : changed, 
-                        shape1[index1].Connector, shape1[index1].Solid);
+                        shape1[index1].Connector);
                     merged.Add(newSpot);
                     index1++;
                     i1 += swapped ? 0 : 1;
                     i2 += swapped ? 1 : 0;
                     var newSpot2 = Utils.CloneSpot(newSpot);
-                    // TODO: Connector/Solid
+                    // TODO: Connector
                     newSpot2.Connector = shape1[Utils.NextIndex(shape1, index1)].Connector;
-                    newSpot2.Solid = shape1[Utils.NextIndex(shape1, index1)].Solid;
 
                     // Check for Self Neighbours
                     if (index1 < shape1.Count && shape1[index1 - 1].GetCoord(z) == shape1[index1].GetCoord(z))
@@ -765,7 +764,7 @@ namespace Optimator
         public float[] FindSymmetricalOppositeCoord(Spot from, Spot to, float value, int xy)
         {
             float gradient = -1;
-            if (from.Connector == Consts.connectorOptions[0] || from.Connector == Consts.connectorOptions[1])
+            if (from.Connector == ConnectorOption.Line|| from.Connector == ConnectorOption.None)
             {
                 if (from.X == to.X)
                 {
@@ -800,7 +799,7 @@ namespace Optimator
                     return new float[] { from.X + (value - from.Y) / gradient, value };  // x = y / gradient
                 }
             }
-            // else if (line == Constants.connectorOptions[2])      
+            // else if (line == Constants.ConnectorOption.Curve)      
             //CURVE
 
             return new float[] { -1 }; // Error
@@ -814,7 +813,7 @@ namespace Optimator
         /// <param name="to">The end point</param>
         /// <param name="join">How the two points are connected</param>
         /// <returns>A list of float[ x, (int)y ] with the point coords</returns>
-        private List<float[]> LineCoords(Spot from, Spot to, string join)
+        private List<float[]> LineCoords(Spot from, Spot to, ConnectorOption join)
         {
             var line = new List<float[]> { new float[] { from.X, from.Y } };
             var fromUpper = from.Y >= to.Y;
@@ -822,7 +821,7 @@ namespace Optimator
             var upper = fromUpper ? from : to;
 
             // Solid Line
-            if (join == Consts.connectorOptions[0] || join == Consts.connectorOptions[1])
+            if (join == ConnectorOption.Line || join == ConnectorOption.None)
             {
                 var section = new List<float[]>();
 
@@ -853,7 +852,7 @@ namespace Optimator
                 line.AddRange(section);
             }
             // CURVE
-            else if (join == Consts.connectorOptions[2])
+            else if (join == ConnectorOption.Curve)
             {
             }
             return line;

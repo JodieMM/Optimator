@@ -88,7 +88,7 @@ namespace Optimator
             for (var index = lastPieceIndex + 1; index < data.Count; index++)
             {
                 var changes = data[index].Split(Consts.Colon);
-                Changes.Add(new Change(decimal.Parse(changes[0]), changes[1], PiecesList[int.Parse(changes[2])],
+                Changes.Add(new Change(decimal.Parse(changes[0]), (Consts.Action)int.Parse(changes[1]), PiecesList[int.Parse(changes[2])],
                     float.Parse(changes[3]), decimal.Parse(changes[4]), this));
             }                                               
         }

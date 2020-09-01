@@ -1,4 +1,6 @@
-﻿namespace Optimator
+﻿using static Optimator.Consts;
+
+namespace Optimator
 {
     /// <summary>
     /// A class to hold animations changes.
@@ -14,7 +16,7 @@
         public decimal StartTime { get; set; }
         public float HowMuch { get; set; }
         public decimal HowLong { get; set; }
-        public string Action { get; set; }
+        public Action Action { get; set; }
         #endregion
 
 
@@ -27,7 +29,7 @@
         /// <param name="howMuch">How much the change should occur per </param>
         /// <param name="howLong">How many frames the change should continue for</param>
         /// <param name="owner">The scene the change belongs to</param>
-        public Change(decimal startTime, string action, Piece affectedPiece, float howMuch, decimal howLong, Scene owner)
+        public Change(decimal startTime, Action action, Piece affectedPiece, float howMuch, decimal howLong, Scene owner)
         {
             StartTime = startTime;
             Action = action;
@@ -59,22 +61,22 @@
 
             switch (Action)
             {
-                case "X":
+                case Action.X:
                     affectedState.X += increment;
                     break;
-                case "Y":
+                case Action.Y:
                     affectedState.Y -= increment;
                     break;
-                case "Rotation":
+                case Action.Rotation:
                     affectedState.R = (affectedState.R + increment) % 360;
                     break;
-                case "Turn":
+                case Action.Turn:
                     affectedState.T = (affectedState.T + increment) % 360;
                     break;
-                case "Spin":
+                case Action.Spin:
                     affectedState.S = (affectedState.S + increment) % 360;
                     break;
-                case "Size":
+                case Action.Size:
                     affectedState.SM += increment / 100;
                     break;
             }
@@ -86,24 +88,8 @@
         /// <returns>Change in string form</returns>
         public override string ToString()
         {
-            return StartTime + Consts.ColonS + Action + Consts.ColonS + host.PiecesList.IndexOf(AffectedPiece) 
-                + Consts.ColonS + HowMuch.ToString() + Consts.ColonS + HowLong;
-        }
-
-        /// <summary>
-        /// Finds the index of the action text.
-        /// </summary>
-        /// <returns></returns>
-        public int ActionIndex()
-        {
-            for (int index = 0; index < Consts.possibleChanges.Length; index++)
-            {
-                if (Action == (string)Consts.possibleChanges[index])
-                {
-                    return index;
-                }
-            }
-            return -1; //Error
+            return StartTime + ColonS + Action.ToString("d") + ColonS + host.PiecesList.IndexOf(AffectedPiece) 
+                + ColonS + HowMuch.ToString() + ColonS + HowLong;
         }
     }
 }

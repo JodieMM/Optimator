@@ -27,7 +27,15 @@ namespace Optimator.Tabs.Pieces
         {
             InitializeComponent();
             Owner = owner;
-            OutlineWidthBox.Value = Owner.WIP.OutlineWidth;
+            ConnectorOptions.Items.AddRange(Enum.GetNames(typeof(Consts.ConnectorOption)));
+            if (Owner.selectedSpot != null)
+            {
+                UpdateValues(Owner.WIP.OutlineWidth, Owner.selectedSpot.Connector);
+            }
+            else
+            {
+                Enable(false);
+            }
         }
 
 
@@ -67,11 +75,11 @@ namespace Optimator.Tabs.Pieces
         /// </summary>
         /// <param name="outlineWidth">New outline width</param>
         /// <param name="connector">New connector option</param>
-        public void UpdateValues(decimal outlineWidth, string connector)
+        public void UpdateValues(decimal outlineWidth, Consts.ConnectorOption connector)
         {
             Enable();
             OutlineWidthBox.Value = outlineWidth;
-            ConnectorOptions.SelectedIndex = Array.IndexOf(Consts.connectorOptions, connector);
+            ConnectorOptions.SelectedIndex = (int)connector;
         }
 
         /// <summary>
@@ -94,7 +102,7 @@ namespace Optimator.Tabs.Pieces
         {
             if (Owner.selectedSpot != null)
             {
-                Owner.selectedSpot.Connector = Consts.connectorOptions[ConnectorOptions.SelectedIndex];
+                Owner.selectedSpot.Connector = (Consts.ConnectorOption)ConnectorOptions.SelectedIndex;
                 Owner.DisplayDrawings();
             }
         }

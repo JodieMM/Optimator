@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using static Optimator.Consts;
 
 namespace Optimator
 {
@@ -9,7 +10,7 @@ namespace Optimator
     /// </summary>
     public class ColourState
     {
-        public string ColourType { get; set; }                     // Solid/Gradient colour and direction
+        public FillOption ColourType { get; set; }                     // Solid/Gradient colour and direction
         public Color[] FillColour { get; set; }                    // Multiple colours for gradients
         public Color OutlineColour { get; set; }
 
@@ -19,9 +20,9 @@ namespace Optimator
         /// </summary>
         public ColourState()
         {
-            ColourType = Consts.fillOptions[0];
-            FillColour = new Color[] { Consts.defaultFill };
-            OutlineColour = Consts.defaultOutline;
+            ColourType = FillOption.Fill;
+            FillColour = new Color[] { defaultFill };
+            OutlineColour = defaultOutline;
         }
 
         /// <summary>
@@ -30,7 +31,7 @@ namespace Optimator
         /// <param name="CT">Colour Type string</param>
         /// <param name="FC">Fill Colour array</param>
         /// <param name="OC">Outline Colour</param>
-        public ColourState(string CT, Color[] FC, Color OC)
+        public ColourState(FillOption CT, Color[] FC, Color OC)
         {
             ColourType = CT;
             FillColour = FC;
@@ -48,7 +49,7 @@ namespace Optimator
         {
             OutlineColour = OC;
             FillColour = FC ?? basis.FillColour;
-            ColourType = FC == null ? basis.ColourType : Consts.fillOptions[0]; 
+            ColourType = FC == null ? basis.ColourType : FillOption.Fill; 
             // GRADIENT: Need to modify colour type to match fill colour amount
         }
 
@@ -62,10 +63,10 @@ namespace Optimator
         /// <returns>ColourState data</returns>
         public string GetData()
         {
-            var data = ColourType + Consts.SemiS + Utils.ColorToString(OutlineColour) + Consts.SemiS;
+            var data = ColourType.ToString("d") + SemiS + Utils.ColorToString(OutlineColour) + SemiS;
             for (int index = 0; index < FillColour.Length - 1; index++)
             {
-                data += Utils.ColorToString(FillColour[index]) + Consts.ColonS;
+                data += Utils.ColorToString(FillColour[index]) + ColonS;
             }
             return data + Utils.ColorToString(FillColour[FillColour.Length - 1]);
         }
