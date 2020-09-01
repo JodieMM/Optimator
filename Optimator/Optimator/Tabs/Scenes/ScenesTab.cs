@@ -92,7 +92,7 @@ namespace Optimator.Tabs.Scenes
         public void SetDrawPanelColour(Color color)
         {
             DrawPanel.BackColor = color;
-            DisplayDrawings();
+            DisplayTimer.Start();
         }
 
 
@@ -116,16 +116,6 @@ namespace Optimator.Tabs.Scenes
 
             DisplayDrawings();
             RefreshDrawPanel(this, new EventArgs());
-        }
-
-        /// <summary>
-        /// Redraws boards once focus is regained.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void FocusOn(object sender, EventArgs e)
-        {
-            DisplayDrawings();
         }
 
         #region ToolStrip
@@ -637,6 +627,8 @@ namespace Optimator.Tabs.Scenes
         {
             if (WIP.PartsList.Count > 0)
             {
+                // Draw BG
+
                 // Draw Panel
                 WIP.RunScene(CurrentTimeUpDown.Value);                
 
@@ -661,9 +653,6 @@ namespace Optimator.Tabs.Scenes
         {
             using (Graphics g = Graphics.FromImage(original))
             {
-                // Draw BGs
-                g.FillRectangle(new SolidBrush(DrawPanel.BackColor), new Rectangle(0, 0, DrawPanel.Width, DrawPanel.Height));
-
                 // Draw Content
                 Visuals.DrawParts(WIP.PartsList, g);
 

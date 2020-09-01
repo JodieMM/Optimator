@@ -88,7 +88,6 @@ namespace Optimator.Tabs.Scenes
                 BgColourBox.BackColor = MyDialog.Color;
                 Owner.WIP.Background = MyDialog.Color;
                 Owner.SetDrawPanelColour(MyDialog.Color);
-                Owner.DisplayDrawings();
             }
         }
     }

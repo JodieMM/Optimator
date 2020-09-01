@@ -68,7 +68,6 @@ namespace Optimator.Tabs.Sets
             {
                 BackColourBox.BackColor = MyDialog.Color;
                 Owner.ChangeDrawingBgs(MyDialog.Color);
-                Owner.DisplayDrawings();
             }
         }
     }

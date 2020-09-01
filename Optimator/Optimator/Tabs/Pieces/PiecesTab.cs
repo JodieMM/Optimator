@@ -258,6 +258,7 @@ namespace Optimator
         public void ChangeDrawingBgs(Color color)
         {
             DrawBase.BackColor = DrawRight.BackColor = DrawDown.BackColor = color;
+            DisplayTimer.Start();
         }
 
 
@@ -576,11 +577,6 @@ namespace Optimator
             using (Graphics rt = Graphics.FromImage(rotated))
             using (Graphics td = Graphics.FromImage(turned))
             {
-                // Draw BGs
-                og.FillRectangle(new SolidBrush(GetBoardColor()), new Rectangle(0, 0, DrawBase.Width, DrawBase.Height));
-                rt.FillRectangle(new SolidBrush(GetBoardColor()), new Rectangle(0, 0, DrawRight.Width, DrawRight.Height));
-                td.FillRectangle(new SolidBrush(GetBoardColor()), new Rectangle(0, 0, DrawDown.Width, DrawDown.Height));
-
                 // Draw Sketches
                 foreach (var sketch in Sketches)
                 {

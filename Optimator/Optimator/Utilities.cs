@@ -445,24 +445,6 @@ namespace Optimator
         // ----- CONVERSIONS -----
 
         /// <summary>
-        /// Converts an angle in degrees to radians.
-        /// </summary>
-        /// <param name="degree">The degree to convert to radians</param>
-        /// <param name="reverse">True if converting from radians to degrees</param>
-        /// <returns>The degree in radians</returns>
-        public static float ConvertDegreeToRadian(float degree, bool reverse = false)
-        {
-            if (!reverse)
-            {
-                return (float)Math.PI / 180.0F * degree;
-            }
-            else
-            {
-                return degree * 180.0F / (float)Math.PI;
-            }
-        }
-
-        /// <summary>
         /// Converts an array of strings into an array of floats.
         /// Used when loading from text files.
         /// </summary>
