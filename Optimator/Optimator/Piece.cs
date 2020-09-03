@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using static Optimator.Consts;
+using static Optimator.Utils;
 
 namespace Optimator
 {
@@ -46,7 +47,7 @@ namespace Optimator
             ColourState = new ColourState
             {
                 ColourType = (FillOption)int.Parse(angleData[0]),
-                OutlineColour = Utils.ColourFromString(angleData[1])
+                OutlineColour = ColourFromString(angleData[1])
             };
 
             // Fill Colour Array
@@ -54,7 +55,7 @@ namespace Optimator
             ColourState.FillColour = new Color[colours.Length];
             for (var index = 0; index < colours.Length; index++)
             {
-                ColourState.FillColour[index] = Utils.ColourFromString(colours[index]);
+                ColourState.FillColour[index] = ColourFromString(colours[index]);
             }
 
             // Outline Width
@@ -67,7 +68,7 @@ namespace Optimator
             for (var index = 2; index < data.Count; index++)
             {
                 var spotData = data[index].Split(Semi);
-                var coords = Utils.ConvertStringArrayToFloats(spotData[0].Split(Colon));
+                var coords = ConvertStringArrayToFloats(spotData[0].Split(Colon));
 
                 Data.Add(new Spot(coords[0], coords[1], coords[2], coords[3], (SpotOption)int.Parse(spotData[1])));
             }
@@ -161,24 +162,24 @@ namespace Optimator
             // Constant Piece
             else if (Type == PieceOption.Constant)
             {
-                points = Utils.CloneSpotList(Data);
+                points = CloneSpotList(Data);
             }
             // Flat Piece
             else if (Type == PieceOption.Flat)
             {
                 // TODO: Flat PieceOption
-                points = Utils.CloneSpotList(Data);
+                points = CloneSpotList(Data);
             }
             else if (Type == PieceOption.Moveable)
             {
                 // Get Points
-                var basePoints = Utils.SortCoordinates(GetAnchorStatePoints(state, 0));
-                var rightPoints = Utils.SortCoordinates(GetAnchorStatePoints(state, 1));
-                var downPoints = Utils.SortCoordinates(GetAnchorStatePoints(state, 2));
-                var downRightPoints = Utils.SortCoordinates(GetAnchorStatePoints(state, 3));
+                var basePoints = SortCoordinates(GetAnchorStatePoints(state, 0));
+                var rightPoints = SortCoordinates(GetAnchorStatePoints(state, 1));
+                var downPoints = SortCoordinates(GetAnchorStatePoints(state, 2));
+                var downRightPoints = SortCoordinates(GetAnchorStatePoints(state, 3));
 
                 // Find Middle Ground
-                var r = Utils.AngleAnchorFromAngle(state.R);
+                var r = AngleAnchorFromAngle(state.R);
                 if (r == 0 || r == 2)
                 {
                     rightPoints = ResizeToMatch(basePoints, rightPoints, false);
@@ -191,15 +192,15 @@ namespace Optimator
                 }
                 downRightPoints = ResizeToMatch(downPoints, downRightPoints, false);
 
-                var merge1 = Utils.SortCoordinates(MergeShapes(basePoints, rightPoints, state.R));
-                var merge2 = Utils.SortCoordinates(MergeShapes(downPoints, downRightPoints, state.R));
-                points = Utils.SortCoordinates(MergeShapes(merge1, merge2, state.T, false));
+                var merge1 = SortCoordinates(MergeShapes(basePoints, rightPoints, state.R));
+                var merge2 = SortCoordinates(MergeShapes(downPoints, downRightPoints, state.R));
+                points = SortCoordinates(MergeShapes(merge1, merge2, state.T, false));
             }
 
             // Recentre, Resize & Spin
             for (var index = 0; index < points.Count; index++)
             {
-                var coords = Utils.SpinAndSizeCoord(state.S, 1, new float[] { points[index].X, points[index].Y });
+                var coords = SpinAndSizeCoord(state.S, 1, new float[] { points[index].X, points[index].Y });
                 points[index].X = coords[0] * state.SM + state.X;
                 points[index].Y = coords[1] * state.SM + state.Y;
             }
@@ -221,14 +222,14 @@ namespace Optimator
             var minT = brd < 2;
             int r, t = new int();
             
-            r = Utils.AngleAnchorFromAngle(state.R, minR);
-            t = Utils.AngleAnchorFromAngle(state.T, minT);
+            r = AngleAnchorFromAngle(state.R, minR);
+            t = AngleAnchorFromAngle(state.T, minT);
 
             foreach (var spot in Data)
             {
                 points.Add(spot.GetCoordAtAnchorAngle(r, t));
             }
-            return Utils.SortCoordinates(points);
+            return SortCoordinates(points);
         }
 
         /// <summary>
@@ -240,9 +241,9 @@ namespace Optimator
         /// <returns>Resized change shape</returns>
         private List<Spot> ResizeToMatch(List<Spot> constantPoints, List<Spot> changePoints, bool xChange = true)
         {
-            var goalSize = Utils.FindMinMax(constantPoints);
+            var goalSize = FindMinMax(constantPoints);
             var goal = xChange ? goalSize[1] - goalSize[0] : goalSize[3] - goalSize[2];
-            var currSize = Utils.FindMinMax(changePoints);
+            var currSize = FindMinMax(changePoints);
             var curr = xChange ? currSize[1] - currSize[0] : currSize[3] - currSize[2];
 
             // No Resizing Needed
@@ -271,7 +272,7 @@ namespace Optimator
             // Flat Current with Non-Flat Goal
             else if (curr == 0)
             {
-                var goalPoints = Utils.FindMinMaxSpots(changePoints);
+                var goalPoints = FindMinMaxSpots(changePoints);
                 for (int index  = 0; index < changePoints.Count; index++)
                 {
                     var point = changePoints[index];
@@ -279,19 +280,19 @@ namespace Optimator
                     {
                         if (point == goalPoints[3] || point == goalPoints[2])
                         {
-                            if (changePoints[Utils.NextIndex(changePoints, index)].X == point.X)
+                            if (changePoints[NextIndex(changePoints, index)].X == point.X)
                             {
                                 point.X = point == goalPoints[3] ? goalSize[0] : goalSize[1];
-                                changePoints[Utils.NextIndex(changePoints, index)].X = point == goalPoints[3] ? goalSize[1] : goalSize[0];
+                                changePoints[NextIndex(changePoints, index)].X = point == goalPoints[3] ? goalSize[1] : goalSize[0];
                                 index++;
                             }
                         }
-                        else if (Utils.WithinRanges(changePoints.IndexOf(goalPoints[3]), 
+                        else if (WithinRanges(changePoints.IndexOf(goalPoints[3]), 
                             changePoints.IndexOf(goalPoints[2]), changePoints.IndexOf(point), true, changePoints))
                         {
                             point.X = goalSize[1];
                         }
-                        else if (Utils.WithinRanges(changePoints.IndexOf(goalPoints[2]),
+                        else if (WithinRanges(changePoints.IndexOf(goalPoints[2]),
                             changePoints.IndexOf(goalPoints[3]), changePoints.IndexOf(point), true, changePoints))
                         {
                             point.X = goalSize[0];
@@ -301,19 +302,19 @@ namespace Optimator
                     {
                         if (point == goalPoints[0] || point == goalPoints[1])
                         {
-                            if (changePoints[Utils.NextIndex(changePoints, index)].Y == point.Y)
+                            if (changePoints[NextIndex(changePoints, index)].Y == point.Y)
                             {
                                 point.Y = point == goalPoints[0] ? goalSize[2] : goalSize[3];
-                                changePoints[Utils.NextIndex(changePoints, index)].Y = point == goalPoints[0] ? goalSize[3] : goalSize[2];
+                                changePoints[NextIndex(changePoints, index)].Y = point == goalPoints[0] ? goalSize[3] : goalSize[2];
                                 index++;
                             }
                         }
-                        else if (Utils.WithinRanges(changePoints.IndexOf(goalPoints[0]),
+                        else if (WithinRanges(changePoints.IndexOf(goalPoints[0]),
                             changePoints.IndexOf(goalPoints[1]), changePoints.IndexOf(point), true, changePoints))
                         {
                             point.Y = goalSize[3];
                         }
-                        else if (Utils.WithinRanges(changePoints.IndexOf(goalPoints[1]),
+                        else if (WithinRanges(changePoints.IndexOf(goalPoints[1]),
                             changePoints.IndexOf(goalPoints[0]), changePoints.IndexOf(point), true, changePoints))
                         {
                             point.Y = goalSize[2];
@@ -354,9 +355,9 @@ namespace Optimator
             var shape1 = s1;
             var shape2 = s2;
             var swapped = false;
-            var minmax = Utils.FindMinMax(s1);
-            var minmax1 = Utils.FindMinMaxSpots(s1);
-            var minmax2 = Utils.FindMinMaxSpots(s2);
+            var minmax = FindMinMax(s1);
+            var minmax1 = FindMinMaxSpots(s1);
+            var minmax2 = FindMinMaxSpots(s2);
             List<int[]> holdingIndexes = new List<int[]>();
             var i1 = 0;
             var i2 = 0;
@@ -433,13 +434,13 @@ namespace Optimator
                         if (s2.IndexOf(minmax2[1]) >= i2)
                         {
                             // Check X
-                            if (s1[Utils.Modulo(i1, s1.Count)].X > s2[Utils.Modulo(i2, s2.Count)].X)
+                            if (s1[Modulo(i1, s1.Count)].X > s2[Modulo(i2, s2.Count)].X)
                             {
                                 swapped = true;
                             }
                             // Check Height
-                            else if (s1[Utils.Modulo(i1, s1.Count)].X == s2[Utils.Modulo(i2, s2.Count)].X &&
-                                s1[Utils.Modulo(i1, s1.Count)].Y < s2[Utils.Modulo(i2, s2.Count)].Y)
+                            else if (s1[Modulo(i1, s1.Count)].X == s2[Modulo(i2, s2.Count)].X &&
+                                s1[Modulo(i1, s1.Count)].Y < s2[Modulo(i2, s2.Count)].Y)
                             {
                                 swapped = true;
                             }
@@ -452,13 +453,13 @@ namespace Optimator
                         if (s2.IndexOf(minmax2[2]) >= i2 && s2.IndexOf(minmax2[1]) < i2)
                         {
                             // Check X
-                            if (s1[Utils.Modulo(i1, s1.Count)].X < s2[Utils.Modulo(i2, s2.Count)].X)
+                            if (s1[Modulo(i1, s1.Count)].X < s2[Modulo(i2, s2.Count)].X)
                             {
                                 swapped = true;
                             }
                             // Check Height
-                            else if (s1[Utils.Modulo(i1, s1.Count)].X == s2[Utils.Modulo(i2, s2.Count)].X &&
-                                s1[Utils.Modulo(i1, s1.Count)].Y < s2[Utils.Modulo(i2, s2.Count)].Y)
+                            else if (s1[Modulo(i1, s1.Count)].X == s2[Modulo(i2, s2.Count)].X &&
+                                s1[Modulo(i1, s1.Count)].Y < s2[Modulo(i2, s2.Count)].Y)
                             {
                                 swapped = true;
                             }
@@ -477,13 +478,13 @@ namespace Optimator
                             s2.IndexOf(minmax2[2]) == i2 && s2.IndexOf(minmax2[2]) == s2.IndexOf(minmax2[0])))
                         {
                             // Check X
-                            if (s1[Utils.Modulo(i1, s1.Count)].X < s2[Utils.Modulo(i2, s2.Count)].X)
+                            if (s1[Modulo(i1, s1.Count)].X < s2[Modulo(i2, s2.Count)].X)
                             {
                                 swapped = true;
                             }
                             // Check Height
-                            else if (s1[Utils.Modulo(i1, s1.Count)].X == s2[Utils.Modulo(i2, s2.Count)].X &&
-                                s1[Utils.Modulo(i1, s1.Count)].Y > s2[Utils.Modulo(i2, s2.Count)].Y)
+                            else if (s1[Modulo(i1, s1.Count)].X == s2[Modulo(i2, s2.Count)].X &&
+                                s1[Modulo(i1, s1.Count)].Y > s2[Modulo(i2, s2.Count)].Y)
                             {
                                 swapped = true;
                             }
@@ -501,13 +502,13 @@ namespace Optimator
                         if (s2.IndexOf(minmax2[0]) < i2)
                         {
                             // Check X
-                            if (s1[Utils.Modulo(i1, s1.Count)].X > s2[Utils.Modulo(i2, s2.Count)].X)
+                            if (s1[Modulo(i1, s1.Count)].X > s2[Modulo(i2, s2.Count)].X)
                             {
                                 swapped = true;
                             }
                             // Check Height
-                            else if (s1[Utils.Modulo(i1, s1.Count)].X == s2[Utils.Modulo(i2, s2.Count)].X &&
-                                s1[Utils.Modulo(i1, s1.Count)].Y > s2[Utils.Modulo(i2, s2.Count)].Y)
+                            else if (s1[Modulo(i1, s1.Count)].X == s2[Modulo(i2, s2.Count)].X &&
+                                s1[Modulo(i1, s1.Count)].Y > s2[Modulo(i2, s2.Count)].Y)
                             {
                                 swapped = true;
                             }
@@ -523,8 +524,8 @@ namespace Optimator
 
                 shape1 = swapped ? s2 : s1;
                 shape2 = swapped ? s1 : s2;
-                index1 = swapped ? Utils.Modulo(i2, s2.Count) : Utils.Modulo(i1, s1.Count);
-                index2 = swapped ? Utils.Modulo(i1, s1.Count) : Utils.Modulo(i2, s2.Count);
+                index1 = swapped ? Modulo(i2, s2.Count) : Modulo(i1, s1.Count);
+                index2 = swapped ? Modulo(i1, s1.Count) : Modulo(i2, s2.Count);
                 
                 var matchPosition = FindSymmetricalCoordHome(shape1, shape2, shape1[index1], z);
 
@@ -541,9 +542,9 @@ namespace Optimator
                 // Single Matching Spot
                 else if (matchPosition.Length == 1)
                 {                        
-                    var match = Utils.Modulo(matchPosition[0], shape2.Count);
+                    var match = Modulo(matchPosition[0], shape2.Count);
                     var unchanged = shape1[index1].GetCoord(z);
-                    var changed = Utils.FindMiddleSpot(shape1[index1].GetCoord(altz), shape2[match].GetCoord(altz), angle, swapped);
+                    var changed = FindMiddleSpot(shape1[index1].GetCoord(altz), shape2[match].GetCoord(altz), angle, swapped);
                     // TODO: Connector/Solid
                     var newSpot = new Spot(xChange ? changed : unchanged, xChange ? unchanged : changed, 
                         shape1[index1].Connector);
@@ -561,18 +562,18 @@ namespace Optimator
                     {
                         merged.Remove(newSpot);
                     }
-                    var newSpot2 = Utils.CloneSpot(newSpot);
+                    var newSpot2 = CloneSpot(newSpot);
                     // TODO: Connector
-                    newSpot2.Connector = shape1[Utils.NextIndex(shape1, index1)].Connector;
+                    newSpot2.Connector = shape1[NextIndex(shape1, index1)].Connector;
 
                     // Check for Self Neighbours
                     if (index1 < shape1.Count && shape1[index1 - 1].GetCoord(z) == shape1[index1].GetCoord(z))
                     {             
                         // Self and Match Neighbours
-                        if (shape2[match].GetCoord(z) == shape2[Utils.NextIndex(shape2, match)].GetCoord(z) && shape2.Count > 1)
+                        if (shape2[match].GetCoord(z) == shape2[NextIndex(shape2, match)].GetCoord(z) && shape2.Count > 1)
                         {
-                            changed = Utils.FindMiddleSpot(shape1[index1].GetCoord(altz),
-                                shape2[Utils.NextIndex(shape2, match)].GetCoord(altz), angle, swapped);
+                            changed = FindMiddleSpot(shape1[index1].GetCoord(altz),
+                                shape2[NextIndex(shape2, match)].GetCoord(altz), angle, swapped);
                             if (xChange)
                             {
                                 newSpot2.X = changed;
@@ -585,13 +586,13 @@ namespace Optimator
                             index1++;
                             i1 += swapped ? 0 : 1;
                             i2 += swapped ? 1 : 0;
-                            if (Utils.NextIndex(shape2, match) == index2)
+                            if (NextIndex(shape2, match) == index2)
                             {
                                 index2++;
                                 i1 += swapped ? 1 : 0;
                                 i2 += swapped ? 0 : 1;
                             }
-                            else if (Utils.NextIndex(shape2, match) > index2)
+                            else if (NextIndex(shape2, match) > index2)
                             {
                                 merged.Remove(newSpot2);
                             }
@@ -599,7 +600,7 @@ namespace Optimator
                         // Self Neighbour Only
                         else
                         {
-                            changed = Utils.FindMiddleSpot(shape1[index1].GetCoord(z),
+                            changed = FindMiddleSpot(shape1[index1].GetCoord(z),
                                 shape2[match].GetCoord(z), angle, swapped);
                             if (xChange)
                             {
@@ -616,10 +617,10 @@ namespace Optimator
                         }
                     }
                     // Check for Match Neighbours
-                    else if (shape2[match].GetCoord(z) == shape2[Utils.NextIndex(shape2, match)].GetCoord(z) && shape2.Count > 1)
+                    else if (shape2[match].GetCoord(z) == shape2[NextIndex(shape2, match)].GetCoord(z) && shape2.Count > 1)
                     {
-                        changed = Utils.FindMiddleSpot(shape1[Utils.NextIndex(shape1, index1, false)].GetCoord(altz),
-                                shape2[Utils.NextIndex(shape2, match)].GetCoord(altz), angle, swapped);
+                        changed = FindMiddleSpot(shape1[NextIndex(shape1, index1, false)].GetCoord(altz),
+                                shape2[NextIndex(shape2, match)].GetCoord(altz), angle, swapped);
                         if (xChange)
                         {
                             newSpot2.X = changed;
@@ -629,13 +630,13 @@ namespace Optimator
                             newSpot2.Y = changed;
                         }
                         merged.Add(newSpot2);
-                        if (Utils.NextIndex(shape2, match) == index2)
+                        if (NextIndex(shape2, match) == index2)
                         {
                             index2++;
                             i1 += swapped ? 1 : 0;
                             i2 += swapped ? 0 : 1;
                         }
-                        else if (Utils.NextIndex(shape2, match) > index2)
+                        else if (NextIndex(shape2, match) > index2)
                         {
                             merged.Remove(newSpot2);
                         }
@@ -644,10 +645,10 @@ namespace Optimator
                 // Spaced Between Two Spots
                 else if (matchPosition.Length == 2)
                 {
-                    var match = FindSymmetricalOppositeCoord(shape2[Utils.Modulo(matchPosition[0], shape2.Count)],
-                            shape2[Utils.Modulo(matchPosition[1], shape2.Count)], shape1[index1].GetCoord(z), z);
+                    var match = FindSymmetricalOppositeCoord(shape2[Modulo(matchPosition[0], shape2.Count)],
+                            shape2[Modulo(matchPosition[1], shape2.Count)], shape1[index1].GetCoord(z), z);
                     var unchanged = shape1[index1].GetCoord(z);
-                    var changed = Utils.FindMiddleSpot(shape1[index1].GetCoord(altz), match[altz], angle, swapped);
+                    var changed = FindMiddleSpot(shape1[index1].GetCoord(altz), match[altz], angle, swapped);
                     // TODO: Connector
                     var newSpot = new Spot(xChange ? changed : unchanged, xChange ? unchanged : changed, 
                         shape1[index1].Connector);
@@ -655,14 +656,14 @@ namespace Optimator
                     index1++;
                     i1 += swapped ? 0 : 1;
                     i2 += swapped ? 1 : 0;
-                    var newSpot2 = Utils.CloneSpot(newSpot);
+                    var newSpot2 = CloneSpot(newSpot);
                     // TODO: Connector
-                    newSpot2.Connector = shape1[Utils.NextIndex(shape1, index1)].Connector;
+                    newSpot2.Connector = shape1[NextIndex(shape1, index1)].Connector;
 
                     // Check for Self Neighbours
                     if (index1 < shape1.Count && shape1[index1 - 1].GetCoord(z) == shape1[index1].GetCoord(z))
                     {
-                        changed = Utils.FindMiddleSpot(shape1[index1].GetCoord(altz),
+                        changed = FindMiddleSpot(shape1[index1].GetCoord(altz),
                                 match[altz], angle, swapped);
                         if (xChange)
                         {
@@ -693,52 +694,52 @@ namespace Optimator
         public int[] FindSymmetricalCoordHome(List<Spot> s1, List<Spot> s2, Spot match, int xy)
         {
             // Determine if Coord Occurs Top or Bottom / Left or Right
-            var minmax = Utils.FindMinMaxSpots(s1);
-            bool topRight = (xy == 0 && Utils.WithinRanges(s1.IndexOf(minmax[0]), s1.IndexOf(minmax[1]), s1.IndexOf(match), true, s1)) ||
-                (xy == 1 && Utils.WithinRanges(s1.IndexOf(minmax[3]), s1.IndexOf(minmax[2]), s1.IndexOf(match), false, s1));
+            var minmax = FindMinMaxSpots(s1);
+            bool topRight = (xy == 0 && WithinRanges(s1.IndexOf(minmax[0]), s1.IndexOf(minmax[1]), s1.IndexOf(match), true, s1)) ||
+                (xy == 1 && WithinRanges(s1.IndexOf(minmax[3]), s1.IndexOf(minmax[2]), s1.IndexOf(match), false, s1));
 
             // Find Matching Position
             var backup = new int[1] { -1 };
-            minmax = Utils.FindMinMaxSpots(s2);
+            minmax = FindMinMaxSpots(s2);
             var goal = match.GetCoord(xy);
             for (int index = 0; index < s2.Count; index++)
             {
                 // Top/Right and in Top/Right
-                if (topRight && ((xy == 0 && Utils.WithinRanges(s2.IndexOf(minmax[0]), s2.IndexOf(minmax[1]), index, true, s2)) ||
-                    (xy == 1 && Utils.WithinRanges(s2.IndexOf(minmax[3]), s2.IndexOf(minmax[2]), index, false, s2))))
+                if (topRight && ((xy == 0 && WithinRanges(s2.IndexOf(minmax[0]), s2.IndexOf(minmax[1]), index, true, s2)) ||
+                    (xy == 1 && WithinRanges(s2.IndexOf(minmax[3]), s2.IndexOf(minmax[2]), index, false, s2))))
                 {
                     // Exact Match
-                    if (Utils.SameValue(s2[index].GetCoord(xy), goal))
+                    if (SameValue(s2[index].GetCoord(xy), goal))
                     {
                         return new int[] { index };
                     }
                     // Between Two Points
-                    else if (s2[index].GetCoord(xy) > goal && s2[Utils.NextIndex(s2, index)].GetCoord(xy) < goal)
+                    else if (s2[index].GetCoord(xy) > goal && s2[NextIndex(s2, index)].GetCoord(xy) < goal)
                     {
-                        return new int[] { index, Utils.NextIndex(s2, index) };
+                        return new int[] { index, NextIndex(s2, index) };
                     }
-                    else if (s2[index].GetCoord(xy) < goal && s2[Utils.NextIndex(s2, index)].GetCoord(xy) > goal)
+                    else if (s2[index].GetCoord(xy) < goal && s2[NextIndex(s2, index)].GetCoord(xy) > goal)
                     {
-                        return new int[] { index, Utils.NextIndex(s2, index) };
+                        return new int[] { index, NextIndex(s2, index) };
                     }
                 }
                 // Bottom/Left and in Bottom/Left
-                else if (!topRight && !((xy == 0 && Utils.WithinRanges(s2.IndexOf(minmax[0]), s2.IndexOf(minmax[1]), index, true, s2)) ||
-                    (xy == 1 && Utils.WithinRanges(s2.IndexOf(minmax[3]), s2.IndexOf(minmax[2]), index, false, s2))))
+                else if (!topRight && !((xy == 0 && WithinRanges(s2.IndexOf(minmax[0]), s2.IndexOf(minmax[1]), index, true, s2)) ||
+                    (xy == 1 && WithinRanges(s2.IndexOf(minmax[3]), s2.IndexOf(minmax[2]), index, false, s2))))
                 {
                     // Exact Match
-                    if (Utils.SameValue(s2[index].GetCoord(xy), goal))
+                    if (SameValue(s2[index].GetCoord(xy), goal))
                     {
                         return new int[] { index };
                     }
                     // Between Two Points
-                    else if (s2[index].GetCoord(xy) > goal && s2[Utils.NextIndex(s2, index)].GetCoord(xy) < goal)
+                    else if (s2[index].GetCoord(xy) > goal && s2[NextIndex(s2, index)].GetCoord(xy) < goal)
                     {
-                        return new int[] { index, Utils.NextIndex(s2, index) };
+                        return new int[] { index, NextIndex(s2, index) };
                     }
-                    else if (s2[index].GetCoord(xy) < goal && s2[Utils.NextIndex(s2, index)].GetCoord(xy) > goal)
+                    else if (s2[index].GetCoord(xy) < goal && s2[NextIndex(s2, index)].GetCoord(xy) > goal)
                     {
-                        return new int[] { index, Utils.NextIndex(s2, index) };
+                        return new int[] { index, NextIndex(s2, index) };
                     }
                 }
             }
@@ -863,7 +864,7 @@ namespace Optimator
             for (var index = 0; index < data.Count; index++)
             {
                 linesCoords.AddRange(LineCoords(data[index],
-                    data[Utils.Modulo(index + 1, data.Count)], data[index].Connector));
+                    data[Modulo(index + 1, data.Count)], data[index].Connector));
             }
             return linesCoords;
         }
@@ -876,7 +877,7 @@ namespace Optimator
         {
             // Turn coords into bound ranges
             var outlineShape = LinesCoords();
-            var minMax = Utils.FindMinMax(outlineShape);
+            var minMax = FindMinMax(outlineShape);
             var ranges = new List<float[]>();
             var halfOutline = OutlineWidth < 3 && Data.Count < 3 ? 3 : (float)(OutlineWidth / 2);
             for (var index = (int)minMax[2]; index <= (int)minMax[3]; index++)
@@ -885,10 +886,10 @@ namespace Optimator
                 var yMatches = new List<float[]>();
                 for (var coordIndex = 0; coordIndex < outlineShape.Count; coordIndex++)
                     if (outlineShape[coordIndex][1] == index &&
-                        !((outlineShape[Utils.Modulo(coordIndex + 1, outlineShape.Count)][1] > outlineShape[coordIndex][1] &&
-                            outlineShape[Utils.Modulo(coordIndex - 1, outlineShape.Count)][1] > outlineShape[coordIndex][1]) ||
-                            (outlineShape[Utils.Modulo(coordIndex + 1, outlineShape.Count)][1] < outlineShape[coordIndex][1] &&
-                            outlineShape[Utils.Modulo(coordIndex - 1, outlineShape.Count)][1] < outlineShape[coordIndex][1])))
+                        !((outlineShape[Modulo(coordIndex + 1, outlineShape.Count)][1] > outlineShape[coordIndex][1] &&
+                            outlineShape[Modulo(coordIndex - 1, outlineShape.Count)][1] > outlineShape[coordIndex][1]) ||
+                            (outlineShape[Modulo(coordIndex + 1, outlineShape.Count)][1] < outlineShape[coordIndex][1] &&
+                            outlineShape[Modulo(coordIndex - 1, outlineShape.Count)][1] < outlineShape[coordIndex][1])))
                     {
                         yMatches.Add(outlineShape[coordIndex]);
                     }

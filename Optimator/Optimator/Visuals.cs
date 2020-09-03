@@ -88,13 +88,61 @@ namespace Optimator
         public static void DrawShape(Graphics g, List<Spot> currentPoints, Brush fill)
         {
             var path = new GraphicsPath();
+            path.StartFigure();
             for (var index = 0; index < currentPoints.Count; index++)
             {
                 var nextIndex = Utils.NextIndex(currentPoints, index);
-                path.AddLine(new Point(Convert.ToInt32(currentPoints[index].X), Convert.ToInt32(currentPoints[index].Y)),
-                    new Point(Convert.ToInt32(currentPoints[nextIndex].X), Convert.ToInt32(currentPoints[nextIndex].Y)));
-                //CURVE
+                var start = Utils.ConvertSpotToPoint(currentPoints[index]);
+                var end = Utils.ConvertSpotToPoint(currentPoints[nextIndex]);
+
+                // Connected by Line
+                if (currentPoints[index].Connector == Consts.SpotOption.Corner &&
+                    currentPoints[nextIndex].Connector == Consts.SpotOption.Corner)
+                {
+                    path.AddLine(start, end);
+                }
+                // Starts with Curve
+                else if (currentPoints[index].Connector == Consts.SpotOption.Curve)
+                {
+                    var count = 0;
+                    var foundNonCurve = false;
+                    while (count < currentPoints.Count && !foundNonCurve)
+                    {
+                        if (currentPoints[count].Connector != Consts.SpotOption.Curve)
+                        {
+                            foundNonCurve = true;
+                        }
+                        count++;
+                    }
+                    // All Curve - ClosedCurve Required
+                    if (!foundNonCurve)
+                    {
+                        var curvePoints = new PointF[currentPoints.Count];
+                        for (int currentPoint = 0; currentPoint < currentPoints.Count; currentPoint++)
+                        {
+                            curvePoints[currentPoint] = Utils.ConvertSpotToPoint(currentPoints[currentPoint]);
+                        }
+                        path.AddClosedCurve(curvePoints);
+                        index = currentPoints.Count;
+                    }
+                    // Else skip- will be drawn in a curve loop
+                }
+                // Start of Curve
+                else if (currentPoints[index].Connector == Consts.SpotOption.Corner &&
+                    currentPoints[nextIndex].Connector == Consts.SpotOption.Curve)
+                {
+                    var curvePoints = new List<PointF>() { start, end };
+                    var newIndex = nextIndex;
+                    while (currentPoints[newIndex].Connector == Consts.SpotOption.Curve)
+                    {
+                        newIndex = Utils.NextIndex(currentPoints, newIndex);
+                        curvePoints.Add(Utils.ConvertSpotToPoint(currentPoints[newIndex]));
+                    }
+                    index = newIndex <= index ? currentPoints.Count : newIndex - 1;
+                    path.AddCurve(Utils.ConvertPointListToArray(curvePoints));
+                }
             }
+            path.CloseFigure();
             g.FillPath(fill, path);
         }
 
@@ -110,8 +158,8 @@ namespace Optimator
             for (var index = 0; index < maxIndex; index++)
             {
                 var nextIndex = Utils.NextIndex(currentPoints, index);
-                var start = new Point(Convert.ToInt32(currentPoints[index].X), Convert.ToInt32(currentPoints[index].Y));
-                var end = new Point(Convert.ToInt32(currentPoints[nextIndex].X), Convert.ToInt32(currentPoints[nextIndex].Y));
+                var start = Utils.ConvertSpotToPoint(currentPoints[index]);
+                var end = Utils.ConvertSpotToPoint(currentPoints[nextIndex]);
 
                 // Connected by Line
                 if (currentPoints[index].Connector == Consts.SpotOption.Corner && 
@@ -120,8 +168,6 @@ namespace Optimator
                     g.DrawLine(pen, start, end);
                 }
                 // Starts with Curve
-                // Only occurs when the first connector is curve (skip it and wait until end) 
-                // Or all is curve (closed curve function)
                 else if (currentPoints[index].Connector == Consts.SpotOption.Curve)
                 {
                     var count = 0;
@@ -134,27 +180,29 @@ namespace Optimator
                         }
                         count++;
                     }
+                    // All Curve - ClosedCurve Required
                     if (!foundNonCurve)
                     {
-                        var curvePoints = new Point[currentPoints.Count];
+                        var curvePoints = new PointF[currentPoints.Count];
                         for (int currentPoint = 0; currentPoint < currentPoints.Count; currentPoint++)
                         {
-                            curvePoints[currentPoint] = new Point(Convert.ToInt32(currentPoints[currentPoint].X),
-                                Convert.ToInt32(currentPoints[currentPoint].Y));
+                            curvePoints[currentPoint] = Utils.ConvertSpotToPoint(currentPoints[currentPoint]);
                         }
                         g.DrawClosedCurve(pen, curvePoints);
+                        index = maxIndex;
                     }
+                    // Else skip- will be drawn in a curve loop
                 }
                 // Start of Curve
                 else if (currentPoints[index].Connector == Consts.SpotOption.Corner &&
                     currentPoints[nextIndex].Connector == Consts.SpotOption.Curve)
                 {
-                    var curvePoints = new List<Point>() { start, end };
+                    var curvePoints = new List<PointF>() { start, end };
                     var newIndex = nextIndex;
                     while (currentPoints[newIndex].Connector == Consts.SpotOption.Curve)
                     {
                         newIndex = Utils.NextIndex(currentPoints, newIndex);
-                        curvePoints.Add(new Point(Convert.ToInt32(currentPoints[newIndex].X), Convert.ToInt32(currentPoints[newIndex].Y)));
+                        curvePoints.Add(Utils.ConvertSpotToPoint(currentPoints[newIndex]));
                     }
                     index = newIndex <= index ? maxIndex : newIndex - 1;
                     g.DrawCurve(pen, Utils.ConvertPointListToArray(curvePoints));

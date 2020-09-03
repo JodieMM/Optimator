@@ -514,14 +514,24 @@ namespace Optimator
         /// </summary>
         /// <param name="points">Points to convert</param>
         /// <returns>Array of points</returns>
-        public static Point[] ConvertPointListToArray(List<Point> points)
+        public static PointF[] ConvertPointListToArray(List<PointF> points)
         {
-            var array = new Point[points.Count];
+            var array = new PointF[points.Count];
             for (int index = 0; index < points.Count; index++)
             {
                 array[index] = points[index];
             }
             return array;
+        }
+
+        /// <summary>
+        /// Converts a spot into a point.
+        /// </summary>
+        /// <param name="spot">Spot to convert</param>
+        /// <returns>PointF with spot coordinates</returns>
+        public static PointF ConvertSpotToPoint(Spot spot)
+        {
+            return new PointF(spot.X, spot.Y);
         }
 
 
