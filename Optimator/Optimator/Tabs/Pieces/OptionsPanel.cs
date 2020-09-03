@@ -23,6 +23,7 @@ namespace Optimator.Tabs.Pieces
             Owner = owner;
             PieceOptionsCb.Items.AddRange(Enum.GetNames(typeof(Consts.PieceOption)));
             PieceOptionsCb.SelectedIndex = (int)Owner.WIP.Type;
+            LineCb.Checked = Owner.WIP.Line;
         }
 
 
@@ -54,6 +55,17 @@ namespace Optimator.Tabs.Pieces
         private void PieceOptionsCb_SelectedIndexChanged(object sender, EventArgs e)
         {
             Owner.WIP.Type = (Consts.PieceOption)PieceOptionsCb.SelectedIndex;
+            Owner.DisplayDrawings();
+        }
+
+        /// <summary>
+        /// Changes whether the piece is a line or connects back to itself.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void LineCb_CheckedChanged(object sender, EventArgs e)
+        {
+            Owner.WIP.Line = LineCb.Checked;
             Owner.DisplayDrawings();
         }
     }

@@ -23,6 +23,8 @@ namespace Optimator
             = new Dictionary<Piece, Join>();                                  // Attached Piece --> Join
         public Dictionary<Piece, State> PersonalStates { get; set; }                 
             = new Dictionary<Piece, State>();                             // Piece --> Original State Position
+        public Dictionary<Piece, Piece> Decals { get; set; } 
+            = new Dictionary<Piece, Piece>();                                     // Piece --> Decal
         #endregion
 
 

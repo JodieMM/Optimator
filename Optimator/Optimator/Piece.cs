@@ -23,6 +23,7 @@ namespace Optimator
         public ColourState ColourState { get; set; } = new ColourState();
         public decimal OutlineWidth { get; set; }
         public PieceOption Type { get; set; }
+        public bool Line { get; set; } = false;
 
         #endregion
 
@@ -81,7 +82,7 @@ namespace Optimator
             Name = "";
             Version = Properties.Settings.Default.Version;
             OutlineWidth = defaultOutlineWidth;
-            Type = PieceOption.Piece;
+            Type = PieceOption.Moveable;
         }
 
 
@@ -128,16 +129,13 @@ namespace Optimator
         {
             state = state ?? State;
             colours = colours ?? ColourState;
-            switch (Type)
+            if (Line)
             {
-                case PieceOption.Piece:
-                case PieceOption.Flat:
-                    Visuals.DrawPiece(this, g, state, colours);
-                    break;
-                case PieceOption.Line:
-                case PieceOption.FlatLine:
-                    Visuals.DrawOutline(g, GetPoints(state), new Pen(colours.OutlineColour, (float)OutlineWidth), false);
-                    break;
+                Visuals.DrawOutline(g, GetPoints(state), new Pen(colours.OutlineColour, (float)OutlineWidth), false);
+            }
+            else
+            {
+                Visuals.DrawPiece(this, g, state, colours);
             }
         }
 
@@ -153,60 +151,51 @@ namespace Optimator
         /// <returns>List of spots to draw</returns>
         public List<Spot> GetPoints(State state)
         {
+            var points = new List<Spot>();
+
             // No Points / No Size
             if (Data.Count < 1 || state.SM <= 0)
             {
-                return new List<Spot>();
+                return points;
+            }
+            // Constant Piece
+            else if (Type == PieceOption.Constant)
+            {
+                points = Utils.CloneSpotList(Data);
             }
             // Flat Piece
-            else if (Type == PieceOption.Flat || Type == PieceOption.FlatLine)
+            else if (Type == PieceOption.Flat)
             {
-                var flatList = new List<Spot>();
-                if (state.R == 90)
+                // TODO: Flat PieceOption
+                points = Utils.CloneSpotList(Data);
+            }
+            else if (Type == PieceOption.Moveable)
+            {
+                // Get Points
+                var basePoints = Utils.SortCoordinates(GetAnchorStatePoints(state, 0));
+                var rightPoints = Utils.SortCoordinates(GetAnchorStatePoints(state, 1));
+                var downPoints = Utils.SortCoordinates(GetAnchorStatePoints(state, 2));
+                var downRightPoints = Utils.SortCoordinates(GetAnchorStatePoints(state, 3));
+
+                // Find Middle Ground
+                var r = Utils.AngleAnchorFromAngle(state.R);
+                if (r == 0 || r == 2)
                 {
-                    foreach (var spot in Data)
-                    {
-                        flatList.Add(new Spot(spot.XRight, spot.Y, spot.Connector));
-                    }
-                }
-                else if (state.T == 90)
-                {
-                    foreach (var spot in Data)
-                    {
-                        flatList.Add(new Spot(spot.X, spot.YDown, spot.Connector));
-                    }
+                    rightPoints = ResizeToMatch(basePoints, rightPoints, false);
+                    downPoints = ResizeToMatch(basePoints, downPoints);
                 }
                 else
                 {
-                    return Utils.CloneSpotList(Data);
+                    basePoints = ResizeToMatch(rightPoints, basePoints, false);
+                    basePoints = ResizeToMatch(downPoints, basePoints);
                 }
-                return flatList;
-            }
-            
-            // Get Points
-            var basePoints = Utils.SortCoordinates(GetAnchorStatePoints(state, 0));
-            var rightPoints = Utils.SortCoordinates(GetAnchorStatePoints(state, 1));
-            var downPoints = Utils.SortCoordinates(GetAnchorStatePoints(state, 2));
-            var downRightPoints = Utils.SortCoordinates(GetAnchorStatePoints(state, 3));
+                downRightPoints = ResizeToMatch(downPoints, downRightPoints, false);
 
-            // Find Middle Ground
-            var r = Utils.AngleAnchorFromAngle(state.R);
-            if (r == 0 || r == 2)
-            {
-                rightPoints = ResizeToMatch(basePoints, rightPoints, false);
-                downPoints = ResizeToMatch(basePoints, downPoints);                
+                var merge1 = Utils.SortCoordinates(MergeShapes(basePoints, rightPoints, state.R));
+                var merge2 = Utils.SortCoordinates(MergeShapes(downPoints, downRightPoints, state.R));
+                points = Utils.SortCoordinates(MergeShapes(merge1, merge2, state.T, false));
             }
-            else
-            {
-                basePoints = ResizeToMatch(rightPoints, basePoints, false);
-                basePoints = ResizeToMatch(downPoints, basePoints);
-            }
-            downRightPoints = ResizeToMatch(downPoints, downRightPoints, false);
 
-            var merge1 = Utils.SortCoordinates(MergeShapes(basePoints, rightPoints, state.R));
-            var merge2 = Utils.SortCoordinates(MergeShapes(downPoints, downRightPoints, state.R));
-            var points = Utils.SortCoordinates(MergeShapes(merge1, merge2, state.T, false));
-            
             // Recentre, Resize & Spin
             for (var index = 0; index < points.Count; index++)
             {

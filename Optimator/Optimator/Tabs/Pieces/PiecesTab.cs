@@ -671,7 +671,7 @@ namespace Optimator
             {
                 return false;
             }
-            if (WIP.Type == Consts.PieceOption.Piece || WIP.Type == Consts.PieceOption.Line)
+            if (WIP.Type == Consts.PieceOption.Moveable)
             {
                 if (spots.Count == 2)
                 {

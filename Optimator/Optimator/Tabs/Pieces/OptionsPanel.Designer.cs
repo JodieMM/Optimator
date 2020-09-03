@@ -32,6 +32,7 @@
             this.PieceOptionsCb = new System.Windows.Forms.ComboBox();
             this.TableLayoutPnl = new System.Windows.Forms.TableLayoutPanel();
             this.OptionsLbl = new System.Windows.Forms.Label();
+            this.LineCb = new System.Windows.Forms.CheckBox();
             this.TableLayoutPnl.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -42,7 +43,7 @@
             this.TypeLbl.Location = new System.Drawing.Point(2, 0);
             this.TypeLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.TypeLbl.Name = "TypeLbl";
-            this.TypeLbl.Size = new System.Drawing.Size(135, 112);
+            this.TypeLbl.Size = new System.Drawing.Size(224, 59);
             this.TypeLbl.TabIndex = 125;
             this.TypeLbl.Text = "Piece Type";
             // 
@@ -53,9 +54,9 @@
             this.PieceOptionsCb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.PieceOptionsCb.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.PieceOptionsCb.FormattingEnabled = true;
-            this.PieceOptionsCb.Location = new System.Drawing.Point(197, 3);
+            this.PieceOptionsCb.Location = new System.Drawing.Point(313, 3);
             this.PieceOptionsCb.Name = "PieceOptionsCb";
-            this.PieceOptionsCb.Size = new System.Drawing.Size(188, 67);
+            this.PieceOptionsCb.Size = new System.Drawing.Size(304, 67);
             this.PieceOptionsCb.TabIndex = 124;
             this.PieceOptionsCb.SelectedIndexChanged += new System.EventHandler(this.PieceOptionsCb_SelectedIndexChanged);
             // 
@@ -64,14 +65,15 @@
             this.TableLayoutPnl.ColumnCount = 2;
             this.TableLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.TableLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.TableLayoutPnl.Controls.Add(this.TypeLbl, 0, 0);
             this.TableLayoutPnl.Controls.Add(this.PieceOptionsCb, 1, 0);
+            this.TableLayoutPnl.Controls.Add(this.TypeLbl, 0, 0);
+            this.TableLayoutPnl.Controls.Add(this.LineCb, 0, 1);
             this.TableLayoutPnl.Location = new System.Drawing.Point(92, 207);
             this.TableLayoutPnl.Name = "TableLayoutPnl";
             this.TableLayoutPnl.RowCount = 2;
-            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.TableLayoutPnl.Size = new System.Drawing.Size(388, 224);
+            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.TableLayoutPnl.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.TableLayoutPnl.Size = new System.Drawing.Size(620, 482);
             this.TableLayoutPnl.TabIndex = 126;
             // 
             // OptionsLbl
@@ -83,6 +85,19 @@
             this.OptionsLbl.Size = new System.Drawing.Size(230, 72);
             this.OptionsLbl.TabIndex = 127;
             this.OptionsLbl.Text = "Options";
+            // 
+            // LineCb
+            // 
+            this.LineCb.AutoSize = true;
+            this.TableLayoutPnl.SetColumnSpan(this.LineCb, 2);
+            this.LineCb.Font = new System.Drawing.Font("Segoe UI", 16.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LineCb.Location = new System.Drawing.Point(3, 76);
+            this.LineCb.Name = "LineCb";
+            this.LineCb.Size = new System.Drawing.Size(133, 63);
+            this.LineCb.TabIndex = 127;
+            this.LineCb.Text = "Line";
+            this.LineCb.UseVisualStyleBackColor = true;
+            this.LineCb.CheckedChanged += new System.EventHandler(this.LineCb_CheckedChanged);
             // 
             // OptionsPanel
             // 
@@ -104,5 +119,6 @@
         private System.Windows.Forms.ComboBox PieceOptionsCb;
         private System.Windows.Forms.TableLayoutPanel TableLayoutPnl;
         private System.Windows.Forms.Label OptionsLbl;
+        private System.Windows.Forms.CheckBox LineCb;
     }
 }

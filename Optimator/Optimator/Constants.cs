@@ -69,11 +69,9 @@ namespace Optimator
         }
         public enum PieceOption
         {
-            Piece,
+            Moveable,
             Flat,
-            Line,
-            FlatLine,
-            Decal
+            Constant
         }
 
         // Colours
