@@ -546,7 +546,7 @@ namespace Optimator
         /// <returns>Seperate object with the same contents</returns>
         public static Spot CloneSpot(Spot spot)
         {
-            return new Spot(spot.X, spot.Y, spot.XRight, spot.YDown, spot.Connector);
+            return new Spot(spot.X, spot.Y, spot.XRight, spot.YDown, spot.Connector, spot.Tension);
         }
 
         /// <summary>
@@ -582,7 +582,7 @@ namespace Optimator
         /// <returns>A separate ColourState</returns>
         public static ColourState CloneColourState(ColourState state)
         {
-            return new ColourState(state.ColourType, state.FillColour, state.OutlineColour);
+            return new ColourState(state.Type, state.Fill, state.Outline);
         }
 
         /// <summary>

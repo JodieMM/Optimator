@@ -10,9 +10,9 @@ namespace Optimator
     /// </summary>
     public class ColourState
     {
-        public FillOption ColourType { get; set; }                     // Solid/Gradient colour and direction
-        public Color[] FillColour { get; set; }                    // Multiple colours for gradients
-        public Color OutlineColour { get; set; }
+        public FillOption Type { get; set; }                     // Solid/Gradient colour and direction
+        public Color[] Fill { get; set; }                    // Multiple colours for gradients
+        public Color Outline { get; set; }
 
 
         /// <summary>
@@ -20,9 +20,9 @@ namespace Optimator
         /// </summary>
         public ColourState()
         {
-            ColourType = FillOption.Fill;
-            FillColour = new Color[] { defaultFill };
-            OutlineColour = defaultOutline;
+            Type = FillOption.Fill;
+            Fill = new Color[] { defaultFill };
+            Outline = defaultOutline;
         }
 
         /// <summary>
@@ -33,9 +33,9 @@ namespace Optimator
         /// <param name="OC">Outline Colour</param>
         public ColourState(FillOption CT, Color[] FC, Color OC)
         {
-            ColourType = CT;
-            FillColour = FC;
-            OutlineColour = OC;
+            Type = CT;
+            Fill = FC;
+            Outline = OC;
         }
 
         /// <summary>
@@ -47,9 +47,9 @@ namespace Optimator
         /// <param name="FC">New fill colour</param>
         public ColourState(ColourState basis, Color OC, Color[] FC = null)
         {
-            OutlineColour = OC;
-            FillColour = FC ?? basis.FillColour;
-            ColourType = FC == null ? basis.ColourType : FillOption.Fill; 
+            Outline = OC;
+            Fill = FC ?? basis.Fill;
+            Type = FC == null ? basis.Type : FillOption.Fill; 
             // GRADIENT: Need to modify colour type to match fill colour amount
         }
 
@@ -63,12 +63,39 @@ namespace Optimator
         /// <returns>ColourState data</returns>
         public string GetData()
         {
-            var data = ColourType.ToString("d") + SemiS + Utils.ColorToString(OutlineColour) + SemiS;
-            for (int index = 0; index < FillColour.Length - 1; index++)
+            var data = Type.ToString("d") + SemiS + Utils.ColorToString(Outline) + SemiS;
+            for (int index = 0; index < Fill.Length - 1; index++)
             {
-                data += Utils.ColorToString(FillColour[index]) + ColonS;
+                data += Utils.ColorToString(Fill[index]) + ColonS;
             }
-            return data + Utils.ColorToString(FillColour[FillColour.Length - 1]);
+            return data + Utils.ColorToString(Fill[Fill.Length - 1]);
+        }
+
+
+
+        // ----- GENERAL FUNCTIONS -----
+
+        /// <summary>
+        /// Checks if the shape is visible and should be drawn.
+        /// </summary>
+        /// <returns>True if visible</returns>
+        public bool IsVisible()
+        {
+            if (Type == FillOption.None)
+            {
+                return false;
+            }
+            else
+            {
+                foreach (var col in Fill)
+                {
+                    if (col.A != 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
     }
 }

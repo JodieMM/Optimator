@@ -21,8 +21,8 @@ namespace Optimator.Tabs.Pieces
         {
             InitializeComponent();
             Owner = owner;
-            FillBox.BackColor = Owner.WIP.ColourState.FillColour[0];
-            OutlineBox.BackColor = Owner.WIP.ColourState.OutlineColour;
+            FillBox.BackColor = Owner.WIP.ColourState.Fill[0];
+            OutlineBox.BackColor = Owner.WIP.ColourState.Outline;
         }
 
 
@@ -62,7 +62,7 @@ namespace Optimator.Tabs.Pieces
             if (MyDialog.ShowDialog() == DialogResult.OK)
             {
                 FillBox.BackColor = MyDialog.Color;
-                Owner.WIP.ColourState.FillColour = new Color[] { MyDialog.Color };
+                Owner.WIP.ColourState.Fill = new Color[] { MyDialog.Color };
                 Owner.DisplayDrawings();
             }
         }
@@ -82,7 +82,7 @@ namespace Optimator.Tabs.Pieces
             if (MyDialog.ShowDialog() == DialogResult.OK)
             {
                 OutlineBox.BackColor = MyDialog.Color;
-                Owner.WIP.ColourState.OutlineColour = MyDialog.Color;
+                Owner.WIP.ColourState.Outline = MyDialog.Color;
                 Owner.DisplayDrawings();
             }
         }

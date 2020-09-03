@@ -18,6 +18,7 @@ namespace Optimator
         public float YDown { get; set; }
 
         public SpotOption Connector { get; set; }
+        public float Tension { get; set; } = 0.5F;
         #endregion
 
 
@@ -29,15 +30,16 @@ namespace Optimator
         /// <param name="xr">Rotated X position</param>
         /// <param name="yd">Turned Y position</param>
         /// <param name="connect">Connector from this spot to the next</param>
-        /// <param name="solid">Flexibility of the spot</param>
+        /// <param name="tension">Tension of curve</param>
         /// /// <param name="drawn">DrawLevel integer</param>
-        public Spot(float x, float y, float? xr = null, float? yd = null, SpotOption? connect = null)
+        public Spot(float x, float y, float? xr = null, float? yd = null, SpotOption? connect = null, float? tension = null)
         {
             X = x;
             Y = y;
             XRight = xr ?? x;
             YDown = yd ?? y;
-            Connector = connect ?? SpotOption.Corner;
+            Connector = connect ?? Connector;
+            Tension = tension ?? Tension;
         }
 
         /// <summary>
@@ -46,12 +48,13 @@ namespace Optimator
         /// <param name="x">X position</param>
         /// <param name="y">Y position</param>
         /// <param name="connect">Connector from this spot to the next</param>
-        /// <param name="solid">Flexibility of the spot</param>
-        public Spot(float x, float y, SpotOption connect)
+        /// <param name="tension">Tension of curve</param>
+        public Spot(float x, float y, SpotOption connect, float tension = 0.5F)
         {
             X = x;
             Y = y;
             Connector = connect;
+            Tension = tension;
         }
 
 
@@ -65,7 +68,7 @@ namespace Optimator
         public override string ToString()
         {
             return X + ColonS + Y + ColonS + XRight + ColonS + YDown + SemiS +
-                Connector.ToString("d");
+                Connector.ToString("d") + ColonS + Tension;
         }
 
         /// <summary>

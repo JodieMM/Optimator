@@ -46,16 +46,16 @@ namespace Optimator
             // Colour State
             ColourState = new ColourState
             {
-                ColourType = (FillOption)int.Parse(angleData[0]),
-                OutlineColour = ColourFromString(angleData[1])
+                Type = (FillOption)int.Parse(angleData[0]),
+                Outline = ColourFromString(angleData[1])
             };
 
             // Fill Colour Array
             var colours = angleData[2].Split(Colon);
-            ColourState.FillColour = new Color[colours.Length];
+            ColourState.Fill = new Color[colours.Length];
             for (var index = 0; index < colours.Length; index++)
             {
-                ColourState.FillColour[index] = ColourFromString(colours[index]);
+                ColourState.Fill[index] = ColourFromString(colours[index]);
             }
 
             // Outline Width
@@ -69,8 +69,10 @@ namespace Optimator
             {
                 var spotData = data[index].Split(Semi);
                 var coords = ConvertStringArrayToFloats(spotData[0].Split(Colon));
+                var connectors = spotData[1].Split(Colon);
 
-                Data.Add(new Spot(coords[0], coords[1], coords[2], coords[3], (SpotOption)int.Parse(spotData[1])));
+                Data.Add(new Spot(coords[0], coords[1], coords[2], coords[3],
+                    (SpotOption)int.Parse(connectors[0]), float.Parse(connectors[1])));
             }
         }
 
@@ -132,7 +134,7 @@ namespace Optimator
             colours = colours ?? ColourState;
             if (Line)
             {
-                Visuals.DrawOutline(g, GetPoints(state), new Pen(colours.OutlineColour, (float)OutlineWidth), false);
+                Visuals.DrawOutline(g, GetPoints(state), new Pen(colours.Outline, (float)OutlineWidth), false);
             }
             else
             {

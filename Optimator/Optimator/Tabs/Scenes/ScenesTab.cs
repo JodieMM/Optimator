@@ -450,7 +450,7 @@ namespace Optimator.Tabs.Scenes
             {
                 subSelected = select as Piece;
             }
-            select.ToPiece().ColourState.OutlineColour = (select is Piece) ? Color.Red : Color.Purple;
+            select.ToPiece().ColourState.Outline = (select is Piece) ? Color.Red : Color.Purple;
             if (Panel.Controls.Count > 0)
             {
                 if (Panel.Controls[0] is PositionsPanel)
@@ -474,10 +474,10 @@ namespace Optimator.Tabs.Scenes
             {
                 if (subSelected != null)
                 {
-                    subSelected.ColourState.OutlineColour = WIP.OriginalColours[selected.ToPiece()].OutlineColour;
+                    subSelected.ColourState.Outline = WIP.OriginalColours[selected.ToPiece()].Outline;
                     subSelected = null;
                 }
-                selected.ToPiece().ColourState.OutlineColour = WIP.OriginalColours[selected.ToPiece()].OutlineColour;
+                selected.ToPiece().ColourState.Outline = WIP.OriginalColours[selected.ToPiece()].Outline;
                 selected = null;
                 if (Panel.Controls.Count > 0 && Panel.Controls[0] is PositionsPanel)
                 {

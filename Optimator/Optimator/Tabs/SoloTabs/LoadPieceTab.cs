@@ -221,11 +221,11 @@ namespace Optimator.Tabs.SoloTabs
 
             if (FillColourBtn.BackColor == selected || AllBtn.BackColor == selected)
             {
-                from.WIP.ColourState.FillColour = loaded.ToPiece().ColourState.FillColour;
+                from.WIP.ColourState.Fill = loaded.ToPiece().ColourState.Fill;
             }
             if (OutlineColourBtn.BackColor == selected || AllBtn.BackColor == selected)
             {
-                from.WIP.ColourState.OutlineColour = loaded.ToPiece().ColourState.OutlineColour;
+                from.WIP.ColourState.Outline = loaded.ToPiece().ColourState.Outline;
             }
             if (OutlineWidthBtn.BackColor == selected || AllBtn.BackColor == selected)
             {

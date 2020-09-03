@@ -65,15 +65,15 @@ namespace Optimator
             {
                 colourState = piece.ColourState;
             }
-            var pen = new Pen(colourState.OutlineColour, (float)piece.OutlineWidth);
-            var fill = new SolidBrush(colourState.FillColour[0]); // GRADIENT
+            var pen = new Pen(colourState.Outline, (float)piece.OutlineWidth);
+            var fill = new SolidBrush(colourState.Fill[0]); // GRADIENT
 
             // Draw
-            if (currentPoints.Count > 1)
+            if (currentPoints.Count > 1 && piece.ColourState.IsVisible())
             {
                 DrawShape(g, currentPoints, fill);
             }
-            if (piece.OutlineWidth > 0)
+            if (piece.OutlineWidth > 0 && piece.ColourState.Outline.A != 0)
             {
                 DrawOutline(g, currentPoints, pen);
             }
@@ -122,7 +122,7 @@ namespace Optimator
                         {
                             curvePoints[currentPoint] = Utils.ConvertSpotToPoint(currentPoints[currentPoint]);
                         }
-                        path.AddClosedCurve(curvePoints);
+                        path.AddClosedCurve(curvePoints, currentPoints[0].Tension);
                         index = currentPoints.Count;
                     }
                     // Else skip- will be drawn in a curve loop
@@ -138,12 +138,25 @@ namespace Optimator
                         newIndex = Utils.NextIndex(currentPoints, newIndex);
                         curvePoints.Add(Utils.ConvertSpotToPoint(currentPoints[newIndex]));
                     }
-                    index = newIndex <= index ? currentPoints.Count : newIndex - 1;
-                    path.AddCurve(Utils.ConvertPointListToArray(curvePoints));
+                    path.AddCurve(Utils.ConvertPointListToArray(curvePoints), currentPoints[nextIndex].Tension);
+                    index = newIndex <= index ? currentPoints.Count : newIndex - 1;                    
                 }
             }
             path.CloseFigure();
             g.FillPath(fill, path);
+        }
+
+        /// <summary>
+        /// Draws a shape within the bounds of another shape.
+        /// </summary>
+        /// <param name="g">Graphics to draw on</param>
+        /// <param name="currentPoints">Shape outline</param>
+        /// <param name="fill">Brush to colour the section</param>
+        /// <param name="onto">Piece to use for bounds</param>
+        public static void DrawDecal(Graphics g, List<Spot> currentPoints, Brush fill, Piece onto)
+        {
+            var bounds = onto.LineBounds();
+            // TODO: Decals
         }
 
         /// <summary>
