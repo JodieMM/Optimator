@@ -55,10 +55,9 @@ namespace Optimator
         public const decimal defaultOutlineWidth = 2;
 
         // Piece Options
-        public enum ConnectorOption
+        public enum SpotOption
         {
-            None,
-            Line,            
+            Corner,            
             Curve
         }
         public enum FillOption

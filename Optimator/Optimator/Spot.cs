@@ -17,7 +17,7 @@ namespace Optimator
         public float Y { get; set; }
         public float YDown { get; set; }
 
-        public ConnectorOption Connector { get; set; }
+        public SpotOption Connector { get; set; }
         #endregion
 
 
@@ -31,13 +31,13 @@ namespace Optimator
         /// <param name="connect">Connector from this spot to the next</param>
         /// <param name="solid">Flexibility of the spot</param>
         /// /// <param name="drawn">DrawLevel integer</param>
-        public Spot(float x, float y, float? xr = null, float? yd = null, ConnectorOption? connect = null)
+        public Spot(float x, float y, float? xr = null, float? yd = null, SpotOption? connect = null)
         {
             X = x;
             Y = y;
             XRight = xr ?? x;
             YDown = yd ?? y;
-            Connector = connect ?? ConnectorOption.Line;
+            Connector = connect ?? SpotOption.Corner;
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace Optimator
         /// <param name="y">Y position</param>
         /// <param name="connect">Connector from this spot to the next</param>
         /// <param name="solid">Flexibility of the spot</param>
-        public Spot(float x, float y, ConnectorOption connect)
+        public Spot(float x, float y, SpotOption connect)
         {
             X = x;
             Y = y;

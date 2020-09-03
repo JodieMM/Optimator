@@ -69,7 +69,7 @@ namespace Optimator
                 var spotData = data[index].Split(Semi);
                 var coords = Utils.ConvertStringArrayToFloats(spotData[0].Split(Colon));
 
-                Data.Add(new Spot(coords[0], coords[1], coords[2], coords[3], (ConnectorOption)int.Parse(spotData[1])));
+                Data.Add(new Spot(coords[0], coords[1], coords[2], coords[3], (SpotOption)int.Parse(spotData[1])));
             }
         }
 
@@ -757,7 +757,7 @@ namespace Optimator
         public float[] FindSymmetricalOppositeCoord(Spot from, Spot to, float value, int xy)
         {
             float gradient = -1;
-            if (from.Connector == ConnectorOption.Line|| from.Connector == ConnectorOption.None)
+            if (from.Connector == SpotOption.Corner)
             {
                 if (from.X == to.X)
                 {
@@ -806,7 +806,7 @@ namespace Optimator
         /// <param name="to">The end point</param>
         /// <param name="join">How the two points are connected</param>
         /// <returns>A list of float[ x, (int)y ] with the point coords</returns>
-        private List<float[]> LineCoords(Spot from, Spot to, ConnectorOption join)
+        private List<float[]> LineCoords(Spot from, Spot to, SpotOption join)
         {
             var line = new List<float[]> { new float[] { from.X, from.Y } };
             var fromUpper = from.Y >= to.Y;
@@ -814,7 +814,7 @@ namespace Optimator
             var upper = fromUpper ? from : to;
 
             // Solid Line
-            if (join == ConnectorOption.Line || join == ConnectorOption.None)
+            if (join == SpotOption.Corner)
             {
                 var section = new List<float[]>();
 
@@ -845,7 +845,7 @@ namespace Optimator
                 line.AddRange(section);
             }
             // CURVE
-            else if (join == ConnectorOption.Curve)
+            else if (join == SpotOption.Curve)
             {
             }
             return line;

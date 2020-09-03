@@ -93,6 +93,7 @@ namespace Optimator
                 var nextIndex = Utils.NextIndex(currentPoints, index);
                 path.AddLine(new Point(Convert.ToInt32(currentPoints[index].X), Convert.ToInt32(currentPoints[index].Y)),
                     new Point(Convert.ToInt32(currentPoints[nextIndex].X), Convert.ToInt32(currentPoints[nextIndex].Y)));
+                //CURVE
             }
             g.FillPath(fill, path);
         }
@@ -108,27 +109,59 @@ namespace Optimator
             var maxIndex = connected ? currentPoints.Count : currentPoints.Count - 1;
             for (var index = 0; index < maxIndex; index++)
             {
-                if (currentPoints[index].Connector != Consts.ConnectorOption.None)
+                var nextIndex = Utils.NextIndex(currentPoints, index);
+                var start = new Point(Convert.ToInt32(currentPoints[index].X), Convert.ToInt32(currentPoints[index].Y));
+                var end = new Point(Convert.ToInt32(currentPoints[nextIndex].X), Convert.ToInt32(currentPoints[nextIndex].Y));
+
+                // Connected by Line
+                if (currentPoints[index].Connector == Consts.SpotOption.Corner && 
+                    currentPoints[nextIndex].Connector == Consts.SpotOption.Corner)
                 {
-                    Point start; Point end;
-                    var nextIndex = Utils.NextIndex(currentPoints, index);
-                    start = new Point(Convert.ToInt32(currentPoints[index].X), Convert.ToInt32(currentPoints[index].Y));
-                    end = new Point(Convert.ToInt32(currentPoints[nextIndex].X), Convert.ToInt32(currentPoints[nextIndex].Y));
-
-                    // Connected by Line
-                    if (currentPoints[index].Connector == Consts.ConnectorOption.Line)
-                    {
-                        g.DrawLine(pen, start, end);
-                    }
-                    // Connected by Curve
-                    else if (currentPoints[index].Connector == Consts.ConnectorOption.Curve)
-                    {
-                        // CURVE
-                    }
-
-                    // Smooth Corner
-                    g.FillEllipse(new SolidBrush(pen.Color), end.X - (pen.Width / 2), end.Y - (pen.Width / 2), pen.Width, pen.Width);
+                    g.DrawLine(pen, start, end);
                 }
+                // Starts with Curve
+                // Only occurs when the first connector is curve (skip it and wait until end) 
+                // Or all is curve (closed curve function)
+                else if (currentPoints[index].Connector == Consts.SpotOption.Curve)
+                {
+                    var count = 0;
+                    var foundNonCurve = false;
+                    while (count < currentPoints.Count && !foundNonCurve)
+                    {
+                        if (currentPoints[count].Connector != Consts.SpotOption.Curve)
+                        {
+                            foundNonCurve = true;
+                        }
+                        count++;
+                    }
+                    if (!foundNonCurve)
+                    {
+                        var curvePoints = new Point[currentPoints.Count];
+                        for (int currentPoint = 0; currentPoint < currentPoints.Count; currentPoint++)
+                        {
+                            curvePoints[currentPoint] = new Point(Convert.ToInt32(currentPoints[currentPoint].X),
+                                Convert.ToInt32(currentPoints[currentPoint].Y));
+                        }
+                        g.DrawClosedCurve(pen, curvePoints);
+                    }
+                }
+                // Start of Curve
+                else if (currentPoints[index].Connector == Consts.SpotOption.Corner &&
+                    currentPoints[nextIndex].Connector == Consts.SpotOption.Curve)
+                {
+                    var curvePoints = new List<Point>() { start, end };
+                    var newIndex = nextIndex;
+                    while (currentPoints[newIndex].Connector == Consts.SpotOption.Curve)
+                    {
+                        newIndex = Utils.NextIndex(currentPoints, newIndex);
+                        curvePoints.Add(new Point(Convert.ToInt32(currentPoints[newIndex].X), Convert.ToInt32(currentPoints[newIndex].Y)));
+                    }
+                    index = newIndex <= index ? maxIndex : newIndex - 1;
+                    g.DrawCurve(pen, Utils.ConvertPointListToArray(curvePoints));
+                }
+
+                // Smooth Corner
+                g.FillEllipse(new SolidBrush(pen.Color), end.X - (pen.Width / 2), end.Y - (pen.Width / 2), pen.Width, pen.Width);
             }
             // Smooth Start for Lines
             if (!connected)

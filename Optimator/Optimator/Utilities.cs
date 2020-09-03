@@ -509,6 +509,21 @@ namespace Optimator
             }
         }
 
+        /// <summary>
+        /// Converts a list of points into an array.
+        /// </summary>
+        /// <param name="points">Points to convert</param>
+        /// <returns>Array of points</returns>
+        public static Point[] ConvertPointListToArray(List<Point> points)
+        {
+            var array = new Point[points.Count];
+            for (int index = 0; index < points.Count; index++)
+            {
+                array[index] = points[index];
+            }
+            return array;
+        }
+
 
 
         // ----- CLONE FUNCTIONS -----
