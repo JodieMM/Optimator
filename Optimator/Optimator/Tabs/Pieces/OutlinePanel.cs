@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace Optimator.Tabs.Pieces
 {
@@ -23,7 +24,7 @@ namespace Optimator.Tabs.Pieces
             ConnectorOptions.Items.AddRange(Enum.GetNames(typeof(Consts.SpotOption)));
             if (Owner.selectedSpot != null)
             {
-                UpdateValues(Owner.WIP.OutlineWidth, Owner.selectedSpot.Connector);
+                UpdateValues(Owner.WIP.OutlineWidth, Owner.selectedSpot.Connector, (decimal)Owner.selectedSpot.Tension);
             }
             else
             {
@@ -61,6 +62,7 @@ namespace Optimator.Tabs.Pieces
         public void Enable(bool enable = true)
         {
             ConnectorOptions.Enabled = enable;
+            TensionUpDown.Enabled = enable;
         }
 
         /// <summary>
@@ -68,11 +70,17 @@ namespace Optimator.Tabs.Pieces
         /// </summary>
         /// <param name="outlineWidth">New outline width</param>
         /// <param name="connector">New connector option</param>
-        public void UpdateValues(decimal outlineWidth, Consts.SpotOption connector)
+        /// <param name="tension">Curve tension</param>
+        public void UpdateValues(decimal outlineWidth, Consts.SpotOption connector, decimal tension)
         {
             Enable();
             OutlineWidthBox.Value = outlineWidth;
             ConnectorOptions.SelectedIndex = (int)connector;
+            if (connector == Consts.SpotOption.Curve)
+            {
+                TensionLbl.Visible = TensionUpDown.Visible = ConnectorOptions.SelectedIndex == (int)Consts.SpotOption.Curve;
+                TensionUpDown.Value = tension;
+            }
         }
 
         /// <summary>
@@ -96,6 +104,43 @@ namespace Optimator.Tabs.Pieces
             if (Owner.selectedSpot != null)
             {
                 Owner.selectedSpot.Connector = (Consts.SpotOption)ConnectorOptions.SelectedIndex;
+                Owner.DisplayDrawings();
+                TensionLbl.Visible = TensionUpDown.Visible = ConnectorOptions.SelectedIndex == (int)Consts.SpotOption.Curve;
+                TensionUpDown.Value = (decimal)Owner.selectedSpot.Tension;
+            }
+        }
+
+        /// <summary>
+        /// Changes the tension of the selected curve.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TensionUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            if (Owner.selectedSpot != null && Owner.selectedSpot.Connector == Consts.SpotOption.Curve)
+            {
+                Owner.selectedSpot.Tension = (float)TensionUpDown.Value;
+
+                // Also Convert Previous/Future Curves
+                var spotIndex = Owner.WIP.Data.IndexOf(Owner.selectedSpot);
+                if (spotIndex != -1)
+                {
+                    // Previous
+                    var modIndex = Utils.NextIndex(Owner.WIP.Data, spotIndex, false);
+                    while (Owner.WIP.Data[modIndex].Connector == Consts.SpotOption.Curve && modIndex != spotIndex)
+                    {
+                        Owner.WIP.Data[modIndex].Tension = (float)TensionUpDown.Value;
+                        modIndex = Utils.NextIndex(Owner.WIP.Data, modIndex, false);
+                    }
+                    // Future
+                    modIndex = Utils.NextIndex(Owner.WIP.Data, spotIndex);
+                    while (Owner.WIP.Data[modIndex].Connector == Consts.SpotOption.Curve && modIndex != spotIndex)
+                    {
+                        Owner.WIP.Data[modIndex].Tension = (float)TensionUpDown.Value;
+                        modIndex = Utils.NextIndex(Owner.WIP.Data, modIndex);
+                    }
+                }
+
                 Owner.DisplayDrawings();
             }
         }

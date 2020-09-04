@@ -49,7 +49,7 @@ namespace Optimator
         /// <param name="y">Y position</param>
         /// <param name="connect">Connector from this spot to the next</param>
         /// <param name="tension">Tension of curve</param>
-        public Spot(float x, float y, SpotOption connect, float tension = 0.5F)
+        public Spot(float x, float y, SpotOption connect, float tension)
         {
             X = x;
             Y = y;
@@ -177,7 +177,7 @@ namespace Optimator
             float[] coord = new float[2];
             coord[0] = r == 0 ? X : r == 1 ? XRight : r == 2 ? -X : -XRight;
             coord[1] = t == 0 ? Y : t == 1 ? YDown : t == 2 ? -Y : -YDown;
-            return new Spot(coord[0], coord[1], Connector);
+            return new Spot(coord[0], coord[1], Connector, Tension);
         }
     }
 }

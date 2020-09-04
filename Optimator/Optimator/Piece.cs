@@ -549,7 +549,7 @@ namespace Optimator
                     var changed = FindMiddleSpot(shape1[index1].GetCoord(altz), shape2[match].GetCoord(altz), angle, swapped);
                     // TODO: Connector/Solid
                     var newSpot = new Spot(xChange ? changed : unchanged, xChange ? unchanged : changed, 
-                        shape1[index1].Connector);
+                        shape1[index1].Connector, shape1[index1].Tension);
                     merged.Add(newSpot);
                     index1++;
                     i1 += swapped ? 0 : 1;
@@ -653,7 +653,7 @@ namespace Optimator
                     var changed = FindMiddleSpot(shape1[index1].GetCoord(altz), match[altz], angle, swapped);
                     // TODO: Connector
                     var newSpot = new Spot(xChange ? changed : unchanged, xChange ? unchanged : changed, 
-                        shape1[index1].Connector);
+                        shape1[index1].Connector, shape1[index1].Tension);
                     merged.Add(newSpot);
                     index1++;
                     i1 += swapped ? 0 : 1;

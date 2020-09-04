@@ -201,7 +201,7 @@ namespace Optimator
                         {
                             curvePoints[currentPoint] = Utils.ConvertSpotToPoint(currentPoints[currentPoint]);
                         }
-                        g.DrawClosedCurve(pen, curvePoints);
+                        g.DrawClosedCurve(pen, curvePoints, currentPoints[0].Tension, FillMode.Alternate);
                         index = maxIndex;
                     }
                     // Else skip- will be drawn in a curve loop
@@ -218,7 +218,7 @@ namespace Optimator
                         curvePoints.Add(Utils.ConvertSpotToPoint(currentPoints[newIndex]));
                     }
                     index = newIndex <= index ? maxIndex : newIndex - 1;
-                    g.DrawCurve(pen, Utils.ConvertPointListToArray(curvePoints));
+                    g.DrawCurve(pen, Utils.ConvertPointListToArray(curvePoints), currentPoints[nextIndex].Tension);
                 }
 
                 // Smooth Corner
