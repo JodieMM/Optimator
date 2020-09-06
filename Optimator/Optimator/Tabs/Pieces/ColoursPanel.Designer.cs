@@ -28,28 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.OutlineBox = new System.Windows.Forms.PictureBox();
             this.FillBox = new System.Windows.Forms.PictureBox();
-            this.OutlineLbl = new System.Windows.Forms.Label();
             this.FillLbl = new System.Windows.Forms.Label();
             this.ColoursLbl = new System.Windows.Forms.Label();
             this.TableLayoutPnl = new System.Windows.Forms.TableLayoutPanel();
-            ((System.ComponentModel.ISupportInitialize)(this.OutlineBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.FillBox)).BeginInit();
             this.TableLayoutPnl.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // OutlineBox
-            // 
-            this.OutlineBox.BackColor = System.Drawing.Color.White;
-            this.OutlineBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.OutlineBox.Dock = System.Windows.Forms.DockStyle.Top;
-            this.OutlineBox.Location = new System.Drawing.Point(236, 178);
-            this.OutlineBox.Name = "OutlineBox";
-            this.OutlineBox.Size = new System.Drawing.Size(227, 169);
-            this.OutlineBox.TabIndex = 119;
-            this.OutlineBox.TabStop = false;
-            this.OutlineBox.Click += new System.EventHandler(this.OutlineBox_Click);
             // 
             // FillBox
             // 
@@ -62,17 +47,6 @@
             this.FillBox.TabIndex = 118;
             this.FillBox.TabStop = false;
             this.FillBox.Click += new System.EventHandler(this.FillBox_Click);
-            // 
-            // OutlineLbl
-            // 
-            this.OutlineLbl.AutoSize = true;
-            this.OutlineLbl.Font = new System.Drawing.Font("Segoe UI", 16F);
-            this.OutlineLbl.Location = new System.Drawing.Point(2, 175);
-            this.OutlineLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.OutlineLbl.Name = "OutlineLbl";
-            this.OutlineLbl.Size = new System.Drawing.Size(162, 59);
-            this.OutlineLbl.TabIndex = 117;
-            this.OutlineLbl.Text = "Outline";
             // 
             // FillLbl
             // 
@@ -102,8 +76,6 @@
             this.TableLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.TableLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.TableLayoutPnl.Controls.Add(this.FillLbl, 0, 0);
-            this.TableLayoutPnl.Controls.Add(this.OutlineBox, 1, 1);
-            this.TableLayoutPnl.Controls.Add(this.OutlineLbl, 0, 1);
             this.TableLayoutPnl.Controls.Add(this.FillBox, 1, 0);
             this.TableLayoutPnl.Location = new System.Drawing.Point(42, 163);
             this.TableLayoutPnl.Name = "TableLayoutPnl";
@@ -121,7 +93,6 @@
             this.Controls.Add(this.ColoursLbl);
             this.Name = "ColoursPanel";
             this.Size = new System.Drawing.Size(742, 1018);
-            ((System.ComponentModel.ISupportInitialize)(this.OutlineBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.FillBox)).EndInit();
             this.TableLayoutPnl.ResumeLayout(false);
             this.TableLayoutPnl.PerformLayout();
@@ -131,10 +102,7 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.PictureBox OutlineBox;
         private System.Windows.Forms.PictureBox FillBox;
-        private System.Windows.Forms.Label OutlineLbl;
         private System.Windows.Forms.Label FillLbl;
         private System.Windows.Forms.Label ColoursLbl;
         private System.Windows.Forms.TableLayoutPanel TableLayoutPnl;

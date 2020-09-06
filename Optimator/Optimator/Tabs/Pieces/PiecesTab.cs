@@ -333,7 +333,8 @@ namespace Optimator
                     {
                         if (cntl is OutlinePanel)
                         {
-                            (cntl as OutlinePanel).UpdateValues(WIP.OutlineWidth, selectedSpot.Connector, (decimal)selectedSpot.Tension);                            
+                            (cntl as OutlinePanel).UpdateValues(selectedSpot.Connector, (decimal)selectedSpot.Tension, selectedSpot.Line.Width,
+                                selectedSpot.Line.Colour, selectedSpot.Line.Visible);                            
                         }
                     }
                 }

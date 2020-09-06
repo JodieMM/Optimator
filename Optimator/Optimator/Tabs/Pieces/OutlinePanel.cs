@@ -24,7 +24,8 @@ namespace Optimator.Tabs.Pieces
             ConnectorOptions.Items.AddRange(Enum.GetNames(typeof(Consts.SpotOption)));
             if (Owner.selectedSpot != null)
             {
-                UpdateValues(Owner.WIP.OutlineWidth, Owner.selectedSpot.Connector, (decimal)Owner.selectedSpot.Tension);
+                var spot = Owner.selectedSpot;
+                UpdateValues(spot.Connector, (decimal)spot.Tension, spot.Line.Width, spot.Line.Colour, spot.Line.Visible);
             }
             else
             {
@@ -42,7 +43,7 @@ namespace Optimator.Tabs.Pieces
         public override void Resize()
         {
             var widthPercent = 0.05F;
-            var heightPercent = 0.2F;
+            var heightPercent = 0.7F;
 
             var smallWidth = (int)(Width * widthPercent);
             var bigHeight = (int)(Height * heightPercent);
@@ -63,6 +64,9 @@ namespace Optimator.Tabs.Pieces
         {
             ConnectorOptions.Enabled = enable;
             TensionUpDown.Enabled = enable;
+            VisibleCb.Enabled = enable;
+            WidthLbl.Text = enable ? "Width" : "Width (All)";
+            OutlineColourLbl.Text = enable ? "Colour" : "Colour (All)";
         }
 
         /// <summary>
@@ -71,28 +75,22 @@ namespace Optimator.Tabs.Pieces
         /// <param name="outlineWidth">New outline width</param>
         /// <param name="connector">New connector option</param>
         /// <param name="tension">Curve tension</param>
-        public void UpdateValues(decimal outlineWidth, Consts.SpotOption connector, decimal tension)
+        public void UpdateValues(Consts.SpotOption connector, decimal tension, float[] outlineWidth, Color[] outlineColour, bool visible)
         {
             Enable();
-            OutlineWidthBox.Value = outlineWidth;
+
             ConnectorOptions.SelectedIndex = (int)connector;
-            if (connector == Consts.SpotOption.Curve)
-            {
-                TensionLbl.Visible = TensionUpDown.Visible = ConnectorOptions.SelectedIndex == (int)Consts.SpotOption.Curve;
-                TensionUpDown.Value = tension;
-            }
+            TensionLbl.Visible = TensionUpDown.Visible = ConnectorOptions.SelectedIndex == (int)Consts.SpotOption.Curve;
+            TensionUpDown.Value = tension;
+
+            WidthUpDown.Value = (decimal)outlineWidth[0];
+            ColourBox.BackColor = outlineColour[0];
+            VisibleCb.Checked = visible;
         }
 
-        /// <summary>
-        /// Changes the outline width of the piece.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OutlineWidthBox_ValueChanged(object sender, EventArgs e)
-        {
-            Owner.WIP.OutlineWidth = OutlineWidthBox.Value;
-            Owner.DisplayDrawings();
-        }
+
+
+        // ----- POINT FUNCTIONS -----
 
         /// <summary>
         /// Changes the join at the selected point.
@@ -141,6 +139,75 @@ namespace Optimator.Tabs.Pieces
                     }
                 }
 
+                Owner.DisplayDrawings();
+            }
+        }
+
+
+
+        // ----- LINE FUNCTIONS -----
+
+        /// <summary>
+        /// Changes the outline width of the piece.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void WidthUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            if (Owner.selectedSpot != null)
+            {
+                Owner.selectedSpot.Line.Width = new float[] { (float)WidthUpDown.Value };
+            }
+            else
+            {
+                foreach (var spot in Owner.WIP.Data)
+                {
+                    spot.Line.Width = new float[] { (float)WidthUpDown.Value };
+                }
+            }
+            Owner.DisplayDrawings();
+        }
+
+        /// <summary>
+        /// Changes the outline colour of the piece.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ColourBox_Click(object sender, EventArgs e)
+        {
+            var MyDialog = new ColorDialog
+            {
+                Color = ColourBox.BackColor,
+                FullOpen = true
+            };
+            if (MyDialog.ShowDialog() == DialogResult.OK)
+            {
+                ColourBox.BackColor = MyDialog.Color;
+                if (Owner.selectedSpot != null)
+                {
+                    Owner.selectedSpot.Line.Colour = new Color[] { MyDialog.Color };
+                }
+                else
+                {
+                    foreach (var spot in Owner.WIP.Data)
+                    {
+                        spot.Line.Colour = new Color[] { MyDialog.Color };
+                    }
+                }
+                Owner.DisplayDrawings();
+            }
+        }
+
+        /// <summary>
+        /// Changes whether the point is visible.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void VisibleCb_CheckedChanged(object sender, EventArgs e)
+        {
+            if (Owner.selectedSpot != null)
+            {
+                Owner.selectedSpot.Line.Visible = VisibleCb.Checked;
                 Owner.DisplayDrawings();
             }
         }

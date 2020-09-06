@@ -19,11 +19,12 @@ namespace Optimator
 
         public SpotOption Connector { get; set; }
         public float Tension { get; set; } = 0.5F;
+        public ConnectorDet Line { get; set; } = new ConnectorDet();
         #endregion
 
 
         /// <summary>
-        /// Constructor for a spot.
+        /// Constructor for a new spot.
         /// </summary>
         /// <param name="x">X position</param>
         /// <param name="y">Y position</param>
@@ -32,14 +33,13 @@ namespace Optimator
         /// <param name="connect">Connector from this spot to the next</param>
         /// <param name="tension">Tension of curve</param>
         /// /// <param name="drawn">DrawLevel integer</param>
-        public Spot(float x, float y, float? xr = null, float? yd = null, SpotOption? connect = null, float? tension = null)
+        public Spot(float x, float y)
         {
-            X = x;
-            Y = y;
-            XRight = xr ?? x;
-            YDown = yd ?? y;
-            Connector = connect ?? Connector;
-            Tension = tension ?? Tension;
+            X = XRight = x;
+            Y = YDown = y;
+            Connector = SpotOption.Corner;
+            Tension = 0.5F;
+            Line = new ConnectorDet();
         }
 
         /// <summary>
@@ -49,12 +49,31 @@ namespace Optimator
         /// <param name="y">Y position</param>
         /// <param name="connect">Connector from this spot to the next</param>
         /// <param name="tension">Tension of curve</param>
-        public Spot(float x, float y, SpotOption connect, float tension)
+        public Spot(float x, float y, SpotOption connect, float tension, ConnectorDet conDet)
         {
             X = x;
             Y = y;
             Connector = connect;
             Tension = tension;
+            Line = conDet;
+        }
+
+        /// <summary>
+        /// Constructor from save file.
+        /// </summary>
+        /// <param name="data"></param>
+        public Spot(string data)
+        {
+            var splitData = data.Split(Semi);       
+            var coords = Utils.ConvertStringArrayToFloats(splitData[0].Split(Colon));
+            var spotDets = splitData[1].Split(Colon);
+            X = coords[0];
+            Y = coords[1];
+            XRight = coords[2];
+            YDown = coords[3];
+            Connector = (SpotOption)int.Parse(spotDets[0]);
+            Tension = float.Parse(spotDets[1]);
+            Line = new ConnectorDet(splitData[2]);
         }
 
 
@@ -68,7 +87,7 @@ namespace Optimator
         public override string ToString()
         {
             return X + ColonS + Y + ColonS + XRight + ColonS + YDown + SemiS +
-                Connector.ToString("d") + ColonS + Tension;
+                Connector.ToString("d") + ColonS + Tension + SemiS + Line.ToString();
         }
 
         /// <summary>
@@ -177,7 +196,7 @@ namespace Optimator
             float[] coord = new float[2];
             coord[0] = r == 0 ? X : r == 1 ? XRight : r == 2 ? -X : -XRight;
             coord[1] = t == 0 ? Y : t == 1 ? YDown : t == 2 ? -Y : -YDown;
-            return new Spot(coord[0], coord[1], Connector, Tension);
+            return new Spot(coord[0], coord[1], Connector, Tension, Line);
         }
     }
 }

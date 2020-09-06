@@ -18,13 +18,12 @@ namespace Optimator
         public override string Name { get; set; }
         public override string Version { get; }
         public List<Spot> Data { get; set; } = new List<Spot>();
+        public State State { get; set; } = new State();
 
         // Piece Details
-        public State State { get; set; } = new State();
-        public ColourState ColourState { get; set; } = new ColourState();
-        public decimal OutlineWidth { get; set; }
         public PieceOption Type { get; set; }
         public bool Line { get; set; } = false;
+        public ColourState ColourState { get; set; } = new ColourState();
 
         #endregion
 
@@ -40,39 +39,18 @@ namespace Optimator
             Name = name;
             Version = data[0];
 
-            // Get Points and Colours from File
-            var angleData = data[1].Split(Semi);
+            // Piece Details
+            var pieceDetails = data[1].Split(Semi);
+            Type = (PieceOption)int.Parse(pieceDetails[0]);
+            Line = bool.Parse(pieceDetails[1]);
 
             // Colour State
-            ColourState = new ColourState
-            {
-                Type = (FillOption)int.Parse(angleData[0]),
-                Outline = ColourFromString(angleData[1])
-            };
-
-            // Fill Colour Array
-            var colours = angleData[2].Split(Colon);
-            ColourState.Fill = new Color[colours.Length];
-            for (var index = 0; index < colours.Length; index++)
-            {
-                ColourState.Fill[index] = ColourFromString(colours[index]);
-            }
-
-            // Outline Width
-            OutlineWidth = int.Parse(angleData[3]);
-
-            // Piece Details
-            Type = (PieceOption)int.Parse(angleData[4]);
+            ColourState = new ColourState(data[2]);
 
             // Spots
-            for (var index = 2; index < data.Count; index++)
+            for (var index = 3; index < data.Count; index++)
             {
-                var spotData = data[index].Split(Semi);
-                var coords = ConvertStringArrayToFloats(spotData[0].Split(Colon));
-                var connectors = spotData[1].Split(Colon);
-
-                Data.Add(new Spot(coords[0], coords[1], coords[2], coords[3],
-                    (SpotOption)int.Parse(connectors[0]), float.Parse(connectors[1])));
+                Data.Add(new Spot(data[index]));
             }
         }
 
@@ -84,8 +62,7 @@ namespace Optimator
         {
             Name = "";
             Version = Properties.Settings.Default.Version;
-            OutlineWidth = defaultOutlineWidth;
-            Type = PieceOption.Moveable;
+            Type = PieceOption.Flat;    //ANIMATION: Make default Moveable
         }
 
 
@@ -101,7 +78,8 @@ namespace Optimator
             var newData = new List<string>
             {
                 Version,
-                ColourState.GetData() + SemiS + OutlineWidth + SemiS + Type
+                Type.ToString("d") + SemiS + Line.ToString(),
+                ColourState.ToString()
             };
 
             // Add Spots
@@ -134,7 +112,7 @@ namespace Optimator
             colours = colours ?? ColourState;
             if (Line)
             {
-                Visuals.DrawOutline(g, GetPoints(state), new Pen(colours.Outline, (float)OutlineWidth), false);
+                Visuals.DrawOutline(g, GetPoints(state), false);
             }
             else
             {
@@ -549,7 +527,7 @@ namespace Optimator
                     var changed = FindMiddleSpot(shape1[index1].GetCoord(altz), shape2[match].GetCoord(altz), angle, swapped);
                     // TODO: Connector/Solid
                     var newSpot = new Spot(xChange ? changed : unchanged, xChange ? unchanged : changed, 
-                        shape1[index1].Connector, shape1[index1].Tension);
+                        shape1[index1].Connector, shape1[index1].Tension, shape1[index1].Line);
                     merged.Add(newSpot);
                     index1++;
                     i1 += swapped ? 0 : 1;
@@ -653,7 +631,7 @@ namespace Optimator
                     var changed = FindMiddleSpot(shape1[index1].GetCoord(altz), match[altz], angle, swapped);
                     // TODO: Connector
                     var newSpot = new Spot(xChange ? changed : unchanged, xChange ? unchanged : changed, 
-                        shape1[index1].Connector, shape1[index1].Tension);
+                        shape1[index1].Connector, shape1[index1].Tension, shape1[index1].Line);
                     merged.Add(newSpot);
                     index1++;
                     i1 += swapped ? 0 : 1;
@@ -811,6 +789,8 @@ namespace Optimator
         /// <returns>A list of float[ x, (int)y ] with the point coords</returns>
         private List<float[]> LineCoords(Spot from, Spot to, SpotOption join)
         {
+            // TODO: Add outline width to line coords
+
             var line = new List<float[]> { new float[] { from.X, from.Y } };
             var fromUpper = from.Y >= to.Y;
             var lower = fromUpper ? to : from;
@@ -881,7 +861,6 @@ namespace Optimator
             var outlineShape = LinesCoords();
             var minMax = FindMinMax(outlineShape);
             var ranges = new List<float[]>();
-            var halfOutline = OutlineWidth < 3 && Data.Count < 3 ? 3 : (float)(OutlineWidth / 2);
             for (var index = (int)minMax[2]; index <= (int)minMax[3]; index++)
             {
                 // Get coords for the specific Y value that aren't corners
@@ -918,7 +897,7 @@ namespace Optimator
                             min2Index = match;
                         }
                     }
-                    ranges.Add(new float[3] { index, min1 - halfOutline, min2 + halfOutline });
+                    ranges.Add(new float[3] { index, min1, min2 });
                     yMatches.RemoveAt(min1Index);
                     yMatches.RemoveAt(min2Index > min1Index ? min2Index - 1 : min2Index);
                 }
@@ -927,7 +906,7 @@ namespace Optimator
             if (ranges.Count == 0 && outlineShape.Count == 2)
             {
                 var minIndex = outlineShape[0][0] > outlineShape[1][0] ? 1 : 0;
-                for (int index = (int)(outlineShape[0][1] - halfOutline); index < (int)(outlineShape[0][1] + halfOutline); index++)
+                for (int index = (int)(outlineShape[0][1]); index < (int)(outlineShape[0][1]); index++)
                 {
                     ranges.Add(new float[3] { index, outlineShape[minIndex][0], outlineShape[minIndex == 0 ? 1 : 0][0] });
                 }

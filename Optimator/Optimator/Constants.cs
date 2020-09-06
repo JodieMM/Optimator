@@ -52,7 +52,7 @@ namespace Optimator
         // Piece Defaults
         public static Color defaultFill = Color.FromArgb(255, 204, 240, 255);
         public static Color defaultOutline = Color.FromArgb(255, 204, 204, 255);
-        public const decimal defaultOutlineWidth = 2;
+        public const float defaultOutlineWidth = 2;
 
         // Piece Options
         public enum SpotOption
@@ -64,7 +64,9 @@ namespace Optimator
         {
             None,
             Fill,
-            Gradient
+            Gradient,
+            LayeredGradient,
+            Image
         }
         public enum PieceOption
         {

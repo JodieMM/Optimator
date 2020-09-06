@@ -546,7 +546,11 @@ namespace Optimator
         /// <returns>Seperate object with the same contents</returns>
         public static Spot CloneSpot(Spot spot)
         {
-            return new Spot(spot.X, spot.Y, spot.XRight, spot.YDown, spot.Connector, spot.Tension);
+            return new Spot(spot.X, spot.Y, spot.Connector, spot.Tension, CloneConnectorDets(spot.Line))
+            {
+                XRight = spot.XRight,
+                YDown = spot.YDown
+            };
         }
 
         /// <summary>
@@ -582,7 +586,7 @@ namespace Optimator
         /// <returns>A separate ColourState</returns>
         public static ColourState CloneColourState(ColourState state)
         {
-            return new ColourState(state.Type, state.Fill, state.Outline);
+            return new ColourState(state.ToString());
         }
 
         /// <summary>
@@ -598,8 +602,8 @@ namespace Optimator
                 Data = CloneSpotList(piece.Data),
                 State = CloneState(piece.State),
                 ColourState = CloneColourState(piece.ColourState),
-                OutlineWidth = piece.OutlineWidth,
-                Type = piece.Type
+                Type = piece.Type,
+                Line = piece.Line
             };
             return clone;
         }
@@ -623,6 +627,26 @@ namespace Optimator
         {
             return new Join(a, b, set, join.AX, join.AY, join.AXRight, join.AYDown, join.BX, join.BY, join.BXRight, join.BYDown,
                 join.FlipAngle, join.IndexSwitch);
+        }
+
+        /// <summary>
+        /// Copies the details from a connectorDet into a seperate object.
+        /// </summary>
+        /// <param name="line">ConnectorDet to clone</param>
+        /// <returns>New ConnectorDet with same details</returns>
+        public static ConnectorDet CloneConnectorDets(ConnectorDet line)
+        {
+            var cloneOutlineColour = new Color[line.Colour.Length];
+            for (int index = 0; index < line.Colour.Length; index++)
+            {
+                cloneOutlineColour[index] = ColourFromString(ColorToString(line.Colour[index]));
+            }
+            return new ConnectorDet()
+            {
+                Width = line.Width,
+                Colour = cloneOutlineColour,
+                Visible = line.Visible
+            };
         }
 
         #endregion

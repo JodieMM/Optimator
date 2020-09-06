@@ -221,15 +221,21 @@ namespace Optimator.Tabs.SoloTabs
 
             if (FillColourBtn.BackColor == selected || AllBtn.BackColor == selected)
             {
-                from.WIP.ColourState.Fill = loaded.ToPiece().ColourState.Fill;
+                from.WIP.ColourState = loaded.ToPiece().ColourState;
             }
             if (OutlineColourBtn.BackColor == selected || AllBtn.BackColor == selected)
             {
-                from.WIP.ColourState.Outline = loaded.ToPiece().ColourState.Outline;
+                foreach (var spot in from.WIP.Data)
+                {
+                    spot.Line.Colour = loaded.ToPiece().Data[0].Line.Colour;
+                }
             }
             if (OutlineWidthBtn.BackColor == selected || AllBtn.BackColor == selected)
             {
-                from.WIP.OutlineWidth = loaded.ToPiece().OutlineWidth;
+                foreach (var spot in from.WIP.Data)
+                {
+                    spot.Line.Width = loaded.ToPiece().Data[0].Line.Width;
+                }
             }
             if (PieceDetailsBtn.BackColor == selected || AllBtn.BackColor == selected)
             {

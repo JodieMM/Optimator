@@ -5,7 +5,7 @@ using System.Windows.Forms;
 namespace Optimator.Tabs.Pieces
 {
     /// <summary>
-    /// A panel for changing the fill and outline colours of a piece.
+    /// A panel for changing the fill colours of a piece.
     /// 
     /// Author Jodie Muller
     /// </summary>
@@ -21,8 +21,7 @@ namespace Optimator.Tabs.Pieces
         {
             InitializeComponent();
             Owner = owner;
-            FillBox.BackColor = Owner.WIP.ColourState.Fill[0];
-            OutlineBox.BackColor = Owner.WIP.ColourState.Outline;
+            FillBox.BackColor = Utils.ColourFromString(Owner.WIP.ColourState.Details[0]);
         }
 
 
@@ -41,7 +40,7 @@ namespace Optimator.Tabs.Pieces
             var bigHeight = (int)(Height * heightPercent);
 
             ColoursLbl.Location = new Point(smallWidth, smallWidth);
-            OutlineBox.Height = FillBox.Height = (int)(bigHeight / 4.0);
+            FillBox.Height = (int)(bigHeight / 4.0);
 
             TableLayoutPnl.Size = new Size(smallWidth * 12, bigHeight);
             TableLayoutPnl.Location = new Point(smallWidth, smallWidth * 3 + ColoursLbl.Height);
@@ -62,27 +61,8 @@ namespace Optimator.Tabs.Pieces
             if (MyDialog.ShowDialog() == DialogResult.OK)
             {
                 FillBox.BackColor = MyDialog.Color;
-                Owner.WIP.ColourState.Fill = new Color[] { MyDialog.Color };
-                Owner.DisplayDrawings();
-            }
-        }
-
-        /// <summary>
-        /// Changes the outline colour of the shape.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OutlineBox_Click(object sender, EventArgs e)
-        {
-            var MyDialog = new ColorDialog
-            {
-                Color = OutlineBox.BackColor,
-                FullOpen = true
-            };
-            if (MyDialog.ShowDialog() == DialogResult.OK)
-            {
-                OutlineBox.BackColor = MyDialog.Color;
-                Owner.WIP.ColourState.Outline = MyDialog.Color;
+                Owner.WIP.ColourState.Layers[0] = Consts.FillOption.Fill;
+                Owner.WIP.ColourState.Details[0] = Utils.ColorToString(MyDialog.Color);
                 Owner.DisplayDrawings();
             }
         }

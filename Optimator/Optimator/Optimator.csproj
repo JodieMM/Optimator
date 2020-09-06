@@ -84,6 +84,7 @@
     <Compile Include="Change.cs" />
     <Compile Include="ColourState.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="ConnectorDetails.cs" />
     <Compile Include="Tabs\Pieces\OptionsPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
