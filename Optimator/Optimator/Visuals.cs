@@ -155,7 +155,6 @@ namespace Optimator
         /// <param name="onto">Piece to use for bounds</param>
         public static void DrawDecal(Graphics g, List<Spot> currentPoints, Brush fill, Piece onto)
         {
-            var bounds = onto.LineBounds();
             // TODO: Decals
         }
 

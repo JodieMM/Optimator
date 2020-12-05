@@ -39,6 +39,16 @@ namespace Optimator
             }
         }
 
+        /// <summary>
+        /// Constructor for a flat colour state.
+        /// </summary>
+        /// <param name="color"></param>
+        public ColourState(Color color)
+        {
+            Layers.Add(FillOption.Fill);
+            Details.Add(Utils.ColorToString(color));
+        }
+
 
 
         // ----- GENERAL FUNCTIONS -----

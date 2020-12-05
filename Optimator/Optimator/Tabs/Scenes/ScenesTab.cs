@@ -450,7 +450,7 @@ namespace Optimator.Tabs.Scenes
             {
                 subSelected = select as Piece;
             }
-            select.ToPiece().ColourState.Outline = (select is Piece) ? Color.Red : Color.Purple;
+            select.ToPiece().ColourState = new ColourState((select is Piece) ? Color.Red : Color.Purple);
             if (Panel.Controls.Count > 0)
             {
                 if (Panel.Controls[0] is PositionsPanel)
@@ -474,10 +474,10 @@ namespace Optimator.Tabs.Scenes
             {
                 if (subSelected != null)
                 {
-                    subSelected.ColourState.Outline = WIP.OriginalColours[selected.ToPiece()].Outline;
+                    subSelected.ColourState = WIP.OriginalColours[selected.ToPiece()];
                     subSelected = null;
                 }
-                selected.ToPiece().ColourState.Outline = WIP.OriginalColours[selected.ToPiece()].Outline;
+                selected.ToPiece().ColourState = WIP.OriginalColours[selected.ToPiece()];
                 selected = null;
                 if (Panel.Controls.Count > 0 && Panel.Controls[0] is PositionsPanel)
                 {
@@ -660,8 +660,7 @@ namespace Optimator.Tabs.Scenes
                 // Draw Shadows
                 if (movingFar && selected != null && shadowState != null)
                 {
-                    selected.Draw(g, shadowState, new ColourState(selected.ToPiece().ColourState,
-                        Consts.shadowShade, new Color[] { Consts.shadowShade }));
+                    selected.Draw(g, shadowState, new ColourState(Consts.shadowShade));
                 }
 
                 // Draw To Screen

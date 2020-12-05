@@ -705,22 +705,22 @@ namespace Optimator.Tabs.Sets
                         // Moving
                         if (selected != null && piece == selected && movingFar)
                         {
-                            piece.Draw(boards[angle], piece.State, new ColourState(piece.ColourState, Consts.shadowShade));
+                            piece.Draw(boards[angle], piece.State, new ColourState(Consts.shadowShade));
                         }
                         // Selected
                         else if (selected != null && piece == selected)
                         {
-                            piece.Draw(boards[angle], piece.State, new ColourState(piece.ColourState, Consts.select));
+                            piece.Draw(boards[angle], piece.State, new ColourState(Consts.select));
                         }
                         // Attached to Selected
                         else if (selected != null && WIP.JoinedPieces.ContainsKey(selected) && WIP.JoinedPieces[selected].Contains(piece))
                         {
-                            piece.Draw(boards[angle], piece.State, new ColourState(piece.ColourState, Consts.highlight));
+                            piece.Draw(boards[angle], piece.State, new ColourState(Consts.highlight));
                         }
                         // Base of Selected
                         else if (selected != null && WIP.JoinsIndex.ContainsKey(selected) && WIP.JoinsIndex[selected].B == piece)
                         {
-                            piece.Draw(boards[angle], piece.State, new ColourState(piece.ColourState, Consts.lowlight));
+                            piece.Draw(boards[angle], piece.State, new ColourState(Consts.lowlight));
                         }
                         else
                         {
@@ -764,22 +764,17 @@ namespace Optimator.Tabs.Sets
                     {
                         if (moving == 0)
                         {
-                            selected.Draw(og, shadowState, new ColourState(selected.ColourState, 
-                                Consts.shadowShade, new Color[] { Consts.shadowShade }));
-                            selected.Draw(rt, shadowState, new ColourState(selected.ColourState,
-                                Consts.shadowShade, new Color[] { Consts.shadowShade }));
-                            selected.Draw(td, shadowState, new ColourState(selected.ColourState,
-                                Consts.shadowShade, new Color[] { Consts.shadowShade }));
+                            selected.Draw(og, shadowState, new ColourState(Consts.shadowShade));
+                            selected.Draw(rt, shadowState, new ColourState(Consts.shadowShade));
+                            selected.Draw(td, shadowState, new ColourState(Consts.shadowShade));
                         }
                         else if (moving == 1)
                         {
-                            selected.Draw(rt, shadowState, new ColourState(selected.ColourState,
-                                Consts.shadowShade, new Color[] { Consts.shadowShade }));
+                            selected.Draw(rt, shadowState, new ColourState(Consts.shadowShade));
                         }
                         else if (moving == 2)
                         {
-                            selected.Draw(td, shadowState, new ColourState(selected.ColourState,
-                                Consts.shadowShade, new Color[] { Consts.shadowShade }));
+                            selected.Draw(td, shadowState, new ColourState(Consts.shadowShade));
                         }
                     }
                 }
